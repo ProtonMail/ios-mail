@@ -61,20 +61,9 @@ class SearchViewController: ProtonMailViewController {
         didSet { self.tableView.reloadData() }
     }
     
-    fileprivate var managedObjectContext: NSManagedObjectContext?
-    fileprivate lazy var fetchQueue: OperationQueue = {
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = .userInitiated
-        return queue
-    }()
     fileprivate var currentPage = 0;
 
-    fileprivate var query: String = "" {
-        didSet {
-            self.fetchRemoteObjects(query)
-        }
-    }
+    fileprivate var query: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -102,7 +91,6 @@ class SearchViewController: ProtonMailViewController {
                 NSAttributedString.Key.font: Fonts.h3.light
             ])
         
-        managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
         searchTextField.becomeFirstResponder()
         
         self.progressBar.translatesAutoresizingMaskIntoConstraints = false
@@ -122,12 +110,12 @@ class SearchViewController: ProtonMailViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
     }
     
     // my selector that was defined above
     @objc func willEnterForeground() {
         self.dismiss(animated: false, completion: nil)
-        self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
     }
 
     override func viewDidLayoutSubviews() {
@@ -158,88 +146,99 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func indexLocalObjects(_ completion: @escaping ()->Void) {
-        DispatchQueue.global(qos: .background).async {
-            let context = sharedCoreDataService.newSeparateManagedObjectContext()
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-            fetchRequest.resultType = .dictionaryResultType
-    
-            let objectId = NSExpressionDescription()
-            objectId.name = "objectID"
-            objectId.expression = NSExpression.expressionForEvaluatedObject()
-            objectId.expressionResultType = NSAttributeType.objectIDAttributeType
-            
-            fetchRequest.propertiesToFetch = [objectId,
-                                              Message.Attributes.title,
-                                              Message.Attributes.sender,
-                                              Message.Attributes.senderName,
-                                              Message.Attributes.toList]
-            fetchRequest.predicate = NSPredicate(format: "(%K != -1) AND (%K != 1)",
-                                                   Message.Attributes.locationNumber,
-                                                   Message.Attributes.locationNumber)
-
-            let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
-                self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
-                self?.localObjectsIndexingObserver = nil
-                completion()
-            })
-            
+        let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
+        var count = 0
+        context.performAndWait {
             do {
                 let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
                 overallCountRequest.resultType = .countResultType
                 let result = try context.fetch(overallCountRequest)
-                let count = result.first as! Int
-            
-                self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
-                let index = try context.execute(async) as! NSPersistentStoreAsynchronousResult
-                self.localObjectIndexing.resignCurrent()
-                self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
-                    DispatchQueue.main.async {
-                        let completionRate = Float(progress.completedUnitCount) / Float(count)
-                        self?.progressBar.setProgress(completionRate, animated: true)
-                    }
-                })
-
+                count = (result.first as? Int) ?? 1
             } catch let error {
                 PMLog.D(" performFetch error: \(error)")
                 assert(false, "Failed to fetch message dicts")
             }
         }
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.resultType = .dictionaryResultType
+
+        let objectId = NSExpressionDescription()
+        objectId.name = "objectID"
+        objectId.expression = NSExpression.expressionForEvaluatedObject()
+        objectId.expressionResultType = NSAttributeType.objectIDAttributeType
+        
+        fetchRequest.propertiesToFetch = [objectId,
+                                          Message.Attributes.title,
+                                          Message.Attributes.sender,
+                                          Message.Attributes.senderName,
+                                          Message.Attributes.toList]
+        fetchRequest.predicate = NSPredicate(format: "(%K != -1) AND (%K != 1)",
+                                               Message.Attributes.locationNumber,
+                                               Message.Attributes.locationNumber)
+
+        let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
+            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+            self?.localObjectsIndexingObserver = nil
+            completion()
+        })
+        
+        context.perform {
+            self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
+            guard let indexRaw = try? context.execute(async),
+                let index = indexRaw as? NSPersistentStoreAsynchronousResult else
+            {
+                self.localObjectIndexing.resignCurrent()
+                return
+            }
+            
+            self.localObjectIndexing.resignCurrent()
+            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
+                DispatchQueue.main.async {
+                    let completionRate = Float(progress.completedUnitCount) / Float(count)
+                    self?.progressBar.setProgress(completionRate, animated: true)
+                }
+            })
+        }
     }
     
     func fetchLocalObjects() {
-        DispatchQueue.main.async {
-            guard let context = self.managedObjectContext else {
-                return
+        // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
+        let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
+            if let title = $0["title"] as? String,
+                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
             }
-
-            // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
-            let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
-                if let title = $0["title"] as? String,
-                    let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                {
-                    return $0["objectID"] as? NSManagedObjectID
-                }
-                if let senderName = $0["senderName"]  as? String,
-                    let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                {
-                    return $0["objectID"] as? NSManagedObjectID
-                }
-                if let sender = $0["sender"]  as? String,
-                    let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                {
-                    return $0["objectID"] as? NSManagedObjectID
-                }
-                if let toList = $0["toList"]  as? String,
-                    let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
-                {
-                    return $0["objectID"] as? NSManagedObjectID
-                }
-                return nil
+            if let senderName = $0["senderName"]  as? String,
+                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
             }
-
-            let messages = messageIds.compactMap(context.object) as? [Message]
-            self.searchResult = messages ?? []
+            if let sender = $0["sender"]  as? String,
+                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            if let toList = $0["toList"]  as? String,
+                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            return nil
+        }
+        
+        let context = sharedCoreDataService.mainManagedObjectContext
+        context.performAndWait {
+            let messages = messageIds.compactMap { oldId -> Message? in
+                let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
+                guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
+                    return nil
+                }
+                return context.object(with: newId) as? Message
+            }
+            self.searchResult = messages
             
             self.showHideNoresult()
         }
@@ -256,7 +255,7 @@ class SearchViewController: ProtonMailViewController {
                             page: Int? = nil)
     {
         let pageToLoad = page ?? 0
-        if query.isEmpty {
+        if query.count < 3 {
             self.searchResult = []
             self.currentPage = 0
             return
@@ -264,37 +263,33 @@ class SearchViewController: ProtonMailViewController {
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
-        self.fetchQueue.cancelAllOperations()
-        self.fetchQueue.addOperation {
-            let semaphore = DispatchSemaphore(value: 0)
-            sharedMessageDataService.search(query, page: pageToLoad, completion: { (messages, error) -> Void in
-                defer { semaphore.signal() }
+        sharedMessageDataService.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
+            DispatchQueue.main.async {
                 self.tableView.hideLoadingFooter()
+            }
+        
+            guard error == nil, let messages = messageBoxes else {
+                PMLog.D(" search error: \(String(describing: error))")
                 
-                guard error == nil,
-                    let messages = messages else
-                {
-                    PMLog.D(" search error: \(String(describing: error))")
-                    self.fetchQueue.cancelAllOperations()
-                    
-                    if pageToLoad == 0 {
-                        self.fetchQueue.addOperation {
-                            self.fetchLocalObjects()
-                        }
-                    }
-                    return
+                if pageToLoad == 0 {
+                    self.fetchLocalObjects()
                 }
-                self.currentPage = pageToLoad
-                guard !messages.isEmpty else {
-                    return
-                }
+                return
+            }
+            self.currentPage = pageToLoad
+            guard !messages.isEmpty else {
+                return
+            }
+            
+            let context = sharedCoreDataService.mainManagedObjectContext
+            context.perform {
+                let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
                 if pageToLoad > 0 {
-                    self.searchResult.append(contentsOf: messages)
+                    self.searchResult.append(contentsOf: mainQueueMessages)
                 } else {
-                    self.searchResult = messages
+                    self.searchResult = mainQueueMessages
                 }
-            })
-            semaphore.wait()
+            }
         }
     }
     
@@ -385,6 +380,7 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        self.fetchRemoteObjects(self.query)
         return true
     }
 }

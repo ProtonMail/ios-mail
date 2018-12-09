@@ -21,15 +21,8 @@ enum LabelFetchType : Int {
 
 class LabelsDataService {
     
-    fileprivate var managedObjectContext: NSManagedObjectContext? {
-        return sharedCoreDataService.mainManagedObjectContext
-    }
-    
-    func cleanUp()
-    {
-        if let context = managedObjectContext {
-            Label.deleteAll(inContext: context)
-        }
+    func cleanUp() {
+        Label.deleteAll(inContext: sharedCoreDataService.backgroundManagedObjectContext)
     }
     
     /**
@@ -48,7 +41,7 @@ class LabelsDataService {
                 //TODO:: error
             } else if let labels = response?.labels {
                 //save
-                let context = sharedCoreDataService.newMainManagedObjectContext()
+                let context = sharedCoreDataService.backgroundManagedObjectContext
                 context.performAndWait() {
                     do {
                         let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
@@ -85,55 +78,52 @@ class LabelsDataService {
             fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         }
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            do {
-                let results = try context.fetch(fetchRequest)
-                if let results = results as? [Label] {
-                    return results
-                } else {
-                    // TODO: handle error
-                    PMLog.D("COnversion to Label error")
-                }
-            } catch {
-                PMLog.D("Get context failed")
+        let context = sharedCoreDataService.mainManagedObjectContext
+        do {
+            let results = try context.fetch(fetchRequest)
+            if let results = results as? [Label] {
+                return results
+            } else {
+                // TODO: handle error
+                PMLog.D("COnversion to Label error")
             }
+        } catch {
+            PMLog.D("Get context failed")
         }
         
         return []
     }
     
     func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-            
-            switch type {
-            case .all:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
-            case .folder:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-            case .label:
-                fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-            case .contactGroup:
-                // in contact group searching, predicate must be consistent with this one
-                fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
-            }
-            
-            if type != .contactGroup {
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
-            } else {
-                let strComp = NSSortDescriptor(key: Label.Attributes.name,
-                                               ascending: true,
-                                               selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-                fetchRequest.sortDescriptors = [strComp]
-            }
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        let moc = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        
+        switch type {
+        case .all:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
+        case .folder:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .label:
+            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .contactGroup:
+            // in contact group searching, predicate must be consistent with this one
+            fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
         }
-        return nil
+        
+        if type != .contactGroup {
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
+        } else {
+            let strComp = NSSortDescriptor(key: Label.Attributes.name,
+                                           ascending: true,
+                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+            fetchRequest.sortDescriptors = [strComp]
+        }
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     func addNewLabel(_ response : [String : Any]?) {
         if let label = response {
-            let context = sharedCoreDataService.newMainManagedObjectContext()
+            let context = sharedCoreDataService.backgroundManagedObjectContext
             context.performAndWait() {
                 do {
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)

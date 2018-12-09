@@ -311,7 +311,8 @@ extension Message {
      :param: messageID String
      */
     class func deleteMessage(_ messageID : String) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: "labels")
                 labelObjs.removeAllObjects()
@@ -325,7 +326,9 @@ extension Message {
     }
     
     class func deleteLocation(_ location : MessageLocation) -> Bool{
-        if let mContext = sharedCoreDataService.mainManagedObjectContext {
+        let mContext = sharedCoreDataService.backgroundManagedObjectContext
+        var success = false
+        mContext.performAndWait {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             if location == .spam || location == .trash {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
@@ -338,7 +341,7 @@ extension Message {
                         if let error = mContext.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
                         } else {
-                            return true
+                            success = true
                         }
                     }
                 } catch {
@@ -346,7 +349,7 @@ extension Message {
                 }
             }
         }
-        return false
+        return success
     }
     
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
@@ -423,7 +426,9 @@ extension Message {
             }
             return body
         } else {
-            if var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: sharedUserDataService.mailboxPassword!) {
+            
+            if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
+                var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: passphrase) {
                 //PMLog.D(body)
                 if isEncrypted == 8 || isEncrypted == 9 {
                     if let mimeMsg = MIMEMessage(string: body) {
@@ -554,7 +559,7 @@ extension Message {
     
     func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
-        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
+        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext)
         newMessage.location = MessageLocation.draft
         newMessage.toList = message.toList
         newMessage.bccList = message.bccList

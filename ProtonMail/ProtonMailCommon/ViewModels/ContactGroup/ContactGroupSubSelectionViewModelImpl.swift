@@ -34,54 +34,50 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            // (1)
-            if let label = Label.labelForLabelName(self.groupName,
-                                                   inManagedObjectContext: context),
-                let emails = label.emails.allObjects as? [Email] {
-                self.groupColor = label.color
-                
-                for email in emails {
-                    emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
-                                                                                           name: email.name))
-                }
-            } else {
-                // the group might be renamed or deleted
-                self.groupColor = ColorManager.defaultColor
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        // (1)
+        if let label = Label.labelForLabelName(self.groupName,
+                                               inManagedObjectContext: context),
+            let emails = label.emails.allObjects as? [Email] {
+            self.groupColor = label.color
             
-            // (2)
-            for member in selectedEmails {
-                var found = false
-                for (i, candidate) in emailData.enumerated() {
-                    if member.email == candidate.email &&
-                        member.name == candidate.name &&
-                        emailData[i].isSelected == false { // case: >= 2 identical name-email pair occurs
-                        emailData[i].isSelected = true
-                        found = true
-                        break
-                    }
-                }
-                
-                if found {
-                    continue
-                }
-                
-                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
-                                                                                  name: member.name,
-                                                                                  isSelected: true))
-            }
-            
-            // (3)
-            emailData.sort {
-                if $0.name == $1.name {
-                    return $0.email < $1.email
-                }
-                return $0.name < $1.name
+            for email in emails {
+                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
+                                                                                       name: email.name))
             }
         } else {
-            // TODO: handle error
+            // the group might be renamed or deleted
             self.groupColor = ColorManager.defaultColor
+        }
+        
+        // (2)
+        for member in selectedEmails {
+            var found = false
+            for (i, candidate) in emailData.enumerated() {
+                if member.email == candidate.email &&
+                    member.name == candidate.name &&
+                    emailData[i].isSelected == false { // case: >= 2 identical name-email pair occurs
+                    emailData[i].isSelected = true
+                    found = true
+                    break
+                }
+            }
+            
+            if found {
+                continue
+            }
+            
+            emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
+                                                                              name: member.name,
+                                                                              isSelected: true))
+        }
+        
+        // (3)
+        emailData.sort {
+            if $0.name == $1.name {
+                return $0.email < $1.email
+            }
+            return $0.name < $1.name
         }
         
         emailArray = emailData // query

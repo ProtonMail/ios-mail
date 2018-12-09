@@ -64,15 +64,14 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            for (key, value) in self.labelMessages {
-                if value.currentStatus == 2 { //delete
-                    if value.label.managedObjectContext != nil && key == value.label.labelID {
-                        let api = DeleteLabelRequest(lable_id: key)
-                        api.call(nil)
-                        context.performAndWait { () -> Void in
-                            context.delete(value.label)
-                        }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        for (key, value) in self.labelMessages {
+            if value.currentStatus == 2 { //delete
+                if value.label.managedObjectContext != nil && key == value.label.labelID {
+                    let api = DeleteLabelRequest(lable_id: key)
+                    api.call(nil)
+                    context.performAndWait { () -> Void in
+                        context.delete(value.label)
                     }
                 }
             }

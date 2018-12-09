@@ -80,7 +80,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func loadMessageDetailes () {
         showEmailLoading()
-        message.fetchDetailIfNeeded() { _, _, msg, error in
+        message.fetchDetailIfNeeded() { _, _, _, error in
             if let error = error {
                 self.processError(error: error)
             } else {
@@ -583,32 +583,29 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
         
-        //let offset = Int64(NSEC_PER_SEC) / 2
-       DispatchQueue.global(qos:.default).asyncAfter(deadline: DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC), execute: { () -> Void in
-            if (!self.bodyLoaded || forceReload) && self.emailView != nil {
-                if self.message.isDetailDownloaded {  //&& forceReload == false
-                    self.bodyLoaded = true
-                    
-                    if self.fixedBody == nil {
-                        self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
-                        DispatchQueue.main.async {
-                            self.showEmbedImage()
-                        }
+        if (!self.bodyLoaded || forceReload) && self.emailView != nil {
+            if self.message.isDetailDownloaded {  //&& forceReload == false
+                self.bodyLoaded = true
+                
+                if self.fixedBody == nil {
+                    self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
+                    DispatchQueue.main.async {
+                        self.showEmbedImage()
                     }
-                    
-                    if !self.isAutoLoadImage && !self.showedShowImageView{
-                        if self.bodyHasImages {
-                            self.needShowShowImageView = true
-                        }
+                }
+                
+                if !self.isAutoLoadImage && !self.showedShowImageView{
+                    if self.bodyHasImages {
+                        self.needShowShowImageView = true
                     }
                 }
             }
-            if self.fixedBody != nil {
-                DispatchQueue.main.async {
-                    self.loadEmailBody(self.fixedBody ?? "")
-                }
+        }
+        if self.fixedBody != nil {
+            DispatchQueue.main.async {
+                self.loadEmailBody(self.fixedBody ?? "")
             }
-        })
+        }
     }
     
     internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
@@ -759,7 +756,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                 complete?(nil, -1)
                                 return
                             }
-                            let context = sharedCoreDataService.newManagedObjectContext()
+                            let context = sharedCoreDataService.backgroundManagedObjectContext
                             let getEmail = UserEmailPubKeys(email: emial).run()
                             let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in

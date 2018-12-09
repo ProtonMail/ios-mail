@@ -43,13 +43,12 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return color
             }
             
-            if let context = sharedCoreDataService.mainManagedObjectContext {
-                if let label = Label.labelForLabelName(contactTitle,
-                                                       inManagedObjectContext: context) {
-                    groupColor = label.color
-                    groupSize = label.emails.count
-                    return label.color
-                }
+            let context = sharedCoreDataService.mainManagedObjectContext
+            if let label = Label.labelForLabelName(contactTitle,
+                                                   inManagedObjectContext: context) {
+                groupColor = label.color
+                groupSize = label.emails.count
+                return label.color
             }
             
             return ColorManager.defaultColor
@@ -140,14 +139,13 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let label = Label.labelForLabelName(contactTitle,
-                                                   inManagedObjectContext: context) {
-                for email in label.emails.allObjects as! [Email] {
-                    let member = DraftEmailData.init(name: email.name,
-                                                     email: email.email)
-                    selectedMembers.insert(member)
-                }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let label = Label.labelForLabelName(contactTitle,
+                                               inManagedObjectContext: context) {
+            for email in label.emails.allObjects as! [Email] {
+                let member = DraftEmailData.init(name: email.name,
+                                                 email: email.email)
+                selectedMembers.insert(member)
             }
         }
     }
@@ -164,13 +162,12 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             return (size, color)
         }
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let label = Label.labelForLabelName(contactTitle,
-                                                   inManagedObjectContext: context) {
-                groupColor = label.color
-                groupSize = label.emails.count
-                return (label.emails.count, label.color)
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let label = Label.labelForLabelName(contactTitle,
+                                               inManagedObjectContext: context) {
+            groupColor = label.color
+            groupSize = label.emails.count
+            return (label.emails.count, label.color)
         }
         
         return (0, ColorManager.defaultColor)
@@ -182,13 +179,12 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return size
             }
             
-            if let context = sharedCoreDataService.mainManagedObjectContext {
-                if let label = Label.labelForLabelName(contactTitle,
-                                                       inManagedObjectContext: context) {
-                    groupColor = label.color
-                    groupSize = label.emails.count
-                    return label.emails.count
-                }
+            let context = sharedCoreDataService.mainManagedObjectContext
+            if let label = Label.labelForLabelName(contactTitle,
+                                                   inManagedObjectContext: context) {
+                groupColor = label.color
+                groupSize = label.emails.count
+                return label.emails.count
             }
             
             return 0
@@ -204,51 +200,48 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            // (1) get all email in the contact group
-            if let label = Label.labelForLabelName(self.contactTitle,
-                                                   inManagedObjectContext: context),
-                let emails = label.emails.allObjects as? [Email] {
-                color = label.color
-                
-                for email in emails {
-                    let member = DraftEmailData.init(name: email.name,
-                                                     email: email.email)
-                    emailMultiSet.insert(member)
-                }
-            } else {
-                // TODO: handle error
-                return errorResponse
+        let context = sharedCoreDataService.mainManagedObjectContext
+        // (1) get all email in the contact group
+        if let label = Label.labelForLabelName(self.contactTitle,
+                                               inManagedObjectContext: context),
+            let emails = label.emails.allObjects as? [Email] {
+            color = label.color
+        
+            for email in emails {
+                let member = DraftEmailData.init(name: email.name,
+                                                 email: email.email)
+                emailMultiSet.insert(member)
             }
-            
-            // (2) get all that is NOT in the contact group, but is selected
-            // Because we might have identical name-email pairs, we can't simply use a set
-            //
-            // We use the frequency map of all name-email pairs, and we
-            // 2a) add pairs that are not present in the emailMultiSet
-            // or
-            // 2b) update the frequency counter of the emailMultiSet only if tmpMultiSet has a larger value
-            for member in self.selectedMembers {
-                let count = emailMultiSet[member.key] ?? 0
-                if member.value > count {
-                    for _ in 0..<(member.value - count) {
-                        emailMultiSet.insert(member.key)
-                    }
-                }
-            }
-            
-            let memberSelected = self.selectedMembers.reduce(0, {x, y in
-                return x + y.value
-            })
-            let totalMemberCount = emailMultiSet.reduce(0, {
-                x, y in
-                return x + y.value
-            })
-            
-            return (memberSelected, totalMemberCount, color)
         } else {
+            // TODO: handle error
             return errorResponse
         }
+        
+        // (2) get all that is NOT in the contact group, but is selected
+        // Because we might have identical name-email pairs, we can't simply use a set
+        //
+        // We use the frequency map of all name-email pairs, and we
+        // 2a) add pairs that are not present in the emailMultiSet
+        // or
+        // 2b) update the frequency counter of the emailMultiSet only if tmpMultiSet has a larger value
+        for member in self.selectedMembers {
+            let count = emailMultiSet[member.key] ?? 0
+            if member.value > count {
+                for _ in 0..<(member.value - count) {
+                    emailMultiSet.insert(member.key)
+                }
+            }
+        }
+        
+        let memberSelected = self.selectedMembers.reduce(0, {x, y in
+            return x + y.value
+        })
+        let totalMemberCount = emailMultiSet.reduce(0, {
+            x, y in
+            return x + y.value
+        })
+        
+        return (memberSelected, totalMemberCount, color)
     }
     
     init(ID: String, name: String, groupSize: Int? = nil, color: String? = nil) {

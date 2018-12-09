@@ -28,24 +28,48 @@ class CoreDataService {
     fileprivate lazy var managedObjectModel: NSManagedObjectModel = {
         let modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
-        }()
+    }()
     
-    fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
+    fileprivate lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator! = {
         return self.newPersistentStoreCoordinator(self.managedObjectModel)
     }()
     
     // MARK: - variables
     
-    lazy var mainManagedObjectContext: NSManagedObjectContext? = {
-        if self.persistentStoreCoordinator == nil {
-            return nil
-        }
-        
+    lazy var mainManagedObjectContext: NSManagedObjectContext = {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
+                                               object: managedObjectContext,
+                                               queue: nil) { notification in
+            let context = self.backgroundManagedObjectContext
+            context.perform {
+                context.mergeChanges(fromContextDidSave: notification)
+            }
+        }
+        
         return managedObjectContext
-        }()
+    }()
+    
+    lazy var backgroundManagedObjectContext: NSManagedObjectContext = {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
+                                               object: managedObjectContext,
+                                               queue: nil) { notification in
+            let context = self.mainManagedObjectContext
+            context.perform {
+                context.mergeChanges(fromContextDidSave: notification)
+            }
+        }
+        
+        return managedObjectContext
+    }()
+    
     
     
     // MARK: - methods
@@ -57,24 +81,9 @@ class CoreDataService {
         return nil
     }
     
-    func newMainManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.parent = mainManagedObjectContext
-        return managedObjectContext
-    }
-    
-    // This context will not automatically merge upstream context saves
-    func newManagedObjectContext() -> NSManagedObjectContext {
+    func makeReadonlyBackgroundManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.parent = mainManagedObjectContext
-        return managedObjectContext
-    }
-    
-    func newSeparateManagedObjectContext() -> NSManagedObjectContext {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        managedObjectContext.persistentStoreCoordinator = self.newPersistentStoreCoordinator(self.managedObjectModel)
         return managedObjectContext
     }
     

@@ -38,21 +38,13 @@ typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 class ContactDataService {
     
     /**
-     wraper of main context
-     **/
-    private var managedObjectContext: NSManagedObjectContext? {
-        return sharedCoreDataService.mainManagedObjectContext
-    }
-    
-    /**
      clean contact local cache
      **/
     func clean() {
         lastUpdatedStore.contactsCached = 0
-        if let context = self.managedObjectContext {
-            Contact.deleteAll(inContext: context)
-            Email.deleteAll(inContext: context)
-        }
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        Contact.deleteAll(inContext: context)
+        Email.deleteAll(inContext: context)
     }
     
     /**
@@ -60,19 +52,17 @@ class ContactDataService {
      
      **/
     func resultController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let moc = self.managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
-            let strComp = NSSortDescriptor(key: Contact.Attributes.name,
-                                           ascending: true,
-                                           selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-            fetchRequest.sortDescriptors = [strComp]
-            
-            return NSFetchedResultsController(fetchRequest: fetchRequest,
-                                              managedObjectContext: moc,
-                                              sectionNameKeyPath: Contact.Attributes.name,
-                                              cacheName: nil)
-        }
-        return nil
+        let moc = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+        let strComp = NSSortDescriptor(key: Contact.Attributes.name,
+                                       ascending: true,
+                                       selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
+        fetchRequest.sortDescriptors = [strComp]
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest,
+                                          managedObjectContext: moc,
+                                          sectionNameKeyPath: Contact.Attributes.name,
+                                          cacheName: nil)
     }
     
     /**
@@ -104,7 +94,7 @@ class ContactDataService {
             }
             
             if !contacts_json.isEmpty {
-                let context = sharedCoreDataService.newManagedObjectContext()
+                let context = sharedCoreDataService.mainManagedObjectContext
                 context.performAndWait() {
                     do {
                         if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -181,7 +171,7 @@ class ContactDataService {
                         tempCards.removeAll()
                         
                         if !contacts_json.isEmpty {
-                            let context = sharedCoreDataService.newManagedObjectContext()
+                            let context = sharedCoreDataService.mainManagedObjectContext
                             context.performAndWait() {
                                 do {
                                     if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -230,7 +220,7 @@ class ContactDataService {
                 if contactDict["Cards"] == nil {
                     contactDict["Cards"] = cards.toDictionary()
                 }
-                let context = sharedCoreDataService.newManagedObjectContext()
+                let context = sharedCoreDataService.mainManagedObjectContext
                 context.performAndWait() {
                     do {
                         // remove all emailID associated with the current contact in the core data
@@ -284,33 +274,29 @@ class ContactDataService {
         api.call { (task, response, hasError) in
             if hasError {
                 if let err = response?.error, err.code == 13043 { //not exsit
-                    if let context = sharedCoreDataService.mainManagedObjectContext {
-                        context.performAndWait() {
-                            if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
-                                context.delete(contact)
-                            }
-                            if let error = context.saveUpstreamIfNeeded() {
-                                PMLog.D(" error: \(error)")
-                            }
-                        }
-                    }
-                }
-                completion(response?.error)
-            } else {
-                if let context = sharedCoreDataService.mainManagedObjectContext {
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.performAndWait() {
                         if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                             context.delete(contact)
                         }
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D(" error: \(error)")
-                            completion(error)
-                        } else {
-                            completion(nil)
                         }
                     }
-                } else {
-                    completion(NSError.unableToParseResponse(response))
+                }
+                completion(response?.error)
+            } else {
+                let context = sharedCoreDataService.backgroundManagedObjectContext
+                context.performAndWait() {
+                    if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
+                        context.delete(contact)
+                    }
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                        completion(error)
+                    } else {
+                        completion(nil)
+                    }
                 }
             }
         }
@@ -319,7 +305,7 @@ class ContactDataService {
     
     
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
-        let context = context ?? sharedCoreDataService.newManagedObjectContext()
+        let context = context ?? sharedCoreDataService.backgroundManagedObjectContext
         return Promise { seal in
             async {
                 guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
@@ -487,7 +473,7 @@ class ContactDataService {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        let context = sharedCoreDataService.newManagedObjectContext()
+                        let context = sharedCoreDataService.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
                                 let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -539,7 +525,7 @@ class ContactDataService {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        let context = sharedCoreDataService.newManagedObjectContext()
+                        let context = sharedCoreDataService.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
                                 if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -595,7 +581,7 @@ class ContactDataService {
             let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
             api.call { (task, response, hasError) in
                 if let contactDict = response?.contact {
-                    let context = inContext ?? sharedCoreDataService.newMainManagedObjectContext()
+                    let context = inContext ?? sharedCoreDataService.mainManagedObjectContext
                     context.performAndWait() {
                         do {
                             if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
@@ -625,10 +611,8 @@ class ContactDataService {
     
     /// Only call from the main thread
     func allEmails() -> [Email] {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            return self.allEmailsInManagedObjectContext(context)
-        }
-        return []
+        let context = sharedCoreDataService.mainManagedObjectContext
+        return self.allEmailsInManagedObjectContext(context)
     }
     
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
@@ -667,7 +651,7 @@ class ContactDataService {
         
         progress()
         
-        let context = sharedCoreDataService.newManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
         async {
             let getEmail = UserEmailPubKeys(email: email).run()
             let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
@@ -754,7 +738,7 @@ extension ContactDataService {
             }
             
             // merge address book and core data contacts
-            let context = sharedCoreDataService.newManagedObjectContext()
+            let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
             context.performAndWait() {
                 let emailsCache = sharedContactDataService.allEmailsInManagedObjectContext(context)
                 var pm_contacts: [ContactVO] = []

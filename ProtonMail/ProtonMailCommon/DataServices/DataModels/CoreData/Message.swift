@@ -147,6 +147,8 @@ final public class Message: NSManagedObject {
     var checkedSign : Bool = false
     var pgpType : PGPType = .none
     var unencrypt_outside : Bool = false
+    
+    typealias ObjectIDContainer = ObjectBox<Message>
 }
 
 //IsEncrypted = 2;

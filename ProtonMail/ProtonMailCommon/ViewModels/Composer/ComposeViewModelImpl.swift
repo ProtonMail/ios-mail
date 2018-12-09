@@ -183,7 +183,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
         progress()
         
-        let context = sharedCoreDataService.newManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
         async {
             guard let c = model as? ContactVO else {
                 complete?(nil, -1)
@@ -419,7 +419,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                                                        body: body,
                                                        attachments: nil,
                                                        mailbox_pwd: mailboxPassword,
-                                                       inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext!)
+                                                       inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext)
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit

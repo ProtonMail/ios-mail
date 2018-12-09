@@ -10,7 +10,9 @@ import Foundation
 
 extension UIApplication {
     class func setBadge(badge:Int) {
-        UIApplication.shared.applicationIconBadgeNumber = badge
+        DispatchQueue.main.async {
+            UIApplication.shared.applicationIconBadgeNumber = badge
+        }
     }
 }
 

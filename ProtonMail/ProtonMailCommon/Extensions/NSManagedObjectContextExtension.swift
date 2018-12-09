@@ -93,11 +93,6 @@ extension NSManagedObjectContext {
         do {
             if hasChanges {
                 try save()
-                if let parentContext = parent {
-                    parentContext.performAndWait() { () -> Void in
-                        error = parentContext.saveUpstreamIfNeeded()
-                    }
-                }
             }
         } catch let ex as NSError {
             error = ex
