@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import CryptoSwift
+import Crypto
 
 public struct Locked<T> {
     public enum Errors: Error {
@@ -34,16 +34,24 @@ extension Locked where T == String {
         guard let data = clearValue.data(using: .utf8) else {
             throw Errors.failedToTurnValueIntoData
         }
-        let aes = try AES(key: key, blockMode: ECB())
-        let cypherBytes = try aes.encrypt(data.bytes)
-        self.encryptedValue = Data(bytes: cypherBytes)
+        
+        var error: NSError?
+        let cypherBytes = CryptoEncryptWithoutIntegrity(key, data, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+        
+        if let error = error {
+            throw error
+        }
+        self.encryptedValue = cypherBytes
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
-        let aes = try AES(key: key, blockMode: ECB())
-        let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
-        let data = Data(bytes: clearBytes)
-        guard let value = String.init(data: data, encoding: .utf8) else {
+        var error: NSError?
+        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+        if let error = error {
+            throw error
+        }
+
+        guard let value = String(data: clearBytes, encoding: .utf8) else {
             throw Errors.failedToTurnValueIntoData
         }
         return value
@@ -52,31 +60,46 @@ extension Locked where T == String {
 
 extension Locked where T == Data {
     public init(clearValue: T, with key: Keymaker.Key) throws {
-        let aes = try AES(key: key, blockMode: ECB())
-        let cypherBytes = try aes.encrypt(clearValue.bytes)
-        self.encryptedValue = Data(bytes: cypherBytes)
+        var error: NSError?
+        let cypherBytes = CryptoEncryptWithoutIntegrity(key, clearValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+        
+        if let error = error {
+            throw error
+        }
+        self.encryptedValue = cypherBytes
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
-        let aes = try AES(key: key, blockMode: ECB())
-        let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
-        return Data(bytes: clearBytes)
+        var error: NSError?
+        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+            
+        if let error = error {
+            throw error
+        }
+        return clearBytes
     }
 }
 
 extension Locked where T: Codable {
     public init(clearValue: T, with key: Keymaker.Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)
-        let aes = try AES(key: key, blockMode: ECB())
-        let cypherBytes = try aes.encrypt(data.bytes)
+        var error: NSError?
+        let cypherBytes = CryptoEncryptWithoutIntegrity(key, data, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+            
+        if let error = error {
+            throw error
+        }
         self.encryptedValue = Data(bytes: cypherBytes)
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
-        let aes = try AES(key: key, blockMode: ECB())
-        let clearBytes = try aes.decrypt(self.encryptedValue.bytes)
-        let data = Data(bytes: clearBytes)
-        let value = try PropertyListDecoder().decode(T.self, from: data)
+        var error: NSError?
+        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+            
+        if let error = error {
+            throw error
+        }
+        let value = try PropertyListDecoder().decode(T.self, from: clearBytes)
         return value
     }
 }
