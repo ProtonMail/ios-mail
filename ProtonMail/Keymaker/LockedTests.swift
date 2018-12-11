@@ -71,7 +71,7 @@ class LockedTests: XCTestCase {
     }
     
     // Maximum key length supported by CryptoSwift - for AES256
-    func testPerformanceExample32() {
+    func testPerformanceCryptoSwift32b() {
         let key = self.makeKey(32)
         let data = self.longMessage.data(using: .utf8)!
         

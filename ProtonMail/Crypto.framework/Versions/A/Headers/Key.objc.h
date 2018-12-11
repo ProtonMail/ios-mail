@@ -9,31 +9,15 @@
 @import Foundation;
 #include "Universe.objc.h"
 
-#include "Armor.objc.h"
 
-/**
- * CheckPassphrase check is private key passphrase ok
- */
 FOUNDATION_EXPORT BOOL KeyCheckPassphrase(NSString* privateKey, NSString* passphrase);
 
-/**
- * GetFingerprint get a armored public key fingerprint
- */
 FOUNDATION_EXPORT NSString* KeyGetFingerprint(NSString* publicKey, NSError** error);
 
-/**
- * GetFingerprintBinKey get a unarmored public key fingerprint
- */
 FOUNDATION_EXPORT NSString* KeyGetFingerprintBinKey(NSData* publicKey, NSError** error);
 
-/**
- * PublicKey get a public key from a private key
- */
 FOUNDATION_EXPORT NSString* KeyPublicKey(NSString* privateKey, NSError** error);
 
-/**
- * PublicKeyBinOut get a public key from a private key
- */
 FOUNDATION_EXPORT NSData* KeyPublicKeyBinOut(NSString* privateKey, NSError** error);
 
 #endif

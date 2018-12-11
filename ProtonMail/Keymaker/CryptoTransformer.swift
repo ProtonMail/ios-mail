@@ -28,6 +28,7 @@
 
 import Foundation
 import CryptoSwift
+import Crypto
 
 public class StringCryptoTransformer: CryptoTransformer {
     // String -> Data
