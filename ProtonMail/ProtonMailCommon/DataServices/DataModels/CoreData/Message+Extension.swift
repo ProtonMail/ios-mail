@@ -552,9 +552,16 @@ extension Message {
     }
     
     var senderContactVO : ContactVO! {
-        var sender : ContactVO!
-        sender = ContactVO(id: "", name: self.senderName, email: self.senderAddress)
-        return sender
+        var sender: Sender?
+        if let senderRaw = self.sender?.data(using: .utf8),
+            let decoded = try? JSONDecoder().decode(Sender.self, from: senderRaw)
+        {
+            sender = decoded
+        }
+        
+        return ContactVO(id: "",
+                         name: sender?.name ?? self.senderName,
+                         email: sender?.address ?? self.senderAddress)
     }
     
     func copyMessage (_ copyAtts : Bool) -> Message {

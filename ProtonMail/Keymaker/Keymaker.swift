@@ -189,5 +189,6 @@ public class Keymaker: NSObject {
     
     public func updateAutolockCountdownStart() {
         self.autolocker?.updateAutolockCountdownStart()
+        let _ = self.mainKey
     }
 }
