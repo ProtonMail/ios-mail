@@ -10,9 +10,11 @@ import Foundation
 
 fileprivate var CoordinatorKey = "CoordinatorKey"
 
+@available(*, deprecated, message: "double check if ok to remove")
 protocol Coordinated {
     associatedtype CoordinatorType
 }
+
 extension Coordinated where Self: UIViewController {
     var coordinator: CoordinatorType! {
         get {
@@ -24,6 +26,7 @@ extension Coordinated where Self: UIViewController {
     }
 }
 
+@available(*, deprecated, message: "double check if ok to remove")
 protocol Coordinator: class {
     associatedtype Destination
     func make<SomeCoordinator: Coordinator>(coordinatorFor next: Destination) -> SomeCoordinator

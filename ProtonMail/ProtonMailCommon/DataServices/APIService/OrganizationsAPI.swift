@@ -16,7 +16,7 @@ final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
     }
     
     override func path() -> String {
-        return OrganizationsAPI.Path + "/keys" + AppConstants.DEBUG_OPTION
+        return OrganizationsAPI.Path + "/keys" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

@@ -49,7 +49,7 @@ class APIService {
         // init lock
         pthread_mutex_init(&mutex, nil)
         URLCache.shared.removeAllCachedResponses()
-        sessionManager = AFHTTPSessionManager(baseURL: URL(string: AppConstants.API_HOST_URL)!)
+        sessionManager = AFHTTPSessionManager(baseURL: URL(string: Constants.App.API_HOST_URL)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
         sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
@@ -389,7 +389,7 @@ class APIService {
                     }
                 }
                 
-                let url = AppConstants.API_HOST_URL + path
+                let url = Constants.App.API_HOST_URL + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,

@@ -27,11 +27,6 @@ struct AuthKey {
     static let twoFactor = "TwoFactorCode"
 }
 
-struct Constants {
-    static let clientID = "iOS"
-    static let rediectURL = "https://protonmail.ch"
-}
-
 final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     var username : String!
@@ -43,7 +38,7 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            AuthKey.clientID : Constants.clientID,
+            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username
         ]
         return out
@@ -54,7 +49,7 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/info" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/info" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -74,7 +69,7 @@ final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/modulus" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/modulus" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -122,7 +117,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
-            AuthKey.clientID : Constants.clientID,
+            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username,
             
             AuthKey.ephemeral : clientEphemeral,
@@ -142,7 +137,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -168,7 +163,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            "ClientID": Constants.clientID,
+            "ClientID": Constants.App.clientID,
             "ResponseType": "token",
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",
@@ -184,7 +179,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/refresh" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/refresh" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -206,7 +201,7 @@ final class AuthDeleteRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {

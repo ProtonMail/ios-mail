@@ -36,7 +36,7 @@ final class ReportPhishing : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return ReportsAPI.path + "/phishing" + AppConstants.DEBUG_OPTION
+        return ReportsAPI.path + "/phishing" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -85,7 +85,7 @@ final class BugReportRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return ReportsAPI.path + "/bug" + AppConstants.DEBUG_OPTION
+        return ReportsAPI.path + "/bug" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

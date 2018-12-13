@@ -1,6 +1,6 @@
 //
-//  URL+Extension.swift
-//  ProtonMail
+//  Coordinator+SWReveal.swift
+//  ProtonMail - Created on 12/12/18.
 //
 //
 //  The MIT License
@@ -24,31 +24,35 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+    
 
 import Foundation
+import SWRevealViewController
 
 
-extension URL {
-    // protonmail app store link
-    static var appleStore: URL {
-        return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
+protocol SWRevealCoordinator: DefaultCoordinator {
+    /// this will be called before push
+    var configuration: ((VC) -> ())? { get }
+    
+    var navigation: UINavigationController? { get set }
+    var swRevealVC: SWRevealViewController? { get set }
+}
+
+
+extension SWRevealCoordinator where VC: UIViewController, VC: CoordinatedNew {
+    func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        configuration?(viewController) //set viewmodel and coordinator
+        if self.navigation != nil, self.swRevealVC != nil {
+            self.swRevealVC?.pushFrontViewController(self.navigation, animated: true)
+        }
     }
     
-    // kb for force upgrade
-    static var forceUpgrade : URL {
-        return URL(string: "https://protonmail.com/support/knowledge-base/update-required")!
-    }
-    
-    // leanr more about encrypt outside - composer view
-    static var eoLearnMore : URL {
-        return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
-    }
-    
-    static var paidPlans : URL {
-        return URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!
-    }
-    
-    static var planUpgradePage : URL {
-        return URL(string: "https://protonmail.com/upgrade")!
+    func stop() {
+//        delegate?.willStop(in: self)
+        //navigationController.popViewController(animated: animated)
+//        delegate?.didStop(in: self)
     }
 }

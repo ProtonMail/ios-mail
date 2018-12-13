@@ -16,7 +16,7 @@ protocol UpgradeAlertVCDelegate {
 }
 
 class UpgradeAlertViewController: UIViewController, ViewModelProtocolNew {
-    typealias argType = UpgradeAlertViewModel
+    typealias viewModelType = UpgradeAlertViewModel
     
     var viewModel : UpgradeAlertViewModel!
     

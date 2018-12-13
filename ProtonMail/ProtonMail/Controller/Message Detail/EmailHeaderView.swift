@@ -1,10 +1,29 @@
 //
 //  EmailHeaderView.swift
-//  ProtonMail
+//  ProtonMail - Created on 7/27/15.
 //
-//  Created by Yanfeng Zhang on 7/27/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 
 import UIKit
@@ -13,12 +32,10 @@ protocol EmailHeaderViewProtocol {
     func updateSize()
 }
 
-protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewProtocol {
+protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegate {
     func quickLook(attachment tempfile : URL, keyPackage:Data, fileName:String, type: String)
     
     func star(changed isStarred : Bool)
-    
-    func showImage()
     
     func downloadFailed(error: NSError)
 }
@@ -137,7 +154,7 @@ class EmailHeaderView: UIView {
     fileprivate var hasExpiration : Bool = false
     fileprivate var hasShowImageCheck : Bool = true
     
-    fileprivate var spamScore: MessageSpamScore = .others
+    fileprivate var spamScore: Message.SpamScore = .others
     
     var isShowingDetail: Bool = true
     fileprivate var expend : Bool = false
@@ -259,8 +276,12 @@ class EmailHeaderView: UIView {
         }
     }
     
-    required init() {
-        super.init(frame: CGRect.zero)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.setup()
+    }
+    
+    private func setup() {
         self.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
         
         // init data
@@ -277,12 +298,13 @@ class EmailHeaderView: UIView {
         self.visible = true
     }
     
-    deinit {
-        self.visible = false
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.setup()
     }
     
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    deinit {
+        self.visible = false
     }
     
     func updateExpirationDate ( _ expiration : Date? ) {
@@ -314,7 +336,7 @@ class EmailHeaderView: UIView {
                            sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
                            isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore, isSent: Bool) {
+                           score: Message.SpamScore, isSent: Bool) {
         self.isSentFolder = isSent
         self.title = title
         self.sender = sender
@@ -488,12 +510,12 @@ class EmailHeaderView: UIView {
     }
     
     fileprivate func createExpirationView() {
-        self.expirationView = ExpirationView()
+        self.expirationView = ExpirationView(frame : CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.addSubview(expirationView!)
     }
     
     fileprivate func createShowImageView() {
-        self.showImageView = ShowImageView()
+        self.showImageView = ShowImageView(frame : CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.addSubview(showImageView!)
     }
     
@@ -521,7 +543,7 @@ class EmailHeaderView: UIView {
     fileprivate func createHeaderView() {
         
         // create header container
-        self.emailHeaderView = UIView()
+        self.emailHeaderView = UIView(frame : CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.addSubview(emailHeaderView)
         
         // create title
@@ -554,7 +576,7 @@ class EmailHeaderView: UIView {
         self.emailFrom.numberOfLines = 1
         self.emailHeaderView.addSubview(emailFrom)
         
-        self.emailFromTable = RecipientView()
+        self.emailFromTable = RecipientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.emailFromTable.alpha = 0.0
         self.emailHeaderView.addSubview(emailFromTable)
         
@@ -562,7 +584,7 @@ class EmailHeaderView: UIView {
         self.emailTo.numberOfLines = 1
         self.emailHeaderView.addSubview(emailTo)
         
-        self.emailToTable = RecipientView()
+        self.emailToTable = RecipientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.emailToTable.alpha = 0.0
         self.emailHeaderView.addSubview(emailToTable)
         
@@ -571,7 +593,7 @@ class EmailHeaderView: UIView {
         self.emailCc.numberOfLines = 1
         self.emailHeaderView.addSubview(emailCc)
         
-        self.emailCcTable = RecipientView()
+        self.emailCcTable = RecipientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.emailCcTable.alpha = 0.0
         self.emailHeaderView.addSubview(emailCcTable)
         

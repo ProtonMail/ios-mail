@@ -102,12 +102,12 @@ final class UserCachedStatus : SharedCacheBase {
     
     func isSplashOk() -> Bool {
         let splashVersion = getShared().integer(forKey: Key.lastSplashViersion)
-        return splashVersion == AppConstants.SplashVersion
+        return splashVersion == Constants.App.SplashVersion
     }
     
     func isTourOk() -> Bool {
         let tourVersion = getShared().integer(forKey: Key.lastTourViersion)
-        return tourVersion == AppConstants.TourVersion
+        return tourVersion == Constants.App.TourVersion
     }
     
     func showTourNextTime() {
@@ -116,7 +116,7 @@ final class UserCachedStatus : SharedCacheBase {
     
     func isCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-        return cachedVersion == AppConstants.CacheVersion
+        return cachedVersion == Constants.App.CacheVersion
     }
     
     var lastCacheVersion : Int {
@@ -128,23 +128,23 @@ final class UserCachedStatus : SharedCacheBase {
     
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
-        return cachedVersion == AppConstants.AuthCacheVersion
+        return cachedVersion == Constants.App.AuthCacheVersion
     }
     
     func resetCache() -> Void {
-        setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+        setValue(Constants.App.CacheVersion, forKey: Key.lastCacheVersion)
     }
     
     func resetAuthCache() -> Void {
-        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
+        setValue(Constants.App.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
     func resetSplashCache() -> Void {
-        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
+        setValue(Constants.App.SplashVersion, forKey: Key.lastSplashViersion)
     }
     
     func resetTourValue() {
-        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
+        setValue(Constants.App.TourVersion, forKey: Key.lastTourViersion)
     }
     
     var mobileSignature : String {
@@ -271,11 +271,11 @@ extension UserCachedStatus {
     
     func alreadyAskedEnableTouchID () -> Bool {
         let code = getShared().integer(forKey: Key.askEnableTouchID)
-        return code == AppConstants.AskTouchID
+        return code == Constants.App.AskTouchID
     }
     
     func resetAskedEnableTouchID() {
-        setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
+        setValue(Constants.App.AskTouchID, forKey: Key.askEnableTouchID)
     }
 }
 

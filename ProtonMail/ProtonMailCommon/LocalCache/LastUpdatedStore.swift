@@ -3,20 +3,33 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
-
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 
 import Foundation
 
+
+//TODO::cache  this only need to load after login/authed
 let lastUpdatedStore = LastUpdatedStore()
 
 final class LastUpdatedStore : SharedCacheBase {
@@ -114,28 +127,28 @@ final class LastUpdatedStore : SharedCacheBase {
     }
     
     
-    /**
-    get the inbox last update time by location
-    
-    :param: location MessageLocation
-    
-    :returns: the Update Time
-    */
-    func inboxLastForKey(_ location : MessageLocation) -> UpdateTime {
-        let str_location = String(location.rawValue)
-        return lastLabelsUpdateds[str_location] ?? UpdateTime.distantPast()
-    }
-    
-    /**
-    update the exsit inbox last update time by location
-    
-    :param: location   message location
-    :param: updateTime the new update time
-    */
-    func updateInboxForKey(_ location : MessageLocation, updateTime: UpdateTime) {
-        let str_location = String(location.rawValue)
-        lastLabelsUpdateds[str_location] = updateTime
-    }
+//    /**
+//    get the inbox last update time by location
+//
+//    :param: location MessageLocation
+//
+//    :returns: the Update Time
+//    */
+//    func inboxLastForKey(_ location : MessageLocation) -> UpdateTime {
+//        let str_location = String(location.rawValue)
+//        return lastLabelsUpdateds[str_location] ?? UpdateTime.distantPast()
+//    }
+//
+//    /**
+//    update the exsit inbox last update time by location
+//
+//    :param: location   message location
+//    :param: updateTime the new update time
+//    */
+//    func updateInboxForKey(_ location : MessageLocation, updateTime: UpdateTime) -> Void {
+//        let str_location = String(location.rawValue)
+//        return lastLabelsUpdateds[str_location] = updateTime
+//    }
     
     func labelsLastForKey(_ labelID : String) -> UpdateTime {
         return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
@@ -151,39 +164,38 @@ final class LastUpdatedStore : SharedCacheBase {
         return labelsUnreadCounts[labelID] ?? 0
     }
     
-    func UnreadCountForKey(_ location : MessageLocation) -> Int {
-        let str_location = String(location.rawValue)
-        return labelsUnreadCounts[str_location] ?? 0
+//    func UnreadCountForKey(_ location : MessageLocation) -> Int {
+//        let str_location = String(location.rawValue)
+//        return labelsUnreadCounts[str_location] ?? 0
+//    }
+//
+    func updateLabelsUnreadCountForKey(_ labelID : String, count: Int) -> Void {
+        return labelsUnreadCounts[labelID] = count
     }
     
-    func updateLabelsUnreadCountForKey(_ labelID : String, count: Int) {
-        labelsUnreadCounts[labelID] = count
-    }
-    
-    func updateUnreadCountForKey(_ location : MessageLocation, count: Int) {
-        let str_location = String(location.rawValue)
-        labelsUnreadCounts[str_location] = count
-    }
+//    func updateUnreadCountForKey(_ location : MessageLocation, count: Int) -> Void {
+//        let str_location = String(location.rawValue)
+//        return labelsUnreadCounts[str_location] = count
+//    }
     
     // Mailbox unread count change
-    func UnreadMailboxMessage(_ location : MessageLocation) {
-        let str_location = String(location.rawValue)
-        var currentCount = labelsUnreadCounts[str_location] ?? 0
+    func UnreadMailboxMessage(_ location : String) {
+        var currentCount = labelsUnreadCounts[location] ?? 0
         currentCount += 1;
-        labelsUnreadCounts[str_location] = currentCount
+        labelsUnreadCounts[location] = currentCount
     }
     
-    func ReadMailboxMessage(_ location : MessageLocation) {
-        let str_location = String(location.rawValue)
-        var currentCount = labelsUnreadCounts[str_location] ?? 0
+    func ReadMailboxMessage(_ location : String) {
+        var currentCount = labelsUnreadCounts[location] ?? 0
         currentCount -= 1;
         if currentCount < 0 {
             currentCount = 0
         }
-        labelsUnreadCounts[str_location] = currentCount
+        labelsUnreadCounts[location] = currentCount
     }
     
-    func MoveUnReadMailboxMessage(_ from : MessageLocation, to : MessageLocation) {
+    func MoveUnReadMailboxMessage(_ from : String, to : String) {
+        //TODO:: doesn't right. need to change
         UnreadMailboxMessage(from);
         ReadMailboxMessage(to)
     }

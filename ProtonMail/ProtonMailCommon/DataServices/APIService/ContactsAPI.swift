@@ -39,7 +39,7 @@ class ContactsRequest : ApiRequest<ContactsResponse> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -72,7 +72,7 @@ class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/emails" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/emails" +  Constants.App.DEBUG_OPTION
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -170,7 +170,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -272,7 +272,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -341,7 +341,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/delete" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/delete" +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -369,7 +369,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/" + self.contactID +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/" + self.contactID +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -406,7 +406,7 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAn
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/emails/label" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/emails/label" +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {
@@ -455,7 +455,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlab
     }
     
     override public func path() -> String {
-        return ContactsAPI.path + "/emails/unlabel" +  AppConstants.DEBUG_OPTION
+        return ContactsAPI.path + "/emails/unlabel" +  Constants.App.DEBUG_OPTION
     }
     
     override public func apiVersion() -> Int {

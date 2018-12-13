@@ -27,15 +27,25 @@ struct CalendarIntervalRule: Codable, Equatable {
     
     internal func intersects(with dateOfInterest: Date) -> Bool {
         // interval already started
-        guard let recentStart = Calendar.current.nextDate(after: dateOfInterest, matching: self.startMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .backward), // and there is an end of interval in future
-            let _ = Calendar.current.nextDate(after: dateOfInterest, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .forward) else
-        {
+        guard let recentStart = Calendar.current.nextDate(after: dateOfInterest,
+                                                          matching: self.startMatching,
+                                                          matchingPolicy: .strict,
+                                                          repeatedTimePolicy: .first,
+                                                          direction: .backward), // and there is an end of interval in future
+            let _ = Calendar.current.nextDate(after: dateOfInterest,
+                                              matching: self.endMatching,
+                                              matchingPolicy: .strict,
+                                              repeatedTimePolicy: .first,
+                                              direction: .forward) else {
             return false
         }
         
         // if there is an end of interval in the past...
-        guard let recentEnd = Calendar.current.nextDate(after: dateOfInterest, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .backward) else
-        {
+        guard let recentEnd = Calendar.current.nextDate(after: dateOfInterest,
+                                                        matching: self.endMatching,
+                                                        matchingPolicy: .strict,
+                                                        repeatedTimePolicy: .first,
+                                                        direction: .backward) else {
             return true
         }
         

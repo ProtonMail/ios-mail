@@ -31,7 +31,7 @@ import Foundation
 extension APIService {
     
     fileprivate struct ContactPath {
-        static let base = AppConstants.API_PATH + "/contacts"
+        static let base = Constants.App.API_PATH + "/contacts"
     }
     
     func contactDelete(contactID: String, completion: CompletionBlock?) {

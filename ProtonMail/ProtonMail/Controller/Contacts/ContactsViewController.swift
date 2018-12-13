@@ -30,7 +30,7 @@ import Contacts
 import CoreData
 
 class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
-    typealias argType = ContactsViewModel
+    typealias viewModelType = ContactsViewModel
     
     // Mark: - view model
     private var viewModel : ContactsViewModel!

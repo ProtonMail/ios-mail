@@ -33,7 +33,7 @@ import PromiseKit
  */
 class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocolNew {
 
-    typealias argType = ContactGroupEditViewModel
+    typealias viewModelType = ContactGroupEditViewModel
 
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"

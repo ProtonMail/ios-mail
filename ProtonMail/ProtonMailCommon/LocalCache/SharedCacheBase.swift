@@ -18,7 +18,7 @@ public class SharedCacheBase {
     }
     
     init () {
-        self.userDefaults = UserDefaults(suiteName: AppConstants.APP_GROUP)
+        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
         
     convenience init (shared : UserDefaults) {
@@ -36,6 +36,6 @@ public class SharedCacheBase {
     }
     
     class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: AppConstants.APP_GROUP)
+        return UserDefaults(suiteName: Constants.App.APP_GROUP)
     }
 }

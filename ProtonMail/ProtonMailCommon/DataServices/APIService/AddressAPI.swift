@@ -12,7 +12,7 @@ import Foundation
 // Mark : get addresses
 final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
     override func path() -> String {
-        return AddressesAPI.path + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -38,7 +38,7 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/order" + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/order" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -68,7 +68,7 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/" + addressid + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/" + addressid + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -94,7 +94,7 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/setup" + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/setup" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

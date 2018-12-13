@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, ELanguage)
     ELanguageCount
 };
 
+///TODO::fixme -- port this to swift
 @interface LanguageManager : NSObject
 
 + (void)setupCurrentLanguage;

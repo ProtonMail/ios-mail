@@ -30,8 +30,27 @@ import Foundation
 
 
 extension Message {
+    internal func contains(label: ExclusiveLabel) -> Bool {
+        return self.contains(label: label.rawValue)
+    }
     
-    var isForwarded : Bool {
+    internal func contains(label labelID : String) -> Bool {
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label, labelID == label.labelID {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var starred : Bool {
+        get {
+            return self.contains(label: ExclusiveLabel.starred)
+        }
+    }
+    
+    var forwarded : Bool {
         get {
             return self.flag.contains(.forwarded)
         }
@@ -46,7 +65,63 @@ extension Message {
         }
     }
     
-    var isReplied : Bool {
+    var draft : Bool {
+        get {
+            return self.contains(label: ExclusiveLabel.draft)
+        }
+    }
+    
+    
+    //    var sendOrDraft : Bool {
+    //        get {
+    //            if self.flag.contains(.rece) || self.flag.contains(.sent) {
+    //                return true
+    //            }
+    //            return false
+    //        }
+    //
+    //    }
+    //    func hasDraftLabel() -> Bool {
+    //        let labels = self.labels
+    //        for l in labels {
+    //            if let label = l as? Label {
+    //                if let l_id = Int(label.labelID) {
+    //                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
+    //                        return true
+    //                    }
+    //                }
+    //
+    //            }
+    //        }
+    //        return false
+    //    }
+    //
+    //    func hasLocation(location : MessageLocation) -> Bool {
+    //        for l in getLocationFromLabels() {
+    //            if l == location {
+    //                return true
+    //            }
+    //        }
+    //        return false
+    //    }
+    //
+    //    func getLocationFromLabels() ->  [MessageLocation] {
+    //        var locations = [MessageLocation]()
+    //        let labels = self.labels
+    //        for l in labels {
+    //            if let label = l as? Label {
+    //                if let l_id = Int(label.labelID) {
+    //                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
+    //                        locations.append(new_loc)
+    //                    }
+    //                }
+    //
+    //            }
+    //        }
+    //        return locations
+    //    }
+    
+    var replied : Bool {
         get {
             return self.flag.contains(.replied)
         }
@@ -61,7 +136,7 @@ extension Message {
         }
     }
     
-    var isRepliedAll : Bool {
+    var repliedAll : Bool {
         get {
             return self.flag.contains(.repliedAll)
         }
@@ -75,14 +150,5 @@ extension Message {
             self.flag = flag
         }
     }
-    
-//    var sendOrDraft : Bool {
-//        get {
-//            if self.flag.contains(.rece) || self.flag.contains(.sent) {
-//                return true
-//            }
-//            return false
-//        }
-//        
-//    }
+
 }

@@ -10,7 +10,6 @@ import Foundation
 
 extension Data {
     
-    
     func stringFromToken() -> String {
         let tokenChars = (self as NSData).bytes.bindMemory(to: CChar.self, capacity: self.count)
         var tokenString = ""

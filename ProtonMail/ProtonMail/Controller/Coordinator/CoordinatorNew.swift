@@ -29,7 +29,6 @@
 import Foundation
 
 
-
 protocol CoordinatorDelegate: class {
     func willStop(in coordinator: CoordinatorNew)
     func didStop(in coordinator: CoordinatorNew)
@@ -47,6 +46,7 @@ protocol CoordinatedNewBase : AnyObject {
 
 protocol CoordinatorNew : AnyObject {
     /// Triggers navigation to the corresponding controller
+    /// set viewmodel and coordinator when call start
     func start()
     
     /// Stops corresponding controller and returns back to previous one
@@ -63,13 +63,13 @@ extension CoordinatorNew {
     }
     
     func stop() {
+        
     }
 }
 
 
 
-
-
+/// The default coordinator is for the segue perform handled by system. need to return true in navigat function to trigger. if return false, need to push in the start().
 protocol DefaultCoordinator: CoordinatorNew {
     associatedtype VC: UIViewController
     var viewController: VC? { get set }
@@ -77,6 +77,7 @@ protocol DefaultCoordinator: CoordinatorNew {
     var animated: Bool { get }
     var delegate: CoordinatorDelegate? { get }
 }
+
 
 protocol PushCoordinator: DefaultCoordinator {
     var configuration: ((VC) -> ())? { get }
@@ -105,6 +106,7 @@ protocol ModalCoordinator: DefaultCoordinator {
     var navigationController: UINavigationController { get }
     var destinationNavigationController: UINavigationController? { get }
 }
+
 extension ModalCoordinator where VC: UIViewController, VC: CoordinatedNew {
     func start() {
         guard let viewController = viewController else {

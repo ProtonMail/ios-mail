@@ -1,14 +1,67 @@
 //
 //  MessageAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/18/15.
 //
-//  Created by Yanfeng Zhang on 6/18/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import PromiseKit
 import AwaitKit
+
+//TODO:: change to enum
+struct EncryptionStep {
+    static public let DefinePassword = "DefinePassword"
+    static public let ConfirmPassword = "ConfirmPassword"
+    static public let DefineHintPassword = "DefineHintPassword"
+}
+
+enum ComposeMessageAction: Int, CustomStringConvertible {
+    case reply = 0
+    case replyAll = 1
+    case forward = 2
+    case newDraft = 3
+    case openDraft = 4
+    case newDraftFromShare = 5
+    
+    /// localized description
+    public var description : String {
+        get {
+            switch(self) {
+            case .reply:
+                return LocalString._general_reply_button
+            case .replyAll:
+                return LocalString._general_replyall_button
+            case .forward:
+                return LocalString._general_forward_button
+            case .newDraft, .newDraftFromShare:
+                return LocalString._general_draft_action
+            case .openDraft:
+                return LocalString._general_opendraft_action
+            }
+        }
+    }
+}
 
 protocol FileData {
     var name: String { get set }
@@ -78,7 +131,7 @@ class ComposeViewModel {
             }
         }
         
-        return emailList.count <= AppConstants.MaxNumberOfRecipients
+        return emailList.count <= Constants.App.MaxNumberOfRecipients
     }
     
     func getSubject() -> String {

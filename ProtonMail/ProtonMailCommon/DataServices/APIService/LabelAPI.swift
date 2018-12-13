@@ -21,7 +21,7 @@ final class GetLabelsRequest : ApiRequest<GetLabelsResponse> {
     }
     
     override func path() -> String {
-        return LabelAPI.path + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -73,7 +73,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return LabelAPI.path + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -121,7 +121,7 @@ final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/\(labelID)" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -156,7 +156,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return LabelAPI.path + "/\(labelID)" + AppConstants.DEBUG_OPTION
+        return LabelAPI.path + "/\(labelID)" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

@@ -1,10 +1,29 @@
 //
 //  MessageAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/18/15.
 //
-//  Created by Yanfeng Zhang on 6/18/15.
-//  Copyright (c) 2015 Proton Reserch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import PromiseKit
@@ -34,7 +53,7 @@ final class ApplyLabelToMessages : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/label" + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/label" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -66,7 +85,7 @@ final class RemoveLabelFromMessages : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/unlabel" + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/unlabel" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -78,7 +97,7 @@ final class RemoveLabelFromMessages : ApiRequest<ApiResponse> {
 // MARK : Get messages part
 final class MessageCount : ApiRequest<MessageCountResponse> {
     override func path() -> String {
-        return MessageAPI.path + "/count" + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/count" + Constants.App.DEBUG_OPTION
     }
     override func apiVersion() -> Int {
         return MessageAPI.v_message_count
@@ -87,20 +106,19 @@ final class MessageCount : ApiRequest<MessageCountResponse> {
 
 // MARK : Get messages part
 final class FetchMessages : ApiRequest<ApiResponse> {
-    let location : MessageLocation!
+    let labelID : String
     let startTime : Int?
     let endTime : Int
     
-    init(location:MessageLocation, endTime : Int = 0) {
-        self.location = location
+    init(labelID : String, endTime : Int = 0) {
+        self.labelID = labelID
         self.endTime = endTime
         self.startTime = 0
     }
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = ["Sort" : "Time"]
-        let labelIDRaw = self.location.rawValue >= 0 ? self.location.rawValue : 0
-        out["LabelID"] = "\(labelIDRaw)"
+        out["LabelID"] = self.labelID
         if self.endTime > 0 {
             let newTime = self.endTime - 1
             out["End"] = newTime
@@ -110,7 +128,7 @@ final class FetchMessages : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -173,7 +191,7 @@ final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -257,7 +275,7 @@ final class UpdateDraft : CreateDraft {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/" + message.messageID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + message.messageID + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -299,7 +317,7 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/" + self.action + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + self.action + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -324,7 +342,7 @@ final class EmptyMessage : ApiRequest <ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/empty?LabelID=" + self.labelID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/empty?LabelID=" + self.labelID + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -501,7 +519,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
     }
     
     override func path() -> String {
-        return MessageAPI.path + "/" + self.messageID + AppConstants.DEBUG_OPTION
+        return MessageAPI.path + "/" + self.messageID + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

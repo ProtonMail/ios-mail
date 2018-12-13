@@ -58,7 +58,7 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
         MBProgressHUD.showAdded(to: webView, animated: true)
         //let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
         
-        let recptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(AppConstants.URL_HOST)")!
+        let recptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(Constants.App.URL_HOST)")!
         let requestObj = URLRequest(url: recptcha)
         webView.loadRequest(requestObj)
     }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-
+@available(*, deprecated, message: "double check if ok to remove")
 protocol ViewModelProtocol {
     func setViewModel(_ vm: Any)
     func inactiveViewModel()

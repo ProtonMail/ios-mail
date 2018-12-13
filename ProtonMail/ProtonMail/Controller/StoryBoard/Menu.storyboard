@@ -30,7 +30,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="92z-LV-j1w" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="321" y="1173"/>
+            <point key="canvasLocation" x="103" y="1022"/>
         </scene>
         <!--Report Bug Navigation Controller-->
         <scene sceneID="ho3-Du-wUo">
@@ -547,8 +547,8 @@
                         <outlet property="headerView" destination="E7U-Dc-qS6" id="wdS-qs-nxc"/>
                         <outlet property="snoozeButton" destination="zXB-Hr-oB5" id="GZL-ce-u1e"/>
                         <outlet property="tableView" destination="wwg-Tx-xnK" id="6s2-NN-nIS"/>
-                        <segue destination="N9H-or-xL9" kind="custom" identifier="toMailboxSegue" customClass="SWRevealViewControllerSeguePushController" id="F9J-SM-saL"/>
-                        <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="SWRevealViewControllerSeguePushController" id="wom-VL-14a"/>
+                        <segue destination="N9H-or-xL9" kind="show" identifier="toMailboxSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="F9J-SM-saL"/>
+                        <segue destination="Olh-tY-NxQ" kind="custom" identifier="toSettingsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="wom-VL-14a"/>
                         <segue destination="8dN-79-EXg" kind="custom" identifier="toBugsSegue" customClass="SWRevealViewControllerSeguePushController" id="0gE-az-sje"/>
                         <segue destination="9an-Gq-bcn" kind="custom" identifier="toContactsSegue" customClass="SWRevealViewControllerSeguePushController" id="dAN-KX-s86"/>
                         <segue destination="N9H-or-xL9" kind="custom" identifier="toLabelboxSegue" customClass="SWRevealViewControllerSeguePushController" id="LdN-DE-nXL"/>
@@ -557,7 +557,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="321" y="1920"/>
+            <point key="canvasLocation" x="246" y="1918"/>
         </scene>
         <!--Mailbox Navigation Controller-->
         <scene sceneID="O0q-7F-TSt">
@@ -573,7 +573,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HCF-St-8mR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="1920"/>
+            <point key="canvasLocation" x="1135" y="1773"/>
         </scene>
         <!--Lables View Controller-->
         <scene sceneID="HFR-bb-BfJ">
@@ -876,7 +876,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVt-bG-ZYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4965.6000000000004" y="1918.2908545727139"/>
+            <point key="canvasLocation" x="5692" y="1955"/>
         </scene>
         <!--Feedback Navigation Controller-->
         <scene sceneID="Hfi-Ob-mMm">
@@ -1105,10 +1105,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3pf-Hd-Pee" userLabel="Bottom Message">
-                                <rect key="frame" x="0.0" y="559" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="559" width="375" height="88"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message Deleted" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IgK-Na-2zA">
                                         <rect key="frame" x="16" y="0.0" width="259" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="CkW-WM-Smy"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1116,6 +1119,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NP8-8G-jWE">
                                         <rect key="frame" x="275" y="0.0" width="100" height="44"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="edR-JO-oCQ"/>
                                             <constraint firstAttribute="width" constant="100" id="xTI-kn-F1J"/>
                                         </constraints>
                                         <state key="normal" title="Undo">
@@ -1128,11 +1132,9 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="IgK-Na-2zA" secondAttribute="bottom" id="3gr-pb-mZX"/>
                                     <constraint firstAttribute="trailing" secondItem="NP8-8G-jWE" secondAttribute="trailing" id="40n-1A-hHc"/>
                                     <constraint firstItem="NP8-8G-jWE" firstAttribute="leading" secondItem="IgK-Na-2zA" secondAttribute="trailing" id="A7M-Iz-fHS"/>
-                                    <constraint firstAttribute="bottom" secondItem="NP8-8G-jWE" secondAttribute="bottom" id="D7a-A7-p1n"/>
-                                    <constraint firstAttribute="height" constant="44" id="JZp-cY-d2o"/>
+                                    <constraint firstAttribute="height" constant="88" id="JZp-cY-d2o"/>
                                     <constraint firstItem="IgK-Na-2zA" firstAttribute="leading" secondItem="3pf-Hd-Pee" secondAttribute="leading" constant="16" id="O3h-p4-izw"/>
                                     <constraint firstItem="NP8-8G-jWE" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" id="mTi-5F-7Dj"/>
                                     <constraint firstItem="IgK-Na-2zA" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" id="tbO-J8-tRc"/>
@@ -1143,14 +1145,14 @@
                         <constraints>
                             <constraint firstItem="Q7u-jG-CGT" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="1H2-nX-7Is"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="6aH-UA-ezI"/>
+                            <constraint firstItem="Jzd-SW-ZeK" firstAttribute="top" secondItem="3pf-Hd-Pee" secondAttribute="top" constant="44" id="737-09-loD"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="vYi-81-AYM" secondAttribute="bottom" id="8Q0-IJ-81j"/>
                             <constraint firstItem="7Zx-Yy-VI3" firstAttribute="top" secondItem="Q7u-jG-CGT" secondAttribute="top" id="Ca9-1t-vLf"/>
-                            <constraint firstItem="3pf-Hd-Pee" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leadingMargin" constant="-16" id="KOu-fu-6Rs"/>
                             <constraint firstAttribute="trailing" secondItem="7Zx-Yy-VI3" secondAttribute="trailing" id="Sxx-a1-umD"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="3pf-Hd-Pee" secondAttribute="trailing" constant="-16" id="aAc-DK-rxb"/>
-                            <constraint firstAttribute="bottom" secondItem="3pf-Hd-Pee" secondAttribute="bottom" id="i67-ZP-Yjt"/>
+                            <constraint firstAttribute="trailing" secondItem="3pf-Hd-Pee" secondAttribute="trailing" id="hlN-eH-7uJ"/>
                             <constraint firstAttribute="bottom" secondItem="7Zx-Yy-VI3" secondAttribute="bottom" id="p9A-ps-8sY"/>
                             <constraint firstAttribute="trailing" secondItem="Q7u-jG-CGT" secondAttribute="trailing" id="rKq-q2-7Ov"/>
+                            <constraint firstItem="3pf-Hd-Pee" firstAttribute="leading" secondItem="OTG-Sc-6eN" secondAttribute="leading" id="u1b-1s-CQu"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -1163,32 +1165,32 @@
                         <outlet property="menuButton" destination="MGt-Hd-KyR" id="g5E-fz-E2f"/>
                         <outlet property="noResultLabel" destination="Q7u-jG-CGT" id="p9K-UZ-b7h"/>
                         <outlet property="tableView" destination="7Zx-Yy-VI3" id="xAI-ZE-pMC"/>
-                        <outlet property="undoBottomDistance" destination="i67-ZP-Yjt" id="mP5-Zd-Jeb"/>
+                        <outlet property="undoBottomDistance" destination="737-09-loD" id="hEA-RV-XID"/>
                         <outlet property="undoButton" destination="NP8-8G-jWE" id="4Kr-eh-S2S"/>
                         <outlet property="undoButtonWidth" destination="xTI-kn-F1J" id="2hK-8V-81X"/>
                         <outlet property="undoLabel" destination="IgK-Na-2zA" id="33M-Ke-Aut"/>
                         <outlet property="undoView" destination="3pf-Hd-Pee" id="5Dw-zE-4Wk"/>
-                        <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" id="6qA-ON-8KL"/>
-                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" id="f3k-3A-WEA"/>
-                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" id="zIE-XJ-wkG"/>
-                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" id="hZj-FM-cPb"/>
+                        <segue destination="xBI-ex-VGk" kind="presentation" identifier="toSearchViewController" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="6qA-ON-8KL"/>
+                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewController" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="f3k-3A-WEA"/>
+                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="zIE-XJ-wkG"/>
+                        <segue destination="kWS-aU-yuK" kind="show" identifier="toMessageDetailViewControllerFromNotification" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="hZj-FM-cPb"/>
                         <segue destination="49o-KF-b5x" kind="presentation" identifier="to_onboarding_segue" id="2RB-hE-91p"/>
                         <segue destination="dfv-k3-W8i" kind="presentation" identifier="to_feedback_segue" id="ds1-qU-XbH"/>
                         <segue destination="PB6-QM-CEf" kind="show" identifier="to_feedback_view_segue" id="0zg-HM-MdK"/>
-                        <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" id="dts-X9-0aN"/>
-                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" id="XIN-Jt-JzU"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" id="dh2-Js-yHz"/>
-                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" id="A0a-yx-qTn"/>
+                        <segue destination="Qwy-GJ-vAH" kind="presentation" identifier="toHumanCheckView" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="dts-X9-0aN"/>
+                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="XIN-Jt-JzU"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="dh2-Js-yHz"/>
+                        <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="A0a-yx-qTn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1850" y="1920"/>
+            <point key="canvasLocation" x="1946" y="1893"/>
         </scene>
         <!--Message View Controller-->
         <scene sceneID="ysU-co-vh9">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Dhe-kT-scI"/>
                         <viewControllerLayoutGuide type="bottom" id="3gu-uZ-r12"/>
@@ -1199,10 +1201,10 @@
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvk-Br-Xxh">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="0.99997437000274658" blue="0.99999129772186279" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gvk-Br-Xxh" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leading" id="P7M-IQ-FKc"/>
                             <constraint firstItem="gvk-Br-Xxh" firstAttribute="top" secondItem="Dhe-kT-scI" secondAttribute="bottom" id="WIO-0o-Mdu"/>
@@ -1210,7 +1212,7 @@
                             <constraint firstAttribute="trailing" secondItem="gvk-Br-Xxh" secondAttribute="trailing" id="urH-B2-pGq"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="juN-ES-tqQ">
                         <barButtonItem key="backBarButtonItem" title=" " id="TBv-QD-aV4"/>
                     </navigationItem>
@@ -1792,7 +1794,7 @@
         <!--Settings Table View-->
         <scene sceneID="qpL-sf-AfB">
             <objects>
-                <tableViewController id="Htd-jh-FjZ" userLabel="Settings Table View" customClass="SettingTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Htd-jh-FjZ" userLabel="Settings Table View" customClass="SettingsTableViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="50" sectionHeaderHeight="30" sectionFooterHeight="10" id="ERU-k3-Enh">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2140,19 +2142,19 @@
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="menuButton" destination="tIr-9y-oZU" id="rsH-ds-zcK"/>
-                        <outlet property="settingTableView" destination="ERU-k3-Enh" id="Dnk-AJ-gWO"/>
-                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_displayname" id="3FM-PP-oeV"/>
-                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_login_pwd" id="V9t-nA-fhw"/>
-                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_mailbox_pwd" id="pf5-Mm-LDI"/>
-                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_notification" id="sPN-i9-NSa"/>
-                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_signature" id="A7E-cY-hB0"/>
-                        <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" id="XyN-LC-jTe"/>
-                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" id="dUE-8e-owj"/>
-                        <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" id="XQx-Pm-sNq"/>
-                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toManagerLabelsSegue" id="GgS-nT-ctf"/>
-                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_single_password_segue" id="PpL-SW-U8F"/>
-                        <segue destination="RSc-Bf-d2p" kind="show" identifier="setting_notifications_snooze_segue" id="qhh-J3-IT5"/>
+                        <outlet property="menuButton" destination="tIr-9y-oZU" id="d77-nw-d1e"/>
+                        <outlet property="settingTableView" destination="ERU-k3-Enh" id="Tz4-qh-E9d"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_displayname" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="3FM-PP-oeV"/>
+                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_login_pwd" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="V9t-nA-fhw"/>
+                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_mailbox_pwd" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="pf5-Mm-LDI"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_notification" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="sPN-i9-NSa"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_signature" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="A7E-cY-hB0"/>
+                        <segue destination="SWZ-VZ-9Rg" kind="show" identifier="setting_debug_queue_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="XyN-LC-jTe"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_mobile_signature" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="dUE-8e-owj"/>
+                        <segue destination="tMn-Uv-JDd" kind="show" identifier="setting_setup_pingcode" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="XQx-Pm-sNq"/>
+                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toManagerLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="GgS-nT-ctf"/>
+                        <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_single_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="PpL-SW-U8F"/>
+                        <segue destination="RSc-Bf-d2p" kind="show" identifier="setting_notifications_snooze_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="qhh-J3-IT5"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xM-0a-IOr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2337,13 +2339,13 @@
                         <outlet property="switchView" destination="d8J-r1-ETb" id="XDb-ZG-gU3"/>
                         <outlet property="switcher" destination="bKT-mv-fYH" id="Ks7-u7-1Lw"/>
                         <outlet property="titleLabel2" destination="jPB-Or-Kop" id="HyH-uj-hLh"/>
-                        <segue destination="eeg-La-Veo" kind="presentation" identifier="password_to_twofa_code_segue" id="Yep-Vd-dxY"/>
-                        <segue destination="bwU-38-Jat" kind="presentation" identifier="toUpgradeAlertSegue" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="DdZ-uz-fPQ"/>
+                        <segue destination="eeg-La-Veo" kind="presentation" identifier="password_to_twofa_code_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="Yep-Vd-dxY"/>
+                        <segue destination="bwU-38-Jat" kind="presentation" identifier="toUpgradeAlertSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="DdZ-uz-fPQ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7FU-gH-cCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-31" y="5384"/>
+            <point key="canvasLocation" x="-106" y="5382"/>
         </scene>
         <!--Setting Debug View Controller-->
         <scene sceneID="LVh-aS-EOZ">
@@ -2602,6 +2604,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Olh-tY-NxQ" userLabel="Settings Navigation Controller" sceneMemberID="viewController">
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Rf8-xz-E3C"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="xAT-mr-j4s">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -3453,10 +3456,10 @@
         <image name="upgrade_background" width="325.5" height="437"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Vk8-EF-JzJ"/>
+        <segue reference="A0a-yx-qTn"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
-        <segue reference="PpL-SW-U8F"/>
+        <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="f3k-3A-WEA"/>
         <segue reference="GgS-nT-ctf"/>

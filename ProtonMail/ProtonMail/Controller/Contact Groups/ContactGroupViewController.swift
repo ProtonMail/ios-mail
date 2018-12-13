@@ -35,7 +35,7 @@ import PromiseKit
  the update will be performed immediately and automatically by core data
  */
 class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
-    typealias argType = ContactGroupsViewModel
+    typealias viewModelType = ContactGroupsViewModel
     
     private var viewModel: ContactGroupsViewModel!
     private var queryString = ""

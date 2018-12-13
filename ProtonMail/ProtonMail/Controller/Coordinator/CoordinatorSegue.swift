@@ -24,23 +24,24 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-    
 
 import Foundation
 
-
+/// when viewController override the 'prepare' function. don't forget to call super. it triggers the setSender.
+/// in order to use this. need to set segue class in the storyboard
 class CoordinatorSegue: UIStoryboardSegue {
-    open var sender: AnyObject!
+    /// keep the @objc key word. the setSender will not work without it.
+    @objc open var sender: AnyObject?
     
     override func perform() {
-        
         guard let coordinated = self.source as? CoordinatedNewBase else {
             return
         }
+        
         if let ret = coordinated.getCoordinator()?.navigate(from: self.source,
                                                             to: destination,
                                                             with: identifier,
-                                                            and: sender), ret == true {
+                                                            and: self.sender), ret == true {
             super.perform()
         }
     }

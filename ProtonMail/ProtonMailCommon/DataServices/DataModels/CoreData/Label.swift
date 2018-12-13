@@ -44,3 +44,36 @@ public class Label: NSManagedObject {
     @NSManaged public var messages: NSSet
     @NSManaged public var emails: NSSet
 }
+
+
+// lableID 
+//    case draft = 1
+//    case inbox = 0
+//    case outbox = 2
+//    case spam = 4
+//    case archive = 6
+//    case trash = 3
+//    case allmail = 5
+//    case starred = 10
+
+
+extension Label {
+    
+    var spam : Bool {
+        get {
+            return self.labelID == "4"
+        }
+    }
+    
+    var trash : Bool {
+        get {
+            return self.labelID == "3"
+        }
+    }
+    
+    var draft : Bool {
+        get {
+            return self.labelID == "1"
+        }
+    }
+}

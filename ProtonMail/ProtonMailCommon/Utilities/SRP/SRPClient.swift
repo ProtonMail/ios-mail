@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 class Proofs {
     var clientEphemeral : Data
     var clientProof : Data

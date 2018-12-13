@@ -27,11 +27,14 @@ class MonitorSavesDataService {
     fileprivate var monitorQueue: [NSManagedObject : [HandlerBlock]] = [:]
     
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.didSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: sharedCoreDataService.backgroundManagedObjectContext)
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.willSaveNotificationBackground(_:)), name: NSNotification.Name.NSManagedObjectContextWillSave, object: sharedCoreDataService.backgroundManagedObjectContext)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.didSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: sharedCoreDataService.mainManagedObjectContext)
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.willSaveNotificationMain(_:)), name: NSNotification.Name.NSManagedObjectContextWillSave, object: sharedCoreDataService.mainManagedObjectContext)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MonitorSavesDataService.didSaveNotification(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextDidSave,
+                                               object: sharedCoreDataService.mainManagedObjectContext)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MonitorSavesDataService.willSaveNotification(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextWillSave,
+                                               object: sharedCoreDataService.mainManagedObjectContext)
     }
     
     deinit {

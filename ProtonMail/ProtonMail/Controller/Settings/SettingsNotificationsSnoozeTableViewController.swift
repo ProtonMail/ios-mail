@@ -9,8 +9,7 @@
 import UIKit
 
 @available (iOS 10, *)
-class SettingsNotificationsSnoozeTableViewController: UITableViewController, SectionHeaderCustomizing {
-    
+class SettingsNotificationsSnoozeTableViewController: UITableViewController, SectionHeaderCustomizing, OptionsDialogPresenter {
     // nested types
     
     private struct RawRulesModel {

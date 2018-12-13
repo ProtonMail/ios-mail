@@ -29,7 +29,7 @@ import UIKit
 import PromiseKit
 
 class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
-    typealias argType = ContactGroupDetailViewModel
+    typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
     

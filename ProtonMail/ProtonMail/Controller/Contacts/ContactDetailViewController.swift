@@ -30,7 +30,7 @@ import PromiseKit
 import AwaitKit
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
-    typealias argType = ContactDetailsViewModel
+    typealias viewModelType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
     

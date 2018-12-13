@@ -69,7 +69,6 @@ class LablesViewController : UIViewController {
         addFolderButton.setTitle(LocalString._labels_add_folder_action, for: .normal)
         archiveOptionLabel.text = LocalString._labels_apply_archive_check
         
-
         self.setupFetchedResultsController()
         titleLabel.text = viewModel.getTitle()
         if viewModel.showArchiveOption() {

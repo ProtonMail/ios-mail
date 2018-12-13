@@ -52,9 +52,9 @@ class ComposeCoordinator : DefaultCoordinator {
     weak var delegate: CoordinatorDelegate?
 
     enum Destination : String {
-        case password = "to_eo_password_segue"
+        case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
-        case subSelection = "toContactGroupSubSelection"
+        case subSelection      = "toContactGroupSubSelection"
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -85,8 +85,7 @@ class ComposeCoordinator : DefaultCoordinator {
             }
             popup.delegate = self
             let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
-            popup.config(needPwd: nonePMEmail,
-                         pgp: vc.headerView.pgpEmails)
+            popup.config(needPwd: nonePMEmail, pgp: vc.headerView.pgpEmails)
         case .subSelection:
             guard let destination = destination as? ContactGroupSubSelectionViewController else {
                 return false

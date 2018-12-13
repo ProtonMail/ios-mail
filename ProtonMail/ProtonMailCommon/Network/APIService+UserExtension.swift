@@ -22,7 +22,7 @@ extension APIService {
     public typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
     fileprivate struct UserPath {
-        static let base = AppConstants.API_PATH + "/users"
+        static let base = Constants.App.API_PATH + "/users"
     }
     
     //deprecated

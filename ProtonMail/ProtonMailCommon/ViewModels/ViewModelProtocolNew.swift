@@ -20,14 +20,16 @@ protocol ViewModelProtocolBase : AnyObject {
 }
 
 protocol ViewModelProtocolNew : ViewModelProtocolBase {
-    associatedtype argType
-    func set(viewModel: argType) -> Void
+    /// typedefine - view model -- if the class name defined in set function. the sub class could ignore viewModelType
+    associatedtype viewModelType
+    
+    func set(viewModel: viewModelType) -> Void
 }
 
 
 extension ViewModelProtocolNew {
     func setModel(vm: Any) {
-        guard let viewModel = vm as? argType else {
+        guard let viewModel = vm as? viewModelType else {
             fatalError("This view model type doesn't match") //this shouldn't happend
         }
         self.set(viewModel: viewModel)

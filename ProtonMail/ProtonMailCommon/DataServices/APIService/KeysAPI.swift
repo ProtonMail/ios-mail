@@ -26,7 +26,7 @@ final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     }
     
     override func path() -> String {
-        return KeysAPI.path + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -133,7 +133,7 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return KeysAPI.path + "/salts" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/salts" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -254,7 +254,7 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return KeysAPI.path + "/private" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/private" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -303,7 +303,7 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return KeysAPI.path + "/setup" + AppConstants.DEBUG_OPTION
+        return KeysAPI.path + "/setup" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

@@ -8,10 +8,23 @@
 
 import Foundation
 
+@available(iOS 10.0, *)
+protocol OptionsDialogPresenter {
+    func toSettings()
+    func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
+}
+
+@available(iOS 10.0, *)
+extension OptionsDialogPresenter {
+    func toSettings() {
+        
+    }
+}
+
 // controller
 @available(iOS 10.0, *)
 final class NotificationsSnoozer: NotificationsSnoozerCore {
-    internal static var appVersion = AppVersion("2.0.0") // TODO: update once we'll be ready to release this feature
+    internal static var appVersion = AppVersion("1.0.0") // TODO: update once we'll be ready to release this feature
     
     internal func overview(at date: Date,
                            ofCase type: NotificationsSnoozerCore.Configuration.CodingKeys? = nil) -> String
@@ -24,7 +37,7 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
     }
     
     internal func quickOptionsDialog(for date: Date,
-                                     toPresentOn presenter: UIViewController,
+                                     toPresentOn presenter: OptionsDialogPresenter,
                                      onStateChangedTo: ((Bool)->Void)? = nil) -> UIViewController
     {
         // time-based options
@@ -79,13 +92,13 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
         }
         let scheduled = UIAlertAction(title: LocalString._scheduled, style: .default) { _ in
             onStateChangedTo?(self.isSnoozeActive(at: Date()))
-            guard let menu = presenter as? MenuViewController else { return }
-            menu.performSegue(withIdentifier: menu.kSegueToSettings, sender: self)
+            presenter.toSettings()
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            dialog.dismiss(animated: true, completion: nil)
+        }
         
         // bring everything together
-        
         if self.isNonRepeatingSnoozeActive(at: date) {
             [turnOff].forEach( dialog.addAction )
         }
@@ -107,6 +120,7 @@ extension NotificationsSnoozer.Configuration {
         formatter.unitsStyle = .short
         return formatter
     }()
+    
     private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .none

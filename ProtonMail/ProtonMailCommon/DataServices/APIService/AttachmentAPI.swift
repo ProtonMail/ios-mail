@@ -22,7 +22,7 @@ final class DeleteAttachment : ApiRequest<ApiResponse> {
     
     override func path() -> String {
         //return AttachmentAPI.path + "/remove" + AppConstants.DEBUG_OPTION
-        return AttachmentAPI.path + "/" + self.attachmentID + AppConstants.DEBUG_OPTION
+        return AttachmentAPI.path + "/" + self.attachmentID + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

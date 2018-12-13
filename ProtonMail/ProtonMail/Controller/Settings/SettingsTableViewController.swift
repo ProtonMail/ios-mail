@@ -1,5 +1,5 @@
 //
-//  SettingTableViewController.swift
+//  SettingsTableViewController.swift
 //  ProtonMail
 //
 //  Created by Yanfeng Zhang on 3/17/15.
@@ -10,8 +10,23 @@ import UIKit
 import MBProgressHUD
 import Keymaker
 
-class SettingTableViewController: ProtonMailViewController {
+class SettingsTableViewController: ProtonMailTableViewController, ViewModelProtocolNew, CoordinatedNew {
+    internal var viewModel : SettingsViewModel!
+    internal var coordinator : SettingsCoordinator?
     
+    func set(viewModel: SettingsViewModel) {
+        self.viewModel = viewModel
+    }
+    
+    func set(coordinator: SettingsCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return self.coordinator
+    }
+    
+    ///
     var setting_headers : [SettingSections]              = [.general,
                                                             .protection,
                                                             .labels,
@@ -45,19 +60,6 @@ class SettingTableViewController: ProtonMailViewController {
     var multi_domains: [Address]!
     var userInfo: UserInfo = sharedUserDataService.userInfo!
     
-    /// segues
-    let NotificationSegue:String      = "setting_notification"
-    let DisplayNameSegue:String       = "setting_displayname"
-    let SignatureSegue:String         = "setting_signature"
-    let MobileSignatureSegue:String   = "setting_mobile_signature"
-    let DebugQueueSegue : String      = "setting_debug_queue_segue"
-    let kSetupPinCodeSegue : String   = "setting_setup_pingcode"
-    let kManagerLabelsSegue : String  = "toManagerLabelsSegue"
-    let kLoginpwdSegue:String         = "setting_login_pwd"
-    let kMailboxpwdSegue:String       = "setting_mailbox_pwd"
-    let kSinglePasswordSegue : String = "setting_single_password_segue"
-    let kNotificationsSnoozeSegue : String = "setting_notifications_snooze_segue"
-    
     /// cells
     let SettingSingalLineCell         = "settings_general"
     let SettingSingalSingleLineCell   = "settings_general_single_line"
@@ -73,13 +75,11 @@ class SettingTableViewController: ProtonMailViewController {
     var cleaning : Bool      = false
     
     //
-    @IBOutlet weak var editBarButton: UIBarButtonItem!
     @IBOutlet var settingTableView: UITableView!
     
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.updateTitle()
     }
     
@@ -107,51 +107,9 @@ class SettingTableViewController: ProtonMailViewController {
         userInfo = sharedUserDataService.userInfo!
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
-        settingTableView.reloadData()
+        self.settingTableView.reloadData()
         UIView.setAnimationsEnabled(true)
         navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let segueID:String! = segue.identifier
-        switch segueID {
-        case kLoginpwdSegue:
-            let changeLoginPwdView = segue.destination as! ChangePasswordViewController
-            changeLoginPwdView.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-        case kMailboxpwdSegue:
-            let changeMBPView = segue.destination as! ChangePasswordViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-        case kSinglePasswordSegue:
-            let changeMBPView = segue.destination as! ChangePasswordViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
-        case NotificationSegue:
-            let changeMBPView = segue.destination as! SettingDetailViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-        case DisplayNameSegue:
-            let changeMBPView = segue.destination as! SettingDetailViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-        case SignatureSegue:
-            let changeMBPView = segue.destination as! SettingDetailViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeSignature())
-        case MobileSignatureSegue:
-            let changeMBPView = segue.destination as! SettingDetailViewController
-            changeMBPView.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-        case kSetupPinCodeSegue:
-            let vc = segue.destination as! PinCodeViewController
-            vc.viewModel = SetPinCodeModelImpl()
-        case kManagerLabelsSegue:
-            let vc = segue.destination as! LablesViewController
-            vc.viewModel = LabelManagerViewModelImpl()
-            self.setPresentationStyleForSelfController(self, presentingController: vc)
-        case kNotificationsSnoozeSegue: // this allows to setup navbar for deeplink when view of this controller does not load/appear
-                if #available(iOS 10, *), sender is NotificationsSnoozer {
-                    super.viewDidLoad()
-                    self.updateTitle()
-                    navigationController?.setNavigationBarHidden(false, animated: true)
-                }
-        default:
-            break
-        }
     }
     
     internal func updateProtectionItems() {
@@ -166,7 +124,6 @@ class SettingTableViewController: ProtonMailViewController {
             setting_protection_items.append(.faceID)
             break
         }
-        
         setting_protection_items.append(.pinCode)
         if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
             setting_protection_items.append(.enterTime)
@@ -178,18 +135,13 @@ class SettingTableViewController: ProtonMailViewController {
         self.settingTableView.reloadData()
     }
     
-    // MARK: - Table view data source
-    @objc func numberOfSectionsInTableView(_ tableView: UITableView) -> Int {
+    ///MARK: -- table view delegate
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return setting_headers.count
     }
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return setting_headers.count
-//    }
-//
-    @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if setting_headers.count > section {
-            switch(setting_headers[section])
-            {
+            switch(setting_headers[section]) {
             case .debug:
                 return setting_debug_items.count
             case .general:
@@ -213,7 +165,7 @@ class SettingTableViewController: ProtonMailViewController {
         return 0
     }
     
-    @objc func tableView(_ tableView: UITableView, cellForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cellout : UITableViewCell?
         if setting_headers.count > indexPath.section {
             let setting_item = setting_headers[indexPath.section]
@@ -240,8 +192,8 @@ class SettingTableViewController: ProtonMailViewController {
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cellout = cell
                     case .notificationsSnooze:
-                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingViewCell
-                        cell.configCell(itme.description, right: "")
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingSinglelineCell
+                        cell.configCell(itme.description)
                         cell.accessoryType = .disclosureIndicator
                         cellout = cell
                     case .autoLoadImage:
@@ -311,7 +263,8 @@ class SettingTableViewController: ProtonMailViewController {
                             if let indexp = tableView.indexPath(for: cell!) {
                                 if indexPath == indexp {
                                     if !userCachedStatus.isPinCodeEnabled {
-                                        self.performSegue(withIdentifier: self.kSetupPinCodeSegue, sender: self)
+//                                        self.performSegue(withIdentifier: self.kSetupPinCodeSegue, sender: self)
+                                        self.coordinator?.go(to: .pinCode)
                                     } else {
                                         keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
                                         feedback(true)
@@ -455,7 +408,8 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
-    @objc func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerCell = tableView.dequeueReusableCell(withIdentifier: HeaderCell) as! CustomHeaderView
         if(setting_headers[section] == SettingSections.version){
             var appVersion = "Unkonw Version"
@@ -479,11 +433,12 @@ class SettingTableViewController: ProtonMailViewController {
         return headerCell
     }
     
-    @objc func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return CellHeight
     }
     
-    @objc func tableView(_ tableView: UITableView, didSelectRowAtIndexPath indexPath: IndexPath) {
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if setting_headers.count > indexPath.section {
             let setting_item = setting_headers[indexPath.section]
             switch setting_item {
@@ -492,20 +447,20 @@ class SettingTableViewController: ProtonMailViewController {
                     let general_itme: SGItems = setting_general_items[indexPath.row]
                     switch general_itme {
                     case .notifyEmail:
-                        self.performSegue(withIdentifier: NotificationSegue, sender: self)
+                        self.coordinator?.go(to: .notification)
                     case .loginPWD:
-                       // if shard
+                        // if shard
                         if sharedUserDataService.passwordMode == 1 {
                             let alert = LocalString._general_use_web_reset_pwd.alertController()
                             alert.addOKAction()
                             present(alert, animated: true, completion: nil)
                         } else {
-                            self.performSegue(withIdentifier: kLoginpwdSegue, sender: self)
+                            self.coordinator?.go(to: .loginPwd)
                         }
                     case .mbp:
-                        self.performSegue(withIdentifier: kMailboxpwdSegue, sender: self)
+                        self.coordinator?.go(to: .mailboxPwd)
                     case .singlePWD:
-                        self.performSegue(withIdentifier: kSinglePasswordSegue, sender: self)
+                        self.coordinator?.go(to: .singlePwd)
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
@@ -521,7 +476,7 @@ class SettingTableViewController: ProtonMailViewController {
                             }
                         }
                     case .notificationsSnooze:
-                        self.performSegue(withIdentifier: kNotificationsSnoozeSegue, sender: self)
+                        self.coordinator?.go(to: .snooze)
                     case .autoLoadImage:
                         break
                     }
@@ -531,7 +486,8 @@ class SettingTableViewController: ProtonMailViewController {
                     let debug_item: SDebugItem = setting_debug_items[indexPath.row]
                     switch debug_item {
                     case .queue:
-                        self.performSegue(withIdentifier: DebugQueueSegue, sender: self)
+//                        self.performSegue(withIdentifier: DebugQueueSegue, sender: self)
+                        self.coordinator?.go(to: .debugQueue)
                         break
                     case .errorLogs:
                         break
@@ -635,11 +591,14 @@ class SettingTableViewController: ProtonMailViewController {
                             present(alertController, animated: true, completion: nil)
                         }
                     case .displayName:
-                        self.performSegue(withIdentifier: DisplayNameSegue, sender: self)
+                        self.coordinator?.go(to: .displayName)
+//                        self.performSegue(withIdentifier: DisplayNameSegue, sender: self)
                     case .signature:
-                        self.performSegue(withIdentifier: SignatureSegue, sender: self)
+//                        self.performSegue(withIdentifier: SignatureSegue, sender: self)
+                        self.coordinator?.go(to: .signature)
                     case .defaultMobilSign:
-                        self.performSegue(withIdentifier: MobileSignatureSegue, sender: self)
+//                        self.performSegue(withIdentifier: MobileSignatureSegue, sender: self)
+                        self.coordinator?.go(to: .mobileSignature)
                     }
                 }
             case .swipeAction:
@@ -671,7 +630,8 @@ class SettingTableViewController: ProtonMailViewController {
                     present(alertController, animated: true, completion: nil)
                 }
             case .labels:
-                self.performSegue(withIdentifier: kManagerLabelsSegue, sender: self)
+//                self.performSegue(withIdentifier: kManagerLabelsSegue, sender: self)
+                self.coordinator?.go(to: .lableManager)
             case .language:
                 let current_language = LanguageManager.currentLanguageEnum()
                 let title = LocalString._settings_current_language_is + current_language.description
@@ -700,29 +660,24 @@ class SettingTableViewController: ProtonMailViewController {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    // Override to support conditional editing of the table view.
-    @objc func tableView(_ tableView: UITableView, canEditRowAtIndexPath indexPath: IndexPath) -> Bool {
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
-    // Override to support conditional rearranging of the table view.
-    @objc func tableView(_ tableView: UITableView, canMoveRowAtIndexPath indexPath: IndexPath) -> Bool {
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
-    // Override to support editing the table view.
-    @objc func tableView(_ tableView: UITableView, commitEditingStyle editingStyle: UITableViewCell.EditingStyle, forRowAtIndexPath indexPath: IndexPath) {
-    }
-    
-    @objc func tableView(_ tableView: UITableView, editingStyleForRowAtIndexPath indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return UITableViewCell.EditingStyle.none
     }
-    
-    @objc func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAtIndexPath indexPath: IndexPath) -> Bool {
+
+    override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
     
-    @objc func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAtIndexPath sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
+    override func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath {
         if sourceIndexPath.section != proposedDestinationIndexPath.section {
             return sourceIndexPath
         }
@@ -731,14 +686,20 @@ class SettingTableViewController: ProtonMailViewController {
         }
     }
     
-    // Override to support rearranging the table view.
-    @objc func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
-        if setting_headers[fromIndexPath.section] == SettingSections.multiDomain {
-            let val = self.multi_domains.remove(at: fromIndexPath.row)
-            self.multi_domains.insert(val, at: toIndexPath.row)
-            //let indexSet = NSIndexSet(index:fromIndexPath.section)
-            tableView.reloadData()
-        }
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+//        if setting_headers[fromIndexPath.section] == SettingSections.multiDomain {
+//            let val = self.multi_domains.remove(at: fromIndexPath.row)
+//            self.multi_domains.insert(val, at: toIndexPath.row)
+//            //let indexSet = NSIndexSet(index:fromIndexPath.section)
+//            tableView.reloadData()
+//        }
     }
+    
+    
+    
+//    // Override to support rearranging the table view.
+//    @objc func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
+
+//    }
     
 }

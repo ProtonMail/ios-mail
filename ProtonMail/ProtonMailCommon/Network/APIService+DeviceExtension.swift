@@ -50,7 +50,7 @@ extension APIService {
         ] as [String : Any]
         
         request(method: .post,
-                path: AppConstants.API_PATH + DevicePath.basePath,
+                path: Constants.App.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 completion: completion)
@@ -67,7 +67,7 @@ extension APIService {
         ]
 
         request(method: .delete,
-                path: AppConstants.API_PATH + DevicePath.basePath,
+                path: Constants.App.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 authenticated: false,

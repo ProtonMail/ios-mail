@@ -93,195 +93,196 @@ extension Message {
     }
     
     
-    var location: MessageLocation {
-        get {
-            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
-        }
-        set {
-            locationNumber = newValue.rawValue as NSNumber
-        }
-    }
+//    var location: MessageLocation {
+//        get {
+//            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
+//        }
+//        set {
+//            locationNumber = newValue.rawValue as NSNumber
+//        }
+//    }
     
-    func getScore() -> MessageSpamScore {
-        if let e = MessageSpamScore(rawValue: self.spamScore.intValue) {
+    func getScore() -> Message.SpamScore {
+        if let e = Message.SpamScore(rawValue: self.spamScore.intValue) {
             return e
         }
         return .others
     }
     
-    func hasDraftLabel() -> Bool {
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
-                        return true
-                    }
-                }
-                
-            }
-        }
-        return false
-    }
-    
-    func hasLocation(location : MessageLocation) -> Bool {
-        for l in getLocationFromLabels() {
-            if l == location {
-                return true
-            }
-        }
-        return false
-    }
-    
-    func getLocationFromLabels() ->  [MessageLocation] {
-        var locations = [MessageLocation]()
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                if let l_id = Int(label.labelID) {
-                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
-                        locations.append(new_loc)
-                    }
-                }
-                
-            }
-        }
-        return locations
-    }
+//    func hasDraftLabel() -> Bool {
+//        let labels = self.labels
+//        for l in labels {
+//            if let label = l as? Label {
+//                if let l_id = Int(label.labelID) {
+//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
+//                        return true
+//                    }
+//                }
+//
+//            }
+//        }
+//        return false
+//    }
+//
+//    func hasLocation(location : MessageLocation) -> Bool {
+//        for l in getLocationFromLabels() {
+//            if l == location {
+//                return true
+//            }
+//        }
+//        return false
+//    }
+//
+//    func getLocationFromLabels() ->  [MessageLocation] {
+//        var locations = [MessageLocation]()
+//        let labels = self.labels
+//        for l in labels {
+//            if let label = l as? Label {
+//                if let l_id = Int(label.labelID) {
+//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
+//                        locations.append(new_loc)
+//                    }
+//                }
+//
+//            }
+//        }
+//        return locations
+//    }
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
-        var lableOnly = false
-        if ignored == MessageLocation.outbox.title {
-            for l in getLocationFromLabels() {
-                if l == .trash || l == .spam || l == .archive {
-                    return l.title
-                }
-            }
-            lableOnly = true
-        }
-    
-        let labels = self.labels
-        for l in labels {
-            if let label = l as? Label {
-                if label.exclusive == true && label.name != ignored {
-                    return label.name
-                } else if !lableOnly {
-                    if let l_id = Int(label.labelID) {
-                        if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
-                            return new_loc.title
-                        }
-                    }
-                }
-            }
-        }
+        //TODO::fix me
+//        var lableOnly = false
+//        if ignored == MessageLocation.outbox.title {
+//            for l in getLocationFromLabels() {
+//                if l == .trash || l == .spam || l == .archive {
+//                    return l.title
+//                }
+//            }
+//            lableOnly = true
+//        }
+//
+//        let labels = self.labels
+//        for l in labels {
+//            if let label = l as? Label {
+//                if label.exclusive == true && label.name != ignored {
+//                    return label.name
+//                } else if !lableOnly {
+//                    if let l_id = Int(label.labelID) {
+//                        if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
+//                            return new_loc.title
+//                        }
+//                    }
+//                }
+//            }
+//        }
         return nil
     }
     
-    func setLabelLocation(_ location : MessageLocation) {
-        if let context = self.managedObjectContext {
-            let toLableID = String(location.rawValue)
-            let labelObjs = self.mutableSetValue(forKey: "labels")
-            
-            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                var exsited = false
-                for l in labelObjs {
-                    if let label = l as? Label {
-                        if label == toLabel {
-                            exsited = true
-                            break
-                        }
-                    }
-                }
-                if !exsited {
-                    labelObjs.add(toLabel)
-                }
-            }
-            self.setValue(labelObjs, forKey: "labels")
-        }
-    }
-    
-    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
-        if let context = self.managedObjectContext {
-            context.performAndWait() {
-                let labelObjs = self.mutableSetValue(forKey: "labels")
-                if keepSent && currentlocation == .outbox {
-                } else {
-                    let fromLabelID = String(currentlocation.rawValue)
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label.labelID == fromLabelID {
-                                labelObjs.remove(label)
-                                break
-                            }
-                        }
-                    }
-                    
-                }
-                let toLableID = String(location.rawValue)
-                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                    var exsited = false
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label.labelID == toLabel.labelID {
-                                exsited = true
-                                break
-                            }
-                        }
-                    }
-                    if !exsited {
-                        labelObjs.add(toLabel)
-                    }
-                }
-                
-                self.setValue(labelObjs, forKey: "labels")
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            }
-        }
-    }
-    
-    func removeFromFolder(current: Label, location : MessageLocation, keepSent: Bool) {
-        if let context = self.managedObjectContext {
-            context.performAndWait() {
-                let labelObjs = self.mutableSetValue(forKey: "labels")
-                if keepSent && current.exclusive == false {
-                    
-                } else {
-                    let fromLabelID = current.labelID
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label.labelID == fromLabelID {
-                                labelObjs.remove(label)
-                                break
-                            }
-                        }
-                    }
-                }
-                
-                let toLableID = String(location.rawValue)
-                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-                    var exsited = false
-                    for l in labelObjs {
-                        if let label = l as? Label {
-                            if label == toLabel {
-                                exsited = true
-                                break
-                            }
-                        }
-                    }
-                    if !exsited {
-                        labelObjs.add(toLabel)
-                    }
-                }
-                
-                self.setValue(labelObjs, forKey: "labels")
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            }
-        }
-    }
+//    func setLabelLocation(_ location : MessageLocation) {
+//        if let context = self.managedObjectContext {
+//            let toLableID = String(location.rawValue)
+//            let labelObjs = self.mutableSetValue(forKey: "labels")
+//
+//            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+//                var exsited = false
+//                for l in labelObjs {
+//                    if let label = l as? Label {
+//                        if label == toLabel {
+//                            exsited = true
+//                            break
+//                        }
+//                    }
+//                }
+//                if !exsited {
+//                    labelObjs.add(toLabel)
+//                }
+//            }
+//            self.setValue(labelObjs, forKey: "labels")
+//        }
+//    }
+//
+//    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
+//        if let context = self.managedObjectContext {
+//            context.performAndWait() {
+//                let labelObjs = self.mutableSetValue(forKey: "labels")
+//                if keepSent && currentlocation == .outbox {
+//                } else {
+//                    let fromLabelID = String(currentlocation.rawValue)
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label.labelID == fromLabelID {
+//                                labelObjs.remove(label)
+//                                break
+//                            }
+//                        }
+//                    }
+//
+//                }
+//                let toLableID = String(location.rawValue)
+//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+//                    var exsited = false
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label.labelID == toLabel.labelID {
+//                                exsited = true
+//                                break
+//                            }
+//                        }
+//                    }
+//                    if !exsited {
+//                        labelObjs.add(toLabel)
+//                    }
+//                }
+//
+//                self.setValue(labelObjs, forKey: "labels")
+//                if let error = context.saveUpstreamIfNeeded() {
+//                    PMLog.D("error: \(error)")
+//                }
+//            }
+//        }
+//    }
+//
+//    func removeFromFolder(current: Label, location : MessageLocation, keepSent: Bool) {
+//        if let context = self.managedObjectContext {
+//            context.performAndWait() {
+//                let labelObjs = self.mutableSetValue(forKey: "labels")
+//                if keepSent && current.exclusive == false {
+//
+//                } else {
+//                    let fromLabelID = current.labelID
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label.labelID == fromLabelID {
+//                                labelObjs.remove(label)
+//                                break
+//                            }
+//                        }
+//                    }
+//                }
+//
+//                let toLableID = String(location.rawValue)
+//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+//                    var exsited = false
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label == toLabel {
+//                                exsited = true
+//                                break
+//                            }
+//                        }
+//                    }
+//                    if !exsited {
+//                        labelObjs.add(toLabel)
+//                    }
+//                }
+//
+//                self.setValue(labelObjs, forKey: "labels")
+//                if let error = context.saveUpstreamIfNeeded() {
+//                    PMLog.D("error: \(error)")
+//                }
+//            }
+//        }
+//    }
     
     var subject : String {
         return title
@@ -326,30 +327,54 @@ extension Message {
     }
     
     class func deleteLocation(_ location : MessageLocation) -> Bool{
-        let mContext = sharedCoreDataService.backgroundManagedObjectContext
-        var success = false
-        mContext.performAndWait {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            if location == .spam || location == .trash {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
-                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-                do {
-                    if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-                        for message in oldMessages {
-                            mContext.delete(message)
-                        }
-                        if let error = mContext.saveUpstreamIfNeeded() {
-                            PMLog.D(" error: \(error)")
-                        } else {
-                            success = true
-                        }
-                    }
-                } catch {
-                    PMLog.D(" error: \(error)")
-                }
-            }
-        }
-        return success
+//         let mContext = sharedCoreDataService.backgroundManagedObjectContext
+//         var success = false
+//         mContext.performAndWait {
+//             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+//             if location == .spam || location == .trash {
+//                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
+//                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+//                 do {
+//                     if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
+//                         for message in oldMessages {
+//                             mContext.delete(message)
+//                         }
+//                         if let error = mContext.saveUpstreamIfNeeded() {
+//                             PMLog.D(" error: \(error)")
+//                         } else {
+//                             success = true
+//                         }
+//                     }
+//                 } catch {
+//                     PMLog.D(" error: \(error)")
+//                 }
+//             }
+//         }
+//         return success
+//     class func deleteLocation(_ location : String) -> Bool{
+//         //TODO::fixme
+// //        if let mContext = sharedCoreDataService.mainManagedObjectContext {
+// //            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+// //            if location == .spam || location == .trash {
+// //                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
+// //                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+// //                do {
+// //                    if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
+// //                        for message in oldMessages {
+// //                            mContext.delete(message)
+// //                        }
+// //                        if let error = mContext.saveUpstreamIfNeeded() {
+// //                            PMLog.D(" error: \(error)")
+// //                        } else {
+// //                            return true
+// //                        }
+// //                    }
+// //                } catch {
+// //                    PMLog.D(" error: \(error)")
+// //                }
+// //            }
+// //        }
+        return false
     }
     
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
@@ -365,10 +390,11 @@ extension Message {
         replaceNilStringAttributesWithEmptyString()
     }
     
-    func updateTag(_ tag: String) {
-        self.tag = tag
-        isStarred = tag.range(of: Constants.starredTag) != nil
-    }
+    //TODO:: fix me
+//    func updateTag(_ tag: String) {
+//        self.tag = tag
+//        isStarred = tag.range(of: Constants.starredTag) != nil
+//    }
     
     // MARK: methods
     func decryptBody(keys: Data, passphrase: String) throws -> String? {
@@ -566,8 +592,7 @@ extension Message {
     
     func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
-        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext)
-        newMessage.location = MessageLocation.draft
+        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
         newMessage.toList = message.toList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList

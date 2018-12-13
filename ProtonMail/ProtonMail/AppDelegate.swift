@@ -2,16 +2,29 @@
 //  AppDelegate.swift
 //  ProtonMail
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  The MIT License
 //
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 import SWRevealViewController
@@ -20,6 +33,7 @@ import AFNetworkActivityLogger
 import Keymaker
 import UserNotifications
 import Intents
+import DeviceCheck
 
 let sharedUserDataService = UserDataService()
 
@@ -30,10 +44,19 @@ class AppDelegate: UIResponder {
 
 extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "sw_front") {
+        if (segue.identifier == "sw_rear") {
+            if let menuViewController =  segue.destination as? MenuViewController {
+                let viewModel = MenuViewModelImpl()
+                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel)
+                menu.start()
+            }
+        } else if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    sharedVMService.mailbox(fromMenu: mailboxViewController, location: .inbox)
+                    sharedVMService.mailbox(fromMenu: mailboxViewController)
+                    let viewModel = MailboxViewModelImpl(label: .inbox)
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel)
+                    mailbox.start()                    
                 }
             }
         }
@@ -144,11 +167,31 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             let intent = WipeMainKeyIntent()
             let suggestions = [INShortcut(intent: intent)!]
             INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        if #available(iOS 11.0, *) {
+            self.generateToken()
+        } else {
+            // Fallback on earlier versions
         }
         
         self.coordinator.start()
         
         return true
+    }
+    
+    @available(iOS 11.0, *)
+    func generateToken(){
+        let currentDevice = DCDevice.current
+        if currentDevice.isSupported {
+            currentDevice.generateToken(completionHandler: { (data, error) in
+                DispatchQueue.main.async {
+                    if let tokenData = data {
+                        PMLog.D(tokenData.base64EncodedString())
+                    } else {
+                       
+                    }
+                }
+            })
+        }
     }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
@@ -165,7 +208,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
         
         let info : [String:String] = ["verifyCode" : code]
-        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
+        let notification = Notification(name: .customUrlSchema,
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
@@ -236,6 +279,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        PMLog.D(deviceToken.stringFromToken())
         PushNotificationService.shared.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     

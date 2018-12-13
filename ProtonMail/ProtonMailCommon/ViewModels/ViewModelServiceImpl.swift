@@ -1,10 +1,29 @@
 //
 //  ViewModelServiceImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/18/15.
 //
-//  Created by Yanfeng Zhang on 6/18/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 import UICKeyChainStore
@@ -15,7 +34,7 @@ class ViewModelServiceImpl: ViewModelService {
     //the active view controller needs to be reset when resetComposerView be called
     private var activeViewController : ViewModelProtocol?
     //the active mailbox
-    private var mailboxViewController : ViewModelProtocol?
+    private var mailboxViewController : ViewModelProtocolBase?
     
     //new one
     private var activeViewControllerNew : ViewModelProtocolBase?
@@ -149,21 +168,21 @@ class ViewModelServiceImpl: ViewModelService {
         activeViewController = vmp
     }
     
-    override func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+    override func mailbox(fromMenu vmp : ViewModelProtocolBase) {
         if let oldVC = mailboxViewController {
             oldVC.inactiveViewModel()
         }
         mailboxViewController = vmp
-        let viewModel = MailboxViewModelImpl(location: location)
-        vmp.setViewModel(viewModel)
+
     }
-    override func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
+    
+    override func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
         if let oldVC = mailboxViewController {
             oldVC.inactiveViewModel()
         }
         mailboxViewController = vmp
         let viewModel = LabelboxViewModelImpl(label: label)
-        vmp.setViewModel(viewModel)
+        vmp.setModel(vm: viewModel)
     }
     
     //
@@ -284,7 +303,7 @@ class ViewModelServiceImpl: ViewModelService {
     // composer
     override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         let latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
-        guard let viewModel = latestComposerViewModel as? T.argType else {
+        guard let viewModel = latestComposerViewModel as? T.viewModelType else {
             return
         }
         vmp.set(viewModel: viewModel)

@@ -29,8 +29,7 @@ import Foundation
 import CoreData
 
 extension Message {
-    static func messageWithLocation (_ location: MessageLocation,
-                                     recipientList: String,
+    static func messageWithLocation (recipientList: String,
                                      bccList: String,
                                      ccList: String,
                                      title: String,
@@ -44,7 +43,6 @@ extension Message {
         
         let message = Message(context: context)
         message.messageID = UUID().uuidString
-        message.location = location
         message.toList = recipientList
         message.bccList = bccList
         message.ccList = ccList

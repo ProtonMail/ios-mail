@@ -9,7 +9,7 @@
 import Foundation
 import MBProgressHUD
 
-protocol MailboxCaptchaVCDelegate {
+protocol MailboxCaptchaVCDelegate : AnyObject {
     func cancel()
     func done()
 }
@@ -23,7 +23,7 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
     
-    var delegate : MailboxCaptchaVCDelegate?
+    weak var delegate : MailboxCaptchaVCDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,7 +42,7 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     }
     
     fileprivate func loadWebView(_ token : String) {
-        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(AppConstants.URL_HOST)")!
+        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Constants.App.URL_HOST)")!
         let requestObj = URLRequest(url: cptcha)
         webVIew.loadRequest(requestObj)
     }
@@ -68,7 +68,6 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
         
     }
     
-    
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         let urlString = request.url?.absoluteString
         if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
@@ -78,16 +77,15 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
         if urlString?.contains("how-to-solve-") == true {
             return false
         }
+        
         if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
             return false
         }
 
-        
         if let _ = urlString?.range(of: "https://secure.protonmail.com/expired_recaptcha_response://") {
             webView.reload()
             return false
-        }
-        else if let _ = urlString?.range(of: "https://secure.protonmail.com/captcha/recaptcha_response://") {
+        } else if let _ = urlString?.range(of: "https://secure.protonmail.com/captcha/recaptcha_response://") {
             if let token = urlString?.replacingOccurrences(of: "https://secure.protonmail.com/captcha/recaptcha_response://", with: "", options: NSString.CompareOptions.widthInsensitive, range: nil) {
                 MBProgressHUD.showAdded(to: view, animated: true)
                 viewModel.humanCheck("captcha", token: token, complete: { (error: NSError?) in

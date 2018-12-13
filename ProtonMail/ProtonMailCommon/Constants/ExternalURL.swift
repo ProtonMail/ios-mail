@@ -1,5 +1,5 @@
 //
-//  Compare+Extension.swift
+//  ExternalURL.swift
 //  ProtonMail
 //
 //
@@ -27,30 +27,27 @@
 
 import Foundation
 
-infix operator <
-infix operator >
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l < r
-    case (nil, _?):
-        return true
-    default:
-        return false
+extension URL {
+    // protonmail app store link
+    static var appleStore: URL {
+        return URL(string: "itms-apps://itunes.apple.com/app/id979659905")!
+    }
+    
+    // kb for force upgrade
+    static var forceUpgrade : URL {
+        return URL(string: "https://protonmail.com/support/knowledge-base/update-required")!
+    }
+    
+    // leanr more about encrypt outside - composer view
+    static var eoLearnMore : URL {
+        return URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    }
+    
+    static var paidPlans : URL {
+        return URL(string: "https://protonmail.com/support/knowledge-base/paid-plans/")!
+    }
+    
+    static var planUpgradePage : URL {
+        return URL(string: "https://protonmail.com/upgrade")!
     }
 }
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
-    switch (lhs, rhs) {
-    case let (l?, r?):
-        return l > r
-    default:
-        return rhs < lhs
-    }
-}
-

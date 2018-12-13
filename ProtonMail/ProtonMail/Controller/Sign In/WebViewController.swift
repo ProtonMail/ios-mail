@@ -9,7 +9,7 @@
 import UIKit
 
 class WebViewController: UIViewController, ViewModelProtocolNew, UIWebViewDelegate {
-    typealias argType = WebViewModel
+    typealias viewModelType = WebViewModel
     func set(viewModel: WebViewModel) {
         self.viewModel = viewModel
     }

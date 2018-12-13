@@ -90,12 +90,7 @@ final public class Message: NSManagedObject {
     @NSManaged public var isDetailDownloaded: Bool
     @available(*, deprecated, message: "use flag instead")
     @NSManaged public var isEncrypted: NSNumber
-    @available(*, deprecated, message: "use labelIDs instead")
-    @NSManaged public var isStarred: Bool    //Deprecated, use LabelIDs instead
     @NSManaged public var lastModified: Date?
-    @available(*, deprecated, message: "use labelIDs instead")
-    @NSManaged public var locationNumber: NSNumber  //Deprecated, use LabelIDs instead
-    
     @NSManaged public var passwordEncryptedBody: String
     @NSManaged public var password: String
     @NSManaged public var passwordHint: String

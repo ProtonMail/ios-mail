@@ -26,7 +26,7 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        download(byUrl: AppConstants.API_HOST_URL + pathForAttachmentID(attachmentID),
+        download(byUrl: Constants.App.API_HOST_URL + pathForAttachmentID(attachmentID),
                  destinationDirectoryURL: filepath,
                  headers: ["x-pm-apiversion": 3],
                  customAuthCredential: customAuthCredential,
@@ -41,7 +41,7 @@ extension APIService {
     
     // MARK: - Private methods
     fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
-        return AppConstants.API_PATH + "/attachments/\(attachmentID)"
+        return Constants.App.API_PATH + "/attachments/\(attachmentID)"
     }
     
 }
