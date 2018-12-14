@@ -1,6 +1,6 @@
 //
-//  SharedCacheBase.swift
-//  ProtonMail - Created on 6/5/15.
+//  DeepLinkTest.swift
+//  ProtonMail - Created on 12/13/18.
 //
 //
 //  The MIT License
@@ -24,38 +24,6 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
-
-
-public class SharedCacheBase {
-    
-    fileprivate var userDefaults : UserDefaults!
-    
-    func getShared() ->UserDefaults! {
-        return self.userDefaults
-    }
-    
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
-        
-    convenience init (shared : UserDefaults) {
-        self.init()
-        self.userDefaults = shared
-    }
-    
-    deinit {
-        //
-    }
-    
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
-    }
-    
-    class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
-}

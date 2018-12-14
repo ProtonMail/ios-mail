@@ -34,7 +34,7 @@ protocol SWRevealCoordinator: DefaultCoordinator {
     /// this will be called before push
     var configuration: ((VC) -> ())? { get }
     
-    var navigation: UINavigationController? { get set }
+    var navigation: UIViewController? { get set }
     var swRevealVC: SWRevealViewController? { get set }
 }
 
@@ -46,8 +46,9 @@ extension SWRevealCoordinator where VC: UIViewController, VC: CoordinatedNew {
         }
         configuration?(viewController) //set viewmodel and coordinator
         if self.navigation != nil, self.swRevealVC != nil {
-            self.swRevealVC?.pushFrontViewController(self.navigation, animated: true)
+            self.swRevealVC?.pushFrontViewController(self.navigation, animated: self.animated)
         }
+        self.processDeepLink()
     }
     
     func stop() {

@@ -68,7 +68,6 @@ extension CoordinatorNew {
 }
 
 
-
 /// The default coordinator is for the segue perform handled by system. need to return true in navigat function to trigger. if return false, need to push in the start().
 protocol DefaultCoordinator: CoordinatorNew {
     associatedtype VC: UIViewController
@@ -76,6 +75,9 @@ protocol DefaultCoordinator: CoordinatorNew {
     
     var animated: Bool { get }
     var delegate: CoordinatorDelegate? { get }
+    
+    func go(to deepLink: DeepLink)
+    func processDeepLink()
 }
 
 
@@ -153,5 +155,17 @@ extension DefaultCoordinator {
         get {
             return nil
         }
+    }
+    
+    /// optional go with deeplink
+    ///
+    /// - Parameter deepLink: deepLink
+    func go(to deepLink: DeepLink) {
+        
+    }
+    
+    /// if add deeplinks could handle here
+    func processDeepLink() {
+        
     }
 }

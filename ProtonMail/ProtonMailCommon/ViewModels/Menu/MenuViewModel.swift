@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 
@@ -37,7 +38,7 @@ enum MenuSection {
 
 protocol MenuViewModel : AnyObject {
     
-    func setupMenu()
+    func updateMenuItems()
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?)
     func sectionCount() -> Int
     func section(at: Int) -> MenuSection

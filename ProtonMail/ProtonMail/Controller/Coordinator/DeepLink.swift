@@ -28,7 +28,101 @@
 
 import Foundation
 
-struct DeepLink {
-//    var subLink : DeepLink
-    var sender: AnyObject?
+class DeepLink {
+    
+    class Path {
+        //
+        var next: Path?
+        weak var previous: Path?
+        
+        //
+        var destination : String
+        var sender: AnyObject?
+        
+        init(dest: String, sender: AnyObject? = nil) {
+            self.destination = dest
+            self.sender = sender
+        }
+    }
+    
+    
+    /// Description
+    ///
+    /// - Parameters:
+    ///   - dest: dest description
+    ///   - sender: sender descriptio
+    init(_ dest: String, sender: AnyObject? = nil) {
+        append(dest, sender: sender)
+    }
+    
+    /// The head of the Linked List
+    private(set) var head: Path?
+    
+    func append(_ dest: String, sender: AnyObject? = nil) {
+        let newNode = Path(dest: dest, sender: sender)
+        append(newNode)
+    }
+    
+    func append(_ path: Path) {
+        let newNode = path
+        if let lastNode = last {
+            newNode.previous = lastNode
+            lastNode.next = newNode
+        } else {
+            head = newNode
+        }
+    }
+    
+    var last: Path? {
+        get {
+            guard var node = head else {
+                return nil
+            }
+            
+            while let next = node.next {
+                node = next
+            }
+            return node
+        }
+    }
+    
+    var empty: Bool {
+        return head == nil
+    }
+    
+    var first: Path? {
+        get {
+            return head
+        }
+    }
+    
+    var pop: Path? {
+        get {
+            return removeTop()
+        }
+    }
+    
+    private func removeTop() -> Path? {
+        if let head = head {
+            self.remove(path: head)
+            return head
+        }
+        return nil
+    }
+
+    private func remove(path: Path) {
+        let prev = path.previous
+        let next = path.next
+        
+        if let prev = prev {
+            prev.next = next
+        } else {
+            head = next
+        }
+        next?.previous = prev
+        
+        path.previous = nil
+        path.next = nil
+    }
 }
+

@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 import Groot
@@ -32,7 +33,7 @@ import AwaitKit
 import PromiseKit
 
 
-/// TODO:: global access need to be refactored
+/// TODO:: global access need to be refactored //TODO::fixme
 let sharedMessageDataService = MessageDataService()
 
 /// Message data service
@@ -401,9 +402,6 @@ class MessageDataService {
             }
         }
     }
-    
-    
-    
     
     
     

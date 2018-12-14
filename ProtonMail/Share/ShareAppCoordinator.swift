@@ -1,6 +1,6 @@
 //
 //  ShareCoordinator.swift
-//  ProtonMail - Created on 10/31/18.
+//  Share - Created on 10/31/18.
 //
 //
 //  The MIT License

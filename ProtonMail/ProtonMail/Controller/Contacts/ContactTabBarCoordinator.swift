@@ -1,6 +1,6 @@
 //
-//  SharedCacheBase.swift
-//  ProtonMail - Created on 6/5/15.
+//  ContactTabBarCoordinator.swift
+//  ProtonMail - Created on 12/13/18.
 //
 //
 //  The MIT License
@@ -24,38 +24,35 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
+import SWRevealViewController
 
-
-public class SharedCacheBase {
+class ContactTabBarCoordinator: DefaultCoordinator {
+    typealias VC = ContactTabBarViewController
     
-    fileprivate var userDefaults : UserDefaults!
+    internal weak var viewController: ContactTabBarViewController?
+    internal weak var swRevealVC: SWRevealViewController?
     
-    func getShared() ->UserDefaults! {
-        return self.userDefaults
+    init(rvc: SWRevealViewController?, vc: ContactTabBarViewController, deeplink: DeepLink? = nil) {
+        self.swRevealVC = rvc
+        self.viewController = vc
     }
     
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
+    func start() {
+        self.viewController?.set(coordinator: self)
         
-    convenience init (shared : UserDefaults) {
-        self.init()
-        self.userDefaults = shared
-    }
-    
-    deinit {
-        //
-    }
-    
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
-    }
-    
-    class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
+        /// setup contacts vc
+        if let viewController = viewController?.contactsViewController {
+            sharedVMService.contactsViewModel(viewController)
+        }
+        
+        /// setup contact groups view controller
+        if let viewController = viewController?.groupsViewController {
+            sharedVMService.contactGroupsViewModel(viewController)
+        }
+        
+        self.swRevealVC?.pushFrontViewController(self.viewController, animated: true)
     }
 }

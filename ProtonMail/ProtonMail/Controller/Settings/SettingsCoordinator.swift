@@ -30,18 +30,26 @@ import Foundation
 import SWRevealViewController
 
 class SettingsCoordinator: SWRevealCoordinator {
+
     typealias VC = SettingsTableViewController
     
     let viewModel : SettingsViewModel
     
     internal weak var viewController: SettingsTableViewController?
-    internal weak var navigation: UINavigationController?
+    internal weak var navigation: UIViewController?
     internal weak var swRevealVC: SWRevealViewController?
     
-
+    internal weak var deepLink: DeepLink?
+    
     lazy internal var configuration: ((SettingsTableViewController) -> ())? = { vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
+    }
+    
+    func processDeepLink() {
+        if let path = self.deepLink?.first, let dest = Destination(rawValue: path.destination) {
+            self.go(to: dest, sender: path.sender)
+        }
     }
     
     enum Destination : String {
@@ -58,11 +66,12 @@ class SettingsCoordinator: SWRevealCoordinator {
         case snooze          = "setting_notifications_snooze_segue"
     }
     
-    init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: SettingsTableViewController, vm: SettingsViewModel) {
+    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, deeplink: DeepLink?) {
         self.navigation = nav
         self.swRevealVC = rvc
         self.viewModel = vm
         self.viewController = vc
+        self.deepLink = deeplink
     }
     
     func go(to dest: Destination, sender: Any? = nil) {
@@ -73,8 +82,6 @@ class SettingsCoordinator: SWRevealCoordinator {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
-
         
         switch dest {
         case .notification:
@@ -109,7 +116,6 @@ class SettingsCoordinator: SWRevealCoordinator {
                 return false
             }
             next.viewModel = LabelManagerViewModelImpl()
-        //self.setPresentationStyleForSelfController(self, presentingController: vc)
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false
@@ -127,18 +133,6 @@ class SettingsCoordinator: SWRevealCoordinator {
             next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
         case .snooze:
             break
-            //                if #available(iOS 10, *), sender is NotificationsSnoozer {
-            //                    super.viewDidLoad()
-            //                    self.updateTitle()
-            //                    navigationController?.setNavigationBarHidden(false, animated: true)
-            //                }
-            
-            //        case kNotificationsSnoozeSegue: // this allows to setup navbar for deeplink when view of this controller does not load/appear
-            //                if #available(iOS 10, *), sender is NotificationsSnoozer {
-            //                    super.viewDidLoad()
-            //                    self.updateTitle()
-            //                    navigationController?.setNavigationBarHidden(false, animated: true)
-            //                }
         }
         
         

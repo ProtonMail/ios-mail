@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import UIKit
 
 class SettingDetailViewController: UIViewController {
@@ -59,6 +60,8 @@ class SettingDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        UIViewController.configureNavigationBar(self)
         
         doneButton = self.editButtonItem
         doneButton.target = self;
@@ -265,6 +268,7 @@ extension SettingDetailViewController : TwoFACodeViewControllerDelegate {
 
 extension SettingDetailViewController : UpgradeAlertVCDelegate {
     func goPlans() {
+        ///TODO::fixme consider to remove the pop
         self.navigationController?.popViewController(animated: true)
         NotificationCenter.default.post(name: .switchView,
                                         object: MenuItem.servicePlan)

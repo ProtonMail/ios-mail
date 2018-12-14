@@ -53,9 +53,11 @@ class MenuViewController: UIViewController, ViewModelProtocolNew, CoordinatedNew
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var snoozeButton: UIButton!
+    
     @available(iOS 10.0, *)
     private lazy var notificationsSnoozer = NotificationsSnoozer()
     
+    //
     private var signingOut: Bool                 = false
     
     // MARK: - Constants
@@ -66,50 +68,46 @@ class MenuViewController: UIViewController, ViewModelProtocolNew, CoordinatedNew
     private let kLabelTableCellId: String = "menu_label_cell"
     
     // temp vars
-    private var lastSegue: String      = "toMailboxSegue"
-//    private var lastMenuItem: MenuItem = .inbox
     private var sectionClicked : Bool  = false
     
-    deinit{
-        NotificationCenter.default.removeObserver(self)
-    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(viewModel != nil, "viewModel can't be empty")
+        assert(coordinator != nil, "coordinator can't be empty")
+        
+        //table view delegates
+        self.tableView.dataSource = self
+        self.tableView.delegate = self
+        
+        //update rear view reveal width based on screen size
+        self.updateRevealWidth()
         
         //setup labels fetch controller
         self.viewModel.setupLabels(delegate: self)
         
-        //setup rear view reveal width based on screen size
-        self.updateRevealWidth()
-        
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        
-        ///
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(MenuViewController.performLastSegue(_:)),
-                                               name: .switchView,
-                                               object: nil)
-
+        ///TODO::fixme not necessary
         sharedLabelsDataService.fetchLabels()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        //update rear view reveal width based on screen size
         self.updateRevealWidth()
         
+        ///TODO::fixme forgot the reason
         self.revealViewController().frontViewController.view.accessibilityElementsHidden = true
         self.view.accessibilityElementsHidden = false
         self.view.becomeFirstResponder()
-        
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
+        
         self.sectionClicked = false
         
-        self.viewModel.setupMenu()
+        self.viewModel.updateMenuItems()
         
         updateEmailLabel()
         updateDisplayNameLabel()
@@ -128,77 +126,8 @@ class MenuViewController: UIViewController, ViewModelProtocolNew, CoordinatedNew
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = true
     }
     
-    override func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool {
-        return true
-    }
-    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent
-    }
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        //        segue.destination.view.accessibilityElementsHidden = false
-        //        self.view.accessibilityElementsHidden = true
-        //
-        //        // TODO: this deeplink implementation is ugly, consider using Coordinators pattern
-        //        if #available(iOS 10.0, *),
-        //            sender is NotificationsSnoozer,
-        //            let navigation = segue.destination as? UINavigationController,
-        //            let settings = navigation.topViewController as? SettingTableViewController
-        //        {
-        //            settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
-        //        }
-        //
-        //
-        //
-        //        if let navigation = segue.destination as? UINavigationController {
-        //            let segueID = segue.identifier
-        //            //right now all mailbox view controller all could process together.
-        //            if let mailbox: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-        //                if let indexPath = sender as? IndexPath {
-        //                    let s = indexPath.section
-        //                    let row = indexPath.row
-        //                    let section = self.viewModel.section(at: s)
-        //                    switch section {
-        //                    case .inboxes:
-        //                        self.lastMenuItem = self.viewModel.item(inboxes: row)
-        //                        //TODO::fixme
-        //                        //sharedVMService.mailbox(fromMenu: mailbox, location: self.lastMenuItem.menuToLocation)
-        //                    case .labels:
-        //                        if  let label = self.viewModel.label(at: row) {
-        //                            sharedVMService.labelbox(fromMenu: mailbox, label: label)
-        //                        }
-        //                    default:
-        //                        break
-        //                    }
-        //                }
-        //            } else if (segueID == kSegueToContacts ) {
-        //                // setup contact group view controller
-        //                if let tabBarController = navigation.firstViewController() as? UITabBarController,
-        //                    let viewControllers = tabBarController.viewControllers {
-        //                    if let contactViewController = viewControllers[0] as? ContactsViewController {
-        //                        sharedVMService.contactsViewModel(contactViewController)
-        //                    }
-        //
-        //                    if let contactGroupsViewController = viewControllers[1] as? ContactGroupsViewController {
-        //                        sharedVMService.contactGroupsViewModel(contactGroupsViewController)
-        //                    }
-        //                }
-        //            }
-        //        } else if let tabBarController = segue.destination as? UITabBarController,
-        //            let viewControllers = tabBarController.viewControllers {
-        //            if let contactNavigation = viewControllers[0] as? UINavigationController,
-        //                let contactViewController = contactNavigation.firstViewController() as? ContactsViewController {
-        //                sharedVMService.contactsViewModel(contactViewController)
-        //            }
-        //
-        //            if let contactGroupNavigation = viewControllers[1] as? UINavigationController,
-        //                let contactGroupsViewController = contactGroupNavigation.firstViewController() as? ContactGroupsViewController {
-        //                sharedVMService.contactGroupsViewModel(contactGroupsViewController)
-        //            }
-        //        }
     }
     
     // MARK: - Methods
@@ -236,25 +165,14 @@ class MenuViewController: UIViewController, ViewModelProtocolNew, CoordinatedNew
         self.sectionClicked = false
         self.present(alertController, animated: true, completion: nil)
     }
-    
-    //@objc for #seclector()
-    @objc func performLastSegue(_ notification: Notification) {
-        if let nextTo = notification.object as? MenuItem {
-            if nextTo == .servicePlan {
-                let coordinator = MenuCoordinator()
-                coordinator.controller = self
-                coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
-                return
-            }
-        }
-        self.performSegue(withIdentifier: lastSegue, sender: IndexPath(row: 0, section: 0))
-    }
 }
 
 @available(iOS 10.0, *)
 extension MenuViewController : OptionsDialogPresenter {
     func toSettings() {
-        self.coordinator?.go(to: .settings)
+        let deepLink = DeepLink(MenuCoordinatorNew.Destination.settings.rawValue)
+        deepLink.append(SettingsCoordinator.Destination.snooze.rawValue)
+        self.coordinator?.go(to: deepLink)
     }
     
     private func setupSnoozeButton(switchedOn: Bool? = nil) {
@@ -303,19 +221,23 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .settings {
                 self.coordinator?.go(to: .settings)
             } else if item == .bugs {
-//                self.performSegue(withIdentifier: kSegueToBugs, sender: indexPath)
+                self.coordinator?.go(to: .bugs)
             } else if item == .contacts {
-//                self.performSegue(withIdentifier: kSegueToContacts, sender: indexPath)
+                self.coordinator?.go(to: .contacts)
             } else if item == .feedback {
-//                self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
+                //self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
             } else if item == .lockapp {
                 keymaker.lockTheApp() // remove mainKey from memory
                 let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
                 sharedVMService.resetView() // FIXME: do we still need this?
             } else if item == .servicePlan {
+<<<<<<< HEAD
                 let coordinator = MenuCoordinator()
                 coordinator.controller = self
                 coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
+=======
+                self.coordinator?.go(to: .plan)
+>>>>>>> simple deeplink . could improve later
             }
         case .labels:
             self.coordinator?.go(to: .label, sender: indexPath)

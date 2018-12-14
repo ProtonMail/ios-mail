@@ -1,6 +1,6 @@
 //
-//  SharedCacheBase.swift
-//  ProtonMail - Created on 6/5/15.
+//  ContactGroupCoordinator.swift
+//  ProtonMail - Created on 12/13/18.
 //
 //
 //  The MIT License
@@ -24,38 +24,42 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
 
-public class SharedCacheBase {
+class ContactGroupCoordinator : DefaultCoordinator {
+    typealias VC = ContactGroupsViewController
+    internal weak var viewController: ContactGroupsViewController?
     
-    fileprivate var userDefaults : UserDefaults!
+//    let viewModel : ContactsViewModel
     
-    func getShared() ->UserDefaults! {
-        return self.userDefaults
+    internal weak var lastestCoordinator: CoordinatorNew?
+    
+    enum Destination : String {
+        case test   = ""
     }
-    
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
+    init() {
         
-    convenience init (shared : UserDefaults) {
-        self.init()
-        self.userDefaults = shared
     }
     
-    deinit {
-        //
+    func start() {
+
     }
     
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
+    func go(to dest: Destination, sender: Any? = nil) {
+        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
-    class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
+
+    
+    ///TODO::fixme. add warning or error when return false except the last one.
+    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
+        guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
+            return false //
+        }
+        
+        return false
     }
 }

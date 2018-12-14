@@ -1,6 +1,6 @@
 //
-//  SharedCacheBase.swift
-//  ProtonMail - Created on 6/5/15.
+//  Keymaker+SharedKeychain.swift
+//  ProtonMail - Created on 23/10/2018.
 //
 //
 //  The MIT License
@@ -27,35 +27,28 @@
 
 
 import Foundation
+import Keymaker
+import UICKeyChainStore
 
+var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
+                        keychain: sharedKeychain.keychain)
 
-public class SharedCacheBase {
-    
-    fileprivate var userDefaults : UserDefaults!
-    
-    func getShared() ->UserDefaults! {
-        return self.userDefaults
+extension UserCachedStatus: SettingsProvider {}
+
+extension PinProtection {
+    init(pin: String) {
+        self.init(pin: pin, keychain: sharedKeychain.keychain)
     }
-    
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
+}
+
+extension NoneProtection {
+    init() {
+        self.init(keychain: sharedKeychain.keychain)
     }
-        
-    convenience init (shared : UserDefaults) {
-        self.init()
-        self.userDefaults = shared
-    }
-    
-    deinit {
-        //
-    }
-    
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
-    }
-    
-    class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
+}
+
+extension BioProtection {
+    init() {
+        self.init(keychain: sharedKeychain.keychain)
     }
 }

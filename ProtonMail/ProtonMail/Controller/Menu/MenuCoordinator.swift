@@ -1,10 +1,30 @@
 //
 //  SettingsCoordinator.swift
-//  ProtonMail
+//  ProtonMail - Created on 09/08/2018.
 //
-//  Created by Anatoly Rosencrantz on 09/08/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import SWRevealViewController
@@ -50,7 +70,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     weak var viewController: MenuViewController?
     
     let viewModel : MenuViewModel
-    
+    internal weak var lastestCoordinator: CoordinatorNew?
     
     enum Destination : String {
         case mailbox   = "toMailboxSegue"
@@ -59,11 +79,31 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case bugs      = "toBugsSegue"
         case contacts  = "toContactsSegue"
         case feedbacks = "toFeedbackSegue"
+        case plan      = "toServicePlan"
     }
     
     init(vc: MenuViewController, vm: MenuViewModel) {
+        defer {
+            NotificationCenter.default.addObserver(self,
+                                                   selector: #selector(performLastSegue(_:)),
+                                                   name: .switchView,
+                                                   object: nil)
+        }
         self.viewModel = vm
         self.viewController = vc
+    }
+    
+    deinit{
+        //unnecessary in newer ios versions
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func performLastSegue(_ notification: Notification) {
+        if let link = notification.object as? DeepLink {
+            self.go(to: link)
+        } else {
+            self.go(to: .mailbox)
+        }
     }
     
     func start() {
@@ -72,17 +112,33 @@ class MenuCoordinatorNew: DefaultCoordinator {
     }
     
     func go(to dest: Destination, sender: Any? = nil) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        switch dest {
+        case .plan:
+            self.toPlan()
+        default:
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
     }
+    
+    func toPlan() {
+        let coordinator = MenuCoordinator()
+        coordinator.controller = self.viewController
+        coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+    }
+    
+    func go(to deepLink: DeepLink) {
+        if let path = deepLink.pop, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
+            self.go(to: dest, sender: deepLink)
+        }
+    }
+    
     ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
         
-        guard let navigation = destination as? UINavigationController else {
-            return false
-        }
+        let navigation = destination as? UINavigationController
         
         guard let rvc = source.revealViewController() else {
             return false
@@ -91,7 +147,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         switch dest {
         case .mailbox:
             //let index = sender as? IndexPath
-            guard let next = navigation.firstViewController() as? MailboxViewController else {
+            guard let next = navigation?.firstViewController() as? MailboxViewController else {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
@@ -99,37 +155,29 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel)
             mailbox.start()
         case .settings:
-            guard let next = navigation.firstViewController() as? SettingsTableViewController else {
+            guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
                 return false
             }
-
+            
+            let deepLink = sender as? DeepLink
             let viewModel = SettingsViewModelImpl()
-            let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel)
+            let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, deeplink: deepLink)
+            self.lastestCoordinator = settings
             settings.start()
+        case .contacts:
+            guard let tabBarController = destination as? ContactTabBarViewController else {
+                return false
+            }
+            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController)
+            contacts.start()
         default:
             return false
         }
-    
-        
-        
         return false
     }
 }
 
-//        segue.destination.view.accessibilityElementsHidden = false
-//        self.view.accessibilityElementsHidden = true
-//
-//        // TODO: this deeplink implementation is ugly, consider using Coordinators pattern
-//        if #available(iOS 10.0, *),
-//            sender is NotificationsSnoozer,
-//            let navigation = segue.destination as? UINavigationController,
-//            let settings = navigation.topViewController as? SettingTableViewController
-//        {
-//            settings.performSegue(withIdentifier: settings.kNotificationsSnoozeSegue, sender: sender)
-//        }
-//
-//
-//
+
 //        if let navigation = segue.destination as? UINavigationController {
 //            let segueID = segue.identifier
 //            //right now all mailbox view controller all could process together.

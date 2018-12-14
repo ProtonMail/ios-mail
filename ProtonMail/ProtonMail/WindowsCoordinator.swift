@@ -29,10 +29,13 @@
 import Foundation
 import Keymaker
 
+
+
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
+    
     var currentWindow: UIWindow! {
         didSet {
             self.currentWindow.makeKeyAndVisible()
@@ -52,13 +55,14 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
     }
-    
+
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
         placeholder.rootViewController = UIViewController() 
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
-        DispatchQueue.main.async {
+        
+        MainThread.auto {
             // initiate unlock process which will send .didUnlock or .requestMainKey eventually
             UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),
                                                 requestPin: self.lock,
@@ -91,26 +95,67 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     func go(dest: Destination) {
-        DispatchQueue.main.async { // cuz creating windows here
+        MainThread.auto {
             switch dest {
             case .signInWindow:
                 self.appWindow = nil
                 self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
-                
             case .lockWindow:
                 self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
-                
             case .appWindow:
-                self.appWindow = self.appWindow ?? UIWindow(storyboard: .inbox)
-                self.navigate(from: self.currentWindow, to: self.appWindow!)
+                let next = self.appWindow ?? UIWindow(storyboard: .inbox)
+                self.appWindow = next
+                self.navigate(from: self.currentWindow, to: next)
             }
         }
     }
     
+    // MARK: - Public methods
+    func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
+        guard let window = appWindow else {
+            return //
+        }
+        
+        guard let rootViewController = window.rootViewController,
+            rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
+                return //
+        }
+        
+        if !animated {
+            window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+        } else {
+//            UIView.animate(withDuration: ViewDefined.animationDuration/2,
+//                           delay: 0,
+//                           options: UIView.AnimationOptions(),
+//                           animations: { () -> Void in
+//                            rootViewController.view.alpha = 0
+//            }, completion: { (finished) -> Void in
+//                guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
+//                    return
+//                }
+//                if let oldView = window.rootViewController as? SWRevealViewController {
+//                    if let navigation = oldView.frontViewController as? UINavigationController {
+//                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
+//                            mailboxViewController.resetFetchedResultsController()
+//                            //TODO:: fix later, this logic change to viewModel service
+//                        }
+//                    }
+//                }
+//                viewController.view.alpha = 0
+//                window.rootViewController = viewController
+//
+//                UIView.animate(withDuration: ViewDefined.animationDuration/2,
+//                               delay: 0, options: UIView.AnimationOptions(),
+//                               animations: { () -> Void in
+//                                viewController.view.alpha = 1.0
+//                }, completion: nil)
+//            })
+        }
+        
+    }
+    
     @discardableResult func navigate(from source: UIWindow, to destination: UIWindow) -> Bool {
-        guard source != destination,
-            source.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else
-        {
+        guard source != destination, source.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
         
@@ -133,9 +178,7 @@ class WindowsCoordinator: CoordinatorNew {
         self.currentWindow = destination
         
         // notify destination views they are about to show up
-        if let topDestination = destination.topmostViewController(),
-            topDestination.isViewLoaded
-        {
+        if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
             topDestination.viewDidAppear(false)
         }
         

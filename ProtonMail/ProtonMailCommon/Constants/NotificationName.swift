@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 extension Notification.Name {
@@ -33,7 +34,7 @@ extension Notification.Name {
     static var switchView: Notification.Name {
         return .init(rawValue: "MenuController.SwitchView")
     }
-    
+
     /// notify when status bar is clicked
     static var touchStatusBar: Notification.Name {
         return .init(rawValue: "Application.TouchStatusBar")

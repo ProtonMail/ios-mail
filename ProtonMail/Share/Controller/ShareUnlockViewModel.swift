@@ -1,6 +1,6 @@
 //
 //  ShareUnlockViewModel.swift
-//  ProtonMail - Created on 11/4/18.
+//  Share - Created on 11/4/18.
 //
 //
 //  The MIT License
@@ -30,7 +30,6 @@ import Foundation
 
 class ShareUnlockViewModel {
 
-    
     init() { }
 
 }

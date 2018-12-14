@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 import UIKit
@@ -43,7 +44,7 @@ class MenuViewModelImpl : MenuViewModel {
     private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
     
-    func setupMenu() {
+    func updateMenuItems() {
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }

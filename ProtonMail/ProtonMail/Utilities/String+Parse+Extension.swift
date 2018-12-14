@@ -1,6 +1,6 @@
 //
-//  SharedCacheBase.swift
-//  ProtonMail - Created on 6/5/15.
+//  StringExtension.swift
+//  ProtonMail - Created on 2/23/15.
 //
 //
 //  The MIT License
@@ -28,34 +28,20 @@
 
 import Foundation
 
-
-public class SharedCacheBase {
+extension String {
     
-    fileprivate var userDefaults : UserDefaults!
-    
-    func getShared() ->UserDefaults! {
-        return self.userDefaults
+    func parseObjectAny () -> [String:Any]? {
+        if self.isEmpty {
+            return nil
+        }
+        do {
+            let data : Data! = self.data(using: String.Encoding.utf8)
+            let decoded = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String:Any]
+            return decoded
+        } catch let ex as NSError {
+            PMLog.D("\(ex)")
+        }
+        return nil
     }
     
-    init () {
-        self.userDefaults = UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
-        
-    convenience init (shared : UserDefaults) {
-        self.init()
-        self.userDefaults = shared
-    }
-    
-    deinit {
-        //
-    }
-    
-    func setValue(_ value: Any?, forKey key: String) {
-        self.userDefaults.setValue(value, forKey: key)
-        self.userDefaults.synchronize()
-    }
-    
-    class func getDefault() ->UserDefaults! {
-        return UserDefaults(suiteName: Constants.App.APP_GROUP)
-    }
 }
