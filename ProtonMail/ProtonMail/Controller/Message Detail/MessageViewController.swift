@@ -687,16 +687,6 @@ extension MessageViewController : LablesViewControllerDelegate {
         }
     }
 }
-extension MessageViewController : TopMessageViewDelegate {
-    
-    func close() {
-        self.emailView?.hideTopMessage()
-    }
-    
-    func retry() {
-        self.recheckMessageDetails ()
-    }
-}
 
 // MARK -- impl MessageDetailBottomViewDelegate
 extension MessageViewController : MessageDetailBottomViewDelegate {

@@ -35,8 +35,9 @@ import WebKit
     public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
 }
 
-protocol EmailViewActionsProtocol {
+protocol EmailViewActionsProtocol: class {
     func mailto(_ url: URL?)
+    func recheckMessageDetails()
 }
 
 /// this veiw is all subviews container
@@ -49,7 +50,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     // Message header view
     var emailHeader : EmailHeaderView!
     
-    weak var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
+    weak var delegate: EmailViewActionsProtocol?
     
     // Message content
     var contentWebView: PMWebView!
@@ -64,7 +65,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
     
-    private weak var topMessageView : TopMessageView?
+    private weak var topMessageView : BannerView?
     
     fileprivate let kAnimationDuration : TimeInterval = 0.25
     //
@@ -295,31 +296,32 @@ extension EmailView: WKNavigationDelegate, WKUIDelegate {
 extension EmailView {
     
     private func showBanner(_ message: String,
-                            appearance: TopMessageView.Appearance,
-                            buttons: Set<TopMessageView.Buttons> = [])
+                            appearance: BannerView.Appearance,
+                            buttons: BannerView.ButtonConfiguration? = nil)
     {
         if let oldMessageView = self.topMessageView {
             oldMessageView.remove(animated: true)
         }
 
-        let newMessageView = TopMessageView(appearance: appearance,
+        let newMessageView = BannerView(appearance: appearance,
                                             message: message,
                                             buttons: buttons,
-                                            lowerPoint: 8.0)
-        newMessageView.delegate = self.delegate
-        
-            self.topMessageView = newMessageView
+                                            offset: 8.0)
+        self.topMessageView = newMessageView
         self.addSubview(newMessageView)
-        self.addSubview(newMessageView)
-        newMessageView.showAnimation(withSuperView: self)
+        newMessageView.drop(on: self, from: .top)
     }
     
     internal func showTimeOutErrorMessage() {
-        showBanner(LocalString._general_request_timed_out, appearance: .red, buttons: [.close])
+        showBanner(LocalString._general_request_timed_out,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration(title: LocalString._retry, action: self.delegate?.recheckMessageDetails))
     }
     
     func showNoInternetErrorMessage() {
-        showBanner(LocalString._general_no_connectivity_detected, appearance: .red, buttons: [.close])
+        showBanner(LocalString._general_no_connectivity_detected,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration(title: LocalString._retry, action: self.delegate?.recheckMessageDetails))
     }
     
     func showErrorMessage(_ errorMsg : String) {
