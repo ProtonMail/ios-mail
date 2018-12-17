@@ -29,18 +29,21 @@
 import Foundation
 
 class StorefrontViewModel: NSObject {
+    @objc dynamic var title: String
     @objc dynamic var storefront: Storefront
     private var storefrontObserver: NSKeyValueObservation!
-
+    
     private var detailItems: [StorefrontItem] = []
     private var othersItems: [StorefrontItem] = []
     
     init(storefront: Storefront) {
         self.storefront = storefront
+        self.title = storefront.title
         super.init()
         
         defer {
             self.storefrontObserver = self.observe(\.storefront, options: [.initial, .new], changeHandler: { viewModel, change in
+                self.title = storefront.title
                 self.detailItems = self.extractDetails(from: viewModel.storefront)
                 self.othersItems = self.extractOthers(from: viewModel.storefront)
             })
@@ -218,11 +221,13 @@ class Storefront: NSObject {
     var plan: ServicePlan
     var details: ServicePlanDetails
     var others: [ServicePlan]
+    var title: String
     
     init(plan: ServicePlan) {
         self.plan = plan
         self.details = plan.fetchDetails()!
         self.others = []
+        self.title = plan.subheader.0
     }
     
     init(subscription: Subscription) {
@@ -230,6 +235,7 @@ class Storefront: NSObject {
         self.plan = subscription.plan
         self.details = subscription.details
         self.others = Array<ServicePlan>.init(arrayLiteral: .free, .plus, .pro, .visionary).filter({ $0 != subscription.plan })
+        self.title = LocalString._menu_service_plan_title
     }
 }
 

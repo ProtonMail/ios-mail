@@ -32,14 +32,18 @@ class StorefrontCollectionViewController: UICollectionViewController {
     private var coordinator: StorefrontCoordinator!
     var viewModel: StorefrontViewModel!
     
-    var modelObserver: NSKeyValueObservation!
+    var titleObserver: NSKeyValueObservation!
+    var collectionObserver: NSKeyValueObservation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
         
-        self.modelObserver = self.viewModel.observe(\.storefront, options: [.initial, .new], changeHandler: { storefront, change in
+        self.titleObserver = self.viewModel.observe(\.title, options: [.initial, .new], changeHandler: { storefront, change in
+            self.title = storefront.title
+        })
+        self.collectionObserver = self.viewModel.observe(\.storefront, options: [.initial, .new], changeHandler: { storefront, change in
             self.collectionView.reloadData()
         })
     }
