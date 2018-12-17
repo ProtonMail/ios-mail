@@ -52,16 +52,20 @@ def pm_pods
 end
 
 # for extensions Share
-def pm_extensions
+def pm_share
     common_pods
     pod 'RichEditorView', '5.0.0'
 end
 
 # for push services PushService
 def pm_push
-    common_pods
+    pod 'OpenPGP', :path => '../OpenPGP'
 end
 
+def pm_siri
+    pod 'UICKeyChainStore', '2.1.1'
+end
+    
 
 #targets
 target 'ProtonMail' do
@@ -89,12 +93,19 @@ target 'ProtonMailTests' do
 end
 
 target 'Share' do
-    pm_extensions
+    pm_share
+end
+target 'ShareDev' do
+    pm_share
 end
 
-target 'ShareDev' do
-    pm_extensions
+target 'Siri' do
+    pm_siri
 end
+target 'SiriDev' do
+    pm_siri
+end
+
 
 target 'Keymaker' do
     pod 'UICKeyChainStore', '2.1.1'

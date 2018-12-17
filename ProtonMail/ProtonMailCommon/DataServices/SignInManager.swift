@@ -58,7 +58,9 @@ class SignInManager: NSObject {
     internal func proceedWithMailboxPassword(_ mailboxPassword: String,
                                   onError: @escaping (NSError)->Void)
     {
-        guard sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: AuthCredential.getPrivateKey()) else {
+        guard let privateKey = AuthCredential.getPrivateKey(),
+            sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: privateKey) else
+        {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }

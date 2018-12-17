@@ -20,9 +20,21 @@ public class Keymaker: NSObject {
     
     private var autolocker: Autolocker?
     private let keychain: UICKeyChainStore
-    public init(autolocker: Autolocker, keychain: UICKeyChainStore) {
+    public init(autolocker: Autolocker?, keychain: UICKeyChainStore) {
         self.autolocker = autolocker
         self.keychain = keychain
+        
+        super.init()
+        defer {
+            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                                   name: UIApplication.willEnterForegroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                                   name: UIApplication.didBecomeActiveNotification, object: nil)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     // stored in-memory value
@@ -77,6 +89,20 @@ public class Keymaker: NSObject {
         
         self._mainKey = nil
         self.setupCryptoTransformers(key: nil)
+    }
+    
+    @discardableResult @objc
+    public func mainKeyExists() -> Bool { // cuz another process can wipe main key from memory while the app is in background
+        if !self.isProtectorActive(BioProtection.self),
+            !self.isProtectorActive(PinProtection.self),
+            !self.isProtectorActive(NoneProtection.self)
+        {
+            self._mainKey = nil
+            NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
+            return false
+        }
+        let _ = self.mainKey
+        return true
     }
     
     public func lockTheApp() {

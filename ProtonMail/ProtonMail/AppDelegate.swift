@@ -21,6 +21,7 @@ import AFNetworking
 import AFNetworkActivityLogger
 import Keymaker
 import UserNotifications
+import Intents
 
 let sharedUserDataService = UserDataService()
 
@@ -141,6 +142,12 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
+        if #available(iOS 12.0, *) {
+            let intent = WipeMainKeyIntent()
+            let suggestions = [INShortcut(intent: intent)!]
+            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        }
+        
         self.coordinator.start()
         
         return true
@@ -176,7 +183,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let delayedCompletion: ()->Void = {
             delay(3) {
                 PMLog.D("End Background Task")
-                application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
+                application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskID.rawValue))
             }
         }
         
@@ -186,19 +193,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
             delayedCompletion()
         }
         PMLog.D("Enter Background")
-    }
-    
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        let _ = UnlockManager.shared.isUnlocked() // this will access mainKey and block the UI if it is blocked
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
@@ -259,11 +253,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
-}
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
 }
 
 #if DEBUG

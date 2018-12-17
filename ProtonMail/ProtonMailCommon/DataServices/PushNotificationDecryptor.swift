@@ -41,4 +41,8 @@ class PushNotificationDecryptor {
         outdated.insert(settings)
         self.outdater.set(newValue: outdated)
     }
+    
+    static func wipeEncryptionKit() {
+        self.saver.set(newValue: nil)
+    }
 }

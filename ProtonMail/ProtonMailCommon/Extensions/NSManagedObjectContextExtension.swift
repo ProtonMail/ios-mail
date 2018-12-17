@@ -21,23 +21,13 @@ extension NSManagedObjectContext {
     
     func deleteAll(_ entityName: String) {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
-        fetchRequest.includesPropertyValues = false
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         
-        perform { () -> Void in
-            do {
-                let objects = try self.fetch(fetchRequest)
-                for object in objects as! [NSManagedObject] {
-                    if object.managedObjectContext != nil {
-                        self.delete(object)
-                    }
-                }
-                PMLog.D("Deleted \(objects.count) \(entityName) objects.")
-                if let error = self.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
-            }
+        do {
+            try self.persistentStoreCoordinator?.execute(deleteRequest, with: self)
+            PMLog.D("Deleted \(entityName) objects.")
+        } catch let error as NSError {
+            PMLog.D("error: \(error)")
         }
     }
     
