@@ -13,6 +13,12 @@ class TableSectionHeader: UIView {
     
     convenience init(title: String, textAlignment: NSTextAlignment) {
         self.init(frame: .zero)
+        defer {
+            self.setup(title: title, textAlignment: textAlignment)
+        }
+    }
+    
+    func setup(title: String, textAlignment: NSTextAlignment) {
         self.title.text = title
         self.title.textAlignment = textAlignment
     }

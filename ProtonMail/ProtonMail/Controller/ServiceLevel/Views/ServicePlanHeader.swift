@@ -18,6 +18,15 @@ class ServicePlanHeader: UIView {
                      subicon: (String, UIColor)? = nil)
     {
         self.init(frame: .zero)
+        defer {
+            self.setup(image: image, title: title, subicon: subicon)
+        }
+    }
+    
+    func setup(image: UIImage? = nil,
+               title: String? = nil,
+               subicon: (String, UIColor)? = nil)
+    {
         self.icon.image = image
         self.subtitle.text = title
         self.icon.isAccessibilityElement = false

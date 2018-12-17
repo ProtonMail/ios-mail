@@ -58,13 +58,10 @@ class ServiceLevelCoordinator: Coordinator {
     weak var controller: UIViewController!
     
     init() {
-        let superController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(ServiceLevelViewControllerBase.self)
-        object_setClass(superController, ServiceLevelViewController.self)
-//        if let subscription = ServicePlanDataService.shared.currentSubscription {
-//            (superController as! ServiceLevelViewController).setup(with: subscription)
-//        }
-        (superController as! ServiceLevelViewController).setup(with: nil)
-        self.controller = superController
+        let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
+        let storefront = Storefront(subscription: ServicePlanDataService.shared.currentSubscription!)
+        controller.viewModel = StorefrontViewModel(storefront: storefront)
+        self.controller = controller
     }
     
     enum Destination {

@@ -22,6 +22,16 @@ class ServicePlanCapability: UIView {
                      context: Any? = nil)
     {
         self.init(frame: .zero)
+        defer {
+            self.setup(image: image, title: title, serviceIconVisible: serviceIconVisible, context: context)
+        }
+    }
+    
+    func setup(image: UIImage? = nil,
+               title: NSAttributedString? = nil,
+               serviceIconVisible: Bool = false,
+               context: Any? = nil)
+    {
         if image != nil {
             self.icon.image = image?.withRenderingMode(.alwaysTemplate)
         } else {
