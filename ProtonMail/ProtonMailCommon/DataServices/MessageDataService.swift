@@ -699,9 +699,7 @@ class MessageDataService {
                                         }
                                         let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
-                                        
-                                        UIApplication.setBadge(badge: count)
-                                        //UIApplication.shared.applicationIconBadgeNumber = count
+
                                         DispatchQueue.main.async {
                                             completion(task, response, message_out, tmpError)
                                         }
@@ -841,8 +839,6 @@ class MessageDataService {
         if let context = managedObjectContext {
             Message.deleteAll(inContext: context) // will cascadely remove appropriate Attacments also
         }
-        UIApplication.setBadge(badge: 0)
-        //UIApplication.shared.applicationIconBadgeNumber = 0
         
         // good opportunity to remove all temp folders (they should be empty by this moment)
         try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
@@ -2114,14 +2110,5 @@ class MessageDataService {
                 lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
             }
         }
-        
-        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
-        if  badgeNumber < 0 {
-            badgeNumber = 0
-        }
-        UIApplication.setBadge(badge: badgeNumber)
     }
-
-    
-    
 }
