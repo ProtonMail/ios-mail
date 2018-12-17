@@ -48,7 +48,7 @@ class StorefrontViewModel: NSObject {
     }
     
     func numberOfSections() -> Int {
-        return 4
+        return 5
     }
     
     func numberOfItems(in section: Int) -> Int {
@@ -56,7 +56,8 @@ class StorefrontViewModel: NSObject {
         case 0: return 1
         case 1: return self.detailItems.count
         case 2: return 1
-        case 3: return self.othersItems.count + 1
+        case 3: return 1
+        case 4: return self.othersItems.count
         default: return 0
         }
     }
@@ -66,11 +67,18 @@ class StorefrontViewModel: NSObject {
         case 0: return self.extractLogo(from: self.storefront)
         case 1: return self.detailItems[indexPath.row]
         case 2: return self.extractAnnotation(from: self.storefront)
-        case 3 where indexPath.row == 0: return .subsectionHeader(text: LocalString._other_plans)
-        case 3: return self.othersItems[indexPath.row - 1]
+        case 3: return .subsectionHeader(text: LocalString._other_plans)
+        case 4: return self.othersItems[indexPath.row]
             
         default:
             fatalError()
+        }
+    }
+    
+    func plan(at indexPath: IndexPath) -> ServicePlan? {
+        switch indexPath.section {
+        case 4: return self.storefront.others[indexPath.row]
+        default: return nil
         }
     }
 

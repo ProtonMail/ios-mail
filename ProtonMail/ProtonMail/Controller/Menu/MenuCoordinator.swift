@@ -14,11 +14,12 @@ class MenuCoordinator: Coordinator {
         guard next == .serviceLevel else {
             fatalError()
         }
-        let nextCoordinator = ServiceLevelCoordinator()
+        let nextCoordinator = ServiceLevelCoordinator(navigationController: self.navigationController)
         return nextCoordinator as! SomeCoordinator
     }
     
     weak var controller: UIViewController!
+    private let navigationController = UINavigationController()
     
     enum Destination {
         case serviceLevel
@@ -27,7 +28,7 @@ class MenuCoordinator: Coordinator {
     private var observation: NSKeyValueObservation!
     func insertIntoHierarchy(_ child: UIViewController) {
         let menuButton = UIBarButtonItem(image: UIImage(named: "hamburger")!, style: .plain, target: nil, action: nil)
-        let navigationController = UINavigationController(rootViewController: child)
+        self.navigationController.viewControllers = [child]
         let segue = SWRevealViewControllerSeguePushController(identifier: String(describing: type(of:child)),
                                                               source: self.controller,
                                                               destination: navigationController)

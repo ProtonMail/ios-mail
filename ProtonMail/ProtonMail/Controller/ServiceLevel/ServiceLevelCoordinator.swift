@@ -57,11 +57,18 @@ class ServiceLevelCoordinator: Coordinator {
     
     weak var controller: UIViewController!
     
-    init() {
+    init(navigationController: UINavigationController) {
         let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
         let storefront = Storefront(subscription: ServicePlanDataService.shared.currentSubscription!)
         controller.viewModel = StorefrontViewModel(storefront: storefront)
         self.controller = controller
+        
+        defer {
+            if let controller = self.controller as? StorefrontCollectionViewController {
+                let coordinatorNew = StorefrontCoordinator(navigation: navigationController, config: { _ in })
+                controller.set(coordinator: coordinatorNew)
+            }
+        }
     }
     
     enum Destination {

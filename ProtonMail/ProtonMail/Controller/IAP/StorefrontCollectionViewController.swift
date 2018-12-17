@@ -29,7 +29,7 @@
 import UIKit
 
 class StorefrontCollectionViewController: UICollectionViewController {
-    private var coordinator: StorefrontCoordinator = StorefrontCoordinator()
+    private var coordinator: StorefrontCoordinator!
     var viewModel: StorefrontViewModel!
     
     var modelObserver: NSKeyValueObservation!
@@ -66,6 +66,12 @@ class StorefrontCollectionViewController: UICollectionViewController {
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let plan = self.viewModel.plan(at: indexPath) {
+            self.coordinator.go(to: plan)
+        }
+    }
+    
     private func cellReuseIdentifier(for item: StorefrontItem) -> String {
         switch item {
         case .logo: return "\(LogoCell.self)"
@@ -79,10 +85,38 @@ class StorefrontCollectionViewController: UICollectionViewController {
     }
 }
 
+extension StorefrontCollectionViewController: CoordinatedNew {
+    typealias coordinatorType = StorefrontCoordinator
+    
+    func set(coordinator: StorefrontCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return self.coordinator
+    }
+}
 
-class StorefrontCoordinator: CoordinatorNew {
-    func start() {
-        fatalError("🚀")
+class StorefrontCoordinator: PushCoordinator {
+    typealias VC = StorefrontCollectionViewController
+    var viewController: StorefrontCollectionViewController?
+    var navigationController: UINavigationController
+    var configuration: ((VC)->Void)?
+    
+    init(navigation: UINavigationController,
+         config: @escaping (VC)->Void )
+    {
+        self.navigationController = navigation
+        self.configuration = config
+        self.viewController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
+    }
+    
+    func go(to nextPlan: ServicePlan) {
+        let nextCoordinator = StorefrontCoordinator(navigation: self.navigationController) { controller in
+            let storefront = Storefront.init(plan: nextPlan)
+            controller.viewModel = StorefrontViewModel(storefront: storefront)
+        }
+        nextCoordinator.start()
     }
 }
 
