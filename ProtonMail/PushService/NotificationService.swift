@@ -43,7 +43,7 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         bestAttemptContent.title = "You received a new message!"
-        
+
         guard let UID = bestAttemptContent.userInfo["UID"] as? String else {
             bestAttemptContent.body = "without UID"
             contentHandler(bestAttemptContent)

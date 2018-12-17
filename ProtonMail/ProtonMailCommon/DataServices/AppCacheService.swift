@@ -1,5 +1,5 @@
 //
-//  AppCacheManager.swift
+//  AppCacheService.swift
 //  ProtonMail - Created on 12/4/18.
 //
 //
@@ -27,3 +27,9 @@
     
 
 import Foundation
+
+class AppCacheService: Service {
+
+
+
+}

@@ -87,7 +87,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
         self.emailView?.backgroundColor = UIColor.ProtonMail.Gray_E2E6E8
         
-        self.emailView?.showDetails(show: self.message.contains(label: ExclusiveLabel.sent))
+        self.emailView?.showDetails(show: self.message.contains(label: Message.Location.sent))
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
@@ -216,7 +216,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                                              showShowImages: self.needShowShowImageView,
                                              expiration: self.message.expirationTime,
                                              score: self.message.getScore(),
-                                             isSent: self.message.contains(label: ExclusiveLabel.sent))
+                                             isSent: self.message.contains(label: Message.Location.sent))
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
         }
@@ -483,51 +483,51 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         return true
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == kToComposerSegue {
-            if let contact = sender as? ContactVO {
-                let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: contact)
-                //TODO:: finish up here
-                let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
-            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
-                let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
-                //TODO:: finish up here
-                let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
-            } else {
-                let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
-                //TODO:: finish up here
-                let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
-            }
-        } else if segue.identifier == kSegueToApplyLabels {
-            let popup = segue.destination as! LablesViewController
-            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
-            popup.delegate = self
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
-        } else if segue.identifier == kSegueMoveToFolders {
-            let popup = segue.destination as! LablesViewController
-            popup.delegate = self
-            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
-        } else if segue.identifier == kToAddContactSegue {
-            if let contact = sender as? ContactVO {
-                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
-            }
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//
+//        if segue.identifier == kToComposerSegue {
+//            if let contact = sender as? ContactVO {
+//                let composeViewController = segue.destination.children[0] as! ComposeViewController
+//                sharedVMService.newDraft(vmp: composeViewController, with: contact)
+//                //TODO:: finish up here
+//                let coordinator = ComposeCoordinator(vc: composeViewController,
+//                                                     vm: composeViewController.viewModel) //set view model
+//                coordinator.viewController = composeViewController
+//                composeViewController.set(coordinator: coordinator)
+//            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
+//                let composeViewController = segue.destination.children[0] as! ComposeViewController
+//                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
+//                //TODO:: finish up here
+//                let coordinator = ComposeCoordinator(vc: composeViewController,
+//                                                     vm: composeViewController.viewModel) //set view model
+//                coordinator.viewController = composeViewController
+//                composeViewController.set(coordinator: coordinator)
+//            } else {
+//                let composeViewController = segue.destination.children[0] as! ComposeViewController
+//                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
+//                //TODO:: finish up here
+//                let coordinator = ComposeCoordinator(vc: composeViewController,
+//                                                     vm: composeViewController.viewModel) //set view model
+//                coordinator.viewController = composeViewController
+//                composeViewController.set(coordinator: coordinator)
+//            }
+//        } else if segue.identifier == kSegueToApplyLabels {
+//            let popup = segue.destination as! LablesViewController
+//            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
+//            popup.delegate = self
+//            self.setPresentationStyleForSelfController(self, presentingController: popup)
+//        } else if segue.identifier == kSegueMoveToFolders {
+//            let popup = segue.destination as! LablesViewController
+//            popup.delegate = self
+//            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
+//            self.setPresentationStyleForSelfController(self, presentingController: popup)
+//        } else if segue.identifier == kToAddContactSegue {
+//            if let contact = sender as? ContactVO {
+//                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
+//                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+//            }
+//        }
+//    }
     
     func shouldShowSideMenu() -> Bool {
         return false

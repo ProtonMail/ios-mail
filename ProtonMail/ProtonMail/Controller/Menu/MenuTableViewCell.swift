@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 class MenuTableViewCell: UITableViewCell {
@@ -51,7 +52,7 @@ class MenuTableViewCell: UITableViewCell {
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
-        titleLabel.text = item.title;
+        titleLabel.text = item.localizedTitle;
         
         let defaultImage = UIImage(named: item.image)
         let selectedImage = UIImage(named: item.imageSelected)

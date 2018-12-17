@@ -270,9 +270,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNe
             let composerVC = segue.destination.children[0] as! ComposeViewController
             let contact = sender as? ContactVO
             sharedVMService.newDraft(vmp: composerVC, with: contact)
-            //TODO:: finish up here
-            let coordinator = ComposeCoordinator(vc: composerVC,
-                                                 vm: composerVC.viewModel) //set view model
+            //TODO:: finish up here,
+            let coordinator = ComposeCoordinator(vc: composerVC, vm: composerVC.viewModel, services: ServiceFactory.default)
             coordinator.viewController = composerVC
             composerVC.set(coordinator: coordinator)
             

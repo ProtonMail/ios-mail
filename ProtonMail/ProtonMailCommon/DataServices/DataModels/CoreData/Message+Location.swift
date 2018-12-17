@@ -25,12 +25,68 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 extension Message {
     
-    
-
+    /// Predefined location. matches with exclusive lable id
+    enum Location : String {
+        case inbox   = "0"
+        case draft   = "1"
+        case sent    = "2"
+        case starred = "10"
+        case archive = "6"
+        case spam    = "4"
+        case trash   = "3"
+        case allmail = "5"
+        
+        var localizedTitle : String {
+            switch(self) {
+            case .inbox:
+                return LocalString._locations_inbox_title
+            case .starred:
+                return LocalString._locations_starred_title
+            case .draft:
+                return LocalString._locations_draft_title
+            case .sent:
+                return LocalString._locations_outbox_title
+            case .trash:
+                return LocalString._locations_trash_title
+            case .archive:
+                return LocalString._locations_archive_title
+            case .spam:
+                return LocalString._locations_spam_title
+            case .allmail:
+                return LocalString._locations_all_mail_title
+            }
+        }
+        
+        var actionTitle : String {
+            get {
+                switch(self) {
+                    //            case .deleted:
+                //                return LocalString._locations_deleted_action
+                case .inbox:
+                    return LocalString._locations_move_inbox_action
+                case .draft:
+                    return LocalString._locations_move_draft_action
+                case .sent:
+                    return LocalString._locations_move_outbox_action
+                case .spam:
+                    return LocalString._locations_move_spam_action
+                case .starred:
+                    return LocalString._locations_add_star_action
+                case .archive:
+                    return LocalString._locations_move_archive_action
+                case .trash:
+                    return LocalString._locations_move_trash_action
+                case .allmail:
+                    return LocalString._locations_move_allmail_action
+                }
+            }
+        }
+    }
 }
 
 //public enum MessageLocation: Int, CustomStringConvertible {

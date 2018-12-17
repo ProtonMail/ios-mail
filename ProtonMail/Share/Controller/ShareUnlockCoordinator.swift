@@ -32,6 +32,7 @@ class ShareUnlockCoordinator : PushCoordinator {
     
     internal weak var navigationController: UINavigationController?
     var viewController: ShareUnlockViewController?
+    var services: ServiceFactory
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in
         // configurateion for set up the view models when needed
@@ -43,9 +44,10 @@ class ShareUnlockCoordinator : PushCoordinator {
         case composer = "composer"
     }
     
-    init(navigation : UINavigationController) {
+    init(navigation : UINavigationController, services: ServiceFactory) {
         //parent navigation
         self.navigationController = navigation
+        self.services = services
         //create self view controller
         self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController" , bundle: nil)
     }
@@ -56,6 +58,7 @@ class ShareUnlockCoordinator : PushCoordinator {
         self.viewController?.pinUnlock.isEnabled = false
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(),
+                                                services: self.services,
                                                 delegate: self)
         pinView.start()
     }
@@ -71,7 +74,7 @@ class ShareUnlockCoordinator : PushCoordinator {
                                              body: vc.inputContent,
                                              files: vc.files,
                                              action: .newDraftFromShare)
-        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel)
+        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel, services: self.services)
         compose.start()
     }
     

@@ -181,9 +181,9 @@ class ViewModelServiceImpl: ViewModelService {
         if let oldVC = mailboxViewController {
             oldVC.inactiveViewModel()
         }
-        mailboxViewController = vmp
-        let viewModel = LabelboxViewModelImpl(label: label)
-        vmp.setModel(vm: viewModel)
+//        mailboxViewController = vmp
+//        let viewModel = LabelboxViewModelImpl(label: label)
+//        vmp.setModel(vm: viewModel)
     }
     
     //

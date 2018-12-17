@@ -25,14 +25,15 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 
 class FolderboxViewModelImpl : MailboxViewModel {
     private let label : Label
-    init(label : Label) {
+    init(label : Label, service: MessageDataService) {
         self.label = label
-        super.init(labelID: self.label.labelID)
+        super.init(labelID: self.label.labelID, msgService: service)
     }
     
     override func showLocation () -> Bool {

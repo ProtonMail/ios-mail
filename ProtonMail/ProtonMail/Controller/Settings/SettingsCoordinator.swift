@@ -30,15 +30,14 @@ import Foundation
 import SWRevealViewController
 
 class SettingsCoordinator: SWRevealCoordinator {
-
     typealias VC = SettingsTableViewController
     
     let viewModel : SettingsViewModel
+    var services: ServiceFactory
     
     internal weak var viewController: SettingsTableViewController?
     internal weak var navigation: UIViewController?
     internal weak var swRevealVC: SWRevealViewController?
-    
     internal weak var deepLink: DeepLink?
     
     lazy internal var configuration: ((SettingsTableViewController) -> ())? = { vc in
@@ -66,12 +65,13 @@ class SettingsCoordinator: SWRevealCoordinator {
         case snooze          = "setting_notifications_snooze_segue"
     }
     
-    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, deeplink: DeepLink?) {
+    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
         self.swRevealVC = rvc
         self.viewModel = vm
         self.viewController = vc
         self.deepLink = deeplink
+        self.services = services
     }
     
     func go(to dest: Destination, sender: Any? = nil) {

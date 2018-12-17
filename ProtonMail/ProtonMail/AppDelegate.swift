@@ -40,7 +40,7 @@ let sharedUserDataService = UserDataService()
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    lazy var coordinator = WindowsCoordinator()
+    var coordinator = WindowsCoordinator()
 }
 
 
@@ -50,15 +50,16 @@ extension SWRevealViewController {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
                 let viewModel = MenuViewModelImpl()
-                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel)
+                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: ServiceFactory.default)
                 menu.start()
             }
         } else if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let viewModel = MailboxViewModelImpl(label: .inbox)
-                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel)
+                    ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
+                    let viewModel = MailboxViewModelImpl(label: .inbox, service: ServiceFactory.default.get() as MessageDataService)
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: ServiceFactory.default)
                     mailbox.start()                    
                 }
             }

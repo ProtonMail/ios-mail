@@ -79,7 +79,7 @@ class ViewModelService {
     func mailbox(fromMenu vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
-    
+
     func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
         fatalError("This method must be overridden")
     }

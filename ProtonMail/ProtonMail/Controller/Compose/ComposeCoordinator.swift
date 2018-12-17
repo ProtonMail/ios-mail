@@ -31,17 +31,21 @@ class ComposeCoordinator : DefaultCoordinator {
     typealias VC = ComposeViewController
 
     weak var viewController: ComposeViewController?
-    let viewModel : ComposeViewModel
+    weak var navigationController: UINavigationController?
     
-    init(vc: ComposeViewController, vm: ComposeViewModel) {
+    let viewModel : ComposeViewModel
+    var services: ServiceFactory
+    
+    init(vc: ComposeViewController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
+        self.services = services
     }
     
-    internal var navigationController: UINavigationController?
-    init(navigation: UINavigationController, vm: ComposeViewModel) {
+    init(navigation: UINavigationController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.navigationController = navigation
+        self.services = services
         let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
         let composer = rootViewController.children[0] as! ComposeViewController
         composer.set(viewModel: vm)

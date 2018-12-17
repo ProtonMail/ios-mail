@@ -1,6 +1,6 @@
 //
-//  ShareCoordinator.swift
-//  Share - Created on 10/31/18.
+//  ServiceFactory.swift
+//  ProtonMail - Created on 12/13/18.
 //
 //
 //  The MIT License
@@ -24,39 +24,48 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
+protocol Service: AnyObject {}
 
-/// Main entry point to the app
-class ShareAppCoordinator: CoordinatorNew {
-    // navigation controller instance -- entry
-    internal var navigationController: UINavigationController
+final class ServiceFactory {
     
-    ///TODO::fixme move the inital to factory
-    let serviceHolder: ServiceFactory = {
+    static let `default` : ServiceFactory = {
         let helper = ServiceFactory()
-        let addrService = AddressBookService()
-        helper.add(AddressBookService.self, for: addrService)
+        helper.add(AppCacheService.self, for: AppCacheService())
+        helper.add(AddressBookService.self, for: AddressBookService())
+        ///TEST
+        let addrService: AddressBookService = helper.get()
         helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+        helper.add(BugDataService.self, for: BugDataService())
+        
+        ///
         helper.add(MessageDataService.self, for: MessageDataService())
-        helper.add(UserDataService.self, for: UserDataService())
+        
         return helper
     }()
     
-    func start() {
-        self.loadUnlockCheckView()
+    private var servicesDictionary: [String: Service] = [:]
+    
+    public func add<T>(_ type: T.Type, with name: String? = nil, constructor: () -> Service) {
+        self.add(type, for: constructor(), with: name)
     }
     
-    init(navigation: UINavigationController) {
-        self.navigationController = navigation
+    public func add<T>(_ protocolType: T.Type, for instance: Service, with name: String? = nil) {
+        let name = name ?? String(reflecting: protocolType)
+        servicesDictionary[name] = instance
     }
     
-    ///
-    private func loadUnlockCheckView() {
-        // create next coordinator
-        let unlock = ShareUnlockCoordinator(navigation: navigationController, services: serviceHolder)
-        unlock.start()
+    public func get<T>(by type: T.Type = T.self) -> T {
+        return get(by: String(reflecting: type))
+    }
+    
+    public func get<T>(by name: String) -> T {
+        guard let service = servicesDictionary[name] as? T else {
+            fatalError("firstly you have to add the service")
+        }
+        return service
     }
 }

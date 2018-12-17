@@ -85,6 +85,7 @@ extension NSManagedObjectContext {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K in %@", key, objectIDs)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: key, ascending: false)]
+        fetchRequest.includesPropertyValues = false
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self, sectionNameKeyPath: nil, cacheName: nil)
     }
     

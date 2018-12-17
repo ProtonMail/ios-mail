@@ -391,9 +391,8 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
-                //TODO:: finish up here
-                let coordinator = ComposeCoordinator(vc: destination,
-                                                     vm: destination.viewModel) //set view model
+                //TODO:: finish up here remove the factory-default part
+                let coordinator = ComposeCoordinator(vc: destination, vm: destination.viewModel, services: ServiceFactory.default)
                 coordinator.viewController = destination
                 destination.set(coordinator: coordinator)
             }

@@ -76,6 +76,8 @@ protocol DefaultCoordinator: CoordinatorNew {
     var animated: Bool { get }
     var delegate: CoordinatorDelegate? { get }
     
+    var services: ServiceFactory {get}
+    
     func go(to deepLink: DeepLink)
     func processDeepLink()
 }

@@ -215,7 +215,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             labels.append(label)
         }
         
-        if message.contains(label: ExclusiveLabel.sent) {
+        if message.contains(label: Message.Location.sent) {
             labelsView.configLables( message.allEmailAddresses, labels: labels)
         } else {
             labelsView.configLables( message.displaySender, labels: labels)

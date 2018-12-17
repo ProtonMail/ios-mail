@@ -29,6 +29,8 @@
 import Foundation
 
 class SharePinUnlockCoordinator : ModalCoordinator {
+    var services: ServiceFactory
+    
     typealias VC = SharePinUnlockViewController
     
     var destinationNavigationController: UINavigationController? = nil
@@ -41,10 +43,11 @@ class SharePinUnlockCoordinator : ModalCoordinator {
     
     var navigationController: UINavigationController
     
-    init(navigation : UINavigationController, vm: PinCodeViewModel, delegate: SharePinUnlockViewControllerDelegate) {
+    init(navigation : UINavigationController, vm: PinCodeViewModel, services: ServiceFactory, delegate: SharePinUnlockViewControllerDelegate) {
         //parent navigation
         self.navigationController = navigation
         self.viewModel = vm
+        self.services = services
         //create self view controller
         self.viewController = SharePinUnlockViewController(nibName: "SharePinUnlockViewController", bundle: nil)
         self.viewController?.delegate = delegate

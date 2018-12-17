@@ -33,21 +33,24 @@ class MailboxCoordinator : DefaultCoordinator {
     typealias VC = MailboxViewController
     
     let viewModel : MailboxViewModel
+    var services: ServiceFactory
     
-    weak var viewController: MailboxViewController?
-    weak var navigation: UINavigationController?
-    weak var rvc: SWRevealViewController?
+    internal weak var viewController: MailboxViewController?
+    internal weak var navigation: UINavigationController?
+    internal weak var rvc: SWRevealViewController?
     
-    init(vc: MailboxViewController, vm: MailboxViewModel) {
+    init(vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
+        self.services = services
     }
     
-    init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel) {
+    init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
         self.rvc = rvc
         self.navigation = nav
         self.viewController = vc
         self.viewModel = vm
+        self.services = services
     }
     
     weak var delegate: CoordinatorDelegate?
@@ -90,7 +93,7 @@ class MailboxCoordinator : DefaultCoordinator {
             sharedVMService.messageDetails(fromList: next)
             let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = self.viewController?.messageAtIndexPath(indexPathForSelectedRow) {
+                if let message = self.viewModel.item(index: indexPathForSelectedRow) {
                     next.message = message
                 } else {
                     //let alert = LocalString._messages_cant_find_message.alertController()

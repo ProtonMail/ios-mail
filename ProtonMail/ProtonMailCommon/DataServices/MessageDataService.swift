@@ -37,7 +37,7 @@ import PromiseKit
 let sharedMessageDataService = MessageDataService()
 
 /// Message data service
-class MessageDataService {
+class MessageDataService : Service {
     
     //TODO:: those 3 var need to double check to clean up
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
@@ -968,14 +968,18 @@ class MessageDataService {
         let moc = sharedCoreDataService.mainManagedObjectContext
         if let moc = managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            if labelID == ExclusiveLabel.sent.rawValue {
+            if labelID == Message.Location.sent.rawValue {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-                                                     labelID, ExclusiveLabel.trash.rawValue, ExclusiveLabel.archive.rawValue, Message.Attributes.messageStatus)
+                                                     labelID, Message.Location.trash.rawValue, Message.Location.archive.rawValue, Message.Attributes.messageStatus)
             } else {
                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
                                                      labelID, Message.Attributes.messageStatus)
             }
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+
+            
+            fetchRequest.includesPropertyValues = false
+            
             return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
         }
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
@@ -1717,61 +1721,38 @@ class MessageDataService {
     }
     
     private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
-// <<<<<<< HEAD
-//         if let originMessageID = oriMsgID {
-//             if let act = action {
-//                 if !originMessageID.isEmpty {
-//                     if let fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(originMessageID) {
-//                         do {
-//                             try fetchedMessageController.performFetch()
-//                             if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
-//                                 //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
-//                                 if act == 0 {
-//                                     message.isReplied = true
-//                                 } else if act == 1 {
-//                                     message.isRepliedAll = true
-//                                 } else if act == 2{
-//                                     message.isForwarded = true
-//                                 } else {
-//                                     //ignore
-//                                 }
-//                                 if let context = message.managedObjectContext {
-//                                     if let error = context.saveUpstreamIfNeeded() {
-//                                         PMLog.D(" error: \(error)")
-// =======
-//         if let _ = managedObjectContext {
-//             if let originMessageID = oriMsgID {
-//                 if let act = action {
-//                     if !originMessageID.isEmpty {
-//                         if let fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(originMessageID) {
-//                             do {
-//                                 try fetchedMessageController.performFetch()
-//                                 if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
-//                                     //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
-//                                     if act == 0 {
-//                                         message.replied = true
-//                                     } else if act == 1 {
-//                                         message.repliedAll = true
-//                                     } else if act == 2{
-//                                         message.forwarded = true
-//                                     } else {
-//                                         //ignore
-//                                     }
-//                                     if let context = message.managedObjectContext {
-//                                         if let error = context.saveUpstreamIfNeeded() {
-//                                             PMLog.D(" error: \(error)")
-//                                         }
-// >>>>>>> a lot of changes
-//                                     }
-//                                 }
-//                             }
-//                         } catch {
-//                             PMLog.D(" error: \(error)")
-//                         }
-//                     }
-//                 }
-//             }
-//         }
+        if let _ = managedObjectContext {
+            if let originMessageID = oriMsgID {
+                if let act = action {
+                    if !originMessageID.isEmpty {
+                        if let fetchedMessageController = self.fetchedMessageControllerForID(originMessageID) {
+                            do {
+                                try fetchedMessageController.performFetch()
+                                if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
+                                    //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                                    if act == 0 {
+                                        message.replied = true
+                                    } else if act == 1 {
+                                        message.repliedAll = true
+                                    } else if act == 2{
+                                        message.forwarded = true
+                                    } else {
+                                        //ignore
+                                    }
+                                    if let context = message.managedObjectContext {
+                                        if let error = context.saveUpstreamIfNeeded() {
+                                            PMLog.D(" error: \(error)")
+                                        }
+                                    }
+                                }
+                            } catch {
+                                PMLog.D(" error: \(error)")
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     // MARK: Notifications
@@ -2012,7 +1993,7 @@ class MessageDataService {
                 self.cleanMessage()
                 sharedContactDataService.clean()
                 sharedLabelsDataService.fetchLabels()
-                self.fetchMessages(byLable: ExclusiveLabel.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)
+                self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)
                 sharedContactDataService.fetchContacts(completion: nil)
             }
         }

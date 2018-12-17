@@ -68,9 +68,10 @@ class MenuCoordinatorNew: DefaultCoordinator {
     typealias VC = MenuViewController
     
     weak var viewController: MenuViewController?
-    
-    let viewModel : MenuViewModel
     internal weak var lastestCoordinator: CoordinatorNew?
+    let viewModel : MenuViewModel
+    var services: ServiceFactory
+    
     
     enum Destination : String {
         case mailbox   = "toMailboxSegue"
@@ -82,7 +83,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case plan      = "toServicePlan"
     }
     
-    init(vc: MenuViewController, vm: MenuViewModel) {
+    init(vc: MenuViewController, vm: MenuViewModel, services: ServiceFactory) {
         defer {
             NotificationCenter.default.addObserver(self,
                                                    selector: #selector(performLastSegue(_:)),
@@ -91,6 +92,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         }
         self.viewModel = vm
         self.viewController = vc
+        self.services = services
     }
     
     deinit{
@@ -151,8 +153,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
-            let viewModel = MailboxViewModelImpl(label: .inbox)
-            let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel)
+            let viewModel = MailboxViewModelImpl(label: .inbox, service: services.get() as MessageDataService)
+            let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             mailbox.start()
         case .settings:
             guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
@@ -161,14 +163,14 @@ class MenuCoordinatorNew: DefaultCoordinator {
             
             let deepLink = sender as? DeepLink
             let viewModel = SettingsViewModelImpl()
-            let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, deeplink: deepLink)
+            let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services, deeplink: deepLink)
             self.lastestCoordinator = settings
             settings.start()
         case .contacts:
             guard let tabBarController = destination as? ContactTabBarViewController else {
                 return false
             }
-            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController)
+            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController, services: self.services)
             contacts.start()
         default:
             return false

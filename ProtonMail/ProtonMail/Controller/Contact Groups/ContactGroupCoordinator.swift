@@ -37,11 +37,14 @@ class ContactGroupCoordinator : DefaultCoordinator {
     
     internal weak var lastestCoordinator: CoordinatorNew?
     
+    var services: ServiceFactory
+    
+    
     enum Destination : String {
         case test   = ""
     }
-    init() {
-        
+    init(services: ServiceFactory) {
+        self.services = services
     }
     
     func start() {
@@ -51,8 +54,6 @@ class ContactGroupCoordinator : DefaultCoordinator {
     func go(to dest: Destination, sender: Any? = nil) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
-    
-
     
     ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {

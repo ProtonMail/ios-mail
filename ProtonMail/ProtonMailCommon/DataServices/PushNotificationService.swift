@@ -31,7 +31,8 @@ import UIKit
 import SWRevealViewController
 import Keymaker
 
-public class PushNotificationService {
+public class PushNotificationService: Service {
+    
     typealias SubscriptionSettings = PushSubscriptionSettings
     
     enum Key {

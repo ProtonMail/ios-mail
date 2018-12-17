@@ -31,12 +31,9 @@ import SWRevealViewController
 
 class ContactCoordinator : DefaultCoordinator {
     typealias VC = ContactsViewController
-    func start() {
-        
-    }
-    
     
     let viewModel : ContactsViewModel
+    var services: ServiceFactory
     
     internal weak var navigation: UIViewController?
     internal weak var swRevealVC: SWRevealViewController?
@@ -45,17 +42,20 @@ class ContactCoordinator : DefaultCoordinator {
     ///
     internal weak var lastestCoordinator: CoordinatorNew?
     
-
+    func start() {
+        
+    }
     ///
     enum Destination : String {
         case test   = ""
     }
     
-    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: ContactsViewController, vm: ContactsViewModel, deeplink: DeepLink? = nil) {
+    init(rvc: SWRevealViewController?, nav: UIViewController?, vc: ContactsViewController, vm: ContactsViewModel, services: ServiceFactory, deeplink: DeepLink? = nil) {
         self.navigation = nav
         self.swRevealVC = rvc
         self.viewModel = vm
         self.viewController = vc
+        self.services = services
     }
     
     func go(to dest: Destination, sender: Any? = nil) {

@@ -25,28 +25,27 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 enum MenuItem: String {//change to Int later.
-    case bugs = "Report Bugs"
-    case inbox = "Inbox"
+    case bugs    = "Report Bugs"
+    case inbox   = "Inbox"
     case starred = "Starred"
     case archive = "Archive"
-    case drafts = "Drafts"
+    case drafts  = "Drafts"
     case allmail = "All Mail"
-    case sent = "Sent"
-    case trash = "Trash"
-    case spam = "Spam"
-    case contacts = "Contacts"
-    case settings = "Settings"
-    case signout = "Logout"
-    case feedback = "Feedback"
-    case lockapp = "Lock The App"
+    case sent    = "Sent"
+    case trash   = "Trash"
+    case spam    = "Spam"
+    case contacts    = "Contacts"
+    case settings    = "Settings"
+    case signout     = "Logout"
+    case feedback    = "Feedback"
+    case lockapp     = "Lock The App"
     case servicePlan = "Service Plan"
-    
-    //var identifier: String { return rawValue }
-    
-    var title: String {
+
+    var localizedTitle: String {
         switch self {
         case .bugs:
             return LocalString._menu_bugs_title
@@ -167,26 +166,26 @@ enum MenuItem: String {//change to Int later.
     }
     
     
-    var menuToLabel : ExclusiveLabel {
+    var menuToLabel : Message.Location {
         switch self {
         case .inbox:
-            return ExclusiveLabel.inbox
+            return Message.Location.inbox
         case .starred:
-            return ExclusiveLabel.starred
+            return Message.Location.starred
         case .archive:
-            return ExclusiveLabel.archive
+            return Message.Location.archive
         case .drafts:
-            return ExclusiveLabel.draft
+            return Message.Location.draft
         case .sent:
-            return ExclusiveLabel.sent
+            return Message.Location.sent
         case .trash:
-            return ExclusiveLabel.trash
+            return Message.Location.trash
         case .spam:
-            return ExclusiveLabel.spam
+            return Message.Location.spam
         case .allmail:
-            return ExclusiveLabel.allmail
+            return Message.Location.allmail
         default:
-            return ExclusiveLabel.inbox
+            return Message.Location.inbox
         }
     }
 }

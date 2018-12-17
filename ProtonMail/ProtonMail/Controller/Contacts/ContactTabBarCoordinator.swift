@@ -35,9 +35,12 @@ class ContactTabBarCoordinator: DefaultCoordinator {
     internal weak var viewController: ContactTabBarViewController?
     internal weak var swRevealVC: SWRevealViewController?
     
-    init(rvc: SWRevealViewController?, vc: ContactTabBarViewController, deeplink: DeepLink? = nil) {
+    var services: ServiceFactory
+    
+    init(rvc: SWRevealViewController?, vc: ContactTabBarViewController, services: ServiceFactory, deeplink: DeepLink? = nil) {
         self.swRevealVC = rvc
         self.viewController = vc
+        self.services = services
     }
     
     func start() {

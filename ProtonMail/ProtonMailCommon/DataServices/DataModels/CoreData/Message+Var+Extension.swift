@@ -30,7 +30,7 @@ import Foundation
 
 
 extension Message {
-    internal func contains(label: ExclusiveLabel) -> Bool {
+    internal func contains(label: Location) -> Bool {
         return self.contains(label: label.rawValue)
     }
     
@@ -46,7 +46,7 @@ extension Message {
     
     var starred : Bool {
         get {
-            return self.contains(label: ExclusiveLabel.starred)
+            return self.contains(label: Location.starred)
         }
     }
     
@@ -67,7 +67,7 @@ extension Message {
     
     var draft : Bool {
         get {
-            return self.contains(label: ExclusiveLabel.draft)
+            return self.contains(label: Location.draft)
         }
     }
     

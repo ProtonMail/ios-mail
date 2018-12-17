@@ -147,9 +147,9 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
                 sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
-                //TODO:: finish up here
+                //TODO::fixme finish up here fix services partservices
                 let coordinator = ComposeCoordinator(vc: destination,
-                                                     vm: destination.viewModel) //set view model
+                                                     vm: destination.viewModel, services: ServiceFactory.default) //set view model
                 coordinator.viewController = destination
                 destination.set(coordinator: coordinator)
             }

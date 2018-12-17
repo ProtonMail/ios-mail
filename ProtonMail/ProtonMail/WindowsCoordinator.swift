@@ -29,12 +29,26 @@
 import Foundation
 import Keymaker
 
-
-
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
+    
+    let serviceHolder: ServiceFactory = {
+        let helper = ServiceFactory()
+        helper.add(AppCacheService.self, for: AppCacheService())
+        helper.add(AddressBookService.self, for: AddressBookService())
+        ///TEST
+        let addrService: AddressBookService = helper.get()
+        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+        helper.add(BugDataService.self, for: BugDataService())
+        
+        ///
+        helper.add(MessageDataService.self, for: MessageDataService())
+        
+        
+        return helper
+    }()
     
     var currentWindow: UIWindow! {
         didSet {

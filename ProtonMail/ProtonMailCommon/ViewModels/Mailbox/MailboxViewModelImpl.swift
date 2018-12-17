@@ -25,25 +25,23 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 
 final class MailboxViewModelImpl : MailboxViewModel {
 
-    fileprivate var label : ExclusiveLabel
+    private let label : Message.Location
 
-    init(label : ExclusiveLabel) {
+    init(label : Message.Location, service: MessageDataService) {
         self.label = label
-        super.init(labelID: label.rawValue)
+        super.init(labelID: label.rawValue, msgService: service)
     }
     
     override var localizedNavigationTitle: String {
         return self.label.localizedTitle
     }
 
-//    override func currentLocation() -> MessageLocation? {
-//        return self.location
-//    }
     override func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         switch(self.label) {
         case .trash, .spam:

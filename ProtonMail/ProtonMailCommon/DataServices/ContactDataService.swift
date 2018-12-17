@@ -3,16 +3,28 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import CoreData
@@ -21,7 +33,7 @@ import Groot
 import PromiseKit
 import AwaitKit
 
-let sharedContactDataService = ContactDataService()
+let sharedContactDataService = ContactDataService(addressBookService: AddressBookService())
 
 
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
@@ -35,7 +47,13 @@ typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
 
-class ContactDataService {
+class ContactDataService: Service  {
+    
+    private let addressBookService: AddressBookService
+    
+    init(addressBookService: AddressBookService) {
+        self.addressBookService = addressBookService
+    }
     
     /**
      clean contact local cache
@@ -301,8 +319,6 @@ class ContactDataService {
             }
         }
     }
-    
-    
     
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
         let context = context ?? sharedCoreDataService.backgroundManagedObjectContext
@@ -710,20 +726,20 @@ extension ContactDataService {
         // fetch latest contacts from server
         //getContacts { (_, error) -> Void in
         self.requestAccessToAddressBookIfNeeded(completion)
-        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
+        self.processContacts(addressBookAccessGranted: addressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
         //}
     }
     
     func getContactVOs(_ completion: @escaping ContactVOCompletionBlock) {
         
         self.requestAccessToAddressBookIfNeeded(completion)
-        self.processContacts(addressBookAccessGranted: sharedAddressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
+        self.processContacts(addressBookAccessGranted: addressBookService.hasAccessToAddressBook(), lastError: nil, completion: completion)
         
     }
     
     fileprivate func requestAccessToAddressBookIfNeeded(_ cp: @escaping ContactVOCompletionBlock) {
-        if !sharedAddressBookService.hasAccessToAddressBook() {
-            sharedAddressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
+        if !addressBookService.hasAccessToAddressBook() {
+            addressBookService.requestAuthorizationWithCompletion({ (granted: Bool, error: Error?) -> Void in
                 self.processContacts(addressBookAccessGranted: granted, lastError: error, completion: cp)
             })
         }
@@ -734,7 +750,7 @@ extension ContactDataService {
             var contacts: [ContactVO] = []
             if granted {
                 // get contacts from address book
-                contacts = sharedAddressBookService.contacts()
+                contacts = self.addressBookService.contacts()
             }
             
             // merge address book and core data contacts
