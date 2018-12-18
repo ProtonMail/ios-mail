@@ -33,7 +33,7 @@ import PromiseKit
 import AwaitKit
 
 
-class ComposeViewController : UIViewController, ViewModelProtocolNew, CoordinatedNew {
+class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     

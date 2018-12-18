@@ -29,7 +29,7 @@ import UIKit
 import PromiseKit
 import AwaitKit
 
-class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactDetailsViewModel
     
     fileprivate var viewModel : ContactDetailsViewModel!
@@ -267,13 +267,17 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocolNe
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let composerVC = segue.destination.children[0] as! ComposeViewController
+            let destination = segue.destination.children[0] as! ComposeViewController
             let contact = sender as? ContactVO
-            sharedVMService.newDraft(vmp: composerVC, with: contact)
+            sharedVMService.newDraft(vmp: destination)
+            let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+            if let c = contact {
+                viewModel.addToContacts(c)
+            }
+            
             //TODO:: finish up here,
-            let coordinator = ComposeCoordinator(vc: composerVC, vm: composerVC.viewModel, services: ServiceFactory.default)
-            coordinator.viewController = composerVC
-            composerVC.set(coordinator: coordinator)
+            let coordinator = ComposeCoordinator(vc: destination, vm: viewModel, services: ServiceFactory.default)
+            coordinator.start()
             
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController

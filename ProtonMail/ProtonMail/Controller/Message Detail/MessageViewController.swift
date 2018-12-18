@@ -34,7 +34,7 @@ import PassKit
 import AwaitKit
 import PromiseKit
 
-class MessageViewController: ProtonMailViewController, ViewModelProtocolNew {
+class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
     func set(viewModel: MessageViewModel) {
         

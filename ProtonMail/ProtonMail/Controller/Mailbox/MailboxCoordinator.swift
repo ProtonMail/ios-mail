@@ -92,20 +92,14 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             let vmService = services.get() as ViewModelService
             vmService.messageDetails(fromList: next)
-            let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow
-            if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = self.viewModel.item(index: indexPathForSelectedRow) {
-                    next.message = message
-                } else {
+            guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
+                let message = self.viewModel.item(index: indexPathForSelectedRow) else {
                     //let alert = LocalString._messages_cant_find_message.alertController()
                     //alert.addOKAction()
                     //present(alert, animated: true, completion: nil)
                     return false
-                }
-            } else {
-                PMLog.D("No selected row.")
-                return false
             }
+            next.message = message
         case .detailsFromNotify:
             guard let next = destination as? MessageViewController else {
                 return false
@@ -119,7 +113,10 @@ class MailboxCoordinator : DefaultCoordinator {
             self.viewModel.resetNotificationMessage()
 
         case .composer:
-            guard let next = destination as? ComposeViewController else {
+            guard let nav = destination as? UINavigationController else {
+                return false
+            }
+            guard let next = nav.firstViewController() as? ComposeViewController else {
                 return false
             }
             let vmService = services.get() as ViewModelService
@@ -150,9 +147,7 @@ class MailboxCoordinator : DefaultCoordinator {
             //            } else {
             //                PMLog.D("No selected row.")
         //            }
-        case .search:
-            return false
-        case .onboarding:
+        case .search, .onboarding:
             return true
         case .feedback:
             return false
@@ -173,22 +168,15 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let next = destination as? LablesViewController else {
                 return false
             }
-            //            let popup = segue.destination as! LablesViewController
-            //            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
-            //            popup.delegate = self
-            //            self.setPresentationStyleForSelfController(self, presentingController: popup)
-            //            self.cancelButtonTapped()
-        //
+            next.viewModel = FolderApplyViewModelImpl(msg: self.viewModel.selectedMessages())
+            next.delegate = self.viewController
         case .labels:
             self.viewController?.cancelButtonTapped()
             guard let next = destination as? LablesViewController else {
                 return false
             }
-            //            let popup = segue.destination as! LablesViewController
-            //            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
-            //            popup.delegate = self
-            //            self.setPresentationStyleForSelfController(self, presentingController: popup)
-            //            self.cancelButtonTapped()
+            next.viewModel = LabelApplyViewModelImpl(msg: self.viewModel.selectedMessages())
+            next.delegate = self.viewController
         }
         return true
     }   

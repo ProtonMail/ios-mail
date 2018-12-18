@@ -30,7 +30,7 @@ import UIKit
 import MBProgressHUD
 import Keymaker
 
-class SettingsTableViewController: ProtonMailTableViewController, ViewModelProtocolNew, CoordinatedNew {
+class SettingsTableViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsViewModel!
     internal var coordinator : SettingsCoordinator?
     

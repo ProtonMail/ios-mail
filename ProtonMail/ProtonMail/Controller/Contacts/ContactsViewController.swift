@@ -30,7 +30,7 @@ import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactsViewModel
     
     // Mark: - view model

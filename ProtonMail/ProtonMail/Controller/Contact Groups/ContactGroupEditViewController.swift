@@ -32,7 +32,7 @@ import PromiseKit
 /**
  The design for now is no auto-saving
  */
-class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
 
     typealias viewModelType = ContactGroupEditViewModel
 

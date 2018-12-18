@@ -30,7 +30,7 @@ import UIKit
 import SWRevealViewController
 
 ///Notes:: can't use it because the generac class can't do extension with @objc functions. like tableviewdelegate
-class ViewController<T_vm, T_Coordinator : CoordinatorNew> : UIViewController, ViewModelProtocolNew, CoordinatedNew {
+class ViewController<T_vm, T_Coordinator : CoordinatorNew> : UIViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = T_vm
     typealias coordinatorType = T_Coordinator
     

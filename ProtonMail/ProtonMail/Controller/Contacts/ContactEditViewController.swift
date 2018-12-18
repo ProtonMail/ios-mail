@@ -34,7 +34,7 @@ protocol ContactEditViewControllerDelegate {
     func updated()
 }
 
-class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactEditViewModel
     
     fileprivate var viewModel : ContactEditViewModel!

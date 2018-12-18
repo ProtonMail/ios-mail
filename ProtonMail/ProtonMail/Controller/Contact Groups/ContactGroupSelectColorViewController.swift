@@ -28,7 +28,7 @@
 
 import UIKit
 
-class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupSelectColorViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupSelectColorViewModel
     
     var viewModel: ContactGroupSelectColorViewModel!

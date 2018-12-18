@@ -29,7 +29,7 @@
 import UIKit
 import CoreData
 
-class MenuViewController: UIViewController, ViewModelProtocolNew, CoordinatedNew {
+class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     /// those two are optional
     typealias viewModelType = MenuViewModel
     typealias coordinatorType = MenuCoordinatorNew

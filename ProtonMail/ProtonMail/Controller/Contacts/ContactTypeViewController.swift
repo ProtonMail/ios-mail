@@ -33,7 +33,7 @@ protocol ContactTypeViewControllerDelegate : AnyObject {
     func done(sectionType: ContactEditSectionType)
 }
 
-class ContactTypeViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactTypeViewModel
     func inactiveViewModel() {
         

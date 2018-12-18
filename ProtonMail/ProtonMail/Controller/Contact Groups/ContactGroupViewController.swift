@@ -34,7 +34,7 @@ import PromiseKit
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactGroupsViewModel
     
     private var viewModel: ContactGroupsViewModel!
@@ -390,11 +390,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
-                sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
-                //TODO:: finish up here remove the factory-default part
-                let coordinator = ComposeCoordinator(vc: destination, vm: destination.viewModel, services: ServiceFactory.default)
-                coordinator.viewController = destination
-                destination.set(coordinator: coordinator)
+                sharedVMService.newDraft(vmp: destination)
+                //TODO::fixme finish up here fix services partservices
+                let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+                viewModel.addToContacts(contactGroupVO)
+                let coordinator = ComposeCoordinator(vc: destination, vm: viewModel, services: ServiceFactory.default)
+                coordinator.start()
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController

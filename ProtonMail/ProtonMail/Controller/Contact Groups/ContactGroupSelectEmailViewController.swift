@@ -28,7 +28,7 @@
 
 import UIKit
 
-class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupSelectEmailViewModel
     
     func set(viewModel: ContactGroupSelectEmailViewModel) {

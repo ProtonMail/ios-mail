@@ -28,7 +28,7 @@
 
 import UIKit
 
-class WebViewController: UIViewController, ViewModelProtocolNew, UIWebViewDelegate {
+class WebViewController: UIViewController, ViewModelProtocol, UIWebViewDelegate {
     typealias viewModelType = WebViewModel
     func set(viewModel: WebViewModel) {
         self.viewModel = viewModel

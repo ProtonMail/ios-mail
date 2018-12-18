@@ -59,6 +59,8 @@ class MailboxViewModel {
     /// local message for rating
     private var ratingMessage : Message?
     
+    var selectedMessageIDs: NSMutableSet = NSMutableSet()
+    
     /// mailbox viewModel
     ///
     /// - Parameters:
@@ -194,6 +196,21 @@ class MailboxViewModel {
     
     func processCachedPush() {
         self.pushService.processCachedLaunchOptions()
+    }
+    
+    func selectedMessages() -> [Message] {
+        if let context = fetchedResultsController?.managedObjectContext {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessageIDs)
+            do {
+                if let messages = try context.fetch(fetchRequest) as? [Message] {
+                    return messages;
+                }
+            } catch let ex as NSError {
+                PMLog.D(" error: \(ex)")
+            }
+        }
+        return [Message]();
     }
     
     var ratingIndex : IndexPath? {

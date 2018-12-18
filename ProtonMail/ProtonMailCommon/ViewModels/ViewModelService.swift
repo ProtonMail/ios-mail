@@ -35,7 +35,7 @@ class ViewModelService : Service {
         fatalError("This method must be overridden")
     }
     
-    func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
+    func buildComposer<T: ViewModelProtocol>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         fatalError("This method must be overridden")
     }
     
@@ -44,10 +44,6 @@ class ViewModelService : Service {
     /// - Parameter vmp: the ViewController based on ViewModelProtocal
     func newDraft(vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
-    }
-    
-    func newDraft(vmp : ViewModelProtocolBase, with contact: ContactVO?) {
-         fatalError("This method must be overridden")
     }
     
     func newDraft(vmp : ViewModelProtocolBase, with mailTo : URL?) {
@@ -59,10 +55,6 @@ class ViewModelService : Service {
     }
     
     func newDraft(vmp: ViewModelProtocolBase, with msg: Message!, action: ComposeMessageAction) {
-        fatalError("This method must be overridden")
-    }
-    
-    func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
         fatalError("This method must be overridden")
     }
     

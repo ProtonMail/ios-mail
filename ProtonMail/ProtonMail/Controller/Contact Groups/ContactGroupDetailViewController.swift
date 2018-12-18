@@ -29,7 +29,7 @@
 import UIKit
 import PromiseKit
 
-class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupDetailViewModel
 
     var viewModel: ContactGroupDetailViewModel!
@@ -146,12 +146,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
-                sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
+                sharedVMService.newDraft(vmp: destination)
                 //TODO::fixme finish up here fix services partservices
+                let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+                viewModel.addToContacts(contactGroupVO)
                 let coordinator = ComposeCoordinator(vc: destination,
-                                                     vm: destination.viewModel, services: ServiceFactory.default) //set view model
-                coordinator.viewController = destination
-                destination.set(coordinator: coordinator)
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController

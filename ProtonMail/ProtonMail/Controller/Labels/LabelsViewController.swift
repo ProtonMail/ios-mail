@@ -34,6 +34,7 @@ protocol LablesViewControllerDelegate {
     func apply(type: LabelFetchType)
 }
 
+//TODO::fixme coordinator
 class LablesViewController : UIViewController {
     
     var viewModel : LabelViewModel!

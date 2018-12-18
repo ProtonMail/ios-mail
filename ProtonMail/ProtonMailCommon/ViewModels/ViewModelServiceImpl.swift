@@ -54,18 +54,6 @@ class ViewModelServiceImpl: ViewModelService {
         }
     }
     
-    override func newDraft(vmp: ViewModelProtocolBase) {
-        self.setup(composer: vmp)
-    }
-    
-    override func newDraft(vmp: ViewModelProtocolBase, with contact: ContactVO?) {
-        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
-        if let c = contact {
-            viewModel.addToContacts(c)
-        }
-        self.setup(composer: vmp)
-    }
-    
     override func openDraft(vmp: ViewModelProtocolBase, with msg: Message!) {
         let viewModel = ComposeViewModelImpl(msg: msg, action: .openDraft)
         self.setup(composer: vmp)
@@ -139,9 +127,7 @@ class ViewModelServiceImpl: ViewModelService {
         self.setup(composer: vmp)
     }
     
-    override func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
-        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
-        viewModel.addToContacts(group)
+    override func newDraft(vmp: ViewModelProtocolBase) {
         self.setup(composer: vmp)
     }
     
@@ -257,7 +243,7 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     // composer
-    override func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
+    override func buildComposer<T: ViewModelProtocol>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         let latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
         guard let viewModel = latestComposerViewModel as? T.viewModelType else {
             return

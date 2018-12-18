@@ -30,7 +30,7 @@ import UIKit
 import CoreData
 import MCSwipeTableViewCell
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, CoordinatedNew {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
@@ -53,7 +53,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
     @IBOutlet weak var tableView: UITableView!
     
     // MARK: - Private constants
-    
     private let kMailboxCellHeight: CGFloat           = 62.0 // change it to auto height
     private let kMailboxRateReviewCellHeight: CGFloat = 125.0
     private let kLongPressDuration: CFTimeInterval    = 0.60 // seconds
@@ -81,7 +80,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
     private var listEditing: Bool = false
     private var timer : Timer!
     private var timerAutoDismiss : Timer?
-    private var selectedMessages: NSMutableSet = NSMutableSet()
     
     private var fetchingNewer : Bool = false
     private var fetchingOlder : Bool = false
@@ -278,21 +276,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
     // MARK: - Button Targets
     @objc internal func composeButtonTapped() {
         if checkHuman() {
-            //TODO::QA
             self.coordinator?.go(to: .composer)
         }
     }
     @objc internal func searchButtonTapped() {
-        //TODO::QA
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
-        //TODO::QA
         self.coordinator?.go(to: .labels)
     }
     
     @objc internal func folderButtonTapped() {
-        //TODO::QA
         self.coordinator?.go(to: .folder)
     }
     
@@ -391,7 +385,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
     }
     
     @objc internal func cancelButtonTapped() {
-        self.selectedMessages.removeAllObjects()
+        self.viewModel.selectedMessageIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
     }
@@ -500,7 +494,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
             return
         }
         mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
-        mailboxCell.setCellIsChecked(selectedMessages.contains(message.messageID))
+        mailboxCell.setCellIsChecked(self.viewModel.selectedMessageIDs.contains(message.messageID))
         if (self.listEditing) {
             mailboxCell.showCheckboxOnLeftSide()
         } else {
@@ -1017,21 +1011,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
 //            }
 //        }
     }
-    
-    fileprivate func getSelectedMessages() -> [Message] {
-//        if let context = fetchedResultsController?.managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessages)
-//            do {
-//                if let messages = try context.fetch(fetchRequest) as? [Message] {
-//                    return messages;
-//                }
-//            } catch let ex as NSError {
-//                PMLog.D(" error: \(ex)")
-//            }
-//        }
-        return [Message]();
-    }
+
     
     fileprivate func setupLeftButtons(_ editingMode: Bool) {
         var leftButtons: [UIBarButtonItem]
@@ -1147,7 +1127,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocolNew, Coo
                             // set selected row to checked
                             if (indexPath.row == visibleIndexPath.row) {
                                 if let message = self.viewModel.item(index: indexPath) {
-                                    selectedMessages.add(message.messageID)
+                                    self.viewModel.selectedMessageIDs.add(message.messageID)
                                 }
                                 messageCell.setCellIsChecked(true)
                             }
@@ -1466,11 +1446,11 @@ extension MailboxViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let message = self.viewModel.item(index: indexPath) {
             if (self.listEditing) {
-                let messageAlreadySelected: Bool = selectedMessages.contains(message.messageID)
+                let messageAlreadySelected: Bool = self.viewModel.selectedMessageIDs.contains(message.messageID)
                 if (messageAlreadySelected) {
-                    selectedMessages.remove(message.messageID)
+                    self.viewModel.selectedMessageIDs.remove(message.messageID)
                 } else {
-                    selectedMessages.add(message.messageID)
+                    self.viewModel.selectedMessageIDs.add(message.messageID)
                 }
                 // update checkbox state
                 if let mailboxCell: MailboxMessageCell = tableView.cellForRow(at: indexPath) as? MailboxMessageCell {

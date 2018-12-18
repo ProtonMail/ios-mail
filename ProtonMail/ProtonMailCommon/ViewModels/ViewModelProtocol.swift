@@ -27,3 +27,38 @@
 
 
 import Foundation
+
+/// Notes for refactor later:
+/// view model need based on ViewModelBase
+/// view model factory control the view model impls
+/// view model impl control viewmodel navigate
+/// View model service tracking the ui flows
+
+protocol ViewModelProtocolBase : AnyObject {
+    func setModel(vm: Any)
+    func inactiveViewModel() -> Void
+}
+
+protocol ViewModelProtocol : ViewModelProtocolBase {
+    /// typedefine - view model -- if the class name defined in set function. the sub class could ignore viewModelType
+    associatedtype viewModelType
+    
+    func set(viewModel: viewModelType) -> Void
+}
+
+
+extension ViewModelProtocol {
+    func setModel(vm: Any) {
+        guard let viewModel = vm as? viewModelType else {
+            fatalError("This view model type doesn't match") //this shouldn't happend
+        }
+        self.set(viewModel: viewModel)
+    }
+    
+    /// optional
+    func inactiveViewModel() {
+        
+    }
+}
+
+
