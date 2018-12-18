@@ -33,8 +33,8 @@ class StorefrontViewModel: NSObject {
     private var storefrontObserver: NSKeyValueObservation!
 
     internal enum Sections: Int {
-        case logo = 0, detail, annotation, subsectionHeader, others
-        static let count = 5
+        case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, disclaimer
+        static let count = 9 // TODO: update this on swift4.3  with allCases.count
         
         var indexSet: IndexSet {
             return IndexSet(integer: self.rawValue)
@@ -44,10 +44,14 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var title: String = ""
     @objc dynamic var logoItem: AnyStorefrontItem = AnyStorefrontItem()
     @objc dynamic var detailItems: [AnyStorefrontItem] = []
-    @objc dynamic var annotationItem: AnyStorefrontItem = AnyStorefrontItem()
-    @objc dynamic var subsectionHeaderItem: AnyStorefrontItem?
+    @objc dynamic var annotationItem: AnyStorefrontItem?
+    @objc dynamic var buyLinkHeaderItem: AnyStorefrontItem?
+    @objc dynamic var othersHeaderItem: AnyStorefrontItem?
     @objc dynamic var othersItems: [AnyStorefrontItem] = []
-
+    @objc dynamic var buyLinkItem: AnyStorefrontItem?
+    @objc dynamic var buyButtonItem: AnyStorefrontItem?
+    @objc dynamic var disclaimerItem: AnyStorefrontItem?
+    
     init(storefront: Storefront) {
         self.storefront = storefront
         
@@ -61,7 +65,11 @@ class StorefrontViewModel: NSObject {
                 self.detailItems = self.extractDetails(from: viewModel.storefront)
                 self.annotationItem = self.extractAnnotation(from: viewModel.storefront)
                 self.othersItems = self.extractOthers(from: viewModel.storefront)
-                self.subsectionHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
+                self.othersHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
+                self.buyLinkItem = self.extractBuyLink(from: viewModel.storefront)
+                self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
+                self.buyButtonItem = self.extractBuyButton(from: viewModel.storefront)
+                self.disclaimerItem = self.extractDisclaimer(from: viewModel.storefront)
             }
         }
     }
@@ -77,9 +85,13 @@ class StorefrontViewModel: NSObject {
         switch section {
         case .logo:              return 1
         case .detail:            return self.detailItems.count
-        case .annotation:        return 1
-        case .subsectionHeader:  return self.subsectionHeaderItem == nil ? 0 : 1
+        case .annotation:        return self.annotationItem == nil ? 0 : 1
+        case .othersHeader:      return self.othersHeaderItem == nil ? 0 : 1
         case .others:            return self.othersItems.count
+        case .buyLinkHeader:     return self.buyLinkHeaderItem == nil ? 0 : 1
+        case .buyLink:           return self.buyLinkItem == nil ? 0 : 1
+        case .buyButton:         return self.buyButtonItem == nil ? 0 : 1
+        case .disclaimer:        return self.disclaimerItem == nil ? 0 : 1
         }
     }
     
@@ -90,9 +102,13 @@ class StorefrontViewModel: NSObject {
         switch section {
         case .logo:                                                      return self.logoItem
         case .detail:                                                    return self.detailItems[indexPath.row]
-        case .annotation:                                                return self.annotationItem
-        case .subsectionHeader where self.subsectionHeaderItem != nil:   return self.subsectionHeaderItem!
+        case .annotation where self.annotationItem != nil:               return self.annotationItem!
+        case .othersHeader where self.othersHeaderItem != nil:           return self.othersHeaderItem!
         case .others:                                                    return self.othersItems[indexPath.row]
+        case .buyLinkHeader where self.buyLinkHeaderItem != nil:         return self.buyLinkHeaderItem!
+        case .buyLink where self.buyLinkItem != nil:                     return self.buyLinkItem!
+        case .buyButton where self.buyButtonItem != nil:                 return self.buyButtonItem!
+        case .disclaimer where self.disclaimerItem != nil:               return self.disclaimerItem!
         default:                                                         fatalError()
         }
     }
@@ -105,6 +121,12 @@ class StorefrontViewModel: NSObject {
         case .others:   return self.storefront.others[indexPath.row]
         default:        return nil
         }
+    }
+}
+
+extension StorefrontViewModel {
+    func buy() {
+        print("now call model")
     }
 }
 
@@ -156,7 +178,7 @@ extension StorefrontViewModel {
         }
     }
     
-    private func extractAnnotation(from storefront: Storefront) -> AnyStorefrontItem {
+    private func extractAnnotation(from storefront: Storefront) -> AnyStorefrontItem? {
         func makeUnavailablePlanText(plan: ServicePlan) -> NSAttributedString {
             var regularAttributes = [NSAttributedString.Key: Any]()
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
@@ -200,8 +222,12 @@ extension StorefrontViewModel {
         switch storefront.subscription {
         case .some(let subscription):
             return AnnotationStorefrontItem(text: makeCurrentPlanText(subscription: subscription))
-        case .none:
+        case .none where !storefront.isProductPurchasable:
             return AnnotationStorefrontItem(text: makeUnavailablePlanText(plan: storefront.plan))
+        case .none where storefront.isProductPurchasable:
+            return nil
+            
+        default: return nil
         }
     }
     
@@ -215,5 +241,64 @@ extension StorefrontViewModel {
             attributed.append(titleColored)
             return LinkStorefrontItem(text: attributed)
         }
+    }
+    
+    private func extractBuyButton(from storefront: Storefront) -> AnyStorefrontItem? {
+        let plan = storefront.plan
+        
+        guard storefront.isProductPurchasable else {
+            return nil
+        }
+        
+        guard let productId = plan.storeKitProductId,
+            let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
+        {
+            return BuyButtonStorefrontItem(subtitle: LocalString._cant_connect_to_store, buttonTitle: nil, buttonEnabled: false)
+        }
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.locale = price.1
+        formatter.maximumFractionDigits = 2
+        
+        let tier54 = ServicePlanDataService.shared.proceedTier54
+        let total = price.0 as Decimal
+        let appleFee = tier54.isZero ? total * 0.75 : total - tier54
+        let pmPrice = tier54.isZero ? total * 0.25 : tier54
+        
+        guard let priceString = formatter.string(from: total as NSNumber),
+            let originalPriceString = formatter.string(from: pmPrice as NSNumber),
+            let feeString = formatter.string(from: appleFee as NSNumber) else
+        {
+            return nil
+        }
+        // once it was a subtitle, but apple review team did not apprive it
+        let _ = String(format: "%@ ProtonMail %@\n%@ %@", originalPriceString, plan.subheader.0, feeString, LocalString._iap_fee)
+        let title = NSMutableAttributedString(string: priceString,
+                                              attributes: [.font: UIFont.preferredFont(forTextStyle: .title1),
+                                                           .foregroundColor: UIColor.white])
+        let caption = NSAttributedString(string: "\n" + LocalString._for_one_year,
+                                         attributes: [.font: UIFont.preferredFont(forTextStyle: .body),
+                                                      .foregroundColor: UIColor.white])
+        title.append(caption)
+        
+        return BuyButtonStorefrontItem(subtitle: nil, buttonTitle: title, buttonEnabled: true) // FIXME: buttonEnabled not always true
+    }
+    
+    private func extractDisclaimer(from storefront: Storefront) -> AnyStorefrontItem? {
+        guard storefront.isProductPurchasable else {
+            return nil
+        }
+        return DisclaimerStorefrontItem(text: LocalString._iap_disclamer)
+    }
+    
+    private func extractBuyLink(from storefront: Storefront) -> AnyStorefrontItem? {
+        guard storefront.canBuyMoreCredits else {
+            return nil
+        }
+        
+        var body = [NSAttributedString.Key: Any]()
+        body[.font] = UIFont.preferredFont(forTextStyle: .body)
+        return LinkStorefrontItem(text: NSAttributedString(string:LocalString._buy_more_credits, attributes: body))
     }
 }

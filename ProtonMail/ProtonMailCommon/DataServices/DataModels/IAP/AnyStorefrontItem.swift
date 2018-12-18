@@ -62,9 +62,26 @@ class SubsectionHeaderStorefrontItem: AnyStorefrontItem {
         self.text = text
     }
 }
+class DisclaimerStorefrontItem: AnyStorefrontItem {
+    var text: String
+    init(text: String) {
+        self.text = text
+    }
+}
 class LinkStorefrontItem: AnyStorefrontItem {
     var text: NSAttributedString
     init(text: NSAttributedString) {
         self.text = text
+    }
+}
+class BuyButtonStorefrontItem: AnyStorefrontItem {
+    var subtitle: String?
+    var buttonTitle: NSAttributedString?
+    var buttonEnabled: Bool
+    
+    init(subtitle: String?, buttonTitle: NSAttributedString?, buttonEnabled: Bool) {
+        self.subtitle = subtitle
+        self.buttonTitle = buttonTitle
+        self.buttonEnabled = buttonEnabled
     }
 }

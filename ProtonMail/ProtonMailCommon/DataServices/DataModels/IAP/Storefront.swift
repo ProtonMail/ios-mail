@@ -35,19 +35,36 @@ class Storefront: NSObject {
     var others: [ServicePlan]
     var title: String
     
+    var canBuyMoreCredits: Bool = false
+    var isProductPurchasable: Bool = false
+    
     init(plan: ServicePlan) {
         self.plan = plan
         self.details = plan.fetchDetails()!
         self.others = []
         self.title = plan.subheader.0
+        
+        if plan == .plus, ServicePlanDataService.shared.currentSubscription?.plan == .free {
+            self.isProductPurchasable = true
+        }
     }
     
     init(subscription: Subscription) {
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
-        self.others = Array<ServicePlan>.init(arrayLiteral: .free, .plus, .pro, .visionary).filter({ $0 != subscription.plan })
         self.title = LocalString._menu_service_plan_title
+        
+        // FIXME: only plus
+        self.others = Array<ServicePlan>.init(arrayLiteral: .free, .plus, .pro, .visionary).filter({ $0 != subscription.plan })
+        
+        //FIXME: only plus, payed via apple, expired
+        if subscription.plan != .free, // == .plus
+            !subscription.hadOnlinePayments/*,
+            ServicePlanDataService.shared.currentSubscription?.end?.compare(Date()) == .orderedAscending */
+        {
+            self.canBuyMoreCredits = true
+        }
     }
 }
 

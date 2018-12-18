@@ -34,7 +34,7 @@
             </objects>
             <point key="canvasLocation" x="-63.200000000000003" y="2.2488755622188905"/>
         </scene>
-        <!--Storefront Collection View Controller-->
+        <!--Delegate-->
         <scene sceneID="I8k-N1-kC7">
             <objects>
                 <collectionViewController storyboardIdentifier="StorefrontCollectionViewController" id="vxv-63-yqK" customClass="StorefrontCollectionViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
@@ -139,6 +139,30 @@
                                 </constraints>
                                 <connections>
                                     <outlet property="header" destination="g2h-C6-YxM" id="Xqa-aQ-6ER"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="BuyButtonCell" id="s6F-nm-sdO" customClass="BuyButtonCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="2" y="372" width="371" height="83"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="371" height="83"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qOq-LI-ftY" customClass="ServicePlanFooter" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="371" height="83"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="qOq-LI-ftY" secondAttribute="trailing" id="4Dg-sA-pIv"/>
+                                    <constraint firstAttribute="bottom" secondItem="qOq-LI-ftY" secondAttribute="bottom" id="9vO-lX-m8o"/>
+                                    <constraint firstItem="qOq-LI-ftY" firstAttribute="leading" secondItem="s6F-nm-sdO" secondAttribute="leading" id="RYJ-3d-mez"/>
+                                    <constraint firstItem="qOq-LI-ftY" firstAttribute="top" secondItem="s6F-nm-sdO" secondAttribute="top" id="dGa-9h-hWa"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="vxv-63-yqK" id="1Jn-0Y-vYo"/>
+                                    <outlet property="footerView" destination="qOq-LI-ftY" id="Bh0-Ws-sgc"/>
                                 </connections>
                             </collectionViewCell>
                         </cells>

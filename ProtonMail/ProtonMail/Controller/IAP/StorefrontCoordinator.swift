@@ -30,8 +30,8 @@ import UIKit
 
 class StorefrontCoordinator: PushCoordinator {
     typealias VC = StorefrontCollectionViewController
-    var viewController: StorefrontCollectionViewController?
-    var navigationController: UINavigationController
+    weak var viewController: StorefrontCollectionViewController?
+    weak var navigationController: UINavigationController?
     var configuration: ((VC)->Void)?
     
     init(navigation: UINavigationController,
@@ -43,10 +43,15 @@ class StorefrontCoordinator: PushCoordinator {
     }
     
     func go(to nextPlan: ServicePlan) {
-        let nextCoordinator = StorefrontCoordinator(navigation: self.navigationController) { controller in
+        guard let navigationController = self.navigationController else { return }
+        let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
             let storefront = Storefront.init(plan: nextPlan)
             controller.viewModel = StorefrontViewModel(storefront: storefront)
         }
         nextCoordinator.start()
+    }
+    
+    func goToBuyMoreCredits() {
+        // TODO: implement
     }
 }

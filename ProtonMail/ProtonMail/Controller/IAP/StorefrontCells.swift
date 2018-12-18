@@ -41,13 +41,12 @@ class LogoCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var headerView: ServicePlanHeader!
     
     func setup(with item: AnyStorefrontItem) {
-        guard let item = item as? LogoStorefrontItem else {
+        if let item = item as? LogoStorefrontItem {
+            self.headerView.setup(image: UIImage(named: item.imageName)?.withRenderingMode(.alwaysTemplate),
+                                  title: item.title,
+                                  subicon: item.subtitle)
             return
         }
-    
-        self.headerView.setup(image: UIImage(named: item.imageName)?.withRenderingMode(.alwaysTemplate),
-                              title: item.title,
-                              subicon: item.subtitle)
     }
 }
 
@@ -73,11 +72,28 @@ class AnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var footerView: ServicePlanFooter!
     
     func setup(with item: AnyStorefrontItem) {
-        guard let item = item as? AnnotationStorefrontItem else {
+        if let item = item as? AnnotationStorefrontItem {
+            self.footerView.setup(title: item.text)
             return
         }
-        
-        self.footerView.setup(title: item.text)
+    }
+}
+
+@objc protocol BuyButtonCellDelegate: class {
+    func buyButtonTapped()
+}
+class BuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {
+    @IBOutlet weak var delegate: BuyButtonCellDelegate?
+    @IBOutlet weak var footerView: ServicePlanFooter!
+    
+    func setup(with item: AnyStorefrontItem) {
+        if let item = item as? BuyButtonStorefrontItem {
+            self.footerView.setup(subTitle: item.subtitle,
+                                  buttonTitle: item.buttonTitle,
+                                  buttonEnabled: item.buttonEnabled,
+                                  buttonAction: { _ in self.delegate?.buyButtonTapped() })
+            return
+        }
     }
 }
 
@@ -90,7 +106,10 @@ class DisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
             return
         }
         
-        // disclaimer
+        if let item = item as? DisclaimerStorefrontItem {
+            self.header.setup(title: item.text, textAlignment: .center)
+            return
+        }
     }
 }
 
