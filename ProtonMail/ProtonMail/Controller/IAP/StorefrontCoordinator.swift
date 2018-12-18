@@ -51,7 +51,12 @@ class StorefrontCoordinator: PushCoordinator {
         nextCoordinator.start()
     }
     
-    func goToBuyMoreCredits() {
-        // TODO: implement
+    func goToBuyMoreCredits(for subscription: Subscription) {
+        guard let navigationController = self.navigationController else { return }
+        let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
+            let storefront = Storefront(creditsFor: subscription)
+            controller.viewModel = StorefrontViewModel(storefront: storefront)
+        }
+        nextCoordinator.start()
     }
 }

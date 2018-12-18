@@ -31,12 +31,12 @@ import Foundation
 class Storefront: NSObject {
     var subscription: Subscription?
     var plan: ServicePlan
-    var details: ServicePlanDetails
+    var details: ServicePlanDetails?
     var others: [ServicePlan]
     var title: String
     
-    var canBuyMoreCredits: Bool = false
-    var isProductPurchasable: Bool = false
+    var canBuyMoreCredits: Bool
+    @objc dynamic var isProductPurchasable: Bool = false
     
     init(plan: ServicePlan) {
         self.plan = plan
@@ -44,9 +44,10 @@ class Storefront: NSObject {
         self.others = []
         self.title = plan.subheader.0
         
-        if plan == .plus, ServicePlanDataService.shared.currentSubscription?.plan == .free {
-            self.isProductPurchasable = true
-        }
+        self.isProductPurchasable = ( plan == .plus
+                                        && ServicePlanDataService.shared.currentSubscription?.plan == .free
+                                        && StoreKitManager.default.readyToPurchaseProduct() )
+        self.canBuyMoreCredits = false
     }
     
     init(subscription: Subscription) {
@@ -55,16 +56,55 @@ class Storefront: NSObject {
         self.details = subscription.details
         self.title = LocalString._menu_service_plan_title
         
-        // FIXME: only plus
-        self.others = Array<ServicePlan>.init(arrayLiteral: .free, .plus, .pro, .visionary).filter({ $0 != subscription.plan })
+        self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != subscription.plan })
         
-        //FIXME: only plus, payed via apple, expired
-        if subscription.plan != .free, // == .plus
-            !subscription.hadOnlinePayments/*,
-            ServicePlanDataService.shared.currentSubscription?.end?.compare(Date()) == .orderedAscending */
-        {
-            self.canBuyMoreCredits = true
+        self.isProductPurchasable = false
+        
+        // only plus, payed via apple, expired
+        self.canBuyMoreCredits = ( subscription.plan == .plus
+                                    && !subscription.hadOnlinePayments
+                                    && subscription.end?.compare(Date()) == .orderedAscending )
+    }
+    
+    init(creditsFor subscription: Subscription) {
+        self.subscription = subscription
+        self.plan = subscription.plan
+        self.title = LocalString._buy_more_credits
+        self.others = []
+        
+        self.isProductPurchasable = ( subscription.plan == .plus
+                                        && !subscription.hadOnlinePayments
+                                        && subscription.end?.compare(Date()) == .orderedAscending
+                                        && StoreKitManager.default.readyToPurchaseProduct() )
+        self.canBuyMoreCredits = false
+    }
+    
+    func buyProduct() {
+        guard let productId = self.plan.storeKitProductId else { return }
+        self.isProductPurchasable = false
+        
+        let successCompletion: ()->Void = {
+            // TODO: nice animation
         }
+        let errorCompletion: (Error)->Void = { [weak self] error in
+            DispatchQueue.main.async {
+                self?.isProductPurchasable = true
+                
+                let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+        let deferredCompletion: ()->Void = {
+            // TODO: nothing special
+        }
+        let canceledCompletion: ()->Void = { [weak self] in
+            DispatchQueue.main.async {
+                self?.isProductPurchasable = StoreKitManager.default.readyToPurchaseProduct()
+            }
+        }
+        StoreKitManager.default.refreshHandler = canceledCompletion
+        StoreKitManager.default.purchaseProduct(withId: productId, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
     }
 }
 

@@ -102,7 +102,9 @@ class StorefrontCollectionViewController: UICollectionViewController {
             }
         
         case .buyLink:
-            self.coordinator.goToBuyMoreCredits()
+            if let subscription = self.viewModel.currentSubscription {
+                self.coordinator.goToBuyMoreCredits(for: subscription)
+            }
             
         default: break
         }
