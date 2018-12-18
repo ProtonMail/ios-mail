@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 /// object for all the localization strings, this avoid some issues with xcode 9 import/export

@@ -29,19 +29,15 @@
 import Foundation
 import UICKeyChainStore
 
+//TODO:: move this to coordinator.
 //keep this unique
 let sharedVMService : ViewModelServiceImpl = ViewModelServiceImpl()
+//keep this unique
 class ViewModelServiceImpl: ViewModelService {
-    //the active view controller needs to be reset when resetComposerView be called
-    private var activeViewController : ViewModelProtocol?
-    //the active mailbox
-    private var mailboxViewController : ViewModelProtocolBase?
-    
-    //new one
+
     private var activeViewControllerNew : ViewModelProtocolBase?
     
-    private func setup(composer vmp: ViewModelProtocolBase, viewModel: ComposeViewModel) {
-        vmp.setModel(vm: viewModel)
+    private func setup(composer vmp: ViewModelProtocolBase) {
         self.activeViewControllerNew = vmp
     }
     
@@ -49,17 +45,7 @@ class ViewModelServiceImpl: ViewModelService {
         self.resetView()
     }
     
-    override func changeIndex() {
-        
-    }
-    
     override func resetView() {
-        if activeViewController != nil {
-            DispatchQueue.main.async {
-                self.activeViewController?.inactiveViewModel()
-                self.activeViewController = nil
-            }
-        }
         DispatchQueue.main.async {
             if let actived  = self.activeViewControllerNew {
                 actived.inactiveViewModel()
@@ -69,8 +55,7 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func newDraft(vmp: ViewModelProtocolBase) {
-        let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     override func newDraft(vmp: ViewModelProtocolBase, with contact: ContactVO?) {
@@ -78,17 +63,17 @@ class ViewModelServiceImpl: ViewModelService {
         if let c = contact {
             viewModel.addToContacts(c)
         }
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     override func openDraft(vmp: ViewModelProtocolBase, with msg: Message!) {
         let viewModel = ComposeViewModelImpl(msg: msg, action: .openDraft)
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     override func newDraft(vmp: ViewModelProtocolBase, with msg: Message!, action: ComposeMessageAction) {
         let viewModel = ComposeViewModelImpl(msg: msg, action: action)
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     override func newDraft(vmp: ViewModelProtocolBase, with mailTo: URL?) {
@@ -151,62 +136,36 @@ class ViewModelServiceImpl: ViewModelService {
                 }
             }
         }
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     override func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
         let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
         viewModel.addToContacts(group)
-        self.setup(composer: vmp, viewModel: viewModel)
+        self.setup(composer: vmp)
     }
     
     // msg details
-    override func messageDetails(fromList vmp: ViewModelProtocol) {
-        activeViewController = vmp
+    override func messageDetails(fromList vmp: ViewModelProtocolBase) {
+        activeViewControllerNew = vmp
     }
     
-    override func messageDetails(fromPush vmp: ViewModelProtocol) {
-        activeViewController = vmp
+    override func messageDetails(fromPush vmp: ViewModelProtocolBase) {
+        activeViewControllerNew = vmp
     }
     
     override func mailbox(fromMenu vmp : ViewModelProtocolBase) {
-        if let oldVC = mailboxViewController {
+        if let oldVC = activeViewControllerNew {
             oldVC.inactiveViewModel()
         }
-        mailboxViewController = vmp
-
+        activeViewControllerNew = vmp
     }
     
     override func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
-        if let oldVC = mailboxViewController {
+        if let oldVC = activeViewControllerNew {
             oldVC.inactiveViewModel()
         }
-//        mailboxViewController = vmp
-//        let viewModel = LabelboxViewModelImpl(label: label)
-//        vmp.setModel(vm: viewModel)
     }
-    
-    //
-    override func cleanLegacy() {
-        //get current cache version
-        let currentVersion = userCachedStatus.lastCacheVersion
-        if currentVersion > 0 && currentVersion < 98 {
-            sharedCoreDataService.cleanLegacy()//clean core data
-            
-            //get default sharedbased
-            let oldDefault = UserDefaults.standard
-            
-            //keychain part
-            oldDefault.removeObject(forKey: "keychainStoreKey")
-            UICKeyChainStore.removeItem(forKey: "keychainStoreKey")
-            
-            oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
-            UICKeyChainStore.removeItem(forKey: "UserTempCachedStatusKey")
-            
-            oldDefault.synchronize()
-        }
-    }
-    
     //contacts
     override func contactsViewModel(_ vmp: ViewModelProtocolBase) {
         activeViewControllerNew = vmp
@@ -233,13 +192,9 @@ class ViewModelServiceImpl: ViewModelService {
         vmp.setModel(vm: ContactEditViewModelImpl(c: contact))
     }
     
-    override func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
-        
-        if activeViewController != nil {
-            
-        }
-        activeViewController = vmp
-        vmp.setViewModel(ContactTypeViewModelImpl(t: type))
+    override func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
+        activeViewControllerNew = vmp
+        vmp.setModel(vm: ContactTypeViewModelImpl(t: type))
     }
     
     override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocolBase,
@@ -327,4 +282,29 @@ class ViewModelServiceImpl: ViewModelService {
     override func upgradeAlert(signature vmp: ViewModelProtocolBase) {
         vmp.setModel(vm: SignatureAlertViewModelImpl())
     }
+    
+    
+    
+    
+    //
+    override func cleanLegacy() {
+        //get current cache version
+        let currentVersion = userCachedStatus.lastCacheVersion
+        if currentVersion > 0 && currentVersion < 98 {
+            sharedCoreDataService.cleanLegacy()//clean core data
+            
+            //get default sharedbased
+            let oldDefault = UserDefaults.standard
+            
+            //keychain part
+            oldDefault.removeObject(forKey: "keychainStoreKey")
+            UICKeyChainStore.removeItem(forKey: "keychainStoreKey")
+            
+            oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
+            UICKeyChainStore.removeItem(forKey: "UserTempCachedStatusKey")
+            
+            oldDefault.synchronize()
+        }
+    }
+    
 }

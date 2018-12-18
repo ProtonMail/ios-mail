@@ -35,18 +35,25 @@ class WindowsCoordinator: CoordinatorNew {
     private var appWindow: UIWindow?
     
     let serviceHolder: ServiceFactory = {
-        let helper = ServiceFactory()
-        helper.add(AppCacheService.self, for: AppCacheService())
-        helper.add(AddressBookService.self, for: AddressBookService())
-        ///TEST
-        let addrService: AddressBookService = helper.get()
-        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-        helper.add(BugDataService.self, for: BugDataService())
+        let helper = ServiceFactory.default
         
-        ///
-        helper.add(MessageDataService.self, for: MessageDataService())
+        helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+        helper.add(ViewModelService.self, for: ViewModelServiceImpl())
         
-        
+//        helper.add(AppCacheService.self, for: AppCacheService())
+//        helper.add(AddressBookService.self, for: AddressBookService())
+//        ///TEST
+//        let addrService: AddressBookService = helper.get()
+//        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+//        helper.add(BugDataService.self, for: BugDataService())
+//
+//        ///
+//        let msgService: MessageDataService = MessageDataService()
+//        helper.add(MessageDataService.self, for: msgService)
+//        helper.add(PushNotificationService.self, for: PushNotificationService(service: msgService))
+//
+//        return helper
+        ///TODO::fixme 
         return helper
     }()
     
@@ -68,6 +75,7 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
+        
     }
 
     func start() {

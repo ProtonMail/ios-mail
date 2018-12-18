@@ -42,7 +42,8 @@ final class ServiceFactory {
         helper.add(BugDataService.self, for: BugDataService())
         
         ///
-        helper.add(MessageDataService.self, for: MessageDataService())
+        let msgService: MessageDataService = MessageDataService()
+        helper.add(MessageDataService.self, for: msgService)
         
         return helper
     }()

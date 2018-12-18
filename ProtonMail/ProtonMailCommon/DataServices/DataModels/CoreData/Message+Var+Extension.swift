@@ -30,10 +30,19 @@ import Foundation
 
 
 extension Message {
+    
+    /// check if contains exclusive lable
+    ///
+    /// - Parameter label: Location
+    /// - Returns: yes or no
     internal func contains(label: Location) -> Bool {
         return self.contains(label: label.rawValue)
     }
     
+    /// check if contains the lable
+    ///
+    /// - Parameter labelID: label id
+    /// - Returns: yes or no
     internal func contains(label labelID : String) -> Bool {
         let labels = self.labels
         for l in labels {
@@ -44,12 +53,14 @@ extension Message {
         return false
     }
     
+    /// check if message starred
     var starred : Bool {
         get {
             return self.contains(label: Location.starred)
         }
     }
     
+    /// check if message forwarded
     var forwarded : Bool {
         get {
             return self.flag.contains(.forwarded)
@@ -65,62 +76,26 @@ extension Message {
         }
     }
     
+    /// check if message contains a draft label
     var draft : Bool {
         get {
             return self.contains(label: Location.draft)
         }
     }
     
+    /// get all labelIDs for moving messages
+    var labelIDs : [String] {
+        var labelIDs = [String]()
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                labelIDs.append(label.labelID)
+            }
+        }
+        return labelIDs
+    }
     
-    //    var sendOrDraft : Bool {
-    //        get {
-    //            if self.flag.contains(.rece) || self.flag.contains(.sent) {
-    //                return true
-    //            }
-    //            return false
-    //        }
-    //
-    //    }
-    //    func hasDraftLabel() -> Bool {
-    //        let labels = self.labels
-    //        for l in labels {
-    //            if let label = l as? Label {
-    //                if let l_id = Int(label.labelID) {
-    //                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
-    //                        return true
-    //                    }
-    //                }
-    //
-    //            }
-    //        }
-    //        return false
-    //    }
-    //
-    //    func hasLocation(location : MessageLocation) -> Bool {
-    //        for l in getLocationFromLabels() {
-    //            if l == location {
-    //                return true
-    //            }
-    //        }
-    //        return false
-    //    }
-    //
-    //    func getLocationFromLabels() ->  [MessageLocation] {
-    //        var locations = [MessageLocation]()
-    //        let labels = self.labels
-    //        for l in labels {
-    //            if let label = l as? Label {
-    //                if let l_id = Int(label.labelID) {
-    //                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
-    //                        locations.append(new_loc)
-    //                    }
-    //                }
-    //
-    //            }
-    //        }
-    //        return locations
-    //    }
-    
+    /// check if message replied
     var replied : Bool {
         get {
             return self.flag.contains(.replied)
@@ -136,6 +111,7 @@ extension Message {
         }
     }
     
+    /// check if message replied to all
     var repliedAll : Bool {
         get {
             return self.flag.contains(.repliedAll)
@@ -151,4 +127,37 @@ extension Message {
         }
     }
 
+    
 }
+
+
+
+
+
+
+
+//    var sendOrDraft : Bool {
+//        get {
+//            if self.flag.contains(.rece) || self.flag.contains(.sent) {
+//                return true
+//            }
+//            return false
+//        }
+//    }
+//
+//    func getLocationFromLabels() ->  [MessageLocation] {
+//        var locations = [MessageLocation]()
+//        let labels = self.labels
+//        for l in labels {
+//            if let label = l as? Label {
+//                if let l_id = Int(label.labelID) {
+//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
+//                        locations.append(new_loc)
+//                    }
+//                }
+//
+//            }
+//        }
+//        return locations
+//    }
+

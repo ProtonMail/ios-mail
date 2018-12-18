@@ -48,6 +48,8 @@ class ContactTabBarCoordinator: DefaultCoordinator {
         
         /// setup contacts vc
         if let viewController = viewController?.contactsViewController {
+            let vmService = services.get() as ViewModelService
+            
             sharedVMService.contactsViewModel(viewController)
         }
         

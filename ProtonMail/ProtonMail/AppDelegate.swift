@@ -56,9 +56,9 @@ extension SWRevealViewController {
         } else if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    sharedVMService.mailbox(fromMenu: mailboxViewController)
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
-                    let viewModel = MailboxViewModelImpl(label: .inbox, service: ServiceFactory.default.get() as MessageDataService)
+                    sharedVMService.mailbox(fromMenu: mailboxViewController)
+                    let viewModel = MailboxViewModelImpl(label: .inbox, service: ServiceFactory.default.get(),pushService: ServiceFactory.default.get())
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: ServiceFactory.default)
                     mailbox.start()                    
                 }
@@ -145,8 +145,9 @@ extension AppDelegate: UIApplicationDelegate {
         LanguageManager.setupCurrentLanguage()
         
         ///TODO::fixme we don't need to register remote when start. we only need to register after user logged in
-        PushNotificationService.shared.registerForRemoteNotifications()
-        PushNotificationService.shared.setLaunchOptions(launchOptions)
+        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
+        pushService.registerForRemoteNotifications()
+        pushService.setLaunchOptions(launchOptions)
         
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
@@ -278,16 +279,18 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
         ///TODO::fixme deep link
+        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
         if UnlockManager.shared.isUnlocked() {
-            PushNotificationService.shared.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+            pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
-            PushNotificationService.shared.setNotificationOptions(userInfo)
+            pushService.setNotificationOptions(userInfo)
         }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         PMLog.D(deviceToken.stringFromToken())
-        PushNotificationService.shared.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
+        pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {

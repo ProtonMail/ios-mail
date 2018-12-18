@@ -28,7 +28,6 @@
 
 import Foundation
 
-
 enum MessageSwipeAction : Int, CustomStringConvertible {
     case trash = 0
     case spam = 1

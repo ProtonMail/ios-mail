@@ -37,52 +37,51 @@ enum SwipeResponse {
 
 class UndoMessage {
     var messageID : String
-    var origLabel : String
+    var origLabels : [String]
+    var newLabels : [String]
+    
     //
-    required init(msgID:String, origLabel : String) {
-        self.messageID = msgID
-        self.origLabel = origLabel
+    required init(msgID: String, origLabels : [String], newLabels: [String]) {
+        self.messageID  = msgID
+        self.origLabels = origLabels
+        self.newLabels  = newLabels
     }
 }
 
+
 class MailboxViewModel {
-    typealias CompletionBlock = APIService.CompletionBlock
-    
     private let labelID : String
+    /// message service
     private let messageService : MessageDataService
-    // MARK: - fetch controller
+    private let pushService : PushNotificationService
+    /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
+    /// local message for rating
+    private var ratingMessage : Message?
     
-    
-    init(labelID : String, msgService: MessageDataService) {
+    /// mailbox viewModel
+    ///
+    /// - Parameters:
+    ///   - labelID: location id and labelid
+    ///   - msgService: service instance
+    init(labelID : String, msgService: MessageDataService, pushService: PushNotificationService) {
         self.labelID = labelID
         self.messageService = msgService
+        self.pushService = pushService
     }
     
+    /// localized navigation title. overrride it or return label name
     var localizedNavigationTitle : String {
         get {
             return ""
         }
     }
     
-    func setupFetchController(_ delegate: NSFetchedResultsControllerDelegate?) {
-        self.fetchedResultsController = self.getFetchedResultsController()
-        self.fetchedResultsController?.delegate = delegate
-    }
-    
-    func resetFetchedController() {
-        if let controller = self.fetchedResultsController {
-            controller.delegate = nil
-        }
-    }
-    
-    
-    func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
-        fatalError("This method must be overridden")
-    }
-    
-    func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let fetchedResultsController = sharedMessageDataService.fetchedResults(by: self.labelID)
+    /// create a fetch controller with labelID
+    ///
+    /// - Returns: fetched result controller
+    private func makeFetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+        let fetchedResultsController = messageService.fetchedResults(by: self.labelID)
         if let fetchedResultsController = fetchedResultsController {
             do {
                 try fetchedResultsController.performFetch()
@@ -93,14 +92,43 @@ class MailboxViewModel {
         return fetchedResultsController
     }
     
+    /// setup fetch controller
+    ///
+    /// - Parameter delegate: delegate from viewcontroller
+    func setupFetchController(_ delegate: NSFetchedResultsControllerDelegate?) {
+        self.fetchedResultsController = self.makeFetchController()
+        self.fetchedResultsController?.delegate = delegate
+    }
+    
+    /// reset delegate if fetch controller is valid
+    func resetFetchedController() {
+        if let controller = self.fetchedResultsController {
+            controller.delegate = nil
+        }
+    }
+
+    
+    ///Mark -- table view usesage
+    
+    /// get section cound
+    ///
+    /// - Returns: 
     func sectionCount() -> Int {
         return fetchedResultsController?.numberOfSections() ?? 0
     }
     
+    /// get row count of a section
+    ///
+    /// - Parameter section: section index
+    /// - Returns: row count
     func rowCount(section: Int) -> Int {
         return fetchedResultsController?.numberOfRows(in: section) ?? 0
     }
     
+    /// get message item from a indexpath
+    ///
+    /// - Parameter index: table cell indexpath
+    /// - Returns: message (nil)
     func item(index: IndexPath) -> Message? {
         guard self.fetchedResultsController?.numberOfSections() > index.section else {
             return nil
@@ -111,19 +139,10 @@ class MailboxViewModel {
         return fetchedResultsController?.object(at: index) as? Message
     }
     
-    func loadMore(index: IndexPath) -> Bool {
-        guard self.fetchedResultsController?.numberOfSections() > index.section else {
-            return false
-        }
-        guard let total = self.fetchedResultsController?.numberOfRows(in: index.section) else {
-            return false
-        }
-        if total - index.row <= 2 {
-            return true
-        }
-        return false
-    }
-
+    
+    ///Mark -- operations
+    
+    /// clean up the rate/review items
     func cleanReviewItems() {
         if let context = fetchedResultsController?.managedObjectContext {
             context.perform {
@@ -148,9 +167,90 @@ class MailboxViewModel {
     }
     
     
+    /// check if need to load more older messages
+    ///
+    /// - Parameter index: the current table index
+    /// - Returns: yes or no
+    func loadMore(index: IndexPath) -> Bool {
+        guard self.fetchedResultsController?.numberOfSections() > index.section else {
+            return false
+        }
+        guard let total = self.fetchedResultsController?.numberOfRows(in: index.section) else {
+            return false
+        }
+        if total - index.row <= 2 {
+            return true
+        }
+        return false
+    }
+    
+    /// the latest cache time of current location
+    ///
+    /// - Returns: location cache info
     func lastUpdateTime() -> UpdateTime {
         return lastUpdatedStore.labelsLastForKey(self.labelID)
     }
+    
+    
+    func processCachedPush() {
+        self.pushService.processCachedLaunchOptions()
+    }
+    
+    var ratingIndex : IndexPath? {
+        get {
+            if let msg = ratingMessage {
+                if let indexPath = fetchedResultsController?.indexPath(forObject: msg) {
+                    return indexPath
+                }
+            }
+            return nil
+        }
+    }
+    
+    func move(from index: IndexPath, to location: Message.Location) {
+        guard let message = self.item(index: index) else {
+            return
+        }
+        
+        let currentLabels = message.labels
+        
+        
+        
+        //call api here. better to cache it.
+//        messageService
+//        self.updateBadgeNumberWhenMove(msg, to: .archive)
+//        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
+//        msg.needsUpdate = true
+//        msg.location = .archive
+//        if let context = msg.managedObjectContext {
+//            context.perform {
+//                if let error = context.saveUpstreamIfNeeded() {
+//                    PMLog.D("error: \(error)")
+//                }
+//            }
+//        }
+    }
+    
+    func label(on index: IndexPath, with labelID: String) {
+        guard let message = self.item(index: index) else {
+            return
+        }
+        
+        // call api here. better to cache it.
+        //        messageService
+        //        self.updateBadgeNumberWhenMove(msg, to: .archive)
+        //        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
+        //        msg.needsUpdate = true
+        //        msg.location = .archive
+        //        if let context = msg.managedObjectContext {
+        //            context.perform {
+        //                if let error = context.saveUpstreamIfNeeded() {
+        //                    PMLog.D("error: \(error)")
+        //                }
+        //            }
+        //        }
+    }
+    
     
     func getSwipeTitle(_ action: MessageSwipeAction) -> String {
         fatalError("This method must be overridden")
@@ -351,12 +451,14 @@ class MailboxViewModel {
     func emptyFolder() {
     }
     
+    
+    typealias CompletionBlock = APIService.CompletionBlock
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
+        messageService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
     }
     
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchEvents(byLable: self.labelID, notificationMessageID: notificationMessageID, completion: completion)
+        messageService.fetchEvents(byLable: self.labelID, notificationMessageID: notificationMessageID, completion: completion)
     }
     
     /// fetch messages and reset events
@@ -365,18 +467,24 @@ class MailboxViewModel {
     ///   - time: the latest mailbox cached time
     ///   - completion: aync complete handler
     func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
-        sharedMessageDataService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+        messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
     }
     
     /// get the cached notification message id
     var notificationMessageID : String? {
         get {
-            return sharedMessageDataService.pushNotificationMessageID
+            return messageService.pushNotificationMessageID
+        }
+    }
+    
+    var notificationMessage : Message? {
+        get {
+            return messageService.messageFromPush()
         }
     }
     
     final func resetNotificationMessage() -> Void {
-        sharedMessageDataService.pushNotificationMessageID = nil
+        messageService.pushNotificationMessageID = nil
     }
     
     

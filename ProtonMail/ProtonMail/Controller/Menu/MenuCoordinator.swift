@@ -153,7 +153,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
-            let viewModel = MailboxViewModelImpl(label: .inbox, service: services.get() as MessageDataService)
+            let viewModel = MailboxViewModelImpl(label: .inbox, service: services.get(), pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             mailbox.start()
         case .settings:

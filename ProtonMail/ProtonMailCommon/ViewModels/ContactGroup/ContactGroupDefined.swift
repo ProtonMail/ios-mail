@@ -28,8 +28,7 @@
 
 import Foundation
 
-enum ContactGroupEditViewControllerState
-{
+enum ContactGroupEditViewControllerState {
     case create
     case edit
 }

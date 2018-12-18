@@ -33,9 +33,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
 
     private let label : Message.Location
 
-    init(label : Message.Location, service: MessageDataService) {
+    init(label : Message.Location, service: MessageDataService, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: label.rawValue, msgService: service)
+        super.init(labelID: label.rawValue, msgService: service, pushService: pushService)
     }
     
     override var localizedNavigationTitle: String {

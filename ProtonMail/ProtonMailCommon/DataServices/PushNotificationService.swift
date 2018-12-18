@@ -41,7 +41,7 @@ public class PushNotificationService: Service {
     
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
-    public static var shared = PushNotificationService()
+    
     private let subscriptionSaver: Saver<Subscription>
     private let outdatedSaver: Saver<Set<SubscriptionSettings>>
     private let encryptionKitSaver: Saver<SubscriptionSettings>
@@ -50,8 +50,9 @@ public class PushNotificationService: Service {
     private let signInProvider: SignInProvider
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
-    
-    init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
+    private let messageService: MessageDataService
+    init(service: MessageDataService,
+         subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
@@ -60,6 +61,7 @@ public class PushNotificationService: Service {
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
     {
+        self.messageService = service
         self.subscriptionSaver = subscriptionSaver
         self.encryptionKitSaver = encryptionKitSaver
         self.outdatedSaver = outdatedSaver
@@ -271,7 +273,7 @@ public class PushNotificationService: Service {
         }
         
         //revealViewController
-        sharedMessageDataService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler(.failed)
                 return
@@ -281,7 +283,7 @@ public class PushNotificationService: Service {
             if let front = revealViewController.frontViewController as? UINavigationController,
                 let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController
             {
-                sharedMessageDataService.pushNotificationMessageID = messageid
+                self.messageService.pushNotificationMessageID = messageid
                 mailboxViewController.performSegueForMessageFromNotification()
             }
             completionHandler(.newData)

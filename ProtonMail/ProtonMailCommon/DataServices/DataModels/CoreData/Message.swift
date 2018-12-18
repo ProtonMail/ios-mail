@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 
@@ -83,6 +84,10 @@ final public class Message: NSManagedObject {
     @NSManaged public var attachments: NSSet
     //"LabelIDs":[ "1", "d3HYa3E394T_ACXDmTaBub14w==" ],
     @NSManaged public var labels: NSSet
+    
+    
+    /// Mark -- local only
+    @NSManaged public var messageType : NSNumber  // 0 message 1 rate
 
     
     ///
@@ -106,7 +111,6 @@ final public class Message: NSManagedObject {
     //
     
     /// loacal only
-    @NSManaged public var messageType : NSNumber  // 0 message 1 rate
     @NSManaged public var messageStatus : NSNumber  // bit 0x00000000 no metadata  0x00000001 has
     
     @NSManaged public var isShowedImages : Bool

@@ -48,8 +48,6 @@ class ComposeCoordinator : DefaultCoordinator {
         self.services = services
         let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
         let composer = rootViewController.children[0] as! ComposeViewController
-        composer.set(viewModel: vm)
-        composer.set(coordinator: self)
         self.viewController = composer
     }
     
@@ -109,6 +107,9 @@ class ComposeCoordinator : DefaultCoordinator {
     }
     
     func start() {
+        viewController?.set(viewModel: self.viewModel)
+        viewController?.set(coordinator: self)
+        
         if let navigation = self.navigationController, let vc = self.viewController {
             navigation.setViewControllers([vc], animated: true)
         }

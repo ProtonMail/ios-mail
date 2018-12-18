@@ -31,9 +31,9 @@ import CoreData
 
 class LabelboxViewModelImpl : MailboxViewModel {
     private let label : Label
-    init(label : Label, service: MessageDataService) {
+    init(label : Label, service: MessageDataService, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: self.label.labelID, msgService: service)
+        super.init(labelID: self.label.labelID, msgService: service, pushService: pushService)
     }
     
     override func showLocation () -> Bool {
@@ -45,9 +45,6 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     open func stayAfterAction () -> Bool {
-        if label.exclusive {
-            return false
-        }
         return true
     }
 

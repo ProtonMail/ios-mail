@@ -29,8 +29,7 @@
 import Foundation
 import PromiseKit
 
-class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
-{
+class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
     /// the contact group label ID
     let groupID: String
     

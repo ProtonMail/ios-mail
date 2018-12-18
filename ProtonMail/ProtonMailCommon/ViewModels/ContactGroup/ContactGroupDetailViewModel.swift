@@ -29,8 +29,7 @@
 import Foundation
 import PromiseKit
 
-protocol ContactGroupDetailViewModel
-{
+protocol ContactGroupDetailViewModel {
     func getGroupID() -> String
     func getName() -> String
     func getColor() -> String

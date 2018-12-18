@@ -50,6 +50,10 @@ class MessageDataService : Service {
     
     fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
+    
+    private var managedObjectContext: NSManagedObjectContext? {
+        return sharedCoreDataService.mainManagedObjectContext
+    }
 
     init() {
         setupMessageMonitoring()
@@ -404,16 +408,86 @@ class MessageDataService : Service {
     }
     
     
+    /// upload attachment to server
+    ///
+    /// - Parameter att: Attachment
+    func upload( att : Attachment) {
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D("error: \(error)")
+                self.dequeueIfNeeded()
+            } else {
+                self.queue(att, action: .uploadAtt)
+            }
+        }
+    }
     
     
+    /// delete attachment from server
+    ///
+    /// - Parameter att: Attachment
+    func delete(att: Attachment!) {
+        let attachmentID = att.attachmentID
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            context.delete(att)
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+        }
+        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
+        dequeueIfNeeded()
+    }
+    
+    // MARK : Send message
+    func send(inQueue messageID : String!, completion: CompletionBlock?) {
+        var error: NSError?
+        if let context = sharedCoreDataService.mainManagedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                //message.location = .outbox
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D(" error: \(String(describing: error))")
+                } else {
+                    self.queue(message, action: .send)
+                }
+            } else {
+                //TODO:: handle can't find the message error.
+            }
+        } else {
+            error = NSError.protonMailError(500, localizedDescription: "No managedObjectContext", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+        }
+        completion?(nil, nil, error)
+    }
+    
+    func updateMessageCount() {
+        let counterApi = MessageCount()
+        counterApi.call({ (task, response, hasError) in
+            if !hasError {
+                self.processEvents(counts: response?.counts)
+            }
+        })
+    }
     
     
-    
+    func messageFromPush() -> Message? {
+        guard let msgID = self.pushNotificationMessageID else {
+            return nil
+        }
+        
+        guard let context = self.managedObjectContext else {
+            return nil
+        }
+        
+        guard let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) else {
+            return nil
+        }
+        return message
+    }
     
     
     ////////////////////////////////////////
     
-    
+    ///TODO::fixme - double check it
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
         guard let context = managedObjectContext else {
@@ -446,52 +520,8 @@ class MessageDataService : Service {
         message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
         message.cachedAddress = message.defaultAddress // computed property depending on current user settings
     }
-    
-    // MAKR : upload attachment
-    func uploadAttachment(_ att: Attachment!) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-                self.dequeueIfNeeded()
-            } else {
-                self.queue(att, action: .uploadAtt)
-            }
-        }
-    }
-    
-    func delete(att: Attachment!) {
-        let attachmentID = att.attachmentID
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.delete(att)
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-        }
-        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
-        dequeueIfNeeded()
-    }
-    
-    
-    // MARK : Send message
-    func send(inQueue messageID : String!, completion: CompletionBlock?) {
-        var error: NSError?
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
-                } else {
-                    self.queue(message, action: .send)
-                }
-            } else {
-                //TODO:: handle can't find the message error.
-            }
-        } else {
-            error = NSError.protonMailError(500, localizedDescription: "No managedObjectContext", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
-        }
-        completion?(nil, nil, error)
-    }
+
+
     
     
     //
@@ -500,22 +530,11 @@ class MessageDataService : Service {
 //            queue(.emptyTrash)
 //        }
     }
-    
     func emptySpam() {
 //        if Message.deleteLocation(MessageLocation.spam) {
 //            queue(.emptySpam)
 //        }
     }
-    
-    func updateMessageCount() {
-        let counterApi = MessageCount()
-        counterApi.call({ (task, response, hasError) in
-            if !hasError {
-                self.processEvents(counts: response?.counts)
-            }
-        })
-    }
-    
     // MARK : fetch functions
     
     /**
@@ -1382,10 +1401,9 @@ class MessageDataService : Service {
         api.call({ (task, response, hasError) -> Void in
             completion?(task, nil, nil)
         })
-
     }
     
-    //TODO:: fixme
+//    //TODO:: fixme
 //    private func labelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
 //        let labelID = "\(location.rawValue)"
 //        let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
@@ -1393,7 +1411,7 @@ class MessageDataService : Service {
 //            completion?(task, nil, response?.error)
 //        })
 //    }
-//
+    
 //    private func unLabelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
 //        guard location == .starred else {
 //            completion?(nil, nil, nil)
@@ -1757,7 +1775,7 @@ class MessageDataService : Service {
     
     // MARK: Notifications
     
-    fileprivate func setupNotifications() {
+    private func setupNotifications() {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(MessageDataService.didSignOutNotification(_:)),
                                                name: NSNotification.Name.didSignOut,
@@ -1770,7 +1788,7 @@ class MessageDataService : Service {
     }
     
     // MARK: Queue
-    fileprivate func writeQueueCompletionBlockForElementID(_ elementID: UUID, messageID : String, actionString : String) -> CompletionBlock {
+    private func writeQueueCompletionBlockForElementID(_ elementID: UUID, messageID : String, actionString : String) -> CompletionBlock {
         return { task, response, error in
             sharedMessageQueue.isInProgress = false
             if error == nil {
@@ -1857,7 +1875,7 @@ class MessageDataService : Service {
         self.dequeueIfNeeded(notify: notify)
     }
     
-    fileprivate func dequeueIfNeeded(notify : (() -> Void)? = nil) {
+    private func dequeueIfNeeded(notify : (() -> Void)? = nil) {
         
         if notify == nil {
             if sharedMessageQueue.count <= 0 && readQueue.count <= 0 {
@@ -1920,7 +1938,7 @@ class MessageDataService : Service {
     }
     
     
-    fileprivate func queue(_ message: Message, action: MessageAction) {
+    private func queue(_ message: Message, action: MessageAction) {
         self.cachePropertiesForBackground(in: message)
         if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
@@ -1961,7 +1979,6 @@ class MessageDataService : Service {
 //                }
 //            }
 //        })
-//
         sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.unRead, handler: { message in
             if message.needsUpdate {
                 let action: MessageAction = message.unRead ? .unread : .read
@@ -1976,7 +1993,6 @@ class MessageDataService : Service {
 //            }
 //        })
     }
-    
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()

@@ -29,7 +29,7 @@
 import Foundation
 
 // this is abstract ViewModel service for tracking the ui flow
-class ViewModelService {
+class ViewModelService : Service {
     
     func changeIndex() {
         fatalError("This method must be overridden")
@@ -68,10 +68,10 @@ class ViewModelService {
     
     
     //messgae detail part
-    func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
+    func messageDetails(fromList vmp : ViewModelProtocolBase) -> Void {
         fatalError("This method must be overridden")
     }
-    func messageDetails(fromPush vmp : ViewModelProtocol) -> Void {
+    func messageDetails(fromPush vmp : ViewModelProtocolBase) -> Void {
         fatalError("This method must be overridden")
     }
     
@@ -109,7 +109,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
+    func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
         fatalError("This method must be overridden")
     }
     

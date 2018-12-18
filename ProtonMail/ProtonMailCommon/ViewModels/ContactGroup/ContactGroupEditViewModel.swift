@@ -33,8 +33,7 @@ protocol ContactGroupEditViewControllerDelegate: class {
     func update()
 }
 
-enum ContactGroupEditError: Error
-{
+enum ContactGroupEditError: Error {
     case noEmailInGroup
     case noNameForGroup
     

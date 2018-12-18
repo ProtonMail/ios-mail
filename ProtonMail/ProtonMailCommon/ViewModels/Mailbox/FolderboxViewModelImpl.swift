@@ -31,9 +31,10 @@ import CoreData
 
 class FolderboxViewModelImpl : MailboxViewModel {
     private let label : Label
-    init(label : Label, service: MessageDataService) {
+    
+    init(label : Label, service: MessageDataService, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: self.label.labelID, msgService: service)
+        super.init(labelID: self.label.labelID, msgService: service, pushService: pushService)
     }
     
     override func showLocation () -> Bool {
@@ -45,10 +46,7 @@ class FolderboxViewModelImpl : MailboxViewModel {
     }
     
     open func stayAfterAction () -> Bool {
-        if label.exclusive {
-            return false
-        }
-        return true
+        return false
     }
     
     override var localizedNavigationTitle: String {
@@ -60,10 +58,7 @@ class FolderboxViewModelImpl : MailboxViewModel {
     }
     
     open override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
-        if label.exclusive {
-            return false
-        }
-        return true
+        return false
     }
     
     open override func deleteMessage(_ msg: Message) -> SwipeResponse {

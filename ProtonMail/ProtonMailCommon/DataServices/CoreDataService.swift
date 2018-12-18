@@ -82,7 +82,6 @@ class CoreDataService {
     }()
     
     
-    
     // MARK: - methods
     
     func managedObjectIDForURIRepresentation(_ urlString: String) -> NSManagedObjectID? {

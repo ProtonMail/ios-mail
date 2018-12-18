@@ -1,5 +1,5 @@
 //
-//  CaptchViewModel.swift
+//  HumanCheckViewModel.swift
 //  ProtonMail - Created on 12/28/16.
 //
 //

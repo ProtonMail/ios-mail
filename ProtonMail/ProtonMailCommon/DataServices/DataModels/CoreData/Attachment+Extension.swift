@@ -25,12 +25,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
-
+//TODO::fixme import header
 extension Attachment {
     
     struct Attributes {

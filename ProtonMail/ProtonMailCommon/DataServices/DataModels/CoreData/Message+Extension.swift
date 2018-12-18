@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 import Crypto
@@ -92,22 +93,64 @@ extension Message {
         return lists
     }
     
-    
-//    var location: MessageLocation {
-//        get {
-//            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
-//        }
-//        set {
-//            locationNumber = newValue.rawValue as NSNumber
-//        }
-//    }
-    
     func getScore() -> Message.SpamScore {
         if let e = Message.SpamScore(rawValue: self.spamScore.intValue) {
             return e
         }
         return .others
     }
+    
+    
+    
+//    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
+//        if let context = self.managedObjectContext {
+//            context.performAndWait() {
+//                let labelObjs = self.mutableSetValue(forKey: "labels")
+//                if keepSent && currentlocation == .outbox {
+//                } else {
+//                    let fromLabelID = String(currentlocation.rawValue)
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label.labelID == fromLabelID {
+//                                labelObjs.remove(label)
+//                                break
+//                            }
+//                        }
+//                    }
+//                    
+//                }
+//                let toLableID = String(location.rawValue)
+//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
+//                    var exsited = false
+//                    for l in labelObjs {
+//                        if let label = l as? Label {
+//                            if label.labelID == toLabel.labelID {
+//                                exsited = true
+//                                break
+//                            }
+//                        }
+//                    }
+//                    if !exsited {
+//                        labelObjs.add(toLabel)
+//                    }
+//                }
+//                
+//                self.setValue(labelObjs, forKey: "labels")
+//                if let error = context.saveUpstreamIfNeeded() {
+//                    PMLog.D("error: \(error)")
+//                }
+//            }
+//        }
+//    }
+    
+    //    var location: MessageLocation {
+    //        get {
+    //            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
+    //        }
+    //        set {
+    //            locationNumber = newValue.rawValue as NSNumber
+    //        }
+    //    }
     
 //    func hasDraftLabel() -> Bool {
 //        let labels = self.labels
@@ -131,22 +174,6 @@ extension Message {
 //            }
 //        }
 //        return false
-//    }
-//
-//    func getLocationFromLabels() ->  [MessageLocation] {
-//        var locations = [MessageLocation]()
-//        let labels = self.labels
-//        for l in labels {
-//            if let label = l as? Label {
-//                if let l_id = Int(label.labelID) {
-//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
-//                        locations.append(new_loc)
-//                    }
-//                }
-//
-//            }
-//        }
-//        return locations
 //    }
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
@@ -198,47 +225,6 @@ extension Message {
 //                }
 //            }
 //            self.setValue(labelObjs, forKey: "labels")
-//        }
-//    }
-//
-//    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
-//        if let context = self.managedObjectContext {
-//            context.performAndWait() {
-//                let labelObjs = self.mutableSetValue(forKey: "labels")
-//                if keepSent && currentlocation == .outbox {
-//                } else {
-//                    let fromLabelID = String(currentlocation.rawValue)
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label.labelID == fromLabelID {
-//                                labelObjs.remove(label)
-//                                break
-//                            }
-//                        }
-//                    }
-//
-//                }
-//                let toLableID = String(location.rawValue)
-//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-//                    var exsited = false
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label.labelID == toLabel.labelID {
-//                                exsited = true
-//                                break
-//                            }
-//                        }
-//                    }
-//                    if !exsited {
-//                        labelObjs.add(toLabel)
-//                    }
-//                }
-//
-//                self.setValue(labelObjs, forKey: "labels")
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
 //        }
 //    }
 //

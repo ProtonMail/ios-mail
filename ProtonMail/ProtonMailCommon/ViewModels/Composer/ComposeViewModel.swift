@@ -1,5 +1,5 @@
 //
-//  MessageAPI.swift
+//  ComposeViewModel.swift
 //  ProtonMail - Created on 6/18/15.
 //
 //

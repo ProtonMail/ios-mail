@@ -34,7 +34,16 @@ import PassKit
 import AwaitKit
 import PromiseKit
 
-class MessageViewController: ProtonMailViewController, ViewModelProtocol {
+class MessageViewController: ProtonMailViewController, ViewModelProtocolNew {
+    typealias viewModelType = MessageViewModel
+    func set(viewModel: MessageViewModel) {
+        
+    }
+    func inactiveViewModel() {
+        latestPresentedView?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popToRootViewController(animated: true)
+    }
+    
     
     fileprivate let kToComposerSegue : String    = "toCompose"
     fileprivate let kSegueMoveToFolders : String = "toMoveToFolderSegue"
@@ -59,15 +68,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var needShowShowImageView : Bool             = false
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
-    
-    func setViewModel(_ vm: Any) {
-    }
-    
-    func inactiveViewModel() {
-        latestPresentedView?.dismiss(animated: true, completion: nil)
-        self.navigationController?.popToRootViewController(animated: true)
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         

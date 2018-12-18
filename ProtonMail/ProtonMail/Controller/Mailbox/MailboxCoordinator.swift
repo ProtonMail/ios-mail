@@ -90,7 +90,8 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let next = destination as? MessageViewController else {
                 return false
             }
-            sharedVMService.messageDetails(fromList: next)
+            let vmService = services.get() as ViewModelService
+            vmService.messageDetails(fromList: next)
             let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 if let message = self.viewModel.item(index: indexPathForSelectedRow) {
@@ -99,158 +100,98 @@ class MailboxCoordinator : DefaultCoordinator {
                     //let alert = LocalString._messages_cant_find_message.alertController()
                     //alert.addOKAction()
                     //present(alert, animated: true, completion: nil)
+                    return false
                 }
             } else {
                 PMLog.D("No selected row.")
+                return false
             }
-        default:
-            return false
-        }
-        
+        case .detailsFromNotify:
+            guard let next = destination as? MessageViewController else {
+                return false
+            }
+            let vmService = services.get() as ViewModelService
+            vmService.messageDetails(fromPush: next)
+            guard let message = self.viewModel.notificationMessage else {
+                return false
+            }
+            next.message = message
+            self.viewModel.resetNotificationMessage()
 
-        
-//        switch dest {
-//        case .password:
-//            guard let popup = destination as? ComposePasswordViewController else {
-//                return false
-//            }
-//            
-//            guard let vc = viewController else {
-//                return false
-//            }
-//            
-//            popup.pwdDelegate = self
-//            //get this data from view model
-//            popup.setupPasswords(vc.encryptionPassword, confirmPassword: vc.encryptionConfirmPassword, hint: vc.encryptionPasswordHint)
-//            
-//        case .expirationWarning:
-//            guard let popup = destination as? ExpirationWarningViewController else {
-//                return false
-//            }
-//            guard let vc = viewController else {
-//                return false
-//            }
-//            popup.delegate = self
-//            let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
-//            popup.config(needPwd: nonePMEmail,
-//                         pgp: vc.headerView.pgpEmails)
-//        case .subSelection:
-//            guard let destination = destination as? ContactGroupSubSelectionViewController else {
-//                return false
-//            }
-//            guard let vc = viewController else {
-//                return false
-//            }
-//            
-//            guard let group = vc.pickedGroup else {
-//                return false
-//            }
-//            destination.contactGroupName = group.contactTitle
-//            destination.selectedEmails = group.getSelectedEmailData()
-//            destination.callback = vc.pickedCallback
-//        }
+        case .composer:
+            guard let next = destination as? ComposeViewController else {
+                return false
+            }
+            let vmService = services.get() as ViewModelService
+            vmService.newDraft(vmp: next)
+            let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+            let coordinator = ComposeCoordinator(vc: next, vm: viewModel, services: services)
+            coordinator.start()
+        case .composeShow:
+            return false
+            //            self.cancelButtonTapped()
+            //            //TODO:: Check
+            //            let composeViewController = segue.destination.children[0] as! ComposeViewController
+            //            if let indexPathForSelectedRow = indexPathForSelectedRow {
+            //                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
+            //                    sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
+            //
+            //                    //TODO:: finish up here
+            //                    let coordinator = ComposeCoordinator(vc: composeViewController,
+            //                                                         vm: composeViewController.viewModel) //set view model
+            //                    coordinator.viewController = composeViewController
+            //                    composeViewController.set(coordinator: coordinator)
+            //                } else {
+            //                    let alert = LocalString._messages_cant_find_message.alertController()
+            //                    alert.addOKAction()
+            //                    present(alert, animated: true, completion: nil)
+            //                }
+            //
+            //            } else {
+            //                PMLog.D("No selected row.")
+        //            }
+        case .search:
+            return false
+        case .onboarding:
+            return true
+        case .feedback:
+            return false
+            //            let popup = segue.destination as! FeedbackPopViewController
+            //            popup.feedbackDelegate = self
+            //            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
+        //            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        case .feedbackView:
+            return false
+        case .humanCheck:
+            guard let next = destination as? MailboxCaptchaViewController else {
+                return false
+            }
+            next.viewModel = CaptchaViewModelImpl()
+            next.delegate = self.viewController
+        case .folder:
+            self.viewController?.cancelButtonTapped()
+            guard let next = destination as? LablesViewController else {
+                return false
+            }
+            //            let popup = segue.destination as! LablesViewController
+            //            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
+            //            popup.delegate = self
+            //            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            //            self.cancelButtonTapped()
+        //
+        case .labels:
+            self.viewController?.cancelButtonTapped()
+            guard let next = destination as? LablesViewController else {
+                return false
+            }
+            //            let popup = segue.destination as! LablesViewController
+            //            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
+            //            popup.delegate = self
+            //            self.setPresentationStyleForSelfController(self, presentingController: popup)
+            //            self.cancelButtonTapped()
+        }
         return true
-    }
-//    // MARK: - Prepare for segue
-//
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == kSegueToMessageDetailFromNotification {
-//            self.cancelButtonTapped()
-//            let messageDetailViewController = segue.destination as! MessageViewController
-//            sharedVMService.messageDetails(fromPush: messageDetailViewController)
-//            if let msgID = self.viewModel.notificationMessageID {
-//                if let context = fetchedResultsController?.managedObjectContext {
-//                    if let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) {
-//                        messageDetailViewController.message = message
-//                        self.viewModel.resetNotificationMessage()
-//                    }
-//                }
-//            } else {
-//                PMLog.D("No selected row.")
-//            }
-//        } else if (segue.identifier == kSegueToMessageDetailController) {
-//            self.cancelButtonTapped()
-//            let messageDetailViewController = segue.destination as! MessageViewController
-//            sharedVMService.messageDetails(fromList: messageDetailViewController)
-//            let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
-//            if let indexPathForSelectedRow = indexPathForSelectedRow {
-//                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-//                    messageDetailViewController.message = message
-//                } else {
-//                    let alert = LocalString._messages_cant_find_message.alertController()
-//                    alert.addOKAction()
-//                    present(alert, animated: true, completion: nil)
-//                }
-//            } else {
-//                PMLog.D("No selected row.")
-//            }
-//        } else if segue.identifier == kSegueToComposeShow {
-//            self.cancelButtonTapped()
-//            //TODO:: Check
-//            let composeViewController = segue.destination.children[0] as! ComposeViewController
-//            if let indexPathForSelectedRow = indexPathForSelectedRow {
-//                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-//                    sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
-//
-//                    //TODO:: finish up here
-//                    let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                         vm: composeViewController.viewModel) //set view model
-//                    coordinator.viewController = composeViewController
-//                    composeViewController.set(coordinator: coordinator)
-//                } else {
-//                    let alert = LocalString._messages_cant_find_message.alertController()
-//                    alert.addOKAction()
-//                    present(alert, animated: true, completion: nil)
-//                }
-//
-//            } else {
-//                PMLog.D("No selected row.")
-//            }
-//
-//        } else if segue.identifier == kSegueToApplyLabels {
-//            let popup = segue.destination as! LablesViewController
-//            popup.viewModel = LabelApplyViewModelImpl(msg: self.getSelectedMessages())
-//            popup.delegate = self
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//            self.cancelButtonTapped()
-//
-//        } else if segue.identifier == kSegueMoveToFolders {
-//            let popup = segue.destination as! LablesViewController
-//            popup.viewModel = FolderApplyViewModelImpl(msg: self.getSelectedMessages())
-//            popup.delegate = self
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//            self.cancelButtonTapped()
-//
-//        }
-//        else if segue.identifier == kSegueToHumanCheckView{
-//            let popup = segue.destination as! MailboxCaptchaViewController
-//            popup.viewModel = CaptchaViewModelImpl()
-//            popup.delegate = self
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//
-//        } else if segue.identifier == kSegueToCompose {
-//            let composeViewController = segue.destination.children[0] as! ComposeViewController
-//            sharedVMService.newDraft(vmp: composeViewController)
-//
-//            //TODO:: finish up here
-//            let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                 vm: composeViewController.viewModel) //set view model
-//            coordinator.viewController = composeViewController
-//            composeViewController.set(coordinator: coordinator)
-//        } else if segue.identifier == kSegueToTour {
-//            let popup = segue.destination as! OnboardingViewController
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        } else if segue.identifier == kSegueToFeedback {
-//            let popup = segue.destination as! FeedbackPopViewController
-//            popup.feedbackDelegate = self
-//            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        } else if segue.identifier == kSegueToFeedbackView {
-//
-//        }
-//    }
-//
-    
+    }   
     
     func go(to dest: Destination) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
