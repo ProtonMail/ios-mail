@@ -29,72 +29,93 @@
 import Foundation
 
 class StorefrontViewModel: NSObject {
-    @objc dynamic var title: String
-    @objc dynamic var storefront: Storefront
+    @objc dynamic private var storefront: Storefront
     private var storefrontObserver: NSKeyValueObservation!
+
+    internal enum Sections: Int {
+        case logo = 0, detail, annotation, subsectionHeader, others
+        static let count = 5
+        
+        var indexSet: IndexSet {
+            return IndexSet(integer: self.rawValue)
+        }
+    }
     
-    private var detailItems: [StorefrontItem] = []
-    private var othersItems: [StorefrontItem] = []
-    
+    @objc dynamic var title: String = ""
+    @objc dynamic var logoItem: AnyStorefrontItem = AnyStorefrontItem()
+    @objc dynamic var detailItems: [AnyStorefrontItem] = []
+    @objc dynamic var annotationItem: AnyStorefrontItem = AnyStorefrontItem()
+    @objc dynamic var subsectionHeaderItem: AnyStorefrontItem?
+    @objc dynamic var othersItems: [AnyStorefrontItem] = []
+
     init(storefront: Storefront) {
         self.storefront = storefront
-        self.title = storefront.title
+        
         super.init()
         
         defer {
-            self.storefrontObserver = self.observe(\.storefront, options: [.initial, .new], changeHandler: { viewModel, change in
+            self.storefrontObserver = self.observe(\.storefront, options: [.initial, .new]) { [unowned self] viewModel, change in
                 self.title = storefront.title
+                
+                self.logoItem = self.extractLogo(from: viewModel.storefront)
                 self.detailItems = self.extractDetails(from: viewModel.storefront)
+                self.annotationItem = self.extractAnnotation(from: viewModel.storefront)
                 self.othersItems = self.extractOthers(from: viewModel.storefront)
-            })
+                self.subsectionHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
+            }
         }
     }
     
     func numberOfSections() -> Int {
-        return 5
+        return Sections.count
     }
     
     func numberOfItems(in section: Int) -> Int {
+        guard let section = Sections(rawValue: section) else {
+            fatalError()
+        }
         switch section {
-        case 0: return 1
-        case 1: return self.detailItems.count
-        case 2: return 1
-        case 3: return 1
-        case 4: return self.othersItems.count
-        default: return 0
+        case .logo:              return 1
+        case .detail:            return self.detailItems.count
+        case .annotation:        return 1
+        case .subsectionHeader:  return self.subsectionHeaderItem == nil ? 0 : 1
+        case .others:            return self.othersItems.count
         }
     }
     
-    func item(for indexPath: IndexPath) -> StorefrontItem {
-        switch indexPath.section {
-        case 0: return self.extractLogo(from: self.storefront)
-        case 1: return self.detailItems[indexPath.row]
-        case 2: return self.extractAnnotation(from: self.storefront)
-        case 3: return .subsectionHeader(text: LocalString._other_plans)
-        case 4: return self.othersItems[indexPath.row]
-            
-        default:
+    func item(for indexPath: IndexPath) -> AnyStorefrontItem {
+        guard let section = Sections(rawValue: indexPath.section) else {
             fatalError()
+        }
+        switch section {
+        case .logo:                                                      return self.logoItem
+        case .detail:                                                    return self.detailItems[indexPath.row]
+        case .annotation:                                                return self.annotationItem
+        case .subsectionHeader where self.subsectionHeaderItem != nil:   return self.subsectionHeaderItem!
+        case .others:                                                    return self.othersItems[indexPath.row]
+        default:                                                         fatalError()
         }
     }
     
     func plan(at indexPath: IndexPath) -> ServicePlan? {
-        switch indexPath.section {
-        case 4: return self.storefront.others[indexPath.row]
-        default: return nil
+        guard let section = Sections(rawValue: indexPath.section) else {
+            fatalError()
+        }
+        switch section {
+        case .others:   return self.storefront.others[indexPath.row]
+        default:        return nil
         }
     }
-
 }
 
 extension StorefrontViewModel {
-    private func extractLogo(from storefront: Storefront) -> StorefrontItem {
-        return StorefrontItem.logo(imageName: "Logo",
-                                   title: storefront.plan.headerText,
-                                   subtitle: storefront.plan.subheader)
+    private func extractLogo(from storefront: Storefront) -> AnyStorefrontItem {
+        return LogoStorefrontItem(imageName: "Logo",
+                                  title: storefront.plan.headerText,
+                                  subtitle: storefront.plan.subheader)
     }
     
-    private func extractDetails(from storefront: Storefront) -> [StorefrontItem] {
+    private func extractDetails(from storefront: Storefront) -> [AnyStorefrontItem] {
         let details = storefront.details
         let formatter = ByteCountFormatter()
         formatter.countStyle = .binary
@@ -102,60 +123,40 @@ extension StorefrontViewModel {
         switch storefront.plan {
         case .free:
             return [
-                .detail(imageName: "iap_email",
-                        description: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
-                .detail(imageName: "iap_hdd",
-                        description: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
-                .detail(imageName: "iap_lock",
-                        description: LocalString._limited_to_150_messages)
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_lock", text: LocalString._limited_to_150_messages)
             ]
         case .plus:
             return [
-                .detail(imageName: "iap_email",
-                        description: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
-                .detail(imageName: "iap_hdd",
-                        description: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
-                .detail(imageName: "iap_link",
-                        description: LocalString._bridge_support),
-                .detail(imageName: "iap_folder",
-                        description: LocalString._labels_folders_filters)
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses)),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_link", text: LocalString._bridge_support),
+                DetailStorefrontItem(imageName: "iap_folder", text: LocalString._labels_folders_filters)
             ]
         case .pro:
             return [
-                .detail(imageName: "iap_users",
-                        description: LocalString._unlimited_messages_sent),
-                .detail(imageName: "iap_email",
-                        description: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + LocalString._per_user),
-                .detail(imageName: "iap_hdd",
-                        description: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
-                .detail(imageName: "iap_link",
-                        description: LocalString._bridge_support),
-                .detail(imageName: "iap_folder",
-                        description: LocalString._labels_folders_filters),
-                .detail(imageName: "iap_lifering",
-                        description: String(format: LocalString._support_n_domains, details.maxDomains))
+                DetailStorefrontItem(imageName: "iap_users", text: LocalString._unlimited_messages_sent),
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + LocalString._per_user),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_link", text: LocalString._bridge_support),
+                DetailStorefrontItem(imageName: "iap_folder", text: LocalString._labels_folders_filters),
+                DetailStorefrontItem(imageName: "iap_lifering", text: String(format: LocalString._support_n_domains, details.maxDomains))
             ]
         case .visionary:
             return [
-                .detail(imageName: "iap_users",
-                        description: String(format: LocalString._up_to_n_users, details.maxMembers)),
-                .detail(imageName: "iap_email",
-                        description: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + LocalString._total),
-                .detail(imageName: "iap_hdd",
-                        description: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
-                .detail(imageName: "iap_link",
-                        description: LocalString._bridge_support),
-                .detail(imageName: "iap_folder",
-                        description: LocalString._labels_folders_filters),
-                .detail(imageName: "iap_lifering",
-                        description: String(format: LocalString._support_n_domains, details.maxDomains)),
-                .detail(imageName: "iap_vpn",
-                        description: LocalString._vpn_included)
+                DetailStorefrontItem(imageName: "iap_users", text: String(format: LocalString._up_to_n_users, details.maxMembers)),
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + LocalString._total),
+                DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
+                DetailStorefrontItem(imageName: "iap_link", text: LocalString._bridge_support),
+                DetailStorefrontItem(imageName: "iap_folder", text: LocalString._labels_folders_filters),
+                DetailStorefrontItem(imageName: "iap_lifering", text: String(format: LocalString._support_n_domains, details.maxDomains)),
+                DetailStorefrontItem(imageName: "iap_vpn", text: LocalString._vpn_included)
             ]
         }
     }
     
-    private func extractAnnotation(from storefront: Storefront) -> StorefrontItem {
+    private func extractAnnotation(from storefront: Storefront) -> AnyStorefrontItem {
         func makeUnavailablePlanText(plan: ServicePlan) -> NSAttributedString {
             var regularAttributes = [NSAttributedString.Key: Any]()
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
@@ -197,54 +198,22 @@ extension StorefrontViewModel {
         }
         
         switch storefront.subscription {
-        case .some(let subscription): return .annotation(text: makeCurrentPlanText(subscription: subscription))
-        case .none: return .annotation(text: makeUnavailablePlanText(plan: storefront.plan))
+        case .some(let subscription):
+            return AnnotationStorefrontItem(text: makeCurrentPlanText(subscription: subscription))
+        case .none:
+            return AnnotationStorefrontItem(text: makeUnavailablePlanText(plan: storefront.plan))
         }
     }
     
-    private func extractOthers(from storefront: Storefront) -> [StorefrontItem] {
+    private func extractOthers(from storefront: Storefront) -> [AnyStorefrontItem] {
         return storefront.others.map { plan in
-            let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(),
-                                                                  attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
-                                                                               .font: UIFont.preferredFont(forTextStyle: .body)])
+            let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(), attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
+                                                                                                      .font: UIFont.preferredFont(forTextStyle: .body)])
             var body = [NSAttributedString.Key: Any]()
             body[.font] = UIFont.preferredFont(forTextStyle: .body)
             let attributed = NSMutableAttributedString(string: "ProtonMail ", attributes: body)
             attributed.append(titleColored)
-            return .link(text: attributed)
+            return LinkStorefrontItem(text: attributed)
         }
     }
-}
-
-class Storefront: NSObject {
-    var subscription: Subscription?
-    var plan: ServicePlan
-    var details: ServicePlanDetails
-    var others: [ServicePlan]
-    var title: String
-    
-    init(plan: ServicePlan) {
-        self.plan = plan
-        self.details = plan.fetchDetails()!
-        self.others = []
-        self.title = plan.subheader.0
-    }
-    
-    init(subscription: Subscription) {
-        self.subscription = subscription
-        self.plan = subscription.plan
-        self.details = subscription.details
-        self.others = Array<ServicePlan>.init(arrayLiteral: .free, .plus, .pro, .visionary).filter({ $0 != subscription.plan })
-        self.title = LocalString._menu_service_plan_title
-    }
-}
-
-enum StorefrontItem {
-    case logo(imageName: String, title: String, subtitle: (String, UIColor)) // FIXME: NSAttributedString instead of color
-    case detail(imageName: String, description: String)
-    case annotation(text: NSAttributedString)
-    case subsectionHeader(text: String)
-    case link(text: NSAttributedString)
-//    case buyButton(title: String)
-//    case disclaimer(text: String)
 }

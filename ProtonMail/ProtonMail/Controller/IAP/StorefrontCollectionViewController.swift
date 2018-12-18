@@ -29,23 +29,40 @@
 import UIKit
 
 class StorefrontCollectionViewController: UICollectionViewController {
+    typealias Sections = StorefrontViewModel.Sections
     private var coordinator: StorefrontCoordinator!
     var viewModel: StorefrontViewModel!
     
-    var titleObserver: NSKeyValueObservation!
-    var collectionObserver: NSKeyValueObservation!
+    private var titleObserver: NSKeyValueObservation!
+    private var logoObserver: NSKeyValueObservation!
+    private var detailObserver: NSKeyValueObservation!
+    private var annotationObserver: NSKeyValueObservation!
+    private var subsectionHeaderObserver: NSKeyValueObservation!
+    private var othersObserver: NSKeyValueObservation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
         
-        self.titleObserver = self.viewModel.observe(\.title, options: [.initial, .new], changeHandler: { storefront, change in
-            self.title = storefront.title
-        })
-        self.collectionObserver = self.viewModel.observe(\.storefront, options: [.initial, .new], changeHandler: { storefront, change in
-            self.collectionView.reloadData()
-        })
+        self.titleObserver = self.viewModel.observe(\.title, options: [.initial, .new]) { [unowned self] viewModel, change in
+            self.title = viewModel.title
+        }
+        self.logoObserver = self.viewModel.observe(\.logoItem) { [unowned self] viewModel, change in
+            self.collectionView.reloadSections(Sections.logo.indexSet)
+        }
+        self.detailObserver = self.viewModel.observe(\.detailItems) { [unowned self] viewModel, change in
+            self.collectionView.reloadSections(Sections.detail.indexSet)
+        }
+        self.annotationObserver = self.viewModel.observe(\.annotationItem) { [unowned self] viewModel, change in
+            self.collectionView.reloadSections(Sections.annotation.indexSet)
+        }
+        self.subsectionHeaderObserver = self.viewModel.observe(\.subsectionHeaderItem) { [unowned self] viewModel, change in
+            self.collectionView.reloadSections(Sections.subsectionHeader.indexSet)
+        }
+        self.othersObserver = self.viewModel.observe(\.othersItems) { [unowned self] viewModel, change in
+            self.collectionView.reloadSections(Sections.others.indexSet)
+        }
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -57,12 +74,10 @@ class StorefrontCollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let item = self.viewModel.item(for: indexPath)
         let cellReuseIdentifier = self.cellReuseIdentifier(for: item)
         
-        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? StorefrontItemConfigurableCell else
-        {
+        guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? StorefrontItemConfigurableCell else {
             fatalError()
         }
         
@@ -76,15 +91,18 @@ class StorefrontCollectionViewController: UICollectionViewController {
         }
     }
     
-    private func cellReuseIdentifier(for item: StorefrontItem) -> String {
+    private func cellReuseIdentifier(for item: AnyStorefrontItem) -> String {
         switch item {
-        case .logo: return "\(LogoCell.self)"
-        case .detail: return "\(DetailCell.self)"
-        case .annotation: return "\(AnnotationCell.self)"
-        case .subsectionHeader: return "\(DisclaimerCell.self)"
-        case .link: return "\(DetailCell.self)"
+        case is LogoStorefrontItem: return "\(LogoCell.self)"
+        case is DetailStorefrontItem: return "\(DetailCell.self)"
+        case is AnnotationStorefrontItem: return "\(AnnotationCell.self)"
+        case is SubsectionHeaderStorefrontItem: return "\(DisclaimerCell.self)"
+        case is LinkStorefrontItem: return "\(DetailCell.self)"
 //        case .buyButton: return "\(.self)"
 //        case .disclaimer: return "\(.self)"
+        default:
+            assert(false, "Unknown cell type requested")
+            return ""
         }
     }
 }
@@ -100,27 +118,3 @@ extension StorefrontCollectionViewController: CoordinatedNew {
         return self.coordinator
     }
 }
-
-class StorefrontCoordinator: PushCoordinator {
-    typealias VC = StorefrontCollectionViewController
-    var viewController: StorefrontCollectionViewController?
-    var navigationController: UINavigationController
-    var configuration: ((VC)->Void)?
-    
-    init(navigation: UINavigationController,
-         config: @escaping (VC)->Void )
-    {
-        self.navigationController = navigation
-        self.configuration = config
-        self.viewController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
-    }
-    
-    func go(to nextPlan: ServicePlan) {
-        let nextCoordinator = StorefrontCoordinator(navigation: self.navigationController) { controller in
-            let storefront = Storefront.init(plan: nextPlan)
-            controller.viewModel = StorefrontViewModel(storefront: storefront)
-        }
-        nextCoordinator.start()
-    }
-}
-

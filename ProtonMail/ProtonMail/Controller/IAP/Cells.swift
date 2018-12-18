@@ -31,7 +31,7 @@ import Foundation
 typealias StorefrontItemConfigurableCell = UICollectionViewCell&StorefrontItemConfigurable
 
 protocol StorefrontItemConfigurable where Self: UICollectionViewCell {
-    func setup(with item: StorefrontItem)
+    func setup(with item: AnyStorefrontItem)
 }
 
 
@@ -40,30 +40,30 @@ protocol StorefrontItemConfigurable where Self: UICollectionViewCell {
 class LogoCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var headerView: ServicePlanHeader!
     
-    func setup(with item: StorefrontItem) {
-        guard case StorefrontItem.logo(imageName: let imageName, title: let title, subtitle: let subtitle) = item else {
+    func setup(with item: AnyStorefrontItem) {
+        guard let item = item as? LogoStorefrontItem else {
             return
         }
     
-        self.headerView.setup(image: UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate),
-                              title: title,
-                              subicon: subtitle)
+        self.headerView.setup(image: UIImage(named: item.imageName)?.withRenderingMode(.alwaysTemplate),
+                              title: item.title,
+                              subicon: item.subtitle)
     }
 }
 
 class DetailCell: SubviewSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var capabilityView: ServicePlanCapability!
     
-    func setup(with item: StorefrontItem) {
-        if case StorefrontItem.detail(imageName: let imageName, description: let description) = item {
-            self.capabilityView.setup(image: UIImage(named: imageName),
-                                      title: NSAttributedString(string: description))
+    func setup(with item: AnyStorefrontItem) {
+        if let item = item as? DetailStorefrontItem {
+            var regularAttributes = [NSAttributedString.Key: Any]()
+            regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
+            self.capabilityView.setup(image: UIImage(named: item.imageName), title: NSAttributedString(string: item.text, attributes: regularAttributes))
             return
         }
         
-        if case StorefrontItem.link(text: let text) = item {
-            self.capabilityView.setup(title: text,
-                                      serviceIconVisible: true)
+        if let item = item as? LinkStorefrontItem {
+            self.capabilityView.setup(title: item.text, serviceIconVisible: true)
             return
         }
     }
@@ -72,21 +72,21 @@ class DetailCell: SubviewSizedCell, StorefrontItemConfigurable {
 class AnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var footerView: ServicePlanFooter!
     
-    func setup(with item: StorefrontItem) {
-        guard case StorefrontItem.annotation(text: let text) = item else {
+    func setup(with item: AnyStorefrontItem) {
+        guard let item = item as? AnnotationStorefrontItem else {
             return
         }
         
-        self.footerView.setup(title: text)
+        self.footerView.setup(title: item.text)
     }
 }
 
 class DisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var header: TableSectionHeader!
     
-    func setup(with item: StorefrontItem) {
-        if case StorefrontItem.subsectionHeader(text: let text) = item {
-            self.header.setup(title: text, textAlignment: .left)
+    func setup(with item: AnyStorefrontItem) {
+        if let item = item as? SubsectionHeaderStorefrontItem {
+            self.header.setup(title: item.text, textAlignment: .left)
             return
         }
         
