@@ -28,47 +28,46 @@
 
 import UIKit
 
-class StorefrontCollectionViewController: UICollectionViewController {
+final class StorefrontCollectionViewController: UICollectionViewController {
     typealias Sections = StorefrontViewModel.Sections
     private var coordinator: StorefrontCoordinator!
-    var viewModel: StorefrontViewModel!
     
-    private var titleObserver: NSKeyValueObservation!
-    private var logoObserver: NSKeyValueObservation!
-    private var detailObserver: NSKeyValueObservation!
-    private var annotationObserver: NSKeyValueObservation!
-    private var othersObserver: NSKeyValueObservation!
-    private var buyButtonObserver: NSKeyValueObservation!
-    private var buyLinkObserver: NSKeyValueObservation!
+    internal var viewModel: StorefrontViewModel!
+    private var viewModelObservers: [NSKeyValueObservation]!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
-        
-        self.titleObserver = self.viewModel.observe(\.title, options: [.initial, .new]) { [unowned self] viewModel, change in
-            self.title = viewModel.title
-        }
-        self.logoObserver = self.viewModel.observe(\.logoItem) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.logo.indexSet)
-        }
-        self.detailObserver = self.viewModel.observe(\.detailItems) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.detail.indexSet)
-        }
-        self.annotationObserver = self.viewModel.observe(\.annotationItem) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.annotation.indexSet)
-        }
-        self.buyLinkObserver = self.viewModel.observe(\.buyLinkItem) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.buyLinkHeader.indexSet)
-            self.collectionView.reloadSections(Sections.buyLink.indexSet)
-        }
-        self.othersObserver = self.viewModel.observe(\.othersItems) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.othersHeader.indexSet)
-            self.collectionView.reloadSections(Sections.others.indexSet)
-        }
-        self.buyButtonObserver = self.viewModel.observe(\.buyButtonItem) { [unowned self] viewModel, change in
-            self.collectionView.reloadSections(Sections.buyButton.indexSet)
-        }
+        self.viewModelObservers = [
+            self.viewModel.observe(\.title, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.title = viewModel.title
+            }),
+            self.viewModel.observe(\.logoItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.logo.indexSet)
+            }),
+            self.viewModel.observe(\.detailItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.detail.indexSet)
+            }),
+            self.viewModel.observe(\.annotationItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.annotation.indexSet)
+            }),
+            self.viewModel.observe(\.buyLinkItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(Sections.buyLinkHeader.indexSet)
+                    self.collectionView.reloadSections(Sections.buyLink.indexSet)
+                }, completion: nil)
+            }),
+            self.viewModel.observe(\.othersItems, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.performBatchUpdates({
+                    self.collectionView.reloadSections(Sections.others.indexSet)
+                    self.collectionView.reloadSections(Sections.othersHeader.indexSet)
+                }, completion: nil)
+            }),
+            self.viewModel.observe(\.buyButtonItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.buyButton.indexSet)
+            })
+        ]
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -84,7 +83,8 @@ class StorefrontCollectionViewController: UICollectionViewController {
         let cellReuseIdentifier = self.cellReuseIdentifier(for: item)
         
         guard let cell = self.collectionView.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as? StorefrontItemConfigurableCell else {
-            fatalError()
+            assert(false, "Failed to dequeue cell")
+            return UICollectionViewCell()
         }
         
         cell.setup(with: item)

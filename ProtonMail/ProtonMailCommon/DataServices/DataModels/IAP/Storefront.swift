@@ -29,14 +29,15 @@
 import Foundation
 
 class Storefront: NSObject {
-    var subscription: Subscription?
     var plan: ServicePlan
     var details: ServicePlanDetails?
     var others: [ServicePlan]
     var title: String
-    
     var canBuyMoreCredits: Bool
-    @objc dynamic var isProductPurchasable: Bool = false
+    @objc dynamic var subscription: Subscription?
+    @objc dynamic var isProductPurchasable: Bool
+    
+    private var subscriptionObserver: NSKeyValueObservation!
     
     init(plan: ServicePlan) {
         self.plan = plan
@@ -48,22 +49,31 @@ class Storefront: NSObject {
                                         && ServicePlanDataService.shared.currentSubscription?.plan == .free
                                         && StoreKitManager.default.readyToPurchaseProduct() )
         self.canBuyMoreCredits = false
+        super.init()
     }
     
     init(subscription: Subscription) {
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
-        self.title = LocalString._menu_service_plan_title
-        
         self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != subscription.plan })
         
+        self.title = LocalString._menu_service_plan_title
         self.isProductPurchasable = false
         
         // only plus, payed via apple, expired
         self.canBuyMoreCredits = ( subscription.plan == .plus
                                     && !subscription.hadOnlinePayments
                                     && subscription.end?.compare(Date()) == .orderedAscending )
+        super.init()
+
+        self.subscriptionObserver = ServicePlanDataService.shared.observe(\.currentSubscription) { [unowned self] shared, change in
+            guard let newSubscription = shared.currentSubscription else { return }
+            self.plan = newSubscription.plan
+            self.details = newSubscription.details
+            self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
+            self.subscription = shared.currentSubscription
+        }
     }
     
     init(creditsFor subscription: Subscription) {
@@ -77,6 +87,7 @@ class Storefront: NSObject {
                                         && subscription.end?.compare(Date()) == .orderedAscending
                                         && StoreKitManager.default.readyToPurchaseProduct() )
         self.canBuyMoreCredits = false
+        super.init()
     }
     
     func buyProduct() {

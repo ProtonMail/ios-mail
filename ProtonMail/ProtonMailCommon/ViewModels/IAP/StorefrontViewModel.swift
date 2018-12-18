@@ -32,7 +32,8 @@ class StorefrontViewModel: NSObject {
     @objc dynamic private var storefront: Storefront
     private var storefrontObserver: NSKeyValueObservation!
     private var canPurchaseObserver: NSKeyValueObservation!
-
+    private var storefrontSubscriptionObserver: NSKeyValueObservation!
+    
     internal enum Sections: Int {
         case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, disclaimer
         static let count = 9 // TODO: update this on swift4.3  with allCases.count
@@ -57,26 +58,32 @@ class StorefrontViewModel: NSObject {
     init(storefront: Storefront) {
         self.storefront = storefront
         
-        super.init()
+        func setup(with storefront: Storefront) {
+            self.title = storefront.title
+            self.currentSubscription = storefront.subscription
+            
+            self.logoItem = self.extractLogo(from: storefront)
+            self.detailItems = self.extractDetails(from: storefront)
+            self.annotationItem = self.extractAnnotation(from: storefront)
+            self.othersItems = self.extractOthers(from: storefront)
+            self.othersHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
+            self.buyLinkItem = self.extractBuyLink(from: storefront)
+            self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
+            self.buyButtonItem = self.extractBuyButton(from: storefront)
+            self.disclaimerItem = self.extractDisclaimer(from: storefront)
+        }
         
-        defer {
-            self.storefrontObserver = self.observe(\.storefront, options: [.initial, .new]) { [unowned self] viewModel, change in
-                self.title = storefront.title
-                self.currentSubscription = storefront.subscription
-                
-                self.logoItem = self.extractLogo(from: viewModel.storefront)
-                self.detailItems = self.extractDetails(from: viewModel.storefront)
-                self.annotationItem = self.extractAnnotation(from: viewModel.storefront)
-                self.othersItems = self.extractOthers(from: viewModel.storefront)
-                self.othersHeaderItem = self.othersItems.isEmpty ? nil : SubsectionHeaderStorefrontItem(text: LocalString._other_plans)
-                self.buyLinkItem = self.extractBuyLink(from: viewModel.storefront)
-                self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
-                self.buyButtonItem = self.extractBuyButton(from: viewModel.storefront)
-                self.disclaimerItem = self.extractDisclaimer(from: viewModel.storefront)
-            }
-            self.canPurchaseObserver = self.storefront.observe(\.isProductPurchasable, options: [.new]) { [unowned self] storefront, change in
-                self.buyButtonItem = self.extractBuyButton(from: storefront)
-            }
+        super.init()
+        setup(with: storefront)
+        
+        self.storefrontObserver = self.observe(\.storefront, options: [.new]) { viewModel, change in
+            setup(with: viewModel.storefront)
+        }
+        self.canPurchaseObserver = self.storefront.observe(\.isProductPurchasable, options: [.new]) { [unowned self] storefront, change in
+            self.buyButtonItem = self.extractBuyButton(from: storefront)
+        }
+        self.storefrontSubscriptionObserver = self.storefront.observe(\.subscription, options: [.new]) { [unowned self] storefront, change in
+            self.storefront = storefront
         }
     }
     
@@ -86,47 +93,53 @@ class StorefrontViewModel: NSObject {
     
     func numberOfItems(in section: Int) -> Int {
         guard let section = Sections(rawValue: section) else {
-            fatalError()
+            assert(false, "Incorrect number of section")
+            return 0
         }
         switch section {
-        case .logo:              return self.logoItem == nil ? 0 : 1
         case .detail:            return self.detailItems.count
-        case .annotation:        return self.annotationItem == nil ? 0 : 1
-        case .othersHeader:      return self.othersHeaderItem == nil ? 0 : 1
         case .others:            return self.othersItems.count
-        case .buyLinkHeader:     return self.buyLinkHeaderItem == nil ? 0 : 1
-        case .buyLink:           return self.buyLinkItem == nil ? 0 : 1
-        case .buyButton:         return self.buyButtonItem == nil ? 0 : 1
-        case .disclaimer:        return self.disclaimerItem == nil ? 0 : 1
+        case .logo:              return NSNumber(value: self.logoItem != nil).intValue
+        case .annotation:        return NSNumber(value: self.annotationItem != nil).intValue
+        case .othersHeader:      return NSNumber(value: self.othersHeaderItem != nil).intValue
+        case .buyLinkHeader:     return NSNumber(value: self.buyLinkHeaderItem != nil).intValue
+        case .buyLink:           return NSNumber(value: self.buyLinkItem != nil).intValue
+        case .buyButton:         return NSNumber(value: self.buyButtonItem != nil).intValue
+        case .disclaimer:        return NSNumber(value: self.disclaimerItem != nil).intValue
         }
     }
     
     func item(for indexPath: IndexPath) -> AnyStorefrontItem {
         guard let section = Sections(rawValue: indexPath.section) else {
-            fatalError()
+            assert(false, "Incorrect number of section")
+            return AnyStorefrontItem()
         }
         switch section {
-        case .logo where self.logoItem != nil:                      return self.logoItem!
         case .detail:                                               return self.detailItems[indexPath.row]
+        case .others:                                               return self.othersItems[indexPath.row]
+        case .logo where self.logoItem != nil:                      return self.logoItem!
         case .annotation where self.annotationItem != nil:          return self.annotationItem!
         case .othersHeader where self.othersHeaderItem != nil:      return self.othersHeaderItem!
-        case .others:                                               return self.othersItems[indexPath.row]
         case .buyLinkHeader where self.buyLinkHeaderItem != nil:    return self.buyLinkHeaderItem!
         case .buyLink where self.buyLinkItem != nil:                return self.buyLinkItem!
         case .buyButton where self.buyButtonItem != nil:            return self.buyButtonItem!
         case .disclaimer where self.disclaimerItem != nil:          return self.disclaimerItem!
-        default:                                                    fatalError()
+        default:
+            assert(false, "Attempt to get incorrect section")
+            return AnyStorefrontItem()
         }
     }
     
     func plan(at indexPath: IndexPath) -> ServicePlan? {
         guard let section = Sections(rawValue: indexPath.section) else {
-            fatalError()
+            assert(false, "Attempt to get incorrect section")
+            return nil
         }
         switch section {
-        case .others:   return self.storefront.others[indexPath.row]
-        default:        return nil
+        case .others: return self.storefront.others[indexPath.row]
+        default: break
         }
+        return nil
     }
 }
 
@@ -136,6 +149,7 @@ extension StorefrontViewModel {
     }
 }
 
+// almost exactly copied from previous version of IAP UI
 extension StorefrontViewModel {
     private func extractLogo(from storefront: Storefront) -> AnyStorefrontItem? {
         guard let _ = storefront.details else { return nil }
@@ -225,7 +239,7 @@ extension StorefrontViewModel {
                     message = title1
                 }
             }
-            return message
+            return message ?? NSAttributedString()
         }
         
         switch storefront.subscription {
@@ -242,8 +256,9 @@ extension StorefrontViewModel {
     
     private func extractOthers(from storefront: Storefront) -> [AnyStorefrontItem] {
         return storefront.others.map { plan in
-            let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(), attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
-                                                                                                      .font: UIFont.preferredFont(forTextStyle: .body)])
+            let titleColored = NSAttributedString(string: plan.subheader.0.uppercased(),
+                                                  attributes: [.foregroundColor : UIColor.ProtonMail.ButtonBackground,
+                                                               .font: UIFont.preferredFont(forTextStyle: .body)])
             var body = [NSAttributedString.Key: Any]()
             body[.font] = UIFont.preferredFont(forTextStyle: .body)
             let attributed = NSMutableAttributedString(string: "ProtonMail ", attributes: body)

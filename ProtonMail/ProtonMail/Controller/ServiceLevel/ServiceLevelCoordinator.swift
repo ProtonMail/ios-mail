@@ -59,8 +59,11 @@ class ServiceLevelCoordinator: Coordinator {
     
     init(navigationController: UINavigationController) {
         let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
-        let storefront = Storefront(subscription: ServicePlanDataService.shared.currentSubscription!)
-        controller.viewModel = StorefrontViewModel(storefront: storefront)
+        if let currentSubscription = ServicePlanDataService.shared.currentSubscription {
+            controller.viewModel = StorefrontViewModel(storefront: Storefront(subscription: currentSubscription))
+        } else {
+            controller.viewModel = StorefrontViewModel(storefront: Storefront(plan: .free))
+        }
         self.controller = controller
         
         defer {
