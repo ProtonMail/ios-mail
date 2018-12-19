@@ -45,11 +45,19 @@ open class DKPhotoContentAnimationView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    #if swift(>=4.2)
     open override var contentMode: UIView.ContentMode {
         didSet {
             self.layoutContentView()
         }
     }
+    #else
+    open override var contentMode: UIViewContentMode {
+        didSet {
+            self.layoutContentView()
+        }
+    }
+    #endif
     
     override open func layoutSubviews() {
         super.layoutSubviews()

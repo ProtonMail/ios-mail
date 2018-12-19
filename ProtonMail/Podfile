@@ -56,6 +56,9 @@ def pm_share
     pod 'RichEditorView', '5.0.0'
 end
 
+def pm_siri
+    pod 'UICKeyChainStore', '2.1.1'
+end
 
 #targets
 target 'ProtonMail' do
