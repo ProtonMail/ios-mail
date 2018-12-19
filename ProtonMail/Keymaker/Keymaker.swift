@@ -16,7 +16,7 @@ import UICKeyChainStore
 
 public class Keymaker: NSObject {
     public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
-    public typealias Key = Array<UInt8>
+    public typealias Key = Data
     
     private var autolocker: Autolocker?
     private let keychain: UICKeyChainStore
@@ -189,5 +189,6 @@ public class Keymaker: NSObject {
     
     public func updateAutolockCountdownStart() {
         self.autolocker?.updateAutolockCountdownStart()
+        let _ = self.mainKey
     }
 }

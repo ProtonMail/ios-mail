@@ -8,22 +8,10 @@
 
 import Foundation
 
-public struct SenderData: Codable {
-    let name: String
-    let address: String
-    // Unused on iOS fields:
-    //    let group: Any
-    
-    private enum CodingKeys: String, CodingKey {
-        case name = "Name"
-        case address = "Address"
-    }
-}
-
 public struct PushData: Codable {
     let badge: Int
     let body: String
-    let sender: SenderData
+    let sender: Sender
     let messageId: String
     // Unused on iOS fields:
     //    let title: String

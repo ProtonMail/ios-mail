@@ -21,7 +21,7 @@ public struct NoneProtection: ProtectionStrategy {
     }
     
     public func unlock(cypherBits: Data) throws -> Keymaker.Key {
-        return cypherBits.bytes
+        return cypherBits
     }
 }
 

@@ -51,7 +51,7 @@ public struct BioProtection: ProtectionStrategy {
             keychain.setAccessibility(oldAccessibility, authenticationPolicy: oldAuthPolicy)
             return ethemeralKey
         }
-        return key.bytes
+        return key
     }
     
     public func lock(value: Keymaker.Key) throws {
@@ -74,7 +74,7 @@ public struct BioProtection: ProtectionStrategy {
         let cleardata = try locked.unlock { cyphertext -> Keymaker.Key in
             if #available(iOS 10.3, *) {
                 let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
-                return try encryptor.decrypt(cyphertext).bytes
+                return try encryptor.decrypt(cyphertext)
             } else {
                 let ethemeral = BioProtection.makeSymmetricEncryptor(in: self.keychain)
                 return try locked.unlock(with: ethemeral)

@@ -27,7 +27,7 @@
 //  THE SOFTWARE.
 
 import Foundation
-import CryptoSwift
+import Crypto
 
 public class StringCryptoTransformer: CryptoTransformer {
     // String -> Data
@@ -58,8 +58,6 @@ public class StringCryptoTransformer: CryptoTransformer {
         do {
             let string = try locked.unlock(with: self.key)
             return string
-        } catch AES.Error.dataPaddingRequired {
-            assert(false, "A bug in  CryptoSwift makes some LabelNames undecryptable")
         } catch let error {
             print(error)
             assert(false, "Error while decrypting value")

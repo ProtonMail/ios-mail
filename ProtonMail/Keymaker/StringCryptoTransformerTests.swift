@@ -36,7 +36,7 @@ class StringCryptoTransformerTests: XCTestCase {
         if status != 0 {
             XCTAssert(false, "failed to create cryptographically secure key")
         }
-        return key
+        return Data(bytes: key)
     }
     
     func testStringExample() {
