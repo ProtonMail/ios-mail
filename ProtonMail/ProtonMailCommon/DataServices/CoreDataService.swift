@@ -72,6 +72,12 @@ class CoreDataService {
         return managedObjectContext
     }
     
+    func newSeparateManagedObjectContext() -> NSManagedObjectContext {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+        return managedObjectContext
+    }
+    
     class var dbUrl: URL {
         return FileManager.default.appGroupsDirectoryURL.appendingPathComponent("ProtonMail.sqlite")
     }
