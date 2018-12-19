@@ -87,13 +87,19 @@ class AppCache : Migrate {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.touchIDEmail)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberUser)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.userInfo)
+        userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.username)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserDataService.isRememberMailboxPassword)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.token)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.UID)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
+        
+        try? FileManager.default.removeItem(at: FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("com.crashlytics"))
+        try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("com.crashlytics.data"))
+        try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("io.fabric.sdk.ios.data"))
     }
     
     func logout() {
@@ -115,9 +121,14 @@ class AppCache : Migrate {
 extension AppCache {
     
     func migrate_110_111() -> Bool {
-        // UserInfo
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
              AppCache.inject(userInfo: userInfo, into: sharedUserDataService)
+        }
+        if let username = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserDataService.username) {
+            AppCache.inject(username: username, into: sharedUserDataService)
+        }
+        if let mobileSignature = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature) {
+            userCachedStatus.mobileSignature = mobileSignature
         }
         
         // mailboxPassword
@@ -164,7 +175,7 @@ extension AppCache {
 }
 
 
-extension AppCache {    
+extension AppCache {
     enum DeprecatedKeys {
         enum AuthCredential {
             static let keychainStore = "keychainStoreKey"
@@ -176,6 +187,7 @@ extension AppCache {
             static let isPinCodeEnabled     = "isPinCodeEnabled"
             static let isTouchIDEnabled     = "isTouchIDEnabled"
             static let touchIDEmail         = "touchIDEmail"
+            static let lastLocalMobileSignature = "last_local_mobile_signature"
         }
         enum UserDataService {
             static let password                  = "passwordKey"
@@ -183,6 +195,7 @@ extension AppCache {
             static let isRememberUser            = "isRememberUserKey"
             static let userInfo                  = "userInfoKey"
             static let isRememberMailboxPassword = "isRememberMailboxPasswordKey"
+            static let username                  = "usernameKey"
         }
         enum PushNotificationService {
             static let token    = "DeviceTokenKey"
@@ -193,3 +206,4 @@ extension AppCache {
         }
     }
 }
+

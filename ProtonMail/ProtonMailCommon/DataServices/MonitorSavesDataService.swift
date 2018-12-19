@@ -45,9 +45,13 @@ class MonitorSavesDataService {
                                                name: NSNotification.Name.NSManagedObjectContextDidSave,
                                                object: nil)
         NotificationCenter.default.addObserver(self,
-                                               selector: #selector(MonitorSavesDataService.willSaveNotification(_:)),
+                                               selector: #selector(MonitorSavesDataService.willSaveNotificationMain(_:)),
                                                name: NSNotification.Name.NSManagedObjectContextWillSave,
                                                object: nil)
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(MonitorSavesDataService.willSaveNotificationBackground(_:)),
+//                                               name: NSNotification.Name.NSManagedObjectContextWillSave,
+//                                               object: nil)
     }
     
     deinit {
@@ -123,10 +127,10 @@ class MonitorSavesDataService {
         self.willSaveNotification(notification, updatedObjects: updatedObjects)
     }
     
-    @objc func willSaveNotificationBackground(_ notification: Notification) {
-        let updatedObjects = sharedCoreDataService.backgroundManagedObjectContext.updatedObjects
-        self.willSaveNotification(notification, updatedObjects: updatedObjects)
-    }
+//    @objc func willSaveNotificationBackground(_ notification: Notification) {
+//        let updatedObjects = sharedCoreDataService.backgroundManagedObjectContext.updatedObjects
+//        self.willSaveNotification(notification, updatedObjects: updatedObjects)
+//    }
     
     func willSaveNotification(_ notification: Notification, updatedObjects: Set<NSManagedObject>) {
         clearMonitorQueue()

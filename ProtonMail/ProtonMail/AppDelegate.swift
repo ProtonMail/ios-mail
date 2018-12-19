@@ -102,7 +102,7 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.coordinator.migrate()
         
@@ -140,7 +140,7 @@ extension AppDelegate: UIApplicationDelegate {
         if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
-         AFNetworkActivityLogger.shared().stopLogging()
+        AFNetworkActivityLogger.shared().stopLogging()
         //setup language
         LanguageManager.setupCurrentLanguage()
         
@@ -156,6 +156,8 @@ extension AppDelegate: UIApplicationDelegate {
             let intent = WipeMainKeyIntent()
             let suggestions = [INShortcut(intent: intent)!]
             INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        }
+        
         if #available(iOS 11.0, *) {
             self.generateToken()
         }
@@ -177,7 +179,6 @@ extension AppDelegate: UIApplicationDelegate {
             })
         }
     }
-    
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(window?.rootViewController)
@@ -310,8 +311,7 @@ extension AppDelegate: UIApplicationDelegate {
 }
 
 #if DEBUG
-@available(iOS 10.0, *)
-extension AppDelegate: UNUserNotificationCenterDelegate {
+@available(iOS 10.0, *) extension AppDelegate: UNUserNotificationCenterDelegate {
     func userNotificationCenter(_ center: UNUserNotificationCenter,
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)

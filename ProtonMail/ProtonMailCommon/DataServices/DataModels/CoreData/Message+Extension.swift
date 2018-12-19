@@ -298,7 +298,7 @@ extension Message {
      :param: messageID String
      */
     class func deleteMessage(_ messageID : String) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: "labels")
@@ -312,7 +312,7 @@ extension Message {
         }
     }
     
-    class func deleteLocation(_ location : MessageLocation) -> Bool{
+//    class func deleteLocation(_ location : MessageLocation) -> Bool{
 //         let mContext = sharedCoreDataService.backgroundManagedObjectContext
 //         var success = false
 //         mContext.performAndWait {
@@ -337,7 +337,7 @@ extension Message {
 //             }
 //         }
 //         return success
-//     class func deleteLocation(_ location : String) -> Bool{
+     class func deleteLocation(_ location : String) -> Bool{
 //         //TODO::fixme
 // //        if let mContext = sharedCoreDataService.mainManagedObjectContext {
 // //            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
@@ -578,7 +578,7 @@ extension Message {
     
     func copyMessage (_ copyAtts : Bool) -> Message {
         let message = self
-        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext!)
+        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext)
         newMessage.toList = message.toList
         newMessage.bccList = message.bccList
         newMessage.ccList = message.ccList

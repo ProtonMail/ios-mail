@@ -26,7 +26,7 @@
         </attribute>
         <attribute name="isTemp" optional="YES" attributeType="Boolean" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="keyChanged" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="keyPacket" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="keyPacket" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="KeyPackets"/>
             </userInfo>
@@ -43,7 +43,7 @@
         </userInfo>
     </entity>
     <entity name="Contact" representedClassName=".Contact" syncable="YES">
-        <attribute name="cardData" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="cardData" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Cards"/>
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
@@ -69,7 +69,7 @@
                 <entry key="JSONKeyPath" value="Size"/>
             </userInfo>
         </attribute>
-        <attribute name="uuid" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="uuid" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="UID"/>
             </userInfo>
@@ -281,7 +281,7 @@
         </attribute>
         <attribute name="messageStatus" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
         <attribute name="messageType" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" indexed="YES" syncable="YES"/>
-        <attribute name="mimeType" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="mimeType" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="MIMEType"/>
             </userInfo>
@@ -380,7 +380,7 @@
     <fetchRequest name="FetchRequest" entity="Message" predicateString="messageType == 1"/>
     <elements>
         <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="210"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="208"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
         <element name="Email" positionX="1539" positionY="-3582" width="128" height="180"/>
         <element name="Label" positionX="2095" positionY="-3357" width="128" height="180"/>

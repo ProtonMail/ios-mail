@@ -120,7 +120,7 @@ class ContactGroupsDataService {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         
                         // successfully deleted on the server
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             () -> Void in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
@@ -174,7 +174,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
@@ -238,7 +238,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             

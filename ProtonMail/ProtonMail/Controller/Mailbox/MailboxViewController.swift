@@ -879,29 +879,29 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
 
-        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-            guard let objectId = msg?.objectID,
-                let message = self.fetchedResultsController?.managedObjectContext.object(with: objectId) as? Message,
-                message.body.isEmpty == false else
-            {
-                if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                    self.tableView.indexPathsForSelectedRows?.forEach {
-                        self.tableView.deselectRow(at: $0, animated: true)
-                    }
-                }
-                return
-            }
-
-            self.selectedDraft = msg
-            if self.checkHuman() {
-                //TODO::QA
-                self.coordinator?.go(to: .composeShow)
-            }
-        }
+//        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+//            guard let objectId = msg?.objectID,
+//                let message = self.fetchedResultsController?.managedObjectContext.object(with: objectId) as? Message,
+//                message.body.isEmpty == false else
+//            {
+//                if error != nil {
+//                    PMLog.D("error: \(String(describing: error))")
+//                    let alert = LocalString._unable_to_edit_offline.alertController()
+//                    alert.addOKAction()
+//                    self.present(alert, animated: true, completion: nil)
+//                    self.tableView.indexPathsForSelectedRows?.forEach {
+//                        self.tableView.deselectRow(at: $0, animated: true)
+//                    }
+//                }
+//                return
+//            }
+//
+//            self.selectedDraft = msg
+//            if self.checkHuman() {
+//                //TODO::QA
+//                self.coordinator?.go(to: .composeShow)
+//            }
+//        }
     }
     
     fileprivate func selectMessageIDIfNeeded() {
@@ -917,7 +917,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //                }
 //            }
         }
-        performSegueForMessage(message)
+        
+//        performSegueForMessage(message)
         self.messageID = nil
     }
     

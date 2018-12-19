@@ -38,7 +38,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     struct CoderKey {
         static let lastLoggedInUser = "lastLoggedInUser"
-        static let touchIDEmail = "isPinCodeEnabled"
+        static let touchIDEmail = "touchIDEmail"
         static let isPinCodeEnabled = "isPinCodeEnabled"
         static let pinCodeCache = "pinCodeCache"
         static let autoLockTime = "autoLockTime"

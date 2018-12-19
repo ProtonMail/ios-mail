@@ -52,34 +52,37 @@ class CoreDataService {
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
         
-        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext,
-                                               queue: nil) { notification in
-            let context = self.backgroundManagedObjectContext
-            context.perform {
-                context.mergeChanges(fromContextDidSave: notification)
-            }
-        }
+//        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
+//                                               object: managedObjectContext,
+//                                               queue: nil) { notification in
+//            let context = self.backgroundManagedObjectContext
+//            context.perform {
+//                context.mergeChanges(fromContextDidSave: notification)
+//            }
+//        }
         
         return managedObjectContext
     }()
     
+    /// this case crashes when cleaning cache 
     lazy var backgroundManagedObjectContext: NSManagedObjectContext = {
-        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
-        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
-        
-        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
-                                               object: managedObjectContext,
-                                               queue: nil) { notification in
-            let context = self.mainManagedObjectContext
-            context.perform {
-                context.mergeChanges(fromContextDidSave: notification)
-            }
-        }
-        
-        return managedObjectContext
+        return mainManagedObjectContext
     }()
+//        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+//        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+//        managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator
+//
+//        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
+//                                               object: managedObjectContext,
+//                                               queue: nil) { notification in
+//            let context = self.mainManagedObjectContext
+//            context.perform {
+//                context.mergeChanges(fromContextDidSave: notification)
+//            }
+//        }
+//
+//        return managedObjectContext
+//    }()
     
     
     // MARK: - methods

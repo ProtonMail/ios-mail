@@ -64,35 +64,6 @@ class MessageDataService : Service {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func injectTransientValuesIntoMessages() {
-        let ids = sharedMessageQueue.queuedMessageIds()
-        let context = sharedCoreDataService.mainManagedObjectContext
-        context.performAndWait {
-            ids.forEach { messageID in
-                guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
-                    let managedObject = try? context.existingObject(with: objectID) else
-                {
-                    return
-                }
-                if let message = managedObject as? Message {
-                    self.cachePropertiesForBackground(in: message)
-                }
-                if let attachment = managedObject as? Attachment {
-                    self.cachePropertiesForBackground(in: attachment.message)
-                }
-            }
-        }
-    }
-    
-    private func cachePropertiesForBackground(in message: Message) {
-        // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
-        // they are transient and will not be persisted in the db, only in managed object context
-        message.cachedPassphrase = sharedUserDataService.mailboxPassword
-        message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
-        message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
-        message.cachedAddress = message.defaultAddress // computed property depending on current user settings
-    }
-    
     // MAKR : upload attachment
     func uploadAttachment(_ att: Attachment!) {
         let context = sharedCoreDataService.mainManagedObjectContext
@@ -101,51 +72,6 @@ class MessageDataService : Service {
             self.dequeueIfNeeded()
         } else {
             self.queue(att, action: .uploadAtt)
-        }
-    }
-    
-    func delete(att: Attachment!) {
-        let attachmentID = att.attachmentID
-        let context = sharedCoreDataService.mainManagedObjectContext
-        context.delete(att)
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
-        }
-
-        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
-        dequeueIfNeeded()
-    }
-    
-    
-    // MARK : Send message
-    func send(inQueue messageID : String!, completion: CompletionBlock?) {
-        var error: NSError?
-        let context = sharedCoreDataService.mainManagedObjectContext
-        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-            //message.location = .outbox
-            error = context.saveUpstreamIfNeeded()
-            if error != nil {
-                PMLog.D(" error: \(String(describing: error))")
-            } else {
-                self.queue(message, action: .send)
-            }
-        } else {
-            //TODO:: handle can't find the message error.
-        }
-        completion?(nil, nil, error)
-    }
-    
-    
-    //
-    func emptyTrash() {
-        if Message.deleteLocation(MessageLocation.trash) {
-            queue(.emptyTrash)
-        }
-    }
-    
-    func emptySpam() {
-        if Message.deleteLocation(MessageLocation.spam) {
-            queue(.emptySpam)
         }
     }
     
@@ -244,7 +170,7 @@ class MessageDataService : Service {
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     let messcount = responseDict?["Total"] as? Int ?? 0
-                    let context = sharedCoreDataService.backgroundManagedObjectContext
+                    let context = sharedCoreDataService.mainManagedObjectContext
                     context.perform() {
                         if forceClean {
                             self.cleanMessage()
@@ -412,27 +338,24 @@ class MessageDataService : Service {
     ///
     /// - Parameter att: Attachment
     func upload( att : Attachment) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-                self.dequeueIfNeeded()
-            } else {
-                self.queue(att, action: .uploadAtt)
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D("error: \(error)")
+            self.dequeueIfNeeded()
+        } else {
+            self.queue(att, action: .uploadAtt)
         }
     }
-    
     
     /// delete attachment from server
     ///
     /// - Parameter att: Attachment
     func delete(att: Attachment!) {
         let attachmentID = att.attachmentID
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.delete(att)
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext 
+        context.delete(att)
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D(" error: \(error)")
         }
         let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
         dequeueIfNeeded()
@@ -441,24 +364,23 @@ class MessageDataService : Service {
     // MARK : Send message
     func send(inQueue messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
-                } else {
-                    self.queue(message, action: .send)
-                }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+            //message.location = .outbox
+            error = context.saveUpstreamIfNeeded()
+            if error != nil {
+                PMLog.D(" error: \(String(describing: error))")
             } else {
-                //TODO:: handle can't find the message error.
+                self.queue(message, action: .send)
             }
         } else {
-            error = NSError.protonMailError(500, localizedDescription: "No managedObjectContext", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            //TODO:: handle can't find the message error.
         }
+        
         completion?(nil, nil, error)
     }
     
+
     func updateMessageCount() {
         let counterApi = MessageCount()
         counterApi.call({ (task, response, hasError) in
@@ -486,7 +408,34 @@ class MessageDataService : Service {
     
     
     ////////////////////////////////////////
+    //     func injectTransientValuesIntoMessages() {
+    //     let ids = sharedMessageQueue.queuedMessageIds()
+    //     let context = sharedCoreDataService.mainManagedObjectContext
+    //     context.performAndWait {
+    //         ids.forEach { messageID in
+    //             guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+    //                 let managedObject = try? context.existingObject(with: objectID) else
+    //             {
+    //                 return
+    //             }
+    //             if let message = managedObject as? Message {
+    //                 self.cachePropertiesForBackground(in: message)
+    //             }
+    //             if let attachment = managedObject as? Attachment {
+    //                 self.cachePropertiesForBackground(in: attachment.message)
+    //             }
+    //         }
+    //     }
+    // }
     
+    // private func cachePropertiesForBackground(in message: Message) {
+    //     // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
+    //     // they are transient and will not be persisted in the db, only in managed object context
+    //     message.cachedPassphrase = sharedUserDataService.mailboxPassword
+    //     message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
+    //     message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+    //     message.cachedAddress = message.defaultAddress // computed property depending on current user settings
+    // }
     ///TODO::fixme - double check it
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
@@ -902,18 +851,18 @@ class MessageDataService : Service {
                                         message_out.isDetailDownloaded = true
                                         message_out.needsUpdate = false
                                         
-                                        // var count = lastUpdatedStore.UnreadCountForKey(.inbox)
-                                        // if message_out.unRead == true {
-                                        //     message_out.unRead = false
-                                        //     self.queue(message_out, action: .read)
+                                        var count = lastUpdatedStore.UnreadCountForKey(Message.Location.inbox.rawValue)
+                                        if message_out.unRead == true {
+                                            message_out.unRead = false
+                                            self.queue(message_out, action: .read)
                                             
-                                        //     count = count + needOffset
-                                        //     if count < 0 {
-                                        //         count = 0
-                                        //     }
-                                        //     lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
-                                        // }
-                                        // let tmpError = context.saveUpstreamIfNeeded()
+                                            count = count + needOffset
+                                            if count < 0 {
+                                                count = 0
+                                            }
+                                            lastUpdatedStore.updateLabelsUnreadCountForKey(Message.Location.inbox.rawValue, count: count)
+                                        }
+                                        let tmpError = context.saveUpstreamIfNeeded()
 
                                         DispatchQueue.main.async {
                                             completion(task, response, Message.ObjectIDContainer(message_out), tmpError)
@@ -982,21 +931,14 @@ class MessageDataService : Service {
 //
     func fetchedResults(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = sharedCoreDataService.mainManagedObjectContext
-        if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            if labelID == Message.Location.sent.rawValue {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-                                                     labelID, Message.Location.trash.rawValue, Message.Location.archive.rawValue, Message.Attributes.messageStatus)
-            } else {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
-                                                     labelID, Message.Attributes.messageStatus)
-            }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-
-            
-            fetchRequest.includesPropertyValues = false
-            
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        if labelID == Message.Location.sent.rawValue {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
+                                                 labelID, Message.Location.trash.rawValue, Message.Location.archive.rawValue, Message.Attributes.messageStatus)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
+                                                 labelID, Message.Attributes.messageStatus)
         }
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.fetchBatchSize = 30
@@ -1069,7 +1011,7 @@ class MessageDataService : Service {
     }
     
     fileprivate func cleanMessage() {
-        Message.deleteAll(inContext: sharedCoreDataService.backgroundManagedObjectContext) // will cascadely remove appropriate Attacments also
+        Message.deleteAll(inContext: sharedCoreDataService.mainManagedObjectContext) // will cascadely remove appropriate Attacments also
         UIApplication.setBadge(badge: 0)
         // good opportunity to remove all temp folders (they should be empty by this moment)
         try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
