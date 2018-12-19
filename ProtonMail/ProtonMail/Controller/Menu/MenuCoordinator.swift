@@ -163,16 +163,19 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
-            var label = Message.Location.inbox
-            if let index = sender as? Message.Location {
-                label = index
+            
+            var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox, service: services.get(), pushService: services.get())
+            
+            if let label = sender as? Label {
+                if label.exclusive {
+                    viewModel = FolderboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                } else {
+                    viewModel = LabelboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                }
             }
-            //if  let label = self.viewModel.label(at: row) {
-            //  sharedVMService.labelbox(fromMenu: mailbox, label: label)
-            // }
-            let viewModel = MailboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             mailbox.start()
+            
         case .settings:
             guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
                 return false

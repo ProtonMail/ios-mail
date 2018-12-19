@@ -72,6 +72,9 @@ end
 target 'ProtonMailDev' do
 	pm_pods
     
+    pod 'Fabric'
+    pod 'Crashlytics'
+    
     # Pods for PushServiceDev
     target 'PushServiceDev' do
         inherit! :search_paths

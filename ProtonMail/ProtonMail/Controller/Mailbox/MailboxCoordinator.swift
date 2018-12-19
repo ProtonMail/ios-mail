@@ -24,7 +24,7 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-    
+
 
 import Foundation
 import SWRevealViewController
@@ -111,7 +111,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             next.message = message
             self.viewModel.resetNotificationMessage()
-
+            
         case .composer:
             guard let nav = destination as? UINavigationController else {
                 return false
@@ -125,28 +125,22 @@ class MailboxCoordinator : DefaultCoordinator {
             let coordinator = ComposeCoordinator(vc: next, vm: viewModel, services: services)
             coordinator.start()
         case .composeShow:
-            return false
-            //            self.cancelButtonTapped()
-            //            //TODO:: Check
-            //            let composeViewController = segue.destination.children[0] as! ComposeViewController
-            //            if let indexPathForSelectedRow = indexPathForSelectedRow {
-            //                if let message = self.messageAtIndexPath(indexPathForSelectedRow) {
-            //                    sharedVMService.openDraft(vmp: composeViewController, with: selectedDraft ?? message)
-            //
-            //                    //TODO:: finish up here
-            //                    let coordinator = ComposeCoordinator(vc: composeViewController,
-            //                                                         vm: composeViewController.viewModel) //set view model
-            //                    coordinator.viewController = composeViewController
-            //                    composeViewController.set(coordinator: coordinator)
-            //                } else {
-            //                    let alert = LocalString._messages_cant_find_message.alertController()
-            //                    alert.addOKAction()
-            //                    present(alert, animated: true, completion: nil)
-            //                }
-            //
-            //            } else {
-            //                PMLog.D("No selected row.")
-        //            }
+            self.viewController?.cancelButtonTapped()
+            guard let nav = destination as? UINavigationController else {
+                return false
+            }
+            guard let next = nav.firstViewController() as? ComposeViewController else {
+                return false
+            }
+            let vmService = services.get() as ViewModelService
+            vmService.newDraft(vmp: next)
+            
+            guard let message = sender as? Message else {
+                return false
+            }
+            let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft)
+            let coordinator = ComposeCoordinator(vc: next, vm: viewModel, services: services)
+            coordinator.start()
         case .search, .onboarding:
             return true
         case .feedback:
@@ -181,7 +175,7 @@ class MailboxCoordinator : DefaultCoordinator {
         return true
     }   
     
-    func go(to dest: Destination) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: nil)
+    func go(to dest: Destination, sender: Any? = nil) {
+        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
 }

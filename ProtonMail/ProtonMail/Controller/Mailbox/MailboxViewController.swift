@@ -83,7 +83,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private var fetchingNewer : Bool = false
     private var fetchingOlder : Bool = false
-    private var selectedDraft : Message!
     private var indexPathForSelectedRow : IndexPath!
     
     private var undoMessage : UndoMessage?
@@ -144,6 +143,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+   
+        assert(self.viewModel != nil)
+        assert(self.coordinator != nil)
+
         ///
         self.viewModel.setupFetchController(self)
         
@@ -559,8 +562,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func archiveMessageForIndexPath(_ indexPath: IndexPath) {
         if let message = self.viewModel.item(index: indexPath) {
-            //TODO::fixme
-//            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
+//            undoMessage = UndoMessage(msgID: message.messageID, origLabels: message.location, newLabels: <#String#>)
 //            let res = viewModel.archiveMessage(message)
 //            switch res {
 //            case .showUndo:
@@ -878,35 +880,34 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             return
         }
-
-//        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-//            guard let objectId = msg?.objectID,
-//                let message = self.fetchedResultsController?.managedObjectContext.object(with: objectId) as? Message,
-//                message.body.isEmpty == false else
-//            {
-//                if error != nil {
-//                    PMLog.D("error: \(String(describing: error))")
-//                    let alert = LocalString._unable_to_edit_offline.alertController()
-//                    alert.addOKAction()
-//                    self.present(alert, animated: true, completion: nil)
-//                    self.tableView.indexPathsForSelectedRows?.forEach {
-//                        self.tableView.deselectRow(at: $0, animated: true)
-//                    }
-//                }
-//                return
-//            }
-//
-//            self.selectedDraft = msg
-//            if self.checkHuman() {
-//                //TODO::QA
-//                self.coordinator?.go(to: .composeShow)
-//            }
-//        }
+        
+        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+            guard let objectId = msg?.objectID,
+                let message = self.viewModel.object(by: objectId),
+                message.body.isEmpty == false else
+            {
+                if error != nil {
+                    PMLog.D("error: \(String(describing: error))")
+                    let alert = LocalString._unable_to_edit_offline.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                    self.tableView.indexPathsForSelectedRows?.forEach {
+                        self.tableView.deselectRow(at: $0, animated: true)
+                    }
+                }
+                return
+            }
+            if self.checkHuman() {
+                self.coordinator?.go(to: .composeShow, sender: message)
+            }
+        }
     }
     
     fileprivate func selectMessageIDIfNeeded() {
-        if messageID != nil {
-            //TODO::fixme
+        if let msgID = messageID {
+            if let message = self.viewModel.message(by: msgID) {
+                self.tappedMassage(message)
+            }
 //            if let messages = fetchedResultsController?.fetchedObjects as? [Message] {
 //                if let message = messages.filter({ $0.messageID == self.messageID }).first {
 //                    if let indexPath = fetchedResultsController?.indexPath(forObject: message) {
@@ -917,8 +918,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //                }
 //            }
         }
-        
-//        performSegueForMessage(message)
         self.messageID = nil
     }
     

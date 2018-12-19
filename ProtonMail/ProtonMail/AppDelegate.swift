@@ -35,6 +35,11 @@ import UserNotifications
 import Intents
 import DeviceCheck
 
+#if Enterprise
+import Fabric
+import Crashlytics
+#endif
+
 let sharedUserDataService = UserDataService()
 
 
@@ -105,6 +110,10 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         self.coordinator.migrate()
+        
+        #if Enterprise
+        Fabric.with([Crashlytics.self])
+        #endif
         
         Analytics.shared.setup()
         

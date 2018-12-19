@@ -484,51 +484,113 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         return true
     }
     
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//
-//        if segue.identifier == kToComposerSegue {
-//            if let contact = sender as? ContactVO {
-//                let composeViewController = segue.destination.children[0] as! ComposeViewController
-//                sharedVMService.newDraft(vmp: composeViewController, with: contact)
-//                //TODO:: finish up here
-//                let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                     vm: composeViewController.viewModel) //set view model
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == kToComposerSegue {
+            if let contact = sender as? ContactVO {
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
+                sharedVMService.newDraft(vmp: composeViewController)
+                //TODO:: finish up here
+                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+                viewModel.addToContacts(contact)
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
 //                coordinator.viewController = composeViewController
 //                composeViewController.set(coordinator: coordinator)
-//            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
-//                let composeViewController = segue.destination.children[0] as! ComposeViewController
-//                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
-//                //TODO:: finish up here
-//                let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                     vm: composeViewController.viewModel) //set view model
-//                coordinator.viewController = composeViewController
-//                composeViewController.set(coordinator: coordinator)
-//            } else {
-//                let composeViewController = segue.destination.children[0] as! ComposeViewController
-//                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
-//                //TODO:: finish up here
-//                let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                     vm: composeViewController.viewModel) //set view model
-//                coordinator.viewController = composeViewController
-//                composeViewController.set(coordinator: coordinator)
-//            }
-//        } else if segue.identifier == kSegueToApplyLabels {
-//            let popup = segue.destination as! LablesViewController
-//            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
-//            popup.delegate = self
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        } else if segue.identifier == kSegueMoveToFolders {
-//            let popup = segue.destination as! LablesViewController
-//            popup.delegate = self
-//            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        } else if segue.identifier == kToAddContactSegue {
-//            if let contact = sender as? ContactVO {
-//                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-//                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
-//            }
-//        }
-//    }
+            } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
+                sharedVMService.newDraft(vmp: composeViewController)
+                
+                let viewModel = ComposeViewModelImpl(msg: message, action: tapped)
+                
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
+            } else {
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
+                sharedVMService.newDraft(vmp: composeViewController)
+                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+                if let mailTo : NSURL = self.url as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
+                    var rawURLparts = resSpecifier.components(separatedBy: "?")
+                    if (rawURLparts.count > 2) {
+                        
+                    } else {
+                        let defaultRecipient = rawURLparts[0]
+                        if defaultRecipient.count > 0 { //default to
+                            if defaultRecipient.isValidEmail() {
+                                viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
+                            }
+                            PMLog.D("to: \(defaultRecipient)")
+                        }
+                        
+                        if (rawURLparts.count == 2) {
+                            let queryString = rawURLparts[1]
+                            let params = queryString.components(separatedBy: "&")
+                            for param in params {
+                                var keyValue = param.components(separatedBy: "=")
+                                if (keyValue.count != 2) {
+                                    continue
+                                }
+                                let key = keyValue[0].lowercased()
+                                var value = keyValue[1]
+                                value = value.removingPercentEncoding ?? ""
+                                if key == "subject" {
+                                    PMLog.D("subject: \(value)")
+                                    viewModel.setSubject(value)
+                                }
+                                
+                                if key == "body" {
+                                    PMLog.D("body: \(value)")
+                                    viewModel.setBody(value)
+                                }
+                                
+                                if key == "to" {
+                                    PMLog.D("to: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addToContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "cc" {
+                                    PMLog.D("cc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addCcContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "bcc" {
+                                    PMLog.D("bcc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addBccContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                //TODO:: finish up here
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
+            }
+        } else if segue.identifier == kSegueToApplyLabels {
+            let popup = segue.destination as! LablesViewController
+            popup.viewModel = LabelApplyViewModelImpl(msg: [self.message])
+            popup.delegate = self
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kSegueMoveToFolders {
+            let popup = segue.destination as! LablesViewController
+            popup.delegate = self
+            popup.viewModel = FolderApplyViewModelImpl(msg: [self.message])
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        } else if segue.identifier == kToAddContactSegue {
+            if let contact = sender as? ContactVO {
+                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
+                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+            }
+        }
+    }
     
     func shouldShowSideMenu() -> Bool {
         return false

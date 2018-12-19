@@ -37,11 +37,11 @@ enum SwipeResponse {
 
 class UndoMessage {
     var messageID : String
-    var origLabels : [String]
-    var newLabels : [String]
+    var origLabels : String
+    var newLabels : String
     
     //
-    required init(msgID: String, origLabels : [String], newLabels: [String]) {
+    required init(msgID: String, origLabels : String, newLabels: String) {
         self.messageID  = msgID
         self.origLabels = origLabels
         self.newLabels  = newLabels
@@ -59,6 +59,7 @@ class MailboxViewModel {
     /// local message for rating
     private var ratingMessage : Message?
     
+    ///
     var selectedMessageIDs: NSMutableSet = NSMutableSet()
     
     /// mailbox viewModel
@@ -194,9 +195,11 @@ class MailboxViewModel {
     }
     
     
+    /// process push
     func processCachedPush() {
         self.pushService.processCachedLaunchOptions()
     }
+    
     
     func selectedMessages() -> [Message] {
         if let context = fetchedResultsController?.managedObjectContext {
@@ -213,6 +216,24 @@ class MailboxViewModel {
         return [Message]();
     }
     
+    func message(by messageID: String) -> Message? {
+        if let context = self.fetchedResultsController?.managedObjectContext {
+            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                return message
+            }
+        }
+        return nil
+    }
+    
+    
+    func object(by object: NSManagedObjectID) -> Message? {
+        if let obj = self.fetchedResultsController?.managedObjectContext.object(with: object) as? Message {
+            return obj
+        }
+        return nil
+    }
+    
+    /// rating index
     var ratingIndex : IndexPath? {
         get {
             if let msg = ratingMessage {

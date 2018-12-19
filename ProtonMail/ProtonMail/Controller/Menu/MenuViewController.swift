@@ -236,7 +236,8 @@ extension MenuViewController: UITableViewDelegate {
 >>>>>>> simple deeplink . could improve later
             }
         case .labels:
-            self.coordinator?.go(to: .label, sender: indexPath)
+            let obj = self.viewModel.label(at: row)
+            self.coordinator?.go(to: .label, sender: obj)
         default:
             break
         }
