@@ -43,11 +43,11 @@ class MonitorSavesDataService {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(MonitorSavesDataService.didSaveNotification(_:)),
                                                name: NSNotification.Name.NSManagedObjectContextDidSave,
-                                               object: sharedCoreDataService.mainManagedObjectContext)
+                                               object: nil)
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(MonitorSavesDataService.willSaveNotification(_:)),
                                                name: NSNotification.Name.NSManagedObjectContextWillSave,
-                                               object: sharedCoreDataService.mainManagedObjectContext)
+                                               object: nil)
     }
     
     deinit {

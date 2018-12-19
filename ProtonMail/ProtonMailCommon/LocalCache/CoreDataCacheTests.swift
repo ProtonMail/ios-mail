@@ -1,6 +1,6 @@
 //
-//  AppVersionTests.swift
-//  ProtonMailTests - Created on 15/06/2018.
+//  CoreDataCacheTests.swift
+//  ProtonMail - Created on 12/18/18.
 //
 //
 //  The MIT License
@@ -24,30 +24,38 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import XCTest
 @testable import ProtonMail
 
-class AppVersionTests: XCTestCase {
-
-    func testExample() {
-        let verA = "1.9.0"
-        let verB = "1.9.1"
-        let verC = "2.0.0"
-        let verD = "0.0.1"
-        let verE = "5.0"
-        let verF = "1"
-        let verG = "1.9.0"
-        
-        let correctOrder = [verA, verB, verC, verD, verE, verF, verG].map{ AppVersion.init($0) }.sorted().map{ $0.string }
-        XCTAssertEqual(correctOrder, [verD, verF, verA, verG, verB, verC, verE])
-    }
+class CoreDataCacheTests: XCTestCase {
     
-    func testDebugBuild() {
-        let ver = "1.11.0"
-        let verD = "1.11.0 (Debug)"
+    var coreDataCache = CoreDataCache(latestVesion: 100)
+    
+    override func setUp() {
         
-        XCTAssertEqual(AppVersion(ver), AppVersion(verD))
+        
+        
+        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
+
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testCoreDataRun() {
+        
+        coreDataCache.run()
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
+
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+        }
+    }
+
 }

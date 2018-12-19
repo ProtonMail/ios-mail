@@ -43,9 +43,7 @@ extension OptionsDialogPresenter {
 
 // controller
 @available(iOS 10.0, *)
-final class NotificationsSnoozer: NotificationsSnoozerCore {
-    internal static var appVersion = AppVersion("1.0.0") // TODO: update once we'll be ready to release this feature
-    
+final class NotificationsSnoozer: NotificationsSnoozerCore {    
     internal func overview(at date: Date,
                            ofCase type: NotificationsSnoozerCore.Configuration.CodingKeys? = nil) -> String
     {

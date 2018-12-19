@@ -272,10 +272,10 @@ class ViewModelServiceImpl: ViewModelService {
     
     
     
-    //
+    //TODO::fixme
     override func cleanLegacy() {
         //get current cache version
-        let currentVersion = userCachedStatus.lastCacheVersion
+        let currentVersion = UserDefaultsSaver<Int>(key: AppCache.Key.cacheVersion).get()
         if currentVersion > 0 && currentVersion < 98 {
             sharedCoreDataService.cleanLegacy()//clean core data
             

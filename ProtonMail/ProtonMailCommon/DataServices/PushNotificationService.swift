@@ -32,7 +32,7 @@ import SWRevealViewController
 import Keymaker
 
 public class PushNotificationService: Service {
-    
+
     typealias SubscriptionSettings = PushSubscriptionSettings
     
     enum Key {
@@ -42,6 +42,10 @@ public class PushNotificationService: Service {
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
     
+    /// message service
+    private let messageService: MessageDataService
+    
+    ///
     private let subscriptionSaver: Saver<Subscription>
     private let outdatedSaver: Saver<Set<SubscriptionSettings>>
     private let encryptionKitSaver: Saver<SubscriptionSettings>
@@ -50,7 +54,7 @@ public class PushNotificationService: Service {
     private let signInProvider: SignInProvider
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
-    private let messageService: MessageDataService
+    
     init(service: MessageDataService,
          subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
@@ -104,7 +108,6 @@ public class PushNotificationService: Service {
     public func registerForRemoteNotifications() {
         DispatchQueue.main.async {
             UIApplication.shared.registerForRemoteNotifications()
-        
             let types: UIUserNotificationType = [.badge , .sound , .alert]
             let settings = UIUserNotificationSettings(types: types, categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
@@ -292,7 +295,7 @@ public class PushNotificationService: Service {
     
     // MARK: - Private methods
     
-    fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
+    private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
         if let encrypted = userInfo["encryptedMessage"] as? String {
             guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
                 return nil
@@ -323,6 +326,7 @@ public class PushNotificationService: Service {
 protocol SessionIdProvider {
     var sessionID: String? { get }
 }
+
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
     var sessionID: String? {
         return AuthCredential.fetchFromKeychain()?.userID
@@ -351,4 +355,5 @@ protocol DeviceRegistrator {
     func device(registerWith settings: PushSubscriptionSettings, completion: APIService.CompletionBlock?)
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
 }
+
 extension APIService: DeviceRegistrator {}

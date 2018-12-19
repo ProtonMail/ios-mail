@@ -1,6 +1,6 @@
 //
-//  PushSubscriptionSettings.swift
-//  ProtonMail - Created on 08/11/2018.
+//  EncryptionKit.swift
+//  ProtonMail - Created on 12/18/18.
 //
 //
 //  The MIT License
@@ -24,35 +24,13 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-struct PushSubscriptionSettings: Hashable, Codable {
-    typealias EncryptionKit = PushNotificationDecryptor.EncryptionKit
-    
-    let token, UID: String
-    var encryptionKit: EncryptionKit!
-    
-    static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
-        return lhs.token == rhs.token && lhs.UID == rhs.UID
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(self.token)
-        hasher.combine(self.UID)
-    }
-    
-    init(token: String, UID: String) {
-        self.token = token
-        self.UID = UID
-    }
-    
-    #if !APP_EXTENSION
-    mutating func generateEncryptionKit() throws {
-        let crypto = PMNOpenPgp.createInstance()!
-        let keypair = try crypto.generateRandomKeypair()
-        self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
-    }
-    #endif
+
+/// initally for push notification key
+struct EncryptionKit: Codable, Equatable {
+    var passphrase, privateKey, publicKey: String
 }
+

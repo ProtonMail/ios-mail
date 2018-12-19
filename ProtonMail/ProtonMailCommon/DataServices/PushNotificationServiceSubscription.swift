@@ -68,7 +68,8 @@ extension PushNotificationService.Subscription: Codable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         switch self {
         case .none, .pending, .notReported: break // no sence in saving these values - settings not accepted by BE are useless
-        case .reported(let settings): try container.encode(settings, forKey: .reported)
+        case .reported(let settings):
+            try container.encode(settings, forKey: .reported)
         }
     }
 }

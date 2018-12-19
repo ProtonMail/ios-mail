@@ -104,7 +104,7 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 extension AppDelegate: UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        AppVersion.migrate()
+        self.coordinator.migrate()
         
         Analytics.shared.setup()
         

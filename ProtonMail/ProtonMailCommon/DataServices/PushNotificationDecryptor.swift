@@ -28,18 +28,15 @@
 
 import Foundation
 
-///Since push notificaitons are not stored in iOS internals for long, we do not care about these properties safety.
+/// Since push notificaitons are not stored in iOS internals for long, we do not care about these properties safety.
 /// They are used for encryption of data-in-the-air and are changed at least per session.
 /// On the other hand, they should be available to all of our extensions even when the app is locked.
 class PushNotificationDecryptor {
-    struct EncryptionKit: Codable, Equatable {
-        var passphrase, privateKey, publicKey: String
-    }
-    
+
     enum Key {
-        static let encyptionKit = "pushNotificationEncryptionKit"
+        static let encyptionKit     = "pushNotificationEncryptionKit"
         static let outdatedSettings = "pushNotificationOutdatedSubscriptions"
-        static let deviceToken = "latestDeviceToken"
+        static let deviceToken      = "latestDeviceToken"
     }
     
     static var saver = KeychainSaver<PushSubscriptionSettings>(key: Key.encyptionKit)

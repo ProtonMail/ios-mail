@@ -63,6 +63,8 @@ class MenuViewModelImpl : MenuViewModel {
                 PMLog.D("error: \(ex)")
             }
         }
+        ///TODO::fixme not necessary
+        sharedLabelsDataService.fetchLabels()
     }
     
     func sectionCount() -> Int {

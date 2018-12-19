@@ -37,7 +37,7 @@ let userCachedStatus = UserCachedStatus()
 final class UserCachedStatus : SharedCacheBase {
     struct Key {
         // inuse
-        static let lastCacheVersion = "last_cache_version" //user cache
+//        static let lastCacheVersion = "last_cache_version" //user cache
         static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey" //user cache
         static let lastAuthCacheVersion = "last_auth_cache_version" //user cache
         static let cachedServerNotices = "cachedServerNotices" //user cache
@@ -134,26 +134,26 @@ final class UserCachedStatus : SharedCacheBase {
         setValue(0, forKey: Key.lastTourViersion)
     }
     
-    func isCacheOk() -> Bool {
-        let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-        return cachedVersion == Constants.App.CacheVersion
-    }
+//    func isCacheOk() -> Bool {
+//        let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
+//        return cachedVersion == Constants.App.CacheVersion
+//    }
     
-    var lastCacheVersion : Int {
-        get {
-            let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-            return cachedVersion
-        }
-    }
+//    var lastCacheVersion : Int {
+//        get {
+//            let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
+//            return cachedVersion
+//        }
+//    }
     
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
         return cachedVersion == Constants.App.AuthCacheVersion
     }
     
-    func resetCache() -> Void {
-        setValue(Constants.App.CacheVersion, forKey: Key.lastCacheVersion)
-    }
+//    func resetCache() -> Void {
+//        setValue(Constants.App.CacheVersion, forKey: Key.lastCacheVersion)
+//    }
     
     func resetAuthCache() -> Void {
         setValue(Constants.App.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
@@ -211,13 +211,11 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastFetchMessageTime)
         getShared().removeObject(forKey: Key.lastUpdateTime)
         getShared().removeObject(forKey: Key.historyTimeStamp)
-        getShared().removeObject(forKey: Key.lastCacheVersion)
         getShared().removeObject(forKey: Key.isCheckSpaceDisabled)
         getShared().removeObject(forKey: Key.cachedServerNotices)
         getShared().removeObject(forKey: Key.showServerNoticesNextTime)
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
-        
         
         //pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)

@@ -1,6 +1,6 @@
 //
-//  KeychainSaver.swift
-//  ProtonMail - Created on 07/11/2018.
+//  PushSubscriptionSettings.swift
+//  ProtonMail - Created on 08/11/2018.
 //
 //
 //  The MIT License
@@ -28,30 +28,29 @@
 
 import Foundation
 
-class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: sharedKeychain, cachingInMemory: cachingInMemory)
-    }
-}
-
-extension KeychainWrapper: KeyValueStoreProvider {
-    func set(_ intValue: Int, forKey key: String) {
-        self.keychain.setValue(intValue, forKey: key)
+struct PushSubscriptionSettings: Hashable, Codable {
+    let token, UID: String
+    var encryptionKit: EncryptionKit!
+    
+    static func == (lhs: PushSubscriptionSettings, rhs: PushSubscriptionSettings) -> Bool {
+        return lhs.token == rhs.token && lhs.UID == rhs.UID
     }
     
-    func set(_ data: Data, forKey key: String) {
-        self.keychain.setData(data, forKey: key)
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.token)
+        hasher.combine(self.UID)
     }
     
-    func data(forKey key: String) -> Data? {
-        return self.keychain.data(forKey: key)
+    init(token: String, UID: String) {
+        self.token = token
+        self.UID = UID
     }
     
-    func intager(forKey key: String) -> Int? {
-        return self.keychain.value(forKey: key) as? Int
+    #if !APP_EXTENSION
+    mutating func generateEncryptionKit() throws {
+        let crypto = PMNOpenPgp.createInstance()!
+        let keypair = try crypto.generateRandomKeypair()
+        self.encryptionKit = EncryptionKit(passphrase: keypair.passphrase, privateKey: keypair.privateKey, publicKey: keypair.publicKey)
     }
-    
-    func removeItem(forKey key: String) {
-        self.keychain.removeItem(forKey: key)
-    }
+    #endif
 }

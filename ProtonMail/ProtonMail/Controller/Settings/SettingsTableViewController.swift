@@ -120,7 +120,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         } else {
             setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache]
         }
-        if #available(iOS 10.0, *), AppVersion.current >= NotificationsSnoozer.appVersion {
+        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             setting_general_items.append(.notificationsSnooze)
         }
         

@@ -70,8 +70,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     // temp vars
     private var sectionClicked : Bool  = false
     
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(viewModel != nil, "viewModel can't be empty")
@@ -86,9 +84,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         
         //setup labels fetch controller
         self.viewModel.setupLabels(delegate: self)
-        
-        ///TODO::fixme not necessary
-        sharedLabelsDataService.fetchLabels()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,7 +108,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         updateDisplayNameLabel()
         self.tableView.reloadData()
         
-        if #available(iOS 10.0, *), AppVersion.current >= NotificationsSnoozer.appVersion {
+        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             self.setupSnoozeButton()
             self.snoozeButton.accessibilityHint = LocalString._double_tap_to_setup
         } else {
@@ -211,7 +206,8 @@ extension MenuViewController: UITableViewDelegate {
         let section = self.viewModel.section(at: s)
         switch section {
         case .inboxes:
-            self.coordinator?.go(to: .mailbox, sender: indexPath)
+            let obj = self.viewModel.item(inboxes: row).menuToLabel
+            self.coordinator?.go(to: .mailbox, sender: obj)
         case .others:
             let item = self.viewModel.item(others: row)
             if item == .signout {

@@ -76,14 +76,28 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
         
+        let placeholder = UIWindow(frame: UIScreen.main.bounds)
+        placeholder.rootViewController = UIViewController()
+        self.snapshot.show(at: placeholder)
+        self.currentWindow = placeholder
+    }
+    
+    /// restore local cache when app start.
+    func migrate() {
+        let cacheService : AppCacheService = serviceHolder.get()
+        
+        cacheService.restoreCacheWhenAppStart()
+    }
+    
+    /// restore some cache after login/authorized
+    func loginmigrate() {
+        ///
+        let cacheService : AppCacheService = serviceHolder.get()
+        
+        cacheService.restoreCacheAfterAuthorized()
     }
 
     func start() {
-        let placeholder = UIWindow(frame: UIScreen.main.bounds)
-        placeholder.rootViewController = UIViewController() 
-        self.snapshot.show(at: placeholder)
-        self.currentWindow = placeholder
-        
         MainThread.auto {
             // initiate unlock process which will send .didUnlock or .requestMainKey eventually
             UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),

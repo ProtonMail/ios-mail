@@ -29,7 +29,7 @@
 import Foundation
 
 
-//TODO::cache  this only need to load after login/authed
+//TODO::cache this only need to load after login/authed
 let lastUpdatedStore = LastUpdatedStore()
 
 final class LastUpdatedStore : SharedCacheBase {

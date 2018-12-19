@@ -1,6 +1,6 @@
 //
-//  KeychainSaver.swift
-//  ProtonMail - Created on 07/11/2018.
+//  UserDefaultsSaverTests.swift
+//  ProtonMail - Created on 12/18/18.
 //
 //
 //  The MIT License
@@ -24,34 +24,31 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+    
+
+import XCTest
+@testable import ProtonMail
+
+class UserDefaultsSaverTests: XCTestCase {
+
+    override func setUp() {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+
+    func testExample() {
+        
+        let saver = UserDefaultsSaver<Int>(key:"test_1")
+        saver.set(newValue: 100)
+        
+        
+        // This is an example of a functional test case.
+        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    }
 
 
-import Foundation
 
-class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: sharedKeychain, cachingInMemory: cachingInMemory)
-    }
-}
-
-extension KeychainWrapper: KeyValueStoreProvider {
-    func set(_ intValue: Int, forKey key: String) {
-        self.keychain.setValue(intValue, forKey: key)
-    }
-    
-    func set(_ data: Data, forKey key: String) {
-        self.keychain.setData(data, forKey: key)
-    }
-    
-    func data(forKey key: String) -> Data? {
-        return self.keychain.data(forKey: key)
-    }
-    
-    func intager(forKey key: String) -> Int? {
-        return self.keychain.value(forKey: key) as? Int
-    }
-    
-    func removeItem(forKey key: String) {
-        self.keychain.removeItem(forKey: key)
-    }
 }

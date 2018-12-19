@@ -24,12 +24,42 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-    
+
 
 import Foundation
 
 class AppCacheService: Service {
-
-
-
+    
+    enum Constants {
+//        static let AuthCacheVersion : Int = 15 //this is user info cache
+//        static let SpaceWarningThreshold: Int = 80
+//        static let SpaceWarningThresholdDouble: Double = 80
+//        static let SplashVersion : Int = 1
+//        static let TourVersion : Int = 2
+//
+//        static let AskTouchID : Int              = 1
+//        static var AppVersion : Int              = 1
+    }
+    private let userDefault = SharedCacheBase()
+    private let coreDataCache: CoreDataCache
+    private let appCache: AppCache
+    
+    init() {
+        self.coreDataCache = CoreDataCache()
+        self.appCache = AppCache()
+    }
+    
+    func restoreCacheWhenAppStart() {
+        self.coreDataCache.run()
+        self.appCache.run()
+    }
+    
+    func restoreCacheAfterAuthorized() {
+        
+    }
+    
+    func logout() {
+        
+    }
 }
+

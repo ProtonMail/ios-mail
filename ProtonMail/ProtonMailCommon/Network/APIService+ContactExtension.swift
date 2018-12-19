@@ -38,20 +38,17 @@ extension APIService {
     func contactDelete(contactID: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/delete"
         let parameters = ["IDs": [ contactID ] ]
-        //setApiVesion(1, appVersion: 1)
         request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
     func contactList(_ completion: CompletionBlock?) {
         let path = ContactPath.base
-        //setApiVesion(1, appVersion: 1)
         request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
      func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
          let path = ContactPath.base + "/\(contactID)"
          let parameters = parametersForName(name, email: email)
-         //setApiVesion(1, appVersion: 1)
          request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     

@@ -28,10 +28,7 @@
 
 import Foundation
 
-
-
 let cachedBugReport = BugReportCache()
-
 final class BugReportCache : SharedCacheBase {
     
     fileprivate struct Key {

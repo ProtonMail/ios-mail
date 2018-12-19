@@ -30,8 +30,6 @@ import Foundation
 import Crypto
 
 extension APIService {
-    typealias EncryptionKit = PushSubscriptionSettings.EncryptionKit
-    
     fileprivate struct DevicePath {
         static let basePath = "/devices"
     }

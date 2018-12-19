@@ -760,7 +760,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if !fetchingMessage {
             fetchingMessage = true
             
-            self.beginRefreshingManually(animated: false)
+            self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
             let updateTime = viewModel.lastUpdateTime()
             let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false

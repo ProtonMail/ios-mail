@@ -900,14 +900,12 @@ class UserDataService : Service {
     // MARK: - Private methods
     
     func cleanUpIfFirstRun() {
-        #if !APP_EXTENSION
-        if AppVersion.isFirstRun() {
+        let firstRunKey = "FirstRunKey"
+        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
             clearAll()
-            SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
+            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
             SharedCacheBase.getDefault().synchronize()
-            AppVersion.lastMigratedTo = AppVersion.current
         }
-        #endif
     }
     
     func clearAll() {
@@ -959,8 +957,7 @@ class UserDataService : Service {
     }
 }
 
-#if !APP_EXTENSION
-extension AppVersion {
+extension AppCache {
     static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
         userDataService.userInfo = userInfo
     }
@@ -969,4 +966,3 @@ extension AppVersion {
         userDataService.username = username
     }
 }
-#endif

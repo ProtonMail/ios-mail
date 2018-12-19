@@ -1,6 +1,6 @@
 //
-//  KeychainSaver.swift
-//  ProtonMail - Created on 07/11/2018.
+//  AppVersionTests.swift
+//  ProtonMailTests - Created on 15/06/2018.
 //
 //
 //  The MIT License
@@ -26,32 +26,28 @@
 //  THE SOFTWARE.
 
 
-import Foundation
+import XCTest
+@testable import ProtonMail
 
-class KeychainSaver<T>: Saver<T> where T: Codable {
-    convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: sharedKeychain, cachingInMemory: cachingInMemory)
-    }
-}
+class AppVersionTests: XCTestCase {
 
-extension KeychainWrapper: KeyValueStoreProvider {
-    func set(_ intValue: Int, forKey key: String) {
-        self.keychain.setValue(intValue, forKey: key)
-    }
-    
-    func set(_ data: Data, forKey key: String) {
-        self.keychain.setData(data, forKey: key)
-    }
-    
-    func data(forKey key: String) -> Data? {
-        return self.keychain.data(forKey: key)
-    }
-    
-    func intager(forKey key: String) -> Int? {
-        return self.keychain.value(forKey: key) as? Int
-    }
-    
-    func removeItem(forKey key: String) {
-        self.keychain.removeItem(forKey: key)
-    }
+//    func testExample() {
+//        let verA = "1.9.0"
+//        let verB = "1.9.1"
+//        let verC = "2.0.0"
+//        let verD = "0.0.1"
+//        let verE = "5.0"
+//        let verF = "1"
+//        let verG = "1.9.0"
+//        
+//        let correctOrder = [verA, verB, verC, verD, verE, verF, verG].map{ AppVersion.init($0) }.sorted().map{ $0.string }
+//        XCTAssertEqual(correctOrder, [verD, verF, verA, verG, verB, verC, verE])
+//    }
+//    
+//    func testDebugBuild() {
+//        let ver = "1.11.0"
+//        let verD = "1.11.0 (Debug)"
+//        
+//        XCTAssertEqual(AppVersion(ver), AppVersion(verD))
+//    }
 }

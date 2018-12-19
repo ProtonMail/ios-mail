@@ -141,19 +141,36 @@ class MenuCoordinatorNew: DefaultCoordinator {
         }
         
         let navigation = destination as? UINavigationController
-        
         guard let rvc = source.revealViewController() else {
             return false
         }
         
         switch dest {
         case .mailbox:
-            //let index = sender as? IndexPath
             guard let next = navigation?.firstViewController() as? MailboxViewController else {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
-            let viewModel = MailboxViewModelImpl(label: .inbox, service: services.get(), pushService: services.get())
+            var label = Message.Location.inbox
+            if let index = sender as? Message.Location {
+                label = index
+            }
+            let viewModel = MailboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
+            mailbox.start()
+        case .label:
+            guard let next = navigation?.firstViewController() as? MailboxViewController else {
+                return false
+            }
+            sharedVMService.mailbox(fromMenu: next)
+            var label = Message.Location.inbox
+            if let index = sender as? Message.Location {
+                label = index
+            }
+            //if  let label = self.viewModel.label(at: row) {
+            //  sharedVMService.labelbox(fromMenu: mailbox, label: label)
+            // }
+            let viewModel = MailboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             mailbox.start()
         case .settings:
@@ -172,57 +189,13 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
             let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController, services: self.services)
             contacts.start()
-        default:
-            return false
+        case .bugs, .feedbacks:
+            ///those two types use the default segue
+            break
+        case .plan:
+            /// this handled in go function.
+            break
         }
         return false
     }
 }
-
-
-//        if let navigation = segue.destination as? UINavigationController {
-//            let segueID = segue.identifier
-//            //right now all mailbox view controller all could process together.
-//            if let mailbox: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-//                if let indexPath = sender as? IndexPath {
-//                    let s = indexPath.section
-//                    let row = indexPath.row
-//                    let section = self.viewModel.section(at: s)
-//                    switch section {
-//                    case .inboxes:
-//                        self.lastMenuItem = self.viewModel.item(inboxes: row)
-//                        //TODO::fixme
-//                        //sharedVMService.mailbox(fromMenu: mailbox, location: self.lastMenuItem.menuToLocation)
-//                    case .labels:
-//                        if  let label = self.viewModel.label(at: row) {
-//                            sharedVMService.labelbox(fromMenu: mailbox, label: label)
-//                        }
-//                    default:
-//                        break
-//                    }
-//                }
-//            } else if (segueID == kSegueToContacts ) {
-//                // setup contact group view controller
-//                if let tabBarController = navigation.firstViewController() as? UITabBarController,
-//                    let viewControllers = tabBarController.viewControllers {
-//                    if let contactViewController = viewControllers[0] as? ContactsViewController {
-//                        sharedVMService.contactsViewModel(contactViewController)
-//                    }
-//
-//                    if let contactGroupsViewController = viewControllers[1] as? ContactGroupsViewController {
-//                        sharedVMService.contactGroupsViewModel(contactGroupsViewController)
-//                    }
-//                }
-//            }
-//        } else if let tabBarController = segue.destination as? UITabBarController,
-//            let viewControllers = tabBarController.viewControllers {
-//            if let contactNavigation = viewControllers[0] as? UINavigationController,
-//                let contactViewController = contactNavigation.firstViewController() as? ContactsViewController {
-//                sharedVMService.contactsViewModel(contactViewController)
-//            }
-//
-//            if let contactGroupNavigation = viewControllers[1] as? UINavigationController,
-//                let contactGroupsViewController = contactGroupNavigation.firstViewController() as? ContactGroupsViewController {
-//                sharedVMService.contactGroupsViewModel(contactGroupsViewController)
-//            }
-//        }

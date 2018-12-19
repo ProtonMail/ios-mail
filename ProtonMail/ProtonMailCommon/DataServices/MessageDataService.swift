@@ -1041,10 +1041,8 @@ class MessageDataService : Service {
      
      */
     func launchCleanUpIfNeeded() {
-        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isCacheOk() || !userCachedStatus.isAuthCacheOk() {
-            cleanUp()
-            userCachedStatus.resetCache()
-            
+        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isAuthCacheOk() {
+            cleanUp()            
             if (!userCachedStatus.isAuthCacheOk()) {
                 sharedUserDataService.clean()
                 userCachedStatus.resetAuthCache()
@@ -1061,7 +1059,7 @@ class MessageDataService : Service {
      3. hacked action detacted
      4. use wraped manully.
      */
-    fileprivate func cleanUp() {
+    func cleanUp() {
         self.cleanMessage()
         
         lastUpdatedStore.clear()
@@ -1076,8 +1074,6 @@ class MessageDataService : Service {
     fileprivate func cleanMessage() {
         Message.deleteAll(inContext: sharedCoreDataService.backgroundManagedObjectContext) // will cascadely remove appropriate Attacments also
         UIApplication.setBadge(badge: 0)
-        //UIApplication.shared.applicationIconBadgeNumber = 0
-        
         // good opportunity to remove all temp folders (they should be empty by this moment)
         try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
     }

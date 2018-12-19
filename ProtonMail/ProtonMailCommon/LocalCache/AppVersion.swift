@@ -162,11 +162,10 @@ extension AppVersion {
     /*
      IMPORTANT: each of these migrations read legacy values and transform them into current ones, not passing thru middle version's migrators. Please mind that user can migrate from every one of prevoius version, not only from the latest!
     */
-    
-    static var v1_12_0 = AppVersion("1.12.0", modelName: "1.12.0") {        
+    static var v1_12_0 = AppVersion("1.12.0", modelName: "1.12.0") {
         // UserInfo
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
-            AppVersion.inject(userInfo: userInfo, into: sharedUserDataService)
+           // AppVersion.inject(userInfo: userInfo, into: sharedUserDataService)
         }
         if let username = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserDataService.username) {
             AppVersion.inject(username: username, into: sharedUserDataService)

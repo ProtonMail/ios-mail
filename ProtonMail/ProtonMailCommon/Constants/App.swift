@@ -29,18 +29,24 @@
 import Foundation
 
 struct Constants {
+    
+    /// use this to replace the version compare to decide feature on/off. this is easier to track
+    enum Feature {
+        static let snoozeOn : Bool = false
+    }
+    
     enum App {
-        
-        static let CacheVersion : Int = 110
-        static let AuthCacheVersion : Int = 15
+//        static let CacheVersion : Int = 110 // this is core data cache
+        static let AuthCacheVersion : Int = 15 //this is user info cache
+//
         static let SpaceWarningThreshold: Int = 80
         static let SpaceWarningThresholdDouble: Double = 80
         static let SplashVersion : Int = 1
         static let TourVersion : Int = 2
-        
+
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
-        
+        //
         //
         static let URL_Protocol : String = "https://"
         //static let URL_Protocol : String = "http://"
