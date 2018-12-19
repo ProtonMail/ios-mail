@@ -13,7 +13,7 @@ protocol ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
     var isIAPAvailable: Bool { get set }
     var defaultPlanDetails: ServicePlanDetails? { get set }
-    var currentSubscription: Subscription? { get set }
+    var currentSubscription: ServicePlanSubscription? { get set }
 }
 
 class ServicePlanDataService: NSObject {
@@ -43,7 +43,7 @@ class ServicePlanDataService: NSObject {
         willSet { userCachedStatus.defaultPlanDetails = newValue }
     }
     
-    @objc dynamic var currentSubscription: Subscription? {
+    @objc dynamic var currentSubscription: ServicePlanSubscription? {
         willSet { userCachedStatus.currentSubscription = newValue }
     }
     
@@ -115,7 +115,7 @@ extension ServicePlanDataService {
             completion?()
         }.catch { error in
             if (error as NSError).code == 22110 { // no subscription stands for free/default plan
-                self.currentSubscription = Subscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
+                self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
             }
             completion?()
         }.finally {

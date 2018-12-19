@@ -34,7 +34,7 @@ class Storefront: NSObject {
     var others: [ServicePlan]
     var title: String
     var canBuyMoreCredits: Bool
-    @objc dynamic var subscription: Subscription?
+    @objc dynamic var subscription: ServicePlanSubscription?
     @objc dynamic var isProductPurchasable: Bool
     
     private var subscriptionObserver: NSKeyValueObservation!
@@ -52,7 +52,7 @@ class Storefront: NSObject {
         super.init()
     }
     
-    init(subscription: Subscription) {
+    init(subscription: ServicePlanSubscription) {
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
@@ -76,7 +76,7 @@ class Storefront: NSObject {
         }
     }
     
-    init(creditsFor subscription: Subscription) {
+    init(creditsFor subscription: ServicePlanSubscription) {
         self.subscription = subscription
         self.plan = subscription.plan
         self.title = LocalString._buy_more_credits

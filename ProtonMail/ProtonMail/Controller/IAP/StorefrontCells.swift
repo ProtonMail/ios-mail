@@ -37,7 +37,7 @@ protocol StorefrontItemConfigurable where Self: UICollectionViewCell {
 
 // concrete
 
-class LogoCell: AutoSizedCell, StorefrontItemConfigurable {
+class StorefrontLogoCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var headerView: ServicePlanHeader!
     
     func setup(with item: AnyStorefrontItem) {
@@ -50,7 +50,7 @@ class LogoCell: AutoSizedCell, StorefrontItemConfigurable {
     }
 }
 
-class DetailCell: SubviewSizedCell, StorefrontItemConfigurable {
+class StorefrontDetailCell: SubviewSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var capabilityView: ServicePlanCapability!
     
     func setup(with item: AnyStorefrontItem) {
@@ -68,7 +68,7 @@ class DetailCell: SubviewSizedCell, StorefrontItemConfigurable {
     }
 }
 
-class AnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
+class StorefrontAnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
     @IBOutlet weak var footerView: ServicePlanFooter!
     
     func setup(with item: AnyStorefrontItem) {
@@ -79,11 +79,11 @@ class AnnotationCell: AutoSizedCell, StorefrontItemConfigurable {
     }
 }
 
-@objc protocol BuyButtonCellDelegate: class {
+@objc protocol StorefrontBuyButtonCellDelegate: class {
     func buyButtonTapped()
 }
-class BuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {
-    @IBOutlet weak var delegate: BuyButtonCellDelegate?
+class StorefrontBuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {
+    @IBOutlet weak var delegate: StorefrontBuyButtonCellDelegate?
     @IBOutlet weak var footerView: ServicePlanFooter!
     
     func setup(with item: AnyStorefrontItem) {
@@ -97,8 +97,8 @@ class BuyButtonCell: AutoSizedCell, StorefrontItemConfigurable  {
     }
 }
 
-class DisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
-    @IBOutlet weak var header: TableSectionHeader!
+class StorefrontDisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
+    @IBOutlet weak var header: ServicePlanTableSectionHeader!
     
     func setup(with item: AnyStorefrontItem) {
         if let item = item as? SubsectionHeaderStorefrontItem {
@@ -110,36 +110,5 @@ class DisclaimerCell: SubviewSizedCell, StorefrontItemConfigurable {
             self.header.setup(title: item.text, textAlignment: .center)
             return
         }
-    }
-}
-
-// base
-
-class AutoSizedCell: UICollectionViewCell {
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
-            return layoutAttributes
-        }
-        
-        var newFrame = attributes.frame
-        self.frame = newFrame
-        
-        self.setNeedsLayout()
-        self.layoutIfNeeded()
-        
-        let desiredHeight = self.contentView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        newFrame.size.height = desiredHeight
-        attributes.frame = newFrame
-        return attributes
-    }
-}
-
-class SubviewSizedCell: AutoSizedCell {
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes
-    {
-        let attributes = super.preferredLayoutAttributesFitting(layoutAttributes)
-        guard let firstSubview = self.contentView.subviews.first else { return attributes}
-        attributes.frame.size = firstSubview.sizeThatFits(attributes.frame.size)
-        return attributes
     }
 }

@@ -1,5 +1,5 @@
 //
-//  Subscription.swift
+//  ServicePlanSubscription.swift
 //  ProtonMail
 //
 //  Created by Anatoly Rosencrantz on 31/08/2018.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Subscription: NSObject, Codable {
+class ServicePlanSubscription: NSObject, Codable {
     internal let start, end: Date?
     internal var paymentMethods: [PaymentMethod]?
     private let planDetails: [ServicePlanDetails]?
@@ -22,7 +22,7 @@ class Subscription: NSObject, Codable {
     }
 }
 
-extension Subscription {
+extension ServicePlanSubscription {
     internal var plan: ServicePlan {
         return self.planDetails?.compactMap({ ServicePlan(rawValue: $0.name) }).first ?? .free
     }

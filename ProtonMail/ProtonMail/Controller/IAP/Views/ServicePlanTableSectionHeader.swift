@@ -8,7 +8,7 @@
 
 import Foundation
 
-class TableSectionHeader: UIView {
+class ServicePlanTableSectionHeader: UIView {
     @IBOutlet private weak var title: UILabel!
     
     convenience init(title: String, textAlignment: NSTextAlignment) {

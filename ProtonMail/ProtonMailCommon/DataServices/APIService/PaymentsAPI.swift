@@ -153,7 +153,7 @@ final class AppleTier : ApiResponse {
 
 
 final class GetSubscriptionResponse: ApiResponse {
-    var subscription: Subscription?
+    var subscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -172,7 +172,7 @@ final class GetSubscriptionResponse: ApiResponse {
         let plans = plansParser.availableServicePlans
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = Subscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
+        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
         
         return true
     }
@@ -288,7 +288,7 @@ final class PostCreditRequest: ApiRequestNew<PostCreditResponse> {
 }
 
 final class PostCreditResponse: ApiResponse {
-    var newSubscription: Subscription?
+    var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -332,7 +332,7 @@ final class PostRecieptRequest: ApiRequestNew<PostRecieptResponse> {
 }
 
 final class PostRecieptResponse: ApiResponse {
-    var newSubscription: Subscription?
+    var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))

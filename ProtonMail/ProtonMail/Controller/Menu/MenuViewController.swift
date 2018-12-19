@@ -224,7 +224,7 @@ class MenuViewController: UIViewController {
             if nextTo == .servicePlan {
                 let coordinator = MenuCoordinator()
                 coordinator.controller = self
-                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+                coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
                 return
             }
         }
@@ -292,7 +292,7 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .servicePlan {
                 let coordinator = MenuCoordinator()
                 coordinator.controller = self
-                coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+                coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
             }
         case .labels:
             self.performSegue(withIdentifier: kSegueToLabelbox, sender: indexPath)

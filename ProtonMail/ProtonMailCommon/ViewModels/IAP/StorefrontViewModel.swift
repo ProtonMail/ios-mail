@@ -43,7 +43,7 @@ class StorefrontViewModel: NSObject {
         }
     }
     
-    internal var currentSubscription: Subscription?
+    internal var currentSubscription: ServicePlanSubscription?
     @objc dynamic var title: String = ""
     @objc dynamic var logoItem: AnyStorefrontItem?
     @objc dynamic var detailItems: [AnyStorefrontItem] = []
@@ -216,7 +216,7 @@ extension StorefrontViewModel {
             title1.append(title3)
             return title1
         }
-        func makeCurrentPlanText(subscription: Subscription) -> NSAttributedString {
+        func makeCurrentPlanText(subscription: ServicePlanSubscription) -> NSAttributedString {
             var message: NSAttributedString!
             var regularAttributes = [NSAttributedString.Key: Any]()
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)

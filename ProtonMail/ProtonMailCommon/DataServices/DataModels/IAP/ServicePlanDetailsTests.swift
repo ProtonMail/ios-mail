@@ -272,7 +272,7 @@ class ServicePlanDetailsTests: XCTestCase {
     }
     
     func testSubscription() {
-        let subscription = Subscription(start: .distantPast,
+        let subscription = ServicePlanSubscription(start: .distantPast,
                                         end: .distantFuture,
                                         planDetails: [self.address5, self.pro],
                                         paymentMethods: [.init(iD: "424242", type: .card)])

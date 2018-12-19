@@ -38,7 +38,7 @@ final class StorefrontCollectionViewController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.collectionView.setCollectionViewLayout(TableLayout(), animated: true, completion: nil)
+        self.collectionView.setCollectionViewLayout(CollectionViewTableLayout(), animated: true, completion: nil)
         self.viewModelObservers = [
             self.viewModel.observe(\.title, options: [.new], changeHandler: { [unowned self] viewModel, change in
                 self.title = viewModel.title
@@ -112,13 +112,13 @@ final class StorefrontCollectionViewController: UICollectionViewController {
     
     private func cellReuseIdentifier(for item: AnyStorefrontItem) -> String {
         switch item {
-        case is LogoStorefrontItem: return "\(LogoCell.self)"
-        case is DetailStorefrontItem: return "\(DetailCell.self)"
-        case is AnnotationStorefrontItem: return "\(AnnotationCell.self)"
-        case is SubsectionHeaderStorefrontItem: return "\(DisclaimerCell.self)"
-        case is LinkStorefrontItem: return "\(DetailCell.self)"
-        case is BuyButtonStorefrontItem: return "\(BuyButtonCell.self)"
-        case is DisclaimerStorefrontItem: return "\(DisclaimerCell.self)"
+        case is LogoStorefrontItem: return "\(StorefrontLogoCell.self)"
+        case is DetailStorefrontItem: return "\(StorefrontDetailCell.self)"
+        case is AnnotationStorefrontItem: return "\(StorefrontAnnotationCell.self)"
+        case is SubsectionHeaderStorefrontItem: return "\(StorefrontDisclaimerCell.self)"
+        case is LinkStorefrontItem: return "\(StorefrontDetailCell.self)"
+        case is BuyButtonStorefrontItem: return "\(StorefrontBuyButtonCell.self)"
+        case is DisclaimerStorefrontItem: return "\(StorefrontDisclaimerCell.self)"
         default:
             assert(false, "Unknown cell type requested")
             return ""
@@ -126,7 +126,7 @@ final class StorefrontCollectionViewController: UICollectionViewController {
     }
 }
 
-extension StorefrontCollectionViewController: BuyButtonCellDelegate {
+extension StorefrontCollectionViewController: StorefrontBuyButtonCellDelegate {
     func buyButtonTapped() {
         self.viewModel.buy()
     }
@@ -142,4 +142,9 @@ extension StorefrontCollectionViewController: CoordinatedNew {
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
     }
+}
+
+// is needed for Menu->ServiceLevel scene transition only via ServiceLevelCoordinator
+extension StorefrontCollectionViewController: Coordinated {
+    typealias CoordinatorType = ServiceLevelCoordinator
 }

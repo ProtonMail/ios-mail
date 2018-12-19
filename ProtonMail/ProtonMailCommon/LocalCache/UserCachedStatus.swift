@@ -308,12 +308,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var currentSubscription: Subscription? {
+    var currentSubscription: ServicePlanSubscription? {
         get {
             guard let data = self.getShared().data(forKey: Key.currentSubscription) else {
                 return nil
             }
-            return try? PropertyListDecoder().decode(Subscription.self, from: data)
+            return try? PropertyListDecoder().decode(ServicePlanSubscription.self, from: data)
         }
         set {
             let data = try? PropertyListEncoder().encode(newValue)
