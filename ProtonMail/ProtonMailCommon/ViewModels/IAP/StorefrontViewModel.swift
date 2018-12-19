@@ -144,8 +144,10 @@ class StorefrontViewModel: NSObject {
 }
 
 extension StorefrontViewModel {
-    func buy() {
-        self.storefront.buyProduct()
+    func buy(successHandler: @escaping ()->Void,
+             errorHandler: @escaping (Error)->Void)
+    {
+        self.storefront.buyProduct(successHandler: successHandler, errorHandler: errorHandler)
     }
 }
 

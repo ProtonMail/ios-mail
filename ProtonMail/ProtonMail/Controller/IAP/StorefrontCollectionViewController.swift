@@ -40,7 +40,7 @@ final class StorefrontCollectionViewController: UICollectionViewController {
         
         self.collectionView.setCollectionViewLayout(CollectionViewTableLayout(), animated: true, completion: nil)
         self.viewModelObservers = [
-            self.viewModel.observe(\.title, options: [.new], changeHandler: { [unowned self] viewModel, change in
+            self.viewModel.observe(\.title, options: [.new, .initial], changeHandler: { [unowned self] viewModel, change in
                 self.title = viewModel.title
             }),
             self.viewModel.observe(\.logoItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
@@ -128,7 +128,13 @@ final class StorefrontCollectionViewController: UICollectionViewController {
 
 extension StorefrontCollectionViewController: StorefrontBuyButtonCellDelegate {
     func buyButtonTapped() {
-        self.viewModel.buy()
+        self.viewModel.buy(successHandler: { [weak self] in
+            self?.coordinator.stop()
+        }, errorHandler: { error in
+            let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+        })
     }
 }
 

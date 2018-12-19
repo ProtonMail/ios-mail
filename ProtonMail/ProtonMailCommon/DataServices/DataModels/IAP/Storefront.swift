@@ -90,20 +90,22 @@ class Storefront: NSObject {
         super.init()
     }
     
-    func buyProduct() {
+    func buyProduct(successHandler: @escaping ()->Void,
+                    errorHandler: @escaping (Error)->Void)
+    {
         guard let productId = self.plan.storeKitProductId else { return }
         self.isProductPurchasable = false
         
-        let successCompletion: ()->Void = {
-            // TODO: nice animation
+        let successWrapper: ()->Void = {
+            DispatchQueue.main.async {
+                // TODO: nice animation
+                successHandler()
+            }
         }
-        let errorCompletion: (Error)->Void = { [weak self] error in
+        let errorWrapper: (Error)->Void = { [weak self] error in
             DispatchQueue.main.async {
                 self?.isProductPurchasable = true
-                
-                let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
-                alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
-                UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+                errorHandler(error)
             }
         }
         let deferredCompletion: ()->Void = {
@@ -115,7 +117,7 @@ class Storefront: NSObject {
             }
         }
         StoreKitManager.default.refreshHandler = canceledCompletion
-        StoreKitManager.default.purchaseProduct(withId: productId, successCompletion: successCompletion, errorCompletion: errorCompletion, deferredCompletion: deferredCompletion)
+        StoreKitManager.default.purchaseProduct(withId: productId, successCompletion: successWrapper, errorCompletion: errorWrapper, deferredCompletion: deferredCompletion)
     }
 }
 
