@@ -19,7 +19,6 @@ import CoreData
 import Groot
 import AwaitKit
 import PromiseKit
-import Crashlytics
 
 
 /// TODO:: global access need to be refactored
@@ -924,7 +923,7 @@ class MessageDataService {
                     self.fetchMessagesWithIDs(badMessages)
                 }
             } catch let ex as NSError {
-                ex.upload(toFabric: "purgeOldMessages")
+                ex.upload(toAnalytics: "purgeOldMessages")
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1240,7 +1239,7 @@ class MessageDataService {
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()
                 let err = RuntimeError.bad_draft.error
-                Crashlytics.sharedInstance().recordError(err)
+                Analytics.shared.recordError(err)
                 errorBlock(nil, nil, err)
                 return
             }
@@ -1616,7 +1615,7 @@ class MessageDataService {
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.upload(toFabric: QueueErrorTitle)
+                    error?.upload(toAnalytics: QueueErrorTitle)
                 }
                 
                 if !isInternetIssue {

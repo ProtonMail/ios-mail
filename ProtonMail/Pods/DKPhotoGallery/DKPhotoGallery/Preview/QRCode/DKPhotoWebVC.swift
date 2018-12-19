@@ -42,7 +42,11 @@ class DKPhotoWebVC: UIViewController, WKNavigationDelegate {
         self.webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.view.addSubview(self.webView)
         
+        #if swift(>=4.2)
         self.spinner = UIActivityIndicatorView(style: .gray)
+        #else
+        self.spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        #endif
         self.spinner.hidesWhenStopped = true
         self.spinner.center = CGPoint(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2)
         self.spinner.autoresizingMask = [.flexibleTopMargin, .flexibleLeftMargin]

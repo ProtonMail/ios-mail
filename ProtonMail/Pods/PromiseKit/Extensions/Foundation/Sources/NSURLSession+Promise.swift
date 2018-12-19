@@ -183,12 +183,14 @@ public enum PMKHTTPError: Error, LocalizedError, CustomStringConvertible {
         }
     }
 
+#if swift(>=4.0)
     public func decodeResponse<T: Decodable>(_ t: T.Type, decoder: JSONDecoder = JSONDecoder()) -> T? {
         switch self {
         case .badStatusCode(_, let data, _):
             return try? decoder.decode(t, from: data)
         }
     }
+#endif
 
     //TODO rename responseJSON
     public var jsonDictionary: Any? {

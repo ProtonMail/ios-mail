@@ -8,7 +8,10 @@
 
 import UIKit
 import Photos
+
+#if canImport(SDWebImage)
 import SDWebImage
+#endif
 
 class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
 

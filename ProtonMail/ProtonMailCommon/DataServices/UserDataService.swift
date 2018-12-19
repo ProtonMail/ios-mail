@@ -619,7 +619,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toFabric: "UpdateLoginPassword")
+                error.upload(toAnalytics: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -756,7 +756,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toFabric: "UpdateMailBoxPassword")
+                error.upload(toAnalytics: "UpdateMailBoxPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -860,7 +860,7 @@ class UserDataService {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toFabric: "UpdateLoginPassword")
+                error.upload(toAnalytics: "UpdateLoginPassword")
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async

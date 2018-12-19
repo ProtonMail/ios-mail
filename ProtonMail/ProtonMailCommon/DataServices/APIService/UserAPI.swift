@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Crashlytics
 
 typealias CheckUserNameBlock = (Bool, NSError?) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void

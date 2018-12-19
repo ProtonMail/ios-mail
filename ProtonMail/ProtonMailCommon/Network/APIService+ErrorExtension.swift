@@ -8,11 +8,6 @@
 
 import Foundation
 
-
-import Fabric
-import Crashlytics
-
-
 let AuthErrorTitle : String          = "AuthRefresh-Error"
 let QueueErrorTitle : String         = "Queue-Error"
 let CacheErrorTitle : String         = "LocalCache-Error"
@@ -22,16 +17,14 @@ let FetchUserInfoErrorTitle : String = "UserInfo-Error"
 
 extension NSError {
     
-    func upload(toFabric title : String ) -> Void {
+    func upload(toAnalytics title : String ) -> Void {
         var ver = "1.0.0"
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             ver = version
         }
         
-        Answers.logCustomEvent(withName: title,
+        Analytics.shared.logCustomEvent(withName: title,
                                        customAttributes: [
-                                        "name": sharedUserDataService.username ?? "unknow",
-                                        "DeviceName" : UIDevice.current.name,
                                         "DeviceModel" : UIDevice.current.model,
                                         "DeviceVersion" : UIDevice.current.systemVersion,
                                         "AppVersion" : "iOS_\(ver)",

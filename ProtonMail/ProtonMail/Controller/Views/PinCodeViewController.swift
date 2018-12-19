@@ -5,11 +5,8 @@
 //  Created by Yanfeng Zhang on 4/6/16.
 //  Copyright (c) 2016 ProtonMail. All rights reserved.
 //
-import Foundation
 
 import UIKit
-import Fabric
-import Crashlytics
 
 protocol PinCodeViewControllerDelegate {
     func Cancel()

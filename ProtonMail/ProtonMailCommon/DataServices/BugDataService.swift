@@ -15,7 +15,6 @@
 //
 
 import Foundation
-import Crashlytics
 
 public class BugDataService {
     public init() {
@@ -54,7 +53,7 @@ public class BugDataService {
         ]
         
         let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
-        Crashlytics.sharedInstance().recordError(errors)
+        Analytics.shared.recordError(errors)
     }
     
     
@@ -72,6 +71,6 @@ public class BugDataService {
         ]
         
         let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
-        Crashlytics.sharedInstance().recordError(errors)
+        Analytics.shared.recordError(errors)
     }
 }

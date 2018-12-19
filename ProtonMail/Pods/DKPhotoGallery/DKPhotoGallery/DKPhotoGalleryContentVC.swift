@@ -110,7 +110,13 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         self.mainView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: self.view.bounds.height)
         self.mainView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         self.mainView.delegate = self
+        
+        #if swift(>=4.2)
         self.mainView.decelerationRate = UIScrollView.DecelerationRate.fast
+        #else
+        self.mainView.decelerationRate = UIScrollViewDecelerationRateFast
+        #endif
+        
         self.mainView.set(totalCount: self.dataSource.numberOfItems())
         self.view.addSubview(self.mainView)
         
@@ -280,7 +286,11 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
         if self.visibleVCs[item] == nil {
             let vc = self.previewVC(for: item)
             if vc.parent != self {
+                #if swift(>=4.2)
                 self.addChild(vc)
+                #else
+                self.addChildViewController(vc)
+                #endif
             }
             self.mainView.set(vc: vc, item: item, atIndex: index)
         }

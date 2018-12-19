@@ -12,7 +12,6 @@
 
 import Foundation
 import RHAddressBook
-import Crashlytics
 
 let sharedAddressBookService = AddressBookService()
 
@@ -99,7 +98,7 @@ class AddressBookService {
                 }
             }
         } else {
-            Crashlytics.sharedInstance().recordError(RuntimeError.cant_get_contacts.error)
+            Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
         }
         return contactVOs
     }

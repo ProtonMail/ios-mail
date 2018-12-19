@@ -8,8 +8,11 @@
 
 import Foundation
 import Photos
-import SDWebImage
 import MobileCoreServices
+
+#if canImport(SDWebImage)
+import SDWebImage
+#endif
 
 protocol DKPhotoImageDownloader {
     

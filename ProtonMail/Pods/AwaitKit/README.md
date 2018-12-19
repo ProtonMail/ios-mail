@@ -162,7 +162,7 @@ $ touch Podfile
 $ edit Podfile
 source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
-pod 'AwaitKit', '~> 5.0.0'
+pod 'AwaitKit', '~> 5.0.1'
 ```
 
 Install into your project:
@@ -214,7 +214,7 @@ $ brew install carthage
 To integrate AwaitKit into your Xcode project using Carthage, specify it in your `Cartfile`:
 
 ```ogdl
-github "yannickl/AwaitKit" ~> 5.0
+github "yannickl/AwaitKit" ~> 5.0.1
 ```
 
 Run `carthage update` to build the framework and drag the built `AwaitKit.framework` into your Xcode project.

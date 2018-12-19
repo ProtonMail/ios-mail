@@ -11,8 +11,6 @@ import QuickLook
 import Foundation
 import CoreData
 import PassKit
-import Crashlytics
-import Fabric
 import AwaitKit
 import PromiseKit
 

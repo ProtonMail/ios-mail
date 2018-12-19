@@ -1,7 +1,8 @@
 DKPhotoGallery
 =======================
 
- [![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
+[![Build Status](https://secure.travis-ci.org/zhangao0086/DKPhotoGallery.svg)](http://travis-ci.org/zhangao0086/DKPhotoGallery) [![Version Status](http://img.shields.io/cocoapods/v/DKPhotoGallery.png)][docsLink] [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+ [![license MIT](https://img.shields.io/cocoapods/l/DKPhotoGallery.svg?style=flat)][mitLink]
 
 <img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/PhotoGallery.gif" />
 <img width="30%" height="30%" src="https://raw.githubusercontent.com/zhangao0086/DKPhotoGallery/develop/Incremental.gif" />
@@ -21,16 +22,24 @@ DKPhotoGallery
 ## Requirements
 * iOS 8.0+
 * ARC
-* Swift 3.2 & 4
+* Swift 3.2 & 4.2
 
 ## Installation
-#### iOS 8 and newer
+#### CocoaPods
 DKPhotoGallery is available on CocoaPods. Simply add the following line to your podfile:
 
-```ruby
+```
 # For latest release in cocoapods
 pod 'DKPhotoGallery'
 ```
+
+#### Carthage
+
+```
+github "zhangao0086/DKPhotoGallery"
+```
+
+If you use Carthage to build your dependencies, make sure you have added `DKPhotoGallery.framework` and `SDWebImage.framework` to the _"Linked Frameworks and Libraries"_ section of your target, and have included them in your Carthage framework copying build phase.
 
 ## Usage
 
