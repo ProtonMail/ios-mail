@@ -194,13 +194,15 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
         //TODO::here need change to notify composer to save editing draft
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                let _ = context.saveUpstreamIfNeeded()
-            }
+        let mainContext = sharedCoreDataService.mainManagedObjectContext
+        mainContext.performAndWait {
+            let _ = mainContext.saveUpstreamIfNeeded()
+        }
+        
+        let backgroundContext = sharedCoreDataService.mainManagedObjectContext
+        backgroundContext.performAndWait {
+            let _ = backgroundContext.saveUpstreamIfNeeded()
         }
     }
     

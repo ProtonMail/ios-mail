@@ -38,10 +38,6 @@ class MessageDataService {
     
     fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
-    
-    fileprivate var managedObjectContext: NSManagedObjectContext? {
-        return sharedCoreDataService.mainManagedObjectContext
-    }
 
     init() {
         setupMessageMonitoring()
@@ -54,23 +50,20 @@ class MessageDataService {
     
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
-        guard let context = managedObjectContext else {
-            let error = NSError.protonMailError(500, localizedDescription: "", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
-            PMLog.D(" error: \(String(describing: error))")
-            return
-        }
-        
-        ids.forEach { messageID in
-            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
-                let managedObject = try? context.existingObject(with: objectID) else
-            {
-                return
-            }
-            if let message = managedObject as? Message {
-                self.cachePropertiesForBackground(in: message)
-            }
-            if let attachment = managedObject as? Attachment {
-                self.cachePropertiesForBackground(in: attachment.message)
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
+            ids.forEach { messageID in
+                guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+                    let managedObject = try? context.existingObject(with: objectID) else
+                {
+                    return
+                }
+                if let message = managedObject as? Message {
+                    self.cachePropertiesForBackground(in: message)
+                }
+                if let attachment = managedObject as? Attachment {
+                    self.cachePropertiesForBackground(in: attachment.message)
+                }
             }
         }
     }
@@ -86,24 +79,23 @@ class MessageDataService {
     
     // MAKR : upload attachment
     func uploadAttachment(_ att: Attachment!) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D("error: \(error)")
-                self.dequeueIfNeeded()
-            } else {
-                self.queue(att, action: .uploadAtt)
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D("error: \(error)")
+            self.dequeueIfNeeded()
+        } else {
+            self.queue(att, action: .uploadAtt)
         }
     }
     
     func delete(att: Attachment!) {
         let attachmentID = att.attachmentID
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.delete(att)
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        context.delete(att)
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D(" error: \(error)")
         }
+
         let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
         dequeueIfNeeded()
     }
@@ -112,20 +104,17 @@ class MessageDataService {
     // MARK : Send message
     func send(inQueue messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
-                } else {
-                    self.queue(message, action: .send)
-                }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+            //message.location = .outbox
+            error = context.saveUpstreamIfNeeded()
+            if error != nil {
+                PMLog.D(" error: \(String(describing: error))")
             } else {
-                //TODO:: handle can't find the message error.
+                self.queue(message, action: .send)
             }
         } else {
-            error = NSError.protonMailError(500, localizedDescription: "No managedObjectContext", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
+            //TODO:: handle can't find the message error.
         }
         completion?(nil, nil, error)
     }
@@ -169,7 +158,7 @@ class MessageDataService {
                 if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
-                    let context = sharedCoreDataService.newMainManagedObjectContext()
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.perform() {
                         if foucsClean {
                             self.cleanMessage()
@@ -240,7 +229,7 @@ class MessageDataService {
                 // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     let messcount = responseDict?["Total"] as? Int ?? 0
-                    let context = sharedCoreDataService.newMainManagedObjectContext()
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.perform() {
                         if foucsClean {
                             self.cleanMessage()
@@ -480,7 +469,7 @@ class MessageDataService {
             queue {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                     if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
-                        let context = sharedCoreDataService.newMainManagedObjectContext()
+                        let context = sharedCoreDataService.backgroundManagedObjectContext
                         context.perform() {
                             do {
                                 if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
@@ -553,7 +542,7 @@ class MessageDataService {
     func ForcefetchDetailForMessage(_ message: Message, completion: @escaping CompletionFetchDetail) {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
-                let context = sharedCoreDataService.newMainManagedObjectContext()
+                let context = sharedCoreDataService.backgroundManagedObjectContext
                 context.perform() {
                     var error: NSError?
                     if response != nil {
@@ -563,30 +552,30 @@ class MessageDataService {
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
                             do {
-                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: message.managedObjectContext!)
+                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
                                 message.isDetailDownloaded = true
                                 message.messageStatus = 1
                                 message.needsUpdate = true
                                 message.unRead = false
-                                let _ = message.managedObjectContext?.saveUpstreamIfNeeded()
+
                                 error = context.saveUpstreamIfNeeded()
                                 DispatchQueue.main.async {
-                                    completion(task, response, message, error)
+                                    completion(task, response, Message.ObjectIDContainer(message), error)
                                 }
                             } catch let ex as NSError {
                                 DispatchQueue.main.async {
-                                    completion(task, response, message, ex)
+                                    completion(task, response, Message.ObjectIDContainer(message), ex)
                                 }
                             }
                         } else {
                             DispatchQueue.main.async {
-                                completion(task, response, message, NSError.badResponse())
+                                completion(task, response, Message.ObjectIDContainer(message), NSError.badResponse())
                             }
                         }
                     } else {
                         error = NSError.unableToParseResponse(response)
                         DispatchQueue.main.async {
-                            completion(task, response, message, error)
+                            completion(task, response, Message.ObjectIDContainer(message), error)
                         }
                     }
                     if error != nil  {
@@ -602,55 +591,46 @@ class MessageDataService {
         if !message.isDetailDownloaded {
             queue {
                 let completionWrapper: CompletionBlock = { task, response, error in
-                    if let context = message.managedObjectContext {
-                        context.perform() {
-                            if response != nil {
-                                //TODO need check the respons code
-                                PMLog.D("\(String(describing: response))")
-                                if var msg: [String : Any] = response?["Message"] as? [String : Any] {
-                                    msg.removeValue(forKey: "Location")
-                                    msg.removeValue(forKey: "Starred")
-                                    msg.removeValue(forKey: "test")
-                                    do {
-                                        if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
-                                            message_n.messageStatus = 1
-                                            message_n.isDetailDownloaded = true
-                                            message_n.needsUpdate = true
-                                            message_n.unRead = false
-                                            if let ctx = message_n.managedObjectContext {
-                                                if let error = ctx.saveUpstreamIfNeeded() {
-                                                    PMLog.D("\(error)")
-                                                }
-                                            }
-                                            let tmpError = context.saveUpstreamIfNeeded()
-                                            DispatchQueue.main.async {
-                                                completion(task, response, message_n, tmpError)
-                                            }
-                                        } else {
-                                            DispatchQueue.main.async {
-                                                completion(task, response, nil, error)
-                                            }
-                                        }
-                                    } catch let ex as NSError {
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
+                    context.perform() {
+                        if response != nil {
+                            //TODO need check the respons code
+                            PMLog.D("\(String(describing: response))")
+                            if var msg: [String : Any] = response?["Message"] as? [String : Any] {
+                                msg.removeValue(forKey: "Location")
+                                msg.removeValue(forKey: "Starred")
+                                msg.removeValue(forKey: "test")
+                                do {
+                                    if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
+                                        message_n.messageStatus = 1
+                                        message_n.isDetailDownloaded = true
+                                        message_n.needsUpdate = true
+                                        message_n.unRead = false
+                                        
+                                        let tmpError = context.saveUpstreamIfNeeded()
                                         DispatchQueue.main.async {
-                                            completion(task, response, nil, ex)
+                                            completion(task, response, Message.ObjectIDContainer(message_n), tmpError)
+                                        }
+                                    } else {
+                                        DispatchQueue.main.async {
+                                            completion(task, response, nil, error)
                                         }
                                     }
-                                } else {
+                                } catch let ex as NSError {
                                     DispatchQueue.main.async {
-                                        completion(task, response, nil, error)
+                                        completion(task, response, nil, ex)
                                     }
-                                    
                                 }
                             } else {
                                 DispatchQueue.main.async {
                                     completion(task, response, nil, error)
                                 }
+                                
                             }
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(task, response, nil, NSError.badResponse()) // the message have been deleted
+                        } else {
+                            DispatchQueue.main.async {
+                                completion(task, response, nil, error)
+                            }
                         }
                     }
                 }
@@ -658,7 +638,7 @@ class MessageDataService {
             }
         } else {
             DispatchQueue.main.async {
-                completion(nil, nil, message, nil)
+                completion(nil, nil, Message.ObjectIDContainer(message), nil)
             }
         }
     }
@@ -667,7 +647,7 @@ class MessageDataService {
         queue {
             let completionWrapper: CompletionBlock = { task, response, error in
                 DispatchQueue.main.async {
-                    let context = sharedCoreDataService.newMainManagedObjectContext()
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.perform() {
                         if response != nil {
                             //TODO need check the respons code
@@ -696,11 +676,10 @@ class MessageDataService {
                                             }
                                             lastUpdatedStore.updateUnreadCountForKey(.inbox, count: count)
                                         }
-                                        let _ = message_out.managedObjectContext?.saveUpstreamIfNeeded()
                                         let tmpError = context.saveUpstreamIfNeeded()
 
                                         DispatchQueue.main.async {
-                                            completion(task, response, message_out, tmpError)
+                                            completion(task, response, Message.ObjectIDContainer(message_out), tmpError)
                                         }
                                     }
                                 } catch let ex as NSError {
@@ -722,18 +701,17 @@ class MessageDataService {
                 }
             }
             
-            if let context = sharedCoreDataService.mainManagedObjectContext {
+            let context = sharedCoreDataService.backgroundManagedObjectContext
+            context.performAndWait {
                 if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
-                        completion(nil, nil, message, nil)
+                        completion(nil, nil, Message.ObjectIDContainer(message), nil)
                     } else {
                         sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
                     }
                 } else {
                     sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
                 }
-            } else {
-                sharedAPIService.messageDetail(messageID: messageID, completion: completionWrapper)
             }
         }
         
@@ -750,29 +728,29 @@ class MessageDataService {
      :returns: NSFetchedResultsController
      */
     func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            if location == .outbox {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", "\(MessageLocation.archive.rawValue)", Message.Attributes.messageStatus)
-            } else {
-                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
-                                                     "\(location.rawValue)", Message.Attributes.messageStatus)
-            }
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+        let moc = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        if location == .outbox {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
+                                                 "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", "\(MessageLocation.archive.rawValue)", Message.Attributes.messageStatus)
+        } else {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
+                                                 "\(location.rawValue)", Message.Attributes.messageStatus)
         }
-        return nil
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.fetchBatchSize = 30
+        fetchRequest.includesPropertyValues = false
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     func fetchedResultsControllerForLabels(_ label: Label) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", label.labelID, Message.Attributes.messageStatus)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        }
-        return nil
+        let moc = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", label.labelID, Message.Attributes.messageStatus)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.fetchBatchSize = 30
+        fetchRequest.includesPropertyValues = false
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     /**
@@ -783,14 +761,11 @@ class MessageDataService {
      :returns: NSFetchedResultsController
      */
     func fetchedMessageControllerForID(_ messageID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let moc = managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
-            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-        }
-        
-        return nil
+        let moc = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K == %@", Message.Attributes.messageID, messageID)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     
     /**
@@ -835,59 +810,51 @@ class MessageDataService {
     }
     
     fileprivate func cleanMessage() {
-        if let context = managedObjectContext {
-            Message.deleteAll(inContext: context) // will cascadely remove appropriate Attacments also
-        }
+        Message.deleteAll(inContext: sharedCoreDataService.backgroundManagedObjectContext) // will cascadely remove appropriate Attacments also
+        UIApplication.setBadge(badge: 0)
+        //UIApplication.shared.applicationIconBadgeNumber = 0
         
         // good opportunity to remove all temp folders (they should be empty by this moment)
         try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
     }
     
-    func search(_ query: String, page: Int, completion: (([Message]?, NSError?) -> Void)?) {
-        queue {
-            let completionWrapper: CompletionBlock = {task, response, error in
-                if error != nil {
-                    completion?(nil, error)
-                }
-                
-                if let context = sharedCoreDataService.mainManagedObjectContext {
-                    if let messagesArray = response?["Messages"] as? [[String : Any]] {
-                        context.perform() {
-                            do {
-                                if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-                                    for message in messages {
-                                        message.messageStatus = 1
-                                    }
-                                    if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
-                                    }
-                                    DispatchQueue.main.async {
-                                        if error != nil  {
-                                            PMLog.D(" error: \(String(describing: error))")
-                                            completion?(nil, error)
-                                        } else {
-                                            completion?(messages, error)
-                                        }
-                                    }
-                                } else {
-                                    completion?(nil, error)
-                                }
-                            } catch let ex as NSError {
-                                PMLog.D(" error: \(ex)")
-                                if let completion = completion {
-                                    DispatchQueue.main.async {
-                                        completion(nil, ex)
-                                    }
-                                }
+    func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
+        let completionWrapper: CompletionBlock = {task, response, error in
+            if error != nil {
+                completion?(nil, error)
+            }
+            
+            if let messagesArray = response?["Messages"] as? [[String : Any]] {
+                let context = sharedCoreDataService.backgroundManagedObjectContext
+                context.perform() {
+                    do {
+                        if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
+                            for message in messages {
+                                message.messageStatus = 1
                             }
+                            if let error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(error)")
+                            }
+
+                            if error != nil  {
+                                PMLog.D(" error: \(String(describing: error))")
+                                completion?(nil, error)
+                            } else {
+                                completion?(messages.map(ObjectBox.init), error)
+                            }
+                        } else {
+                            completion?(nil, error)
                         }
-                    } else {
-                        completion?(nil, NSError.unableToParseResponse(response))
+                    } catch let ex as NSError {
+                        PMLog.D(" error: \(ex)")
+                        if let completion = completion {
+                            completion(nil, ex)
+                        }
                     }
                 }
             }
-            sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
         }
+        sharedAPIService.messageSearch(query, page: page, completion: completionWrapper)
     }
     
     func saveDraft(_ message : Message!) {
@@ -903,18 +870,18 @@ class MessageDataService {
     }
     
     func deleteDraft (_ message : Message!) {
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            } else {
-                self.queue(message, action: .delete)
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D(" error: \(error)")
+        } else {
+            self.queue(message, action: .delete)
         }
     }
     
     func purgeOldMessages() {
         // need fetch status bad messages
-        if let context = sharedCoreDataService.mainManagedObjectContext {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
             fetchRequest.predicate = NSPredicate(format: "%K == 0", Message.Attributes.messageStatus)
             do {
@@ -939,61 +906,64 @@ class MessageDataService {
     }
     
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let context = managedObjectContext {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 do {
                     if let message = try context.existingObject(with: objectID) as? Message {
                         let completionWrapper: CompletionBlock = { task, response, error in
-                            PMLog.D("SendAttachmentDebug == finish save draft!")
                             if let mess = response {
                                 if let messageID = mess["ID"] as? String {
-                                    message.messageID = messageID
-                                    message.isDetailDownloaded = true
-                                    
-                                    var hasTemp = false
-                                    let attachments = message.mutableSetValue(forKey: "attachments")
-                                    for att in attachments {
-                                        if let att = att as? Attachment {
-                                            if att.isTemp {
-                                                hasTemp = true
-                                                context.delete(att)
-                                            }
-                                            att.keyChanged = false
-                                        }
-                                    }
-                                    
-                                    
-                                    if let subject = mess["Subject"] as? String {
-                                        message.title = subject
-                                    }
-                                    if let timeValue = mess["Time"] {
-                                        if let timeString = timeValue as? NSString {
-                                            let time = timeString.doubleValue as TimeInterval
-                                            if time != 0 {
-                                                message.time = time.asDate()
-                                            }
-                                        } else if let dateNumber = timeValue as? NSNumber {
-                                            let time = dateNumber.doubleValue as TimeInterval
-                                            if time != 0 {
-                                                message.time = time.asDate()
+                                    PMLog.D("SendAttachmentDebug == finish save draft!")
+                                    context.performAndWait {
+                                        message.messageID = messageID
+                                        message.isDetailDownloaded = true
+                                        
+                                        var hasTemp = false
+                                        let attachments = message.mutableSetValue(forKey: "attachments")
+                                        for att in attachments {
+                                            if let att = att as? Attachment {
+                                                if att.isTemp {
+                                                    hasTemp = true
+                                                    context.delete(att)
+                                                }
+                                                att.keyChanged = false
                                             }
                                         }
-                                    }
-                                    
-                                    
-                                    if let error = context.saveUpstreamIfNeeded() {
-                                        PMLog.D(" error: \(error)")
-                                    }
-                                    
-                                    if hasTemp {
-                                        do {
-                                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                                            if let save_error = context.saveUpstreamIfNeeded() {
-                                                PMLog.D(" error: \(save_error)")
+                                        
+                                        
+                                        if let subject = mess["Subject"] as? String {
+                                            message.title = subject
+                                        }
+                                        if let timeValue = mess["Time"] {
+                                            if let timeString = timeValue as? NSString {
+                                                let time = timeString.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    message.time = time.asDate()
+                                                }
+                                            } else if let dateNumber = timeValue as? NSNumber {
+                                                let time = dateNumber.doubleValue as TimeInterval
+                                                if time != 0 {
+                                                    message.time = time.asDate()
+                                                }
                                             }
-                                        } catch let exc as NSError {
-                                            completion?(task, response, exc)
-                                            return
+                                        }
+                                        
+                                        
+                                        if let error = context.saveUpstreamIfNeeded() {
+                                            PMLog.D(" error: \(error)")
+                                        }
+                                        
+                                        if hasTemp {
+                                            do {
+                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
+                                                if let save_error = context.saveUpstreamIfNeeded() {
+                                                    PMLog.D(" error: \(save_error)")
+                                                }
+                                            } catch let exc as NSError {
+                                                completion?(task, response, exc)
+                                                return
+                                            }
                                         }
                                     }
                                     completion?(task, response, error)
@@ -1045,8 +1015,8 @@ class MessageDataService {
     
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        guard let context = managedObjectContext,
-            let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
             let attachment = managedObject as? Attachment else
         {
@@ -1116,7 +1086,8 @@ class MessageDataService {
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        if let context = managedObjectContext {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
             var authCredential: AuthCredential?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(deleteObject),
                 let managedObject = try? context.existingObject(with: objectID),
@@ -1130,34 +1101,23 @@ class MessageDataService {
             })
             return
         }
-        
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
-        
-        completion?(nil, nil, NSError.badParameter(deleteObject))
     }
     
     private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
-        guard let context = managedObjectContext else {
-            let _ = sharedMessageQueue.remove(writeQueueUUID)
-            self.dequeueIfNeeded()
-            
-            completion?(nil, nil, NSError.badParameter(managedObjectIds))
-            return
-        }
-        
-        let messages = managedObjectIds.compactMap { (id: String) -> Message? in
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
-                let managedObject = try? context.existingObject(with: objectID)
-            {
-                return managedObject as? Message
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
+            let messages = managedObjectIds.compactMap { (id: String) -> Message? in
+                if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
+                    let managedObject = try? context.existingObject(with: objectID)
+                {
+                    return managedObject as? Message
+                }
+                return nil
             }
-            return nil
+            let messageIds = messages.map { $0.messageID }
+            let authCredential = messages.first(where: { $0.cachedAuthCredential != nil })?.cachedAuthCredential
+            sharedAPIService.PUT(MessageActionRequest(action: action, ids: messageIds), authCredential: authCredential, completion: completion)
         }
-        let messageIds = messages.map { $0.messageID }
-        let authCredential = messages.first(where: { $0.cachedAuthCredential != nil })?.cachedAuthCredential
-        sharedAPIService.PUT(MessageActionRequest(action: action, ids: messageIds), authCredential: authCredential, completion: completion)
     }
     
     private func emptyMessage(at location: MessageLocation, completion: CompletionBlock?) {
@@ -1227,9 +1187,14 @@ class MessageDataService {
             completion?(task, response, error)
         }
         
-        if let context = managedObjectContext,
-            let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
-            let message = context.find(with: objectID) as? Message {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        context.performAndWait {
+            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+                let message = context.find(with: objectID) as? Message else
+            {
+                    errorBlock(nil, nil, NSError.badParameter(messageID))
+                    return
+            }
             
             if message.messageID.isEmpty {//
                 errorBlock(nil, nil, NSError.badParameter(messageID))
@@ -1504,33 +1469,31 @@ class MessageDataService {
     }
     
     private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
-        if let _ = managedObjectContext {
-            if let originMessageID = oriMsgID {
-                if let act = action {
-                    if !originMessageID.isEmpty {
-                        if let fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(originMessageID) {
-                            do {
-                                try fetchedMessageController.performFetch()
-                                if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
-                                    //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
-                                    if act == 0 {
-                                        message.isReplied = true
-                                    } else if act == 1 {
-                                        message.isRepliedAll = true
-                                    } else if act == 2{
-                                        message.isForwarded = true
-                                    } else {
-                                        //ignore
-                                    }
-                                    if let context = message.managedObjectContext {
-                                        if let error = context.saveUpstreamIfNeeded() {
-                                            PMLog.D(" error: \(error)")
-                                        }
+        if let originMessageID = oriMsgID {
+            if let act = action {
+                if !originMessageID.isEmpty {
+                    if let fetchedMessageController = sharedMessageDataService.fetchedMessageControllerForID(originMessageID) {
+                        do {
+                            try fetchedMessageController.performFetch()
+                            if let message : Message = fetchedMessageController.fetchedObjects?.first as? Message  {
+                                //{0|1|2} // Optional, reply = 0, reply all = 1, forward = 2
+                                if act == 0 {
+                                    message.isReplied = true
+                                } else if act == 1 {
+                                    message.isRepliedAll = true
+                                } else if act == 2{
+                                    message.isForwarded = true
+                                } else {
+                                    //ignore
+                                }
+                                if let context = message.managedObjectContext {
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)")
                                     }
                                 }
-                            } catch {
-                                PMLog.D(" error: \(error)")
                             }
+                        } catch {
+                            PMLog.D(" error: \(error)")
                         }
                     }
                 }
@@ -1790,7 +1753,7 @@ class MessageDataService {
         
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
-            let context = sharedCoreDataService.newMainManagedObjectContext()
+            let context = sharedCoreDataService.backgroundManagedObjectContext
             context.perform { () -> Void in
                 var error: NSError?
                 var messagesNoCache : [Message] = []
@@ -1920,7 +1883,7 @@ class MessageDataService {
     /// - Parameter contacts: contact events
     private func processEvents(contacts: [[String : Any]]?) {
         if let contacts = contacts {
-            let context = sharedCoreDataService.newMainManagedObjectContext()
+            let context = sharedCoreDataService.backgroundManagedObjectContext
             context.perform { () -> Void in
                 for contact in contacts {
                     let contactObj = ContactEvent(event: contact)
@@ -1962,7 +1925,7 @@ class MessageDataService {
             return
         }
         
-        let context = sharedCoreDataService.newMainManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext
         context.perform { () -> Void in
             for email in emails {
                 let emailObj = EmailEvent(event: email)
@@ -2010,7 +1973,7 @@ class MessageDataService {
         if let labels = labels {
             // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
             self.incrementalUpdateQueue.sync {
-                let context = sharedCoreDataService.newMainManagedObjectContext()
+                let context = sharedCoreDataService.backgroundManagedObjectContext
                 context.perform { () -> Void in
                     for labelEvent in labels {
                         let label = LabelEvent(event: labelEvent)

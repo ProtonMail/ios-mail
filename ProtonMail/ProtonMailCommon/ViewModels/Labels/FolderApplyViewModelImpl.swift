@@ -96,7 +96,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     
     override func apply(archiveMessage : Bool) -> Bool {
         var changed : Bool = false
-        let context = sharedCoreDataService.newMainManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }

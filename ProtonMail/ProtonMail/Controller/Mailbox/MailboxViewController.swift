@@ -818,13 +818,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func fetchMessagesIfNeededForIndexPath(_ indexPath: IndexPath) {
+        // This thing hangs app with big cache when used with batch fetches
+        
         if let fetchedResultsController = fetchedResultsController {
-            if let last = fetchedResultsController.fetchedObjects?.last as? Message {
+            let lastIndex = fetchedResultsController.numberOfRows(in: indexPath.section)
                 if let current = self.messageAtIndexPath(indexPath) {
                     let updateTime = viewModel.lastUpdateTime()
                     if let currentTime = current.time {
                         let isOlderMessage = updateTime.end.compare(currentTime as Date) != ComparisonResult.orderedAscending
-                        let isLastMessage = (last == current)
+                        let isLastMessage = (lastIndex == indexPath.row)
                         if  (isOlderMessage || isLastMessage) && !fetching {
                             let sectionCount = fetchedResultsController.numberOfRows(in: 0)
                             let recordedCount = Int(updateTime.total)
@@ -833,7 +835,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                                 tableView.showLoadingFooter()
                                 let updateTime = viewModel.lastUpdateTime()
                                 let unixTimt:Int = (updateTime.end as Date == Date.distantPast ) ? 0 : Int(updateTime.end.timeIntervalSince1970)
-                                viewModel.fetchMessages(last.messageID, Time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
+                                viewModel.fetchMessages(current.messageID, Time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
                                     self.tableView.hideLoadingFooter()
                                     self.fetching = false
                                     if error != nil {
@@ -847,7 +849,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                         }
                     }
                 }
-            }
         }
     }
     
@@ -942,7 +943,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 if loadMore > 0 {
                      self.retry()
                 } else {
-                    delay(1.0, closure: {
+                    delay(0.1, closure: {
                         self.refreshControl.endRefreshing()
                         if self.fetchingStopped! == true {
                             return;
@@ -1038,7 +1039,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
         }
         
         sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-            guard msg?.body.isEmpty == false else {
+            guard let objectId = msg?.objectID,
+                let message = self.fetchedResultsController?.managedObjectContext.object(with: objectId) as? Message,
+                message.body.isEmpty == false else
+            {
                 if error != nil {
                     PMLog.D("error: \(String(describing: error))")
                     let alert = LocalString._unable_to_edit_offline.alertController()
@@ -1051,7 +1055,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
                 return
             }
             
-            self.selectedDraft = msg
+            self.selectedDraft = message
             if self.checkHuman() {
                 self.performSegue(withIdentifier: self.kSegueToComposeShow, sender: self)
             }
@@ -1059,17 +1063,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func selectMessageIDIfNeeded() {
-        if messageID != nil {
-            if let messages = fetchedResultsController?.fetchedObjects as? [Message] {
-                if let message = messages.filter({ $0.messageID == self.messageID }).first {
-                    if let indexPath = fetchedResultsController?.indexPath(forObject: message) {
-                        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-                    }
-                    performSegueForMessage(message)
-                    messageID = nil
-                }
-            }
+        guard self.messageID != nil,
+            let message = fetchedResultsController?.fetchedObjects?.first(where: { ($0 as? Message)?.messageID == self.messageID }) as? Message else
+        {
+            return
         }
+        if let indexPath = fetchedResultsController?.indexPath(forObject: message) {
+            tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
+            tableView.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: true)
+        }
+        performSegueForMessage(message)
+        self.messageID = nil
     }
     
     fileprivate func selectedMessagesSetValue(setValue value: Any?, forKey key: String) {

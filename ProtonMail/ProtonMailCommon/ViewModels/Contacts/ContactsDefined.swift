@@ -142,26 +142,22 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            let emailObject = Email.EmailForAddressWithContact(self.newEmail,
-                                                               contactID: contactID,
-                                                               inManagedObjectContext: context)
-            if let emailObject = emailObject {
-                if let contactGroups = emailObject.labels.allObjects as? [Label] {
-                    for contactGroup in contactGroups {
-                        origContactGroupIDs.insert(contactGroup.labelID)
-                    }
-                } else {
-                    // TODO: handle error
-                    PMLog.D("Can't get contact groups")
+        let context = sharedCoreDataService.mainManagedObjectContext
+        let emailObject = Email.EmailForAddressWithContact(self.newEmail,
+                                                           contactID: contactID,
+                                                           inManagedObjectContext: context)
+        if let emailObject = emailObject {
+            if let contactGroups = emailObject.labels.allObjects as? [Label] {
+                for contactGroup in contactGroups {
+                    origContactGroupIDs.insert(contactGroup.labelID)
                 }
             } else {
                 // TODO: handle error
-                PMLog.D("Can't get email from address")
+                PMLog.D("Can't get contact groups")
             }
         } else {
             // TODO: handle error
-            PMLog.D("Can't get main context")
+            PMLog.D("Can't get email from address")
         }
         
         newContactGroupIDs = origContactGroupIDs
@@ -170,17 +166,12 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            if let context = sharedCoreDataService.mainManagedObjectContext {
-                if let label = Label.labelForLableID(labelID,
-                                                     inManagedObjectContext: context) {
-                    result.append(label.name)
-                } else {
-                    // TODO: handle error
-                    PMLog.D(("Can't get label from ID"))
-                }
+            let context = sharedCoreDataService.mainManagedObjectContext
+            if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                result.append(label.name)
             } else {
                 // TODO: handle error
-                PMLog.D(("Can't get main context"))
+                PMLog.D(("Can't get label from ID"))
             }
         }
         
@@ -201,20 +192,16 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            for ID in newContactGroupIDs {
-                let label = Label.labelForLableID(ID, inManagedObjectContext: context)
-                
-                if let label = label {
-                    colors.append(label.color)
-                } else {
-                    // TODO: handle error
-                    PMLog.D("Can't retrieve label by ID")
-                }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        for ID in newContactGroupIDs {
+            let label = Label.labelForLableID(ID, inManagedObjectContext: context)
+            
+            if let label = label {
+                colors.append(label.color)
+            } else {
+                // TODO: handle error
+                PMLog.D("Can't retrieve label by ID")
             }
-        } else {
-            // TODO: handle error
-            PMLog.D("Can't get context")
         }
         
         return colors

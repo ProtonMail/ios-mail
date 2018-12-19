@@ -89,7 +89,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        let context = sharedCoreDataService.newMainManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
                 let ids = self.messages.map { ($0).messageID }
