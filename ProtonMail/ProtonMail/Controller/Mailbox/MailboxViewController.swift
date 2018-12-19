@@ -394,27 +394,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.showCheckOptions(longPressGestureRecognizer)
         updateNavigationController(listEditing)
     }
-    
-    //    internal func createRateReviewCell () {
-    //        let count = fetchedResultsController?.numberOfRowsInSection(0) ?? 0
-    //        if count > 3 {
-    //            if let message = fetchedResultsController?.objectAtIndexPath(NSIndexPath(forRow: 3, inSection: 0)) as? Message {
-    //                if let context = message.managedObjectContext {
-    //                    let newMessage = Message(context: context)
-    //                    newMessage.messageType = 1
-    //                    newMessage.title = ""
-    //                    newMessage.messageStatus = 1
-    //                    newMessage.time = message.time ?? NSDate()
-    //                    if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
-    //                        PMLog.D("error: \(error)")
-    //                    }
-    //                    ratingMessage = newMessage
-    //                }
-    //            }
-    //        }
-    //    }
 
-    
     internal func beginRefreshingManually(animated: Bool) {
         if animated {
             self.refreshControl.beginRefreshing()

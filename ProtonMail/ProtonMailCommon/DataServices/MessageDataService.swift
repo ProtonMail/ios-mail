@@ -520,9 +520,6 @@ class MessageDataService : Service {
         message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
         message.cachedAddress = message.defaultAddress // computed property depending on current user settings
     }
-
-
-    
     
     //
     func emptyTrash() {
