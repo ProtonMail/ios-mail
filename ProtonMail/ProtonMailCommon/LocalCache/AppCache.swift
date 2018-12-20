@@ -71,6 +71,10 @@ class AppCache : Migrate {
     }
     
     
+    static func isFirstRun() -> Bool {
+        return SharedCacheBase.getDefault().object(forKey: UserDataService.Key.firstRunKey) == nil
+    }
+    
     func rebuild(reason: RebuildReason) {
         self.cleanLagacy()
         self.currentVersion = self.latestVersion
@@ -97,9 +101,11 @@ class AppCache : Migrate {
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badToken)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.PushNotificationService.badUID)
         
+        #if !Enterprise
         try? FileManager.default.removeItem(at: FileManager.default.applicationSupportDirectoryURL.appendingPathComponent("com.crashlytics"))
         try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("com.crashlytics.data"))
         try? FileManager.default.removeItem(at: FileManager.default.cachesDirectoryURL.appendingPathComponent("io.fabric.sdk.ios.data"))
+        #endif
     }
     
     func logout() {

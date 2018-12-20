@@ -41,7 +41,7 @@ class ShareAppCoordinator: CoordinatorNew {
         helper.add(AddressBookService.self, for: addrService)
         helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
         helper.add(MessageDataService.self, for: MessageDataService())
-        helper.add(UserDataService.self, for: UserDataService())
+        //helper.add(UserDataService.self, for: UserDataService())
         return helper
     }()
     

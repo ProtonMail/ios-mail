@@ -900,12 +900,13 @@ class UserDataService : Service {
     // MARK: - Private methods
     
     func cleanUpIfFirstRun() {
-        let firstRunKey = "FirstRunKey"
-        if SharedCacheBase.getDefault().object(forKey: firstRunKey) == nil {
+        #if !APP_EXTENSION
+        if AppCache.isFirstRun() {
             clearAll()
-            SharedCacheBase.getDefault().set(Date(), forKey: firstRunKey)
+            SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
         }
+        #endif
     }
     
     func clearAll() {

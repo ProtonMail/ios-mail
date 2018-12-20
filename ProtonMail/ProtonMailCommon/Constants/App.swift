@@ -36,9 +36,8 @@ struct Constants {
     }
     
     enum App {
-//        static let CacheVersion : Int = 110 // this is core data cache
         static let AuthCacheVersion : Int = 15 //this is user info cache
-//
+        
         static let SpaceWarningThreshold: Int = 80
         static let SpaceWarningThresholdDouble: Double = 80
         static let SplashVersion : Int = 1

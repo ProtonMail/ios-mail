@@ -210,9 +210,23 @@ class CoreDataServiceTests: XCTestCase {
             return
         }
         XCTAssertEqual(beforeMerge.messageID, "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==")
-        XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
+        XCTAssertEqual(beforeMerge.body, "")
+//        XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
         XCTAssertEqual(beforeMerge.spamScore, 0)
-        XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
+        XCTAssertEqual(beforeMerge.mimeType, "texthtml")
+//        XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
+        
+        
+        guard let beforeMerge1 = Message.messageForMessageID("cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==", inManagedObjectContext: coredata.backgroundManagedObjectContext) else {
+            XCTAssertNotNil(nil)
+            return
+        }
+        XCTAssertEqual(beforeMerge1.messageID, "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==")
+        XCTAssertEqual(beforeMerge1.body, "")
+        //        XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
+        XCTAssertEqual(beforeMerge1.spamScore, 0)
+        XCTAssertEqual(beforeMerge1.mimeType, "texthtml")
+        //        XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
     }
     
     func testPerformanceExample() {

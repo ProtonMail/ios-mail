@@ -134,26 +134,10 @@ final class UserCachedStatus : SharedCacheBase {
         setValue(0, forKey: Key.lastTourViersion)
     }
     
-//    func isCacheOk() -> Bool {
-//        let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-//        return cachedVersion == Constants.App.CacheVersion
-//    }
-    
-//    var lastCacheVersion : Int {
-//        get {
-//            let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-//            return cachedVersion
-//        }
-//    }
-    
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
         return cachedVersion == Constants.App.AuthCacheVersion
     }
-    
-//    func resetCache() -> Void {
-//        setValue(Constants.App.CacheVersion, forKey: Key.lastCacheVersion)
-//    }
     
     func resetAuthCache() -> Void {
         setValue(Constants.App.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
