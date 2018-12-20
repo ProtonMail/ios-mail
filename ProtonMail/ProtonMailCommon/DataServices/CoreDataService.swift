@@ -80,20 +80,28 @@ class CoreDataService {
             PMLog.D("\(error)")
         }
     }
-
+    
+    /// this do the auto sync
+    lazy var testChildContext: NSManagedObjectContext = {
+        let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
+        managedObjectContext.parent = self.mainManagedObjectContext
+        return managedObjectContext
+    }()
     
     lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.persistentStoreCoordinator = self.persistentStore
-//        
-//        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
-//                                               object: managedObjectContext,
-//                                               queue: nil) { notification in
-//                                                let context = self.mainManagedObjectContext
-//                                                context.perform {
-//                                                    context.mergeChanges(fromContextDidSave: notification)
-//                                                }
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextDidSave,
+                                               object: managedObjectContext,
+                                               queue: nil)
+        { notification in
+            let context = self.mainManagedObjectContext
+            context.performAndWait {
+                context.mergeChanges(fromContextDidSave: notification)
+            }
+        }
         return managedObjectContext
     }()
     

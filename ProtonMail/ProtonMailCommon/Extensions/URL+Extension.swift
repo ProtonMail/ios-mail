@@ -35,7 +35,7 @@ extension URL {
             resourceValues.isExcludedFromBackup = true
             try setResourceValues(resourceValues)
         } catch let ex as NSError {
-            PMLog.D(" path: \(absoluteString) excludeFromBackup error: \(ex)")
+            assert(false, " path: \(absoluteString) excludeFromBackup error: \(ex)")
         }
     }
 }

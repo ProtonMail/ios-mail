@@ -72,7 +72,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: TopMessage
-    @available(*, deprecated)
     private weak var topMessageView: TopMessageView?
     
     // MARK: - Private attributes
