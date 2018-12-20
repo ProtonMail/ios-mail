@@ -1564,7 +1564,7 @@ class LocalizedString {
 
     lazy var _n_email_address = NSLocalizedString("%i email address", comment: "Service plan capability; i = 1")
     lazy var _n_email_addresses = NSLocalizedString("%i email addresses", comment: "Service plan capability; i = 5 or 50")
-    lazy var _total = NSLocalizedString(" (total)", comment: "Service plan capability detail; like in '50 email addresses (total)'")
+    lazy var _total = NSLocalizedString("(total)", comment: "Service plan capability detail; like in '50 email addresses (total)'")
     lazy var _per_user = NSLocalizedString("/user", comment: "Service plan capability detail; like in '5 email addresses/user'")
 
     lazy var _storage_capacity = NSLocalizedString("%@ storage capacity", comment: "Service plan capability")

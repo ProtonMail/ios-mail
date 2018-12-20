@@ -193,7 +193,7 @@ extension StorefrontViewModel {
         case .visionary:
             return [
                 DetailStorefrontItem(imageName: "iap_users", text: String(format: LocalString._up_to_n_users, details.maxMembers)),
-                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + LocalString._total),
+                DetailStorefrontItem(imageName: "iap_email", text: String(format: details.maxAddresses > 1 ? LocalString._n_email_addresses : LocalString._n_email_address, details.maxAddresses) + " " + LocalString._total),
                 DetailStorefrontItem(imageName: "iap_hdd", text: String(format: LocalString._storage_capacity, formatter.string(fromByteCount: Int64(details.maxSpace)))),
                 DetailStorefrontItem(imageName: "iap_link", text: LocalString._bridge_support),
                 DetailStorefrontItem(imageName: "iap_folder", text: LocalString._labels_folders_filters),
