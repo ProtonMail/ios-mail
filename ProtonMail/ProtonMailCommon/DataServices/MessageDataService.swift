@@ -50,7 +50,7 @@ class MessageDataService {
     
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             ids.forEach { messageID in
                 guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
@@ -906,7 +906,7 @@ class MessageDataService {
     }
     
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
                 do {
@@ -915,7 +915,6 @@ class MessageDataService {
                             if let mess = response {
                                 if let messageID = mess["ID"] as? String {
                                     PMLog.D("SendAttachmentDebug == finish save draft!")
-                                    context.performAndWait {
                                         message.messageID = messageID
                                         message.isDetailDownloaded = true
                                         
@@ -965,7 +964,6 @@ class MessageDataService {
                                                 return
                                             }
                                         }
-                                    }
                                     completion?(task, response, error)
                                     return
                                 } else {//error
@@ -1006,16 +1004,11 @@ class MessageDataService {
                 }
             }
         }
-        
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
-        completion?(nil, nil, NSError.badParameter(messageID))
     }
     
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
             let attachment = managedObject as? Attachment else
@@ -1086,7 +1079,7 @@ class MessageDataService {
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             var authCredential: AuthCredential?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(deleteObject),
@@ -1104,7 +1097,7 @@ class MessageDataService {
     }
     
     private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
@@ -1187,7 +1180,7 @@ class MessageDataService {
             completion?(task, response, error)
         }
         
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
                 let message = context.find(with: objectID) as? Message else
@@ -1465,7 +1458,6 @@ class MessageDataService {
             }
             return
         }
-        errorBlock(nil, nil, NSError.badParameter(messageID))
     }
     
     private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
@@ -1581,7 +1573,7 @@ class MessageDataService {
                     error?.upload(toAnalytics: QueueErrorTitle)
                 }
                 
-                if !isInternetIssue {
+                if !isInternetIssue && (error?.code != NSError.authCacheLocked().code) {
                     self.dequeueIfNeeded()
                 } else {
                     if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
