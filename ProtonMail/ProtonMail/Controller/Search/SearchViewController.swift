@@ -188,12 +188,7 @@ class SearchViewController: ProtonMailViewController {
         fetchRequest.propertiesToFetch = [objectId,
                                           Message.Attributes.title,
                                           Message.Attributes.sender,
-                                          Message.Attributes.senderName,
                                           Message.Attributes.toList]
-        fetchRequest.predicate = NSPredicate(format: "(%K != -1) AND (%K != 1)",
-                                               Message.Attributes.locationNumber,
-                                               Message.Attributes.locationNumber)
-
         let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
             self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
             self?.localObjectsIndexingObserver = nil

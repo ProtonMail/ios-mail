@@ -348,18 +348,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             
             alertController.addAction(UIAlertAction(title: LocalString._locations_add_star_action,
                                                     style: .default, handler: { (action) -> Void in
-                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
-                self.selectedMessagesSetStar()
-                self.cancelButtonTapped();
-                self.navigationController?.popViewController(animated: true)
+//                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
+//                self.selectedMessagesSetStar()
+//                self.cancelButtonTapped();
+//                self.navigationController?.popViewController(animated: true)
             }))
             
             alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"),
                                                     style: .default, handler: { (action) -> Void in
-                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
-                self.selectedMessagesSetUnStar()
-                self.cancelButtonTapped();
-                self.navigationController?.popViewController(animated: true)
+//                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
+//                self.selectedMessagesSetUnStar()
+//                self.cancelButtonTapped();
+//                self.navigationController?.popViewController(animated: true)
             }))
             
             var locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]

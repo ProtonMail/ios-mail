@@ -34,12 +34,9 @@ extension Message {
     
     struct Attributes {
         static let entityName = "Message"
-        static let locationNumber = "locationNumber"
         static let isDetailDownloaded = "isDetailDownloaded"
-        static let isStarred = "isStarred"
         static let messageID = "messageID"
         static let toList = "toList"
-        static let senderName = "senderName"
         static let sender = "sender"
         static let time = "time"
         static let title = "title"

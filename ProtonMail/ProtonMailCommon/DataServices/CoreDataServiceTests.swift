@@ -195,6 +195,7 @@ class CoreDataServiceTests: XCTestCase {
         let messagedetails = try? GRTJSONSerialization.object(withEntityName: "Message",
                                                               fromJSONDictionary: out, in: coredata.testbackgroundManagedObjectContext)
     
+//        try! coredata.testbackgroundManagedObjectContext.save()
         XCTAssertNotNil(messagedetails)
         guard let message2 = messagedetails as? Message else {
             XCTAssertNotNil(nil)
@@ -217,16 +218,15 @@ class CoreDataServiceTests: XCTestCase {
 //        XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
         
         
-        guard let beforeMerge1 = Message.messageForMessageID("cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==", inManagedObjectContext: coredata.backgroundManagedObjectContext) else {
+        guard let beforeMerge1 = Message.messageForMessageID("cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==", inManagedObjectContext: coredata.testbackgroundManagedObjectContext) else {
             XCTAssertNotNil(nil)
             return
         }
         XCTAssertEqual(beforeMerge1.messageID, "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==")
-        XCTAssertEqual(beforeMerge1.body, "")
-        //        XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
+        XCTAssertEqual(beforeMerge1.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
         XCTAssertEqual(beforeMerge1.spamScore, 0)
-        XCTAssertEqual(beforeMerge1.mimeType, "texthtml")
-        //        XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
+//        XCTAssertEqual(beforeMerge1.mimeType, "texthtml")
+        XCTAssertEqual(beforeMerge1.mimeType, "texthtml11111")
     }
     
     func testPerformanceExample() {
