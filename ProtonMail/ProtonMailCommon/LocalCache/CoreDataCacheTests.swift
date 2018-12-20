@@ -31,7 +31,7 @@ import XCTest
 
 class CoreDataCacheTests: XCTestCase {
     
-    var coreDataCache = CoreDataCache(latestVesion: 100)
+    var coreDataCache = CoreDataCache()
     
     override func setUp() {
         

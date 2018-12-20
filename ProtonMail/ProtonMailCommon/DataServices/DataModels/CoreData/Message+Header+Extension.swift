@@ -88,7 +88,7 @@ extension Message {
             return left.name == "X-Autoreply"
         }
         
-        if self.senderAddress == email {
+        if self.senderContactVO.email == email {
             var autoreply = false
             if let body = autoReply?.body, body == "yes" {
                 autoreply = true

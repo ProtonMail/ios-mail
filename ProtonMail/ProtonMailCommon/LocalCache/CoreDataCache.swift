@@ -51,7 +51,7 @@ class CoreDataCache : Migrate {
         var model: String { // hard code model we don't need to cache it.
             switch self {
             case .v1:
-                return "v1"
+                return "ProtonMail"
             }
         }
     }
@@ -82,14 +82,25 @@ class CoreDataCache : Migrate {
     
     /// for the first version we have too many changes. we just rebuild the model and leave the migrate to later versions.
     internal func migrate_0_to_1() {
-            // core data
+        // core data
+//        let knownVersions = [self.v1_12_0].sorted()
+//        let shouldMigrateTo = knownVersions.filter { $0 > self.lastMigratedTo && $0 <= self.current }
+//        
+//        var previousModel = self.lastMigratedTo.model!
+//        var previousUrl = CoreDataService.dbUrl
+//        
+//        shouldMigrateTo.forEach { nextKnownVersion in
+//            nextKnownVersion.migration?()
+//            
+//            // core data
+//            
 //            guard lastMigratedTo.modelName != nextKnownVersion.modelName,
 //                let nextModel = nextKnownVersion.model else
 //            {
 //                self.lastMigratedTo = nextKnownVersion
 //                return
 //            }
-//
+//            
 //            guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: NSSQLiteStoreType,
 //                                                                                              at: previousUrl,
 //                                                                                              options: nil),
@@ -99,7 +110,7 @@ class CoreDataCache : Migrate {
 //                self.lastMigratedTo = nextKnownVersion
 //                return
 //            }
-//
+//            
 //            let migrationManager = NSMigrationManager(sourceModel: previousModel, destinationModel: nextModel)
 //            guard let mappingModel = NSMappingModel(from: [Bundle.main], forSourceModel: previousModel, destinationModel: nextModel) else {
 //                assert(false, "No mapping model found but need one")
@@ -107,7 +118,7 @@ class CoreDataCache : Migrate {
 //                self.lastMigratedTo = nextKnownVersion
 //                return
 //            }
-//
+//            
 //            let destUrl = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(UUID().uuidString, isDirectory: false)
 //            try? migrationManager.migrateStore(from: previousUrl,
 //                                               sourceType: NSSQLiteStoreType,
@@ -120,17 +131,12 @@ class CoreDataCache : Migrate {
 //            previousModel = nextModel
 //            self.lastMigratedTo = nextKnownVersion
 //        }
-//
-//        try? NSPersistentStoreCoordinator(managedObjectModel: previousModel).replacePersistentStore(at: CoreDataService.dbUrl,
-//                                                                                                    destinationOptions: nil,
-//                                                                                                    withPersistentStoreFrom: previousUrl,
-//                                                                                                    sourceOptions: nil,
-//                                                                                                    ofType: NSSQLiteStoreType)
+        
     }
     
     internal func rebuild(reason: RebuildReason) {
         do {
-            try FileManager.default.removeItem(at: CoreDataService.dbUrl)
+            try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
         } catch {
         }
         sharedMessageDataService.cleanUp()

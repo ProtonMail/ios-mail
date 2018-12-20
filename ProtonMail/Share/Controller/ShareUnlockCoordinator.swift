@@ -27,6 +27,7 @@
 
 
 import Foundation
+
 class ShareUnlockCoordinator : PushCoordinator {
     typealias VC = ShareUnlockViewController
     

@@ -31,6 +31,30 @@ import Foundation
 
 extension Message {
     
+    /// wrappers
+    var cachedPassphrase: String? {
+        get {
+            guard let raw = self.cachedPassphraseRaw as Data? else { return nil }
+            return String(data: raw, encoding: .utf8)
+        }
+        set { self.cachedPassphraseRaw = newValue?.data(using: .utf8) as NSData? }
+    }
+    
+    var cachedAuthCredential: AuthCredential? {
+        get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
+        set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
+    }
+    var cachedPrivateKeys: Data? {
+        get { return self.cachedPrivateKeysRaw as Data? }
+        set { self.cachedPrivateKeysRaw = newValue as NSData? }
+    }
+    var cachedAddress: Address? {
+        get { return Address.unarchive(self.cachedAddressRaw as Data?) }
+        set { self.cachedAddressRaw = newValue?.archive() as NSData? }
+    }
+    
+    
+    
     /// check if contains exclusive lable
     ///
     /// - Parameter label: Location

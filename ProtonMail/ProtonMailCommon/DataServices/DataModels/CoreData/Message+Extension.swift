@@ -572,8 +572,8 @@ extension Message {
         }
         
         return ContactVO(id: "",
-                         name: sender?.name ?? self.senderName,
-                         email: sender?.address ?? self.senderAddress)
+                         name: sender?.name ?? "",
+                         email: sender?.address ?? "")
     }
     
     func copyMessage (_ copyAtts : Bool) -> Message {
@@ -586,8 +586,6 @@ extension Message {
         newMessage.time = Date()
         newMessage.body = message.body
         newMessage.isEncrypted = message.isEncrypted
-        newMessage.senderAddress = message.senderAddress
-        newMessage.senderName = message.senderName
         newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
         

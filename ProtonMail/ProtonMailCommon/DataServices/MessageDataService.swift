@@ -428,15 +428,7 @@ class MessageDataService : Service {
     //     }
     // }
     
-    // private func cachePropertiesForBackground(in message: Message) {
-    //     // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
-    //     // they are transient and will not be persisted in the db, only in managed object context
-    //     message.cachedPassphrase = sharedUserDataService.mailboxPassword
-    //     message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
-    //     message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
-    //     message.cachedAddress = message.defaultAddress // computed property depending on current user settings
-    // }
-    ///TODO::fixme - double check it
+    ///TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
         guard let context = managedObjectContext else {
@@ -780,6 +772,7 @@ class MessageDataService : Service {
                     let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.perform() {
                         if response != nil {
+                            PMLog.D(response?.json(prettyPrinted: true) ?? "")
                             //TODO need check the respons code
                             PMLog.D("\(String(describing: response))")
                             if var msg: [String : Any] = response?["Message"] as? [String : Any] {

@@ -35,7 +35,6 @@ import AwaitKit
 
 let sharedContactDataService = ContactDataService(addressBookService: AddressBookService())
 
-
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 

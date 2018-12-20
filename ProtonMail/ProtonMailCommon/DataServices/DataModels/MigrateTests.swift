@@ -32,6 +32,10 @@ import XCTest
 class MigrateTests: XCTestCase {
     
     class MigrateTest : Migrate {
+        func logout() {
+            
+        }
+        
         var _curVersion : Int
         init(l: Int, c: Int, s: [Int]) {
             self.latestVersion = l

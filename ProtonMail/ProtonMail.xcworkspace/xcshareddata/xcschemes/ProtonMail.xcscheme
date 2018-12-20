@@ -43,7 +43,7 @@
       </PostActions>
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "NO"
+            buildForTesting = "YES"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
@@ -64,6 +64,26 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4C4094ADA302FE10FF33218039B6C756"
+               BuildableName = "KeymakerTests.xctest"
+               BlueprintName = "KeymakerTests"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8150D92393298F02FA3A03CA9FE6DF20"
+               BuildableName = "ProtonMailTests.xctest"
+               BlueprintName = "ProtonMailTests"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -102,6 +122,10 @@
          <CommandLineArgument
             argument = "-com.apple.CoreData.ConcurrencyDebug 1"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "com.apple.CoreData.SQLDebug 3"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "-com.apple.CoreData.SQLDebug 1"
