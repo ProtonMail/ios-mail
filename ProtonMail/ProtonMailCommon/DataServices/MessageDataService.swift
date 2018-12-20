@@ -1002,7 +1002,12 @@ class MessageDataService {
                     completion?(nil, nil, ex)
                     return
                 }
+                return
             }
+            // nothing to send, dequeue request
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+            completion?(nil, nil, NSError.badParameter(messageID))
         }
     }
     
