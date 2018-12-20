@@ -242,6 +242,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
 }
 
 extension ShareUnlockViewController: AttachmentController {
+    var barItem: UIBarButtonItem? {
+        return nil
+    }
+    
     func error(_ description: String) {
         self.localized_errors.append(description)
     }

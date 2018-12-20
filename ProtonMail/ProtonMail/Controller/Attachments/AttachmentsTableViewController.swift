@@ -1,17 +1,36 @@
 //
 //  AttachmentsTableViewController.swift
+//  ProtonMail - Created on 10/16/15.
 //
 //
-//  Created by Yanfeng Zhang on 10/16/15.
+//  The MIT License
 //
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import UIKit
 import Photos
 import AssetsLibrary
 import MCSwipeTableViewCell
 
-protocol AttachmentsTableViewControllerDelegate {
+protocol AttachmentsTableViewControllerDelegate : AnyObject {
     func attachments(_ attViewController: AttachmentsTableViewController, didFinishPickingAttachments: [Any]) -> Void
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment: Attachment) -> Void
     func attachments(_ attViewController: AttachmentsTableViewController, didDeletedAttachment: Attachment) -> Void
@@ -19,31 +38,40 @@ protocol AttachmentsTableViewControllerDelegate {
     func attachments(_ attViewController: AttachmentsTableViewController, error: String) -> Void
 }
 
-public enum AttachmentSections: Int {
-    case normal = 1, inline
+class AttachmentsTableViewController: UITableViewController, AttachmentController {
     
-    public var actionTitle : String {
-        get {
-            switch(self) {
-            case .normal: return LocalString._normal_attachments
-            case .inline: return LocalString._inline_attachments
+    enum AttachmentSection: Int {
+        case normal = 1, inline
+        
+        var actionTitle : String {
+            get {
+                switch(self) {
+                case .normal: return LocalString._normal_attachments
+                case .inline: return LocalString._inline_attachments
+                }
             }
         }
     }
-}
 
-class AttachmentsTableViewController: UITableViewController, AttachmentController {
-    internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000
+    private var doneButton: UIBarButtonItem!
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    
+    /// AttachmentController
+    var barItem: UIBarButtonItem? {
+        get {
+            return addButton
+        }
+    }
+    
+    weak var delegate: AttachmentsTableViewControllerDelegate?
+    
+    internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
     internal var currentAttachmentSize : Int = 0
     
-    fileprivate var doneButton: UIBarButtonItem!
-
     var message: Message!
-    var delegate: AttachmentsTableViewControllerDelegate?
-    
     var normalAttachments: [Attachment] = []
     var inlineAttachments: [Attachment] = []
-    var attachmentSections : [AttachmentSections] = []
+    var attachmentSections : [AttachmentSection] = []
 
     var attachments: [Attachment] = [] {
         didSet {
