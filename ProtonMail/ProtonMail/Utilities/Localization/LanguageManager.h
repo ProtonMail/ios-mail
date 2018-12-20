@@ -49,6 +49,13 @@ typedef NS_ENUM(NSInteger, ELanguage)
     
     ELanguagePortugueseBrazil, //add at 18/10/2017
     
+    ELanguageChineseSimplified,  // add at 12/20/2018
+    ELanguageChineseTraditional, // add at 12/20/2018
+    ELanguageCatalan,            // add at 12/20/2018
+    ELanguageDanish,             // add at 12/20/2018
+    ELanguageCzech,              // add at 12/20/2018
+    ELanguagePortuguese,         // add at 12/20/2018 
+    
     ELanguageCount
 };
 

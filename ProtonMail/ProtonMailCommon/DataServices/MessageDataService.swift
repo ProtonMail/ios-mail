@@ -452,7 +452,7 @@ class MessageDataService : Service {
         }
     }
     
-    //// need to remvoe this.
+    //// only needed for drafts
     private func cachePropertiesForBackground(in message: Message) {
         // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
         // they are transient and will not be persisted in the db, only in managed object context
@@ -1866,7 +1866,7 @@ class MessageDataService : Service {
     }
     
     
-    private func queue(_ message: Message, action: MessageAction) {
+    func queue(_ message: Message, action: MessageAction) {
         self.cachePropertiesForBackground(in: message)
         if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)

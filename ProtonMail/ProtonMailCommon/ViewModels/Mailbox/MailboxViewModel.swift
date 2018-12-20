@@ -200,7 +200,7 @@ class MailboxViewModel {
         self.pushService.processCachedLaunchOptions()
     }
     
-    
+    ///
     func selectedMessages() -> [Message] {
         if let context = fetchedResultsController?.managedObjectContext {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
@@ -216,6 +216,7 @@ class MailboxViewModel {
         return [Message]();
     }
     
+    ///
     func message(by messageID: String) -> Message? {
         if let context = self.fetchedResultsController?.managedObjectContext {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
@@ -224,8 +225,7 @@ class MailboxViewModel {
         }
         return nil
     }
-    
-    
+    ///
     func object(by object: NSManagedObjectID) -> Message? {
         if let obj = self.fetchedResultsController?.managedObjectContext.object(with: object) as? Message {
             return obj
@@ -245,29 +245,94 @@ class MailboxViewModel {
         }
     }
     
+    
+    func move(from messages: [Message], to location: Message.Location) {
+        for msg in messages {
+            if let context = msg.managedObjectContext {
+                switch location {
+                case .inbox:
+                    
+                    break
+                    
+                case .starred:
+                    // action: MessageAction =  ? .star : .unstar
+                   // self.messageService.queue(msg, action: action)
+                    break
+                default:
+                    break
+                }
+                
+                
+            }
+        }
+    }
+    
     func move(from index: IndexPath, to location: Message.Location) {
         guard let message = self.item(index: index) else {
             return
         }
         
-        let currentLabels = message.labels
+        self.move(from: message, to: location)
+    }
+    
+    
+    func move(from message: Message, to location: Message.Location) {
         
+
         
-        
-        //call api here. better to cache it.
-//        messageService
-//        self.updateBadgeNumberWhenMove(msg, to: .archive)
-//        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-//        msg.needsUpdate = true
-//        msg.location = .archive
-//        if let context = msg.managedObjectContext {
-//            context.perform {
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
+//            let action: MessageAction = message.unRead ? .unread : .read
+//            self.queue(message, action: action)
 //        }
     }
+    
+    //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
+    //            if message.needsUpdate {
+    //                let action: MessageAction = message.isStarred ? .star : .unstar
+    //                self.queue(message, action: action)
+    //            }
+    //        })
+    
+        //call api here. better to cache it.
+        //        messageService
+        //        self.updateBadgeNumberWhenMove(msg, to: .archive)
+        //        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
+        //        msg.needsUpdate = true
+        //        msg.location = .archive
+        //        if let context = msg.managedObjectContext {
+        //            context.perform {
+        //                if let error = context.saveUpstreamIfNeeded() {
+        //                    PMLog.D("error: \(error)")
+        //                }
+        //            }
+        //        }
+        //let currentLabels = message.labels
+
+//    fileprivate func setupMessageMonitoring() {
+//
+//        //TODO:: double check
+//        //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
+//        //            if message.needsUpdate {
+//        //                if let action = message.location.moveAction {
+//        //                    self.queue(message, action: action)
+//        //                } else {
+//        //                    PMLog.D(" \(message.messageID) move to \(message.location) was not a user initiated move.")
+//        //                }
+//        //            }
+//        //        })
+//        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.unRead, handler: { message in
+//            if message.needsUpdate {
+//                let action: MessageAction = message.unRead ? .unread : .read
+//                self.queue(message, action: action)
+//            }
+//        })
+//
+//        //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
+//        //            if message.needsUpdate {
+//        //                let action: MessageAction = message.isStarred ? .star : .unstar
+//        //                self.queue(message, action: action)
+//        //            }
+//        //        })
+//    }
     
     func label(on index: IndexPath, with labelID: String) {
         guard let message = self.item(index: index) else {

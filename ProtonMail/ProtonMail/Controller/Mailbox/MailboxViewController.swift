@@ -143,7 +143,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-   
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
@@ -348,6 +347,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             
             alertController.addAction(UIAlertAction(title: LocalString._locations_add_star_action,
                                                     style: .default, handler: { (action) -> Void in
+                                                
+//                                                        self.viewModel.move(from: <#T##IndexPath#>, to: <#T##Message.Location#>)
 //                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
 //                self.selectedMessagesSetStar()
 //                self.cancelButtonTapped();

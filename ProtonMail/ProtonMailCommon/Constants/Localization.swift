@@ -988,6 +988,18 @@ class LocalizedString {
     lazy var _italian = NSLocalizedString("Italian", comment: "Action")
     /// "Portuguese Brazil"
     lazy var _portuguese_brazil = NSLocalizedString("Portuguese Brazil", comment: "Action")
+    /// "Chinese Simplified"
+    lazy var _chinese_simplified = NSLocalizedString("Chinese Simplified", comment: "Action")
+    /// "Chinese Traditional"
+    lazy var _chinese_traditional = NSLocalizedString("Chinese Traditional", comment: "Action")
+    /// "Catalan"
+    lazy var _catalan = NSLocalizedString("Catalan", comment: "Action")
+    /// "Danish"
+    lazy var _danish = NSLocalizedString("Danish", comment: "Action")
+    /// "Czech"
+    lazy var _czech = NSLocalizedString("Czech", comment: "Action")
+    /// "Portuguese"
+    lazy var _portuguese = NSLocalizedString("Portuguese", comment: "Action")
 
     /// "Message Queue"
     lazy var _message_queue = NSLocalizedString("Message Queue", comment: "settings debug section title")

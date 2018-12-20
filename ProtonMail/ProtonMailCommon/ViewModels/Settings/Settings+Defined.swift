@@ -56,6 +56,19 @@ extension ELanguage {
                 return "Italiano"
             case .portugueseBrazil:
                 return "Portuguese Brazil"
+            case .chineseSimplified:
+                return "简体中文"
+            case .chineseTraditional:
+                return "繁體中文"
+            case .catalan:
+                return "Català"
+            case .danish:
+                return "dansk"
+            case  .czech:
+                return "Čeština"
+            case .portuguese:
+                return "português"
+                
             case .count:
                 return ""
             }
@@ -87,6 +100,18 @@ extension ELanguage {
                 return LocalString._italian
             case .portugueseBrazil:
                 return LocalString._portuguese_brazil
+            case .chineseSimplified:
+                return LocalString._chinese_simplified
+            case .chineseTraditional:
+                return LocalString._chinese_traditional
+            case .catalan:
+                return LocalString._catalan
+            case .danish:
+                return LocalString._danish
+            case .czech:
+                return LocalString._czech
+            case .portuguese:
+                return LocalString._portuguese
             case .count:
                 return ""
             }
@@ -118,6 +143,18 @@ extension ELanguage {
                 return "it_IT"
             case .portugueseBrazil:
                 return "pt_BR"
+            case .chineseSimplified:
+                return "zh_CN"
+            case .chineseTraditional:
+                return "zh_TW"
+            case .catalan:
+                return "ca_ES"
+            case .danish:
+                return "da_DK"
+            case .czech:
+                return "cs_CZ"
+            case .portuguese:
+                return "pt_PT"
             case .count:
                 return "en_US"
             }
@@ -150,6 +187,18 @@ extension ELanguage {
                 return "it"
             case .portugueseBrazil:
                 return "pt-BR"
+            case .chineseSimplified:
+                return "zh-Hans"
+            case .chineseTraditional:
+                return "zh-Hant"
+            case .catalan:
+                return "ca"
+            case .danish:
+                return "da"
+            case .czech:
+                return "cs"
+            case .portuguese:
+                return "pt"
             case .count:
                 return "en"
             }
@@ -167,7 +216,13 @@ extension ELanguage {
                 ELanguage.ukrainian.code,
                 ELanguage.dutch.code,
                 ELanguage.italian.code,
-                ELanguage.portugueseBrazil.code
+                ELanguage.portugueseBrazil.code,
+                ELanguage.chineseSimplified.code,
+                ELanguage.chineseTraditional.code,
+                ELanguage.catalan.code,
+                ELanguage.danish.code,
+                ELanguage.czech.code,
+                ELanguage.portuguese.code
         ]
     }
     static public func allItems() -> [ELanguage] {
@@ -181,7 +236,13 @@ extension ELanguage {
                 .ukrainian,
                 .dutch,
                 .italian,
-                .portugueseBrazil
+                .portugueseBrazil,
+                .chineseSimplified,
+                .chineseTraditional,
+                .catalan,
+                .danish,
+                .czech,
+                .portuguese
         ]
     }
 }

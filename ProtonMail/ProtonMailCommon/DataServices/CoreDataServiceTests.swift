@@ -195,7 +195,7 @@ class CoreDataServiceTests: XCTestCase {
         let messagedetails = try? GRTJSONSerialization.object(withEntityName: "Message",
                                                               fromJSONDictionary: out, in: coredata.testbackgroundManagedObjectContext)
     
-//        try! coredata.testbackgroundManagedObjectContext.save()
+        try! coredata.testbackgroundManagedObjectContext.save()
         XCTAssertNotNil(messagedetails)
         guard let message2 = messagedetails as? Message else {
             XCTAssertNotNil(nil)
