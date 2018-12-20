@@ -184,8 +184,8 @@ extension WindowsCoordinator: ForceUpgradeViewDelegate {
     }
     
     func learnMore() {
-        if UIApplication.shared.canOpenURL(.kbUpdateRequired) {
-            UIApplication.shared.openURL(.kbUpdateRequired)
+        if UIApplication.shared.canOpenURL(.forceUpgrade) {
+            UIApplication.shared.openURL(.forceUpgrade)
         }
     }
     func update() {

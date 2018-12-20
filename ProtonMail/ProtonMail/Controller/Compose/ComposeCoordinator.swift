@@ -160,16 +160,7 @@ extension ComposeCoordinator: ExpirationWarningVCDelegate{
     
     func learnMore() {
         #if !APP_EXTENSION
-        UIApplication.shared.openURL(.kEOLearnMore)
+        UIApplication.shared.openURL(.eoLearnMore)
         #endif
     }
 }
-
-//
-//override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//if segue.identifier == kExpirationWarningSegue {
-
-//    } else if segue.identifier == kToContactGroupSubSelection {
-
-//    }
-//}

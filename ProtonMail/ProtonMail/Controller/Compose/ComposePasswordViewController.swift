@@ -1,14 +1,33 @@
 //
 //  ComposePasswordViewController.swift
-//  ProtonMail
+//  ProtonMail - Created on 3/24/16.
 //
-//  Created by Yanfeng Zhang on 3/24/16.
-//  Copyright (c) 2016 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 import Foundation
 
-protocol ComposePasswordViewControllerDelegate {
+protocol ComposePasswordViewControllerDelegate : AnyObject {
     func Cancelled()
     func Removed()
     func Apply(_ password : String, confirmPassword :String, hint : String)
@@ -29,16 +48,13 @@ class ComposePasswordViewController: UIViewController {
     @IBOutlet weak var removeButton: UIButton!
     @IBOutlet weak var applyButton: UIButton!
     
-    
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
 
-    fileprivate let upgradePageUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    private var pwd : String = ""
+    private var pwdConfirm : String  = ""
+    private var pwdHint : String = ""
     
-    fileprivate var pwd : String = ""
-    fileprivate var pwdConfirm : String  = ""
-    fileprivate var pwdHint : String = ""
-    
-    var pwdDelegate : ComposePasswordViewControllerDelegate?
+    weak var pwdDelegate : ComposePasswordViewControllerDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,10 +98,10 @@ class ComposePasswordViewController: UIViewController {
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
-    //
-    
     @IBAction func getMoreInfoAction(_ sender: UIButton) {
-       // UIApplication.shared.openURL(upgradePageUrl)
+        #if !APP_EXTENSION
+        UIApplication.shared.openURL(.eoLearnMore)
+        #endif
     }
 
     @IBAction func closeAction(_ sender: AnyObject) {
@@ -96,7 +112,6 @@ class ComposePasswordViewController: UIViewController {
     @IBAction func removeAction(_ sender: UIButton) {
         pwdDelegate?.Removed()
         self.dismiss(animated: true, completion: nil)
-        
     }
     
     @IBAction func applyAction(_ sender: UIButton) {

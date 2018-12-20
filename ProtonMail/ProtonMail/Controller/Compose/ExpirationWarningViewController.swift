@@ -20,8 +20,7 @@ enum HeaderType {
 }
 
 class ExpirationWarningViewController : UIViewController {
-
-    fileprivate let learnMoreUrl = URL(string: "https://protonmail.com/support/knowledge-base/encrypt-for-outside-users/")!
+    
     fileprivate let kHeaderView : String = "ExpirationWarningHeaderCell"
     fileprivate let kHeaderID : String   = "expiration_warning_header_cell"
     fileprivate let kCellID : String     = "expiration_warning_email_cell"
