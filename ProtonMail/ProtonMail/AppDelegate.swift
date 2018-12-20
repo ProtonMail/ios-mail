@@ -42,12 +42,31 @@ import Crashlytics
 
 let sharedUserDataService = UserDataService()
 
+/// tempeary here.
+let sharedServices: ServiceFactory = {
+    let helper = ServiceFactory()
+    ///
+    helper.add(AppCacheService.self, for: AppCacheService())
+    helper.add(AddressBookService.self, for: AddressBookService())
+    ///
+    let addrService: AddressBookService = helper.get()
+    helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+    helper.add(BugDataService.self, for: BugDataService())
+    
+    ///
+    let msgService: MessageDataService = MessageDataService()
+    helper.add(MessageDataService.self, for: msgService)
+    
+    helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    
+    return helper
+}()
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    var coordinator = WindowsCoordinator()
+    lazy var coordinator = WindowsCoordinator()
 }
-
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
 extension SWRevealViewController {
@@ -55,7 +74,7 @@ extension SWRevealViewController {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
                 let viewModel = MenuViewModelImpl()
-                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: ServiceFactory.default)
+                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
                 menu.start()
             }
         } else if (segue.identifier == "sw_front") {
@@ -63,8 +82,8 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let viewModel = MailboxViewModelImpl(label: .inbox, service: ServiceFactory.default.get(),pushService: ServiceFactory.default.get())
-                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: ServiceFactory.default)
+                    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()                    
                 }
             }
@@ -109,7 +128,8 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 extension AppDelegate: UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        self.coordinator.migrate()
+        let cacheService : AppCacheService = sharedServices.get()
+        cacheService.restoreCacheWhenAppStart()
         
         #if Enterprise
         Fabric.with([Crashlytics.self])
@@ -154,7 +174,7 @@ extension AppDelegate: UIApplicationDelegate {
         LanguageManager.setupCurrentLanguage()
         
         ///TODO::fixme we don't need to register remote when start. we only need to register after user logged in
-        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
+        let pushService : PushNotificationService = sharedServices.get()
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
         
@@ -289,7 +309,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
         ///TODO::fixme deep link
-        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
+        let pushService: PushNotificationService = sharedServices.get()
         if UnlockManager.shared.isUnlocked() {
             pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
@@ -299,7 +319,7 @@ extension AppDelegate: UIApplicationDelegate {
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         PMLog.D(deviceToken.stringFromToken())
-        let pushService = self.coordinator.serviceHolder.get() as PushNotificationService
+        let pushService: PushNotificationService = sharedServices.get()
         pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     

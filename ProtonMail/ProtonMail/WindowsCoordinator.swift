@@ -34,29 +34,6 @@ class WindowsCoordinator: CoordinatorNew {
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
     
-    let serviceHolder: ServiceFactory = {
-        let helper = ServiceFactory.default
-        
-        helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
-        helper.add(ViewModelService.self, for: ViewModelServiceImpl())
-        
-//        helper.add(AppCacheService.self, for: AppCacheService())
-//        helper.add(AddressBookService.self, for: AddressBookService())
-//        ///TEST
-//        let addrService: AddressBookService = helper.get()
-//        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-//        helper.add(BugDataService.self, for: BugDataService())
-//
-//        ///
-//        let msgService: MessageDataService = MessageDataService()
-//        helper.add(MessageDataService.self, for: msgService)
-//        helper.add(PushNotificationService.self, for: PushNotificationService(service: msgService))
-//
-//        return helper
-        ///TODO::fixme 
-        return helper
-    }()
-    
     var currentWindow: UIWindow! {
         didSet {
             self.currentWindow.makeKeyAndVisible()
@@ -75,29 +52,22 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
-        
+
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
         placeholder.rootViewController = UIViewController()
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
     }
     
-    /// restore local cache when app start.
-    func migrate() {
-        let cacheService : AppCacheService = serviceHolder.get()
-        
-        cacheService.restoreCacheWhenAppStart()
-    }
-    
     /// restore some cache after login/authorized
     func loginmigrate() {
         ///
-        let cacheService : AppCacheService = serviceHolder.get()
-        
-        cacheService.restoreCacheAfterAuthorized()
+        //let cacheService : AppCacheService = serviceHolder.get()
+        //cacheService.restoreCacheAfterAuthorized()
     }
 
     func start() {
+
         MainThread.auto {
             // initiate unlock process which will send .didUnlock or .requestMainKey eventually
             UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),
@@ -144,50 +114,6 @@ class WindowsCoordinator: CoordinatorNew {
                 self.navigate(from: self.currentWindow, to: next)
             }
         }
-    }
-    
-    // MARK: - Public methods
-    func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
-        guard let window = appWindow else {
-            return //
-        }
-        
-        guard let rootViewController = window.rootViewController,
-            rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
-                return //
-        }
-        
-        if !animated {
-            window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-        } else {
-//            UIView.animate(withDuration: ViewDefined.animationDuration/2,
-//                           delay: 0,
-//                           options: UIView.AnimationOptions(),
-//                           animations: { () -> Void in
-//                            rootViewController.view.alpha = 0
-//            }, completion: { (finished) -> Void in
-//                guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
-//                    return
-//                }
-//                if let oldView = window.rootViewController as? SWRevealViewController {
-//                    if let navigation = oldView.frontViewController as? UINavigationController {
-//                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-//                            mailboxViewController.resetFetchedResultsController()
-//                            //TODO:: fix later, this logic change to viewModel service
-//                        }
-//                    }
-//                }
-//                viewController.view.alpha = 0
-//                window.rootViewController = viewController
-//
-//                UIView.animate(withDuration: ViewDefined.animationDuration/2,
-//                               delay: 0, options: UIView.AnimationOptions(),
-//                               animations: { () -> Void in
-//                                viewController.view.alpha = 1.0
-//                }, completion: nil)
-//            })
-        }
-        
     }
     
     @discardableResult func navigate(from source: UIWindow, to destination: UIWindow) -> Bool {
