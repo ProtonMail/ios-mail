@@ -339,8 +339,10 @@ class UserDataService {
     // MARK: - methods
     init(check : Bool = true) {
         if check {
-            cleanUpIfFirstRun()
-            launchCleanUp()
+            defer {
+                cleanUpIfFirstRun()
+                launchCleanUp()
+            }
         }
     }
     
@@ -927,7 +929,7 @@ class UserDataService {
     }
     
     func launchCleanUp() {
-        if username == nil {
+        if !self.isUserCredentialStored {
             twoFactorStatus = 0
             passwordMode = 2
         }
