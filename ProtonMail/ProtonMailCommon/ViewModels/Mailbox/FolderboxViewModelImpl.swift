@@ -61,72 +61,51 @@ class FolderboxViewModelImpl : MailboxViewModel {
         return false
     }
     
-    open override func deleteMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .trash, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .trash
-//
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .trash, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .trash
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-            return .showUndo
-//        }
-        
-    }
     
-    open override func archiveMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        self.updateBadgeNumberWhenMove(msg, to: .archive)
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .archive, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .archive
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .archive
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D("error: \(error)")
-//            }
-            return .showUndo
-//        }
-    }
     
-    open override func spamMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        self.updateBadgeNumberWhenMove(msg, to: .spam)
-//
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .spam, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .spam
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .spam
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D("error: \(error)")
-//            }
-            return .showUndo
-//        }
-    }
+    
+//    open override func archiveMessage(_ msg: Message) -> SwipeResponse {
+//        //TODO::fix me
+////        self.updateBadgeNumberWhenMove(msg, to: .archive)
+////        if label.exclusive {
+////            msg.removeFromFolder(current: label, location: .archive, keepSent: true)
+////            msg.needsUpdate = true
+////            msg.location = .archive
+////            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+////                PMLog.D(" error: \(error)")
+////            }
+////            return .showGeneral
+////        } else {
+////            msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
+////            msg.needsUpdate = true
+////            msg.location = .archive
+////            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+////                PMLog.D("error: \(error)")
+////            }
+//            return .showUndo
+////        }
+//    }
+    
+//    open override func spamMessage(_ msg: Message) -> SwipeResponse {
+//        //TODO::fix me
+////        self.updateBadgeNumberWhenMove(msg, to: .spam)
+////
+////        if label.exclusive {
+////            msg.removeFromFolder(current: label, location: .spam, keepSent: true)
+////            msg.needsUpdate = true
+////            msg.location = .spam
+////            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+////                PMLog.D(" error: \(error)")
+////            }
+////            return .showGeneral
+////        } else {
+////            msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
+////            msg.needsUpdate = true
+////            msg.location = .spam
+////            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
+////                PMLog.D("error: \(error)")
+////            }
+//            return .showUndo
+////        }
+//    }
 }

@@ -57,79 +57,49 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     open override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
-        if label.exclusive {
-            return false
-        }
         return true
     }
     
-    open override func deleteMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .trash, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .trash
-//
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .trash, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .trash
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-            return .showUndo
-//        }
-        
+    override func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if let fLabel = message.firstValidFolder() {
+                if messageService.move(message: message, from: fLabel, to: Message.Location.trash.rawValue) {
+                    if self.label.labelID != fLabel {
+                        return (.showGeneral, nil)
+                    }
+                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.trash.rawValue))
+                }
+            }
+        }
+        return (.nothing, nil)
     }
     
-    open override func archiveMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        self.updateBadgeNumberWhenMove(msg, to: .archive)
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .archive, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .archive
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .archive
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D("error: \(error)")
-//            }
-            return .showUndo
-//        }
+    override func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if let fLabel = message.firstValidFolder() {
+                if messageService.move(message: message, from: fLabel, to: Message.Location.archive.rawValue) {
+                    if self.label.labelID != fLabel {
+                        return (.showGeneral, nil)
+                    }
+                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.archive.rawValue))
+                }
+            }
+        }
+        return (.nothing, nil)
     }
     
-    open override func spamMessage(_ msg: Message) -> SwipeResponse {
-        //TODO::fix me
-//        self.updateBadgeNumberWhenMove(msg, to: .spam)
-//
-//        if label.exclusive {
-//            msg.removeFromFolder(current: label, location: .spam, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .spam
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D(" error: \(error)")
-//            }
-//            return .showGeneral
-//        } else {
-//            msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
-//            msg.needsUpdate = true
-//            msg.location = .spam
-//            if let error = msg.managedObjectContext?.saveUpstreamIfNeeded() {
-//                PMLog.D("error: \(error)")
-//            }
-            return .showUndo
-//        }
+    override func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if let fLabel = message.firstValidFolder() {
+                if messageService.move(message: message, from: fLabel, to: Message.Location.spam.rawValue) {
+                    if self.label.labelID != fLabel {
+                        return (.showGeneral, nil)
+                    }
+                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.spam.rawValue))
+                }
+            }
+        }
+        return (.nothing, nil)
     }
   
 }

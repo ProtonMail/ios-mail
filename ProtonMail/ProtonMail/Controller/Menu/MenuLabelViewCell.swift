@@ -70,7 +70,7 @@ class MenuLabelViewCell: UITableViewCell {
     
     func configUnreadCount () {
         
-        let count = lastUpdatedStore.UnreadCountForKey(item.labelID)
+        let count = lastUpdatedStore.unreadCountForKey(item.labelID)
         if count > 0 {
             unreadLabel.text = "\(count)";
             unreadLabel.isHidden = false;

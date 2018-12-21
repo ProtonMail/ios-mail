@@ -54,84 +54,60 @@ final class MailboxViewModelImpl : MailboxViewModel {
         }
     }
 
-//    override func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
-//        switch(self.location!) {
-//        case .archive:
-//            return action != .archive
-//        case .starred:
-//            return action != .star
-//        case .spam:
-//            return action != .spam
-//        case .draft, .outbox:
-//            return action != .spam && action != .trash && action != .archive
-//        case .trash:
-//            return action != .trash
-//        case .allmail:
-//            return false;
-//        default:
-//            return true
-//        }
-//    }
-//
-//    override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
-//        switch(self.location!) {
-//        case .starred:
-//            return true
-//        default:
-//            return false
-//        }
-//    }
-//
-//    override func deleteMessage(_ msg: Message) -> SwipeResponse  {
-//        var needShowMessage = true
-//        if let context = msg.managedObjectContext {
-//            switch(self.location!) {
-//            case .trash, .spam:
-//                msg.removeLocationFromLabels(currentlocation: self.location, location: .deleted, keepSent: false)
-//                msg.needsUpdate = true
-//                msg.location = .deleted
-//                needShowMessage = false
-//            default:
-//                msg.removeLocationFromLabels(currentlocation: self.location, location: .trash, keepSent: true)
-//                msg.needsUpdate = true
-//                self.updateBadgeNumberWhenMove(msg, to: .deleted)
-//                msg.location = .trash
-//            }
-//            context.perform {
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
-//        }
-//        return needShowMessage ? SwipeResponse.showUndo : SwipeResponse.nothing
-//    }
-//
-//    override func isDrafts() -> Bool {
-//        return self.location == MessageLocation.draft
-//    }
-//
-//    override func isArchive() -> Bool {
-//        return self.location == MessageLocation.archive
-//    }
-//
-//    override func isDelete () -> Bool {
-//        switch(self.location!) {
-//        case .trash, .spam, .draft:
-//            return true;
-//        default:
-//            return false
-//        }
-//    }
-//
-//    override func showLocation() -> Bool {
-//        switch(self.location!) {
-//        case .allmail, .outbox, .trash, .archive, .draft:
-//            return true
-//        default:
-//            return false
-//        }
-//    }
-
+    override func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
+        switch(self.label) {
+        case .archive:
+            return action != .archive
+        case .starred:
+            return action != .star
+        case .spam:
+            return action != .spam
+        case .draft, .sent:
+            return action != .spam && action != .trash && action != .archive
+        case .trash:
+            return action != .trash
+        case .allmail:
+            return false;
+        default:
+            return true
+        }
+    }
+    
+    override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
+        switch(self.label) {
+        case .starred:
+            return true
+        default:
+            return false
+        }
+    }
+    
+    override func isDrafts() -> Bool {
+        return self.label == .draft
+    }
+    
+    override func isArchive() -> Bool {
+        return self.label == .archive
+    }
+    
+    override func isDelete () -> Bool {
+        switch(self.label) {
+        case .trash, .spam, .draft:
+            return true;
+        default:
+            return false
+        }
+    }
+    
+    override func showLocation() -> Bool {
+        switch(self.label) {
+        case .allmail, .sent, .trash, .archive, .draft:
+            return true
+        default:
+            return false
+        }
+    }
+    
     override func isShowEmptyFolder() -> Bool {
         switch(self.label) {
         case .trash, .spam:
@@ -140,41 +116,58 @@ final class MailboxViewModelImpl : MailboxViewModel {
             return false
         }
     }
-//
-//    override func emptyFolder() {
-//        switch(self.location!) {
-//        case .trash:
-//            sharedMessageDataService.emptyTrash();
-//        case .spam:
-//            sharedMessageDataService.emptySpam();
-//        default:
-//            break
-//        }
-//    }
-//
-//    override func ignoredLocationTitle() -> String {
-//        if self.location == .outbox {
-//            return MessageLocation.outbox.title
-//        }
-//
-//        if self.location == .trash {
-//            return MessageLocation.trash.title
-//        }
-//        if self.location == .archive {
-//            return MessageLocation.archive.title
-//        }
-//        if self.location == .draft {
-//            return MessageLocation.draft.title
-//        }
-//        if self.location == .trash {
-//            return MessageLocation.trash.title
-//        }
-//        return ""
-//    }
-
-
-
+    
+    override func emptyFolder() {
+        switch(self.label) {
+        case .trash:
+            sharedMessageDataService.emptyTrash();
+        case .spam:
+            sharedMessageDataService.emptySpam();
+        default:
+            break
+        }
+    }
+    
+    
+    override func ignoredLocationTitle() -> String {
+        if self.label == .sent {
+            return Message.Location.sent.title
+        }
+        if self.label == .trash {
+            return Message.Location.trash.title
+        }
+        if self.label == .archive {
+            return Message.Location.archive.title
+        }
+        if self.label == .draft {
+            return Message.Location.draft.title
+        }
+        if self.label == .trash {
+            return Message.Location.trash.title
+        }
+        return ""
+    }
+    
     override func reloadTable() -> Bool {
         return self.label == .draft
     }
+    
+    override func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            switch(self.label) {
+            case .trash, .spam:
+                if messageService.delete(message: message, label: self.label.rawValue) {
+                    return (.showGeneral, nil)
+                }
+            default:
+                if messageService.move(message: message, from: self.label.rawValue, to: Message.Location.trash.rawValue) {
+                     return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.label.rawValue, newLabels: Message.Location.trash.rawValue))
+                }
+            }
+        }
+        return (.nothing, nil)
+    }
+    
+    
+
 }

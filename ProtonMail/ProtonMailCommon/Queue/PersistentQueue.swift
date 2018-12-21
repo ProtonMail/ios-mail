@@ -57,8 +57,7 @@ import Foundation
         return self.queue.count
     }
     
-    func queueArray() -> [Any]
-    {
+    func queueArray() -> [Any] {
         return self.queue
     }
     

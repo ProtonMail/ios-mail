@@ -117,7 +117,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private var leftSwipeAction : MessageSwipeAction  = .archive
     private var rightSwipeAction : MessageSwipeAction = .trash
+    
+    
+    
+    ///
+    var selectedIDs: NSMutableSet = NSMutableSet()
 
+    ///
     func inactiveViewModel() {
         self.viewModel.resetFetchedController()
     }
@@ -284,35 +290,36 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
-        self.coordinator?.go(to: .labels)
+        self.coordinator?.go(to: .labels, sender: self.viewModel.selectedMessages(selected: self.selectedIDs))
     }
     
     @objc internal func folderButtonTapped() {
-        self.coordinator?.go(to: .folder)
+        self.coordinator?.go(to: .folder, sender: self.viewModel.selectedMessages(selected: self.selectedIDs))
     }
     
     //TODO:: this is a global message should move it to the
     func performSegueForMessageFromNotification() {
         self.coordinator?.go(to: .detailsFromNotify)
     }
+
+    /// unread tapped, this is the button in navigation bar 
+    @objc internal func unreadTapped() {
+        self.viewModel.mark(IDs: self.selectedIDs, unread: true)
+        cancelButtonTapped();
+    }
     
+    /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
-        //TODO::QA
         if viewModel.isDelete() {
-            moveMessagesToLocation(.trash)
+            moveMessages(to: .trash)
             showMessageMoved(title: LocalString._messages_has_been_deleted)
         } else {
-            moveMessagesToLocation(.trash)
+            moveMessages(to: .trash)
             showMessageMoved(title: LocalString._messages_has_been_moved)
         }
         self.cancelButtonTapped();
     }
 
-    @objc internal func unreadTapped() {
-        selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.unRead)
-        cancelButtonTapped();
-    }
-    
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -322,49 +329,44 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                        self.moveMessagesToLocation(location)
+                        self.moveMessages(to: location)
                         self.cancelButtonTapped();
-                        self.navigationController?.popViewController(animated: true)
                     }))
                 }
             }
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Empty Folder",  comment: "Action"),
+            alertController.addAction(UIAlertAction(title: LocalString._empty_folder,
                                                     style: .destructive, handler: { (action) -> Void in
-                                                        self.viewModel.emptyFolder()
-                                                        self.showNoResultLabel()
-                                                        self.navigationController?.popViewController(animated: true)
+                self.viewModel.emptyFolder()
+                self.showNoResultLabel()
             }))
         } else {
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Mark Read",  comment: "Action"),
+            alertController.addAction(UIAlertAction(title: LocalString._mark_read,
                                                     style: .default, handler: { (action) -> Void in
-                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.unRead)
-                self.cancelButtonTapped();
-                self.navigationController?.popViewController(animated: true)
+                self.viewModel.mark(IDs: self.selectedIDs, unread: false)
+                self.cancelButtonTapped()
             }))
             
             alertController.addAction(UIAlertAction(title: LocalString._locations_add_star_action,
                                                     style: .default, handler: { (action) -> Void in
-                                                
-//                                                        self.viewModel.move(from: <#T##IndexPath#>, to: <#T##Message.Location#>)
-//                self.selectedMessagesSetValue(setValue: true, forKey: Message.Attributes.isStarred)
-//                self.selectedMessagesSetStar()
-//                self.cancelButtonTapped();
-//                self.navigationController?.popViewController(animated: true)
+                self.viewModel.label(IDs: self.selectedIDs, with: Message.Location.starred.rawValue, apply: true)
+                self.cancelButtonTapped()
             }))
             
-            alertController.addAction(UIAlertAction(title: NSLocalizedString("Remove Star",  comment: "Action"),
+            alertController.addAction(UIAlertAction(title: LocalString._remove_star,
                                                     style: .default, handler: { (action) -> Void in
-//                self.selectedMessagesSetValue(setValue: false, forKey: Message.Attributes.isStarred)
-//                self.selectedMessagesSetUnStar()
-//                self.cancelButtonTapped();
-//                self.navigationController?.popViewController(animated: true)
+                self.viewModel.label(IDs: self.selectedIDs, with: Message.Location.starred.rawValue, apply: false)
+                self.cancelButtonTapped()
             }))
             
             var locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
             if !viewModel.isCurrentLocation(.sent) {
                 locations = [.spam : .default, .archive : .default]
+            }
+            
+            if viewModel.isCurrentLocation(.archive) || viewModel.isCurrentLocation(.trash) || viewModel.isCurrentLocation(.spam) {
+                locations[.inbox] = .default
             }
 
             if (viewModel.isCurrentLocation(.sent)) {
@@ -374,8 +376,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                        self.moveMessagesToLocation(location)
-                        self.cancelButtonTapped();
+                        self.moveMessages(to: location)
+                        self.cancelButtonTapped()
                         self.navigationController?.popViewController(animated: true)
                     }))
                 }
@@ -388,7 +390,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     @objc internal func cancelButtonTapped() {
-        self.viewModel.selectedMessageIDs.removeAllObjects()
+        self.selectedIDs.removeAllObjects()
         self.hideCheckOptions()
         self.updateNavigationController(false)
     }
@@ -447,7 +449,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if sharedMessageQueue.isRequiredHumanCheck && isCheckingHuman == false {
             //show human check view with warning
             isCheckingHuman = true
-            //TODO::QA
             self.coordinator?.go(to: .humanCheck)
             return false
         }
@@ -477,7 +478,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
         mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
-        mailboxCell.setCellIsChecked(self.viewModel.selectedMessageIDs.contains(message.messageID))
+        mailboxCell.setCellIsChecked(self.selectedIDs.contains(message.messageID))
         if (self.listEditing) {
             mailboxCell.showCheckboxOnLeftSide()
         } else {
@@ -541,100 +542,75 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         UIAccessibility.post(notification: UIAccessibility.Notification.announcement, argument: action.description)
         switch (action) {
         case .archive:
-            self.archiveMessageForIndexPath(indexPath)
+            self.archive(indexPath)
             return true
         case .trash:
-            self.deleteMessageForIndexPath(indexPath)
+            self.delete(indexPath)
             return true
         case .spam:
-            self.spamMessageForIndexPath(indexPath)
+            self.spam(indexPath)
             return true
         case .star:
-            self.starMessageForIndexPath(indexPath)
+            self.star(indexPath)
             return false
         case .unread:
-            self.unreadMessageForIndexPath(indexPath)
+            self.unread(indexPath)
             return false
         }
     }
     
-
-    
-    private func archiveMessageForIndexPath(_ indexPath: IndexPath) {
-        if let message = self.viewModel.item(index: indexPath) {
-//            undoMessage = UndoMessage(msgID: message.messageID, origLabels: message.location, newLabels: <#String#>)
-//            let res = viewModel.archiveMessage(message)
-//            switch res {
-//            case .showUndo:
-//                showUndoView(LocalString._messages_archived)
-//            case .showGeneral:
-//                showMessageMoved(title: LocalString._messages_has_been_moved)
-//            default: break
-//            }
+    private func archive(_ index: IndexPath) {
+        let (res, undo) = self.viewModel.archive(index: index)
+        switch res {
+        case .showUndo:
+            undoMessage = undo
+            showUndoView(LocalString._messages_archived)
+        case .showGeneral:
+            showMessageMoved(title: LocalString._messages_has_been_moved)
+        default: break
+        }
+    }
+    private func delete(_ index: IndexPath) {
+        let (res, undo) = self.viewModel.delete(index: index)
+        switch res {
+        case .showUndo:
+            undoMessage = undo
+            showUndoView(LocalString._locations_deleted_desc)
+        case .showGeneral:
+            showMessageMoved(title: LocalString._messages_has_been_deleted)
+        default: break
         }
     }
     
-//    private func archiveMessages(indexes)
-    
-    fileprivate func deleteMessageForIndexPath(_ indexPath: IndexPath) {
-        if let message = self.viewModel.item(index: indexPath) {
-            //TODO::fixme
-//            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-//            let res = viewModel.deleteMessage(message)
-//            switch res {
-//            case .showUndo:
-//                showUndoView(LocalString._locations_deleted_desc)
-//            case .showGeneral:
-//                showMessageMoved(title: LocalString._messages_has_been_deleted)
-//            default: break
-//            }
+    private func spam(_ index: IndexPath) {
+        let (res, undo) = self.viewModel.spam(index: index)
+        switch res {
+        case .showUndo:
+            undoMessage = undo
+            showUndoView(LocalString._messages_spammed)
+        case .showGeneral:
+            showMessageMoved(title: LocalString._messages_has_been_moved)
+        default: break
+            
         }
     }
     
-    fileprivate func spamMessageForIndexPath(_ indexPath: IndexPath) {
+    private func star(_ indexPath: IndexPath) {
         if let message = self.viewModel.item(index: indexPath) {
-            //TODO::fixme
-//            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-//            let res = viewModel.spamMessage(message)
-//            switch res {
-//            case .showUndo:
-//                showUndoView(LocalString._messages_spammed)
-//            case .showGeneral:
-//                showMessageMoved(title: LocalString._messages_has_been_moved)
-//            default: break
-//            }
+            self.viewModel.label(msg: message, with: Message.Location.starred.rawValue)
         }
     }
     
-    fileprivate func starMessageForIndexPath(_ indexPath: IndexPath) {
+    private func unread(_ indexPath: IndexPath) {
         if let message = self.viewModel.item(index: indexPath) {
-            //TODO::fixme
-//            undoMessage = UndoMessage(msgID: message.messageID, oldLocation: message.location)
-//            let _ = viewModel.starMessage(message)
-        }
-    }
-    
-    fileprivate func unreadMessageForIndexPath(_ indexPath: IndexPath) {
-        if let message = self.viewModel.item(index: indexPath) {
-            let _ = viewModel.unreadMessage(message)
+           self.viewModel.mark(msg: message)
         }
     }
     
     fileprivate func undoTheMessage() { //need move into viewModel
         if let undoMsg = undoMessage {
-            //TODO::fixme
-//            if let context = fetchedResultsController?.managedObjectContext {
-//                if let message = Message.messageForMessageID(undoMsg.messageID, inManagedObjectContext: context) {
-//                    self.viewModel.updateBadgeNumberWhenMove(message, to: undoMsg.oldLocation)
-//                    message.removeLocationFromLabels(currentlocation: message.location, location: undoMsg.oldLocation, keepSent: true)
-//                    message.needsUpdate = true
-//                    message.location = undoMsg.oldLocation
-//                    if let error = context.saveUpstreamIfNeeded() {
-//                        PMLog.D("error: \(error)")
-//                    }
-//                }
-//            }
-//            undoMessage = nil
+            self.viewModel.undo(undoMsg)
+            undoMessage = nil
         }
     }
     
@@ -814,54 +790,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func showNoResultLabel() {
-        //TODO::fixme
-//        let count = (self.fetchedResultsController?.numberOfSections() > 0) ? (self.fetchedResultsController?.numberOfRows(in: 0) ?? 0) : 0
-//        if (count <= 0 && !fetchingMessage ) {
-//            self.noResultLabel.isHidden = false;
-//        } else {
-//            self.noResultLabel.isHidden = true;
-//        }
+        let count =  self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+        if (count <= 0 && !fetchingMessage ) {
+            self.noResultLabel.isHidden = false;
+        } else {
+            self.noResultLabel.isHidden = true;
+        }
     }
-    
-    //TODO::fixme
-   fileprivate func moveMessagesToLocation(_ location: Message.Location) {
-//        if let context = fetchedResultsController?.managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
-//            do {
-//                if let messages = try context.fetch(fetchRequest) as? [Message] {
-//                    for message in messages {
-//                        var toLocation = location
-//                        if location == .inbox {
-//                            if message.hasLocation(location: .outbox)  {
-//                                toLocation = .outbox
-//                            }
-//                            if message.hasLocation(location: .draft) {
-//                                toLocation = .draft
-//                            }
-//                        }
-//
-//                        var fromLocation = message.location
-//                        if let floc = self.viewModel.currentLocation() {
-//                            fromLocation = floc
-//                        }
-//
-//                        message.removeLocationFromLabels(currentlocation: fromLocation,
-//                                                         location: toLocation,
-//                                                         keepSent: true);
-//                        message.needsUpdate = true
-//                        message.location = toLocation
-//                        if let error = context.saveUpstreamIfNeeded() {
-//                            PMLog.D("error: \(error)")
-//                        }
-//                    }
-//
-//                }
-//            } catch let ex as NSError {
-    //                PMLog.D(" error: \(ex)")
-    //            }
-    //
-    //        }
+
+    internal func moveMessages(to location: Message.Location) {
+        self.viewModel.move(IDs: self.selectedIDs, to: location.rawValue)
     }
     
     internal func tappedMassage(_ message: Message) {
@@ -908,91 +846,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             if let message = self.viewModel.message(by: msgID) {
                 self.tappedMassage(message)
             }
-//            if let messages = fetchedResultsController?.fetchedObjects as? [Message] {
-//                if let message = messages.filter({ $0.messageID == self.messageID }).first {
-//                    if let indexPath = fetchedResultsController?.indexPath(forObject: message) {
-//                        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .top)
-//                    }
-//                    self.tappedMassage(message)
-//                    messageID = nil
-//                }
-//            }
         }
         self.messageID = nil
     }
     
-    fileprivate func selectedMessagesSetValue(setValue value: Any?, forKey key: String) {
-        //TODO::fixme
-//        if let context = fetchedResultsController?.managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
-//
-//            do {
-//                if let messages = try context.fetch(fetchRequest) as? [Message] {
-//                    if key == Message.Attributes.unRead {
-//                        if let changeto = value as? Bool {
-//                            for msg in messages {
-//                                self.viewModel.updateBadgeNumberWhenRead(msg, unRead: changeto)
-//                            }
-//                        }
-//                    }
-//                    NSArray(array: messages).setValue(value, forKey: key)
-//                    NSArray(array: messages).setValue(true, forKey: "needsUpdate")
-//                    let error = context.saveUpstreamIfNeeded()
-//                    if let error = error {
-//                        PMLog.D(" error: \(error)")
-//                    }
-//                }
-//            } catch let ex as NSError {
-//                PMLog.D(" error: \(ex)")
-//            }
-//        }
-    }
-    
-    
-    fileprivate func selectedMessagesSetStar() {
-//        if let context = fetchedResultsController?.managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
-//            do {
-//                //TODO::fixme
-////                if let messages = try context.fetch(fetchRequest) as? [Message] {
-////                    for msg in messages {
-////                        msg.setLabelLocation(.starred);
-////                    }
-////                    let error = context.saveUpstreamIfNeeded()
-////                    if let error = error {
-////                        PMLog.D(" error: \(error)")
-////                    }
-////                }
-//            } catch let ex as NSError {
-//                PMLog.D(" error: \(ex)")
-//            }
-//        }
-    }
-    
-    fileprivate func selectedMessagesSetUnStar() {
-//        if let context = fetchedResultsController?.managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, self.selectedMessages)
-//            do {
-//                //TODO::fixme
-////                if let messages = try context.fetch(fetchRequest) as? [Message] {
-////                    for msg in messages {
-////                        msg.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true);
-////                    }
-////                    let error = context.saveUpstreamIfNeeded()
-////                    if let error = error {
-////                        PMLog.D(" error: \(error)")
-////                    }
-////                }
-//            } catch let ex as NSError {
-//                PMLog.D(" error: \(ex)")
-//            }
-//        }
-    }
 
-    
     fileprivate func setupLeftButtons(_ editingMode: Bool) {
         var leftButtons: [UIBarButtonItem]
         
@@ -1107,7 +965,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                             // set selected row to checked
                             if (indexPath.row == visibleIndexPath.row) {
                                 if let message = self.viewModel.item(index: indexPath) {
-                                    self.viewModel.selectedMessageIDs.add(message.messageID)
+                                    self.selectedIDs.add(message.messageID)
                                 }
                                 messageCell.setCellIsChecked(true)
                             }
@@ -1426,11 +1284,11 @@ extension MailboxViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let message = self.viewModel.item(index: indexPath) {
             if (self.listEditing) {
-                let messageAlreadySelected: Bool = self.viewModel.selectedMessageIDs.contains(message.messageID)
+                let messageAlreadySelected: Bool = self.selectedIDs.contains(message.messageID)
                 if (messageAlreadySelected) {
-                    self.viewModel.selectedMessageIDs.remove(message.messageID)
+                    self.selectedIDs.remove(message.messageID)
                 } else {
-                    self.viewModel.selectedMessageIDs.add(message.messageID)
+                    self.selectedIDs.add(message.messageID)
                 }
                 // update checkbox state
                 if let mailboxCell: MailboxMessageCell = tableView.cellForRow(at: indexPath) as? MailboxMessageCell {

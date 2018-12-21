@@ -106,9 +106,11 @@ extension Message {
             return self.contains(label: Location.draft)
         }
     }
-    
-    /// get all labelIDs for moving messages
-    var labelIDs : [String] {
+
+    /// get messsage label ids
+    ///
+    /// - Returns: array
+    func getLableIDs() -> [String] {
         var labelIDs = [String]()
         let labels = self.labels
         for l in labels {
@@ -117,6 +119,33 @@ extension Message {
             }
         }
         return labelIDs
+    }
+    
+    func getNormalLableIDs() -> [String] {
+        var labelIDs = [String]()
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label, label.exclusive == false {
+                if label.labelID.preg_match ("(?!^\\d+$)^.+$") {
+                    labelIDs.append(label.labelID )
+                }
+            }
+        }
+        return labelIDs
+    }
+    
+    /// get the lable IDs with the info about exclusive
+    ///
+    /// - Returns: dict
+    func getLableIDs() -> [String: Bool] {
+        var out : [String : Bool] = [String : Bool]()
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                out[label.labelID] = label.exclusive
+            }
+        }
+        return out
     }
     
     /// check if message replied

@@ -37,6 +37,8 @@ class MessageQueue: PersistentQueue {
         static let action = "action"
         static let time = "time"
         static let count = "count"
+        static let data1 = "data1"
+        static let data2 = "data2"
     }
     
     // MARK: - variables
@@ -45,13 +47,13 @@ class MessageQueue: PersistentQueue {
     var isRequiredHumanCheck : Bool = false
     
     //TODO::here need input the time of action when local cache changed.
-    func addMessage(_ messageID: String, action: MessageAction) -> UUID {
+    func addMessage(_ messageID: String, action: MessageAction, data1: String = "", data2: String = "") -> UUID {
         let time = Date().timeIntervalSince1970
-        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0"]
+        let element = [Key.id : messageID, Key.action : action.rawValue, Key.time : "\(time)", Key.count : "0", Key.data1 : data1, Key.data2 : data2]
         return add(element as NSCoding)
     }
     
-    func nextMessage() -> (uuid: UUID, messageID: String, action: String)? {
+    func nextMessage() -> (uuid: UUID, messageID: String, action: String, data1: String, data2: String)? {
         if isBlocked || isInProgress || isRequiredHumanCheck {
             return nil
         }
@@ -59,7 +61,9 @@ class MessageQueue: PersistentQueue {
             if let element = object as? [String : String] {
                 if let id = element[Key.id] {
                     if let action = element[Key.action] {
-                        return (uuid as UUID, id, action)
+                        let data1 = element[Key.data1] ?? ""
+                        let data2 = element[Key.data2] ?? ""
+                        return (uuid as UUID, id, action, data1, data2)
                     }
                 }
             }

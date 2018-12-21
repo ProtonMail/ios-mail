@@ -97,6 +97,93 @@ extension Message {
         return .others
     }
     
+    @discardableResult
+    func add(labelID: String) -> String? {
+        var outLabel: String?
+        //1, 2, labels can't be in inbox,
+        var addLabelID = labelID
+        if labelID == Location.inbox.rawValue && (self.contains(label: "1") || self.contains(label: "8")) {
+            // move message to 1 / 8
+            addLabelID = "8"
+        }
+        
+        if labelID == Location.inbox.rawValue && (self.contains(label: "2") || self.contains(label: "7")) {
+            // move message to 2 / 7
+            addLabelID = "7"
+        }
+        
+        if let context = self.managedObjectContext {
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            if let toLabel = Label.labelForLableID(addLabelID, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            break
+                        }
+                    }
+                }
+                if !exsited {
+                    outLabel = addLabelID
+                    labelObjs.add(toLabel)
+                }
+            }
+            self.setValue(labelObjs, forKey: "labels")
+        }
+        return outLabel;
+    }
+    
+    
+    func firstValidFolder() -> String? {
+        let labelObjs = self.mutableSetValue(forKey: "labels")
+        for l in labelObjs {
+            if let label = l as? Label {
+                if label.exclusive == true {
+                    return label.labelID
+                }
+                
+                if !label.labelID.preg_match ("(?!^\\d+$)^.+$") {
+                    if label.labelID != "1", label.labelID != "2", label.labelID != "5" {
+                        return label.labelID
+                    }
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    @discardableResult
+    func remove(labelID: String) -> String? {
+        var outLabel: String?
+        if let _ = self.managedObjectContext {
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            for l in labelObjs {
+                if let label = l as? Label {
+                    // can't remove label 1, 2, 5
+                    //case inbox   = "0"
+                    //case draft   = "1"
+                    //case sent    = "2"
+                    //case starred = "10"
+                    //case archive = "6"
+                    //case spam    = "4"
+                    //case trash   = "3"
+                    //case allmail = "5"
+                    if label.labelID == "1" || label.labelID == "2" || label.labelID == "5" {
+                        continue
+                    }
+                    if label.labelID == labelID {
+                        labelObjs.remove(label)
+                        outLabel = labelID
+                        break
+                    }
+                }
+            }
+            self.setValue(labelObjs, forKey: "labels")
+        }
+        return outLabel
+    }
     
     
 //    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
@@ -148,57 +235,40 @@ extension Message {
     //            locationNumber = newValue.rawValue as NSNumber
     //        }
     //    }
-    
-//    func hasDraftLabel() -> Bool {
-//        let labels = self.labels
-//        for l in labels {
-//            if let label = l as? Label {
-//                if let l_id = Int(label.labelID) {
-//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc == .draft {
-//                        return true
-//                    }
-//                }
-//
-//            }
-//        }
-//        return false
-//    }
-//
-//    func hasLocation(location : MessageLocation) -> Bool {
-//        for l in getLocationFromLabels() {
-//            if l == location {
-//                return true
-//            }
-//        }
-//        return false
-//    }
+
+
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
         //TODO::fix me
-//        var lableOnly = false
-//        if ignored == MessageLocation.outbox.title {
-//            for l in getLocationFromLabels() {
-//                if l == .trash || l == .spam || l == .archive {
-//                    return l.title
-//                }
-//            }
-//            lableOnly = true
-//        }
-//
-//        let labels = self.labels
-//        for l in labels {
-//            if let label = l as? Label {
-//                if label.exclusive == true && label.name != ignored {
-//                    return label.name
-//                } else if !lableOnly {
-//                    if let l_id = Int(label.labelID) {
-//                        if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
-//                            return new_loc.title
-//                        }
-//                    }
-//                }
-//            }
-//        }
+        var lableOnly = false
+        if ignored == Message.Location.sent.title {
+            if contains(label: .trash) {
+                return Message.Location.trash.title
+            }
+            
+            if contains(label: .trash) {
+                return Message.Location.spam.title
+            }
+            
+            if contains(label: .trash) {
+                return Message.Location.archive.title
+            }
+            lableOnly = true
+        }
+        
+        let labels = self.labels
+        for l in labels {
+            if let label = l as? Label {
+                if label.exclusive == true && label.name != ignored {
+                    return label.name
+                } else if !lableOnly {
+                    if let new_loc = Message.Location(rawValue: label.labelID), new_loc != .starred && new_loc != .allmail && new_loc.title != ignored {
+                        return new_loc.title
+                    }
+                    
+                }
+            }
+        }
         return nil
     }
     

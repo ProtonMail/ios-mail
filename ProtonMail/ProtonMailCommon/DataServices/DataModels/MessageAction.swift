@@ -41,10 +41,6 @@ enum MessageAction: String {
     case read = "read"
     case unread = "unread"
     
-    // Star/unstar
-    case star = "star"
-    case unstar = "unstar"
-    
     // Move mailbox
     case delete = "delete"
     case inbox = "inbox"
@@ -58,4 +54,8 @@ enum MessageAction: String {
     // Empty
     case emptyTrash = "emptyTrash"
     case emptySpam = "emptySpam"
+    
+    case label = "applyLabel"
+    case unlabel = "unapplyLabel"
+    case folder = "moveToFolder"
 }

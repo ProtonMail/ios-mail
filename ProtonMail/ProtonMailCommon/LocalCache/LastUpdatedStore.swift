@@ -51,7 +51,7 @@ final class LastUpdatedStore : SharedCacheBase {
         static let lastInboxesUpdated  = "LastInboxesUpdated"
     }
     
-    var lastLabelsUpdateds: [String : UpdateTime] {
+    private var lastLabelsUpdateds: [String : UpdateTime] {
         get {
             return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? [String : UpdateTime]) ?? [:]
         }
@@ -61,12 +61,11 @@ final class LastUpdatedStore : SharedCacheBase {
         }
     }
     
-    var labelsUnreadCounts: [String : Int] {
+    private var labelsUnreadCounts: [String : Int] {
         get {
             return (getShared().customObjectForKey(Key.labelsUnreadCount) as? [String : Int]) ?? [:]
         }
         set {
-            UIApplication.setBadge(badge: self.UnreadCountForKey(Message.Location.inbox.rawValue))
             getShared().setCustomValue(newValue as NSCoding?, forKey: Key.labelsUnreadCount)
             getShared().synchronize()
         }
@@ -126,47 +125,7 @@ final class LastUpdatedStore : SharedCacheBase {
         UIApplication.setBadge(badge: 0)
     }
     
-    func labelsLastForKey(_ labelID : String) -> UpdateTime {
-        return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
-    }
-    
-    func updateLabelsForKey(_ labelID : String, updateTime: UpdateTime) {
-        lastLabelsUpdateds[labelID] = updateTime
-    }
-    
-    // location & label: message unread count
-    func UnreadCountForKey(_ labelID : String) -> Int {
-        return labelsUnreadCounts[labelID] ?? 0
-    }
-
-    func updateLabelsUnreadCountForKey(_ labelID : String, count: Int) -> Void {
-        return labelsUnreadCounts[labelID] = count
-    }
-    
-    // Mailbox unread count change
-    func UnreadMailboxMessage(_ location : String) {
-        var currentCount = labelsUnreadCounts[location] ?? 0
-        currentCount += 1;
-        labelsUnreadCounts[location] = currentCount
-    }
-    
-    func ReadMailboxMessage(_ location : String) {
-        var currentCount = labelsUnreadCounts[location] ?? 0
-        currentCount -= 1;
-        if currentCount < 0 {
-            currentCount = 0
-        }
-        labelsUnreadCounts[location] = currentCount
-    }
-    
-    func MoveUnReadMailboxMessage(_ from : String, to : String) {
-        //TODO:: doesn't right. need to change
-        UnreadMailboxMessage(from);
-        ReadMailboxMessage(to)
-    }
-    
-    
-    // reset functions    
+    // reset functions
     func resetUnreadCounts() {
         getShared().removeObject(forKey: Key.mailboxUnreadCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
@@ -175,6 +134,55 @@ final class LastUpdatedStore : SharedCacheBase {
         
         getShared().synchronize()
     }
+    
+    
+    // location & label: message unread count
+    func unreadCountForKey(_ labelID : String) -> Int {
+        return labelsUnreadCounts[labelID] ?? 0
+    }
+    // update unread count
+    func updateUnreadCountForKey(_ labelID : String, count: Int) {
+        labelsUnreadCounts[labelID] = count
+        
+        if labelID == Message.Location.inbox.rawValue {
+            UIApplication.setBadge(badge: count)
+        }
+    }
+    
+    /// cache time mark part
+    func labelsLastForKey(_ labelID : String) -> UpdateTime {
+        return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
+    }
+    
+    func updateLabelsForKey(_ labelID : String, updateTime: UpdateTime) {
+        lastLabelsUpdateds[labelID] = updateTime
+    }
+
+    
+//    // Mailbox unread count change
+//    func UnreadMailboxMessage(_ location : String) {
+//        var currentCount = labelsUnreadCounts[location] ?? 0
+//        currentCount += 1;
+//        labelsUnreadCounts[location] = currentCount
+//    }
+//
+//    func ReadMailboxMessage(_ location : String) {
+//        var currentCount = labelsUnreadCounts[location] ?? 0
+//        currentCount -= 1;
+//        if currentCount < 0 {
+//            currentCount = 0
+//        }
+//        labelsUnreadCounts[location] = currentCount
+//    }
+//
+//    func MoveUnReadMailboxMessage(_ from : String, to : String) {
+//        //TODO:: doesn't right. need to change
+//        UnreadMailboxMessage(from);
+//        ReadMailboxMessage(to)
+//    }
+//
+    
+
 }
 
 

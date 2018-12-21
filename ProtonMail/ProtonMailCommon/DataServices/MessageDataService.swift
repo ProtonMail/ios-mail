@@ -51,17 +51,172 @@ class MessageDataService : Service {
     fileprivate var readQueue: [ReadBlock] = []
     var pushNotificationMessageID : String? = nil
     
-    private var managedObjectContext: NSManagedObjectContext? {
+    private var managedObjectContext: NSManagedObjectContext {
         return sharedCoreDataService.mainManagedObjectContext
     }
 
     init() {
-        setupMessageMonitoring()
         setupNotifications()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    /// fetch messages with set of message id
+    ///
+    /// - Parameter selected: MessageIDs
+    /// - Returns: fetched message obj
+    func fetchMessages(withIDs selected: NSMutableSet, in context: NSManagedObjectContext? = nil) -> [Message] {
+        let context = context ?? self.managedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
+        do {
+            if let messages = try context.fetch(fetchRequest) as? [Message] {
+                return messages;
+            }
+        } catch let ex as NSError {
+            PMLog.D(" error: \(ex)")
+        }
+        return [Message]();
+    }
+    
+    /// mark message to unread
+    ///
+    /// - Parameter message: message
+    /// - Returns: true if change to unread and push to the queue
+    @discardableResult
+    func mark( message: Message, unRead: Bool) -> Bool {
+        guard let context = message.managedObjectContext else {
+            return false
+        }
+        self.queue(message, action: unRead ? .unread : .read)
+        guard message.unRead != unRead else {
+            return false
+        }
+        message.unRead = unRead
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            PMLog.D(" error: \(error)")
+            return false
+        }
+        self.updateCounter(markUnRead: unRead, on: message)
+        return true
+    }
+    
+    private func updateCounter(markUnRead: Bool, on message: Message) {
+        let offset = markUnRead ? 1 : -1
+        let labelIDs: [String] = message.getLableIDs()
+        for lID in labelIDs {
+            var count = lastUpdatedStore.unreadCountForKey(lID)
+            count = count + offset
+            if count < 0 {
+                count = 0
+            }
+            lastUpdatedStore.updateUnreadCountForKey(lID, count: count)
+        }
+    }
+    @discardableResult
+    func label(message: Message, label: String, apply: Bool) -> Bool {
+        guard let context = message.managedObjectContext else {
+            return false
+        }
+//if message.contains(label: label) == apply {
+//  return false
+//}
+        if apply {
+            if message.add(labelID: label) != nil && message.unRead {
+                self.updateCounter(plus: true, with: label)
+            }
+        } else {
+            if message.remove(labelID: label) != nil && message.unRead {
+                self.updateCounter(plus: false, with: label)
+            }
+        }
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            PMLog.D(" error: \(error)")
+            return false
+        }
+        self.queue(message, action: apply ? .label : .unlabel, data1: label)
+        return true
+    }
+    
+    private func updateCounter(plus: Bool, with labelID: String) {
+        let offset = plus ? 1 : -1
+        var count = lastUpdatedStore.unreadCountForKey(labelID)
+        count = count + offset
+        if count < 0 {
+            count = 0
+        }
+        lastUpdatedStore.updateUnreadCountForKey(labelID, count: count)
+    }
+    
+    @discardableResult
+    func move(message: Message, from fLabel: String, to tLabel: String) -> Bool {
+        guard let context = message.managedObjectContext else {
+            return false
+        }
+        if let lid = message.remove(labelID: fLabel), message.unRead {
+            self.updateCounter(plus: false, with: lid)
+        }
+        if let lid = message.add(labelID: tLabel) {
+            //if move to trash. clean lables.
+            let labelsFound = message.getNormalLableIDs()
+            if lid == Message.Location.trash.rawValue {
+                message.unRead = false
+                self.remove(labels: labelsFound, on: message, cleanUnread: true)
+            }
+            if lid == Message.Location.spam.rawValue {
+                self.remove(labels: labelsFound, on: message, cleanUnread: false)
+            }
+            
+            if message.unRead {
+                self.updateCounter(plus: true, with: lid)
+            }
+        }
+        
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            PMLog.D(" error: \(error)")
+            return false
+        }
+        self.queue(message, action: .folder, data1: fLabel, data2: tLabel)
+        return true
+    }
+    
+    private func remove(labels: [String], on message: Message, cleanUnread: Bool) {
+        let unread = cleanUnread ? message.unRead : cleanUnread
+        for label in labels {
+            if let lid = message.remove(labelID: label), unread {
+                self.updateCounter(plus: false, with: lid)
+            }
+        }
+    }
+    
+    func delete(message: Message, label: String) -> Bool {
+        guard let context = message.managedObjectContext else {
+            return false
+        }
+        
+        if let lid = message.remove(labelID: label), message.unRead {
+            self.updateCounter(plus: false, with: lid)
+        }
+        let labelsFound = message.getNormalLableIDs()
+        self.remove(labels: labelsFound, on: message, cleanUnread: true)
+        
+        let labelObjs = message.mutableSetValue(forKey: "labels")
+        labelObjs.removeAllObjects()
+        message.setValue(labelObjs, forKey: "labels")
+        context.delete(message)
+        
+        let error = context.saveUpstreamIfNeeded()
+        if let error = error {
+            PMLog.D(" error: \(error)")
+            return false
+        }
+        self.queue(message, action: .delete)
+        return true
     }
     
     // MAKR : upload attachment
@@ -77,86 +232,6 @@ class MessageDataService : Service {
     
     /// MARK -- Refactored functions
     
-//     /**
-//      nonmaly fetching the message from server based on location and time.
-     
-//      :param: location   mailbox location
-//      :param: MessageID  mesasge id not inuse for now
-//      :param: Time       the latest update time
-//      :param: completion aync complete handler
-//      */
-//     func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-//         queue {
-//             let completionWrapper: CompletionBlock = { task, responseDict, error in
-//                 if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
-//                     PMLog.D("\(messagesArray)")
-//                     let messcount = responseDict?["Total"] as? Int ?? 0
-//                     let context = sharedCoreDataService.backgroundManagedObjectContext
-//                     context.perform() {
-//                         if foucsClean {
-//                             self.cleanMessage()
-//                             let _ = context.saveUpstreamIfNeeded()
-//                         }
-//                         do {
-//                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-//                                 for message in messages {
-//                                     if location == .archive {
-//                                         message.location = location
-//                                     }
-//                                     message.messageStatus = 1
-//                                     message.needsUpdate = false
-//                                 }
-//                                 if let error = context.saveUpstreamIfNeeded() {
-//                                     PMLog.D(" error: \(error)")
-//                                 }
-//                                 if let lastMsg = messages.last, let firstMsg = messages.first {
-//                                     let updateTime = lastUpdatedStore.inboxLastForKey(location)
-//                                     if (updateTime.isNew) {
-//                                         updateTime.start = firstMsg.time!
-//                                         updateTime.total = Int32(messcount)
-//                                     }
-//                                     if let time = lastMsg.time {
-//                                         updateTime.end = time
-//                                     }
-//                                     updateTime.update = Date()
-//                                     lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
-//                                 }
-                                
-//                                 //fetch inbox count
-//                                 if location == .inbox {
-//                                     let counterApi = MessageCount()
-//                                     counterApi.call({ (task, response, hasError) in
-//                                         if !hasError {
-//                                             self.processEvents(counts: response?.counts)
-//                                         }
-//                                     })
-//                                 }
-                                
-//                                 DispatchQueue.main.async {
-//                                     completion?(task, responseDict, error)
-//                                 }
-//                             }
-//                             DispatchQueue.main.async {
-//                                 completion?(task, responseDict, error)
-//                             }
-//                         } catch let ex as NSError {
-//                             PMLog.D("error: \(ex)")
-//                             DispatchQueue.main.async {
-//                                 completion?(task, responseDict, ex)
-//                             }
-//                         }
-//                     }
-//                 } else {
-//                     completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
-//                 }
-//             }
-            
-//             let request = FetchMessages(location: location, endTime: Time)
-//             sharedAPIService.GET(request, completion: completionWrapper)
-//         }
-//     }
-    
-//     func fetchMessagesForLabels(_ labelID : String, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
     ///  nonmaly fetching the message from server based on label and time. //TODO:: change to promise
     ///
     /// - Parameters:
@@ -167,18 +242,15 @@ class MessageDataService : Service {
     func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
-                // TODO :: need abstract the respons error checking
                 if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
+                    PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
-                    let context = sharedCoreDataService.mainManagedObjectContext
+                    let context = sharedCoreDataService.backgroundManagedObjectContext
                     context.perform() {
-                        if forceClean {
-                            self.cleanMessage()
-                            let _ = context.saveUpstreamIfNeeded()
-                        }
                         do {
                             if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
                                 for message in messages {
+                                    // the matedata set, mark the status
                                     message.messageStatus = 1
                                 }
                                 if let error = context.saveUpstreamIfNeeded() {
@@ -190,17 +262,32 @@ class MessageDataService : Service {
                                         updateTime.start = firstMsg.time!
                                         updateTime.total = Int32(messcount)
                                     }
-                                    updateTime.end = lastMsg.time!
+                                    if let time = lastMsg.time {
+                                        updateTime.end = time
+                                    }
                                     updateTime.update = Date()
-                                    
                                     lastUpdatedStore.updateLabelsForKey(labelID, updateTime: updateTime)
+                                }
+                                
+                                //fetch inbox count
+                                if labelID == Message.Location.inbox.rawValue {
+                                    let counterApi = MessageCount()
+                                    counterApi.call({ (task, response, hasError) in
+                                        if !hasError {
+                                            self.processEvents(counts: response?.counts)
+                                        }
+                                    })
+                                }
+                                
+                                DispatchQueue.main.async {
+                                    completion?(task, responseDict, error)
                                 }
                             }
                             DispatchQueue.main.async {
                                 completion?(task, responseDict, error)
                             }
                         } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)")
+                            PMLog.D("error: \(ex)")
                             DispatchQueue.main.async {
                                 completion?(task, responseDict, ex)
                             }
@@ -210,6 +297,7 @@ class MessageDataService : Service {
                     completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
                 }
             }
+
             let request = FetchMessagesByLabel(labelID: labelID, endTime: time)
             sharedAPIService.GET(request, completion: completionWrapper)
         }
@@ -245,8 +333,6 @@ class MessageDataService : Service {
             }
         }
     }
-    
-    
     
     /// fetch event logs from server. sync up the cache status to latest
     ///
@@ -395,11 +481,7 @@ class MessageDataService : Service {
         guard let msgID = self.pushNotificationMessageID else {
             return nil
         }
-        
-        guard let context = self.managedObjectContext else {
-            return nil
-        }
-        
+        let context = self.managedObjectContext
         guard let message = Message.messageForMessageID(msgID, inManagedObjectContext: context) else {
             return nil
         }
@@ -431,12 +513,7 @@ class MessageDataService : Service {
     ///TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
-        guard let context = managedObjectContext else {
-            let error = NSError.protonMailError(500, localizedDescription: "", localizedFailureReason: nil, localizedRecoverySuggestion: nil)
-            PMLog.D(" error: \(String(describing: error))")
-            return
-        }
-        
+        let context = managedObjectContext
         ids.forEach { messageID in
             guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
                 let managedObject = try? context.existingObject(with: objectID) else
@@ -473,175 +550,10 @@ class MessageDataService : Service {
 //            queue(.emptySpam)
 //        }
     }
-    // MARK : fetch functions
     
-    /**
-     nonmaly fetching the message from server based on location and time.
-     
-     :param: location   mailbox location
-     :param: MessageID  mesasge id not inuse for now
-     :param: Time       the latest update time
-     :param: completion aync complete handler
-     */
-//    func fetchMessagesForLocation(_ location: MessageLocation, MessageID : String, Time: Int, foucsClean: Bool, completion: CompletionBlock?) {
-//        queue {
-//            let completionWrapper: CompletionBlock = { task, responseDict, error in
-//                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
-//                    PMLog.D("\(messagesArray)")
-//                    let messcount = responseDict?["Total"] as? Int ?? 0
-//                    let context = sharedCoreDataService.newMainManagedObjectContext()
-//                    context.perform() {
-//                        if foucsClean {
-//                            self.cleanMessage()
-//                            let _ = context.saveUpstreamIfNeeded()
-//                        }
-//                        do {
-//                            if let messages = try GRTJSONSerialization.objects(withEntityName: Message.Attributes.entityName, fromJSONArray: messagesArray, in: context) as? [Message] {
-//                                for message in messages {
-//                                    if location == .archive {
-//                                        message.location = location
-//                                    }
-//                                    message.messageStatus = 1
-//                                    message.needsUpdate = false
-//                                }
-//                                if let error = context.saveUpstreamIfNeeded() {
-//                                    PMLog.D(" error: \(error)")
-//                                }
-//                                if let lastMsg = messages.last, let firstMsg = messages.first {
-//                                    let updateTime = lastUpdatedStore.inboxLastForKey(location)
-//                                    if (updateTime.isNew) {
-//                                        updateTime.start = firstMsg.time!
-//                                        updateTime.total = Int32(messcount)
-//                                    }
-//                                    if let time = lastMsg.time {
-//                                        updateTime.end = time
-//                                    }
-//                                    updateTime.update = Date()
-//                                    lastUpdatedStore.updateInboxForKey(location, updateTime: updateTime)
-//                                }
-//
-//                                //fetch inbox count
-//                                if location == .inbox {
-//                                    let counterApi = MessageCount()
-//                                    counterApi.call({ (task, response, hasError) in
-//                                        if !hasError {
-//                                            self.processEvents(counts: response?.counts)
-//                                        }
-//                                    })
-//                                }
-//
-//                                DispatchQueue.main.async {
-//                                    completion?(task, responseDict, error)
-//                                }
-//                            }
-//                            DispatchQueue.main.async {
-//                                completion?(task, responseDict, error)
-//                            }
-//                        } catch let ex as NSError {
-//                            PMLog.D("error: \(ex)")
-//                            DispatchQueue.main.async {
-//                                completion?(task, responseDict, ex)
-//                            }
-//                        }
-//                    }
-//                } else {
-//                    completion?(task, responseDict, NSError.unableToParseResponse(responseDict))
-//                }
-//            }
-//
-//            let request = FetchMessages(location: location, endTime: Time)
-//            sharedAPIService.GET(request, completion: completionWrapper)
-//        }
-//    }
-    
-    
-    
-    fileprivate var tempUnreadAddjustCount = 0
-    /**
-     fetch the new messages use the events log
-     
-     :param: Time       latest message time
-     :param: completion complete handler
-     */
-//    func fetchNewMessagesForLocation(_ location: MessageLocation, notificationMessageID : String?, completion: CompletionBlock?) {
-//        queue {
-//            let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
-//            eventAPI.call() { task, _eventsRes, _hasEventsError in
-//                if let eventsRes = _eventsRes {
-//                    if eventsRes.refresh.contains(.all) ||  eventsRes.refresh.contains(.mail) || (_hasEventsError && eventsRes.code == 18001) || (_hasEventsError && eventsRes.code == 400) {
-//                        let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
-//                        getLatestEventID.call() { task, _IDRes, hasIDError in
-//                            if let IDRes = _IDRes, !hasIDError && !IDRes.eventID.isEmpty {
-//                                let completionWrapper: CompletionBlock = { task, responseDict, error in
-//                                    if error == nil {
-//                                        lastUpdatedStore.clear()
-//                                        lastUpdatedStore.lastEventID = IDRes.eventID
-//                                    }
-//                                    completion?(task, responseDict, error)
-//                                }
-//                                self.cleanMessage()
-//                                sharedContactDataService.clean()
-//                                self.fetchMessagesForLocation(location, MessageID: "", Time: 0, foucsClean: false, completion: completionWrapper)
-//                                sharedContactDataService.fetchContacts(completion: nil)
-//                                sharedLabelsDataService.fetchLabels()
-//                            } else {
-//                                completion?(task, nil, nil)
-//                            }
-//                        }
-//                    } else if eventsRes.refresh.contains(.contacts) {
-//                        sharedContactDataService.clean()
-//                        sharedContactDataService.fetchContacts(completion: nil)
-//                    } else if let messageEvents = eventsRes.messages {
-//                        self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
-//                            if error == nil {
-//                                lastUpdatedStore.lastEventID = eventsRes.eventID
-//                                self.processEvents(contacts: eventsRes.contacts)
-//                                self.processEvents(contactEmails: eventsRes.contactEmails)
-//                                self.processEvents(labels: eventsRes.labels)
-//                                self.processEvents(user: eventsRes.user)
-//                                self.processEvents(userSettings: eventsRes.userSettings)
-//                                self.processEvents(mailSettings: eventsRes.mailSettings)
-//                                self.processEvents(addresses: eventsRes.addresses)
-//                                self.processEvents(counts: eventsRes.messageCounts)
-//
-//                                var outMessages : [Any] = []
-//                                for message in messageEvents {
-//                                    let msg = MessageEvent(event: message)
-//                                    if msg.Action == 1 {
-//                                        outMessages.append(msg)
-//                                    }
-//                                }
-//                                completion?(task, ["Messages": outMessages, "Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
-//                            }
-//                            else {
-//                                completion?(task, nil, error)
-//                            }
-//                        }
-//                    } else {
-//                        if eventsRes.code == 1000 {
-//                            lastUpdatedStore.lastEventID = eventsRes.eventID
-//                            self.processEvents(contacts: eventsRes.contacts)
-//                            self.processEvents(contactEmails: eventsRes.contactEmails)
-//                            self.processEvents(labels: eventsRes.labels)
-//                            self.processEvents(user: eventsRes.user)
-//                            self.processEvents(userSettings: eventsRes.userSettings)
-//                            self.processEvents(mailSettings: eventsRes.mailSettings)
-//                            self.processEvents(addresses: eventsRes.addresses)
-//                            self.processEvents(counts: eventsRes.messageCounts)
-//                        }
-//                        if _hasEventsError {
-//                            completion?(task, nil, eventsRes.error)
-//                        } else {
-//                            completion?(task, ["Notices": eventsRes.notices ?? [String](), "More" : eventsRes.more], nil)
-//                        }
-//                    }
-//                } else {
-//                    completion?(task, nil, nil)
-//                }
-//            }
-//        }
-//    }
-    
+    /// fetch message with message obj
+    ///
+    /// - Parameter messages: Message
     func fetchMessagesWithIDs (_ messages : [Message]) {
         if messages.count > 0 {
             queue {
@@ -844,7 +756,7 @@ class MessageDataService : Service {
                                         message_out.isDetailDownloaded = true
                                         message_out.needsUpdate = false
                                         
-                                        var count = lastUpdatedStore.UnreadCountForKey(Message.Location.inbox.rawValue)
+                                        var count = lastUpdatedStore.unreadCountForKey(Message.Location.inbox.rawValue)
                                         if message_out.unRead == true {
                                             message_out.unRead = false
                                             self.queue(message_out, action: .read)
@@ -853,7 +765,7 @@ class MessageDataService : Service {
                                             if count < 0 {
                                                 count = 0
                                             }
-                                            lastUpdatedStore.updateLabelsUnreadCountForKey(Message.Location.inbox.rawValue, count: count)
+                                            lastUpdatedStore.updateUnreadCountForKey(Message.Location.inbox.rawValue, count: count)
                                         }
                                         let tmpError = context.saveUpstreamIfNeeded()
 
@@ -926,28 +838,21 @@ class MessageDataService : Service {
         let moc = sharedCoreDataService.mainManagedObjectContext
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        if labelID == Message.Location.sent.rawValue {
-            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-                                                 labelID, Message.Location.trash.rawValue, Message.Location.archive.rawValue, Message.Attributes.messageStatus)
-        } else {
-            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
-                                                 labelID, Message.Attributes.messageStatus)
-        }
+        var predicates : [NSPredicate] = [NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", labelID, Message.Attributes.messageStatus)]
+//        if labelID == Message.Location.sent.rawValue || labelID == Message.Location.draft.rawValue {
+//            let forSent = [Message.Location.trash, Message.Location.spam, Message.Location.archive].map {
+//                return NSPredicate(format:"(SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0)", $0.rawValue)
+//            }
+//            predicates.append(contentsOf: forSent)
+//            predicates.append(NSPredicate(format: "(SUBQUERY(labels, $a, $a.labelID MATCHES %@ AND $a.type == 1 AND $a.exclusive == true).@count == 0)", "(?!^\\d+$)^.+$"))
+//        }
+        
+        fetchRequest.predicate = NSCompoundPredicate.init(type: .and, subpredicates: predicates)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.fetchBatchSize = 30
         fetchRequest.includesPropertyValues = false
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
-    
-    // func fetchedResultsControllerForLabels(_ label: Label) -> NSFetchedResultsController<NSFetchRequestResult>? {
-    //     let moc = sharedCoreDataService.mainManagedObjectContext
-    //     let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-    //     fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", label.labelID, Message.Attributes.messageStatus)
-    //     fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-    //     fetchRequest.fetchBatchSize = 30
-    //     fetchRequest.includesPropertyValues = false
-    //     return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-    // }
     
     /**
      fetch the message from local cache use message id
@@ -1314,44 +1219,39 @@ class MessageDataService : Service {
                 return nil
             }
             let messageIds = messages.map { $0.messageID }
-            let authCredential = messages.first(where: { $0.cachedAuthCredential != nil })?.cachedAuthCredential
-            sharedAPIService.PUT(MessageActionRequest(action: action, ids: messageIds), authCredential: authCredential, completion: completion)
+            let api = MessageActionRequest(action: action, ids: messageIds)
+            api.call({ (task, response, hasError) in
+                completion!(task, nil, nil)
+            })
         }
     }
     
-    private func empty(at label: Label, completion: CompletionBlock?) {
+    private func empty(at location: Message.Location, completion: CompletionBlock?) {
         //TODO:: check is label valid
-        guard label.spam || label.trash || label.draft else {
+        if location == .spam || location == .trash || location == .draft {
             completion?(nil, nil, nil)
             return
         }
-        let api = EmptyMessage(labelID: label.labelID)
+        let api = EmptyMessage(labelID: location.rawValue)
         api.call({ (task, response, hasError) -> Void in
             completion?(task, nil, nil)
         })
     }
+
+    private func labelMessage(_ labelID: String, messageID: String, completion: CompletionBlock?) {
+        let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
+        api.call({ (task, response, hasError) -> Void in
+            completion?(task, nil, response?.error)
+        })
+    }
     
-//    //TODO:: fixme
-//    private func labelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
-//        let labelID = "\(location.rawValue)"
-//        let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
-//        api.call({ (task, response, hasError) -> Void in
-//            completion?(task, nil, response?.error)
-//        })
-//    }
+    private func unLabelMessage(_ labelID: String, messageID: String, completion: CompletionBlock?) {
+        let api = RemoveLabelFromMessages(labelID: labelID, messages: [messageID])
+        api.call({ (task, response, hasError) -> Void in
+            completion?(task, nil, response?.error)
+        })
+    }
     
-//    private func unLabelMessage(_ location: MessageLocation, messageID: String, completion: CompletionBlock?) {
-//        guard location == .starred else {
-//            completion?(nil, nil, nil)
-//            return
-//        }
-//        let labelID = "\(location.rawValue)"
-//        let api = RemoveLabelFromMessages(labelID: labelID, messages: [messageID])
-//        api.call({ (task, response, hasError) -> Void in
-//            completion?(task, nil, response?.error)
-//        })
-//    }
-//
     //
     struct SendStatus : OptionSet {
         let rawValue: Int
@@ -1667,7 +1567,7 @@ class MessageDataService : Service {
     }
     
     private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
-        if let _ = managedObjectContext {
+        
             if let originMessageID = oriMsgID {
                 if let act = action {
                     if !originMessageID.isEmpty {
@@ -1698,7 +1598,6 @@ class MessageDataService : Service {
                     }
                 }
             }
-        }
     }
     
     // MARK: Notifications
@@ -1814,7 +1713,9 @@ class MessageDataService : Service {
             self.dequieNotify = notify
         }
         
-        if let (uuid, messageID, actionString) = sharedMessageQueue.nextMessage() {
+        // for label action: data1 is `to`
+        // for forder action: data1 is `from`  data2 is `to`
+        if let (uuid, messageID, actionString, data1, data2) = sharedMessageQueue.nextMessage() {
             PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
                 sharedMessageQueue.isInProgress = true
@@ -1828,11 +1729,9 @@ class MessageDataService : Service {
                 case .send:
                     self.send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptyTrash:
-                    break
-                    //self.emptyMessage(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.empty(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
-                    break
-                   // self.emptyMessage(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.empty(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .read, .unread, .delete:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .inbox:
@@ -1843,17 +1742,16 @@ class MessageDataService : Service {
                     //self.labelMessage(.spam, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .trash:
                     break
-                    //self.labelMessage(.trash, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                //self.labelMessage(.trash, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .archive:
                     break
-                    //self.labelMessage(.archive, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .star:
-                    break
-                   // self.labelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .unstar:
-                    break
-                   // self.unLabelMessage(.starred, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                    
+                case .label:
+                    self.labelMessage(data1, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .unlabel:
+                    self.unLabelMessage(data1, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .folder:
+                    //later use data 1 to handle the failure
+                    self.labelMessage(data2, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
@@ -1866,26 +1764,26 @@ class MessageDataService : Service {
     }
     
     
-    func queue(_ message: Message, action: MessageAction) {
+    func queue(_ message: Message, action: MessageAction, data1: String = "", data2: String = "") {
         self.cachePropertiesForBackground(in: message)
         if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
-            let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action)
+            let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
-                let _ = sharedMessageQueue.addMessage(message.messageID, action: action)
+                let _ = sharedMessageQueue.addMessage(message.messageID, action: action, data1: data1, data2: data2)
             }
         }
         dequeueIfNeeded()
     }
     
-    fileprivate func queue(_ action: MessageAction) {
-        let _ = sharedMessageQueue.addMessage("", action: action)
+    fileprivate func queue(_ action: MessageAction, data1: String = "", data2: String = "") {
+        let _ = sharedMessageQueue.addMessage("", action: action, data1: data1, data2: data2)
         dequeueIfNeeded()
     }
     
-    fileprivate func queue(_ att: Attachment, action: MessageAction) {
+    fileprivate func queue(_ att: Attachment, action: MessageAction, data1: String = "", data2: String = "") {
         self.cachePropertiesForBackground(in: att.message)
-        let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action)
+        let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2)
         dequeueIfNeeded()
     }
     
@@ -1893,34 +1791,7 @@ class MessageDataService : Service {
         readQueue.append(readBlock)
         dequeueIfNeeded()
     }
-    
-    // MARK: message monitor
-    fileprivate func setupMessageMonitoring() {
-        
-        //TODO:: double check
-//        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
-//            if message.needsUpdate {
-//                if let action = message.location.moveAction {
-//                    self.queue(message, action: action)
-//                } else {
-//                    PMLog.D(" \(message.messageID) move to \(message.location) was not a user initiated move.")
-//                }
-//            }
-//        })
-        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.unRead, handler: { message in
-            if message.needsUpdate {
-                let action: MessageAction = message.unRead ? .unread : .read
-                self.queue(message, action: action)
-            }
-        })
-        
-//        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-//            if message.needsUpdate {
-//                let action: MessageAction = message.isStarred ? .star : .unstar
-//                self.queue(message, action: action)
-//            }
-//        })
-    }
+ 
     
     func cleanLocalMessageCache(_ completion: CompletionBlock?) {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
@@ -1982,11 +1853,9 @@ class MessageDataService : Service {
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                //TODO::fixme
-//                                if cachedMessage.location != MessageLocation.draft && cachedMessage.location != MessageLocation.outbox {
-//                                    self.tempUnreadAddjustCount = cachedMessage.unRead ? 0 : -1
-//                                    continue
-//                                }
+                                if !cachedMessage.contains(label: .draft) && !cachedMessage.contains(label: .sent) {
+                                    continue
+                                }
                             }
                             if let notify_msg_id = notificationMessageID {
                                 if notify_msg_id == msg.ID {
@@ -2280,15 +2149,14 @@ class MessageDataService : Service {
                 guard let unread = count["Unread"] as? Int else {
                     continue
                 }
-                lastUpdatedStore.updateLabelsUnreadCountForKey(labelID, count: unread)
+                lastUpdatedStore.updateUnreadCountForKey(labelID, count: unread)
             }
         }
         
-        //TODO:: fixme
-//        var badgeNumber = lastUpdatedStore.UnreadCountForKey(.inbox)
-//        if  badgeNumber < 0 {
-//            badgeNumber = 0
-//        }
-//        UIApplication.setBadge(badge: badgeNumber)
+        var badgeNumber = lastUpdatedStore.unreadCountForKey(Message.Location.inbox.rawValue)
+        if  badgeNumber < 0 {
+            badgeNumber = 0
+        }
+        UIApplication.setBadge(badge: badgeNumber)
     }
 }

@@ -188,8 +188,16 @@ class LocalizedString {
     lazy var _locations_move_trash_action   = NSLocalizedString("Move to Trash", comment: "move action")
     /// "Move to AllMail"
     lazy var _locations_move_allmail_action = NSLocalizedString("Move to AllMail", comment: "move action")
+    /// "Empty Folder"
+    lazy var _empty_folder = NSLocalizedString("Empty Folder", comment: "empty folder, for spam and trash")
+    /// "Mark Read"
+    lazy var _mark_read = NSLocalizedString("Mark Read", comment: "mark message as read action")
+    /// "Remove Star"
+    lazy var _remove_star = NSLocalizedString("Remove Star", comment: "un star message")
 
 
+    
+    
     // Mark Messages
 
     /// "Message sent"

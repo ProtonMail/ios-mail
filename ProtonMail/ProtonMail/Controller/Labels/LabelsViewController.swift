@@ -219,13 +219,13 @@ extension LablesViewController: UITableViewDataSource {
                                  showIcon: viewModel.getFetchType() == .all,
                                  showEdit: showEdit,
                                  editAction: { (sender) in
-                                    if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
-                                        if editlabel.exclusive {
-                                            self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)
-                                        } else {
-                                            self.performSegue(withIdentifier: self.kToEditingLabel, sender: editlabel)
-                                        }
-                                    }
+                if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
+                    if editlabel.exclusive {
+                        self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)
+                    } else {
+                        self.performSegue(withIdentifier: self.kToEditingLabel, sender: editlabel)
+                    }
+                }
             })
         }
         return labelCell

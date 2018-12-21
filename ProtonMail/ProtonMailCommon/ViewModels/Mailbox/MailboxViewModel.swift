@@ -52,15 +52,13 @@ class UndoMessage {
 class MailboxViewModel {
     private let labelID : String
     /// message service
-    private let messageService : MessageDataService
+    internal let messageService : MessageDataService
     private let pushService : PushNotificationService
     /// fetch controller
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     /// local message for rating
     private var ratingMessage : Message?
     
-    ///
-    var selectedMessageIDs: NSMutableSet = NSMutableSet()
     
     /// mailbox viewModel
     ///
@@ -201,19 +199,8 @@ class MailboxViewModel {
     }
     
     ///
-    func selectedMessages() -> [Message] {
-        if let context = fetchedResultsController?.managedObjectContext {
-            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selectedMessageIDs)
-            do {
-                if let messages = try context.fetch(fetchRequest) as? [Message] {
-                    return messages;
-                }
-            } catch let ex as NSError {
-                PMLog.D(" error: \(ex)")
-            }
-        }
-        return [Message]();
+    func selectedMessages(selected: NSMutableSet) -> [Message] {
+        return messageService.fetchMessages(withIDs: selected)
     }
     
     ///
@@ -245,272 +232,6 @@ class MailboxViewModel {
         }
     }
     
-    
-    func move(from messages: [Message], to location: Message.Location) {
-        for msg in messages {
-            if let context = msg.managedObjectContext {
-                switch location {
-                case .inbox:
-                    
-                    break
-                    
-                case .starred:
-                    // action: MessageAction =  ? .star : .unstar
-                   // self.messageService.queue(msg, action: action)
-                    break
-                default:
-                    break
-                }
-                
-                
-            }
-        }
-    }
-    
-    func move(from index: IndexPath, to location: Message.Location) {
-        guard let message = self.item(index: index) else {
-            return
-        }
-        
-        self.move(from: message, to: location)
-    }
-    
-    
-    func move(from message: Message, to location: Message.Location) {
-        
-
-        
-//            let action: MessageAction = message.unRead ? .unread : .read
-//            self.queue(message, action: action)
-//        }
-    }
-    
-    //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-    //            if message.needsUpdate {
-    //                let action: MessageAction = message.isStarred ? .star : .unstar
-    //                self.queue(message, action: action)
-    //            }
-    //        })
-    
-        //call api here. better to cache it.
-        //        messageService
-        //        self.updateBadgeNumberWhenMove(msg, to: .archive)
-        //        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-        //        msg.needsUpdate = true
-        //        msg.location = .archive
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-        //let currentLabels = message.labels
-
-//    fileprivate func setupMessageMonitoring() {
-//
-//        //TODO:: double check
-//        //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.locationNumber, handler: { message in
-//        //            if message.needsUpdate {
-//        //                if let action = message.location.moveAction {
-//        //                    self.queue(message, action: action)
-//        //                } else {
-//        //                    PMLog.D(" \(message.messageID) move to \(message.location) was not a user initiated move.")
-//        //                }
-//        //            }
-//        //        })
-//        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.unRead, handler: { message in
-//            if message.needsUpdate {
-//                let action: MessageAction = message.unRead ? .unread : .read
-//                self.queue(message, action: action)
-//            }
-//        })
-//
-//        //        sharedMonitorSavesDataService.registerMessage(attribute: Message.Attributes.isStarred, handler: { message in
-//        //            if message.needsUpdate {
-//        //                let action: MessageAction = message.isStarred ? .star : .unstar
-//        //                self.queue(message, action: action)
-//        //            }
-//        //        })
-//    }
-    
-    func label(on index: IndexPath, with labelID: String) {
-        guard let message = self.item(index: index) else {
-            return
-        }
-        
-        // call api here. better to cache it.
-        //        messageService
-        //        self.updateBadgeNumberWhenMove(msg, to: .archive)
-        //        message.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-        //        msg.needsUpdate = true
-        //        msg.location = .archive
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-    }
-    
-    
-    func getSwipeTitle(_ action: MessageSwipeAction) -> String {
-        fatalError("This method must be overridden")
-    }
-    
-    func deleteMessage(_ msg: Message) -> SwipeResponse {
-        fatalError("This method must be overridden")
-    }
-    
-    func archiveMessage(_ msg: Message) -> SwipeResponse {
-        //TODO:: fixme
-        //        self.updateBadgeNumberWhenMove(msg, to: .archive)
-        //        msg.removeLocationFromLabels(currentlocation: msg.location, location: .archive, keepSent: true)
-        //        msg.needsUpdate = true
-        //        msg.location = .archive
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-        return .showUndo
-    }
-    
-    func spamMessage(_ msg: Message) -> SwipeResponse {
-        //TODO:: fixme
-        //        self.updateBadgeNumberWhenMove(msg, to: .spam)
-        //        msg.removeLocationFromLabels(currentlocation: msg.location, location: .spam, keepSent: true)
-        //        msg.needsUpdate = true
-        //        msg.location = .spam
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-        return .showUndo
-    }
-    
-    func star(_ msg: Message) -> SwipeResponse{
-        //TODO:: fixme
-        //        self.updateBadgeNumberWhenMove(msg, to: .starred)
-        //        msg.setLabelLocation(.starred)
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-        //        //TODO:: add queue
-        return .nothing
-    }
-    
-    func starMessage(_ msg: Message) -> SwipeResponse {
-        //        self.updateBadgeNumberWhenMove(msg, to: .starred)
-        //        msg.setLabelLocation(.starred)
-        //        msg.isStarred = true
-        //        msg.needsUpdate = true
-        //        if let context = msg.managedObjectContext {
-        //            context.perform {
-        //                if let error = context.saveUpstreamIfNeeded() {
-        //                    PMLog.D("error: \(error)")
-        //                }
-        //            }
-        //        }
-        return .nothing
-    }
-    
-    func unreadMessage(_ msg: Message) -> SwipeResponse {
-        guard msg.unRead == false else {
-            return .nothing
-        }
-        
-        self.updateBadgeNumberWhenRead(msg, unRead: true)
-        msg.unRead = true
-        msg.needsUpdate = true
-        if let context = msg.managedObjectContext {
-            context.perform {
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D("error: \(error)")
-                }
-            }
-        }
-        return .nothing
-    }
-    
-    func updateBadgeNumberWhenMove(_ message : Message, to : String) {
-        //TODO:: fix me
-        //        let fromLocation = message.location
-        //        let toLocation = to
-        //
-        //        if toLocation == .starred && message.isStarred {
-        //            return
-        //        }
-        //
-        //        var fromCount = lastUpdatedStore.UnreadCountForKey(fromLocation)
-        //        var toCount = lastUpdatedStore.UnreadCountForKey(toLocation)
-        //
-        //        let offset = message.unRead ? 1 : 0
-        //
-        //        if toLocation != .starred {
-        //            fromCount = fromCount + (-1 * offset)
-        //            if fromCount < 0 {
-        //                fromCount = 0
-        //            }
-        //            lastUpdatedStore.updateUnreadCountForKey(fromLocation, count: fromCount)
-        //        }
-        //
-        //        if fromLocation != .starred {
-        //            toCount = toCount + offset
-        //            if toCount < 0 {
-        //                toCount = 0
-        //            }
-        //            lastUpdatedStore.updateUnreadCountForKey(toLocation, count: toCount)
-        //        }
-        //
-        //        if fromLocation == .inbox {
-        //            UIApplication.setBadge(badge: fromCount)
-        //            //UIApplication.shared.applicationIconBadgeNumber = fromCount
-        //        }
-        //        if toLocation == .inbox {
-        //            UIApplication.setBadge(badge: toCount)
-        //            //UIApplication.shared.applicationIconBadgeNumber = toCount
-        //        }
-    }
-    
-    func updateBadgeNumberWhenRead(_ message : Message, unRead : Bool) {
-        //TODO:: fix me
-        //        let location = message.location
-        //
-        //        if message.unRead == unRead {
-        //            return
-        //        }
-        //        var count = lastUpdatedStore.UnreadCountForKey(location)
-        //        count = count + (unRead ? 1 : -1)
-        //        if count < 0 {
-        //            count = 0
-        //        }
-        //        lastUpdatedStore.updateUnreadCountForKey(location, count: count)
-        //
-        //        if message.isStarred {
-        //            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-        //            staredCount = staredCount + (unRead ? 1 : -1)
-        //            if staredCount < 0 {
-        //                staredCount = 0
-        //            }
-        //            lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
-        //        }
-        //        if location == .inbox {
-        //            UIApplication.setBadge(badge: count)
-        //            //UIApplication.shared.applicationIconBadgeNumber = count
-        //        }
-    }
-    
     func isDrafts() -> Bool {
         return false
     }
@@ -535,10 +256,6 @@ class MailboxViewModel {
         return self.labelID == l.rawValue
     }
     
-    //    func currentLocation() -> ExclusiveLabel? {
-    //        return nil
-    //    }
-    
     func isSwipeActionValid(_ action: MessageSwipeAction) -> Bool {
         return true
     }
@@ -552,8 +269,8 @@ class MailboxViewModel {
     }
     
     func emptyFolder() {
+        
     }
-    
     
     typealias CompletionBlock = APIService.CompletionBlock
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
@@ -590,11 +307,82 @@ class MailboxViewModel {
         messageService.pushNotificationMessageID = nil
     }
     
-    
     /// this is a workaground for draft. somehow back from the background the fetch controller can't get the latest data. remove this when fix this issue
     ///
     /// - Returns: bool
     func reloadTable() -> Bool {
         return false
+    }
+    
+    func getSwipeTitle(_ action: MessageSwipeAction) -> String {
+        fatalError("This method must be overridden")
+    }
+
+    func mark(IDs messageIDs : NSMutableSet, unread: Bool) {
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        for msg in messages {
+            messageService.mark(message : msg, unRead: unread)
+        }
+    }
+    
+    func mark(msg message : Message, unread: Bool = true) {
+        messageService.mark(message : message, unRead: unread)
+    }
+
+    func label(IDs messageIDs : NSMutableSet, with labelID: String, apply: Bool) {
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        for msg in messages {
+            messageService.label(message: msg, label: labelID, apply: apply)
+        }
+    }
+    
+    func label(msg message : Message, with labelID: String, apply: Bool = true) {
+        messageService.label(message: message, label: labelID, apply: apply)
+    }
+    
+    func move(IDs messageIDs : NSMutableSet, to tLabel: String) {
+        self.move(IDs: messageIDs, from: self.labelID, to: tLabel)
+    }
+    
+    func move(IDs messageIDs : NSMutableSet, from fLabel: String, to tLabel: String) {
+        let messages = self.messageService.fetchMessages(withIDs: messageIDs)
+        for msg in messages {
+            messageService.move(message: msg, from: fLabel, to: tLabel)
+        }
+    }
+    
+    func undo(_ undo: UndoMessage) {
+        let messages = self.messageService.fetchMessages(withIDs: [undo.messageID])
+        for msg in messages {
+            messageService.move(message: msg, from: undo.newLabels, to: undo.origLabels)
+        }
+    }
+    
+    
+    func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if messageService.move(message: message, from: self.labelID, to: Message.Location.trash.rawValue) {
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.trash.rawValue))
+            }
+        }
+        return (.nothing, nil)
+    }
+    
+    func archive(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if messageService.move(message: message, from: self.labelID, to: Message.Location.archive.rawValue) {
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.archive.rawValue))
+            }
+        }
+        return (.nothing, nil)
+    }
+    
+    func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+        if let message = self.item(index: index) {
+            if messageService.move(message: message, from: self.labelID, to: Message.Location.archive.rawValue) {
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.spam.rawValue))
+            }
+        }
+        return (.nothing, nil)
     }
 }

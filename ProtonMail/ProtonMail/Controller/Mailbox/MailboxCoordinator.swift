@@ -162,14 +162,22 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let next = destination as? LablesViewController else {
                 return false
             }
-            next.viewModel = FolderApplyViewModelImpl(msg: self.viewModel.selectedMessages())
+            
+            guard let messages = sender as? [Message] else {
+                return false
+            }
+
+            next.viewModel = FolderApplyViewModelImpl(msg: messages)
             next.delegate = self.viewController
         case .labels:
             self.viewController?.cancelButtonTapped()
             guard let next = destination as? LablesViewController else {
                 return false
             }
-            next.viewModel = LabelApplyViewModelImpl(msg: self.viewModel.selectedMessages())
+            guard let messages = sender as? [Message] else {
+                return false
+            }
+            next.viewModel = LabelApplyViewModelImpl(msg: messages)
             next.delegate = self.viewController
         }
         return true
