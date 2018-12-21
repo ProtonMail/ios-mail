@@ -40,20 +40,20 @@ extension APIService {
         #if Enterprise
             #if DEBUG
                 //let env = 20
-                let env = 17
+                let env = 17  /// Enterprise dev certification build (fabric beta)
             #else
                 //let env = 21
-                let env = 7
+                let env = 7 ///Enterprise release certification build
             #endif
         #else
-            // const PROVIDER_FCM_IOS = 4;
-            // const PROVIDER_FCM_IOS_BETA = 5;
+            // const PROVIDER_FCM_IOS = 4; // google firebase live
+            // const PROVIDER_FCM_IOS_BETA = 5; //google firebase beta
             #if DEBUG
                 //let env = 1
-                let env = 16
+                let env = 16 /// apple store certificaiton dev build (dev)
             #else
                 //let env = 2
-                let env = 6
+                let env = 6  /// apple store release build (for apple store submit)
             #endif
         
         #endif
