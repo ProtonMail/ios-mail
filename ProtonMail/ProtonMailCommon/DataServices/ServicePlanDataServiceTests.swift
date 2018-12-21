@@ -10,7 +10,7 @@ import XCTest
 @testable import ProtonMail
 
 class ServicePlanDataServiceTests: XCTestCase {
-    
+    typealias Subscription = ServicePlanSubscription
     struct MockDataStorage: ServicePlanDataStorage {
         var servicePlansDetails: [ServicePlanDetails]?
         var isIAPAvailable: Bool

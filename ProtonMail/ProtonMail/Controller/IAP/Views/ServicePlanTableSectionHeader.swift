@@ -8,11 +8,17 @@
 
 import Foundation
 
-class TableSectionHeader: UIView {
+class ServicePlanTableSectionHeader: UIView {
     @IBOutlet private weak var title: UILabel!
     
     convenience init(title: String, textAlignment: NSTextAlignment) {
         self.init(frame: .zero)
+        defer {
+            self.setup(title: title, textAlignment: textAlignment)
+        }
+    }
+    
+    func setup(title: String, textAlignment: NSTextAlignment) {
         self.title.text = title
         self.title.textAlignment = textAlignment
     }

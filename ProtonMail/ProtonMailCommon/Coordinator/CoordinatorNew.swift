@@ -80,7 +80,7 @@ protocol DefaultCoordinator: CoordinatorNew {
 
 protocol PushCoordinator: DefaultCoordinator {
     var configuration: ((VC) -> ())? { get }
-    var navigationController: UINavigationController { get }
+    var navigationController: UINavigationController? { get }
 }
 
 extension PushCoordinator where VC: UIViewController, VC: CoordinatedNew {
@@ -90,12 +90,12 @@ extension PushCoordinator where VC: UIViewController, VC: CoordinatedNew {
         }
         configuration?(viewController)
         viewController.set(coordinator: self as! Self.VC.coordinatorType)
-        navigationController.pushViewController(viewController, animated: animated)
+        navigationController?.pushViewController(viewController, animated: animated)
     }
     
     func stop() {
         delegate?.willStop(in: self)
-        navigationController.popViewController(animated: animated)
+        navigationController?.popViewController(animated: animated)
         delegate?.didStop(in: self)
     }
 }

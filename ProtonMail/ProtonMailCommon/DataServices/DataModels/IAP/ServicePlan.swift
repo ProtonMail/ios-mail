@@ -41,9 +41,7 @@ enum ServicePlan: String {
     internal var storeKitProductId: String? {
         switch self {
         case .free, .pro, .visionary: return nil
-        case .plus:
-            //"ios_plus_12_usd_consumable" -- old one
-            return "ios_plus_12_usd_non_renewing"
+        case .plus: return "ios_plus_12_usd_non_renewing"
         }
     }
     

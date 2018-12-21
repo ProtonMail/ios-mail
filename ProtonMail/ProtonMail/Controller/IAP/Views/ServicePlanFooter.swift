@@ -26,7 +26,17 @@ class ServicePlanFooter: UIView {
                      buttonAction: ((UIButton?)->Void)?=nil)
     {
         self.init(frame: .zero)
-        
+        defer {
+            self.setup(title: title, subTitle: subTitle, buttonTitle: buttonTitle, buttonEnabled: buttonEnabled, buttonAction: buttonAction)
+        }
+    }
+    
+    func setup(title: NSAttributedString? = nil,
+               subTitle: String? = nil,
+               buttonTitle: NSAttributedString? = nil,
+               buttonEnabled: Bool = true,
+               buttonAction: ((UIButton?)->Void)?=nil)
+    {
         self.title.attributedText = title
         self.subtitle.text = subTitle
         

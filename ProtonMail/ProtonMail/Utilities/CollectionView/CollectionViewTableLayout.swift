@@ -1,5 +1,5 @@
 //
-//  TableLayout.swift
+//  CollectionViewTableLayout.swift
 //  ProtonMail
 //
 //  Created by Anatoly Rosencrantz on 15/08/2018.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TableLayout: UICollectionViewFlowLayout {
+class CollectionViewTableLayout: UICollectionViewFlowLayout {
     override init() {
         super.init()
         self.register(SeparatorDecorationView.self)
@@ -26,7 +26,7 @@ class TableLayout: UICollectionViewFlowLayout {
     private var separators: [IndexPath: UICollectionViewLayoutAttributes] = [:]
     
     override func invalidateLayout(with context: UICollectionViewLayoutInvalidationContext) {
-        self.estimatedItemSize = .init(width: UIApplication.shared.keyWindow!.bounds.width * 0.70, height: 200)
+        self.estimatedItemSize = .init(width: (UIApplication.shared.keyWindow?.bounds.width ?? 200) * 0.70, height: 200)
         super.invalidateLayout(with: context)
     }
     
@@ -40,10 +40,7 @@ class TableLayout: UICollectionViewFlowLayout {
     }
     
     override func layoutAttributesForDecorationView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        fatalError()
-    }
-    override func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-        fatalError()
+        return self.separators[indexPath]
     }
     
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
@@ -80,27 +77,28 @@ class TableLayout: UICollectionViewFlowLayout {
     }
 }
 
-class SeparatorDecorationView: UICollectionReusableView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
-    }
-    
-    override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-        self.frame = layoutAttributes.frame
-    }
-    
-    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
-        guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
-            return layoutAttributes
+extension CollectionViewTableLayout {
+    class SeparatorDecorationView: UICollectionReusableView {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
         }
-        attributes.zIndex = Int.max - 1
-        return attributes
+        
+        required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+            self.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+        }
+        
+        override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+            self.frame = layoutAttributes.frame
+        }
+        
+        override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+            guard let attributes: UICollectionViewLayoutAttributes = layoutAttributes.copy() as? UICollectionViewLayoutAttributes else {
+                return layoutAttributes
+            }
+            attributes.zIndex = Int.max - 1
+            return attributes
+        }
     }
 }
-

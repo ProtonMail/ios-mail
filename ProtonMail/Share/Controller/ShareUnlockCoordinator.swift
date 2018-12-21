@@ -30,7 +30,7 @@ import Foundation
 class ShareUnlockCoordinator : PushCoordinator {
     typealias VC = ShareUnlockViewController
     
-    internal var navigationController: UINavigationController
+    internal weak var navigationController: UINavigationController?
     var viewController: ShareUnlockViewController?
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in
@@ -52,6 +52,7 @@ class ShareUnlockCoordinator : PushCoordinator {
     
     private func goPin() {
         //UI refe
+        guard let navigationController = self.navigationController else { return }
         self.viewController?.pinUnlock.isEnabled = false
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(),
@@ -60,7 +61,9 @@ class ShareUnlockCoordinator : PushCoordinator {
     }
     
     private func gotoComposer() {
-        guard let vc = self.viewController else {
+        guard let vc = self.viewController,
+            let navigationController = self.navigationController else
+        {
             return
         }
         //TODO:: this compose should get from the current viewModel.
