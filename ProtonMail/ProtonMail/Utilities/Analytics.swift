@@ -35,9 +35,9 @@ class Analytics {
     
     private var sentryEndpoint: String {
         #if Enterprise
-            return "https://3f5b27555fa64b519002266dcdc7744c:d9b72932c36d4456b9535c93b7c7e834@sentry.protontech.ch/25"
+            return "https://3f5b27555fa64b519002266dcdc7744c:d9b72932c36d4456b9535c93b7c7e834@api.protonmail.ch/reports/sentry/25"
         #else
-            return "https://bcbe8b2a026848c4b139df228d088072:b0643c66a54347f299b4e70bc39ce6ba@sentry.protontech.ch/7"
+            return "https://bcbe8b2a026848c4b139df228d088072:b0643c66a54347f299b4e70bc39ce6ba@api.protonmail.ch/reports/sentry/7"
         #endif
     }
     
