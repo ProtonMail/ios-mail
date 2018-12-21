@@ -49,7 +49,7 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
     
     override func isPinMatched(completion: @escaping (Bool)->Void) {
         UnlockManager.shared.match(userInputPin: enterPin, completion: completion)
-        //currentStep = .enterPin
+        currentStep = .enterPin
     }
     
     override func getPinFailedRemainingCount() -> Int {
