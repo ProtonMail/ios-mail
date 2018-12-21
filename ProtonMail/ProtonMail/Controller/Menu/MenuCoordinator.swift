@@ -125,7 +125,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     func toPlan() {
         let coordinator = MenuCoordinator()
         coordinator.controller = self.viewController
-        coordinator.go(to: .serviceLevel, creating: ServiceLevelViewController.self)
+        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
     }
     
     func go(to deepLink: DeepLink) {

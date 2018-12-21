@@ -29,6 +29,9 @@
 import UIKit
 
 class StorefrontCoordinator: PushCoordinator {
+    ///tempery for build error
+    var services: ServiceFactory = ServiceFactory()
+    
     typealias VC = StorefrontCollectionViewController
     weak var viewController: StorefrontCollectionViewController?
     weak var navigationController: UINavigationController?

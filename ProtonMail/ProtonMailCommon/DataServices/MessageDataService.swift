@@ -490,42 +490,23 @@ class MessageDataService : Service {
     }
     
     
-    ////////////////////////////////////////
-    //     func injectTransientValuesIntoMessages() {
-    //     let ids = sharedMessageQueue.queuedMessageIds()
-    //     let context = sharedCoreDataService.mainManagedObjectContext
-    //     context.performAndWait {
-    //         ids.forEach { messageID in
-    //             guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
-    //                 let managedObject = try? context.existingObject(with: objectID) else
-    //             {
-    //                 return
-    //             }
-    //             if let message = managedObject as? Message {
-    //                 self.cachePropertiesForBackground(in: message)
-    //             }
-    //             if let attachment = managedObject as? Attachment {
-    //                 self.cachePropertiesForBackground(in: attachment.message)
-    //             }
-    //         }
-    //     }
-    // }
-    
     ///TODO::fixme - double check it  // this way is a little bit hacky. future we will prebuild the send message body
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
-        let context = managedObjectContext
-        ids.forEach { messageID in
-            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
-                let managedObject = try? context.existingObject(with: objectID) else
-            {
-                return
-            }
-            if let message = managedObject as? Message {
-                self.cachePropertiesForBackground(in: message)
-            }
-            if let attachment = managedObject as? Attachment {
-                self.cachePropertiesForBackground(in: attachment.message)
+        let context = sharedCoreDataService.mainManagedObjectContext
+        context.performAndWait {
+            ids.forEach { messageID in
+                guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
+                    let managedObject = try? context.existingObject(with: objectID) else
+                {
+                    return
+                }
+                if let message = managedObject as? Message {
+                    self.cachePropertiesForBackground(in: message)
+                }
+                if let attachment = managedObject as? Attachment {
+                    self.cachePropertiesForBackground(in: attachment.message)
+                }
             }
         }
     }
@@ -539,6 +520,7 @@ class MessageDataService : Service {
         message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
         message.cachedAddress = message.defaultAddress // computed property depending on current user settings
     }
+    
     
     //
     func emptyTrash() {

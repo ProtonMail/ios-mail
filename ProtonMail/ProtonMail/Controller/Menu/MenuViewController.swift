@@ -227,13 +227,7 @@ extension MenuViewController: UITableViewDelegate {
                 let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
                 sharedVMService.resetView() // FIXME: do we still need this?
             } else if item == .servicePlan {
-<<<<<<< HEAD
-                let coordinator = MenuCoordinator()
-                coordinator.controller = self
-                coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
-=======
                 self.coordinator?.go(to: .plan)
->>>>>>> simple deeplink . could improve later
             }
         case .labels:
             let obj = self.viewModel.label(at: row)
