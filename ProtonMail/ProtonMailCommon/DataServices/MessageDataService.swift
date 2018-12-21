@@ -50,7 +50,7 @@ class MessageDataService {
     
     func injectTransientValuesIntoMessages() {
         let ids = sharedMessageQueue.queuedMessageIds()
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             ids.forEach { messageID in
                 guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
@@ -906,116 +906,123 @@ class MessageDataService {
     }
     
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
-            if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) {
-                do {
-                    if let message = try context.existingObject(with: objectID) as? Message {
-                        let completionWrapper: CompletionBlock = { task, response, error in
-                            if let mess = response {
-                                if let messageID = mess["ID"] as? String {
-                                    PMLog.D("SendAttachmentDebug == finish save draft!")
-                                    context.performAndWait {
-                                        message.messageID = messageID
-                                        message.isDetailDownloaded = true
-                                        
-                                        var hasTemp = false
-                                        let attachments = message.mutableSetValue(forKey: "attachments")
-                                        for att in attachments {
-                                            if let att = att as? Attachment {
-                                                if att.isTemp {
-                                                    hasTemp = true
-                                                    context.delete(att)
-                                                }
-                                                att.keyChanged = false
-                                            }
-                                        }
-                                        
-                                        
-                                        if let subject = mess["Subject"] as? String {
-                                            message.title = subject
-                                        }
-                                        if let timeValue = mess["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    message.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    message.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        
-                                        
-                                        if let error = context.saveUpstreamIfNeeded() {
-                                            PMLog.D(" error: \(error)")
-                                        }
-                                        
-                                        if hasTemp {
-                                            do {
-                                                try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
-                                                if let save_error = context.saveUpstreamIfNeeded() {
-                                                    PMLog.D(" error: \(save_error)")
-                                                }
-                                            } catch let exc as NSError {
-                                                completion?(task, response, exc)
-                                                return
-                                            }
-                                        }
-                                    }
-                                    completion?(task, response, error)
-                                    return
-                                } else {//error
-                                    completion?(task, response, error)
-                                    return
-                                }
-                            } else {//error
-                                completion?(task, response, error)
-                                return
-                            }
-                        }
-                        
-                        PMLog.D("SendAttachmentDebug == start save draft!")
-                        if message.isDetailDownloaded && message.messageID != "0" {
-                            let api = UpdateDraft(message: message, authCredential: message.cachedAuthCredential)
-                            api.call({ (task, response, hasError) -> Void in
-                                if hasError {
-                                    completionWrapper(task, nil, response?.error)
-                                } else {
-                                    completionWrapper(task, response?.message, nil)
-                                }
-                            })
-                        } else {
-                            let api = CreateDraft(message: message)
-                            api.call({ (task, response, hasError) -> Void in
-                                if hasError {
-                                    completionWrapper(task, nil, response?.error)
-                                } else {
-                                    completionWrapper(task, response?.message, nil)
-                                }
-                            })
-                        }
-                        return
-                    }
-                } catch let ex as NSError {
-                    completion?(nil, nil, ex)
+            guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID) else {
+                // error: while trying to get objectID
+                let _ = sharedMessageQueue.remove(writeQueueUUID)
+                self.dequeueIfNeeded()
+                completion?(nil, nil, NSError.badParameter(messageID))
+                return
+            }
+            
+            do {
+                guard let message = try context.existingObject(with: objectID) as? Message else {
+                    // error: object is not a Message
+                    let _ = sharedMessageQueue.remove(writeQueueUUID)
+                    self.dequeueIfNeeded()
+                    completion?(nil, nil, NSError.badParameter(messageID))
                     return
                 }
+                
+                let completionWrapper: CompletionBlock = { task, response, error in
+                    guard let mess = response else {
+                        // error: response nil
+                        completion?(task, nil, error)
+                        return
+                    }
+                    
+                    guard let messageID = mess["ID"] as? String else {
+                        // error: not ID field in response
+                        completion?(task, nil, error)
+                        return
+                    }
+                    
+                    PMLog.D("SendAttachmentDebug == finish save draft!")
+                    message.messageID = messageID
+                    message.isDetailDownloaded = true
+                
+                    var hasTemp = false
+                    let attachments = message.mutableSetValue(forKey: "attachments")
+                    for att in attachments {
+                        if let att = att as? Attachment {
+                            if att.isTemp {
+                                hasTemp = true
+                                context.delete(att)
+                            }
+                            att.keyChanged = false
+                        }
+                    }
+                
+                
+                    if let subject = mess["Subject"] as? String {
+                        message.title = subject
+                    }
+                    if let timeValue = mess["Time"] {
+                        if let timeString = timeValue as? NSString {
+                            let time = timeString.doubleValue as TimeInterval
+                            if time != 0 {
+                                message.time = time.asDate()
+                            }
+                        } else if let dateNumber = timeValue as? NSNumber {
+                            let time = dateNumber.doubleValue as TimeInterval
+                            if time != 0 {
+                                message.time = time.asDate()
+                            }
+                        }
+                    }
+                
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    }
+                
+                    if hasTemp {
+                        do {
+                            try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: mess, in: context)
+                            if let save_error = context.saveUpstreamIfNeeded() {
+                                PMLog.D(" error: \(save_error)")
+                            }
+                        } catch let exc as NSError {
+                            completion?(task, response, exc)
+                            return
+                        }
+                    }
+                    completion?(task, response, error)
+                }
+                
+                PMLog.D("SendAttachmentDebug == start save draft!")
+                if message.isDetailDownloaded && message.messageID != "0" {
+                    let api = UpdateDraft(message: message, authCredential: message.cachedAuthCredential)
+                    api.call({ (task, response, hasError) -> Void in
+                        if hasError {
+                            completionWrapper(task, nil, response?.error)
+                        } else {
+                            completionWrapper(task, response?.message, nil)
+                        }
+                    })
+                } else {
+                    let api = CreateDraft(message: message)
+                    api.call({ (task, response, hasError) -> Void in
+                        if hasError {
+                            completionWrapper(task, nil, response?.error)
+                        } else {
+                            completionWrapper(task, response?.message, nil)
+                        }
+                    })
+                }
+            } catch let ex as NSError {
+                // error: context thrown trying to get Message
+                let _ = sharedMessageQueue.remove(writeQueueUUID)
+                self.dequeueIfNeeded()
+                completion?(nil, nil, ex)
+                return
             }
         }
-        
-        // nothing to send, dequeue request
-        let _ = sharedMessageQueue.remove(writeQueueUUID)
-        self.dequeueIfNeeded()
-        completion?(nil, nil, NSError.badParameter(messageID))
     }
     
     
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
             let attachment = managedObject as? Attachment else
@@ -1086,7 +1093,7 @@ class MessageDataService {
     }
     
     private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             var authCredential: AuthCredential?
             if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(deleteObject),
@@ -1104,7 +1111,7 @@ class MessageDataService {
     }
     
     private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
                 if let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(id),
@@ -1187,7 +1194,7 @@ class MessageDataService {
             completion?(task, response, error)
         }
         
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(messageID),
                 let message = context.find(with: objectID) as? Message else
@@ -1465,7 +1472,6 @@ class MessageDataService {
             }
             return
         }
-        errorBlock(nil, nil, NSError.badParameter(messageID))
     }
     
     private func markReplyStatus(_ oriMsgID : String?, action : NSNumber?) {
@@ -1581,7 +1587,7 @@ class MessageDataService {
                     error?.upload(toAnalytics: QueueErrorTitle)
                 }
                 
-                if !isInternetIssue {
+                if !isInternetIssue && (error?.code != NSError.authCacheLocked().code) {
                     self.dequeueIfNeeded()
                 } else {
                     if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {
