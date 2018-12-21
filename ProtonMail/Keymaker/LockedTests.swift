@@ -18,7 +18,7 @@ class LockedTests: XCTestCase {
         if status != 0 {
             XCTAssert(false, "failed to create cryptographically secure key")
         }
-        return Data(bytes: key)
+        return key
     }
     
     func testCodableLockUnlock() {

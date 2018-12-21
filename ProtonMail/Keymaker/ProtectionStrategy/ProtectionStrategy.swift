@@ -32,12 +32,12 @@ public extension ProtectionStrategy {
         return self.keychain.data(forKey: String(describing: Self.self))
     }
     
-    static func generateRandomValue(length: Int) -> Data {
+    static func generateRandomValue(length: Int) -> Keymaker.Key {
         var newKey = Array<UInt8>(repeating: 0, count: length)
         let status = SecRandomCopyBytes(kSecRandomDefault, newKey.count, &newKey)
         guard status == 0 else {
             fatalError("failed to generate cryptographically secure value")
         }
-        return Data(bytes: newKey)
+        return newKey
     }
 }

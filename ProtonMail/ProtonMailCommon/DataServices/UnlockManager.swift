@@ -32,7 +32,7 @@ class UnlockManager: NSObject {
             completion(false)
             return
         }
-        let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
+        keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
             guard self.validate(mainKey: key) else {
                 userCachedStatus.pinFailedCount += 1
                 completion(false)
@@ -45,10 +45,8 @@ class UnlockManager: NSObject {
     }
     
     private func validate(mainKey: Keymaker.Key?) -> Bool {
-        guard let _ = mainKey, // have non-nil mainKey
-            let _ = AuthCredential.fetchFromKeychain() else // and it suits AuthCredential
-        {
-            keymaker.lockTheApp()
+        guard let _ = mainKey else { // currently enough: key is Array and will be nil in case it was unlocked incorrectly
+            keymaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
             return false
         }
         return true

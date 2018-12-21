@@ -432,6 +432,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
                 alert.dismiss(animated: true, completion: nil)
                 self?.observation?.invalidate()
                 self?.observation = nil
+                keymaker.lockTheApp()
                 UIView.animate(withDuration: 0.25, animations: animationBlock, completion: completion)
             }
         }
