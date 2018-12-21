@@ -78,7 +78,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             10, 15, 30, 60]
     
     var multi_domains: [Address]!
-    var userInfo: UserInfo = sharedUserDataService.userInfo!
+    var userInfo: UserInfo {
+        return sharedUserDataService.userInfo!
+    }
     
     /// cells
     let SettingSingalLineCell         = "settings_general"
@@ -124,7 +126,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             setting_general_items.append(.notificationsSnooze)
         }
         
-        userInfo = sharedUserDataService.userInfo!
+        //userInfo = sharedUserDataService.userInfo!
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
         self.settingTableView.reloadData()

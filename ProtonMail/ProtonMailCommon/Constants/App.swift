@@ -32,7 +32,7 @@ struct Constants {
     
     /// use this to replace the version compare to decide feature on/off. this is easier to track
     enum Feature {
-        static let snoozeOn : Bool = true
+        static let snoozeOn : Bool = false
     }
     
     enum App {

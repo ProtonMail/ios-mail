@@ -32,13 +32,14 @@
 static NSString * const LanguageCodes[] = { @"en", @"de", @"fr",
                                             @"ru", @"es", @"tr",
                                             @"pl", @"uk", @"nl",
-                                            @"it", @"pt-BR"
+                                            @"it", @"pt-BR",
+                                            @"zh-Hans", @"zh-Hant", @"ca", @"da", @"cs", @"pt"
 };
 
 static NSString * const LanguageStrings[] = { @"English", @"German", @"French",
                                               @"Russian", @"Spanish", @"Turkish",
-                                              @"Polish", @"Ukrainian", @"Dutch",
-                                              @"Italian", @"PortugueseBrazil"
+                                              @"Polish", @"Ukrainian", @"Dutch", @"Italian", @"PortugueseBrazil",
+                                              @"Chinese Simplified", @"Chinese Traditional", @"Catalan", @"Danish", @"Czech", @"portuguese"
 };
 
 static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
