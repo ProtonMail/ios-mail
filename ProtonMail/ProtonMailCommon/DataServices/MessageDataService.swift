@@ -194,6 +194,7 @@ class MessageDataService : Service {
         }
     }
     
+    @discardableResult
     func delete(message: Message, label: String) -> Bool {
         guard let context = message.managedObjectContext else {
             return false
@@ -818,22 +819,6 @@ class MessageDataService : Service {
      
      :returns: NSFetchedResultsController
      */
-//    func fetchedResultsControllerForLocation(_ location: MessageLocation) -> NSFetchedResultsController<NSFetchRequestResult>? {
-//        if let moc = managedObjectContext {
-//            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//            if location == .outbox {
-//                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0) AND (%K > 0)",
-//                                                     "\(location.rawValue)", "\(MessageLocation.trash.rawValue)", "\(MessageLocation.archive.rawValue)", Message.Attributes.messageStatus)
-//            } else {
-//                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
-//                                                     "\(location.rawValue)", Message.Attributes.messageStatus)
-//            }
-//            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-//            return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
-//        }
-//        return nil
-//    }
-//
     func fetchedResults(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = sharedCoreDataService.mainManagedObjectContext
         
@@ -1476,33 +1461,34 @@ class MessageDataService : Service {
                 let error = res.error
                 if error == nil {
                     //TODO::
-//                    if (message.location == MessageLocation.draft) {
-//                        if isEO {
-//                            if sendBuilder.outSideUser {
-//                                message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
-//                            } else {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
-//                            }
-//                        } else {
-//                            if sendBuilder.outSideUser {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue)
-//                            } else {
-//                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
-//                            }
-//                        }
-//
-//                        if attachments.count > 0 {
-//                            message.numAttachments = NSNumber(value: attachments.count)
-//                        }
-//                        //TODO::fix later 1.7
-//                        message.mimeType = "text/html"
-//                        message.needsUpdate = false
-//                        message.unRead = false
-//                        lastUpdatedStore.ReadMailboxMessage(message.location)
-//                        message.location = MessageLocation.outbox
-//                        message.isDetailDownloaded = false
-//                        message.removeLocationFromLabels(currentlocation: .draft, location: .outbox, keepSent: true)
-//                    }
+                    if message.contains(label: .draft) {
+                        if isEO {
+                            if sendBuilder.outSideUser {
+                                message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
+                            } else {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
+                            }
+                        } else {
+                            if sendBuilder.outSideUser {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue)
+                            } else {
+                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
+                            }
+                        }
+                        
+                        if attachments.count > 0 {
+                            message.numAttachments = NSNumber(value: attachments.count)
+                        }
+                        //TODO::fix later 1.7
+                        message.mimeType = "text/html"
+                        message.needsUpdate = false
+                        message.unRead = false
+                        message.isDetailDownloaded = false
+                        if let lid = message.remove(labelID: Message.Location.draft.rawValue), message.unRead {
+                            self.updateCounter(plus: false, with: lid)
+                        }
+                        message.add(labelID: Message.Location.sent.rawValue)
+                    }
                     
                     NSError.alertMessageSentToast()
                     if let error = context.saveUpstreamIfNeeded() {
@@ -1734,8 +1720,8 @@ class MessageDataService : Service {
                     self.empty(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .read, .unread, .delete:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .inbox:
-                    break
+//                case .inbox:
+//                    break
                    // self.labelMessage(.inbox, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .spam:
                     break

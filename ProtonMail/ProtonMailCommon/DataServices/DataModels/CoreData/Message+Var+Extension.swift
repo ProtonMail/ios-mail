@@ -197,20 +197,3 @@ extension Message {
 //            return false
 //        }
 //    }
-//
-//    func getLocationFromLabels() ->  [MessageLocation] {
-//        var locations = [MessageLocation]()
-//        let labels = self.labels
-//        for l in labels {
-//            if let label = l as? Label {
-//                if let l_id = Int(label.labelID) {
-//                    if let new_loc = MessageLocation(rawValue: l_id), new_loc != .starred && new_loc != .allmail {
-//                        locations.append(new_loc)
-//                    }
-//                }
-//
-//            }
-//        }
-//        return locations
-//    }
-

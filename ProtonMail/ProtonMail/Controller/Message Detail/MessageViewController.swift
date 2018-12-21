@@ -94,7 +94,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView!.emailHeader.delegate = self
         self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
-        self.updateBadgeNumberWhenRead(message, unRead: false)
         loadMessageDetailes()
         
     }
@@ -255,19 +254,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     @objc internal func removeButtonTapped() {
         if !actionTapped {
-            //TODO::fixme
-//            actionTapped = true
-//            switch(message.location) {
-//            case .trash, .spam:
-//                if self.message.managedObjectContext != nil {
-//                    self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.deleted, keepSent: true)
-//                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
-//                }
-//            default:
-//                self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.trash, keepSent: true)
-//                self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
-//            }
-//            popViewController()
+            actionTapped = true
+            if message.contains(label: .trash) {
+                sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
+            } else {
+                if let label = message.firstValidFolder() {
+                    sharedMessageDataService.move(message: message, from: label, to: Message.Location.trash.rawValue)
+                }
+            }
+            popViewController()
         }
     }
     
@@ -280,100 +275,88 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func spamButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            //TODO::fixme
-//            self.message.removeLocationFromLabels(currentlocation: self.message.location, location: .spam, keepSent: true)
-//            self.messagesSetValue(setValue: MessageLocation.spam.rawValue, forKey: Message.Attributes.locationNumber)
-//            self.popViewController()
+            if let label = message.firstValidFolder() {
+                sharedMessageDataService.move(message: message, from: label, to: Message.Location.spam.rawValue)
+            }
+            self.popViewController()
         }
     }
     
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
-//TODO::fixme
-//        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-//        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-//        let locations: [MessageLocation : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
-//        for (location, style) in locations {
-//            if !message.hasLocation(location: location) {
-//                if self.message.location == .outbox && location == .inbox {
-//                    continue
-//                }
-//
-//                alertController.addAction(UIAlertAction(title: location.actionTitle,
-//                                                        style: style,
-//                                                        handler: { (action) -> Void in
-//
-//                    var toLocation = location
-//                    if location == .inbox {
-//                        if self.message.hasLocation(location: .outbox)  {
-//                            toLocation = .outbox
-//                        }
-//                        if self.message.hasLocation(location: .draft) {
-//                            toLocation = .draft
-//                        }
-//                    }
-//                    self.message.removeLocationFromLabels(currentlocation: self.message.location,
-//                                                          location: toLocation,
-//                                                          keepSent: true)
-//                    self.messagesSetValue(setValue: toLocation.rawValue, forKey: Message.Attributes.locationNumber)
-//                    self.popViewController()
-//                }))
-//            }
-//        }
-//
-//        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
-//            self.print(webView : self.emailView!.contentWebView)
-//        }))
-//
-//        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
-//            let headers = self.message.header
-//            let formatter = DateFormatter()
-//            formatter.calendar = Calendar(identifier: .gregorian)
-//            formatter.timeZone = TimeZone(secondsFromGMT: 0)
-//            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-//            let filename = formatter.string(from: self.message.time!) + "-" + self.message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
-//            tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
-//            try? FileManager.default.removeItem(at: tempFileUri!)
-//            try? headers?.write(to: tempFileUri!, atomically: true, encoding: .utf8)
-//            let previewQL = QuickViewViewController()
-//            previewQL.dataSource = self
-//            self.latestPresentedView = previewQL
-//            self.present(previewQL, animated: true, completion: nil)
-//        }))
-//
-//        alertController.addAction(UIAlertAction(title: LocalString._report_phishing, style: .destructive, handler: { (action) -> Void in
-//            let alert = UIAlertController(title: LocalString._confirm_phishing_report,
-//                                          message: LocalString._reporting_a_message_as_a_phishing_,
-//                                          preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { (action) in
-//
-//            }))
-//            alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
-//                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-//                if let _ = self.message.managedObjectContext {
-//                    BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "") { error in
-//                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
-//                        if let error = error {
-//                            let alert = error.alertController()
-//                            alert.addOKAction()
-//                            self.present(alert, animated: true, completion: nil)
-//                        } else {
-//                            self.spamButtonTapped()
-//                        }
-//                    }
-//                }
-//
-//            }))
-//            self.present(alert, animated: true, completion: {
-//
-//            })
-//        }))
-//
-//
-//        alertController.popoverPresentationController?.barButtonItem = sender
-//        alertController.popoverPresentationController?.sourceRect = self.view.frame
-//
-//        latestPresentedView = alertController
-//        self.present(alertController, animated: true, completion: nil)
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        let locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
+        for (location, style) in locations {
+            if !message.contains(label: location) {
+                if self.message.contains(label: .sent) && location == .inbox {
+                    continue
+                }
+
+                alertController.addAction(UIAlertAction(title: location.actionTitle,
+                                                        style: style,
+                                                        handler: { (action) -> Void in
+                    if let label = self.message.firstValidFolder() {
+                        sharedMessageDataService.move(message: self.message, from: label, to: location.rawValue)
+                    }
+                    self.popViewController()
+                }))
+            }
+        }
+
+        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
+            self.print(webView : self.emailView!.contentWebView)
+        }))
+
+        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
+            let headers = self.message.header
+            let formatter = DateFormatter()
+            formatter.calendar = Calendar(identifier: .gregorian)
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+            let filename = formatter.string(from: self.message.time!) + "-" + self.message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+            tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+            try? FileManager.default.removeItem(at: tempFileUri!)
+            try? headers?.write(to: tempFileUri!, atomically: true, encoding: .utf8)
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            self.latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+        }))
+
+        alertController.addAction(UIAlertAction(title: LocalString._report_phishing, style: .destructive, handler: { (action) -> Void in
+            let alert = UIAlertController(title: LocalString._confirm_phishing_report,
+                                          message: LocalString._reporting_a_message_as_a_phishing_,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { (action) in
+
+            }))
+            alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
+                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                if let _ = self.message.managedObjectContext {
+                    BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "") { error in
+                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                        if let error = error {
+                            let alert = error.alertController()
+                            alert.addOKAction()
+                            self.present(alert, animated: true, completion: nil)
+                        } else {
+                            self.spamButtonTapped()
+                        }
+                    }
+                }
+
+            }))
+            self.present(alert, animated: true, completion: {
+
+            })
+        }))
+
+
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+
+        latestPresentedView = alertController
+        self.present(alertController, animated: true, completion: nil)
     }
     
     
@@ -420,64 +403,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func messagesSetRead(unRead: Bool) {
-        if let context = message.managedObjectContext {
-            self.updateBadgeNumberWhenRead(message, unRead: unRead)
-            message.unRead = unRead
-            message.needsUpdate = true
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-        }
-    }
-    
-    func updateBadgeNumberWhenRead(_ message : Message, unRead : Bool) {
-//<<<<<<< HEAD
-//        let location = message.location
-//        
-//        if message.unRead == unRead {
-//            return
-//        }
-//        var count = lastUpdatedStore.UnreadCountForKey(location)
-//        count = count + (unRead ? 1 : -1)
-//        if count < 0 {
-//            count = 0
-//        }
-//        lastUpdatedStore.updateUnreadCountForKey(location, count: count)
-//        
-//        if message.isStarred {
-//            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-//            staredCount = staredCount + (unRead ? 1 : -1)
-//            if staredCount < 0 {
-//                staredCount = 0
-//            }
-//            lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
-//        }
-//=======
-//        //TODO::fixme
-////        let location = message.location
-////
-////        if message.unRead == unRead {
-////            return
-////        }
-////        var count = lastUpdatedStore.UnreadCountForKey(location)
-////        count = count + (unRead ? 1 : -1)
-////        if count < 0 {
-////            count = 0
-////        }
-////        lastUpdatedStore.updateUnreadCountForKey(location, count: count)
-////
-////        if message.isStarred {
-////            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-////            staredCount = staredCount + (unRead ? 1 : -1)
-////            if staredCount < 0 {
-////                staredCount = 0
-////            }
-////            lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
-////        }
-////        if location == .inbox {
-////            UIApplication.setBadge(badge: count)
-////        }
-//>>>>>>> a lot of changes
+        sharedMessageDataService.mark(message: message, unRead: unRead)
     }
     
     override var shouldAutorotate : Bool {
@@ -1014,20 +940,11 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func star(changed isStarred: Bool) {
-        //TODO::fixme
-//        if isStarred {
-//            self.message.setLabelLocation(.starred)
-//            if let context = message.managedObjectContext {
-//                context.perform {
-//                    if let error = context.saveUpstreamIfNeeded() {
-//                        PMLog.D("error: \(error)")
-//                    }
-//                }
-//            }
-//        } else {
-//            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
-//        }
-//        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
+        if isStarred {
+            sharedMessageDataService.label(message: message, label: Message.Location.starred.rawValue, apply: true)
+        } else {
+            sharedMessageDataService.label(message: message, label: Message.Location.starred.rawValue, apply: false)
+        }
     }
     
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {
@@ -1062,9 +979,8 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
-        //TODO::fixme
-        //let notes = model.notes(type: self.message.hasLocation(location: .outbox) ? 2 : 1)
-        //notes.alertToastBottom()
+        let notes = model.notes(type: self.message.contains(label: .sent) ? 2 : 1)
+        notes.alertToastBottom()
     }
     
     func showImage() {

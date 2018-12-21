@@ -185,59 +185,6 @@ extension Message {
         return outLabel
     }
     
-    
-//    func removeLocationFromLabels(currentlocation:MessageLocation, location : MessageLocation, keepSent: Bool) {
-//        if let context = self.managedObjectContext {
-//            context.performAndWait() {
-//                let labelObjs = self.mutableSetValue(forKey: "labels")
-//                if keepSent && currentlocation == .outbox {
-//                } else {
-//                    let fromLabelID = String(currentlocation.rawValue)
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label.labelID == fromLabelID {
-//                                labelObjs.remove(label)
-//                                break
-//                            }
-//                        }
-//                    }
-//                    
-//                }
-//                let toLableID = String(location.rawValue)
-//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-//                    var exsited = false
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label.labelID == toLabel.labelID {
-//                                exsited = true
-//                                break
-//                            }
-//                        }
-//                    }
-//                    if !exsited {
-//                        labelObjs.add(toLabel)
-//                    }
-//                }
-//                
-//                self.setValue(labelObjs, forKey: "labels")
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
-//        }
-//    }
-    
-    //    var location: MessageLocation {
-    //        get {
-    //            return MessageLocation(rawValue: locationNumber.intValue) ?? .inbox
-    //        }
-    //        set {
-    //            locationNumber = newValue.rawValue as NSNumber
-    //        }
-    //    }
-
-
-    
     func getShowLocationNameFromLabels(ignored : String) -> String? {
         //TODO::fix me
         var lableOnly = false
@@ -271,30 +218,7 @@ extension Message {
         }
         return nil
     }
-    
-//    func setLabelLocation(_ location : MessageLocation) {
-//        if let context = self.managedObjectContext {
-//            let toLableID = String(location.rawValue)
-//            let labelObjs = self.mutableSetValue(forKey: "labels")
-//
-//            if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-//                var exsited = false
-//                for l in labelObjs {
-//                    if let label = l as? Label {
-//                        if label == toLabel {
-//                            exsited = true
-//                            break
-//                        }
-//                    }
-//                }
-//                if !exsited {
-//                    labelObjs.add(toLabel)
-//                }
-//            }
-//            self.setValue(labelObjs, forKey: "labels")
-//        }
-//    }
-//
+
 //    func removeFromFolder(current: Label, location : MessageLocation, keepSent: Bool) {
 //        if let context = self.managedObjectContext {
 //            context.performAndWait() {
@@ -404,31 +328,6 @@ extension Message {
 //             }
 //         }
 //         return success
-     class func deleteLocation(_ location : String) -> Bool{
-//         //TODO::fixme
-// //        if let mContext = sharedCoreDataService.mainManagedObjectContext {
-// //            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-// //            if location == .spam || location == .trash {
-// //                fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
-// //                fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-// //                do {
-// //                    if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-// //                        for message in oldMessages {
-// //                            mContext.delete(message)
-// //                        }
-// //                        if let error = mContext.saveUpstreamIfNeeded() {
-// //                            PMLog.D(" error: \(error)")
-// //                        } else {
-// //                            return true
-// //                        }
-// //                    }
-// //                } catch {
-// //                    PMLog.D(" error: \(error)")
-// //                }
-// //            }
-// //        }
-        return false
-    }
     
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
@@ -442,12 +341,6 @@ extension Message {
         super.awakeFromInsert()
         replaceNilStringAttributesWithEmptyString()
     }
-    
-    //TODO:: fix me
-//    func updateTag(_ tag: String) {
-//        self.tag = tag
-//        isStarred = tag.range(of: Constants.starredTag) != nil
-//    }
     
     // MARK: methods
     func decryptBody(keys: Data, passphrase: String) throws -> String? {
