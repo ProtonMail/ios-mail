@@ -41,7 +41,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
-                                                   signInProvider: SignInMock())
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
         
@@ -87,7 +88,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
-                                                   signInProvider: SignInMock())
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: Optional.none)
         
@@ -140,7 +142,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    outdatedSaver: outdatedPin,
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
-                                                   signInProvider: SignInMock())
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: .reported(.init(token: oldToken, UID: session.sessionID!))) // already have some reported subscription
         
@@ -154,7 +157,7 @@ class PushNotificationServiceTests: XCTestCase {
             default: XCTFail("did not report altho api did not return error")
             }
             
-            XCTAssertTrue(outdatedPin.get()!.isEmpty) // outdated should be empty
+            XCTAssertTrue(outdatedPin.get()?.isEmpty == true) // outdated should be empty
         }
     }
 
@@ -184,7 +187,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
-                                                   signInProvider: SignInMock())
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
         NotificationCenter.default.removeObserver(service)
         currentSubscriptionPin.set(newValue: .reported(.init(token: oldToken, UID: session.sessionID!))) // already have some reported subscription
         
@@ -222,7 +226,8 @@ class PushNotificationServiceTests: XCTestCase {
                                                    outdatedSaver: InMemorySaver(),
                                                    sessionIDProvider: session,
                                                    deviceRegistrator: api,
-                                                   signInProvider: SignInMock())
+                                                   signInProvider: SignInMock(),
+                                                   unlockProvider: UnlockMock())
         NotificationCenter.default.removeObserver(service)
         
         currentSubscriptionPin.set(newValue: .notReported(.init(token: oldToken, UID: session.sessionID!))) // already have not reported subscription
@@ -283,5 +288,9 @@ extension PushNotificationServiceTests {
     
     private struct SignInMock: SignInProvider {
         let isSignedIn: Bool = true
+    }
+    
+    private struct UnlockMock: UnlockProvider {
+        let isUnlocked: Bool = true
     }
 }
