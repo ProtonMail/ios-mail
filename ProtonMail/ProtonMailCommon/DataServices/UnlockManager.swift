@@ -13,7 +13,7 @@ class UnlockManager: NSObject {
     static var shared = UnlockManager()
     
     internal func isUnlocked() -> Bool {
-        return keymaker.mainKey != nil
+        return self.validate(mainKey: keymaker.mainKey)
     }
     
     internal func getUnlockFlow() -> SignInUIFlow {
@@ -33,26 +33,37 @@ class UnlockManager: NSObject {
             return
         }
         let _ = keymaker.obtainMainKey(with: PinProtection(pin: userInputPin)) { key in
-            guard let _ = key else {
+            guard self.validate(mainKey: key) else {
                 userCachedStatus.pinFailedCount += 1
                 completion(false)
                 return
             }
+            
             userCachedStatus.pinFailedCount = 0;
             completion(true)
         }
     }
     
+    private func validate(mainKey: Keymaker.Key?) -> Bool {
+        guard let _ = mainKey, // have non-nil mainKey
+            let _ = AuthCredential.fetchFromKeychain() else // and it suits AuthCredential
+        {
+            keymaker.lockTheApp()
+            return false
+        }
+        return true
+    }
+    
     internal func biometricAuthentication(requestMailboxPassword: @escaping ()->Void) {
         keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard let _ = key else { return }
+            guard self.validate(mainKey: key) else { return }
             self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
         }
     }
     
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
         keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard let _ = key else { return }
+            guard self.validate(mainKey: key) else { return }
             afterBioAuthPassed()
         }
     }

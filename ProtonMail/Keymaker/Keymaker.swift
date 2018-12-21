@@ -118,8 +118,8 @@ public class Keymaker: NSObject {
         let isMainThread = Thread.current.isMainThread
         
         self.controlThread.async {
-            guard self.mainKey == nil else {
-                isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
+            guard self._mainKey == nil else {
+                isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
                 return
             }
             
@@ -130,7 +130,7 @@ public class Keymaker: NSObject {
 
             let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
             self._mainKey = mainKeyBytes
-            isMainThread ? DispatchQueue.main.async { handler(self.mainKey) } : handler(self.mainKey)
+            isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
         }
     }
     
