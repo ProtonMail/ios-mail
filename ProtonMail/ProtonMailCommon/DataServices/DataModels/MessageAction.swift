@@ -44,9 +44,9 @@ enum MessageAction: String {
     // Move mailbox
     case delete = "delete"
 //    case inbox = "inbox"
-    case spam = "spam"
-    case trash = "trash"
-    case archive = "archive"
+//    case spam = "spam"
+//    case trash = "trash"
+//    case archive = "archive"
     
     // Send
     case send = "send"

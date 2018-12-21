@@ -35,9 +35,28 @@ extension APIService {
     }
     
     func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
-        let env = 16 // FIXME: debug value only
-        let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         
+        let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+        #if Enterprise
+            #if DEBUG
+                //let env = 20
+                let env = 17
+            #else
+                //let env = 21
+                let env = 7
+            #endif
+        #else
+            // const PROVIDER_FCM_IOS = 4;
+            // const PROVIDER_FCM_IOS_BETA = 5;
+            #if DEBUG
+                //let env = 1
+                let env = 16
+            #else
+                //let env = 2
+                let env = 6
+            #endif
+        
+        #endif
         let parameters = [
             "DeviceToken" : settings.token,
             "DeviceName" : UIDevice.current.name,
