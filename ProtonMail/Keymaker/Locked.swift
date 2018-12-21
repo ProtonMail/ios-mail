@@ -13,6 +13,8 @@ public struct Locked<T> {
     public enum Errors: Error {
         case failedToTurnValueIntoData
         case keyDoesNotMatch
+        case failedToEncrypt
+        case failedToDecrypt
     }
     public private(set) var encryptedValue: Data
     
@@ -31,28 +33,12 @@ public struct Locked<T> {
 
 extension Locked where T == String {
     public init(clearValue: T, with key: Keymaker.Key) throws {
-        guard let data = clearValue.data(using: .utf8) else {
-            throw Errors.failedToTurnValueIntoData
-        }
-        
-        var error: NSError?
-        let cypherBytes = CryptoEncryptWithoutIntegrity(key, data, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
-        
-        if let error = error {
-            throw error
-        }
-        self.encryptedValue = cypherBytes
+        self.encryptedValue = try Locked<[String]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
-        var error: NSError?
-        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
-        if let error = error {
-            throw error
-        }
-
-        guard let value = String(data: clearBytes, encoding: .utf8) else {
-            throw Errors.failedToTurnValueIntoData
+        guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+            throw Errors.failedToDecrypt
         }
         return value
     }
@@ -60,23 +46,14 @@ extension Locked where T == String {
 
 extension Locked where T == Data {
     public init(clearValue: T, with key: Keymaker.Key) throws {
-        var error: NSError?
-        let cypherBytes = CryptoEncryptWithoutIntegrity(key, clearValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
-        
-        if let error = error {
-            throw error
-        }
-        self.encryptedValue = cypherBytes
+        self.encryptedValue = try Locked<[Data]>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
-        var error: NSError?
-        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
-            
-        if let error = error {
-            throw error
+        guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+            throw Errors.failedToDecrypt
         }
-        return clearBytes
+        return value
     }
 }
 
@@ -84,22 +61,30 @@ extension Locked where T: Codable {
     public init(clearValue: T, with key: Keymaker.Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
-        let cypherBytes = CryptoEncryptWithoutIntegrity(key, data, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
-            
+        let cypherData = CryptoEncryptWithoutIntegrity(Data(bytes: key), data, Data(bytes: key.prefix(16)), &error)
+        
         if let error = error {
             throw error
         }
-        self.encryptedValue = Data(bytes: cypherBytes)
+        guard let lockedData = cypherData else {
+            throw Errors.failedToEncrypt
+        }
+        
+        self.encryptedValue = lockedData
     }
     
     public func unlock(with key: Keymaker.Key) throws -> T {
         var error: NSError?
-        let clearBytes = CryptoDecryptWithoutIntegrity(key, self.encryptedValue, key.subdata(in: .init(uncheckedBounds: (lower: 0, upper: 16))), &error) ?? Data()
+        let clearData = CryptoDecryptWithoutIntegrity(Data(bytes: key), self.encryptedValue, Data(bytes: key.prefix(16)), &error)
             
         if let error = error {
             throw error
         }
-        let value = try PropertyListDecoder().decode(T.self, from: clearBytes)
+        guard let unlockedData = clearData else {
+            throw Errors.failedToDecrypt
+        }
+        
+        let value = try PropertyListDecoder().decode(T.self, from: unlockedData)
         return value
     }
 }
