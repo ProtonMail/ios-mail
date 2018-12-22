@@ -109,7 +109,7 @@ extension Message {
         
         if labelID == Location.inbox.rawValue && (self.contains(label: "2") || self.contains(label: "7")) {
             // move message to 2 / 7
-            addLabelID = "7"
+            addLabelID = sentSelf ? Location.inbox.rawValue : "7"
         }
         
         if let context = self.managedObjectContext {

@@ -800,8 +800,8 @@ class MessageDataService : Service {
     func fetchedResults(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = sharedCoreDataService.mainManagedObjectContext
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        var predicates : [NSPredicate] = [NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", labelID, Message.Attributes.messageStatus)]
+//        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        //var predicates : [NSPredicate] = [NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", labelID, Message.Attributes.messageStatus)]
 //        if labelID == Message.Location.sent.rawValue || labelID == Message.Location.draft.rawValue {
 //            let forSent = [Message.Location.trash, Message.Location.spam, Message.Location.archive].map {
 //                return NSPredicate(format:"(SUBQUERY(labels, $a, $a.labelID =[cd] %@).@count == 0)", $0.rawValue)
@@ -810,7 +810,12 @@ class MessageDataService : Service {
 //            predicates.append(NSPredicate(format: "(SUBQUERY(labels, $a, $a.labelID MATCHES %@ AND $a.type == 1 AND $a.exclusive == true).@count == 0)", "(?!^\\d+$)^.+$"))
 //        }
         
-        fetchRequest.predicate = NSCompoundPredicate.init(type: .and, subpredicates: predicates)
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
+                                             labelID, Message.Attributes.messageStatus)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.fetchBatchSize = 30
+        fetchRequest.includesPropertyValues = false
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         fetchRequest.fetchBatchSize = 30
         fetchRequest.includesPropertyValues = false

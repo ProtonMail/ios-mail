@@ -100,6 +100,12 @@ extension Message {
         }
     }
     
+    var sentSelf : Bool {
+        get {
+            return self.flag.contains(.sent) && self.flag.contains(.received)
+        }
+    }
+    
     /// check if message contains a draft label
     var draft : Bool {
         get {
