@@ -33,10 +33,10 @@ class SharePinUnlockCoordinator : ModalCoordinator {
     
     var services: ServiceFactory
     
-    weak var destinationNavigationController: UINavigationController? = nil
+    weak var destinationNavigationController: UINavigationController?
     weak var navigationController: UINavigationController?
     
-    var viewController: VC?
+    var viewController: SharePinUnlockViewController?
     let viewModel: PinCodeViewModel
     lazy var configuration: ((VC) -> ())? = { vc in
         vc.viewModel = self.viewModel

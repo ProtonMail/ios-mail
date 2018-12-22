@@ -29,7 +29,7 @@
 import Foundation
 import AudioToolbox
 
-protocol PinCodeViewDelegate {
+protocol PinCodeViewDelegate : AnyObject {
     func Cancel()
     func Next(_ code : String)
     func TouchID()
@@ -61,10 +61,10 @@ class PinCodeView : PMView {
     @IBOutlet weak var attempsLabel: UILabel!
     @IBOutlet weak var whiteLineView: UIView!
     
-    var delegate : PinCodeViewDelegate?
+    weak var delegate : PinCodeViewDelegate?
     
     var pinCode : String = ""
-    
+
     override func getNibName() -> String {
         return "PinCodeView";
     }

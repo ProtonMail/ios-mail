@@ -32,7 +32,7 @@ import Foundation
 /// Main entry point to the app
 class ShareAppCoordinator: CoordinatorNew {
     // navigation controller instance -- entry
-    internal var navigationController: UINavigationController
+    internal weak var navigationController: UINavigationController?
     
     ///TODO::fixme move the inital to factory
     let serviceHolder: ServiceFactory = {
@@ -49,7 +49,7 @@ class ShareAppCoordinator: CoordinatorNew {
         self.loadUnlockCheckView()
     }
     
-    init(navigation: UINavigationController) {
+    init(navigation: UINavigationController?) {
         self.navigationController = navigation
     }
     

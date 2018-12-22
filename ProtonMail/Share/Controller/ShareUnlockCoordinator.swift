@@ -29,6 +29,8 @@
 import Foundation
 
 class ShareUnlockCoordinator : PushCoordinator {
+    var destinationNavigationController: UINavigationController?
+    
     typealias VC = ShareUnlockViewController
     
     var viewController: ShareUnlockViewController?
@@ -37,8 +39,6 @@ class ShareUnlockCoordinator : PushCoordinator {
     var services: ServiceFactory
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in
-        // configurateion for set up the view models when needed
-        
     }
     
     enum Destination : String {
@@ -46,13 +46,19 @@ class ShareUnlockCoordinator : PushCoordinator {
         case composer = "composer"
     }
     
-    init(navigation : UINavigationController, services: ServiceFactory) {
+    deinit {
+        print("deinit ShareUnlockCoordinator")
+    }
+    
+    init(navigation : UINavigationController?, services: ServiceFactory) {
+        print("init ShareUnlockCoordinator")
         //parent navigation
         self.navigationController = navigation
         self.services = services
         //create self view controller
         self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController" , bundle: nil)
     }
+
     
     private func goPin() {
         //UI refe
