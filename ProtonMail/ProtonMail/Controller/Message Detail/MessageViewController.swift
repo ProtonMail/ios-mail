@@ -526,17 +526,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                                                selector: #selector(MessageViewController.reachabilityChanged(_:)),
                                                name: .reachabilityChanged,
                                                object: nil)
-        
-        if message != nil {
-            if let context = message.managedObjectContext {
-                message.unRead = false
-                message.needsUpdate = true
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
-            }
-        }
-        
+
         self.emailView?.contentWebView.isUserInteractionEnabled = true;
         self.emailView?.contentWebView.becomeFirstResponder()
         

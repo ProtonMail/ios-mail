@@ -80,8 +80,6 @@ final public class Message: NSManagedObject {
     @NSManaged public var messageType : NSNumber  // 0 message 1 rate
     ///"MIMEType": "text/html",
     @NSManaged public var mimeType : String?
-    @available(*, deprecated, message: "this used to check if observed event needs to trigger a api call. we don't want to do it anymore")
-    @NSManaged public var needsUpdate : Bool
     ///"NumAttachments":0,
     @NSManaged public var numAttachments: NSNumber
     ///local use, only when send/draft/reply/forward. to track the orginal message id

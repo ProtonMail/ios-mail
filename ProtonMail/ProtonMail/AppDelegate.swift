@@ -188,7 +188,7 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         if #available(iOS 11.0, *) {
-            self.generateToken()
+            //self.generateToken()
         }
         
         self.coordinator.start()

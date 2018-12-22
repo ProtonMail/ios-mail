@@ -629,10 +629,13 @@ class MessageDataService : Service {
                                 try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
                                 message.isDetailDownloaded = true
                                 message.messageStatus = 1
-                                message.needsUpdate = true
+                                self.queue(message, action: .read)
+                                if message.unRead {
+                                    self.updateCounter(markUnRead: false, on: message)
+                                }
                                 message.unRead = false
-
                                 error = context.saveUpstreamIfNeeded()
+                                
                                 DispatchQueue.main.async {
                                     completion(task, response, Message.ObjectIDContainer(message), error)
                                 }
@@ -679,7 +682,10 @@ class MessageDataService : Service {
                                     if let message_n = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                         message_n.messageStatus = 1
                                         message_n.isDetailDownloaded = true
-                                        message_n.needsUpdate = true
+                                        self.queue(message, action: .read)
+                                        if message_n.unRead {
+                                            self.updateCounter(markUnRead: false, on: message)
+                                        }
                                         message_n.unRead = false
                                         
                                         let tmpError = context.saveUpstreamIfNeeded()
@@ -712,6 +718,7 @@ class MessageDataService : Service {
                 sharedAPIService.messageDetail(messageID: message.messageID, completion: completionWrapper)
             }
         } else {
+            sharedMessageDataService.mark(message: message, unRead: false)
             DispatchQueue.main.async {
                 completion(nil, nil, Message.ObjectIDContainer(message), nil)
             }
@@ -731,25 +738,13 @@ class MessageDataService : Service {
                                 msg.removeValue(forKey: "Starred")
                                 msg.removeValue(forKey: "test")
                                 do {
-                                    var needOffset = 0
-                                    if let msg = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                        needOffset = msg.unRead ? -1 : 0
-                                    }
                                     if let message_out = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context) as? Message {
                                         message_out.messageStatus = 1
                                         message_out.isDetailDownloaded = true
-                                        message_out.needsUpdate = false
-                                        
-                                        var count = lastUpdatedStore.unreadCountForKey(Message.Location.inbox.rawValue)
+                                        self.queue(message_out, action: .read)
                                         if message_out.unRead == true {
                                             message_out.unRead = false
-                                            self.queue(message_out, action: .read)
-                                            
-                                            count = count + needOffset
-                                            if count < 0 {
-                                                count = 0
-                                            }
-                                            lastUpdatedStore.updateUnreadCountForKey(Message.Location.inbox.rawValue, count: count)
+                                            self.updateCounter(markUnRead: false, on: message_out)
                                         }
                                         let tmpError = context.saveUpstreamIfNeeded()
 
@@ -1464,7 +1459,10 @@ class MessageDataService : Service {
                         }
                         //TODO::fix later 1.7
                         message.mimeType = "text/html"
-                        message.needsUpdate = false
+                        self.queue(message, action: .read)
+                        if message.unRead {
+                            self.updateCounter(markUnRead: false, on: message)
+                        }
                         message.unRead = false
                         message.isDetailDownloaded = false
                         if let lid = message.remove(labelID: Message.Location.draft.rawValue), message.unRead {
