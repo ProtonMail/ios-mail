@@ -134,6 +134,43 @@ extension Message {
         return outLabel;
     }
     
+    /// in rush , clean up later
+    func setAsDraft() {
+        if let context = self.managedObjectContext {
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            if let toLabel = Label.labelForLableID(Location.draft.rawValue, inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            return
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.add(toLabel)
+                }
+            }
+            
+            if let toLabel = Label.labelForLableID("1", inManagedObjectContext: context) {
+                var exsited = false
+                for l in labelObjs {
+                    if let label = l as? Label {
+                        if label == toLabel {
+                            exsited = true
+                            return
+                        }
+                    }
+                }
+                if !exsited {
+                    labelObjs.add(toLabel)
+                }
+            }
+            self.setValue(labelObjs, forKey: "labels")
+        }
+    }
+    
     
     func firstValidFolder() -> String? {
         let labelObjs = self.mutableSetValue(forKey: "labels")
@@ -219,48 +256,6 @@ extension Message {
         return nil
     }
 
-//    func removeFromFolder(current: Label, location : MessageLocation, keepSent: Bool) {
-//        if let context = self.managedObjectContext {
-//            context.performAndWait() {
-//                let labelObjs = self.mutableSetValue(forKey: "labels")
-//                if keepSent && current.exclusive == false {
-//
-//                } else {
-//                    let fromLabelID = current.labelID
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label.labelID == fromLabelID {
-//                                labelObjs.remove(label)
-//                                break
-//                            }
-//                        }
-//                    }
-//                }
-//
-//                let toLableID = String(location.rawValue)
-//                if let toLabel = Label.labelForLableID(toLableID, inManagedObjectContext: context) {
-//                    var exsited = false
-//                    for l in labelObjs {
-//                        if let label = l as? Label {
-//                            if label == toLabel {
-//                                exsited = true
-//                                break
-//                            }
-//                        }
-//                    }
-//                    if !exsited {
-//                        labelObjs.add(toLabel)
-//                    }
-//                }
-//
-//                self.setValue(labelObjs, forKey: "labels")
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
-//        }
-//    }
-    
     var subject : String {
         return title
     }
@@ -302,33 +297,7 @@ extension Message {
             }
         }
     }
-    
-//    class func deleteLocation(_ location : MessageLocation) -> Bool{
-//         let mContext = sharedCoreDataService.backgroundManagedObjectContext
-//         var success = false
-//         mContext.performAndWait {
-//             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-//             if location == .spam || location == .trash {
-//                 fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
-//                 fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-//                 do {
-//                     if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
-//                         for message in oldMessages {
-//                             mContext.delete(message)
-//                         }
-//                         if let error = mContext.saveUpstreamIfNeeded() {
-//                             PMLog.D(" error: \(error)")
-//                         } else {
-//                             success = true
-//                         }
-//                     }
-//                 } catch {
-//                     PMLog.D(" error: \(error)")
-//                 }
-//             }
-//         }
-//         return success
-    
+
     class func messageForMessageID(_ messageID: String, inManagedObjectContext context: NSManagedObjectContext) -> Message? {
         return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.messageID, matchingValue: messageID) as? Message
     }
@@ -557,6 +526,7 @@ extension Message {
         newMessage.messageStatus = message.messageStatus
         newMessage.numAttachments = message.numAttachments
         newMessage.mimeType = message.mimeType
+        newMessage.setAsDraft()
 
         if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
             PMLog.D("error: \(error)")

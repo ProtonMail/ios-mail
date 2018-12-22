@@ -415,21 +415,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             if let contact = sender as? ContactVO {
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController)
-                //TODO:: finish up here
                 let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
                 viewModel.addToContacts(contact)
                 let coordinator = ComposeCoordinator(vc: composeViewController,
                                                      vm: viewModel, services: ServiceFactory.default) //set view model
                 coordinator.start()
-//                coordinator.viewController = composeViewController
-//                composeViewController.set(coordinator: coordinator)
             } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
                 sharedVMService.newDraft(vmp: composeViewController)
-                
                 let viewModel = ComposeViewModelImpl(msg: message, action: tapped)
-                
-                //TODO:: finish up here
                 let coordinator = ComposeCoordinator(vc: composeViewController,
                                                      vm: viewModel, services: ServiceFactory.default) //set view model
                 coordinator.start()

@@ -31,8 +31,9 @@ import Foundation
 class ShareUnlockCoordinator : PushCoordinator {
     typealias VC = ShareUnlockViewController
     
-    internal weak var navigationController: UINavigationController?
     var viewController: ShareUnlockViewController?
+    
+    internal weak var navigationController: UINavigationController?
     var services: ServiceFactory
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in

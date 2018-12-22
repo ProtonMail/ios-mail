@@ -130,7 +130,7 @@ final public class Message: NSManagedObject {
     
     
     //@NSManaged public var tag: String
-
+    
     //temp cache memory only
     var checkingSign : Bool = false
     var checkedSign : Bool = false

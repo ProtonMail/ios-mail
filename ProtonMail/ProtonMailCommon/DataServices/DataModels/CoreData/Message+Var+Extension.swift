@@ -179,8 +179,20 @@ extension Message {
             self.flag = flag
         }
     }
-
     
+    /// this will check two type of sent folder
+    var sentHardCheck : Bool {
+        get {
+            return self.contains(label: Message.Location.sent) || self.contains(label: "2")
+        }
+    }
+    
+    /// this will check two type of draft folder
+    var draftHardCheck : Bool {
+        get {
+            return self.contains(label: Message.Location.draft) || self.contains(label: "1")
+        }
+    }
 }
 
 

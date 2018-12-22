@@ -200,6 +200,8 @@ class MessageDataService : Service {
             return false
         }
         
+        self.queue(message, action: .delete)
+        
         if let lid = message.remove(labelID: label), message.unRead {
             self.updateCounter(plus: false, with: lid)
         }
@@ -216,7 +218,6 @@ class MessageDataService : Service {
             PMLog.D(" error: \(error)")
             return false
         }
-        self.queue(message, action: .delete)
         return true
     }
     

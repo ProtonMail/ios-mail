@@ -29,19 +29,18 @@
 import Foundation
 
 class SharePinUnlockCoordinator : ModalCoordinator {
-    var services: ServiceFactory
-    
     typealias VC = SharePinUnlockViewController
     
-    var destinationNavigationController: UINavigationController? = nil
+    var services: ServiceFactory
+    
+    weak var destinationNavigationController: UINavigationController? = nil
+    weak var navigationController: UINavigationController?
     
     var viewController: VC?
     let viewModel: PinCodeViewModel
     lazy var configuration: ((VC) -> ())? = { vc in
         vc.viewModel = self.viewModel
     }
-    
-    var navigationController: UINavigationController
     
     init(navigation : UINavigationController, vm: PinCodeViewModel, services: ServiceFactory, delegate: SharePinUnlockViewControllerDelegate) {
         //parent navigation

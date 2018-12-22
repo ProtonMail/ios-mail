@@ -103,8 +103,6 @@ extension Message {
                 return LocalString._locations_spam_title
             case .allmail:
                 return LocalString._locations_all_mail_title
-            default:
-                return LocalString._locations_inbox_title
             }
         }
     }

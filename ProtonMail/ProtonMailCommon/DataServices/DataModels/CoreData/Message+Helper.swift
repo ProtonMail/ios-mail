@@ -53,6 +53,7 @@ extension Message {
         message.isEncrypted = 1
         message.expirationOffset = Int32(expirationTimeInterval)
         message.messageStatus = 1
+        message.setAsDraft()
         
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

@@ -179,7 +179,7 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
             self.headerView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
             self.headerView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
             
-            switch self.viewModel.messageAction!
+            switch self.viewModel.messageAction
             {
             case .openDraft, .reply, .replyAll:
                 if !self.isShowingConfirm {

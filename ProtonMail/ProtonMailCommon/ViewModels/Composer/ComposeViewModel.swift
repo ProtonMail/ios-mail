@@ -85,7 +85,7 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 class ComposeViewModel {
     var message : Message?
-    var messageAction : ComposeMessageAction!
+    var messageAction : ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = []
     var ccSelectedContacts: [ContactPickerModelProtocol] = []
     var bccSelectedContacts: [ContactPickerModelProtocol] = []

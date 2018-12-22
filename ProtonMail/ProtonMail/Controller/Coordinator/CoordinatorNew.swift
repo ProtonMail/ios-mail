@@ -107,7 +107,7 @@ extension PushCoordinator where VC: UIViewController, VC: CoordinatedNew {
 
 protocol ModalCoordinator: DefaultCoordinator {
     var configuration: ((VC) -> ())? { get }
-    var navigationController: UINavigationController { get }
+    var navigationController: UINavigationController? { get }
     var destinationNavigationController: UINavigationController? { get }
 }
 
@@ -122,10 +122,10 @@ extension ModalCoordinator where VC: UIViewController, VC: CoordinatedNew {
         
         if let destinationNavigationController = destinationNavigationController {
             // wrapper navigation controller given, present it
-            navigationController.present(destinationNavigationController, animated: animated, completion: nil)
+            navigationController?.present(destinationNavigationController, animated: animated, completion: nil)
         } else {
             // no wrapper navigation controller given, present actual controller
-            navigationController.present(viewController, animated: animated, completion: nil)
+            navigationController?.present(viewController, animated: animated, completion: nil)
         }
     }
     
