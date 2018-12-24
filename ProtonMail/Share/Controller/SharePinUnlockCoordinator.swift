@@ -38,7 +38,7 @@ class SharePinUnlockCoordinator : ModalCoordinator {
     
     var viewController: SharePinUnlockViewController?
     let viewModel: PinCodeViewModel
-    lazy var configuration: ((VC) -> ())? = { vc in
+    lazy var configuration: ((VC) -> ())? = { [unowned self] vc in
         vc.viewModel = self.viewModel
     }
     

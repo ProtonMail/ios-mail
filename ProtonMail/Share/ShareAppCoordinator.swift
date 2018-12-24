@@ -33,6 +33,7 @@ import Foundation
 class ShareAppCoordinator: CoordinatorNew {
     // navigation controller instance -- entry
     internal weak var navigationController: UINavigationController?
+    private var nextCoordinator: CoordinatorNew?
     
     ///TODO::fixme move the inital to factory
     let serviceHolder: ServiceFactory = {
@@ -56,7 +57,7 @@ class ShareAppCoordinator: CoordinatorNew {
     ///
     private func loadUnlockCheckView() {
         // create next coordinator
-        let unlock = ShareUnlockCoordinator(navigation: navigationController, services: serviceHolder)
-        unlock.start()
+        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: serviceHolder)
+        self.nextCoordinator?.start()
     }
 }

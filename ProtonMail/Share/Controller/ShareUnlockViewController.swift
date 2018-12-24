@@ -32,7 +32,7 @@ var sharedUserDataService : UserDataService!
 
 class ShareUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = ShareUnlockCoordinator
-    private var coordinator: ShareUnlockCoordinator?
+    private weak var coordinator: ShareUnlockCoordinator?
     
     func set(coordinator: ShareUnlockCoordinator) {
         self.coordinator = coordinator
