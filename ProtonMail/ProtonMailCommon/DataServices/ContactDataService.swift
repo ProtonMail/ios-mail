@@ -89,8 +89,9 @@ class ContactDataService: Service  {
      - Parameter completion: async add contact complete response
      **/
     func add(cards: [[CardData]],
+             authCredential: AuthCredential?,
              completion: ContactAddComplete?) {
-        let api = ContactAddRequest<ContactAddResponse>(cards: cards)
+        let api = ContactAddRequest<ContactAddResponse>(cards: cards, authCredential: authCredential)
         api.call { (task, response, hasError) in
             var contacts_json : [[String : Any]] = []
             var lasterror : NSError?
@@ -143,7 +144,7 @@ class ContactDataService: Service  {
      - Parameter cards: vcard contact data -- 4 different types
      - Parameter completion: async add contact complete response
      **/
-    func imports(cards: [[CardData]], cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
+    func imports(cards: [[CardData]], authCredential: AuthCredential?, cancel: ContactImportCancel?, update: ContactImportUpdate?, completion: ContactImportComplete?) {
         
         {
             var lasterror : [String] = []
@@ -162,7 +163,7 @@ class ContactDataService: Service  {
                 processed += 1
                 if processed == count || tempCards.count >= 3 {
                     
-                    let api = ContactAddRequest<ContactAddResponse>(cards: tempCards)
+                    let api = ContactAddRequest<ContactAddResponse>(cards: tempCards, authCredential: authCredential)
                     do {
                         let response = try api.syncCall()
                         

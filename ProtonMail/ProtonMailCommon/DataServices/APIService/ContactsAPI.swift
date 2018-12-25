@@ -264,12 +264,16 @@ extension Array where Element: CardData {
 
 final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
     let cardsList : [[CardData]]
-    init(cards: [CardData]) {
+    init(cards: [CardData], authCredential: AuthCredential?) {
         self.cardsList = [cards]
+        super.init()
+        self.authCredential = authCredential
     }
     
-    init(cards: [[CardData]]) {
+    init(cards: [[CardData]], authCredential: AuthCredential?) {
         self.cardsList = cards
+        super.init()
+        self.authCredential = authCredential
     }
     
     override public func path() -> String {

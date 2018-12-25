@@ -207,6 +207,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
+            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
+            let authCredential = AuthCredential.fetchFromKeychain() else
+        {
+            complete(NSError.lockError())
+            return
+        }
+        
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
@@ -244,14 +252,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-            return; //with error
-        }
         PMLog.D(vcard2Str)
         //TODO:: fix the try?
         let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
                                                                 privateKey: userkey.private_key,
-                                                                passphrase: sharedUserDataService.mailboxPassword!,
+                                                                passphrase: mailboxPassword,
                                                                 trim: true)
         //card 2 object
         let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
@@ -370,7 +375,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                            privateKey: userkey.private_key,
-                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           passphrase: mailboxPassword,
                                                            trim: true)
         //card 3 object
         let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
@@ -381,6 +386,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         sharedContactDataService.add(cards: [cards],
+                                     authCredential: authCredential,
                                      completion:  { (contacts : [Contact]?, error : NSError?) in
                                         if error == nil {
                                             complete(nil)
