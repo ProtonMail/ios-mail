@@ -32,13 +32,13 @@ import Foundation
 /// Auth extension
 extension APIService {
 
-    func auth(_ username: String, password: String, twoFACode: String?, completion: AuthCompleteBlock!) {
+    func auth(_ username: String, password: String, twoFACode: String?, authCredential: AuthCredential?, completion: AuthCompleteBlock!) {
         
         var forceRetry = false
         var forceRetryVersion = 2
         
         func tryAuth() {
-            AuthInfoRequest(username: username).call() { task, res, hasError in
+            AuthInfoRequest(username: username, authCredential: authCredential).call() { task, res, hasError in
                 if hasError {
                     guard let error = res?.error else {
                         return completion(task, nil, .resCheck, NSError.authInvalidGrant())

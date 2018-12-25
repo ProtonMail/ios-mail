@@ -221,7 +221,8 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
          tfaCode : String?,
          orgKey: String?,
          
-         auth: PasswordAuth?
+         auth: PasswordAuth?,
+         authCredential: AuthCredential?
          ) {
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
@@ -234,6 +235,10 @@ final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
         self.orgKey = orgKey
         self.tfaCode = tfaCode
         self.auth = auth
+        
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

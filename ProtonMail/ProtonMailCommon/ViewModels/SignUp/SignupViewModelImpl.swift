@@ -164,7 +164,7 @@ final class SignupViewModelImpl : SignupViewModel {
         if let key = self.newPrivateKey {
             {
                 do {
-                    let authModuls = try AuthModulusRequest().syncCall()
+                    let authModuls = try AuthModulusRequest(authCredential: nil).syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
@@ -212,7 +212,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let setupAddrApi = try SetupAddressRequest(domain_name: self.domain).syncCall()
                                             
                                             //need setup keys
-                                            let authModuls_for_key = try AuthModulusRequest().syncCall()
+                                            let authModuls_for_key = try AuthModulusRequest(authCredential: nil).syncCall()
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
                                                 throw SignUpCreateUserError.invalidModulsID.error
                                             }
@@ -240,9 +240,9 @@ final class SignupViewModelImpl : SignupViewModel {
                                                 PMLog.D("signup seupt key error")
                                             }
                                             
-                                            //setup swipe function
-                                            let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive).syncCall()
-                                            let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash).syncCall()
+                                            //setup swipe function, will use default auth credential
+                                            let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive, authCredential: nil).syncCall()
+                                            let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash, authCredential: nil).syncCall()
 
                                             sharedLabelsDataService.fetchLabels()
                                             ServicePlanDataService.shared.updateCurrentSubscription()

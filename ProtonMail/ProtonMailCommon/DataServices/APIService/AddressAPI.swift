@@ -44,8 +44,10 @@ final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
 final class UpdateAddressOrder : ApiRequest<ApiResponse> {
     let newOrder : [String]!
     
-    init(adds : [String]!) {
+    init(adds : [String]!, authCredential: AuthCredential?) {
         self.newOrder = adds
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -71,10 +73,12 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
     let addressid : String!
     let displayName : String!
     let signature : String!
-    init(id : String, displayName: String, signature: String) {
+    init(id : String, displayName: String, signature: String, authCredential: AuthCredential?) {
         self.addressid = id
         self.displayName = displayName
         self.signature = signature;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

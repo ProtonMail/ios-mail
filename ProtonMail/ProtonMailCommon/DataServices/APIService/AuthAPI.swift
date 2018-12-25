@@ -51,9 +51,10 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     var username : String!
     
-    init(username : String) {
+    init(username : String, authCredential: AuthCredential?) {
         super.init()
         self.username = username;
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -83,7 +84,10 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
 
 
 final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
-    
+    init(authCredential: AuthCredential?) {
+        super.init()
+        self.authCredential = authCredential
+    }
     override func method() -> APIService.HTTPMethod {
         return .get
     }
