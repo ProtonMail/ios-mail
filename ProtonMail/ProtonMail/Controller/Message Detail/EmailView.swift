@@ -29,9 +29,10 @@
 import Foundation
 import UIKit
 import QuickLook
+import WebKit
 
-extension UIDataDetectorTypes {
-    public static var pm_email: UIDataDetectorTypes = [.phoneNumber, .link]
+@available(iOS 10.0, *) extension WKDataDetectorTypes {
+    public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
 }
 
 protocol EmailViewActionsProtocol {
@@ -39,7 +40,7 @@ protocol EmailViewActionsProtocol {
 }
 
 /// this veiw is all subviews container
-class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
+class EmailView: UIView, UIScrollViewDelegate{
     
     var kDefautWebViewScale : CGFloat = 0.9
     //
@@ -51,7 +52,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
     
     // Message content
-    var contentWebView: UIWebView!
+    var contentWebView: PMWebView!
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -115,7 +116,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         let path = bundle.path(forResource: "editor", ofType: "css")
         let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
         let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
-        self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
+        self.contentWebView.loadHTMLString(htmlString, baseURL: URL(string: "about:blank"))
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
@@ -178,18 +179,26 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     fileprivate func setupContentView() {
-        self.contentWebView = PMWebView()
-        self.contentWebView.scalesPageToFit = true;
+        let preferences = WKPreferences()
+        preferences.javaScriptEnabled = false
+        preferences.javaScriptCanOpenWindowsAutomatically = false
+        
+        let config = WKWebViewConfiguration.init()
+        config.preferences = preferences
+        if #available(iOS 10.0, *) {
+            config.dataDetectorTypes = .pm_email
+        }
+        
+        self.contentWebView = PMWebView(frame: .zero, configuration: config)
         self.addSubview(contentWebView)
         
-        self.contentWebView.dataDetectorTypes = .pm_email
         self.contentWebView.backgroundColor = UIColor.white
         self.contentWebView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.isScrollEnabled = true
         self.contentWebView.scrollView.alwaysBounceVertical = true
         self.contentWebView.scrollView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.bounces = true;
-        self.contentWebView.delegate = self
+        self.contentWebView.navigationDelegate = self
         self.contentWebView.scrollView.delegate = self
         let w = UIScreen.main.bounds.width
         self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height:100);
@@ -216,23 +225,26 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             }
         })
     }
-    
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        if navigationType == .linkClicked {
-            if request.url?.scheme == "mailto" {
-                self.delegate?.mailto(request.url)
-                return false
-            } else {
-                UIApplication.shared.openURL(request.url!)
-                return false
-            }
+}
+
+extension EmailView: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated where navigationAction.request.url?.scheme == "mailto":
+            self.delegate?.mailto(navigationAction.request.url)
+            decisionHandler(.cancel)
+            
+        case .linkActivated where navigationAction.request.url != nil:
+            UIApplication.shared.openURL(navigationAction.request.url!)
+            decisionHandler(.cancel)
+            
+        default:
+            decisionHandler(.allow)
         }
-        return true
     }
+
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        
-        //contentWebView.scrollView.subviews.first?.becomeFirstResponder()
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         contentWebView.becomeFirstResponder()
         
         let contentSize = webView.scrollView.contentSize
@@ -242,8 +254,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             zoom = zoom * self.kDefautWebViewScale - 0.05
             self.kDefautWebViewScale = zoom
             PMLog.D("\(zoom)")
-            let js = "var t=document.createElement('meta'); t.name=\"viewport\"; t.content=\"target-densitydpi=device-dpi, width=device-width, initial-scale=\(self.kDefautWebViewScale), maximum-scale=3.0\"; document.getElementsByTagName('head')[0].appendChild(t);";
-            webView.stringByEvaluatingJavaScript(from: js);
         }
         self.emailLoaded = true
         self.updateContentLayout(false)        

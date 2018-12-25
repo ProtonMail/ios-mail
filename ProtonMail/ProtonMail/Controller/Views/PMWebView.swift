@@ -29,7 +29,7 @@
 import Foundation
 
 
-class  PMWebView: UIWebView {
+class  PMWebView: WKWebView {
     
     override var canBecomeFirstResponder : Bool {
         return true

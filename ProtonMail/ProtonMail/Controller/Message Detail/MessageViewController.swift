@@ -380,7 +380,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     
-    fileprivate func print(webView : UIWebView) {
+    fileprivate func print(webView : PMWebView) {
         //TODO:: here need reformat the size.
         let render = UIPrintPageRenderer()
         render.addPrintFormatter(webView.viewPrintFormatter(), startingAtPageAt: 0);
