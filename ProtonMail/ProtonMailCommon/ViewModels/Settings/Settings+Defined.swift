@@ -68,7 +68,8 @@ extension ELanguage {
                 return "Čeština"
             case .portuguese:
                 return "português"
-                
+            case .romanian:
+                return "românesc"
             case .count:
                 return ""
             }
@@ -112,6 +113,8 @@ extension ELanguage {
                 return LocalString._czech
             case .portuguese:
                 return LocalString._portuguese
+            case .romanian:
+                return LocalString._romanian
             case .count:
                 return ""
             }
@@ -155,6 +158,8 @@ extension ELanguage {
                 return "cs_CZ"
             case .portuguese:
                 return "pt_PT"
+            case .romanian:
+                return "ro_RO"
             case .count:
                 return "en_US"
             }
@@ -199,50 +204,55 @@ extension ELanguage {
                 return "cs"
             case .portuguese:
                 return "pt"
+            case .romanian:
+                return "ro"
             case .count:
                 return "en"
             }
         }
     }
 
-    static public func allItemsCode() -> [String] {
-        return [ELanguage.english.code,
-                ELanguage.german.code,
-                ELanguage.french.code,
-                ELanguage.russian.code,
-                ELanguage.spanish.code,
-                ELanguage.turkish.code,
-                ELanguage.polish.code,
-                ELanguage.ukrainian.code,
-                ELanguage.dutch.code,
-                ELanguage.italian.code,
-                ELanguage.portugueseBrazil.code,
-                ELanguage.chineseSimplified.code,
-                ELanguage.chineseTraditional.code,
-                ELanguage.catalan.code,
-                ELanguage.danish.code,
-                ELanguage.czech.code,
-                ELanguage.portuguese.code
-        ]
-    }
+//    static public func allItemsCode() -> [String] {
+//        return [ELanguage.english.code,
+//                ELanguage.german.code,
+//                ELanguage.french.code,
+//                ELanguage.russian.code,
+//                ELanguage.spanish.code,
+//                ELanguage.turkish.code,
+//                ELanguage.polish.code,
+//                ELanguage.ukrainian.code,
+//                ELanguage.dutch.code,
+//                ELanguage.italian.code,
+//                ELanguage.portugueseBrazil.code,
+//                ELanguage.chineseSimplified.code,
+//                ELanguage.chineseTraditional.code,
+//                ELanguage.catalan.code,
+//                ELanguage.danish.code,
+//                ELanguage.czech.code,
+//                ELanguage.portuguese.code,
+//                ELanguage.romanian.code
+//        ]
+//    }
     static public func allItems() -> [ELanguage] {
-        return [.english,
-                .german,
-                .french,
-                .russian,
-                .spanish,
-                .turkish,
-                .polish,
-                .ukrainian,
-                .dutch,
-                .italian,
-                .portugueseBrazil,
-                .chineseSimplified,
-                .chineseTraditional,
-                .catalan,
-                .danish,
-                .czech,
-                .portuguese
+        return [
+            .catalan,
+            .czech,
+            .chineseSimplified,
+            .chineseTraditional,
+            .danish,
+            .dutch,
+            .english,
+            .french,
+            .german,
+            .italian,
+            .polish,
+            .portuguese,
+            .portugueseBrazil,
+            .romanian,
+            .russian,
+            .spanish,
+            .turkish,
+            .ukrainian,
         ]
     }
 }
