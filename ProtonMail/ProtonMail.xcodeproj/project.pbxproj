@@ -150,6 +150,7 @@
 		16F0E3E31AC970BAB7E33A82F73C3A72 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
 		17131F4C7C8F2441B81FE9863EDBD005 /* ContactEditCell+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18D268BE6C958860B247B9BE76D6DDED /* ContactEditCell+Delegates.swift */; };
 		17683DD2CCA79D6BC32558AF6850DCD3 /* Message+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45197333CE217D153E2CB7F49C9449CD /* Message+Location.swift */; };
+		1785716B664E88575AD51B49FAE798C8 /* ActionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */; };
 		178B242941604A0DE39D2D0AE7590EDB /* SpamScoreWarningView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E62C3AA33B3CFEBDC6C8534BCC758323 /* SpamScoreWarningView.xib */; };
 		17C4B5C785D21B727509DE868AF3FFAD /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218348D8D5386E202A585F3C1D3CF0A8 /* UITextField+Extension.swift */; };
 		17C8DE8143362CEE711CB48E244CD17C /* OpenPGP+String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 484BA40D9AED8FE12BB572BA8EF99800 /* OpenPGP+String+Extension.swift */; };
@@ -591,6 +592,7 @@
 		5A2F085CC1F662AD9E48CBCA794395C2 /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A22C634A036FFC8E1055518DB9867 /* APIServiceDefined.swift */; };
 		5A4711345BDDFF0C4E4C729204ECD6C6 /* ViewModelServiceImpl+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */; };
 		5A6855663102EC324474A755DC034B9D /* SignIn.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */; };
+		5A815A07A018C324A31DE23700F7922B /* ActionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */; };
 		5AB260D27701C2784A4B89F9057199B1 /* AuthCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A17542C9E75573C9AE7D50D090DC4BC /* AuthCredential.swift */; };
 		5AB5B6F0DF0CC8FA0D049705C9D2430D /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CC1C68F121EC52427410D7D6FA0753 /* MenuViewController.swift */; };
 		5AC313799E564E00DB83D3783F4D7DD3 /* CoreDataStoreTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338B5030AA2AC5D7A9B5F4BCE1CDEEA0 /* CoreDataStoreTest.swift */; };
@@ -1872,6 +1874,7 @@
 		011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
 		0209C6CD5DA523EFB7789D59AA08104E /* TimeInterval+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extension.swift"; sourceTree = "<group>"; };
 		0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
+		02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLabel.swift; sourceTree = "<group>"; };
 		02B874B017458C7227D9E2D4617DD04D /* Pods_SiriDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SiriDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactSearchTableViewController.swift; sourceTree = "<group>"; };
 		0329B2D1C050CD483F5A611FC8B4F3CB /* SettingsViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3031,6 +3034,7 @@
 		2AF3359203835E353281F42161F5BB46 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */,
 				76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */,
 				9D9667E37D3C989F4A573929F329B87D /* ForceUpgradeView.xib */,
 				D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */,
@@ -5520,6 +5524,7 @@
 				852C81FAB24147A8C7BB8E379737174B /* APIServiceDefined.swift in Sources */,
 				F4DF1DC2F9464756F4BFD7937790DA97 /* APIServiceRequest.swift in Sources */,
 				360ADF7F1EF2AB6859BC7C11527BF4E3 /* APIServiceResponse.swift in Sources */,
+				5A815A07A018C324A31DE23700F7922B /* ActionLabel.swift in Sources */,
 				2A260CF69B1199DE954F043BCACB0FBF /* ActivityIndicatorHelper.swift in Sources */,
 				BA36E66BF1C01E53370D5FA066E175B7 /* Address.swift in Sources */,
 				56E68D657FC1507D2D478DB5813E0B21 /* AddressAPI.swift in Sources */,
@@ -6014,6 +6019,7 @@
 				716C13816A0AD342FFC08FEB4679B9E2 /* APIServiceDefined.swift in Sources */,
 				560D452C2FEAC1EABE37A09B3678F05E /* APIServiceRequest.swift in Sources */,
 				729183EA5473E7A306A4D0DE97F72F9F /* APIServiceResponse.swift in Sources */,
+				1785716B664E88575AD51B49FAE798C8 /* ActionLabel.swift in Sources */,
 				DDE05A9D4374ED6C849C5BD2B4720651 /* ActivityIndicatorHelper.swift in Sources */,
 				86D4BCE044FF8D29FC0B242850B7023E /* Address.swift in Sources */,
 				472CCCF84185441403F7BC40C1A4A26A /* AddressAPI.swift in Sources */,
