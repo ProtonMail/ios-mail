@@ -103,6 +103,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
+        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
     }
     
     private func updateTitle() {
@@ -126,7 +127,6 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             setting_general_items.append(.notificationsSnooze)
         }
         
-        //userInfo = sharedUserDataService.userInfo!
         multi_domains = sharedUserDataService.userAddresses
         UIView.setAnimationsEnabled(false)
         self.settingTableView.reloadData()
@@ -432,7 +432,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerCell = tableView.dequeueReusableCell(withIdentifier: HeaderCell) as! CustomHeaderView
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderCell)
+        header?.textLabel?.font = Fonts.h6.regular
+        header?.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+        
         if(setting_headers[section] == SettingSections.version){
             var appVersion = "Unkonw Version"
             var libVersion = "| LibVersion: 1.0.0"
@@ -446,13 +449,13 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             
             let lib_v = PMNLibVersion.getLibVersion()
             libVersion = "| LibVersion: \(lib_v)"
-            headerCell.headerText.text = appVersion + " " + libVersion
+            header?.textLabel?.text = appVersion + " " + libVersion
         }
         else
         {
-            headerCell.headerText.text = setting_headers[section].description
+            header?.textLabel?.text = setting_headers[section].description
         }
-        return headerCell
+        return header
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -542,9 +545,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                 text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
                             }
                             alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
-                                let _ = self.navigationController?.popViewController(animated: true)
                                 userCachedStatus.lockTime = AutolockTimeout(rawValue: timeIndex)
-                                tableView.reloadData()
+                                DispatchQueue.main.async {
+                                    tableView.reloadRows(at: [indexPath], with: .fade)
+                                }
                             }))
                         }
                         let cell = tableView.cellForRow(at: indexPath)
