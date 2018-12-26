@@ -34,6 +34,7 @@ class ShareUnlockCoordinator : PushCoordinator {
     typealias VC = ShareUnlockViewController
     
     var viewController: ShareUnlockViewController?
+    private var nextCoordinator: CoordinatorNew?
     
     internal weak var navigationController: UINavigationController?
     var services: ServiceFactory
@@ -68,6 +69,7 @@ class ShareUnlockCoordinator : PushCoordinator {
                                                 vm: ShareUnlockPinCodeModelImpl(),
                                                 services: self.services,
                                                 delegate: self)
+        self.nextCoordinator = pinView
         pinView.start()
     }
     
@@ -83,6 +85,7 @@ class ShareUnlockCoordinator : PushCoordinator {
                                              files: vc.files,
                                              action: .newDraftFromShare)
         let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel, services: self.services)
+        self.nextCoordinator = compose
         compose.start()
     }
     

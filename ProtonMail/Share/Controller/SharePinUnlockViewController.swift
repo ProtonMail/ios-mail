@@ -36,7 +36,7 @@ protocol SharePinUnlockViewControllerDelegate : AnyObject {
 
 class SharePinUnlockViewController : UIViewController, CoordinatedNew {
     typealias coordinatorType = SharePinUnlockCoordinator
-    private var coordinator: SharePinUnlockCoordinator?
+    private weak var coordinator: SharePinUnlockCoordinator?
     var viewModel : PinCodeViewModel!
     weak var delegate : SharePinUnlockViewControllerDelegate?
     
