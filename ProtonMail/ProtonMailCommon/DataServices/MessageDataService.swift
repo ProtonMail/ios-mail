@@ -164,8 +164,8 @@ class MessageDataService : Service {
             //if move to trash. clean lables.
             let labelsFound = message.getNormalLableIDs()
             if lid == Message.Location.trash.rawValue {
-                message.unRead = false
                 self.remove(labels: labelsFound, on: message, cleanUnread: true)
+                message.unRead = false
             }
             if lid == Message.Location.spam.rawValue {
                 self.remove(labels: labelsFound, on: message, cleanUnread: false)

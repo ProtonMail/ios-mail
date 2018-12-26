@@ -137,6 +137,7 @@ extension Message {
                 }
             }
         }
+        labelIDs.append(Location.starred.rawValue)
         return labelIDs
     }
     
