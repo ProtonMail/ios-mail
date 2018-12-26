@@ -39,7 +39,7 @@ class PushNotificationDecryptor {
         static let deviceToken      = "latestDeviceToken"
     }
     
-    static var saver = KeychainSaver<PushSubscriptionSettings>(key: Key.encyptionKit)
+    static var saver = KeychainSaver<PushSubscriptionSettings>(key: Key.encyptionKit, cachingInMemory: false)
     static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.outdatedSettings, cachingInMemory: false)
     static var deviceTokenSaver = KeychainSaver<String>(key: Key.deviceToken, cachingInMemory: false)
     
