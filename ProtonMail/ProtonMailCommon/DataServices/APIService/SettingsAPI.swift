@@ -144,8 +144,10 @@ final class MailSettingsResponse : ApiResponse {
 final class UpdateNotify : ApiRequest<ApiResponse> {
     let notify : Int
     
-    init(notify : Int) {
+    init(notify : Int, authCredential: AuthCredential?) {
         self.notify = notify
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -177,12 +179,15 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
     let tfaCode : String? // optional
 
     
-    init(clientEphemeral : String!, clientProof : String!, sRPSession: String!, notificationEmail : String!, tfaCode : String?) {
+    init(clientEphemeral : String!, clientProof : String!, sRPSession: String!, notificationEmail : String!, tfaCode : String?, authCredential: AuthCredential?) {
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
         self.SRPSession = sRPSession
         self.email = notificationEmail
         self.tfaCode = tfaCode
+        
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -244,8 +249,10 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
 final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
     let displayName : String!
     
-    init(displayName: String) {
+    init(displayName: String, authCredential: AuthCredential?) {
         self.displayName = displayName
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -274,8 +281,10 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
     /// Initial
     ///
     /// - Parameter status: //0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
-    init(status: Int) {
+    init(status: Int, authCredential: AuthCredential?) {
         self.status = status
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -300,8 +309,10 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
 final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
-    init(action : MessageSwipeAction!) {
+    init(action : MessageSwipeAction!, authCredential: AuthCredential?) {
         self.newAction = action;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -326,8 +337,10 @@ final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
 final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
-    init(action : MessageSwipeAction!) {
+    init(action : MessageSwipeAction!, authCredential: AuthCredential?) {
         self.newAction = action;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -366,7 +379,8 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
          modulusID : String!,
          salt : String!,
          verifer : String!,
-         tfaCode : String?) {
+         tfaCode : String?,
+         authCredential: AuthCredential?) {
         
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
@@ -375,6 +389,10 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
+        
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

@@ -126,11 +126,16 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             setting_general_items.append(.notificationsSnooze)
         }
-        
-        multi_domains = sharedUserDataService.userAddresses
-        UIView.setAnimationsEnabled(false)
-        self.settingTableView.reloadData()
-        UIView.setAnimationsEnabled(true)
+   
+      
+      
+        // FIXME: this fixes crash in cases when viewWillAppear is called while the app is locked. That happens when API calls of other VCs are popping them from navigationController asynchronously in completion handlers. This fix is ugly, better approach will be to cache userInfo in a local variable and update sharedUserDataService accordingly.
+        if let _ = sharedUserDataService.userInfo {
+            multi_domains = sharedUserDataService.userAddresses
+            UIView.setAnimationsEnabled(false)
+            self.settingTableView.reloadData()
+            UIView.setAnimationsEnabled(true)
+        }
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     

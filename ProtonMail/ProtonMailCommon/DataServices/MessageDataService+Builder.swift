@@ -528,7 +528,7 @@ class EOAddressBuilder : PackageBuilder {
             
             
             //start build auth package
-            let authModuls = try AuthModulusRequest().syncCall()
+            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall() // will use standard auth credential
             guard let moduls_id = authModuls?.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }
