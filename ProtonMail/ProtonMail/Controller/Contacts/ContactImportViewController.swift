@@ -193,6 +193,13 @@ class ContactImportViewController: UIViewController {
     
     @available(iOS 9.0, *)
     internal func retrieveContactsWithStore(store: CNContactStore) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
+            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
+            let authCredential = AuthCredential.fetchFromKeychain() else
+        {
+            NSError.lockError().alertToast()
+            return
+        }
         
         {
             var pre_contacts : [[CardData]] = []
@@ -284,13 +291,9 @@ class ContactImportViewController: UIViewController {
                                     continue
                                 }
                                 
-                                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                                    continue //with error
-                                }
-                                
                                 let signed_vcard2 = try sharedOpenPGP.signTextDetached(vcard2Str,
                                                                                        privateKey: userkey.private_key,
-                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       passphrase: mailboxPassword,
                                                                                        trim: true)
                                 
                                 //card 2 object
@@ -309,7 +312,7 @@ class ContactImportViewController: UIViewController {
                                 let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
                                 let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
                                                                                        privateKey: userkey.private_key,
-                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       passphrase: mailboxPassword,
                                                                                        trim: true)
                                 //card 3 object
                                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
@@ -342,7 +345,7 @@ class ContactImportViewController: UIViewController {
                     self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
                 } ~> .main
                 
-                sharedContactDataService.imports(cards: pre_contacts, cancel: { () -> Bool in
+                sharedContactDataService.imports(cards: pre_contacts, authCredential: authCredential, cancel: { () -> Bool in
                     return self.cancelled
                 }, update: { (processed) in
                     {
