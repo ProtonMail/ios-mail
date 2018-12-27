@@ -40,15 +40,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
 
     override func showArchiveOption() -> Bool {
-        if let msg = messages.first {
-            //TODO::fixme
-//            let locations = msg.getLocationFromLabels()
-//            for loc in locations {
-//                if loc == .outbox {
-//                    return false;
-//                }
+//        if let msg = messages.first {
+//            if msg.contains(label: .sent) {
+//                return false
 //            }
-        }
+//        }
         return true;
     }
     
@@ -118,9 +114,9 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValue(forKey: "labels")
-                        labelObjs.remove(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
+                        if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
+                            sharedMessageDataService.updateCounter(plus: false, with: value.label.labelID)
+                        }
                     }
                 }
             } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
@@ -129,16 +125,16 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValue(forKey: "labels")
-                        labelObjs.add(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
+                        if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
+                            sharedMessageDataService.updateCounter(plus: true, with: value.label.labelID)
+                        }
                     }
                 }
             } else {
                 
             }
             
-            context.perform {
+            context.performAndWait {
                 let error = context.saveUpstreamIfNeeded()
                 if let error = error {
                     PMLog.D("error: \(error)")
@@ -147,22 +143,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         }
         
         if archiveMessage {
-            //TODO::fixme
-//            for message in self.messages {
-//                message.removeLocationFromLabels(currentlocation: message.location, location: .archive, keepSent: true)
-//                message.needsUpdate = false
-//                message.location = .archive
-//            }
-//            context.perform {
-//                if let error = context.saveUpstreamIfNeeded() {
-//                    PMLog.D("error: \(error)")
-//                }
-//            }
-//            let ids = self.messages.map { ($0).messageID }
-//
-//            let labelID = "\(MessageLocation.archive.rawValue)"
-//            let api = ApplyLabelToMessages(labelID: labelID, messages: ids)
-//            api.call(nil)
+            for message in self.messages {
+                if let flabel = message.firstValidFolder() {
+                    sharedMessageDataService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
+                }
+            }
         }
         
         return true
@@ -173,26 +158,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func cancel() {
-//        let context = sharedCoreDataService.newMainManagedObjectContext()
-//        for (_, value) in self.labelMessages {
-//            
-//            for mm in self.messages {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.removeObject(value.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//            
-//            for mm in value.originalSelected {
-//                let labelObjs = mm.mutableSetValueForKey("labels")
-//                labelObjs.addObject(value.label)
-//                mm.setValue(labelObjs, forKey: "labels")
-//            }
-//        }
-//        
-//        let error = context.saveUpstreamIfNeeded()
-//        if let error = error {
-//            PMLog.D("error: \(error)")
-//        }
+
     }
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {

@@ -121,9 +121,6 @@ class MessageDataService : Service {
         guard let context = message.managedObjectContext else {
             return false
         }
-//if message.contains(label: label) == apply {
-//  return false
-//}
         if apply {
             if message.add(labelID: label) != nil && message.unRead {
                 self.updateCounter(plus: true, with: label)
@@ -142,7 +139,7 @@ class MessageDataService : Service {
         return true
     }
     
-    private func updateCounter(plus: Bool, with labelID: String) {
+    func updateCounter(plus: Bool, with labelID: String) {
         let offset = plus ? 1 : -1
         var count = lastUpdatedStore.unreadCountForKey(labelID)
         count = count + offset
@@ -151,7 +148,7 @@ class MessageDataService : Service {
         }
         lastUpdatedStore.updateUnreadCountForKey(labelID, count: count)
     }
-    
+
     @discardableResult
     func move(message: Message, from fLabel: String, to tLabel: String) -> Bool {
         guard let context = message.managedObjectContext else {
@@ -159,10 +156,15 @@ class MessageDataService : Service {
         }
         if let lid = message.remove(labelID: fLabel), message.unRead {
             self.updateCounter(plus: false, with: lid)
+            if let id = message.selfSent(labelID: lid) {
+                self.updateCounter(plus: false, with: id)
+            }
         }
         if let lid = message.add(labelID: tLabel) {
             //if move to trash. clean lables.
-            let labelsFound = message.getNormalLableIDs()
+            var labelsFound = message.getNormalLableIDs()
+            labelsFound.append(Message.Location.starred.rawValue)
+            labelsFound.append(Message.Location.allmail.rawValue)
             if lid == Message.Location.trash.rawValue {
                 self.remove(labels: labelsFound, on: message, cleanUnread: true)
                 message.unRead = false
@@ -173,6 +175,9 @@ class MessageDataService : Service {
             
             if message.unRead {
                 self.updateCounter(plus: true, with: lid)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounter(plus: true, with: id)
+                }
             }
         }
         
@@ -190,6 +195,9 @@ class MessageDataService : Service {
         for label in labels {
             if let lid = message.remove(labelID: label), unread {
                 self.updateCounter(plus: false, with: lid)
+                if let id = message.selfSent(labelID: lid) {
+                    self.updateCounter(plus: false, with: id)
+                }
             }
         }
     }
@@ -204,10 +212,14 @@ class MessageDataService : Service {
         
         if let lid = message.remove(labelID: label), message.unRead {
             self.updateCounter(plus: false, with: lid)
+            if let id = message.selfSent(labelID: lid) {
+                self.updateCounter(plus: false, with: id)
+            }
         }
-        let labelsFound = message.getNormalLableIDs()
+        var labelsFound = message.getNormalLableIDs()
+        labelsFound.append(Message.Location.starred.rawValue)
+        labelsFound.append(Message.Location.allmail.rawValue)
         self.remove(labels: labelsFound, on: message, cleanUnread: true)
-        
         let labelObjs = message.mutableSetValue(forKey: "labels")
         labelObjs.removeAllObjects()
         message.setValue(labelObjs, forKey: "labels")

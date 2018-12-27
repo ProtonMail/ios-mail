@@ -44,10 +44,6 @@ class LabelboxViewModelImpl : MailboxViewModel {
         return self.label.exclusive ? self.label.name : ""
     }
     
-    open func stayAfterAction () -> Bool {
-        return true
-    }
-
     override var localizedNavigationTitle: String {
         return self.label.name
     }
@@ -57,6 +53,9 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     open override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
+        if action == .trash {
+            return false
+        }
         return true
     }
     

@@ -181,7 +181,7 @@ extension Message {
                 }
                 
                 if !label.labelID.preg_match ("(?!^\\d+$)^.+$") {
-                    if label.labelID != "1", label.labelID != "2", label.labelID != "5" {
+                    if label.labelID != "1", label.labelID != "2", label.labelID != "5", label.labelID != "10" {
                         return label.labelID
                     }
                 }
@@ -193,6 +193,9 @@ extension Message {
     
     @discardableResult
     func remove(labelID: String) -> String? {
+        if Location.allmail.rawValue == labelID  {
+            return Location.allmail.rawValue
+        }
         var outLabel: String?
         if let _ = self.managedObjectContext {
             let labelObjs = self.mutableSetValue(forKey: "labels")
@@ -207,7 +210,7 @@ extension Message {
                     //case spam    = "4"
                     //case trash   = "3"
                     //case allmail = "5"
-                    if label.labelID == "1" || label.labelID == "2" || label.labelID == "5" {
+                    if label.labelID == "1" || label.labelID == "2" || label.labelID == Location.allmail.rawValue {
                         continue
                     }
                     if label.labelID == labelID {
@@ -221,6 +224,32 @@ extension Message {
         }
         return outLabel
     }
+    
+    
+    func selfSent(labelID: String) -> String? {
+        if let _ = self.managedObjectContext {
+            let labelObjs = self.mutableSetValue(forKey: "labels")
+            for l in labelObjs {
+                if let label = l as? Label {
+                    if labelID == Location.inbox.rawValue {
+                        if label.labelID == "2" || label.labelID == "7" {
+                            return Location.sent.rawValue
+                        }
+                    }
+                    
+                    if labelID == Location.sent.rawValue {
+                        if label.labelID == Location.inbox.rawValue {
+                            return Location.inbox.rawValue
+                        }
+                    
+                    }
+                }
+            }
+        }
+        return nil
+    }
+    
+    
     
     func getShowLocationNameFromLabels(ignored : String) -> String? {
         //TODO::fix me
