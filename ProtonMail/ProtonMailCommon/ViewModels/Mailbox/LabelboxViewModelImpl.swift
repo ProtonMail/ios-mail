@@ -53,7 +53,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
     }
     
     open override func stayAfterAction (_ action: MessageSwipeAction) -> Bool {
-        if action == .trash {
+        if action == .trash || action == .spam {
             return false
         }
         return true
