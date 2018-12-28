@@ -130,6 +130,7 @@ extension Message {
                 }
             }
             self.setValue(labelObjs, forKey: "labels")
+            
         }
         return outLabel;
     }
