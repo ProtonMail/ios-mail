@@ -1408,7 +1408,8 @@ extension EmailHeaderView: UITableViewDelegate {
                     if let cell = tableView.cellForRow(at: indexPath) {
                         if let key_packet = attachment.keyPacket {
                             if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                                openLocalURL(localURL, keyPackage: data, fileName: attachment.fileName, type: attachment.mimeType, forCell: cell)
+                                let fixedFilename = attachment.fileName.clear
+                                openLocalURL(localURL, keyPackage: data, fileName: fixedFilename, type: attachment.mimeType, forCell: cell)
                             }
                         }
                     }
@@ -1463,8 +1464,9 @@ extension EmailHeaderView: UITableViewDelegate {
                                     if let cell = self.attachmentView!.cellForRow(at: indexPath) {
                                         if let key_packet = attachment.keyPacket {
                                             if let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                                                let fixedFilename = attachment.fileName.clear
                                                 self.openLocalURL(localURL, keyPackage: data,
-                                                                  fileName: attachment.fileName,
+                                                                  fileName: fixedFilename,
                                                                   type: attachment.mimeType,
                                                                   forCell: cell)
                                             }

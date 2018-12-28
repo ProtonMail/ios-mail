@@ -873,7 +873,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
-
+        
         guard let data: Data = try? Data(contentsOf: tempfile) else {
             let alert = LocalString._cant_find_this_attachment.alertController()
             alert.addOKAction()

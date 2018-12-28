@@ -169,4 +169,22 @@ extension String {
     public func mimeType() -> String {
         return (self as NSString).mimeType()
     }
+    
+    var ext : String {
+        get {
+            return (self as NSString).pathExtension
+        }
+    }
+    
+    var clear : String {
+        get {
+            var invalidCharacters = CharacterSet(charactersIn: ":/")
+            invalidCharacters.formUnion(.newlines)
+            invalidCharacters.formUnion(.illegalCharacters)
+            invalidCharacters.formUnion(.controlCharacters)
+            
+            let newFilename = self.components(separatedBy: invalidCharacters).joined(separator: "_")
+            return newFilename
+        }
+    }
 }
