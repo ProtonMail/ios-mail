@@ -196,8 +196,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     @IBAction func undoAction(_ sender: UIButton) {
-        self.undoTheMessage();
-        self.hideUndoView();
+        self.undoTheMessage()
+        self.hideUndoView()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -305,7 +305,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     /// unread tapped, this is the button in navigation bar 
     @objc internal func unreadTapped() {
         self.viewModel.mark(IDs: self.selectedIDs, unread: true)
-        cancelButtonTapped();
+        cancelButtonTapped()
     }
     
     /// remove button tapped. in the navigation bar
@@ -317,7 +317,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             moveMessages(to: .trash)
             showMessageMoved(title: LocalString._messages_has_been_moved)
         }
-        self.cancelButtonTapped();
+        self.cancelButtonTapped()
     }
 
     @objc internal func moreButtonTapped() {
@@ -330,7 +330,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if !viewModel.isCurrentLocation(location) {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                         self.moveMessages(to: location)
-                        self.cancelButtonTapped();
+                        self.cancelButtonTapped()
                     }))
                 }
             }
@@ -370,7 +370,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
 
             if (viewModel.isCurrentLocation(.sent)) {
-                locations = [:];
+                locations = [:]
             }
 
             for (location, style) in locations {
@@ -405,7 +405,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.refreshControl.beginRefreshing()
             if (self.tableView.contentOffset.y == 0) {
                 UIView.animate(withDuration: 0.25, animations: {
-                    self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.frame.size.height);
+                    self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.frame.size.height)
                 })
             }
         }
@@ -459,7 +459,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     fileprivate var failedTimes = 30
     
     func offlineTimerReset() {
-        timerInterval = TimeInterval(arc4random_uniform(90)) + 30;
+        timerInterval = TimeInterval(arc4random_uniform(90)) + 30
         stopAutoFetch()
         startAutoFetch(false)
     }
@@ -486,12 +486,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         mailboxCell.zeroMargin()
         mailboxCell.defaultColor = UIColor.lightGray
-        let leftCrossView = UILabel();
+        let leftCrossView = UILabel()
         leftCrossView.text = self.viewModel.getSwipeTitle(leftSwipeAction)
         leftCrossView.sizeToFit()
         leftCrossView.textColor = UIColor.white
         
-        let rightCrossView = UILabel();
+        let rightCrossView = UILabel()
         rightCrossView.text = self.viewModel.getSwipeTitle(rightSwipeAction)
         rightCrossView.sizeToFit()
         rightCrossView.textColor = UIColor.white
@@ -726,7 +726,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
-                    return;
+                    return
                 }
                 
                 if let error = error {
@@ -756,15 +756,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                      self.retry()
                 } else {
+                    let state = self.refreshControl.isRefreshing
                     self.refreshControl.endRefreshing()
                     if self.fetchingStopped! == true {
-                        return;
+                        return
                     }
                     self.showNoResultLabel()
                     let _ = self.checkHuman()
                     
                     UIView.animate(withDuration: 0.25, animations: {
-                        self.tableView.contentOffset = CGPoint(x: 0, y: 0);
+                        if state {
+                            self.tableView.contentOffset = CGPoint(x: 0, y: 0)
+                        }
                     })
                 }
                 
@@ -793,9 +796,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     fileprivate func showNoResultLabel() {
         let count =  self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
         if (count <= 0 && !fetchingMessage ) {
-            self.noResultLabel.isHidden = false;
+            self.noResultLabel.isHidden = false
         } else {
-            self.noResultLabel.isHidden = true;
+            self.noResultLabel.isHidden = true
         }
     }
 
@@ -1305,11 +1308,11 @@ extension MailboxViewController: UITableViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        let frame = noResultLabel.frame;
+        let frame = noResultLabel.frame
         if scrollView.contentOffset.y <= 0 {
-            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height);
+            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: -scrollView.contentOffset.y, width: frame.width, height: frame.height)
         } else {
-            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height);
+            self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
         }
     }
 }

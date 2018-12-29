@@ -811,7 +811,6 @@ class MessageDataService : Service {
      */
     func fetchedResults(by labelID: String) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = sharedCoreDataService.mainManagedObjectContext
-        
 //        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         //var predicates : [NSPredicate] = [NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)", labelID, Message.Attributes.messageStatus)]
 //        if labelID == Message.Location.sent.rawValue || labelID == Message.Location.draft.rawValue {
@@ -826,10 +825,7 @@ class MessageDataService : Service {
         fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
                                              labelID, Message.Attributes.messageStatus)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        fetchRequest.fetchBatchSize = 30
-        fetchRequest.includesPropertyValues = false
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        fetchRequest.fetchBatchSize = 30
+        fetchRequest.fetchBatchSize = 100
         fetchRequest.includesPropertyValues = false
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }

@@ -40,11 +40,11 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
 
     override func showArchiveOption() -> Bool {
-//        if let msg = messages.first {
-//            if msg.contains(label: .sent) {
-//                return false
-//            }
-//        }
+        if let msg = messages.first {
+            if msg.contains(label: .sent) || msg.contains(label: .archive) {
+                return false
+            }
+        }
         return true;
     }
     

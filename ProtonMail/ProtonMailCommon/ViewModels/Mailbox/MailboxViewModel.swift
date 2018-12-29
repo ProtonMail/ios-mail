@@ -379,7 +379,7 @@ class MailboxViewModel {
     
     func spam(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
-            if messageService.move(message: message, from: self.labelID, to: Message.Location.archive.rawValue) {
+            if messageService.move(message: message, from: self.labelID, to: Message.Location.spam.rawValue) {
                 return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.spam.rawValue))
             }
         }
