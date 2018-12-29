@@ -756,14 +756,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                      self.retry()
                 } else {
-                    delay(0.1, closure: {
-                        self.refreshControl.endRefreshing()
-                        if self.fetchingStopped! == true {
-                            return;
-                        }
-                        self.showNoResultLabel()
-                        self.tableView.reloadData()
-                        let _ = self.checkHuman()
+                    self.refreshControl.endRefreshing()
+                    if self.fetchingStopped! == true {
+                        return;
+                    }
+                    self.showNoResultLabel()
+                    let _ = self.checkHuman()
+                    
+                    UIView.animate(withDuration: 0.25, animations: {
+                        self.tableView.contentOffset = CGPoint(x: 0, y: 0);
                     })
                 }
                 
