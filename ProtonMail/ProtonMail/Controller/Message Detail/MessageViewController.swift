@@ -33,6 +33,7 @@ import CoreData
 import PassKit
 import AwaitKit
 import PromiseKit
+import JavaScriptCore
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
@@ -69,8 +70,28 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
 
+    
+    let jsContext = JSContext()
+    func initJSContact() {
+        // Specify the path to the jssource.js file.
+        if let jsSourcePath = Bundle.main.path(forResource: "purify", ofType: "js") {
+            do {
+                // Load its contents to a String variable.
+                let jsSourceContents = try String(contentsOfFile: jsSourcePath)
+                
+                // Add the Javascript code that currently exists in the jsSourceContents to the Javascript Runtime through the jsContext object.
+                self.jsContext?.evaluateScript(jsSourceContents)
+            }
+            catch {
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        //self.initJSContact(
         
         self.setupRightButtons()
         
@@ -639,10 +660,18 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             if !autoloadimage {
                 bodyText = bodyText.stringByPurifyImages()
             }
+            //self.jsDemo3(bodyText)
             return bodyText
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
             return self.message.bodyToHtml()
+        }
+    }
+    
+    func jsDemo3(_ body : String) {
+        if let functionGenerateLuckyNumbers = self.jsContext!.objectForKeyedSubscript("DOMPurify.sanitize") {
+            let out = functionGenerateLuckyNumbers.call(withArguments: [body.escaped])
+            Swift.print(out?.toString())
         }
     }
     
