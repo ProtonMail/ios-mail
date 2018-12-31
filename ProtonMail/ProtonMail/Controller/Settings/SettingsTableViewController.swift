@@ -78,8 +78,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             10, 15, 30, 60]
     
     var multi_domains: [Address]!
-    var userInfo: UserInfo {
-        return sharedUserDataService.userInfo!
+    var userInfo: UserInfo? = sharedUserDataService.userInfo {
+        didSet {
+            self.tableView.reloadData()
+        }
     }
     
     /// cells
@@ -127,15 +129,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             setting_general_items.append(.notificationsSnooze)
         }
    
-      
-      
-        // FIXME: this fixes crash in cases when viewWillAppear is called while the app is locked. That happens when API calls of other VCs are popping them from navigationController asynchronously in completion handlers. This fix is ugly, better approach will be to cache userInfo in a local variable and update sharedUserDataService accordingly.
-        if let _ = sharedUserDataService.userInfo {
-            multi_domains = sharedUserDataService.userAddresses
-            UIView.setAnimationsEnabled(false)
-            self.settingTableView.reloadData()
-            UIView.setAnimationsEnabled(true)
-        }
+        multi_domains = sharedUserDataService.userAddresses
+        self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
@@ -159,7 +154,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     
     internal func updateTableProtectionSection() {
         self.updateProtectionItems()
-        self.settingTableView.reloadData()
+        if let index = setting_headers.firstIndex(of: SettingSections.protection) {
+            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
+        }
     }
     
     ///MARK: -- table view delegate
@@ -204,7 +201,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     case .notifyEmail:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = itme.description
-                        cell.RightText.text = userInfo.notificationEmail
+                        cell.RightText.text = userInfo?.notificationEmail
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .loginPWD, .mbp, .singlePWD:
@@ -227,9 +224,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                        cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
-                            if let indexp = tableView.indexPath(for: cell!) {
-                                if indexPath == indexp {
+                        if let userInfo = userInfo {
+                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                                if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow
                                     ActivityIndicatorHelper.show(at: view)
                                     sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
@@ -246,10 +243,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                 } else {
                                     feedback(false)
                                 }
-                            } else {
-                                feedback(false)
-                            }
-                        })
+                            })
+                        }
                         cellout = cell
                     }
                 }
@@ -369,10 +364,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
                         cell.LeftText.text = address_item.description
-                        if let addr = userInfo.userAddresses.defaultAddress() {
+                        if let addr = userInfo?.userAddresses.defaultAddress() {
                             cell.RightText.text = addr.display_name
                         } else {
-                            cell.RightText.text = userInfo.displayName.decodeHtml()
+                            cell.RightText.text = userInfo?.displayName.decodeHtml()
                         }
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
@@ -392,7 +387,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 if indexPath.row < setting_swipe_action_items.count {
                     let actionItem = setting_swipe_action_items[indexPath.row]
                     let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                    let action = actionItem == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
+                    let action = actionItem == .left ? userInfo?.swipeLeftAction : userInfo?.swipeRightAction
                     cell.domainText.text = actionItem.description
                     cell.defaultMark.text = action?.description
                     cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
@@ -400,8 +395,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 }
             case .storage:
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingStorageCell, for: indexPath) as! StorageViewCell
-                let usedSpace = userInfo.usedSpace
-                let maxSpace = userInfo.maxSpace
+                let usedSpace = userInfo?.usedSpace ?? 0
+                let maxSpace = userInfo?.maxSpace ?? 0
                 cell.setValue(usedSpace, maxSpace: maxSpace)
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 cellout = cell
@@ -604,12 +599,11 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                         let view = UIApplication.shared.keyWindow
                                         ActivityIndicatorHelper.show(at: view)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
-                                            tableView.reloadData()
                                             ActivityIndicatorHelper.hide(at: view)
                                             if error == nil {
                                                 self.multi_domains = newAddrs
-                                                tableView.reloadData()
                                             }
+                                            self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
                                         }
                                     }))
                                 }
@@ -638,7 +632,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
                     alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                     
-                    let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
+                    let currentAction = action_item == .left ? userInfo?.swipeLeftAction : userInfo?.swipeRightAction
                     for swipeAction in setting_swipe_actions {
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
@@ -646,11 +640,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                 let view = UIApplication.shared.keyWindow
                                 ActivityIndicatorHelper.show(at: view)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
-                                    tableView.reloadData()
                                     ActivityIndicatorHelper.hide(at: view)
-                                    if error == nil {
-                                        tableView.reloadData()
-                                    }
+                                    self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
                                 })
                             }))
                         }
@@ -676,7 +667,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                             LocalizedString.reset()
                             
                             self.updateTitle()
-                            tableView.reloadData()
+                            self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
                         }))
                     }
                 }
