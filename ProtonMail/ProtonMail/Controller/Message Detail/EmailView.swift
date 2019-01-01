@@ -112,13 +112,19 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
     
     func updateEmailBody (_ body : String, meta : String) {
-        let bundle = Bundle.main
-        let path = bundle.path(forResource: "editor", ofType: "css")
+        let path = Bundle.main.path(forResource: "editor", ofType: "css")
         let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-        let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
-        self.contentWebView.loadHTMLString(htmlString, baseURL: URL(string: "about:blank"))
+        self.html = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
+        
+        if #available(iOS 11.0, *) {
+            self.contentWebView.load(self.request)
+        } else {
+            self.contentWebView.loadHTMLString(self.html, baseURL: URL(string: "about:blank"))
+        }
     }
     
+    private var html: String = ""
+
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
         var attachments = [AttachmentInfo]()
         
@@ -183,8 +189,11 @@ class EmailView: UIView, UIScrollViewDelegate{
         preferences.javaScriptEnabled = false
         preferences.javaScriptCanOpenWindowsAutomatically = false
         
-        let config = WKWebViewConfiguration.init()
+        let config = WKWebViewConfiguration()
         config.preferences = preferences
+        if #available(iOS 11.0, *) {
+            config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
+        }
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
         }
@@ -342,5 +351,38 @@ extension EmailView : EmailHeaderViewProtocol {
     
     func starredChanged(_ isStarred: Bool) {
         
+    }
+}
+
+@available(iOS 11.0, *) extension EmailView: WKURLSchemeHandler {
+    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+        // FIXME: improve headers, switch off second line for images/media/fonts when remote content is allowed
+        // FIXME: will upgrade to https fallback in case https is not supported by remote content provider?
+        let headers: Dictionary<String, String> = [
+            "Content-Type": "text/html",
+            "Content-Security-Policy": "default-src 'self'", // this cuts off all remote content
+            "Cross-Origin-Resource-Policy": "Same"
+        ]
+        let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
+        urlSchemeTask.didReceive(response)
+        urlSchemeTask.didReceive(self.html.data(using: .unicode)!)
+        urlSchemeTask.didFinish()
+    }
+    
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+        assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
+    }
+    
+    private var loopbackScheme: String {
+        return "pm-incoming-mail"
+    }
+    
+    private var loopbackUrl: URL {
+        let url = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
+        return url
+    }
+    
+    var request: URLRequest {
+        return URLRequest(url: self.loopbackUrl)
     }
 }
