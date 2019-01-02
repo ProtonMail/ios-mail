@@ -94,6 +94,7 @@ class ContactImportViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.cancelled = true
+        self.dismiss()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -132,7 +133,6 @@ class ContactImportViewController: UIViewController {
         }
     }
     
-    @available(iOS 9.0, *)
     internal func getContacts() {
         let store = CNContactStore()
         switch CNContactStore.authorizationStatus(for: .contacts) {
@@ -153,7 +153,6 @@ class ContactImportViewController: UIViewController {
         }
     }
     
-    @available(iOS 9.0, *)
     lazy var contacts: [CNContact] = {
         let contactStore = CNContactStore()
         let keysToFetch : [CNKeyDescriptor] = [
@@ -191,7 +190,6 @@ class ContactImportViewController: UIViewController {
         return results
     }()
     
-    @available(iOS 9.0, *)
     internal func retrieveContactsWithStore(store: CNContactStore) {
         guard let mailboxPassword = sharedUserDataService.mailboxPassword,
             let userkey = sharedUserDataService.userInfo?.firstUserKey(),
