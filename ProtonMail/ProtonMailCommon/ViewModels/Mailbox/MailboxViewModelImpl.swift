@@ -152,22 +152,20 @@ final class MailboxViewModelImpl : MailboxViewModel {
         return self.label == .draft
     }
     
-    override func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
-        if let message = self.item(index: index) {
-            switch(self.label) {
-            case .trash, .spam:
-                if messageService.delete(message: message, label: self.label.rawValue) {
-                    return (.showGeneral, nil)
-                }
-            default:
-                if messageService.move(message: message, from: self.label.rawValue, to: Message.Location.trash.rawValue) {
-                     return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.label.rawValue, newLabels: Message.Location.trash.rawValue))
-                }
+    override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
+        switch(self.label) {
+        case .trash, .spam:
+            if messageService.delete(message: message, label: self.label.rawValue) {
+                return (.showGeneral, nil)
+            }
+        default:
+            if messageService.move(message: message, from: self.label.rawValue, to: Message.Location.trash.rawValue) {
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.label.rawValue, newLabels: Message.Location.trash.rawValue))
             }
         }
+        
         return (.nothing, nil)
     }
-    
     
 
 }

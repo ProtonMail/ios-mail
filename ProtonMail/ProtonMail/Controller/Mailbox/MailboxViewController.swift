@@ -311,7 +311,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
         if viewModel.isDelete() {
-            moveMessages(to: .trash)
+            self.viewModel.delete(IDs: self.selectedIDs)
             showMessageMoved(title: LocalString._messages_has_been_deleted)
         } else {
             moveMessages(to: .trash)

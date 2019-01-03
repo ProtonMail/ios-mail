@@ -59,17 +59,16 @@ class LabelboxViewModelImpl : MailboxViewModel {
         return true
     }
     
-    override func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
-        if let message = self.item(index: index) {
-            if let fLabel = message.firstValidFolder() {
-                if messageService.move(message: message, from: fLabel, to: Message.Location.trash.rawValue) {
-                    if self.label.labelID != fLabel {
-                        return (.showGeneral, nil)
-                    }
-                    return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.trash.rawValue))
+    override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
+        if let fLabel = message.firstValidFolder() {
+            if messageService.move(message: message, from: fLabel, to: Message.Location.trash.rawValue) {
+                if self.label.labelID != fLabel {
+                    return (.showGeneral, nil)
                 }
+                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: fLabel, newLabels: Message.Location.trash.rawValue))
             }
         }
+        
         return (.nothing, nil)
     }
     

@@ -1202,6 +1202,20 @@ class MessageDataService : Service {
         }
     }
     
+    /// delete a message
+    ///
+    /// - Parameters:
+    ///   - messageIDs: must be the real message id. becuase the message is deleted before this triggered
+    ///   - writeQueueUUID: queue UID
+    ///   - action: action type. should .delete here
+    ///   - completion: call back
+    private func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
+        let api = MessageActionRequest(action: action, ids: messageIDs)
+        api.call({ (task, response, hasError) in
+            completion!(task, nil, nil)
+        })
+    }
+    
     private func empty(at location: Message.Location, completion: CompletionBlock?) {
         //TODO:: check is label valid
         if location != .spam && location != .trash && location != .draft {
@@ -1712,8 +1726,10 @@ class MessageDataService : Service {
                     self.empty(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .emptySpam:
                     self.empty(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
-                case .read, .unread, .delete:
+                case .read, .unread:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                case .delete:
+                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .label:
                     self.labelMessage(data1, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
                 case .unlabel:
@@ -1732,10 +1748,9 @@ class MessageDataService : Service {
         }
     }
     
-    
     func queue(_ message: Message, action: MessageAction, data1: String = "", data2: String = "") {
         self.cachePropertiesForBackground(in: message)
-        if action == .saveDraft || action == .send || action == .delete || action == .read || action == .unread {
+        if action == .saveDraft || action == .send || action == .read || action == .unread {
             let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {

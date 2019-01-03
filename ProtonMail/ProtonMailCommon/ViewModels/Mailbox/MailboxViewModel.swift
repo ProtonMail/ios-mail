@@ -359,12 +359,23 @@ class MailboxViewModel {
         }
     }
     
+    final func delete(IDs: NSMutableSet) {
+        let messages = self.messageService.fetchMessages(withIDs: IDs)
+        for msg in messages {
+            let _ = self.delete(message: msg)
+        }
+    }
     
-    func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
+    final func delete(index: IndexPath) -> (SwipeResponse, UndoMessage?) {
         if let message = self.item(index: index) {
-            if messageService.move(message: message, from: self.labelID, to: Message.Location.trash.rawValue) {
-                return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.trash.rawValue))
-            }
+            return self.delete(message: message)
+        }
+        return (.nothing, nil)
+    }
+    
+    func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
+        if messageService.move(message: message, from: self.labelID, to: Message.Location.trash.rawValue) {
+            return (.showUndo, UndoMessage(msgID: message.messageID, origLabels: self.labelID, newLabels: Message.Location.trash.rawValue))
         }
         return (.nothing, nil)
     }
