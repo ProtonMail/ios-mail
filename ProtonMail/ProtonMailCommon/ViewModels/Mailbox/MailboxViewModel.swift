@@ -105,6 +105,7 @@ class MailboxViewModel {
     func resetFetchedController() {
         if let controller = self.fetchedResultsController {
             controller.delegate = nil
+            self.fetchedResultsController = nil
         }
     }
 

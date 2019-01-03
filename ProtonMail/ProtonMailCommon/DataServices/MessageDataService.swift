@@ -822,11 +822,11 @@ class MessageDataService : Service {
 //        }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > 0)",
-                                             labelID, Message.Attributes.messageStatus)
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
-        fetchRequest.fetchBatchSize = 100
-        fetchRequest.includesPropertyValues = false
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > %d)",
+                                             labelID, Message.Attributes.messageStatus, 0)
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false)]
+        fetchRequest.fetchBatchSize = 30
+        fetchRequest.includesPropertyValues = true
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
     }
     
