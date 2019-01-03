@@ -308,6 +308,32 @@ extension Message {
         context.deleteAll(Attributes.entityName)
     }
     
+    class func delete(location : Message.Location) -> Bool{
+        let mContext = sharedCoreDataService.mainManagedObjectContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        if location == .spam || location == .trash {
+            fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(location.rawValue)")
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+            do {
+                if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
+                    for message in oldMessages {
+                        mContext.delete(message)
+                    }
+                    if let error = mContext.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)")
+                    } else {
+                        return true
+                    }
+                }
+            } catch {
+                PMLog.D(" error: \(error)")
+            }
+        }
+        
+        return false
+    }
+    
+    
     /**
      delete the message from local cache only use the message id
      

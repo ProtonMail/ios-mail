@@ -537,14 +537,14 @@ class MessageDataService : Service {
     
     //
     func emptyTrash() {
-//        if Message.deleteLocation(MessageLocation.trash) {
-//            queue(.emptyTrash)
-//        }
+        if Message.delete(location: .trash) {
+            queue(.emptyTrash)
+        }
     }
     func emptySpam() {
-//        if Message.deleteLocation(MessageLocation.spam) {
-//            queue(.emptySpam)
-//        }
+        if Message.delete(location: .spam) {
+            queue(.emptySpam)
+        }
     }
     
     /// fetch message with message obj
@@ -1204,7 +1204,7 @@ class MessageDataService : Service {
     
     private func empty(at location: Message.Location, completion: CompletionBlock?) {
         //TODO:: check is label valid
-        if location == .spam || location == .trash || location == .draft {
+        if location != .spam && location != .trash && location != .draft {
             completion?(nil, nil, nil)
             return
         }
