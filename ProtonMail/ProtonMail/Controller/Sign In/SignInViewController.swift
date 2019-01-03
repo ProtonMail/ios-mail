@@ -304,9 +304,11 @@ class SignInViewController: ProtonMailViewController {
             SignInManager.shared.clean();
         }
         
-        if(UIDevice.current.isLargeScreen() && !isRemembered)
-        {
-            usernameTextField.becomeFirstResponder()
+        if(UIDevice.current.isLargeScreen() && !isRemembered) {
+            let signinFlow = UnlockManager.shared.getUnlockFlow()
+            if signinFlow != .requireTouchID {
+                usernameTextField.becomeFirstResponder()
+            }
         }
     }
     

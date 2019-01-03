@@ -68,11 +68,19 @@ class WindowsCoordinator: CoordinatorNew {
         placeholder.rootViewController = UIViewController()
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
-        DispatchQueue.main.async {
-            // initiate unlock process which will send .didUnlock or .requestMainKey eventually
-            UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),
-                                                requestPin: self.lock,
-                                                requestMailboxPassword: self.lock)
+        
+        //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
+        // clean this up later.
+        let flow = UnlockManager.shared.getUnlockFlow()
+        if flow == .requireTouchID || flow == .requirePin {
+            self.lock()
+        } else {
+            DispatchQueue.main.async {
+                // initiate unlock process which will send .didUnlock or .requestMainKey eventually
+                UnlockManager.shared.initiateUnlock(flow: flow,
+                                                    requestPin: self.lock,
+                                                    requestMailboxPassword: self.lock)
+            }
         }
     }
     

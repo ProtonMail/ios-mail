@@ -109,7 +109,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
         self.emailView?.backgroundColor = UIColor.ProtonMail.Gray_E2E6E8
         
-        self.emailView?.showDetails(show: self.message.contains(label: Message.Location.sent))
+        self.emailView?.showDetails(show: false)
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
