@@ -28,7 +28,7 @@
                             <rect key="frame" x="146" y="0.0" width="83" height="64"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="83" id="Mhs-s7-2m0"/>
-                                <constraint firstAttribute="height" constant="64" id="Ya4-o7-8wo"/>
+                                <constraint firstAttribute="height" priority="900" constant="64" id="Ya4-o7-8wo"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="-34" minY="0.0" maxX="0.0" maxY="-30"/>
@@ -40,13 +40,11 @@
                             <variation key="default">
                                 <mask key="constraints">
                                     <exclude reference="Mhs-s7-2m0"/>
-                                    <exclude reference="Ya4-o7-8wo"/>
                                 </mask>
                             </variation>
                             <variation key="widthClass=compact">
                                 <mask key="constraints">
                                     <include reference="Mhs-s7-2m0"/>
-                                    <include reference="Ya4-o7-8wo"/>
                                 </mask>
                             </variation>
                             <connections>
@@ -57,7 +55,7 @@
                             <rect key="frame" x="252" y="0.0" width="83" height="64"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="83" id="E8G-ga-ABZ"/>
-                                <constraint firstAttribute="height" constant="64" id="gLm-dx-YTT"/>
+                                <constraint firstAttribute="height" priority="900" constant="64" id="gLm-dx-YTT"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
                             <inset key="titleEdgeInsets" minX="-34" minY="0.0" maxX="0.0" maxY="-30"/>
@@ -69,13 +67,11 @@
                             <variation key="default">
                                 <mask key="constraints">
                                     <exclude reference="E8G-ga-ABZ"/>
-                                    <exclude reference="gLm-dx-YTT"/>
                                 </mask>
                             </variation>
                             <variation key="widthClass=compact">
                                 <mask key="constraints">
                                     <include reference="E8G-ga-ABZ"/>
-                                    <include reference="gLm-dx-YTT"/>
                                 </mask>
                             </variation>
                             <connections>
@@ -85,7 +81,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sa8-eL-P2l">
                             <rect key="frame" x="40" y="0.0" width="83" height="64"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="64" id="LZW-xc-L7Z"/>
+                                <constraint firstAttribute="height" priority="900" constant="64" id="LZW-xc-L7Z"/>
                                 <constraint firstAttribute="width" constant="83" id="atn-b5-6iP"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="12"/>
@@ -97,13 +93,11 @@
                             </state>
                             <variation key="default">
                                 <mask key="constraints">
-                                    <exclude reference="LZW-xc-L7Z"/>
                                     <exclude reference="atn-b5-6iP"/>
                                 </mask>
                             </variation>
                             <variation key="widthClass=compact">
                                 <mask key="constraints">
-                                    <include reference="LZW-xc-L7Z"/>
                                     <include reference="atn-b5-6iP"/>
                                 </mask>
                             </variation>
