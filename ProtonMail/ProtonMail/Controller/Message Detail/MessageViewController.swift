@@ -65,8 +65,11 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     ///
     private var bodyLoaded: Bool                             = false
     fileprivate var showedShowImageView : Bool               = false
-    private var isAutoLoadImage : Bool                       = false
     fileprivate var needShowShowImageView : Bool             = false
+    private lazy var autoLoadImageMode: EmailView.EmailContents.RemoteContentLoadingMode = {
+        return sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
+    }()
+
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
 
@@ -99,7 +102,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             popViewController()
             return
         }
-        self.isAutoLoadImage = sharedUserDataService.autoLoadRemoteImages
         
         self.updateHeader()
         
@@ -353,7 +355,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
                 ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                 if let _ = self.message.managedObjectContext {
-                    BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.fixedBody ?? "") { error in
+                    BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.htmlBody ?? "") { error in
                         ActivityIndicatorHelper.showActivityIndicator(at: self.view)
                         if let error = error {
                             let alert = error.alertController()
@@ -612,8 +614,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate var purifiedBodyLock: Int = 0
-    fileprivate var fixedBody : String? = nil
-    fileprivate var bodyHasImages : Bool = false
+    fileprivate var htmlBody: String? = nil
     
     // MARK : private function
     fileprivate func updateEmailBody (force forceReload : Bool = false) {
@@ -627,41 +628,26 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             if self.message.isDetailDownloaded {  //&& forceReload == false
                 self.bodyLoaded = true
                 
-                if self.fixedBody == nil {
-                    self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
-                    DispatchQueue.main.async {
-                        let atts = self.message.attachments.allObjects as? [Attachment]
-                        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
-                        self.showEmbedImage()
-                        self.emailView?.emailHeader.updateAttConstraints(true)
-                    }
+                if self.htmlBody == nil {
+                    self.htmlBody = self.prepareHTMLBody(self.message)
+                    self.showEmbedImage()
                 }
                 
-                if !self.isAutoLoadImage && !self.showedShowImageView{
-                    if self.bodyHasImages {
+                if self.autoLoadImageMode == .disallowed && !self.showedShowImageView{
+                    if self.htmlBody?.hasImage() == true {
                         self.needShowShowImageView = true
                     }
                 }
             }
         }
-        if self.fixedBody != nil {
-            DispatchQueue.main.async {
-                self.loadEmailBody(self.fixedBody ?? "")
-            }
+        if self.htmlBody != nil {
+            self.loadEmailBody(self.htmlBody ?? "")
         }
     }
     
-    internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
+    internal func prepareHTMLBody(_ message : Message!) -> String? {
         do {
-            var bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
-            bodyText = bodyText.stringByStrippingStyleHTML()
-            bodyText = bodyText.stringByStrippingBodyStyle()
-            bodyText = bodyText.stringByPurifyHTML()
-            self.bodyHasImages = bodyText.hasImage()
-            if !autoloadimage {
-                bodyText = bodyText.stringByPurifyImages()
-            }
-            //self.jsDemo3(bodyText)
+            let bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
             return bodyText
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
@@ -679,13 +665,16 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func showEmailLoading () {
         let body = LocalString._loading_
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-        self.emailView?.updateEmailBody(body, meta: meta)
+        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        self.emailView?.updateEmailContent(contents, meta: meta)
     }
     
     var contentLoaded = false
     internal func loadEmailBody(_ body : String) {
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(emailView?.kDefautWebViewScale ?? 0.9)\" content=\"yes\">"
-        self.emailView?.updateEmailBody(body, meta: meta)
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
+        
+        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        self.emailView?.updateEmailContent(contents, meta: meta)
         
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
@@ -695,11 +684,12 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func updateEmailBodyWithError (_ error:String) {
         let atts = self.message.attachments.allObjects as? [Attachment]
         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+
+        let body = NSLocalizedString(error, comment: "")
+        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         
-        let bodyText = NSLocalizedString(error, comment: "")
-        let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-        
-        self.emailView?.updateEmailBody(bodyText, meta: meta1)
+        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        self.emailView?.updateEmailContent(contents, meta: meta)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -1028,7 +1018,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     func showImage() {
         self.showedShowImageView = true
         self.needShowShowImageView = false
-        self.fixedBody = self.fixedBody?.stringFixImages()
+        self.autoLoadImageMode = .allowed
         self.updateContent()
     }
     
@@ -1040,7 +1030,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                     att.base64AttachmentData({ (based64String) in
                         if !based64String.isEmpty {
                             objc_sync_enter(self.purifiedBodyLock)
-                            self.fixedBody = self.fixedBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            self.htmlBody = self.htmlBody?.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                             objc_sync_exit(self.purifiedBodyLock)
                             checkCount = checkCount - 1
                             

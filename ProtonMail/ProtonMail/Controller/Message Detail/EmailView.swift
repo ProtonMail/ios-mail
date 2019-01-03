@@ -42,7 +42,7 @@ protocol EmailViewActionsProtocol {
 /// this veiw is all subviews container
 class EmailView: UIView, UIScrollViewDelegate{
     
-    var kDefautWebViewScale : CGFloat = 0.9
+    static let kDefautWebViewScale : CGFloat = 0.9
     //
     fileprivate let kMoreOptionsViewHeight: CGFloat = 123.0
     
@@ -61,7 +61,6 @@ class EmailView: UIView, UIScrollViewDelegate{
     
     fileprivate let kAnimationDuration : TimeInterval = 0.25
     //
-    var subWebview : UIView?
     
     fileprivate var isViewingMoreOptions: Bool = false
 
@@ -111,19 +110,40 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    func updateEmailBody (_ body : String, meta : String) {
-        let path = Bundle.main.path(forResource: "editor", ofType: "css")
-        let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-        self.html = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
+    struct EmailContents {
+        let body: String
+        let remoteContentMode: RemoteContentLoadingMode
         
-        if #available(iOS 11.0, *) {
-            self.contentWebView.load(self.request)
-        } else {
-            self.contentWebView.loadHTMLString(self.html, baseURL: URL(string: "about:blank"))
+        enum RemoteContentLoadingMode {
+            case allowed, disallowed
         }
     }
     
-    private var html: String = ""
+    func updateEmailContent(_ contents: EmailContents, meta: String) {
+        let path = Bundle.main.path(forResource: "editor", ofType: "css")
+        let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
+        
+        // TODO: run purifier.js here
+        var bodyText = contents.body/*.stringByStrippingStyleHTML()
+        bodyText = bodyText.stringByStrippingBodyStyle()
+        bodyText = bodyText.stringByPurifyHTML() */
+        
+        if #available(iOS 11.0, *) {
+            self.html = .init(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
+                              remoteContentMode: contents.remoteContentMode)
+            self.contentWebView.load(self.request)
+        } else {
+            switch contents.remoteContentMode {
+            case .disallowed:   bodyText = bodyText.stringByPurifyImages()
+            case .allowed:      bodyText = bodyText.stringFixImages()
+            }
+            self.html = .init(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
+                              remoteContentMode: contents.remoteContentMode)
+            self.contentWebView.loadHTMLString(self.html.body, baseURL: URL(string: "about:blank"))
+        }
+    }
+    
+    private var html: EmailContents = .init(body: "", remoteContentMode: .disallowed)
 
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
         var attachments = [AttachmentInfo]()
@@ -196,6 +216,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         }
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
+            config.ignoresViewportScaleLimits = true
         }
         
         self.contentWebView = PMWebView(frame: .zero, configuration: config)
@@ -226,10 +247,9 @@ class EmailView: UIView, UIScrollViewDelegate{
                 } else if subview is UIImageView {
                     continue
                 } else {
-                    self.subWebview = sub
                     let h = self.emailHeader.getHeight()
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-                    self.attY = sub.frame.origin.y + sub.frame.height;
+                    self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
                 }
             }
         })
@@ -255,15 +275,6 @@ extension EmailView: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         contentWebView.becomeFirstResponder()
-        
-        let contentSize = webView.scrollView.contentSize
-        let viewSize = webView.bounds.size
-        var zoom = viewSize.width / contentSize.width
-        if zoom < 1 {
-            zoom = zoom * self.kDefautWebViewScale - 0.05
-            self.kDefautWebViewScale = zoom
-            PMLog.D("\(zoom)")
-        }
         self.emailLoaded = true
         self.updateContentLayout(false)        
     }
@@ -356,16 +367,23 @@ extension EmailView : EmailHeaderViewProtocol {
 
 @available(iOS 11.0, *) extension EmailView: WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        // FIXME: improve headers, switch off second line for images/media/fonts when remote content is allowed
-        // FIXME: will upgrade to https fallback in case https is not supported by remote content provider?
-        let headers: Dictionary<String, String> = [
+        let contents = self.html
+        
+        // TODO: possible improvements:
+        // - upgrade remote content loading requests to https
+        // - switch off only images
+        var headers: Dictionary<String, String> = [
             "Content-Type": "text/html",
-            "Content-Security-Policy": "default-src 'self'", // this cuts off all remote content
             "Cross-Origin-Resource-Policy": "Same"
         ]
+        
+        if contents.remoteContentMode == .disallowed {
+            headers["Content-Security-Policy"] = "default-src 'self'" // this cuts off all remote content
+        }
+        
         let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
         urlSchemeTask.didReceive(response)
-        urlSchemeTask.didReceive(self.html.data(using: .unicode)!)
+        urlSchemeTask.didReceive(contents.body.data(using: .unicode)!)
         urlSchemeTask.didFinish()
     }
     
