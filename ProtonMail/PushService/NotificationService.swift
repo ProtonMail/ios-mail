@@ -41,24 +41,32 @@ class NotificationService: UNNotificationServiceExtension {
             contentHandler(request.content)
             return
         }
-        
+        bestAttemptContent.body = "You received a new message!"
+        #if Enterprise
         bestAttemptContent.title = "You received a new message!"
+        #endif
 
         guard let UID = bestAttemptContent.userInfo["UID"] as? String else {
+            #if Enterprise
             bestAttemptContent.body = "without UID"
+            #endif
             contentHandler(bestAttemptContent)
             return
         }
         
         guard let encryptionKit = PushNotificationDecryptor.encryptionKit(forSession: UID) else {
             PushNotificationDecryptor.markForUnsubscribing(uid: UID)
+            #if Enterprise
             bestAttemptContent.body = "no encryption kit for UID"
+            #endif
             contentHandler(bestAttemptContent)
             return
         }
 
         guard let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String else {
+            #if Enterprise
             bestAttemptContent.body = "no encrypted message in push"
+            #endif
             contentHandler(bestAttemptContent)
             return
         }
@@ -69,7 +77,9 @@ class NotificationService: UNNotificationServiceExtension {
                                                              passphrase: encryptionKit.passphrase)
             
             guard let push = PushData.parse(with: plaintext) else {
+                #if Enterprise
                 bestAttemptContent.body = "failed to decrypt"
+                #endif
                 contentHandler(bestAttemptContent)
                 return
             }
@@ -81,7 +91,9 @@ class NotificationService: UNNotificationServiceExtension {
                 bestAttemptContent.badge = NSNumber(value: push.badge)
             }
         } catch let error {
+            #if Enterprise
             bestAttemptContent.body = "error: \(error.localizedDescription)"
+            #endif
         }
         
         contentHandler(bestAttemptContent)
