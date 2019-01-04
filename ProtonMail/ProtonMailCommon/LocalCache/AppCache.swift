@@ -127,6 +127,10 @@ class AppCache : Migrate {
 extension AppCache {
     
     func migrate_110_111() -> Bool {
+        /// if dev devices have run 1.11.3 before. some of the keys are stuck in the keychain. and if reinstall the app from the apple store(<= 1.11.2) and upgrade to the 1.11.3. the app will get the date from keychain which are shouldn't be there. so migrate from 110-111 should clean the data in keymaker which are saved in keychain. the same case also happens on core data migration but that cache could be removed from the reinstall app.
+        keymaker.wipeMainKey()
+        
+        
         if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
              AppCache.inject(userInfo: userInfo, into: sharedUserDataService)
         }
