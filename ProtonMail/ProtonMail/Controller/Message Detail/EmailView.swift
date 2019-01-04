@@ -118,8 +118,20 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
     }
     
-    func updateEmailAttachment (_ atts : [Attachment]?) {
-        self.emailHeader.updateAttachmentData(atts)
+    func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
+        var attachments = [AttachmentInfo]()
+        
+        if let atts = atts {
+            for att in atts {
+                attachments.append(AttachmentNormal(att: att))
+            }
+        }
+        
+        if let inline = inline {
+            attachments.append(contentsOf: inline)
+        }
+        
+        self.emailHeader.update(attachments: attachments)
     }
     
     required override init(frame : CGRect) {

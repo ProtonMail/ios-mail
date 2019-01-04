@@ -423,7 +423,6 @@ extension Message {
             }
             return body
         } else {
-            
             if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
                 var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: passphrase) {
                 //PMLog.D(body)
@@ -445,6 +444,22 @@ extension Message {
                             let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
                             body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
                         }
+                        /// cache the decrypted inline attachments
+                        let atts = mimeMsg.mainPart.findAtts()
+                        var inlineAtts = [AttachmentInline]()
+                        for att in atts {
+                            if let filename = att.getFilename()?.clear {
+                                let data = att.data
+                                let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                                do {
+                                    try data.write(to: path, options: [.atomic])
+                                } catch {
+                                    continue
+                                }
+                                inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
+                            }
+                        }
+                        self.tempAtts = inlineAtts
                     } else { //backup plan
                         body = body.multipartGetHtmlContent ()
                     }
@@ -453,7 +468,46 @@ extension Message {
                         body = body.encodeHtml()
                         body = body.ln2br()
                         return body
-                    } else {
+                    } else if isMultipartMixed() {
+                        ///TODO:: clean up later
+                        if let mimeMsg = MIMEMessage(string: body) {
+                            if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
+                                body = html
+                            } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.plainString {
+                                body = text.encodeHtml()
+                                body = "<html><body>\(body.ln2br())</body></html>"
+                            }
+                            
+                            if let cidPart = mimeMsg.mainPart.partCID(),
+                                var cid = cidPart.cid,
+                                let rawBody = cidPart.rawBodyString {
+                                cid = cid.preg_replace("<", replaceto: "")
+                                cid = cid.preg_replace(">", replaceto: "")
+                                let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                                let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                                body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                            }
+                            /// cache the decrypted inline attachments
+                            let atts = mimeMsg.mainPart.findAtts()
+                            var inlineAtts = [AttachmentInline]()
+                            for att in atts {
+                                if let filename = att.getFilename()?.clear {
+                                    let data = att.data
+                                    let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                                    do {
+                                        try data.write(to: path, options: [.atomic])
+                                    } catch {
+                                        continue
+                                    }
+                                    inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
+                                }
+                            }
+                            self.tempAtts = inlineAtts
+                        } else { //backup plan
+                            body = body.multipartGetHtmlContent ()
+                        }
+                    }
+                    else {
                         return body
                     }
                 }
@@ -491,10 +545,19 @@ extension Message {
     }
     
     func isPlainText() -> Bool {
+        PMLog.D(mimeType ?? "")
         if let type = mimeType, type.lowercased() == "text/plain" {
             return true
         }
         return false
+    }
+    
+    func isMultipartMixed() -> Bool {
+        if let type = mimeType, type.lowercased() == "multipart/mixed" {
+            return true
+        }
+        return false
+        
     }
     
     var encryptType : EncryptTypes! {

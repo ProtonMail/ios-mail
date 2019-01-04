@@ -103,10 +103,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         
         self.updateHeader()
         
-        if (self.message.numAttachments.int32Value > 0) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+        
         self.emailView?.backgroundColor = UIColor.ProtonMail.Gray_E2E6E8
         
         self.emailView?.showDetails(show: false)
@@ -618,10 +617,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK : private function
     fileprivate func updateEmailBody (force forceReload : Bool = false) {
-        if (self.message.numAttachments.int32Value > 0) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+        
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
         
@@ -632,6 +630,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                 if self.fixedBody == nil {
                     self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
                     DispatchQueue.main.async {
+                        let atts = self.message.attachments.allObjects as? [Attachment]
+                        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
                         self.showEmbedImage()
                     }
                 }
@@ -692,10 +692,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK : private function
     fileprivate func updateEmailBodyWithError (_ error:String) {
-        if (self.message.numAttachments.int32Value > 0 ) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+        
         let bodyText = NSLocalizedString(error, comment: "")
         let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         
@@ -950,6 +949,35 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
             latestPresentedView = alert
             self.present(alert, animated: true, completion: nil)
         }
+    }
+    
+    func quickLook(file : URL, fileName:String, type: String) {
+        tempFileUri = file
+        //TODO:: the hard code string need change it to enum later
+        guard (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+            let pkfile = try? Data(contentsOf: tempFileUri!) else
+        {
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+            return
+        }
+        
+        //TODO:: I add some change here for conflict but not sure if it is ok -- from Feng
+        guard let pass = try? PKPass(data: pkfile),
+            let vc = PKAddPassesViewController(pass: pass),
+            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+            (vc as UIViewController?) != nil else
+        {
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+            return
+        }
+        
+        self.present(vc, animated: true, completion: nil)
     }
     
     func star(changed isStarred: Bool) {

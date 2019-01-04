@@ -36,6 +36,36 @@ public struct Part: CustomStringConvertible {
     public var plainString : String {
         return self.string
     }
+    
+    public func findAtts() -> [Part] {
+        var ret = [Part]()
+        if let cd = self.contentDisposition, cd.body.contains(check: "attachment") {
+            ret.append(self)
+        }
+        for part in self.subParts {
+            let subRet = part.findAtts()
+            ret.append(contentsOf: subRet)
+        }
+        return ret
+    }
+    
+    public func getFilename() -> String? {
+        if let cd = self.contentDisposition {
+            let kv = cd.keyValues
+            if let name = kv["filename"] {
+                return name
+            }
+        }
+        
+        if let cd = self.headers[.contentType] {
+            let kv = cd.keyValues
+            if let name = kv["name"] {
+                return name
+            }
+        }
+        
+        return nil
+    }
 
     public func bodyString(convertingFromUTF8: Bool) -> String {
         var data = self.data.unwrap7BitLineBreaks()
@@ -47,6 +77,8 @@ public struct Part: CustomStringConvertible {
         
         return string
     }
+    
+    public var contentDisposition: Header? { return self.headers[.contentDisposition] }
     
     public var contentCID: String? { return self.headers[.contentID]?.name }
     public var cid: String? { return self.headers[.contentID]?.body }
@@ -73,9 +105,11 @@ public struct Part: CustomStringConvertible {
     
     var data: Data {
         if self.contentEncoding == .base64,
-            let string = String(data: self.body, encoding: .ascii),
-            let decoded = Data(base64Encoded: string) {
-            return decoded
+            let string = String(data: self.body, encoding: .ascii) {
+            let trimmed = string.preg_replace_none_regex("\r\n", replaceto: "")
+            if let decoded = Data(base64Encoded: trimmed) {
+                return decoded
+            }
         }
         return self.body
     }

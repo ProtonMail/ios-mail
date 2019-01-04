@@ -135,6 +135,8 @@ final public class Message: NSManagedObject {
     var pgpType : PGPType = .none
     var unencrypt_outside : Bool = false
     typealias ObjectIDContainer = ObjectBox<Message>
+    
+    var tempAtts: [AttachmentInline]? = nil
 }
 
 //IsEncrypted = 2;
