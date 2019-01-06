@@ -66,7 +66,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     private var bodyLoaded: Bool                             = false
     fileprivate var showedShowImageView : Bool               = false
     fileprivate var needShowShowImageView : Bool             = false
-    private lazy var autoLoadImageMode: EmailView.EmailContents.RemoteContentLoadingMode = {
+    private lazy var autoLoadImageMode: EmailBodyContents.RemoteContentLoadingMode = {
         return sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
     }()
 
@@ -665,7 +665,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func showEmailLoading () {
         let body = LocalString._loading_
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents, meta: meta)
     }
     
@@ -673,7 +673,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func loadEmailBody(_ body : String) {
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
         
-        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents, meta: meta)
         
         self.updateHeader()
@@ -688,7 +688,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         let body = NSLocalizedString(error, comment: "")
         let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         
-        let contents = EmailView.EmailContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents, meta: meta)
     }
     

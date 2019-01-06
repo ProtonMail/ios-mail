@@ -53,6 +53,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     
     // Message content
     var contentWebView: PMWebView!
+    @available(iOS 11.0, *) private lazy var loader = HTMLSecureLoader()
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -110,26 +111,15 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    struct EmailContents {
-        let body: String
-        let remoteContentMode: RemoteContentLoadingMode
-        
-        enum RemoteContentLoadingMode {
-            case allowed, disallowed
-        }
-    }
-    
-    func updateEmailContent(_ contents: EmailContents, meta: String) {
+    func updateEmailContent(_ contents: EmailBodyContents, meta: String) {
         let path = Bundle.main.path(forResource: "editor", ofType: "css")
         let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-        
-        // TODO: run purifier.js here
-        var bodyText = contents.body
+        var bodyText = contents.secureBody
         
         if #available(iOS 11.0, *) {
-            self.html = .init(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
-                              remoteContentMode: contents.remoteContentMode)
-            self.contentWebView.load(self.request)
+            let contentsWithPermissions = EmailBodyContents(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
+                                                        remoteContentMode: contents.remoteContentMode)
+            self.loader.load(contents: contentsWithPermissions, in: self.contentWebView)
         } else { // old way of purifying
             bodyText = bodyText.stringByStrippingStyleHTML()
             bodyText = bodyText.stringByStrippingBodyStyle()
@@ -139,14 +129,11 @@ class EmailView: UIView, UIScrollViewDelegate{
             case .disallowed:   bodyText = bodyText.stringByPurifyImages()
             case .allowed:      bodyText = bodyText.stringFixImages()
             }
-            self.html = .init(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
-                              remoteContentMode: contents.remoteContentMode)
-            self.contentWebView.loadHTMLString(self.html.body, baseURL: URL(string: "about:blank"))
+            let html = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>"
+            self.contentWebView.loadHTMLString(html, baseURL: URL(string: "about:blank"))
         }
     }
     
-    private var html: EmailContents = .init(body: "", remoteContentMode: .disallowed)
-
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
         var attachments = [AttachmentInfo]()
         
@@ -214,7 +201,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         let config = WKWebViewConfiguration()
         config.preferences = preferences
         if #available(iOS 11.0, *) {
-            config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
+            self.loader.inject(into: config)
         }
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
@@ -364,46 +351,5 @@ extension EmailView : EmailHeaderViewProtocol {
     
     func starredChanged(_ isStarred: Bool) {
         
-    }
-}
-
-@available(iOS 11.0, *) extension EmailView: WKURLSchemeHandler {
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        let contents = self.html
-        
-        var headers: Dictionary<String, String> = [
-            "Content-Type": "text/html",
-            "Cross-Origin-Resource-Policy": "Same"
-        ]
-        
-        switch contents.remoteContentMode {
-        case .disallowed: // this cuts off all remote content
-            headers["Content-Security-Policy"] = "default-src 'none';"
-            
-        case .allowed: // this cuts off only scripts and connections
-            headers["Content-Security-Policy"] = "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
-        }
-        
-        let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
-        urlSchemeTask.didReceive(response)
-        urlSchemeTask.didReceive(contents.body.data(using: .unicode)!)
-        urlSchemeTask.didFinish()
-    }
-    
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
-        assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
-    }
-    
-    private var loopbackScheme: String {
-        return "pm-incoming-mail"
-    }
-    
-    private var loopbackUrl: URL {
-        let url = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
-        return url
-    }
-    
-    var request: URLRequest {
-        return URLRequest(url: self.loopbackUrl)
     }
 }
