@@ -124,15 +124,17 @@ class EmailView: UIView, UIScrollViewDelegate{
         let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
         
         // TODO: run purifier.js here
-        var bodyText = contents.body/*.stringByStrippingStyleHTML()
-        bodyText = bodyText.stringByStrippingBodyStyle()
-        bodyText = bodyText.stringByPurifyHTML() */
+        var bodyText = contents.body
         
         if #available(iOS 11.0, *) {
             self.html = .init(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
                               remoteContentMode: contents.remoteContentMode)
             self.contentWebView.load(self.request)
-        } else {
+        } else { // old way of purifying
+            bodyText = bodyText.stringByStrippingStyleHTML()
+            bodyText = bodyText.stringByStrippingBodyStyle()
+            bodyText = bodyText.stringByPurifyHTML()
+            
             switch contents.remoteContentMode {
             case .disallowed:   bodyText = bodyText.stringByPurifyImages()
             case .allowed:      bodyText = bodyText.stringFixImages()
@@ -369,16 +371,17 @@ extension EmailView : EmailHeaderViewProtocol {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         let contents = self.html
         
-        // TODO: possible improvements:
-        // - upgrade remote content loading requests to https
-        // - switch off only images
         var headers: Dictionary<String, String> = [
             "Content-Type": "text/html",
             "Cross-Origin-Resource-Policy": "Same"
         ]
         
-        if contents.remoteContentMode == .disallowed {
-            headers["Content-Security-Policy"] = "default-src 'self'" // this cuts off all remote content
+        switch contents.remoteContentMode {
+        case .disallowed: // this cuts off all remote content
+            headers["Content-Security-Policy"] = "default-src 'none';"
+            
+        case .allowed: // this cuts off only scripts and connections
+            headers["Content-Security-Policy"] = "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
         }
         
         let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
