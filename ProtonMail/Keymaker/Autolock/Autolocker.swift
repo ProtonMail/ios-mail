@@ -35,7 +35,7 @@ public protocol SettingsProvider {
 public class Autolocker {
     // there is no need to persist this value anywhere except memory since we can not unlock the app automatically after relaunch (except NoneProtection case)
     // by the same reason we can benefit from system uptime value instead of current Date which can be played with in Settings.app
-    internal var autolockCountdownStart: TimeInterval?
+    private var autolockCountdownStart: TimeInterval?
     private var userSettingsProvider: SettingsProvider
     
     public init(lockTimeProvider: SettingsProvider) {
@@ -44,6 +44,10 @@ public class Autolocker {
     
     internal func updateAutolockCountdownStart() {
         self.autolockCountdownStart = ProcessInfo().systemUptime
+    }
+    
+    internal func releaseCountdown() {
+        self.autolockCountdownStart = nil
     }
     
     internal func shouldAutolockNow() -> Bool {

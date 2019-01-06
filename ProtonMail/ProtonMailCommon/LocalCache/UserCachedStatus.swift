@@ -259,6 +259,7 @@ extension UserCachedStatus {
         }
         set {
             sharedKeychain.keychain.setString("\(newValue.rawValue)", forKey: Key.autoLockTime)
+            keymaker.resetAutolock()
         }
     }
     

@@ -143,7 +143,7 @@ class UnlockManager: NSObject {
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             } else {
-                PMLog.D("Contacts count: \(contacts!.count)")
+                PMLog.D("Contacts count: \(contacts?.count)")
             }
         }
     }
