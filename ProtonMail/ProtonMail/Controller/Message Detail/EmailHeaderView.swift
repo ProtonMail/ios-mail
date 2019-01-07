@@ -476,6 +476,7 @@ class EmailHeaderView: UIView {
             self.emailAttachmentsAmount.isHidden = true
             self.emailHasAttachmentsImageView.isHidden = true
         }
+        self.emailAttachmentsAmount.sizeToFit()
     }
     
     func updateHeaderLayout () {
