@@ -633,6 +633,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                         let atts = self.message.attachments.allObjects as? [Attachment]
                         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
                         self.showEmbedImage()
+                        self.emailView?.emailHeader.updateAttConstraints(true)
                     }
                 }
                 
