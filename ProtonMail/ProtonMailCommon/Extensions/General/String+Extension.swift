@@ -238,7 +238,8 @@ extension String {
     
     
     func stringByStrippingStyleHTML() -> String {        
-        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: "")
+        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: " ")
+        //out.preg_replace("\\s+", replaceto:" ") try this later if purifier doesnt work
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
