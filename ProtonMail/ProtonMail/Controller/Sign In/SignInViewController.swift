@@ -29,28 +29,26 @@
 import UIKit
 import MBProgressHUD
 
-
-//class SignInViewController: BaseViewController {
 class SignInViewController: ProtonMailViewController {
-    static var isComeBackFromMailbox                = false
+    static var isComeBackFromMailbox = false
     
-    fileprivate let animationDuration: TimeInterval = 0.5
-    fileprivate let keyboardPadding: CGFloat        = 12
-    fileprivate let buttonDisabledAlpha: CGFloat    = 0.5
+    private let animationDuration: TimeInterval = 0.5
+    private let keyboardPadding: CGFloat        = 12
+    private let buttonDisabledAlpha: CGFloat    = 0.5
     
-    fileprivate let kDecryptMailboxSegue            = "mailboxSegue"
-    fileprivate let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
-    fileprivate let kSegueToSignUpWithNoAnimation   = "sign_in_to_splash_no_segue"
-    fileprivate let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
-    fileprivate let kSegueTo2FACodeSegue            = "2fa_code_segue"
+    private let kDecryptMailboxSegue            = "mailboxSegue"
+    private let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
+    private let kSegueToSignUpWithNoAnimation   = "sign_in_to_splash_no_segue"
+    private let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
+    private let kSegueTo2FACodeSegue            = "2fa_code_segue"
     
-    private var isShowpwd                           = false
-    private var isRemembered                        = false
-    private var showingTouchID                      = false
+    private var isShowpwd      = false
+    private var isRemembered   = false
+    private var showingTouchID = false
     
     //define
-    fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
-    fileprivate let showPriority: UILayoutPriority  = UILayoutPriority(rawValue: 750.0);
+    private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
+    private let showPriority: UILayoutPriority  = UILayoutPriority(rawValue: 750.0)
     
     //views
     @IBOutlet weak var versionLabel: UILabel!
@@ -135,7 +133,7 @@ class SignInViewController: ProtonMailViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    fileprivate func setupVersionLabel () {
+    internal func setupVersionLabel () {
         let language: ELanguage =  LanguageManager.currentLanguageEnum()
         languagesLabel.text = language.description
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
@@ -150,13 +148,10 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func setupView() {
-        if(isRemembered)
-        {
-            HideLoginViews();
-        }
-        else
-        {
-            ShowLoginViews();
+        if isRemembered {
+            HideLoginViews()
+        } else {
+            ShowLoginViews()
             if !userCachedStatus.isSplashOk() {
                 self.performSegue(withIdentifier: kSegueToSignUpWithNoAnimation, sender: self)
             }
@@ -201,9 +196,9 @@ class SignInViewController: ProtonMailViewController {
         sender.isSelected = isShowpwd
         
         if isShowpwd {
-            self.passwordTextField.isSecureTextEntry = false;
+            self.passwordTextField.isSecureTextEntry = false
         } else {
-            self.passwordTextField.isSecureTextEntry = true;
+            self.passwordTextField.isSecureTextEntry = true
         }
     }
     
@@ -222,10 +217,9 @@ class SignInViewController: ProtonMailViewController {
         if (!(parent?.isEqual(self.parent) ?? false)) {
         }
         
-        if(SignInViewController.isComeBackFromMailbox)
-        {
-            ShowLoginViews();
-            SignInManager.shared.clean();
+        if SignInViewController.isComeBackFromMailbox {
+            ShowLoginViews()
+            SignInManager.shared.clean()
         }
     }
     
@@ -241,8 +235,8 @@ class SignInViewController: ProtonMailViewController {
                 return
             }
             
-            let username : String! = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
-            let password : String! = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "")
+            let username : String = (loginDictionary?[AppExtensionUsernameKey] as? String ?? "").trim()
+            let password : String = (loginDictionary?[AppExtensionPasswordKey] as? String ?? "")
             
             self.usernameTextField.text = username
             self.passwordTextField.text = password
@@ -263,6 +257,9 @@ class SignInViewController: ProtonMailViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
                                                name:  UIApplication.willEnterForegroundNotification,
                                                object: nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
+                                               name:  UIApplication.didEnterBackgroundNotification,
+                                               object: nil)
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
@@ -282,11 +279,16 @@ class SignInViewController: ProtonMailViewController {
     @objc func doEnterForeground() {
         if userCachedStatus.isTouchIDEnabled && !showingTouchID {
             showingTouchID = true
+            //TODO::fixme. need to add a callback event when touch id/face id canceled or dismissed. `workaround is func doEnterBackground()`
             UnlockManager.shared.biometricAuthentication(requestMailboxPassword: {
                 self.showingTouchID = false
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             })
         }
+    }
+    
+    @objc func doEnterBackground() {
+        self.showingTouchID = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -299,7 +301,7 @@ class SignInViewController: ProtonMailViewController {
                     self.isRemembered = true
                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
                 })
-                if(isRemembered) {
+                if isRemembered {
                     HideLoginViews()
                 } else {
                     ShowLoginViews()
@@ -307,13 +309,12 @@ class SignInViewController: ProtonMailViewController {
             }
         }
         
-        if(SignInViewController.isComeBackFromMailbox)
-        {
-            ShowLoginViews();
-            SignInManager.shared.clean();
+        if SignInViewController.isComeBackFromMailbox {
+            ShowLoginViews()
+            SignInManager.shared.clean()
         }
         
-        if(UIDevice.current.isLargeScreen() && !isRemembered) {
+        if UIDevice.current.isLargeScreen() && !isRemembered {
             let signinFlow = UnlockManager.shared.getUnlockFlow()
             if signinFlow != .requireTouchID {
                 usernameTextField.becomeFirstResponder()
@@ -328,7 +329,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent;
+        return UIStatusBarStyle.lightContent
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -349,8 +350,7 @@ class SignInViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    fileprivate func HideLoginViews()
-    {
+    internal func HideLoginViews() {
         self.usernameView.alpha      = 0.0
         self.passwordView.alpha      = 0.0
         self.signInButton.alpha      = 0.0
@@ -376,7 +376,6 @@ class SignInViewController: ProtonMailViewController {
     internal func setupTextFields() {
         PMLog.D(LocalString._user_login)
         signInTitle.text = LocalString._user_login
-        
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,
@@ -384,7 +383,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     func setupButtons() {
-        signInButton.layer.borderColor      = UIColor.ProtonMail.Login_Button_Border_Color.cgColor;
+        signInButton.layer.borderColor      = UIColor.ProtonMail.Login_Button_Border_Color.cgColor
         signInButton.alpha                  = buttonDisabledAlpha
         
         onePasswordButton.layer.borderColor = UIColor.white.cgColor
@@ -406,14 +405,13 @@ class SignInViewController: ProtonMailViewController {
         signInButton.isEnabled = !usernameText.isEmpty && !passwordText.isEmpty
         
         UIView.animate(withDuration: animationDuration, animations: { () -> Void in
-            if (self.signInButton.alpha != 0.0) {
+            if self.signInButton.alpha != 0.0 {
                 self.signInButton.alpha = self.signInButton.isEnabled ? 1.0 : self.buttonDisabledAlpha
             }
         })
     }
     
     // MARK: - Actions
-    
     @IBAction func rememberButtonAction(_ sender: UIButton) {
         isRemembered = !isRemembered
         isRemembered = true
@@ -427,7 +425,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
-        dismissKeyboard();
+        dismissKeyboard()
 
         let alertStr = LocalString._please_use_the_web_application_to_reset_your_password
         let alertController = alertStr.alertController()
@@ -444,9 +442,9 @@ class SignInViewController: ProtonMailViewController {
         dismissKeyboard()
     }
     
-    fileprivate func signIn(username: String,
-                            password: String,
-                            cachedTwoCode: String?)
+    internal func signIn(username: String,
+                         password: String,
+                         cachedTwoCode: String?)
     {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         self.isRemembered = true
@@ -463,7 +461,7 @@ class SignInViewController: ProtonMailViewController {
                         onError: { error in
                             PMLog.D("error: \(error)")
                             MBProgressHUD.hide(for: self.view, animated: true)
-                            self.ShowLoginViews();
+                            self.ShowLoginViews()
                             if !error.code.forceUpgrade {
                                 let alertController = error.alertController()
                                 alertController.addOKAction()
@@ -506,7 +504,7 @@ extension SignInViewController : PinCodeViewControllerDelegate {
             self.isRemembered = true
             self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
         })
-        setupView();
+        setupView()
     }
 }
 
@@ -518,19 +516,19 @@ extension SignInViewController: NSNotificationCenterKeyboardObserverProtocol {
         self.configConstraint(false)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollBottomPaddingConstraint.constant = keyboardSize.height;
+            scrollBottomPaddingConstraint.constant = keyboardSize.height
         }
         self.configConstraint(true)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
 }
 

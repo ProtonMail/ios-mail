@@ -1,6 +1,6 @@
 //
 //  RecaptchaViewController.swift
-//  ProtonMail - Created by Yanfeng Zhang on 12/17/15.
+//  ProtonMail - Created on 12/17/15.
 //
 //
 //  The MIT License

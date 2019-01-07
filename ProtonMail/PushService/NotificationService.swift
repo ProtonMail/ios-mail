@@ -1,6 +1,6 @@
 //
 //  NotificationService.swift
-//  PushService - Created by Yanfeng Zhang on 11/14/17.
+//  PushService - Created on 11/14/17.
 //
 //
 //  The MIT License

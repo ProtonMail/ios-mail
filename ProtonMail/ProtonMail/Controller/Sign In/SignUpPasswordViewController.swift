@@ -1,6 +1,6 @@
 //
 //  SignUpPasswordViewController.swift
-//  ProtonMail - Created by Yanfeng Zhang on 12/18/15.
+//  ProtonMail - Created on 12/18/15.
 //
 //
 //  The MIT License
@@ -129,8 +129,8 @@ class SignUpPasswordViewController: UIViewController {
     @IBAction func createPasswordAction(_ sender: UIButton) {
         dismissKeyboard()
         
-        let login_pwd = (loginPasswordField.text ?? "") //.trim()
-        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "") //.trim()
+        let login_pwd = (loginPasswordField.text ?? "")
+        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "")
         
         if !login_pwd.isEmpty && confirm_login_pwd == login_pwd {
             //create user & login
@@ -161,8 +161,8 @@ class SignUpPasswordViewController: UIViewController {
     }
     
     func updateButtonStatus () {
-        let login_pwd = (loginPasswordField.text ?? "") //.trim()
-        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "") //.trim()
+        let login_pwd = (loginPasswordField.text ?? "")
+        let confirm_login_pwd = (confirmLoginPasswordField.text ?? "")
         
         if !login_pwd.isEmpty && !confirm_login_pwd.isEmpty {
             createPasswordButton.isEnabled = true
@@ -201,7 +201,7 @@ extension SignUpPasswordViewController: NSNotificationCenterKeyboardObserverProt
         self.configConstraint(false)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -213,6 +213,6 @@ extension SignUpPasswordViewController: NSNotificationCenterKeyboardObserverProt
         self.configConstraint(true)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
-            }, completion: nil)
+        }, completion: nil)
     }
 }
