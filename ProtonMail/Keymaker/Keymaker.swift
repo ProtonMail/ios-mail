@@ -56,7 +56,7 @@ public class Keymaker: NSObject {
     private var _mainKey: Key? {
         didSet {
             if _mainKey != nil {
-                self.autolocker?.autolockCountdownStart = nil
+                self.resetAutolock()
                 self.setupCryptoTransformers(key: _mainKey)
             }
         }
@@ -71,6 +71,10 @@ public class Keymaker: NSObject {
             self._mainKey = self.provokeMainKeyObtention()
         }
         return self._mainKey
+    }
+    
+    public func resetAutolock() {
+        self.autolocker?.releaseCountdown()
     }
     
     // Try to get main key from storage if it exists, otherwise create one.
