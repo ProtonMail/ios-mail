@@ -477,6 +477,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard let message = self.viewModel.item(index: indexPath) else {
             return
         }
+        
         mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
         mailboxCell.setCellIsChecked(self.selectedIDs.contains(message.messageID))
         if (self.listEditing) {
@@ -1219,10 +1220,32 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 }
             }
         case .update:
+            /// # 1
             if let indexPath = indexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: indexPath)
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
             }
+            if let newIndexPath = newIndexPath {
+                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
+            }
+            
+            /// #2
+//            if let indexPath = indexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: indexPath)
+//            }
+//
+//            if let newIndexPath = newIndexPath {
+//                let cell = tableView.cellForRow(at: newIndexPath)
+//                self.configure(cell: cell, indexPath: newIndexPath)
+//            }
+
+            /// #3
+//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: newIndexPath)
+//            }
+        case .move:
+            break
         default:
             return
         }
