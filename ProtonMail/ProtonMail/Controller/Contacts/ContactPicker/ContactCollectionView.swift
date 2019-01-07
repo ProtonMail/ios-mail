@@ -416,7 +416,7 @@ extension ContactCollectionView : UICollectionViewDelegateFlowLayout {
         
         if self.isCell(prompt: indexPath) {
             widthForItem = ContactCollectionViewPromptCell.widthWithPrompt(prompt: self._prompt)
-            widthForItem += 30
+            widthForItem = max(30, widthForItem)
         } else if self.isCell(entry: indexPath) {
             let prototype = ContactCollectionViewEntryCell()
             widthForItem = max(50, prototype.widthForText(text: self.searchText))

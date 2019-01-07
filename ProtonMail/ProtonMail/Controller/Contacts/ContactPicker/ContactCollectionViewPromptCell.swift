@@ -40,7 +40,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
             self.promptLabel.font = newValue
         }
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setup()
@@ -67,12 +67,12 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
-    
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["label": label]))
-
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[label]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
@@ -81,9 +81,9 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         label.textAlignment = .left
         label.text = self.prompt
         label.textColor = UIColor.black
-
+        
         self.promptLabel = label
-}
+    }
     
     var prompt : String {
         get {
@@ -95,11 +95,9 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         }
     }
     
-    //TODO:: here need change to depends on real string size
     class func widthWithPrompt(prompt: String) -> CGFloat {
-        return 5.0
+        let size = prompt.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        return 5 + size.width.rounded(.up)
     }
     
-
-
 }

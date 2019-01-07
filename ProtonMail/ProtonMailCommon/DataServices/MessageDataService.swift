@@ -1480,16 +1480,11 @@ class MessageDataService : Service {
                                 message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
                             }
                         }
-                        
                         if attachments.count > 0 {
                             message.numAttachments = NSNumber(value: attachments.count)
                         }
                         //TODO::fix later 1.7
                         message.mimeType = "text/html"
-                        self.queue(message, action: .read)
-                        if message.unRead {
-                            self.updateCounter(markUnRead: false, on: message)
-                        }
                         message.unRead = false
                         message.isDetailDownloaded = false
                         if let lid = message.remove(labelID: Message.Location.draft.rawValue), message.unRead {
