@@ -150,7 +150,7 @@ class MessageDataService : Service {
     }
 
     @discardableResult
-    func move(message: Message, from fLabel: String, to tLabel: String) -> Bool {
+    func move(message: Message, from fLabel: String, to tLabel: String, queue: Bool = true) -> Bool {
         guard let context = message.managedObjectContext else {
             return false
         }
@@ -186,7 +186,10 @@ class MessageDataService : Service {
             PMLog.D(" error: \(error)")
             return false
         }
-        self.queue(message, action: .folder, data1: fLabel, data2: tLabel)
+        
+        if queue {
+            self.queue(message, action: .folder, data1: fLabel, data2: tLabel)
+        }
         return true
     }
     
@@ -479,15 +482,16 @@ class MessageDataService : Service {
         
         completion?(nil, nil, error)
     }
-    
 
     func updateMessageCount() {
-        let counterApi = MessageCount()
-        counterApi.call({ (task, response, hasError) in
-            if !hasError {
-                self.processEvents(counts: response?.counts)
-            }
-        })
+        queue {
+            let counterApi = MessageCount()
+            counterApi.call({ (task, response, hasError) in
+                if !hasError {
+                    self.processEvents(counts: response?.counts)
+                }
+            })
+        }
     }
     
     

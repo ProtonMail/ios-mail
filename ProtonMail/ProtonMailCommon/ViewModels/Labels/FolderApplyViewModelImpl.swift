@@ -105,7 +105,6 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        var changed : Bool = false
         let context = sharedCoreDataService.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
@@ -114,40 +113,13 @@ final class FolderApplyViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValue(forKey: "labels")
-                        var needsDelete : [Label] = []
-                        for lo in labelObjs {
-                            if let l = lo as? Label {
-                                switch l.labelID {
-                                case "0", "3", "4", "6":
-                                    needsDelete.append(l)
-                                    changed = true
-                                default:
-                                    if l.exclusive == true {
-                                        needsDelete.append(l)
-                                        changed = true
-                                    }
-                                    break
-                                }
-                                
-                            }
-                        }
-                        for l in needsDelete {
-                            labelObjs.remove(l)
-                            changed = true
-                        }
-                        labelObjs.add(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
+                        let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
+                        sharedMessageDataService.move(message: mm, from: flable, to: key, queue: false)
                     }
                 }
             }
-            
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D("error: \(error)")
-            }
         }
-        return changed
+        return true
     }
     
     override func getTitle() -> String {

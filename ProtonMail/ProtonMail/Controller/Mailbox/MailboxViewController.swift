@@ -372,6 +372,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             if (viewModel.isCurrentLocation(.sent)) {
                 locations = [:]
             }
+            
+            if viewModel.showLocation() {
+                locations[.inbox] = .default
+            }
 
             for (location, style) in locations {
                 if !viewModel.isCurrentLocation(location) {
@@ -1221,23 +1225,23 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
             }
         case .update:
             /// # 1
-            if let indexPath = indexPath {
-                self.tableView.reloadRows(at: [indexPath], with: .fade)
-            }
-            if let newIndexPath = newIndexPath {
-                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
-            }
+//            if let indexPath = indexPath {
+//                self.tableView.reloadRows(at: [indexPath], with: .fade)
+//            }
+//            if let newIndexPath = newIndexPath {
+//                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
+//            }
             
             /// #2
-//            if let indexPath = indexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: indexPath)
-//            }
-//
-//            if let newIndexPath = newIndexPath {
-//                let cell = tableView.cellForRow(at: newIndexPath)
-//                self.configure(cell: cell, indexPath: newIndexPath)
-//            }
+            if let indexPath = indexPath {
+                let cell = tableView.cellForRow(at: indexPath)
+                self.configure(cell: cell, indexPath: indexPath)
+            }
+            
+            if let newIndexPath = newIndexPath {
+                let cell = tableView.cellForRow(at: newIndexPath)
+                self.configure(cell: cell, indexPath: newIndexPath)
+            }
 
             /// #3
 //            if let indexPath = indexPath, let newIndexPath = newIndexPath {

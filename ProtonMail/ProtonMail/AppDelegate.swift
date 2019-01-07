@@ -269,6 +269,7 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         if SignInManager.shared.isSignedIn() {
+            sharedMessageDataService.updateMessageCount()
             sharedMessageDataService.backgroundFetch { delayedCompletion() }
         } else {
             delayedCompletion()
