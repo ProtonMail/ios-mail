@@ -191,7 +191,7 @@ class UserDataService : Service {
                 return switchCacheOff == false //TODO:: need test this part
             } else {
                 switchCacheOff = false
-                return true;
+                return true
             } }
         set {
             switchCacheOff = (newValue == false)
@@ -270,16 +270,16 @@ class UserDataService : Service {
     
     var defaultEmail : String {
         if let addr = userAddresses.defaultAddress() {
-            return addr.email;
+            return addr.email
         }
-        return "";
+        return ""
     }
     
     var defaultDisplayName : String {
         if let addr = userAddresses.defaultAddress() {
-            return addr.display_name;
+            return addr.display_name
         }
-        return displayName;
+        return displayName
     }
     
     var swiftLeft : MessageSwipeAction {
@@ -347,7 +347,7 @@ class UserDataService : Service {
     }
     
     var notify: Bool {
-        return (userInfo?.notify ?? 0 ) == 1;
+        return (userInfo?.notify ?? 0 ) == 1
     }
     
     var userDefaultSignature: String {
@@ -410,6 +410,13 @@ class UserDataService : Service {
     func updateFromEvents(mailSettings: [String : Any]?) {
         if let user = self.userInfo {
             user.parse(mailSettings: mailSettings)
+            self.userInfo = user
+        }
+    }
+    
+    func update(usedSpace: Int64) {
+        if let user = self.userInfo {
+            user.usedSpace = usedSpace
             self.userInfo = user
         }
     }

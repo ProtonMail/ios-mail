@@ -108,11 +108,11 @@ final class EventCheckResponse : ApiResponse {
     
     var conversationCounts: [[String : Any]]? //TODO:: use when we add conversation view
     
-    var usedSpace : String?
+    var usedSpace : Int64?
     var notices : [String]?
     
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        //PMLog.D(response.JSONStringify(prettyPrinted: true))
+    override func ParseResponse(_ response: [String : Any]) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
         self.more    = response["More"] as? Int ?? 0
@@ -141,7 +141,7 @@ final class EventCheckResponse : ApiResponse {
         
         //self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
         
-        self.usedSpace = response["UsedSpace"] as? String
+        self.usedSpace = response["UsedSpace"] as? Int64
         self.notices = response["Notices"] as? [String]
         
         return true

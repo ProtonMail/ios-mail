@@ -73,12 +73,12 @@ class MessageDataService : Service {
         fetchRequest.predicate = NSPredicate(format: "%K in %@", Message.Attributes.messageID, selected)
         do {
             if let messages = try context.fetch(fetchRequest) as? [Message] {
-                return messages;
+                return messages
             }
         } catch let ex as NSError {
             PMLog.D(" error: \(ex)")
         }
-        return [Message]();
+        return [Message]()
     }
     
     /// mark message to unread
@@ -397,6 +397,7 @@ class MessageDataService : Service {
                                 self.processEvents(mailSettings: eventsRes.mailSettings)
                                 self.processEvents(addresses: eventsRes.addresses)
                                 self.processEvents(counts: eventsRes.messageCounts)
+                                self.processEvents(space: eventsRes.usedSpace)
                                 
                                 var outMessages : [Any] = []
                                 for message in messageEvents {
@@ -422,6 +423,7 @@ class MessageDataService : Service {
                             self.processEvents(mailSettings: eventsRes.mailSettings)
                             self.processEvents(addresses: eventsRes.addresses)
                             self.processEvents(counts: eventsRes.messageCounts)
+                            self.processEvents(space: eventsRes.usedSpace)
                         }
                         if hasError {
                             completion?(task, nil, eventsRes.error)
@@ -2141,5 +2143,13 @@ class MessageDataService : Service {
             badgeNumber = 0
         }
         UIApplication.setBadge(badge: badgeNumber)
+    }
+    
+    
+    private func processEvents(space usedSpace : Int64?) {
+        guard let usedSpace = usedSpace else {
+            return
+        }
+        sharedUserDataService.update(usedSpace: usedSpace)
     }
 }

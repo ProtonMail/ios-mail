@@ -48,9 +48,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
             if action == .trash {
                 return LocalString._general_delete_action
             }
-            return action.description;
+            return action.description
         default:
-            return action.description;
+            return action.description
         }
     }
 
@@ -67,7 +67,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
         case .trash:
             return action != .trash
         case .allmail:
-            return false;
+            return false
         default:
             return true
         }
@@ -93,7 +93,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     override func isDelete () -> Bool {
         switch(self.label) {
         case .trash, .spam, .draft:
-            return true;
+            return true
         default:
             return false
         }
@@ -111,7 +111,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     override func isShowEmptyFolder() -> Bool {
         switch(self.label) {
         case .trash, .spam:
-            return true;
+            return true
         default:
             return false
         }
@@ -120,9 +120,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
     override func emptyFolder() {
         switch(self.label) {
         case .trash:
-            sharedMessageDataService.emptyTrash();
+            sharedMessageDataService.emptyTrash()
         case .spam:
-            sharedMessageDataService.emptySpam();
+            sharedMessageDataService.emptySpam()
         default:
             break
         }
@@ -154,7 +154,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     
     override func delete(message: Message) -> (SwipeResponse, UndoMessage?) {
         switch(self.label) {
-        case .trash, .spam:
+        case .trash, .spam, .draft:
             if messageService.delete(message: message, label: self.label.rawValue) {
                 return (.showGeneral, nil)
             }

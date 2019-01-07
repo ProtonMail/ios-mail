@@ -29,8 +29,7 @@
 import UIKit
 
 class CountryCodeTableViewCell : UITableViewCell {
-    var vc : UIViewController!;
-
+    
     @IBOutlet weak var flagImage: UIImageView!
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var codeLabel: UILabel!
@@ -51,13 +50,14 @@ class CountryCodeTableViewCell : UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        var frame = imageView?.frame
-        frame?.origin.x = 0
-        frame?.size.width = 24
-        imageView?.frame = frame!
+        if var frame = imageView?.frame {
+            frame.origin.x = 0
+            frame.size.width = 24
+            imageView?.frame = frame
+        }
     }
     
-    func ConfigCell(_ countryCode : CountryCode!, vc : UIViewController) {
+    func ConfigCell(_ countryCode : CountryCode, vc : UIViewController) {
         let image = UIImage(named: "flags.bundle/\(countryCode.country_code)" )
         imageView?.image = image
         countryLabel.text = countryCode.country_en

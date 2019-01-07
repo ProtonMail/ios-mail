@@ -47,7 +47,7 @@ public class ApiResponse {
         return code == 1000
     }
     
-    func ParseResponseError (_ response: [String : Any]!) -> Bool {
+    func ParseResponseError (_ response: [String : Any]) -> Bool {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
         errorDetails = response["ErrorDescription"] as? String
@@ -79,7 +79,7 @@ public class ApiResponse {
         self.error = error
     }
     
-    func ParseResponse (_ response: [String : Any]!) -> Bool {
+    func ParseResponse (_ response: [String : Any]) -> Bool {
         return true
     }
 }
