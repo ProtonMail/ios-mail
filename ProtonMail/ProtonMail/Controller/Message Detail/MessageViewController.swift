@@ -275,7 +275,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     @objc internal func removeButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            if message.contains(label: .trash) {
+            if message.contains(label: .trash) || message.contains(label: .spam) {
                 sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
             } else {
                 if let label = message.firstValidFolder() {

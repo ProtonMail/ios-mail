@@ -226,7 +226,7 @@ extension MenuViewController: UITableViewDelegate {
                 keymaker.lockTheApp() // remove mainKey from memory
                 let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
                 self.sectionClicked = false
-                sharedVMService.resetView() // FIXME: do we still need this?
+                self.closeMenu()
             } else if item == .servicePlan {
                 self.coordinator?.go(to: .plan)
             }
