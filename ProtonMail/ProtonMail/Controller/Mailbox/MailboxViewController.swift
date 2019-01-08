@@ -1233,21 +1233,21 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 //            }
             
             /// #2
-            if let indexPath = indexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: indexPath)
-            }
-            
-            if let newIndexPath = newIndexPath {
-                let cell = tableView.cellForRow(at: newIndexPath)
-                self.configure(cell: cell, indexPath: newIndexPath)
-            }
-
-            /// #3
-//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+//            if let indexPath = indexPath {
 //                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: indexPath)
+//            }
+//            
+//            if let newIndexPath = newIndexPath {
+//                let cell = tableView.cellForRow(at: newIndexPath)
 //                self.configure(cell: cell, indexPath: newIndexPath)
 //            }
+
+            /// #3
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                let cell = tableView.cellForRow(at: indexPath)
+                self.configure(cell: cell, indexPath: newIndexPath)
+            }
         case .move:
             break
         default:

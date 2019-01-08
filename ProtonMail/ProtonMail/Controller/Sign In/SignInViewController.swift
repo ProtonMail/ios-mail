@@ -252,6 +252,7 @@ class SignInViewController: ProtonMailViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.showingTouchID = false
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
@@ -260,6 +261,7 @@ class SignInViewController: ProtonMailViewController {
         NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
                                                name:  UIApplication.didEnterBackgroundNotification,
                                                object: nil)
+        
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
@@ -290,7 +292,7 @@ class SignInViewController: ProtonMailViewController {
     @objc func doEnterBackground() {
         self.showingTouchID = false
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
