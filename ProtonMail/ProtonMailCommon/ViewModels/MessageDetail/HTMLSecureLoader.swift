@@ -27,58 +27,118 @@
     
 
 import Foundation
+import JavaScriptCore
 
-struct EmailBodyContents {
-    private let rawBody: String
-    let remoteContentMode: RemoteContentLoadingMode
+class EmailBodyContents {
+    private let body: String
+    private let remoteContentMode: RemoteContentLoadingMode
     
-    init(body rawBody: String, remoteContentMode: RemoteContentLoadingMode) {
-        self.rawBody = rawBody
+    private lazy var vm = JSVirtualMachine()
+    private lazy var context: JSContext = {
+        let context = JSContext(virtualMachine: self.vm)!
+        context.exceptionHandler = { context, exception in
+            PMLog.D(exception.debugDescription)
+        }
+        return context
+    }()
+    
+    init(body: String, remoteContentMode: RemoteContentLoadingMode) {
+        self.body = body
         self.remoteContentMode = remoteContentMode
     }
     
-    var secureBody: String {
-        // TODO: inject purifier here
-        return self.rawBody
+    var fullBody: String {
+        let css = try! String(contentsOfFile: Bundle.main.path(forResource: "editor", ofType: "css")!, encoding: String.Encoding.utf8)
+        let meta: String = {
+            if #available(iOS 11.0, *) {
+                // in this case we will use preferable way for CSP - HTTP headers
+                return """
+                <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)">
+                """
+            } else {
+                // older iOS versions of WKWebView will load html without http headers, so we have to fallback to meta tag for CSP
+                return """
+                <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)">
+                <meta http-equiv="Content-Security-Policy" content="\(self.contentSecurityPolicy)">
+                """
+            }
+        }()
+        
+        return "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(self.body)</div>"
+    }
+    
+    
+    var contentSecurityPolicy: String {
+        switch self.remoteContentMode {
+        case .disallowed: // this cuts off all remote content
+            return "default-src 'none'; style-src 'self' 'unsafe-inline';"
+            
+        case .allowed: // this cuts off only scripts and connections
+            return "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
+        }
     }
     
     enum RemoteContentLoadingMode {
-        case allowed, disallowed // TODO: .noImages
+        case allowed, disallowed
     }
 }
 
-@available(iOS 11.0, *) class HTMLSecureLoader: NSObject, WKURLSchemeHandler {
+class HTMLSecureLoader: NSObject, WKScriptMessageHandler {
     private var contents: EmailBodyContents?
+    private lazy var loopbackScheme: String = "pm-incoming-mail"
+    private lazy var loopbackUrl: URL = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
+    private lazy var request: URLRequest = URLRequest(url: self.loopbackUrl)
     
     func load(contents: EmailBodyContents, in webView: WKWebView) {
         self.contents = contents
-        webView.load(self.request)
+        
+        if #available(iOS 11.0, *) {
+            webView.load(self.request)
+        } else {
+            webView.loadHTMLString(contents.fullBody, baseURL: URL(string: "about:blank")!)
+        }
     }
     
     func inject(into config: WKWebViewConfiguration) {
-        config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
+        let domPurifyRaw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
+        let domPurify = WKUserScript(source: domPurifyRaw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+        
+        let sanitizeRaw = """
+        var clear = DOMPurify.sanitize(document.documentElement.innerHTML.toString());
+        window.webkit.messageHandlers.loaded.postMessage({'clearBody':clear});
+        document.documentElement.innerHTML = clear;
+        """
+        let sanitize = WKUserScript(source: sanitizeRaw, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        
+        config.userContentController.add(self, name: "loaded")
+        config.userContentController.removeAllUserScripts()
+        config.userContentController.addUserScript(domPurify)
+        config.userContentController.addUserScript(sanitize)
+        
+        if #available(iOS 11.0, *) {
+            config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
+        }
     }
     
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        PMLog.D(any: message.body)
+    }
+}
+
+@available(iOS 11.0, *) extension HTMLSecureLoader: WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
-        guard let mode = self.contents?.remoteContentMode,
-            let bodyData = self.contents?.secureBody.data(using: .unicode) else
+        guard let contents = self.contents,
+            let bodyData = contents.fullBody.data(using: .unicode) else
         {
             urlSchemeTask.didFinish()
             return
         }
         
-        var headers: Dictionary<String, String> = [
+        let headers: Dictionary<String, String> = [
             "Content-Type": "text/html",
-            "Cross-Origin-Resource-Policy": "Same"
+            "Cross-Origin-Resource-Policy": "Same",
+            "Content-Security-Policy": contents.contentSecurityPolicy
         ]
-        
-        switch mode {
-        case .disallowed: // this cuts off all remote content
-            headers["Content-Security-Policy"] = "default-src 'none'; style-src 'self' 'unsafe-inline';"
-            
-        case .allowed: // this cuts off only scripts and connections
-            headers["Content-Security-Policy"] = "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
-        }
         
         let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
         urlSchemeTask.didReceive(response)
@@ -88,18 +148,5 @@ struct EmailBodyContents {
     
     func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         assert(false, "webView should not stop urlSchemeTask cuz we're providing response locally")
-    }
-    
-    private var loopbackScheme: String {
-        return "pm-incoming-mail"
-    }
-    
-    private var loopbackUrl: URL {
-        let url = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
-        return url
-    }
-    
-    var request: URLRequest {
-        return URLRequest(url: self.loopbackUrl)
     }
 }

@@ -664,17 +664,14 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func showEmailLoading () {
         let body = LocalString._loading_
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
-        self.emailView?.updateEmailContent(contents, meta: meta)
+        self.emailView?.updateEmailContent(contents)
     }
     
     var contentLoaded = false
     internal func loadEmailBody(_ body : String) {
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)\" content=\"yes\">"
-        
         let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
-        self.emailView?.updateEmailContent(contents, meta: meta)
+        self.emailView?.updateEmailContent(contents)
         
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
@@ -686,10 +683,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
 
         let body = NSLocalizedString(error, comment: "")
-        let meta : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
-        
         let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
-        self.emailView?.updateEmailContent(contents, meta: meta)
+        self.emailView?.updateEmailContent(contents)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {

@@ -53,7 +53,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     
     // Message content
     var contentWebView: PMWebView!
-    @available(iOS 11.0, *) private lazy var loader = HTMLSecureLoader()
+    private lazy var loader = HTMLSecureLoader()
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -111,27 +111,8 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    func updateEmailContent(_ contents: EmailBodyContents, meta: String) {
-        let path = Bundle.main.path(forResource: "editor", ofType: "css")
-        let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-        var bodyText = contents.secureBody
-        
-        if #available(iOS 11.0, *) {
-            let contentsWithPermissions = EmailBodyContents(body: "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>",
-                                                        remoteContentMode: contents.remoteContentMode)
-            self.loader.load(contents: contentsWithPermissions, in: self.contentWebView)
-        } else { // old way of purifying
-            bodyText = bodyText.stringByStrippingStyleHTML()
-            bodyText = bodyText.stringByStrippingBodyStyle()
-            bodyText = bodyText.stringByPurifyHTML()
-            
-            switch contents.remoteContentMode {
-            case .disallowed:   bodyText = bodyText.stringByPurifyImages()
-            case .allowed:      bodyText = bodyText.stringFixImages()
-            }
-            let html = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(bodyText)</div>"
-            self.contentWebView.loadHTMLString(html, baseURL: URL(string: "about:blank"))
-        }
+    func updateEmailContent(_ contents: EmailBodyContents) {
+        self.loader.load(contents: contents, in: self.contentWebView)
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
@@ -200,9 +181,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         
         let config = WKWebViewConfiguration()
         config.preferences = preferences
-        if #available(iOS 11.0, *) {
-            self.loader.inject(into: config)
-        }
+        self.loader.inject(into: config)
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
             config.ignoresViewportScaleLimits = true
@@ -236,6 +215,8 @@ class EmailView: UIView, UIScrollViewDelegate{
                 } else if subview is UIImageView {
                     continue
                 } else {
+                    // FIXME: this should be done for highlight overlay subview also
+                    
                     let h = self.emailHeader.getHeight()
                     sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
                     self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
