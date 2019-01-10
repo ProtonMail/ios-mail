@@ -229,6 +229,7 @@
 		23E0B58144CA677A5148535CD7A0B801 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */; };
 		23E57CEFB95173CACAC273CD1C21D49E /* ExpirationWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57805306D07DA8BD55BDA82FCEA2986C /* ExpirationWarningViewController.swift */; };
 		23E5F14C52F1190EF22F1814F0D4E911 /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
+		23F67E7389A9F29D8B488D2A2C658DFD /* purify.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 013738496623C6A8ADC4FE5EFD9A9FB2 /* purify.min.js */; };
 		240CA34E535AACA5A9BC039334E5EDFB /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 235775AD83A1552B74E4185C2702107F /* LaunchScreen.xib */; };
 		24518277D80AF35B4F6929E4D3BE276F /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		2457DEBCAA51133C61E85F44B1DA4C9B /* Pods_KeymakerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAC33B29F96859EC6802F8339E4AAEB1 /* Pods_KeymakerTests.framework */; };
@@ -357,7 +358,6 @@
 		3657A7B97B19CD78B774E808CCDBBA8E /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */; };
 		365A38334F22DF3A489CA31F0C4EDE20 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451A9B0D4FA42E20F1E5DF6F73A2D947 /* ContactsViewController.swift */; };
 		367B6A2BEDCE5E7C961D81ADE5CEBC45 /* JKBCryptRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70B25C00C752F87EA359EDBCB669D1CB /* JKBCryptRandom.swift */; };
-		3687CD733A9F972896E212E842184618 /* purify.js in Resources */ = {isa = PBXBuildFile; fileRef = 970E538A9D3C987DC00F4DBD940FD78C /* purify.js */; };
 		36AE3CE81ADCD340524A24486FC29E29 /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
 		36C9DF29773300A1EE2EBDA7CFA2036B /* ContactCell+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD8DBF7CB24230E04BA6EE2259E2F4 /* ContactCell+Share.swift */; };
 		36E35A37054A6EF2FBAD7128B8C30129 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209C6CD5DA523EFB7789D59AA08104E /* TimeInterval+Extension.swift */; };
@@ -787,6 +787,9 @@
 		74289135107AD4D3F5934A6E368145E5 /* ComposeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897D0BE51EA2CC2FCE34C2A2AD6F9CEC /* ComposeViewModelImpl.swift */; };
 		744CA151523651437BE20A59FD19B116 /* SettingDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C467E89063311611C9C038E80E4F3CD0 /* SettingDetailViewController.swift */; };
 		749B4C09B947BFFE85D7CE6F634F3F1B /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */; };
+		746EA1028C65A1D811A05787C3E51CB2 /* purify.min.js in Resources */ = {isa = PBXBuildFile; fileRef = 013738496623C6A8ADC4FE5EFD9A9FB2 /* purify.min.js */; };
+		7485FE32F8CA73637473A982ECF725C7 /* CoordinatorSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57DD94CFF0F0A1D6CFD6D5CBEEBA4F5 /* CoordinatorSegue.swift */; };
+		74A05E850E33FDD43986FF6BFECDBBBE /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46E920C3C00281DF5439E20B7CE49AA /* Coordinator.swift */; };
 		74E60C60677D96441CABEFDF54640388 /* DeviceInfoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AFDE70918FC2D6514115BB96D9972 /* DeviceInfoCache.swift */; };
 		74F422AB95B8B51656E734006F8A9955 /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C325968088FD68E27D9274AE99D4BB /* SwipeAction.swift */; };
 		74F6EEE7F424802F48CE8E706685DFC9 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
@@ -1060,7 +1063,6 @@
 		9FD73B446F3F0931EF91E64B20F6E5A0 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		9FF40A7A7656FDE69397612451539E89 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */; };
 		A0549E3B0917C4F391C34DDD4355D223 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */; };
-		A06A29CBE156DC4EE1055DB4FD0EF236 /* purify.min.js in Resources */ = {isa = PBXBuildFile; fileRef = EC808E257516CB2D190796184EFFD88F /* purify.min.js */; };
 		A07D710E56B39CF6A9E9F94E5511CE24 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */; };
 		A0978C5D06F4B6C098352E6F58804710 /* ProtonMail.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		A0B13DBE786FFB4D428541DDFDFD7B62 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
@@ -1096,7 +1098,6 @@
 		A4B864A0110756258C51C4B768D0F1E4 /* AppCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */; };
 		A4F90C339C0245C578A2A0FB4FF33EC5 /* ContactGroupSubSelectionEmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4331F081AA90E7986906F6000B49CE /* ContactGroupSubSelectionEmailCell.xib */; };
 		A53F6651B5B542A82D70A2A7A6D6E0FE /* ServicePlanHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 20457356B822B4AA92822E628FF5B525 /* ServicePlanHeader.xib */; };
-		A56E3168BDDB99D0AEF37FF8BE36300C /* purify.cjs.js in Resources */ = {isa = PBXBuildFile; fileRef = E5E428326315278BA8ED17D2A2B060E8 /* purify.cjs.js */; };
 		A578131E99AD5D6137A5C3B75B30355D /* PushNotificationDecryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */; };
 		A588495B5F7F11B3F293E4FD297F1C22 /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */; };
 		A5992358AA73EDBCEF1F36BDA36C5544 /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
@@ -1882,6 +1883,7 @@
 		0103B7C1FC16F7B8A0AE6F4F6FAC5808 /* MessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
+		013738496623C6A8ADC4FE5EFD9A9FB2 /* purify.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = purify.min.js; path = ../../../DOMPurify/dist/purify.min.js; sourceTree = "<group>"; };
 		0209C6CD5DA523EFB7789D59AA08104E /* TimeInterval+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TimeInterval+Extension.swift"; sourceTree = "<group>"; };
 		0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Extension.swift"; sourceTree = "<group>"; };
 		02635A572CAAECCED7BCF09361710C5D /* ActionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionLabel.swift; sourceTree = "<group>"; };
@@ -2288,6 +2290,7 @@
 		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		8B7F1E2698842DF474D535ECC28EBA76 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
+		8BFE4DA4069E188AF860795FB7CABF21 /* Readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = Readme.md; sourceTree = "<group>"; };
 		8CD94D0FDF3B2AF80193BF9882D94C43 /* EncryptTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptTypes.swift; sourceTree = "<group>"; };
 		8D0D8871C5AF26D9C5679C65AD042501 /* Pods-ProtonMailTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.release.xcconfig"; sourceTree = "<group>"; };
 		8D63E722A24AF52CA417EEC2F60DD5FE /* ShareUnlockViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareUnlockViewModel.swift; sourceTree = "<group>"; };
@@ -2322,7 +2325,6 @@
 		969E254553B2D3B139F9689BDF62BAE1 /* ContactCollectionViewContactCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewContactCell.swift; sourceTree = "<group>"; };
 		96B510F2298FF72A4B77337856F9219E /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SignInViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		96C351D63254CEA37CCEC1D2B914848B /* OnboardingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		970E538A9D3C987DC00F4DBD940FD78C /* purify.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = purify.js; sourceTree = "<group>"; };
 		97716E80A4749362840D571CEBAE3540 /* LockedTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockedTests.swift; sourceTree = "<group>"; };
 		979CBC43EC39AC196CFCB13E86E3EF52 /* Pods-KeymakerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KeymakerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-KeymakerTests/Pods-KeymakerTests.release.xcconfig"; sourceTree = "<group>"; };
 		97B440C871DE3EDCA9832500EF24FF56 /* LabelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelTableViewCell.swift; sourceTree = "<group>"; };
@@ -2551,7 +2553,6 @@
 		E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
 		E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCacheService.swift; sourceTree = "<group>"; };
-		E5E428326315278BA8ED17D2A2B060E8 /* purify.cjs.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = purify.cjs.js; sourceTree = "<group>"; };
 		E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Packages.swift"; sourceTree = "<group>"; };
 		E6286CDFA472ABD288218EA86185FB40 /* Pods-ProtonMail.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.distribution.xcconfig"; sourceTree = "<group>"; };
 		E62C3AA33B3CFEBDC6C8534BCC758323 /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
@@ -2575,7 +2576,6 @@
 		EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Parse+Extension.swift"; sourceTree = "<group>"; };
 		EC6B492F6F532F6FE805CC7F50C82509 /* APIService+ErrorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+ErrorExtension.swift"; sourceTree = "<group>"; };
 		EC7416468AD82FAC6F802B130FB6F2A9 /* ServicePlanTableSectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlanTableSectionHeader.swift; sourceTree = "<group>"; };
-		EC808E257516CB2D190796184EFFD88F /* purify.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = purify.min.js; sourceTree = "<group>"; };
 		EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrganizationsAPI.swift; sourceTree = "<group>"; };
 		ED4AF35529FF1DDD5608E76CE2E3885C /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/Localizable.strings; sourceTree = "<group>"; };
 		EDA55AD9ECACD406A8CEE5F40D66001B /* Pods-ShareDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.debug.xcconfig"; sourceTree = "<group>"; };
@@ -3400,6 +3400,7 @@
 				7F4B7FE0C7FE827FC7E14E5CFA68C9AD /* editor.html */,
 				8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */,
 				D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */,
+				013738496623C6A8ADC4FE5EFD9A9FB2 /* purify.min.js */,
 				64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */,
 			);
 			path = Resource;
@@ -3797,6 +3798,7 @@
 				395DB8FC12730E6D4CE4A2F11AEF5DC0 /* PushService */,
 				8AAC3F978D5BBEB889BA0E63A8159C5F /* Share */,
 				0AB7A3E650DAA8940C2E295A2EF5E679 /* Siri */,
+				8BFE4DA4069E188AF860795FB7CABF21 /* Readme.md */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3880,9 +3882,6 @@
 				667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */,
 				6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */,
 				57805306D07DA8BD55BDA82FCEA2986C /* ExpirationWarningViewController.swift */,
-				E5E428326315278BA8ED17D2A2B060E8 /* purify.cjs.js */,
-				970E538A9D3C987DC00F4DBD940FD78C /* purify.js */,
-				EC808E257516CB2D190796184EFFD88F /* purify.min.js */,
 			);
 			path = Compose;
 			sourceTree = "<group>";
@@ -4819,9 +4818,7 @@
 				39F684E5143A98954B4C35F035FB193D /* editor.html in Resources */,
 				7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */,
 				CAD2F312EE677EFF26ACDB2B9F0C9615 /* phone_country_code.geojson in Resources */,
-				A56E3168BDDB99D0AEF37FF8BE36300C /* purify.cjs.js in Resources */,
-				3687CD733A9F972896E212E842184618 /* purify.js in Resources */,
-				A06A29CBE156DC4EE1055DB4FD0EF236 /* purify.min.js in Resources */,
+				746EA1028C65A1D811A05787C3E51CB2 /* purify.min.js in Resources */,
 				FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4891,7 +4888,7 @@
 				C84543D923DF233835A139A074300ADF /* editor.html in Resources */,
 				12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */,
 				38FBA82B3B38DC4B7262C39122E45CE9 /* phone_country_code.geojson in Resources */,
-				31ACE7CBCF377685AC530B1265A92D64 /* purify.min.js in Resources */,
+				23F67E7389A9F29D8B488D2A2C658DFD /* purify.min.js in Resources */,
 				2E89DBD8BBFFEA0DFB17E3F2E9E51311 /* test_html.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
