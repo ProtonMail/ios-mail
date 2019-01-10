@@ -1,24 +1,32 @@
 //
 //  ContactCollectionViewPromptCell.swift
-//  ProtonMail
+//  ProtonMail - Created on 4/27/18.
 //
-//  Created by Yanfeng Zhang on 4/27/18.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
-
-//    - (instancetype)initWithPrompt:(NSString*)prompt
-//    {
-//    self = [super init]
-//    if (self)
-//    {
-//    self.prompt = prompt
-//    [self setup]
-//    }
-//    return self
-//    }
-//
 
 class ContactCollectionViewPromptCell: UICollectionViewCell {
     
@@ -32,7 +40,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
             self.promptLabel.font = newValue
         }
     }
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.setup()
@@ -59,12 +67,12 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(label)
-    
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[label]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
                                                            views: ["label": label]))
-
+        
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[label]|",
                                                            options: NSLayoutConstraint.FormatOptions(rawValue: 0),
                                                            metrics: nil,
@@ -73,9 +81,9 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         label.textAlignment = .left
         label.text = self.prompt
         label.textColor = UIColor.black
-
+        
         self.promptLabel = label
-}
+    }
     
     var prompt : String {
         get {
@@ -87,11 +95,9 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         }
     }
     
-    //TODO:: here need change to depends on real string size
     class func widthWithPrompt(prompt: String) -> CGFloat {
-        return 5.0
+        let size = prompt.size(withAttributes: [NSAttributedString.Key.font:  Fonts.h6.light])
+        return 5 + size.width.rounded(.up)
     }
     
-
-
 }

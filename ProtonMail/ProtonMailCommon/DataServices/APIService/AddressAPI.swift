@@ -1,10 +1,30 @@
 //
 //  AddressAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/7/16.
 //
-//  Created by Yanfeng Zhang on 6/7/16.
-//  Copyright © 2016 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -12,7 +32,7 @@ import Foundation
 // Mark : get addresses
 final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
     override func path() -> String {
-        return AddressesAPI.path + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -24,8 +44,10 @@ final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
 final class UpdateAddressOrder : ApiRequest<ApiResponse> {
     let newOrder : [String]!
     
-    init(adds : [String]!) {
+    init(adds : [String]!, authCredential: AuthCredential?) {
         self.newOrder = adds
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -38,7 +60,7 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/order" + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/order" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -51,10 +73,12 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
     let addressid : String!
     let displayName : String!
     let signature : String!
-    init(id : String, displayName: String, signature: String) {
+    init(id : String, displayName: String, signature: String, authCredential: AuthCredential?) {
         self.addressid = id
         self.displayName = displayName
         self.signature = signature;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -68,7 +92,7 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/" + addressid + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/" + addressid + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -94,7 +118,7 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     }
     
     override func path() -> String {
-        return AddressesAPI.path + "/setup" + AppConstants.DEBUG_OPTION
+        return AddressesAPI.path + "/setup" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

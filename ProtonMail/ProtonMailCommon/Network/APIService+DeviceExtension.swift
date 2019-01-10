@@ -25,20 +25,38 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import Crypto
 
 extension APIService {
-    typealias EncryptionKit = PushSubscriptionSettings.EncryptionKit
-    
     fileprivate struct DevicePath {
         static let basePath = "/devices"
     }
     
     func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
-        let env = 16 // FIXME: debug value only
-        let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         
+        let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
+        #if Enterprise
+            #if DEBUG
+                //let env = 20
+                let env = 17  /// Enterprise dev certification build (fabric beta)
+            #else
+                //let env = 21
+                let env = 7 ///Enterprise release certification build
+            #endif
+        #else
+            // const PROVIDER_FCM_IOS = 4; // google firebase live
+            // const PROVIDER_FCM_IOS_BETA = 5; //google firebase beta
+            #if DEBUG
+                //let env = 1
+                let env = 16 /// apple store certificaiton dev build (dev)
+            #else
+                //let env = 2
+                let env = 6  /// apple store release build (for apple store submit)
+            #endif
+        
+        #endif
         let parameters = [
             "DeviceToken" : settings.token,
             "DeviceName" : UIDevice.current.name,
@@ -50,7 +68,7 @@ extension APIService {
         ] as [String : Any]
         
         request(method: .post,
-                path: AppConstants.API_PATH + DevicePath.basePath,
+                path: Constants.App.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 completion: completion)
@@ -67,7 +85,7 @@ extension APIService {
         ]
 
         request(method: .delete,
-                path: AppConstants.API_PATH + DevicePath.basePath,
+                path: Constants.App.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 authenticated: false,

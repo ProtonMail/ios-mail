@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import UIKit
 import QuickLook
@@ -78,12 +79,12 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
             let _ = make?.bottom.equalTo()(self.bottomActionView.mas_top)
         }
         
-        bottomActionView.mas_makeConstraints { (make) -> Void in
-            let _ = make?.removeExisting = true
-            let _ = make?.bottom.equalTo()(self)
-            let _ = make?.left.equalTo()(self)
-            let _ = make?.right.equalTo()(self)
-            let _ = make?.height.equalTo()(self.kButtonsViewHeight)
+        self.bottomActionView.mas_makeConstraints { (make) in
+            make?.removeExisting = true
+            make?.left.mas_equalTo()(self)
+            make?.right.mas_equalTo()(self)
+            make?.height.mas_equalTo()(self.kButtonsViewHeight)
+            make?.bottom.mas_equalTo()(self.mas_bottomMargin)
         }
     }
     
@@ -99,7 +100,7 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
                            sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?,
                            isStarred:Bool, time : Date?, encType: EncryptTypes, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
-                           score: MessageSpamScore, isSent: Bool) {
+                           score: Message.SpamScore, isSent: Bool) {
         
         self.emailHeader.updateHeaderData(title, sender:sender,
                                           to: to, cc: cc, bcc: bcc,
@@ -117,12 +118,33 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
     }
     
-    func updateEmailAttachment (_ atts : [Attachment]?) {
-        self.emailHeader.updateAttachmentData(atts)
+    func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
+        var attachments = [AttachmentInfo]()
+        
+        if let atts = atts {
+            for att in atts {
+                attachments.append(AttachmentNormal(att: att))
+            }
+        }
+        
+        if let inline = inline {
+            attachments.append(contentsOf: inline)
+        }
+        
+        self.emailHeader.update(attachments: attachments)
     }
     
     required override init(frame : CGRect) {
-        super.init(frame: CGRect.zero)
+        super.init(frame: frame)
+        self.setup()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.setup()
+    }
+    
+    private func setup() {
         self.backgroundColor = UIColor.white
         
         // init views
@@ -133,20 +155,17 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.updateContentLayout(false)
     }
     
-    required init(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     fileprivate func setupBottomView() {
-        //TODO:: need to handle the empty instead of !
-        //TODO:: crash happens sometime only one or two here need handle it
-        self.bottomActionView = Bundle.main.loadNibNamed("MessageDetailBottomView", owner: 0, options: nil)![0] as? MessageDetailBottomView
-        self.bottomActionView.backgroundColor = UIColor.ProtonMail.Gray_E8EBED
+        var frame = self.frame
+        frame.size.height = self.kButtonsViewHeight
+        self.bottomActionView = MessageDetailBottomView(frame: frame)
         self.addSubview(bottomActionView)
     }
     
     fileprivate func setupHeaderView () {
-        self.emailHeader = EmailHeaderView()
+        var frame = self.frame
+        frame.size.height = 100
+        self.emailHeader = EmailHeaderView(frame : frame)
         self.emailHeader.backgroundColor = UIColor.white
         self.emailHeader.viewDelegate = self
         self.contentWebView.scrollView.addSubview(self.emailHeader)

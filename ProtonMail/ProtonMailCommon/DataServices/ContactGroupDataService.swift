@@ -1,10 +1,30 @@
 //
 //  ContactGroupDataService.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/8/20.
 //
-//  Created by Chun-Hung Tseng on 2018/8/20.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import CoreData
@@ -100,7 +120,7 @@ class ContactGroupsDataService {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         
                         // successfully deleted on the server
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             () -> Void in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
@@ -154,7 +174,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
@@ -218,7 +238,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.backgroundManagedObjectContext
+                        let context = sharedCoreDataService.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             

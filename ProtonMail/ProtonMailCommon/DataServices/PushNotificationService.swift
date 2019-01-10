@@ -3,23 +3,36 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import UIKit
 import SWRevealViewController
 import Keymaker
 
-public class PushNotificationService {
+public class PushNotificationService: Service {
+
     typealias SubscriptionSettings = PushSubscriptionSettings
     
     enum Key {
@@ -28,7 +41,11 @@ public class PushNotificationService {
     
     fileprivate var launchOptions: [AnyHashable: Any]? = nil
 
-    public static var shared = PushNotificationService()
+    
+    /// message service
+    private let messageService: MessageDataService
+    
+    ///
     private let subscriptionSaver: Saver<Subscription>
     private let outdatedSaver: Saver<Set<SubscriptionSettings>>
     private let encryptionKitSaver: Saver<SubscriptionSettings>
@@ -38,7 +55,8 @@ public class PushNotificationService {
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
-    init(subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
+    init(service: MessageDataService,
+         subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
@@ -47,6 +65,7 @@ public class PushNotificationService {
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
     {
+        self.messageService = service
         self.subscriptionSaver = subscriptionSaver
         self.encryptionKitSaver = encryptionKitSaver
         self.outdatedSaver = outdatedSaver
@@ -89,7 +108,6 @@ public class PushNotificationService {
     public func registerForRemoteNotifications() {
         DispatchQueue.main.async {
             UIApplication.shared.registerForRemoteNotifications()
-        
             let types: UIUserNotificationType = [.badge , .sound , .alert]
             let settings = UIUserNotificationSettings(types: types, categories: nil)
             UIApplication.shared.registerUserNotificationSettings(settings)
@@ -218,7 +236,7 @@ public class PushNotificationService {
         if let view = front.viewControllers.first {
             if view.isKind(of: MailboxViewController.self) ||
                 view.isKind(of: ContactsViewController.self) ||
-                view.isKind(of: SettingTableViewController.self) {
+                view.isKind(of: SettingsTableViewController.self) {
                 self.launchOptions = nil
             }
         }
@@ -258,16 +276,17 @@ public class PushNotificationService {
         }
         
         //revealViewController
-        sharedMessageDataService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler(.failed)
                 return
             }
-
+            
+            //TODO::fixme change to deeplink
             if let front = revealViewController.frontViewController as? UINavigationController,
                 let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController
             {
-                sharedMessageDataService.pushNotificationMessageID = messageid
+                self.messageService.pushNotificationMessageID = messageid
                 mailboxViewController.performSegueForMessageFromNotification()
             }
             completionHandler(.newData)
@@ -276,7 +295,7 @@ public class PushNotificationService {
     
     // MARK: - Private methods
     
-    fileprivate func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
+    private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
         if let encrypted = userInfo["encryptedMessage"] as? String {
             guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
                 return nil
@@ -307,6 +326,7 @@ public class PushNotificationService {
 protocol SessionIdProvider {
     var sessionID: String? { get }
 }
+
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
     var sessionID: String? {
         return AuthCredential.fetchFromKeychain()?.userID
@@ -335,4 +355,5 @@ protocol DeviceRegistrator {
     func device(registerWith settings: PushSubscriptionSettings, completion: APIService.CompletionBlock?)
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
 }
+
 extension APIService: DeviceRegistrator {}

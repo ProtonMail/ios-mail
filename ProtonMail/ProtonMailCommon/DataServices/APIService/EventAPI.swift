@@ -1,10 +1,30 @@
 //
 //  EventAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/26/15.
 //
-//  Created by Yanfeng Zhang on 6/26/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -18,7 +38,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
     }
     
     override func path() -> String {
-        return EventAPI.path + "/\(self.eventID)" + AppConstants.DEBUG_OPTION
+        return EventAPI.path + "/\(self.eventID)" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -30,7 +50,7 @@ final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
 final class EventLatestIDRequest<T : ApiResponse> : ApiRequest<T>{
 
     override func path() -> String {
-        return EventAPI.path + "/latest" + AppConstants.DEBUG_OPTION
+        return EventAPI.path + "/latest" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -88,11 +108,11 @@ final class EventCheckResponse : ApiResponse {
     
     var conversationCounts: [[String : Any]]? //TODO:: use when we add conversation view
     
-    var usedSpace : String?
+    var usedSpace : Int64?
     var notices : [String]?
     
-    override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        //PMLog.D(response.JSONStringify(prettyPrinted: true))
+    override func ParseResponse(_ response: [String : Any]) -> Bool {
+        PMLog.D(response.json(prettyPrinted: true))
         self.eventID = response["EventID"] as? String ?? ""
         self.refresh = RefreshStatus(rawValue: response["Refresh"] as? Int ?? 0)
         self.more    = response["More"] as? Int ?? 0
@@ -121,7 +141,7 @@ final class EventCheckResponse : ApiResponse {
         
         //self.conversationCounts = response["ConversationCounts"] as? [[String : Any]]
         
-        self.usedSpace = response["UsedSpace"] as? String
+        self.usedSpace = response["UsedSpace"] as? Int64
         self.notices = response["Notices"] as? [String]
         
         return true
@@ -153,7 +173,7 @@ class Event {
 // TODO:: remove the hard convert
 final class MessageEvent {
     var Action : Int!
-    var ID : String!;
+    var ID : String!
     var message : [String : Any]?
     init(event: [String : Any]) {
         self.Action = event["Action"] as! Int
@@ -174,7 +194,7 @@ final class ContactEvent {
     }
     var action : UpdateType
     
-    var ID : String!;
+    var ID : String!
     var contact : [String : Any]?
     var contacts : [[String : Any]] = []
     init(event: [String : Any]!) {
@@ -231,7 +251,7 @@ final class EmailEvent {
 
 final class LabelEvent {
     var Action : Int!
-    var ID : String!;
+    var ID : String!
     var label : [String : Any]?
     
     init(event: [String : Any]!) {

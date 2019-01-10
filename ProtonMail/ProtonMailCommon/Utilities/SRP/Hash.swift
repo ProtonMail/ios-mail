@@ -68,6 +68,7 @@ extension Data {
     }
 }
 
+
 public struct HMAC {
     
     static func hash(_ inp: String, algo: HMACAlgo) -> String {

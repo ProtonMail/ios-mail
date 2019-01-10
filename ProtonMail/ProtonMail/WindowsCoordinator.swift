@@ -33,6 +33,7 @@ class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
+    
     var currentWindow: UIWindow! {
         didSet {
             self.currentWindow.makeKeyAndVisible()
@@ -51,18 +52,35 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
+
+       
     }
     
+    /// restore some cache after login/authorized
+    func loginmigrate() {
+        ///
+        //let cacheService : AppCacheService = serviceHolder.get()
+        //cacheService.restoreCacheAfterAuthorized()
+    }
+
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
-        placeholder.rootViewController = UIViewController() 
+        placeholder.rootViewController = UIViewController()
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
-        DispatchQueue.main.async {
-            // initiate unlock process which will send .didUnlock or .requestMainKey eventually
-            UnlockManager.shared.initiateUnlock(flow: UnlockManager.shared.getUnlockFlow(),
-                                                requestPin: self.lock,
-                                                requestMailboxPassword: self.lock)
+        
+        //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
+        // clean this up later.
+        let flow = UnlockManager.shared.getUnlockFlow()
+        if flow == .requireTouchID || flow == .requirePin {
+            self.lock()
+        } else {
+            DispatchQueue.main.async {
+                // initiate unlock process which will send .didUnlock or .requestMainKey eventually
+                UnlockManager.shared.initiateUnlock(flow: flow,
+                                                    requestPin: self.lock,
+                                                    requestMailboxPassword: self.lock)
+            }
         }
     }
     
@@ -91,26 +109,23 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     func go(dest: Destination) {
-        DispatchQueue.main.async { // cuz creating windows here
+        DispatchQueue.main.async { // cuz
             switch dest {
             case .signInWindow:
                 self.appWindow = nil
                 self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
-                
             case .lockWindow:
                 self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
-                
             case .appWindow:
-                self.appWindow = self.appWindow ?? UIWindow(storyboard: .inbox)
-                self.navigate(from: self.currentWindow, to: self.appWindow!)
+                let next = self.appWindow ?? UIWindow(storyboard: .inbox)
+                self.appWindow = next
+                self.navigate(from: self.currentWindow, to: next)
             }
         }
     }
     
     @discardableResult func navigate(from source: UIWindow, to destination: UIWindow) -> Bool {
-        guard source != destination,
-            source.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else
-        {
+        guard source != destination, source.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
         
@@ -133,9 +148,7 @@ class WindowsCoordinator: CoordinatorNew {
         self.currentWindow = destination
         
         // notify destination views they are about to show up
-        if let topDestination = destination.topmostViewController(),
-            topDestination.isViewLoaded
-        {
+        if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
             topDestination.viewDidAppear(false)
         }
         

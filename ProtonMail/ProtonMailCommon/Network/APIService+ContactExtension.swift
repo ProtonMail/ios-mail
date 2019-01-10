@@ -25,32 +25,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 
 /// Contact extension
 extension APIService {
     
     fileprivate struct ContactPath {
-        static let base = AppConstants.API_PATH + "/contacts"
+        static let base = Constants.App.API_PATH + "/contacts"
     }
     
     func contactDelete(contactID: String, completion: CompletionBlock?) {
         let path = ContactPath.base + "/delete"
         let parameters = ["IDs": [ contactID ] ]
-        //setApiVesion(1, appVersion: 1)
         request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
     func contactList(_ completion: CompletionBlock?) {
         let path = ContactPath.base
-        //setApiVesion(1, appVersion: 1)
         request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     
      func contactUpdate(contactID: String, name: String, email: String, completion: CompletionBlock?) {
          let path = ContactPath.base + "/\(contactID)"
          let parameters = parametersForName(name, email: email)
-         //setApiVesion(1, appVersion: 1)
          request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
     }
     

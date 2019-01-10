@@ -1,14 +1,35 @@
 //
 //  LabelsDataService.swift
-//  ProtonMail
+//  ProtonMail - Created on 8/13/15.
 //
-//  Created by Yanfeng Zhang on 8/13/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import CoreData
 import Groot
+
 
 let sharedLabelsDataService = LabelsDataService()
 
@@ -29,7 +50,7 @@ class LabelsDataService {
      Fetch all contact groups using API call
      
      No email list is included in this fetching operation
-     
+     ````
      - Parameter type: type 1 is for message labels, type 2 is for contact groups
      */
     func fetchLabels(type: Int = 1) {
@@ -39,7 +60,21 @@ class LabelsDataService {
             
             if response == nil {
                 //TODO:: error
-            } else if let labels = response?.labels {
+            } else if var labels = response?.labels {
+                // add prebuild inbox label
+                if type == 1 {
+                    labels.append(["ID": "0"]) //case inbox   = "0"
+                    labels.append(["ID": "8"]) //case draft   = "8"
+                    labels.append(["ID": "1"]) //case draft   = "1"
+                    labels.append(["ID": "7"]) //case sent    = "7"
+                    labels.append(["ID": "2"]) //case sent    = "2"
+                    labels.append(["ID": "10"]) //case starred = "10"
+                    labels.append(["ID": "6"]) //case archive = "6"
+                    labels.append(["ID": "4"]) //case spam    = "4"
+                    labels.append(["ID": "3"]) //case trash   = "3"
+                    labels.append(["ID": "5"]) //case allmail = "5"
+                }
+                
                 //save
                 let context = sharedCoreDataService.backgroundManagedObjectContext
                 context.performAndWait() {

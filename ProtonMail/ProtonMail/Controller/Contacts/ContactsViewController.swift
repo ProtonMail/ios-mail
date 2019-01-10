@@ -25,15 +25,19 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import UIKit
 import Contacts
 import CoreData
 
-class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
-    typealias argType = ContactsViewModel
+class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
+    typealias viewModelType = ContactsViewModel
     
     // Mark: - view model
     private var viewModel : ContactsViewModel!
+    func set(viewModel: ContactsViewModel) {
+        self.viewModel = viewModel
+    }
     
     private let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
     private let kContactDetailsSugue : String  = "toContactDetailsSegue";
@@ -49,13 +53,10 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew 
     
     @IBOutlet weak var searchView: UIView!
     @IBOutlet weak var searchViewConstraint: NSLayoutConstraint!
-    
-    func set(viewModel: ContactsViewModel) {
-        self.viewModel = viewModel
-    }
+
     
     deinit {
-        self.viewModel.resetFetchedController()
+        self.viewModel?.resetFetchedController()
     }
     // MARK: - View Controller Lifecycle
     override func viewDidLoad() {
@@ -181,9 +182,9 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew 
             let popup = segue.destination as! UpgradeAlertViewController
             popup.delegate = self
             sharedVMService.upgradeAlert(contacts: popup)
-            self.setPresentationStyleForSelfController(self,
-                                                       presentingController: popup,
-                                                       style: .overFullScreen)
+//            self.setPresentationStyleForSelfController(self,
+//                                                       presentingController: popup,
+//                                                       style: .overFullScreen)
         }
     }
     
@@ -202,11 +203,18 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew 
 }
 
 extension ContactsViewController: UpgradeAlertVCDelegate {
+    func postToPlan() {
+        NotificationCenter.default.post(name: .switchView,
+                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+    }
     func goPlans() {
-        self.navigationController?.dismiss(animated: false, completion: {
-            NotificationCenter.default.post(name: .switchView,
-                                            object: MenuItem.servicePlan)
-        })
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true) {
+                self.postToPlan()
+            }
+        } else {
+            self.postToPlan()
+        }
     }
     
     func learnMore() {

@@ -25,6 +25,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import Photos
 
@@ -33,8 +34,8 @@ protocol ContactEditViewControllerDelegate {
     func updated()
 }
 
-class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew {
-    typealias argType = ContactEditViewModel
+class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
+    typealias viewModelType = ContactEditViewModel
     
     fileprivate var viewModel : ContactEditViewModel!
     
@@ -410,11 +411,18 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
 }
 
 extension ContactEditViewController : UpgradeAlertVCDelegate {
+    func postToPlan() {
+        NotificationCenter.default.post(name: .switchView,
+                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+    }
     func goPlans() {
-        self.navigationController?.dismiss(animated: false, completion: {
-            NotificationCenter.default.post(name: .switchView,
-                                            object: MenuItem.servicePlan)
-        })
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true) {
+                self.postToPlan()
+            }
+        } else {
+            self.postToPlan()
+        }
     }
     
     func learnMore() {

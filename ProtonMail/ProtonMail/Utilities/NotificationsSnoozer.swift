@@ -1,18 +1,49 @@
 //
 //  UserNotificationsSnoozer.swift
-//  ProtonMail
+//  ProtonMail - Created on 13/06/2018.
 //
-//  Created by Anatoly Rosencrantz on 13/06/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
+@available(iOS 10.0, *)
+protocol OptionsDialogPresenter {
+    func toSettings()
+    func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
+}
+
+@available(iOS 10.0, *)
+extension OptionsDialogPresenter {
+    func toSettings() {
+        
+    }
+}
+
 // controller
 @available(iOS 10.0, *)
-final class NotificationsSnoozer: NotificationsSnoozerCore {
-    internal static var appVersion = AppVersion("2.0.0") // TODO: update once we'll be ready to release this feature
-    
+final class NotificationsSnoozer: NotificationsSnoozerCore {    
     internal func overview(at date: Date,
                            ofCase type: NotificationsSnoozerCore.Configuration.CodingKeys? = nil) -> String
     {
@@ -24,7 +55,7 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
     }
     
     internal func quickOptionsDialog(for date: Date,
-                                     toPresentOn presenter: UIViewController,
+                                     toPresentOn presenter: OptionsDialogPresenter,
                                      onStateChangedTo: ((Bool)->Void)? = nil) -> UIViewController
     {
         // time-based options
@@ -79,13 +110,13 @@ final class NotificationsSnoozer: NotificationsSnoozerCore {
         }
         let scheduled = UIAlertAction(title: LocalString._scheduled, style: .default) { _ in
             onStateChangedTo?(self.isSnoozeActive(at: Date()))
-            guard let menu = presenter as? MenuViewController else { return }
-            menu.performSegue(withIdentifier: menu.kSegueToSettings, sender: self)
+            presenter.toSettings()
         }
-        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in dialog.dismiss(animated: true, completion: nil) }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            dialog.dismiss(animated: true, completion: nil)
+        }
         
         // bring everything together
-        
         if self.isNonRepeatingSnoozeActive(at: date) {
             [turnOff].forEach( dialog.addAction )
         }
@@ -107,6 +138,7 @@ extension NotificationsSnoozer.Configuration {
         formatter.unitsStyle = .short
         return formatter
     }()
+    
     private static var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .none

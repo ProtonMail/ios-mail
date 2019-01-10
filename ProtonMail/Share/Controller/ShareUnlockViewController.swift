@@ -1,17 +1,38 @@
 //
 //  ShareUnlockViewController.swift
-//  ProtonMail
+//  Share - Created on 7/13/17.
 //
-//  Created by Yanfeng Zhang on 7/13/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+
 import UIKit
 
 var sharedUserDataService : UserDataService!
 
 class ShareUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = ShareUnlockCoordinator
-    private var coordinator: ShareUnlockCoordinator?
+    private weak var coordinator: ShareUnlockCoordinator?
     
     func set(coordinator: ShareUnlockCoordinator) {
         self.coordinator = coordinator
@@ -100,35 +121,35 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             let plainText = item.attributedContentText?.string
             if let attachments = item.attachments {
                 for att in attachments {
-                    if let itemProvider = att as? NSItemProvider {
-                        if let type = itemProvider.hasItem(types: file_types) {
-                            group.enter() //#1
-                            self.loadItem(itemProvider, type: type) {
-                                 group.leave() //#1
-                            }
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                            PMLog.D("1")
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
-                            group.enter()//#2
-                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
-                                defer {
-                                    group.leave()//#2
-                                }
-                                if let shareURL = url as? NSURL {
-                                    self.inputSubject = plainText ?? ""
-                                    let url = shareURL.absoluteString ?? ""
-                                    self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
-                                } else {
-                                    self.error(LocalString._cant_load_share_content)
-                                }
-                            }
-                        } else if let pt = plainText {
-                            self.inputSubject = ""
-                            self.inputContent = self.inputContent + "\n"  + pt
-                        } else {
-                            PMLog.D("4")
+                    let itemProvider = att
+                    if let type = itemProvider.hasItem(types: file_types) {
+                        group.enter() //#1
+                        self.loadItem(itemProvider, type: type) {
+                            group.leave() //#1
                         }
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                        PMLog.D("1")
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                        group.enter()//#2
+                        itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
+                            defer {
+                                group.leave()//#2
+                            }
+                            if let shareURL = url as? NSURL {
+                                self.inputSubject = plainText ?? ""
+                                let url = shareURL.absoluteString ?? ""
+                                self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
+                            } else {
+                                self.error(LocalString._cant_load_share_content)
+                            }
+                        }
+                    } else if let pt = plainText {
+                        self.inputSubject = ""
+                        self.inputContent = self.inputContent + "\n"  + pt
+                    } else {
+                        PMLog.D("4")
                     }
+                    
                 }
             }
         }

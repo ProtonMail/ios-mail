@@ -1,6 +1,6 @@
 //
 //  ShareUnlockCoordinator.swift
-//  ProtonMail - Created on 10/31/18.
+//  Share - Created on 10/31/18.
 //
 //
 //  The MIT License
@@ -27,15 +27,19 @@
 
 
 import Foundation
+
 class ShareUnlockCoordinator : PushCoordinator {
+    var destinationNavigationController: UINavigationController?
+    
     typealias VC = ShareUnlockViewController
     
-    internal weak var navigationController: UINavigationController?
     var viewController: ShareUnlockViewController?
+    private var nextCoordinator: CoordinatorNew?
+    
+    internal weak var navigationController: UINavigationController?
+    var services: ServiceFactory
     
     lazy var configuration: ((ShareUnlockViewController) -> ())? = { vc in
-        // configurateion for set up the view models when needed
-        
     }
     
     enum Destination : String {
@@ -43,12 +47,19 @@ class ShareUnlockCoordinator : PushCoordinator {
         case composer = "composer"
     }
     
-    init(navigation : UINavigationController) {
+    deinit {
+        print("deinit ShareUnlockCoordinator")
+    }
+    
+    init(navigation : UINavigationController?, services: ServiceFactory) {
+        print("init ShareUnlockCoordinator")
         //parent navigation
         self.navigationController = navigation
+        self.services = services
         //create self view controller
         self.viewController = ShareUnlockViewController(nibName: "ShareUnlockViewController" , bundle: nil)
     }
+
     
     private func goPin() {
         //UI refe
@@ -56,7 +67,9 @@ class ShareUnlockCoordinator : PushCoordinator {
         self.viewController?.pinUnlock.isEnabled = false
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
                                                 vm: ShareUnlockPinCodeModelImpl(),
+                                                services: self.services,
                                                 delegate: self)
+        self.nextCoordinator = pinView
         pinView.start()
     }
     
@@ -71,7 +84,8 @@ class ShareUnlockCoordinator : PushCoordinator {
                                              body: vc.inputContent,
                                              files: vc.files,
                                              action: .newDraftFromShare)
-        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel)
+        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel, services: self.services)
+        self.nextCoordinator = compose
         compose.start()
     }
     

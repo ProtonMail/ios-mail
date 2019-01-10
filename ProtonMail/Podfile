@@ -72,6 +72,9 @@ end
 target 'ProtonMailDev' do
 	pm_pods
     
+    pod 'Fabric'
+    pod 'Crashlytics'
+    
     # Pods for PushServiceDev
     target 'PushServiceDev' do
         inherit! :search_paths
@@ -83,6 +86,7 @@ target 'ProtonMailTests' do
     pod 'OpenPGP', :path => '../OpenPGP'
     pod 'AFNetworking', '3.2.1'
     pod 'OHHTTPStubs/Swift'
+    pod 'Groot', '3.0.1'
 end
 
 target 'Share' do

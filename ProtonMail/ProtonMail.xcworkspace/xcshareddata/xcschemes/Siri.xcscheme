@@ -15,7 +15,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D881AA0A21AD48DD0093B263"
+               BlueprintIdentifier = "10AE226907E28369B3D152C04DA2B0D9"
                BuildableName = "Siri.appex"
                BlueprintName = "Siri"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
@@ -47,7 +47,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D881AA0A21AD48DD0093B263"
+            BlueprintIdentifier = "10AE226907E28369B3D152C04DA2B0D9"
             BuildableName = "Siri.appex"
             BlueprintName = "Siri"
             ReferencedContainer = "container:ProtonMail.xcodeproj">

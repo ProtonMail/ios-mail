@@ -1,58 +1,38 @@
-/* No comment provided by engineer. */
+/* auto lock time format */
 "%d Minute" = "%d minuto";
 
-/* No comment provided by engineer. */
+/* auto lock time format */
 "%d Minutes" = "%d minutos";
 
-/* Key size text */
+/* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
 
-/* Key size text */
+/* Key size text when setup key */
 "(4096 bit)" = "(4096 bit)";
 
-/* No comment provided by engineer. */
-"(string_show)" = "(string_show)";
-
-/* No comment provided by engineer. */
+/* secret */
 "**********" = "**********";
 
-/* Title */
+/* optional text field */
 "*OPTIONAL" = "*OPCIONAL";
 
-/* Error */
+/* 2fa verification failed */
 "2fa Authentication failed please try to login again" = "Falló la autenticación de dos factores, inténtelo nuevamente";
-
-/* no object error, local only , this could be not translated! */
-"<no object>" = "<no object>";
-
-/* (No Comment) */
-"A message cannot have more than 5 labels" = "Un mensaje no puede tener más de 5 etiquetas";
 
 /* Description */
 "A new version of ProtonMail app is available, please update to latest version." = "Una nueva versión de la aplicación ProtonMail está disponible, por favor actualice a la última versión.";
 
-/* Description */
+/* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "No se ha establecido un código de acceso, habilítelo en los ajustes del sistema";
 
-/* Error
-   Title */
+/* when server not reachable */
 "API Server not reachable..." = "Servidor API no accesible...";
 
-/* Title */
-"ARCHIVE" = "Archivo";
+/* mail location title */
+"ARCHIVE" = "ARCHIVO";
 
-/* Description
-   error message when acction disabled */
+/* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.";
-
-/* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago.\n\nVisite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"> nuestra base de conocimientos</a> para más información.";
-
-/* (No Comment) */
-"Account password invalid" = "Contraseña de cuenta incorrecta";
-
-/* (No Comment) */
-"Add" = "Añadir";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Añadir aniversario";
@@ -63,20 +43,23 @@
 /* Contacts add new contact */
 "Add Contact" = "Añadir contacto";
 
-/* action */
+/* add custom label type action */
 "Add Custom Label" = "Añadir etiqueta personalizada";
 
 /* Action */
 "Add Folder" = "Añadir carpeta";
 
-/* Action */
+/* new contacts add Gender */
+"Add Gender" = "Añadir sexo";
+
+/* add label action */
 "Add Label" = "Añadir etiqueta";
 
-/* Title */
-"Add New Folder" = "Añadir nueva carpeta";
+/* add a new folder */
+"Add New Folder" = "Añadir carpeta nueva";
 
-/* Title */
-"Add New Label" = "Añadir nueva etiqueta";
+/* add a new folder */
+"Add New Label" = "Añadir etiqueta nueva";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Añadir apodo";
@@ -84,36 +67,42 @@
 /* new contacts add Organization */
 "Add Organization" = "Añadir organización";
 
-/* Action */
+/* mark message star */
 "Add Star" = "Destacar";
 
 /* new contacts add Title */
 "Add Title" = "Añadir título";
 
-/* action */
+/* add new address action */
 "Add new address" = "Añadir nueva dirección";
 
-/* action */
+/* new custom field action */
 "Add new custom field" = "Añadir nuevo campo personalizado";
 
-/* action */
+/* new email action */
 "Add new email" = "Añadir correo electrónico nuevo";
 
-/* action */
+/* new field action */
 "Add new field" = "Añadir campo nuevo";
 
-/* action */
+/* new phone action */
 "Add new phone number" = "Añadir nuevo número telefónico";
+
+/* action */
+"Add new url" = "Añadir url nueva";
+
+/* Title */
+"Add to contacts" = "Añadir a contactos";
 
 /* default vcard types */
 "Address" = "Dirección";
 
-/* alert title
-   Error
-   Title */
+/* Title */
 "Alert" = "Alerta";
 
-/* Title */
+/* mail location desc
+   mail location title
+   menu title */
 "All Mail" = "Todos";
 
 /* Title */
@@ -122,7 +111,7 @@
 /* Description */
 "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.\n\n¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
 
-/* Apply label then also archive */
+/* archive when apply label */
 "Also Archive" = "Además archivar";
 
 /* Description */
@@ -131,26 +120,27 @@
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Aniversario";
 
-/* No comment provided by engineer. */
-"AppVersion" = "AppVersion";
-
-/* Action */
+/* Apply action */
 "Apply" = "Aplicar";
 
 /* Title */
-"Apply Labels" = "Aplicar las etiquetas";
+"Apply Labels" = "Aplicar etiquetas";
 
-/* Title */
-"Archive" = "Archivo";
+/* mail location desc
+   menu title */
+"Archive" = "Archivados";
 
 /* Description */
 "Archived" = "Archivado";
+
+/* VoiceOver: email has attachments */
+"Attachments" = "Adjuntos";
 
 /* Title */
 "Authentication" = "Autenticación";
 
 /* Description */
-"Authentication Failed Wrong username or password" = "Error en la autenticación: usuario o contraseña incorrecta.";
+"Authentication Failed Wrong username or password" = "Error en la autenticación: usuario o contraseña incorrecta";
 
 /* Description */
 "Authentication failed" = "Autenticación fallida";
@@ -161,42 +151,35 @@
 /* Description */
 "Authentication was cancelled by the system" = "Autenticación cancelada por el sistema";
 
-/* Description */
-"Authentication was cancelled by the user" = "Autenticación cancelada por el usuario";
-
-/* settings protection section title */
+/* Title */
 "Auto Lock Time" = "Tiempo de bloqueo automático";
 
 /* settings general section title */
 "Auto Show Images" = "Mostrar imágenes automáticamente";
 
-/* Action
-   top left back button */
-"Back" = "Volver";
+/* top left back button */
+"Back" = "Atrás";
 
 /* Error */
 "Bad auth cache" = "Autenticación de caché errónea";
 
-/* Description */
+/* Error title */
 "Bad parameter" = "Parámetro erróneo";
 
-/* Description */
+/* Error Description */
 "Bad parameter: %@" = "Parámetro erróneo: %@";
 
-/* Description */
-"Bad path" = "Ruta errónea";
-
-/* Description */
+/* Error Description */
 "Bad response" = "Respuesta errónea";
 
 /* Title */
-"Bcc" = "CCO";
+"Bcc" = "Cco";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Cumpleaños";
 
 /* Title */
-"Bug Description" = "Descripción del error";
+"Bug Description" = "Descripción del Error";
 
 /* Title */
 "Bug Report Received" = "Informe de error recibido";
@@ -207,27 +190,16 @@
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
 
-/* Action */
-"CONFIRM" = "CONFIRMAR";
-
-/* Title */
-"CONTACTS" = "CONTACTOS";
-
-/* setup pin action */
-"CREATE" = "CREAR";
-
 /* key size note part 2 */
 "Can take several minutes to setup." = "La configuración puede tardar varios minutos.";
 
 /* Error */
 "Can't copy the file" = "No se puede copiar el archivo";
 
-/* update notification email error
-   update password error */
+/* update password error */
 "Can't create a SRP Client" = "No se puede crear un cliente SRP";
 
-/* update notification email error
-   update password error */
+/* update password error */
 "Can't create a SRP verifier!" = "¡No se puede crear un verificador SRP!";
 
 /* When quick look attachment but can't decrypt it! */
@@ -248,11 +220,10 @@
 /* update password error = typo:Modulus */
 "Can't get a Moduls!" = "¡No se puede obtener un Moduls!";
 
-/* update notification email error
-   update password error */
+/* update password error */
 "Can't get user auth info" = "No se puede obtener la información de autenticación del usuario";
 
-/* Description */
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
 "Can't load share content!" = "¡No se puede cargar el contenido compartido!";
 
 /* Error */
@@ -264,20 +235,19 @@
 /* Error */
 "Can't open the file" = "No se puede abrir el archivo";
 
-/* Action
-   Title */
+/* Cancel action */
 "Cancel" = "Cancelar";
 
 /* Action */
 "Cancel Check" = "Cancelar la verificación";
 
-/* (No Comment) */
-"Cant' decrypt this attachment!" = "No se puede descifrar este archivo adjunto.";
+/* Title */
+"Cancelling" = "Cancelando";
 
 /* Title */
-"Cc" = "CC";
+"Cc" = "Cc";
 
-/* Title */
+/* message Cc: feild */
 "Cc:" = "Cc:";
 
 /* place holder */
@@ -287,7 +257,7 @@
 "Change Login Password" = "Cambiar contraseña de inicio de sesión";
 
 /* Title */
-"Change Mailbox Password" = "Cambiar contraseña del buzón";
+"Change Mailbox Password" = "Cambiar contraseña de buzón";
 
 /* update password error title */
 "Change Password" = "Cambiar contraseña";
@@ -319,37 +289,34 @@
 /* place holder */
 "Choose a Password" = "Elija una contraseña";
 
+/* contact placeholder */
+"City" = "Ciudad";
+
 /* settings general section title */
 "Clear Local Message Cache" = "Vaciar caché de mensajes locales";
 
-/* Action */
+/* general close action */
 "Close" = "Cerrar";
 
 /* Action */
 "Compose" = "Redactar";
 
-/* Action
-   Title */
+/* Title */
+"Compose to" = "Redactar a";
+
+/* Action */
 "Confirm" = "Confirmar";
 
-/* (No Comment) */
-"Confirm Login Password" = "Confirmar contraseña de inicio de sesión";
-
-/* (No Comment) */
-"Confirm Mailbox Password" = "Confirmar contraseña del buzón";
-
-/* Placeholder
-   Title */
+/* Placeholder */
 "Confirm Password" = "Confirmar contraseña";
 
 /* Title */
 "Confirm new login password" = "Confirmar nueva contraseña de inicio de sesión";
 
 /* Title */
-"Confirm new mailbox password" = "Confirmar nueva contraseña del buzón";
+"Confirm new mailbox password" = "Confirmar nueva contraseña de buzón";
 
-/* Placeholder
-   Title */
+/* Placeholder */
 "Confirm new password" = "Confirmar nueva contraseña";
 
 /* Title */
@@ -364,16 +331,23 @@
 /* Title */
 "Contact the ProtonMail team" = "Contactar con el equipo de ProtonMail";
 
-/* Action
-   Title */
+/* Action and title
+   menu title */
 "Contacts" = "Contactos";
 
-/* Action
-   key setup continue button */
+/* Action */
 "Continue" = "Continuar";
 
-/* top right action item title
-   top right action text */
+/* Title */
+"Copy address" = "Copiar dirección";
+
+/* Title */
+"Copy name" = "Copiar nombre";
+
+/* contact placeholder */
+"Country" = "País";
+
+/* top right action text */
 "Create" = "Crear";
 
 /* Create account button */
@@ -388,9 +362,7 @@
 /* Description */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Cree y añada etiquetas para organizar su bandeja de entrada. Presione y mantenga pulsado un mensaje para todas las opciones.";
 
-/* error message title when create new user
-   sign up user error
-   Title */
+/* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
 
 /* Change language title */
@@ -399,24 +371,20 @@
 /* Title */
 "Current login password" = "Contraseña de inicio de sesión actual";
 
-/* Placeholder
-   Title */
+/* Placeholder */
 "Current password" = "Contraseña actual";
 
-/* custom label type default
-   default label type */
+/* action sheet option
+   contacts default label type */
 "Custom" = "Personalizar";
 
 /* Title */
 "DECRYPT MAILBOX" = "DESCIFRAR BUZÓN";
 
-/* Title */
-"DISPLAY NAME" = "NOMBRE PARA MOSTRAR";
+/* mail location title */
+"DRAFTS" = "BORRADORES";
 
-/* Title */
-"DRAFTS" = "Borradores";
-
-/* Title */
+/* message Date: text */
 "Date:" = "Fecha:";
 
 /* like Date: 2017-10-10 */
@@ -426,37 +394,39 @@
 "Debug" = "Depurar";
 
 /* Action */
-"Decrypt" = "Descifrar";
+"Decrypt" = "Descrifrar";
 
 /* Description */
 "Decrypt token failed please try again" = "Error en el token de descifrado, inténtelo nuevamente";
 
-/* Title */
-"Default" = "Predeterminado";
+/* error title */
+"Decryption error" = "Error de descifrado";
 
-/* Description
-   Error
-   error message when create new user */
+/* error details */
+"Decryption of this content failed" = "Falló el descifrado de este contenido";
+
+/* Title */
+"Default" = "Por defecto";
+
+/* error message when create new user */
 "Default error, please try again." = "Error por defecto, inténtelo nuevamente.";
 
 /* Placeholder */
-"Define Expiration Date" = "Definir fecha de caducidad";
+"Define Expiration Date" = "Definir fecha de expiración";
 
-/* place holder
-   Placeholder */
+/* Placeholder */
 "Define Hint (Optional)" = "Definir pista (opcional)";
 
 /* place holder */
 "Define Password" = "Definir contraseña";
 
-/* swipe title when swipe cell on mailbox message list */
+/* general delete action */
 "Delete" = "Eliminar";
 
-/* action
-   Title-Contacts */
+/* Title-Contacts */
 "Delete Contact" = "Eliminar contacto";
 
-/* Title */
+/* mail location desc */
 "Deleted" = "Eliminado";
 
 /* Title */
@@ -465,17 +435,20 @@
 /* Action */
 "Discard changes" = "Descartar cambios";
 
-/* Title */
+/* Action */
 "Discard draft" = "Descartar borrador";
 
 /* Title */
-"Display Name" = "Nombre a mostrar";
+"Display Name" = "Nombre para mostrar";
 
 /* Title */
 "Display Name Updated" = "Nombre a mostrar actualizado";
 
 /* Title */
 "DisplayName" = "Nombre a mostrar";
+
+/* Description */
+"Do you want to cancel the process?" = "¿Desea cancelar el proceso?";
 
 /* Title */
 "Do you want to save the unsaved changes?" = "¿Desea guardar los cambios sin guardar?";
@@ -484,13 +457,19 @@
 "Don't Show Again" = "No mostrar de nuevo";
 
 /* Action */
+"Don't remind me again" = "No volver a recordarme";
+
+/* Done action */
 "Done" = "Hecho";
 
+/* VoiceOver action description */
+"Double tap to setup" = "Doble toque para configurar";
+
 /* Action
-   Title */
+   mail location desc */
 "Draft" = "Borrador";
 
-/* Title */
+/* menu title */
 "Drafts" = "Borradores";
 
 /* Action */
@@ -499,24 +478,26 @@
 /* Action */
 "Edit" = "Editar";
 
-/* (No Comment) */
-"Edit Contact" = "Editar contacto";
-
 /* Title */
 "Edit Folder" = "Editar carpeta";
 
 /* Title */
 "Edit Label" = "Editar etiqueta";
 
+/* title */
+"Edit mobile signature" = "Editar firma de móvil";
+
+/* title */
+"Edit signature" = "Editar firma";
+
 /* default vcard types */
-"Email" = "Email";
+"Email" = "Correo";
 
 /* human check option button */
-"Email Verification" = "Verificación de email";
+"Email Verification" = "Verificación de correo electrónico";
 
-/* contact placeholder
-   Title */
-"Email address" = "Dirección de correo electrónico";
+/* contact placeholder */
+"Email address" = "Dirección de correo";
 
 /* Title */
 "Email address invalid" = "La dirección de correo electrónico es inválida";
@@ -524,17 +505,14 @@
 /* place holder */
 "Email default signature" = "Firma de correo electrónico predeterminada";
 
-/* (No Comment) */
-"Email domain invalid" = "Dominio de correo electrónico inválido";
-
 /* Action */
 "Empty Folder" = "Vaciar carpeta";
 
-/* Test */
-"Enable - Test" = "Habilitar - Prueba";
-
 /* Title */
 "Enable Default Signature" = "Habilitar la firma predeterminada";
+
+/* settings protection section title */
+"Enable FaceID" = "Habilitar FaceID";
 
 /* Title */
 "Enable Mobile Signature" = "Habilitar la firma móvil";
@@ -543,17 +521,16 @@
 "Enable Notification Email" = "Habilitar correo electrónico de notificación";
 
 /* settings protection section title */
-"Enable Pin Protection" = "Habilitar la protección con PIN";
+"Enable Pin Protection" = "Habilitar protección con PIN";
 
 /* settings protection section title */
 "Enable TouchID" = "Habilitar TouchID";
 
-/* contact section title
-   title */
-"Encrypted Contact Details" = "Detalles de contacto cifrados";
+/* contact section title */
+"Encrypted Contact Details" = "Datos de contacto cifrados";
 
 /* Title */
-"Encrypted for outside" = "Cifrado para afuera";
+"Encrypted for outside" = "Cifrado para externos";
 
 /* Title */
 "Encrypted for outside reply" = "Cifrado para respuesta externa";
@@ -567,54 +544,74 @@
 /* Title */
 "Encrypted from outside pgp mime" = "Cifrado desde afuera con PGP/MIME";
 
-/* Alert */
-"Encrypting contacts... %d" = "Cifrando contactos... %d";
+/* Title */
+"Encrypted from outside signed pgp mime" = "Cifrado desde afuera firmado con PGP/MIME";
+
+/* encryption lock description */
+"Encrypted outside" = "Cifrado de afuera";
 
 /* key setup top title */
 "Encryption Setup" = "Configuración de cifrado";
 
+/* settings option (End Time: 8am) */
+"End Time" = "Hora Fin";
+
 /* Title */
 "End-to-End Encryption" = "Cifrado de extremo a extremo";
+
+/* encryption lock description */
+"End-to-end encrypted" = "Cifrado de extremo a extremo";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Mensaje cifrado de extremo a extremo";
+
+/* encryption lock description */
+"End-to-end encrypted message from verified address" = "Mensaje cifrado de extremo a extremo de dirección verificada";
+
+/* encryption lock description */
+"End-to-end encrypted to verified address" = "Cifrado de extremo a extremo a la dirección verificada";
 
 /* Action */
 "English" = "Inglés";
 
-/* Action */
+/* Action in 2fa popup view */
 "Enter" = "Ingresar";
 
-/* place holder
-   Title */
+/* Title */
 "Enter Verification Code" = "Ingrese el código de verificación";
 
 /* set pin title */
 "Enter your PIN" = "Ingrese su PIN";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Ingrese su PIN para desbloquear la bandeja de entrada.";
+"Enter your PIN to unlock your inbox." = "Ingrese su PIN para desbloquear el buzón.";
 
 /* human verification top title */
 "Enter your cell phone number" = "Ingrese su número de teléfono móvil";
 
 /* top title */
-"Enter your existing email address." = "Ingrese su dirección de email existente.";
+"Enter your existing email address." = "Ingrese su dirección de correo existente.";
 
 /* settings debug section title */
 "Error Logs" = "Registro de errores";
 
-/* No comment provided by engineer. */
+/* lock app option */
 "Every time enter app" = "Cada vez al abrir la aplicación";
 
+/* VoiceOver: email can expire */
+"Expires" = "Expira";
+
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Caduca en %d días %d horas %d minutos %d segundos";
+"Expires in %d days %d hours %d mins %d seconds" = "Expira en %1$d días %2$d horas %3$d minutos %4$d segundos";
 
 /* Title */
-"Expiring Messages" = "Caducidad de mensajes";
+"Expiring Messages" = "Expiración de mensajes";
 
 /* Key size checkbox */
 "Extreme Security" = "Máxima seguridad";
 
 /* login page forgot pwd */
-"FORGOT PASSWORD?" = "¿Olvidó su contraseña?";
+"FORGOT PASSWORD?" = "¿OLVIDÓ LA CONTRASEÑA?";
 
 /* Description */
 "Failed to initialize the application's saved data" = "Error al inicializar los datos guardados de la aplicación";
@@ -622,20 +619,22 @@
 /* default vcard types */
 "Fax" = "Fax";
 
-/* Title */
+/* menu title */
 "Feedback" = "Comentarios";
 
 /* Error */
 "Fetch user info failed" = "Error al obtener información de usuario";
 
-/* folder editing editfeild place holder
-   place holder */
+/* VoiceOver: email belongs to folder */
+"Folder" = "Carpeta";
+
+/* place holder */
 "Folder Name" = "Nombre de la carpeta";
 
-/* Action */
+/* forward action */
 "Forward" = "Reenviar";
 
-/* Title */
+/* forwarded message title */
 "Forwarded message" = "Mensaje reenviado";
 
 /* Action */
@@ -644,11 +643,14 @@
 /* Title */
 "From" = "De";
 
-/* Title */
+/* message From: field text */
 "From:" = "De:";
 
-/* Title */
+/* abbreviation of forward: */
 "Fwd:" = "Fwd:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Sexo";
 
 /* Title */
 "General Settings" = "Ajustes generales";
@@ -660,10 +662,13 @@
 "Get more information" = "Obtener más información";
 
 /* Action */
-"Go to inbox" = "Ir a la bandeja de entrada";
+"Go to inbox" = "Ir al buzón";
+
+/* Action */
+"Got it" = "Entendido";
 
 /* Title */
-"Help & Support" = "Ayuda & Soporte";
+"Help & Support" = "Ayuda y Soporte";
 
 /* Title */
 "Help us to improve ProtonMail with your input." = "Ayúdenos a mejorar ProtonMail con sus comentarios.";
@@ -680,7 +685,7 @@
 /* Key size checkbox */
 "High Security" = "Alta seguridad";
 
-/* No comment provided by engineer. */
+/* Title */
 "Hours" = "Horas";
 
 /* Description */
@@ -689,21 +694,26 @@
 /* human check warning title */
 "Human Check Warning" = "Advertencia de captcha";
 
-/* human verification top title
-   top title
-   view top title */
-"Human Verification" = "Verificación de captcha";
+/* top title */
+"Human Verification" = "Captcha";
 
-/* Title */
-"INBOX" = "Buzón";
+/* mail location title */
+"INBOX" = "BUZÓN";
+
+/* Action */
+"Import Error" = "Error al importar";
 
 /* Title */
 "Import File From..." = "Importar archivo desde...";
 
+/* import contact title */
+"Importing Contacts" = "Importando contactos";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Para poder utilizar nuestros servicios, debe aceptar las condiciones del servicio de ProtonMail.";
 
-/* Title */
+/* mail location desc
+   menu title */
 "Inbox" = "Buzón";
 
 /* Error */
@@ -721,14 +731,13 @@
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Diríjase a https://protonmail.com/invite para solicitar una invitación.";
 
+/* default vcard types */
+"Internet" = "Internet";
+
 /* Error */
 "Invalid Password" = "Contraseña incorrecta";
 
-/* Error */
-"Invalid UserName" = "Nombre de usuario inválido";
-
-/* update notification email error
-   update password error when input invalid username */
+/* Error message */
 "Invalid UserName!" = "¡Nombre de usuario inválido!";
 
 /* Description */
@@ -737,49 +746,47 @@
 /* Error */
 "Invalid credential" = "Credencial inválida";
 
-/* update notification email error
-   update password error */
+/* update password error */
 "Invalid hashed password!" = "¡Contraseña hash inválida!";
 
 /* Action */
 "Italian" = "Italiano";
 
 /* Title */
-"Keep me updated about new features" = "Mantenerme informado acerca de nuevas funciones";
+"Keep me updated about new features" = "Mantenerme actualizado acerca de nuevas funciones";
 
 /* Error */
 "Key generation failed" = "Error en la generación de claves";
 
 /* Error */
-"Key generation failed please try again" = "Se produjo un error en la generación de claves por favor inténtelo de nuevo";
+"Key generation failed please try again" = "Ocurrió un error al generar las claves por favor inténtelo de nuevo";
 
 /* Error */
 "Key invalid please go back try again" = "Clave inválida, vuelva a intentarlo nuevamente";
 
 /* Title */
-"LOGIN" = "Iniciar sesión";
+"Label Management" = "Gestión de etiquetas";
 
-/* Title */
-"Label Management" = "Administrar etiquetas";
-
-/* createing lable input place holder
-   place holder */
+/* createing lable input place holder */
 "Label Name" = "Nombre de la etiqueta";
 
 /* Title */
 "Label as..." = "Etiquetar como...";
 
+/* VoiceOver: email has lables */
+"Labels" = "Etiquetas";
+
 /* Title */
 "Labels have been applied." = "Las etiquetas han sido aplicadas.";
 
 /* Title */
-"Labels/Folders" = "Etiquetas / Carpetas";
+"Labels/Folders" = "Etiquetas/Carpetas";
 
 /* Title */
 "Language" = "Idioma";
 
-/* lib version text */
-"LibVersion" = "LibVersion";
+/* learn more button */
+"Learn more here" = "Más información aquí";
 
 /* Action */
 "Load remote content" = "Cargar contenido remoto";
@@ -790,13 +797,10 @@
 /* Description */
 "Local cache can't find mailbox password" = "La caché local no puede encontrar la contraseña del buzón";
 
-/* (No Comment) */
-"Localizable.strings" = "Inglés";
-
-/* Title */
+/* menu title */
 "Lock The App" = "Bloquear la aplicación";
 
-/* No comment provided by engineer. */
+/* Title */
 "Login" = "Iniciar sesión";
 
 /* settings general section title */
@@ -805,20 +809,23 @@
 /* Error */
 "Login password doesn't match" = "La contraseña de inicio de sesión no coincide";
 
-/* Title */
+/* menu title */
 "Logout" = "Cerrar sesión";
 
-/* Title */
-"MAILBOX PASSWORD" = "Contraseña del buzón";
+/* error title */
+"Logs" = "Registros";
+
+/* alert description */
+"Looking to edit or disable your mobile signature?" = "¿Desea editar o deshabilitar la firma móvil?";
+
+/* Upgrade warning title */
+"Looking to secure your contact's details?" = "¿Buscando asegurar sus datos de contacto?";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Contraseña del buzón";
-
-/* (No Comment) */
-"Mailbox password doesn't match" = "La contraseña del buzón no coincide";
 
 /* Title */
 "Manage Labels/Folders" = "Administrar Etiquetas/Carpetas";
@@ -842,7 +849,7 @@
 "Message Swipe Actions" = "Acciones de deslizamiento de mensajes";
 
 /* No comment provided by engineer. */
-"Message expired" = "El mensaje ha caducado";
+"Message expired" = "Mensaje expirado";
 
 /* Title */
 "Message has been deleted." = "El mensaje ha sido eliminado.";
@@ -850,7 +857,7 @@
 /* Title */
 "Message has been moved." = "El mensaje ha sido movido.";
 
-/* Error */
+/* Description */
 "Message password does not match." = "La contraseña del mensaje no coincide.";
 
 /* Description */
@@ -863,53 +870,49 @@
 "Messages you send can be set to auto delete after a certain time period." = "Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.";
 
 /* default vcard types */
-"Mobile" = "Celular";
+"Mobile" = "Móvil";
 
 /* Title */
 "Mobile Signature" = "Firma móvil";
 
-/* Description
-   signup human check error description when mobile signup disabled */
+/* Description */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "El registro por móvil está temporalmente deshabilitado. Inténtelo de nuevo más tarde o intente registrarse en protonmail.com utilizando una computadora.";
 
-/* Action */
+/* move action */
 "Move to AllMail" = "Mover a Todos";
 
-/* Action */
+/* move action */
 "Move to Archive" = "Mover a Archivo";
 
-/* Action */
+/* move action */
 "Move to Draft" = "Mover a Borradores";
 
 /* folder apply - title */
 "Move to Folder" = "Mover a carpeta";
 
-/* Action */
-"Move to Inbox" = "Mover al buzón";
+/* move action */
+"Move to Inbox" = "Mover al Buzón";
 
-/* Action */
+/* move action */
 "Move to Outbox" = "Mover a Enviados";
 
-/* Action */
+/* move action */
 "Move to Spam" = "Mover a Spam";
 
-/* Action */
+/* move action */
 "Move to Trash" = "Mover a Papelera";
 
 /* Title */
 "Move to..." = "Mover a...";
 
 /* Title */
-"Multiple Addresses" = "Múltiples direcciones";
+"Multiple Addresses" = "Direcciones múltiples";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "Regístrese gratis";
+"NEED AN ACCOUNT? SIGN UP." = "¿NECESITA UNA CUENTA? REGÍSTRESE.";
 
 /* title */
 "Name" = "Nombre";
-
-/* Test */
-"Navigation Title - Test" = "Título de navegación - prueba";
 
 /* Title */
 "New login password" = "Nueva contraseña de inicio de sesión";
@@ -917,8 +920,7 @@
 /* Title */
 "New mailbox password" = "Nueva contraseña del buzón";
 
-/* Placeholder
-   Title */
+/* Placeholder */
 "New password" = "Nueva contraseña";
 
 /* contacts talbe cell Nickname title */
@@ -927,21 +929,14 @@
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "No hay mensajes";
 
-/* Error
-   Title */
+/* Title */
 "No connectivity detected..." = "No se detectó ninguna conexión...";
 
-/* Description */
-"No managed object context" = "No hay contexto de objeto administrado";
-
-/* Description */
-"No managed object context." = "No hay contexto de objeto administrado.";
-
-/* this is a system object can't find, this could be not trasnlated */
-"No managedObjectContext" = "No managedObjectContext";
-
-/* No comment provided by engineer. */
+/* Title */
 "None" = "Ninguno";
+
+/* alert description */
+"Not all recipients support message expiration" = "No todos los destinatarios admiten la expiración de mensajes";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Nota: El nombre de usuario es también su dirección de ProtonMail.";
@@ -952,15 +947,26 @@
 /* setup password notes */
 "Note: This is used to log you into your account." = "Nota: Esto se utiliza para iniciar sesión en su cuenta.";
 
-/* title
-   Title */
+/* title */
 "Notes" = "Notas";
+
+/* Alert title */
+"Notice" = "Aviso";
 
 /* Title */
 "Notification / Recovery Email" = "Notificación / Email de recuperación";
 
-/* settings general section title */
-"Notification Email" = "Email de notificación";
+/* Title */
+"Notification Email" = "Correo electrónico de notificación";
+
+/* title of action sheet */
+"Notification Snooze" = "Silenciar notificaciones";
+
+/* VoiceOver description */
+"Notifications Are Snoozed" = "Notificaciones silenciadas";
+
+/* VoiceOver description */
+"Notifications Snooze Off" = "Notificaciones desactivadas";
 
 /* Action */
 "OK" = "OK";
@@ -971,9 +977,6 @@
 /* Description */
 "Only a paid user can modify default mobile signature or turn it off!" = "Solamente los usuarios de pago pueden modificar la firma móvil predeterminada o deshabilitarla.";
 
-/* Description */
-"Only plus user could modify default mobile signature or turn it off!" = "¡Sólo usuarios Plus podrán modificar la firma móvil predeterminada o deshabilitarla!";
-
 /* Action */
 "OpenDraft" = "Abrir borrador";
 
@@ -983,29 +986,40 @@
 /* default vcard types */
 "Other" = "Otro";
 
-/* Title */
+/* mail location desc */
 "Outbox" = "Enviados";
 
-/* change login password navigation title
-   change mailbox password navigation title
-   change signle password navigation title */
-"PASSWORD" = "CONTRASEÑA";
+/* encryption lock description */
+"PGP-encrypted" = "PGP-cifrado";
 
-/* Title */
+/* encryption lock description */
+"PGP-encrypted message" = "Mensaje PGP-cifrado";
+
+/* encryption lock description */
+"PGP-encrypted message from verified address" = "Mensaje PGP-cifrado de dirección verificada";
+
+/* encryption lock description */
+"PGP-signed" = "PGP-firmado";
+
+/* encryption lock description */
+"PGP-signed message from verified address" = "Mensaje PGP-firmado de dirección verificada";
+
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "CARACTERÍSTICA PREMIUM";
+
+/* title */
 "Password" = "Contraseña";
 
-/* Error
-   Title */
-"Password Mismatch" = "Las contraseñas no coinciden";
+/* Title */
+"Password Mismatch" = "La contraseña no coincide";
 
 /* Title */
 "Password Updated" = "Contraseña actualizada";
 
-/* Error */
+/* Description */
 "Password cannot be empty." = "La contraseña no puede estar vacía.";
 
-/* update notification email error
-   update password error */
+/* update password error */
 "Password update failed" = "Falló la actualización de la contraseña";
 
 /* default vcard types */
@@ -1015,7 +1029,10 @@
 "Phone" = "Teléfono";
 
 /* human check option button */
-"Phone Verification" = "Verificación del teléfono";
+"Phone Verification" = "Verificación de teléfono";
+
+/* contact placeholder */
+"Phone number" = "Número de teléfono";
 
 /* Title */
 "Phone number invalid" = "Número de teléfono inválido";
@@ -1029,63 +1046,41 @@
 /* Title */
 "Plain text" = "Texto plano";
 
+/* alert description */
+"Please add a password for the following recipients" = "Por favor añada una contraseña para los siguientes destinatarios";
+
 /* Description */
 "Please check your cell phone for the verification code." = "Por favor revise su teléfono para obtener el código de verificación.";
 
 /* error message */
 "Please check your email for the verification code." = "Por favor revise su correo electrónico para obtener el código de verificación.";
 
-/* Test */
-"Please input ... - Test" = "Por favor ingrese ... - Prueba";
+/* alert description */
+"Please disable PGP Sending for following addresses" = "Por favor deshabilite el envío PGP para las siguientes direcciones";
 
 /* Description */
 "Please input a valid cell phone number." = "Ingrese un número de teléfono válido.";
 
-/* Description
-   error message */
-"Please input a valid email address." = "Por favor, ingrese una dirección de email válida.";
+/* error message */
+"Please input a valid email address." = "Por favor, ingrese una dirección de correo válida.";
 
 /* Error */
 "Please pick a user name first!" = "¡Por favor elija un nombre de usuario primero!";
 
-/* Error */
-"Please remove all attachments before changing sender!" = "Elimine todos los datos adjuntos antes de cambiar el remitente";
-
 /* human check select option title */
-"Please select one of the following options:" = "Por favor, elija una de las siguientes opciones:";
+"Please select one of the following options:" = "Por favor, seleccione una de las siguientes opciones:";
 
 /* Description */
 "Please set a password." = "Por favor, establezca una contraseña.";
 
-/* (No Comment) */
-"Please try a different domain." = "Por favor intente con un dominio diferente.";
-
-/* (No Comment) */
-"Please try a different email address." = "Por favor, pruebe una dirección de correo electrónico diferente.";
-
-/* (No Comment) */
-"Please try a different password." = "Por favor, intente una contraseña diferente.";
-
-/* (No Comment) */
-"Please try a different user name." = "Intente un nombre de usuario diferente.";
-
-/* (No Comment) */
-"Please try again." = "Por favor inténtelo de nuevo";
-
-/* Alert */
-"Please upgrade to access encrypted contact details." = "Actualice su plan para acceder a los detalles de contacto cifrados.";
-
 /* Description */
 "Please use ProtonMail App login first" = "Primero inicie sesión en la app de ProtonMail";
 
-/* (No Comment) */
-"Please use the web version of ProtonMail to change your mailbox password!" = "¡Utilice la versión web de ProtonMail para cambiar la contraseña del buzón!";
+/* Alert */
+"Please use the web application to reset your password." = "Por favor utilice la versión web para restablecer su contraseña.";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords!" = "Utilice la versión web de ProtonMail para cambiar sus contraseñas.";
-
-/* Alert */
-"Please use the web version of ProtonMail to change your passwords.!" = "¡Utilice la versión web de ProtonMail para cambiar sus contraseñas.!";
 
 /* Description */
 "Please use your new password when signing in." = "Utilice su nueva contraseña al iniciar sesión.";
@@ -1093,14 +1088,14 @@
 /* The */
 "Please wait until the email downloaded!" = "¡Espere hasta que se descargue el correo electrónico!";
 
-/* Title */
-"Please, manage it in your phone." = "Por favor, hágalo en su teléfono.";
-
 /* Action */
 "Polish" = "Polaco";
 
 /* Action */
 "Portuguese Brazil" = "Portugués de Brasil";
+
+/* Action */
+"Print" = "Imprimir";
 
 /* Title */
 "Protection" = "Protección";
@@ -1114,11 +1109,17 @@
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "Es necesario tener ProtonMail Plus para editar la firma móvil";
 
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary le permite añadir y editar los datos de contacto más allá del nombre y el correo electrónico. Al usar ProtonMail, estos datos se mantendrán tan seguros con el cifrado de extremo a extremo de su correo electrónico.";
+
+/* alert description */
+"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "Los planes Plus, Professional y Visionary le permiten personalizar su firma móvil.";
+
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no vende anuncios o abusa su privacidad. Su apoyo es esencial para mantener ProtonMail en ejecución. Puede actualizar a una cuenta de pago o donar para apoyar a ProtonMail.";
 
 /* Title */
-"ProtonMail encrypted emails" = "ProtonMail correo electrónico cifrado";
+"ProtonMail encrypted emails" = "Correos cifrados de ProtonMail";
 
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail no está actualmente en línea, consulte nuestro twitter para conocer el estado actual: https://twitter.com/protonmail";
@@ -1126,19 +1127,16 @@
 /* Title */
 "Quick swipe actions" = "Acciones de deslizamiento rápido";
 
-/* Title */
-"REPORT BUGS" = "REPORTAR ERRORES";
-
 /* Action */
 "RESET MAILBOX PASSWORD" = "RESTABLECER CONTRASEÑA DEL BUZÓN";
 
 /* Title */
-"Rate & Review" = "Calificar & Reseña";
+"Rate & Review" = "Calificar y Comentar";
 
 /* set pin title */
 "Re-Enter your PIN" = "Vuelva a ingresar su PIN";
 
-/* Title */
+/* abbreviation of reply: */
 "Re:" = "Re:";
 
 /* Title */
@@ -1148,7 +1146,7 @@
 "Recovery Code" = "Código de recuperación";
 
 /* Title */
-"Recovery Email" = "Email de recuperación";
+"Recovery Email" = "Correo electrónico de recuperación";
 
 /* Title */
 "Recovery Email Warning" = "Aviso de email de recuperación";
@@ -1156,26 +1154,23 @@
 /* Title */
 "Remind Me Later" = "Recordarme más tarde";
 
-/* Action */
+/* remove action */
 "Remove" = "Eliminar";
 
 /* Action */
 "Remove Star" = "Quitar destacado";
 
-/* Action */
+/* settings option (Repeat: sun, mon, thu) */
+"Repeat" = "Repetir";
+
+/* reply action */
 "Reply" = "Responder";
 
-/* top left back button */
+/* reply all action */
 "Reply All" = "Responder a todos";
 
-/* (No Comment) */
-"Reply message" = "Responder mensaje";
-
-/* Action */
-"ReplyAll" = "Responder a todos";
-
-/* Title */
-"Report Bugs" = "Reportar errores";
+/* menu title */
+"Report Bugs" = "Reportar Errores";
 
 /* Title */
 "Resetting message cache ..." = "Restableciendo la caché del mensaje...";
@@ -1183,24 +1178,17 @@
 /* Action */
 "Retry" = "Reintentar";
 
-/* email verify code resend count down
-   Title */
+/* email verify code resend count down */
 "Retry after %d seconds" = "Reintentar después de %d segundos";
 
 /* Action */
 "Russian" = "Ruso";
 
-/* Title */
-"SENT" = "Enviados";
+/* mail location title */
+"SENT" = "ENVIADOS";
 
-/* Title */
-"SETTINGS" = "AJUSTES";
-
-/* Title */
-"SIGNATURE" = "FIRMA";
-
-/* Title */
-"SPAM" = "Spam";
+/* mail location title */
+"SPAM" = "SPAM";
 
 /* Error */
 "SRP Client" = "Cliente SRP";
@@ -1208,53 +1196,56 @@
 /* Error */
 "SRP Server" = "Servidor SRP";
 
-/* Title */
-"STARRED" = "Destacados";
+/* mail location title */
+"STARRED" = "DESTACADOS";
 
-/* Action
-   Action-Contacts
-   Title */
+/* Title */
 "Save" = "Guardar";
 
 /* title */
 "Save Changes" = "Guardar cambios";
 
-/* Title */
+/* Action */
 "Save draft" = "Guardar borrador";
 
-/* Placeholder
-   Title */
+/* action sheet option */
+"Scheduled" = "Programado";
+
+/* Title */
 "Search" = "Buscar";
-
-/* Test */
-"Section Title - Test" = "Sección de título - prueba";
-
-/* (No Comment) */
-"Select your language" = "Seleccione su idioma";
 
 /* Action */
 "Send" = "Enviar";
 
 /* Title */
-"Send Verification Code" = "Enviar código de verificación";
+"Send Verification Code" = "Enviar el código de verificación";
+
+/* Action */
+"Send anyway" = "Enviar de todos modos";
 
 /* Description */
 "Send message without subject?" = "¿Enviar mensaje sin asunto?";
 
 /* Title */
-"Send plain but stored enc" = "Enviar plano pero almacenado cifrado";
+"Send plain but stored enc" = "Enviar plano pero almacenar cifrado";
 
-/* Description */
-"Sending Failed" = "Error al enviar";
+/* encryption lock description */
+"Sender Verification Failed" = "Falló la verificación del remitente";
 
 /* Description */
 "Sending Message" = "Enviando mensaje";
 
-/* Title */
-"Sent" = "Enviado";
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "El envío de mensajes desde la dirección %1$@ es una característica de pago. Su mensaje será enviado desde su dirección predeterminada %2$@";
+
+/* menu title */
+"Sent" = "Enviados";
 
 /* Description */
 "Sent Failed" = "Falló el envío";
+
+/* encryption lock description */
+"Sent by you with end-to-end encryption" = "Enviado por usted con cifrado de extremo a extremo";
 
 /* Description */
 "Server proofs not valid!" = "¡Las comprobaciones del servidor son inválidas!";
@@ -1268,11 +1259,14 @@
 /* Signup passwords top title */
 "Set passwords" = "Definir contraseñas";
 
-/* Title */
+/* menu title */
 "Settings" = "Ajustes";
 
 /* Title */
 "Share Alert" = "Compartir alerta";
+
+/* action */
+"Share Contact" = "Compartir contacto";
 
 /* Title */
 "Share it with your friends" = "Compartir con sus amigos";
@@ -1289,10 +1283,20 @@
 /* settings general section title */
 "Single Password" = "Contraseña Única";
 
+/* settings option */
+"Snooze Notifications" = "Silenciar notificaciones";
+
+/* title of action sheet when quick snooze is active (Snoozed for 30min) */
+"Snoozed for" = "Silenciado por";
+
+/* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
+"Snoozed till" = "Silenciado hasta";
+
 /* Title */
 "Space Warning" = "Advertencia de espacio";
 
-/* Title */
+/* mail location desc
+   menu title */
 "Spam" = "Spam";
 
 /* Description */
@@ -1307,21 +1311,34 @@
 /* Title */
 "Star" = "Destacar";
 
-/* Title */
+/* mail location desc
+   menu title
+   VoiceOver: email is starred */
 "Starred" = "Destacados";
+
+/* settings option (Start Time: 8am) */
+"Start Time" = "Hora inicio";
+
+/* contact placeholder */
+"State" = "Estado";
 
 /* Title */
 "Storage" = "Almacenamiento";
 
+/* encryption lock description */
+"Stored with zero access encryption" = "Almacenado con cifrado de acceso cero";
+
+/* contact placeholder */
+"Street" = "Calle";
+
 /* Placeholder */
 "Subject" = "Asunto";
 
-/* Title */
+/* subject: text when forward */
 "Subject:" = "Asunto:";
 
-/* Action
-   Title */
-"Support ProtonMail" = "Apoyar ProtonMail";
+/* Action */
+"Support ProtonMail" = "Apoye a ProtonMail";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Deslizar de izquierda a derecha";
@@ -1332,11 +1349,14 @@
 /* Error */
 "System can't copy the file" = "El sistema no puede copiar el archivo";
 
-/* Title */
-"TRASH" = "Papelera";
+/* mail location title */
+"TRASH" = "PAPELERA";
 
 /* Title */
-"Take a Photo" = "Tomar foto";
+"Take a Photo" = "Tomar una foto";
+
+/* alert description */
+"Tap send anyway to send without expiration to these recipients" = "Pulse enviar para enviar sin expiración para estos destinatarios";
 
 /* No comment provided by engineer. */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Gracias por enviar un informe de error.  Hemos añadido su informe a nuestro sistema de seguimiento de errores.";
@@ -1347,14 +1367,8 @@
 /* Title */
 "The ProtonMail current offline..." = "No hay conexión con ProtonMail...";
 
-/* Error Description */
-"The UserName have been taken." = "El nombre de usuario ya está en uso.";
-
 /* Description */
 "The authentication credentials are invalid." = "Las credenciales de autenticación son inválidas.";
-
-/* Description */
-"The authentication token has expired." = "El token de autenticación ha caducado.";
 
 /* key size notes */
 "The current standard" = "El estándar actual";
@@ -1366,66 +1380,37 @@
 "The draft cache is broken please try again" = "La caché del borrador está rota, inténtelo de nuevo";
 
 /* error when sending the message */
-"The draft format incorrectly sending failed!" = "Falló el envío. Hubo un error con el formato del borrador.";
+"The draft format incorrectly sending failed!" = "¡El formato del borrador es incorrecto, el envío falló!";
 
 /* key size note part 1 */
 "The highest level of encryption available." = "El máximo nivel de cifrado disponible.";
 
-/* Description */
-"The label name is duplicate" = "El nombre de la etiqueta está duplicado";
-
-/* Description
-   Error */
+/* Error */
 "The mailbox password is incorrect." = "La contraseña del buzón es incorrecta.";
 
-/* (No Comment) */
-"The maximum number of labels is %d." = "El número máximo de etiquetas es %d.";
-
-/* Description */
-"The maximum number of labels is 20." = "El número máximo de etiquetas es de 20.";
-
-/* Description */
-"The message password can't be empty" = "La contraseña del mensaje no puede estar vacía";
-
-/* Description */
-"The message password didn't match" = "La contraseña del mensaje no coincide";
-
-/* (No Comment) */
-"The new password can't empty" = "La nueva contraseña no puede estar vacía";
+/* update password error */
+"The new password can't empty." = "La contraseña nueva no puede estar vacía.";
 
 /* update password error */
-"The new password can't empty." = "La nueva contraseña no puede estar vacía.";
-
-/* (No Comment) */
-"The new password not match" = "Las contraseñas no coinciden";
-
-/* update password error */
-"The new password not match." = "La nueva contraseña no coincide.";
+"The new password not match." = "La contraseña nueva no coincide.";
 
 /* recovery email notes */
 "The optional recovery email address allows you to reset your login password if you forget it." = "El email de recuperación opcional le permite restablecer su contraseña de acceso si la olvidara.";
 
 /* Description */
-"The password you entered does not match the current password." = "La contraseña introducida no coincide con la contraseña actual.";
+"The password you entered does not match the current password." = "La contraseña ingresada no coincide con la contraseña actual.";
 
 /* Description */
-"The passwords you entered do not match." = "Las contraseñas introducidas no coinciden.";
+"The passwords you entered do not match." = "Las contraseñas ingresadas no coinciden.";
 
 /* update password error */
-"The private update failed." = "Falló la actualización privada.";
+"The private key update failed." = "Falló la actualización de clave privada.";
 
-/* Error
-   Title */
+/* Title */
 "The request timed out." = "Tiempo de espera agotado.";
 
 /* Description */
 "The total attachment size can't be bigger than 25MB" = "El tamaño total de ajuntos no puede ser mayor que 25 MB";
-
-/* Description */
-"The user info fetch is wrong" = "La búsqueda de información del usuario es incorrecta";
-
-/* (No Comment) */
-"The verification email invalid" = "Correo de verificación inválido";
 
 /* Error */
 "The verification failed!" = "¡La verificación ha fallado!";
@@ -1433,11 +1418,8 @@
 /* Description */
 "There was an error creating or loading the application's saved data." = "Se ha producido un error al crear o cargar los datos guardados de la aplicación.";
 
-/* No comment provided by engineer. */
-"This contact belongs to your Address Book." = "Este contacto pertenece a su libreta de direcciones.";
-
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo ha fallado los requisitos de verificación de su dominio. ¡Pudo ser falsificado o reenviado incorrectamente!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede ser falsificado o reenviado incorrectamente!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo parece ser de una dirección de ProtonMail, pero vino de fuera de nuestro sistema y ha fallado los requisitos de autenticación. ¡Pudo ser falsificado o reenviado incorrectamente!";
@@ -1448,26 +1430,24 @@
 /* Title */
 "To" = "Para";
 
-/* (No Comment) */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
+/* human verification notes */
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para evitar el abuso de ProtonMail,\r\n debemos verificar que es humano.";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
 
-/* Title */
+/* message To: feild */
 "To:" = "Para:";
 
-/* Error */
-"Token expired" = "Token caducado";
-
-/* Description */
+/* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "El TouchID no está registrado, habilítelo en los ajustes del sistema";
 
-/* Description */
+/* settings touchid/faceid error */
 "TouchID not available" = "TouchID no disponible";
 
-/* Action
-   Title */
+/* mail location desc
+   menu title
+   move action */
 "Trash" = "Papelera";
 
 /* Title */
@@ -1476,23 +1456,26 @@
 /* Action */
 "Turkish" = "Turco";
 
+/* action sheet option */
+"Turn Off" = "Desactivar";
+
 /* Title */
 "Tweet about ProtonMail" = "Tweetear acerca de ProtonMail";
 
 /* Placeholder */
 "Two Factor Code" = "Código de dos factores";
 
+/* default vcard types */
+"URL" = "URL";
+
 /* Title */
-"USER LOGIN" = "Inicio de sesión";
+"USER LOGIN" = "INICIO DE SESIÓN DE USUARIO";
 
 /* Action */
 "Ukrainian" = "Ucraniano";
 
 /* Description */
-"Unable to connect to the server" = "No se ha podido conectar con el servidor";
-
-/* Description */
-"Unable to construct a valid URL with the following path: %@" = "No se puede definir una dirección URL válida con la siguiente ruta: %@";
+"Unable to connect to the server" = "No se puede conectar con el servidor";
 
 /* Description */
 "Unable to create SRP Client!" = "¡No se puede crear el cliente SRP!";
@@ -1525,7 +1508,7 @@
 "Unable to parse token" = "No se puede analizar el token";
 
 /* error when sending the message */
-"Unable to send the email" = "No se puede enviar el correo electrónico.";
+"Unable to send the email" = "No se puede enviar el mensaje";
 
 /* Action */
 "Undo" = "Deshacer";
@@ -1533,48 +1516,44 @@
 /* Description */
 "Unknow Error" = "Error desconocido";
 
-/* (No Comment) */
-"Unknow file" = "Archivo desconocido";
-
-/* No comment provided by engineer. */
+/* title, default display name */
 "Unknown" = "Desconocido";
 
 /* Error */
 "Unknown Error" = "Error desconocido";
 
-/* No comment provided by engineer. */
-"Unkonw Version" = "Versión desconocida";
+/* VoiceOver: email is not read yet */
+"Unread" = "Sin leer";
 
-/* right top action button
-   top right action text */
+/* like top right action text */
 "Update" = "Actualizar";
 
 /* Contacts Update contact */
 "Update Contact" = "Actualizar contacto";
 
 /* update notification email error title */
-"Update Notification Email" = "Actualizar email de notificación";
-
-/* Action */
-"Upgrade" = "Mejorar";
+"Update Notification Email" = "Actualizar correo de notificación";
 
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "Actualice a un plan de pago para enviar desde su dirección %@";
 
+/* Upgrade warning message */
+"Upgrading is not possible in the app." = "No se puede actualizar en la app.";
+
 /* Action */
 "Upload Contacts" = "Cargar contactos";
 
+/* Description */
+"Upload iOS contacts to ProtonMail?" = "¿Cargar contactos de iOS a ProtonMail?";
+
+/* default vcard types */
+"Url" = "Url";
+
 /* error when user already exist */
-"User already exist!" = "Nombre de usuario ya registrado";
+"User already exist!" = "¡El usuario ya existe!";
 
 /* No comment provided by engineer. */
-"User is available!" = "Nombre de usuario disponible";
-
-/* (No Comment) */
-"User name exist" = "El nombre de usuario existe";
-
-/* (No Comment) */
-"User name invalid" = "Nombre de usuario inválido";
+"User is available!" = "¡Usuario disponible!";
 
 /* Title */
 "Username" = "Nombre de usuario";
@@ -1585,26 +1564,29 @@
 /* Title */
 "Verification code sent" = "Código de verificación enviado";
 
-/* (No Comment) */
-"Version %@ %@" = "Versión %@ %@";
+/* error title */
+"Verification error" = "Error de verificación";
+
+/* error details */
+"Verification of this content’s signature failed" = "Falló la verificación de la firma de este contenido";
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't sent email!!!" = "Advertencia: ¡Antes de pasar el control humano no puede enviar correos electrónicos!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: no ha establecido un email de recuperación por lo que recuperar la cuenta será imposible si olvida su contraseña. ¿Proceder sin email de recuperación?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Advertencia: no estableció un correo electrónico de recuperación por lo que la recuperación de cuentas es imposible si olvida su contraseña. ¿Proceder sin correo electrónico de recuperación?";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Le enviaremos un código de verificación al número de teléfono indicado.";
 
 /* email field notes */
-"We will send a verification code to the email address above." = "Enviaremos un código de verificación a la dirección de email indicada.";
+"We will send a verification code to the email address above." = "Enviaremos un código de verificación a la dirección de correo indicada.";
 
 /* Title */
 "We would like to know what we can do better." = "Nos gustaría saber qué podemos hacer mejor.";
 
 /* Title */
-"Welcome to ProtonMail!" = "Bienvenido/a a ProtonMail";
+"Welcome to ProtonMail!" = "¡Bienvenido/a a ProtonMail!";
 
 /* Description */
 "What people see in the \"From\" field." = "Lo que la gente ve en el campo \"De\".";
@@ -1615,32 +1597,29 @@
 /* default vcard types */
 "Work" = "Trabajo";
 
-/* (No Comment) */
-"Wrong verification code" = "Código de verificación incorrecto";
+/* Description */
+"You can customize swipe gestures in the ProtonMail App Settings." = "Puede personalizar gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.";
 
 /* Description */
-"You can customize swipe gestures in the ProtonMail App Settings." = "Puede personalizar los gestos de deslizamiento en los ajustes de la aplicación ProtonMail.";
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puede obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden informar desde la aplicación.";
 
-/* Description */
-"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Puede obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden reportar con la aplicación.";
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "No puede establecer la dirección %@ como predeterminada porque es una característica de pago.";
+
+/* description */
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Ha habilitado la expiración de mensajes, pero no todos los destinatarios lo admiten. Por favor, añada una contraseña o deshabilite el envío PGP para utilizar la expiración con todos los destinatarios.";
 
 /* Message */
-"You have %d new emails!" = "¡Tiene %d correos nuevos!";
+"You have %d new emails!" = "¡Tiene %d mensajes nuevos!";
 
 /* Title */
-"You have a new email!" = "¡Tiene un nuevo correo!";
-
-/* Alert */
-"You have imported %d of %d contacts!" = "¡Ha importado %1$d de %2$d contactos!";
-
-/* Title */
-"You have imported (count) of (pre_contacts.count) contacts!" = "Ha importado (count) de (pre_contacts.count) contactos!";
+"You have a new email!" = "¡Tiene un mensaje nuevo!";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Tiene cambios sin guardar. ¿Desea guardarlos?";
 
 /* Description */
-"You have used %d%% of your storage space (%@)." = "Ha usado %d%% de su espacio de almacenamiento (%@).";
+"You have used %d%% of your storage space (%@)." = "Ha utilizado %1$d%% de su espacio de almacenamiento (%2$@).";
 
 /* Description */
 "You have used up all of your storage space (%@)." = "Ha usado todo su espacio de almacenamiento (%@).";
@@ -1652,19 +1631,25 @@
 "Your Country Code" = "Su código de país";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Su bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de correo electrónico de forma automática y de forma segura a amigos, ¡invítelos a utilizar ProtonMail! También puede cifrar los mensajes manualmente si no utilizan ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Su bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de email de forma automática y segura a sus amigos, pídales que se unan a ProtonMail. También puede cifrar los mensajes manualmente si no utilizan ProtonMail.";
 
 /* Description */
-"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Su nueva cuenta de correo electrónico cifrada se ha configurado y está lista para enviar y recibir mensajes cifrados.";
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Su nueva cuenta de email cifrado se ha configurado y está lista para enviar y recibir mensajes cifrados.";
+
+/* view top title */
+"Your new secure email\r\n account is ready." = "Su nueva cuenta de correo\r\n seguro está lista.";
 
 /* Description */
 "Your signature has been updated." = "Su firma ha sido actualizada.";
 
+/* contact placeholder */
+"ZIP" = "ZIP";
+
 /* agree check box middle word */
 "and" = "y";
 
-/* Title */
-"at" = "en";
+/* like at 10:00pm */
+"at" = "a las";
 
 /* Error */
 "attempt remaining until secure data wipe!" = "intento restante hasta que los datos seguros se borren!";
@@ -1678,17 +1663,17 @@
 /* Action */
 "close tour" = "cerrar recorrido";
 
-/* No comment provided by engineer. */
-"days" = "Días";
+/* Title */
+"days" = "días";
 
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "falló obtener contacts(), peopleOrderedByUsersPreference devuelve nulo";
 
-/* (No Comment) */
-"hours" = "Horas";
-
 /* Title */
-"inline attachments" = "archivos adjuntos en línea";
+"inline attachments" = "adjuntos incrustados";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "sin objetos";
 
 /* Title */
 "normal attachments" = "archivos adjuntos normales";
@@ -1698,15 +1683,6 @@
 
 /* agree check box terms */
 "terms and conditions" = "términos y condiciones";
-
-/* Test */
-"test value" = "valor de prueba";
-
-/* Test */
-"this is description - Test" = "esta es la descripción - Prueba";
-
-/* versions first character */
-"v" = "v";
 
 /* Title */
 "wrote:" = "escribió:";

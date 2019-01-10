@@ -1,35 +1,49 @@
 //
 //  ViewModelService.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/18/15.
 //
-//  Created by Yanfeng Zhang on 6/18/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
-
 // this is abstract ViewModel service for tracking the ui flow
-class ViewModelService {
+class ViewModelService : Service {
     
     func changeIndex() {
         fatalError("This method must be overridden")
     }
     
-    func buildComposer<T: ViewModelProtocolNew>(_ vmp: T, subject: String, content: String, files: [FileData]) {
+    func buildComposer<T: ViewModelProtocol>(_ vmp: T, subject: String, content: String, files: [FileData]) {
         fatalError("This method must be overridden")
     }
-    
     
     /// NewDraft
     /// init normal new draft viewModel
     /// - Parameter vmp: the ViewController based on ViewModelProtocal
     func newDraft(vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
-    }
-    
-    func newDraft(vmp : ViewModelProtocolBase, with contact: ContactVO?) {
-         fatalError("This method must be overridden")
     }
     
     func newDraft(vmp : ViewModelProtocolBase, with mailTo : URL?) {
@@ -44,24 +58,21 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func newDraft(vmp: ViewModelProtocolBase, with group: ContactGroupVO) {
-        fatalError("This method must be overridden")
-    }
-    
     
     //messgae detail part
-    func messageDetails(fromList vmp : ViewModelProtocol) -> Void {
+    func messageDetails(fromList vmp : ViewModelProtocolBase) -> Void {
         fatalError("This method must be overridden")
     }
-    func messageDetails(fromPush vmp : ViewModelProtocol) -> Void {
+    func messageDetails(fromPush vmp : ViewModelProtocolBase) -> Void {
         fatalError("This method must be overridden")
     }
     
     //inbox part
-    func mailbox(fromMenu vmp : ViewModelProtocol, location : MessageLocation) -> Void {
+    func mailbox(fromMenu vmp : ViewModelProtocolBase) {
         fatalError("This method must be overridden")
     }
-    func labelbox(fromMenu vmp : ViewModelProtocol, label: Label) -> Void {
+
+    func labelbox(fromMenu vmp : ViewModelProtocolBase, label: Label) -> Void {
         fatalError("This method must be overridden")
     }
     
@@ -90,7 +101,7 @@ class ViewModelService {
         fatalError("This method must be overridden")
     }
     
-    func contactTypeViewModel(_ vmp : ViewModelProtocol, type: ContactEditTypeInterface) {
+    func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
         fatalError("This method must be overridden")
     }
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HLX-xi-kWa">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -461,7 +461,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="KRC-sl-Cdx">
-                                <rect key="frame" x="0.0" y="144" width="320" height="424"/>
+                                <rect key="frame" x="0.0" y="144" width="320" height="375"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="JZ0-Zf-iCa" id="f5C-8V-j6y"/>
@@ -2533,10 +2533,10 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6gL-17-Vjp"/>
-        <segue reference="oC7-Qd-EW1"/>
+        <segue reference="Hva-pu-Vsz"/>
         <segue reference="rru-oY-8Lv"/>
         <segue reference="Grd-B0-e0M"/>
-        <segue reference="GcK-DS-QnS"/>
+        <segue reference="vny-dJ-xp5"/>
         <segue reference="Rzd-pg-PEg"/>
     </inferredMetricsTieBreakers>
 </document>

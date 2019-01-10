@@ -1,10 +1,30 @@
 //
 //  SettingAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 7/13/15.
 //
-//  Created by Yanfeng Zhang on 7/13/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -21,7 +41,7 @@ struct News : OptionSet {
 // Mark : get settings
 final class GetUserSettings : ApiRequestNew<SettingsResponse> {
     override func path() -> String {
-        return SettingsAPI.path + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -60,7 +80,7 @@ final class SettingsResponse : ApiResponse {
 // Mark : get mail settings
 final class GetMailSettings : ApiRequestNew<MailSettingsResponse> {
     override func path() -> String {
-        return SettingsAPI.path + "/mail" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -124,8 +144,10 @@ final class MailSettingsResponse : ApiResponse {
 final class UpdateNotify : ApiRequest<ApiResponse> {
     let notify : Int
     
-    init(notify : Int) {
+    init(notify : Int, authCredential: AuthCredential?) {
         self.notify = notify
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -138,7 +160,7 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/email/notify" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/email/notify" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -157,12 +179,15 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
     let tfaCode : String? // optional
 
     
-    init(clientEphemeral : String!, clientProof : String!, sRPSession: String!, notificationEmail : String!, tfaCode : String?) {
+    init(clientEphemeral : String!, clientProof : String!, sRPSession: String!, notificationEmail : String!, tfaCode : String?, authCredential: AuthCredential?) {
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
         self.SRPSession = sRPSession
         self.email = notificationEmail
         self.tfaCode = tfaCode
+        
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -185,7 +210,7 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/email" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/email" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -212,7 +237,7 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/news" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/news" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -224,8 +249,10 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
 final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
     let displayName : String!
     
-    init(displayName: String) {
+    init(displayName: String, authCredential: AuthCredential?) {
         self.displayName = displayName
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -238,7 +265,7 @@ final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/mail/display" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/display" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -254,8 +281,10 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
     /// Initial
     ///
     /// - Parameter status: //0 for none, 1 for remote, 2 for embedded, 3 for remote and embedded
-    init(status: Int) {
+    init(status: Int, authCredential: AuthCredential?) {
         self.status = status
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -268,7 +297,7 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/mail/images" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/images" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -280,8 +309,10 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
 final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
-    init(action : MessageSwipeAction!) {
+    init(action : MessageSwipeAction!, authCredential: AuthCredential?) {
         self.newAction = action;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -294,7 +325,7 @@ final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/mail/swipeleft" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/swipeleft" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -306,8 +337,10 @@ final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
 final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!
     
-    init(action : MessageSwipeAction!) {
+    init(action : MessageSwipeAction!, authCredential: AuthCredential?) {
         self.newAction = action;
+        super.init()
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -320,7 +353,7 @@ final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/mail/swiperight" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/mail/swiperight" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {
@@ -346,7 +379,8 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
          modulusID : String!,
          salt : String!,
          verifer : String!,
-         tfaCode : String?) {
+         tfaCode : String?,
+         authCredential: AuthCredential?) {
         
         self.clientEphemeral = clientEphemeral
         self.clientProof = clientProof
@@ -355,6 +389,10 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
         self.modulusID = modulusID
         self.salt = salt
         self.verifer = verifer
+        
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -385,7 +423,7 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return SettingsAPI.path + "/password" + AppConstants.DEBUG_OPTION
+        return SettingsAPI.path + "/password" + Constants.App.DEBUG_OPTION
     }
     
     override func apiVersion() -> Int {

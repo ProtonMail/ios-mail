@@ -26,7 +26,6 @@
 //  THE SOFTWARE.
 
 
-
 import UIKit
 import WebKit
 import JavaScriptCore
@@ -34,8 +33,8 @@ import PromiseKit
 import AwaitKit
 
 
-class ComposeViewController : UIViewController, ViewModelProtocolNew, CoordinatedNew {
-    typealias argType = ComposeViewModel
+class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNew {
+    typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
     ///
@@ -103,6 +102,9 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        assert(self.coordinator != nil)
+        assert(self.viewModel != nil)
         
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
                                             style: UIBarButtonItem.Style.plain,
@@ -177,7 +179,7 @@ class ComposeViewController : UIViewController, ViewModelProtocolNew, Coordinate
             self.headerView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
             self.headerView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
             
-            switch self.viewModel.messageAction!
+            switch self.viewModel.messageAction
             {
             case .openDraft, .reply, .replyAll:
                 if !self.isShowingConfirm {
@@ -767,7 +769,7 @@ extension ComposeViewController : ComposeViewDelegate {
             // present error
             let alert = UIAlertController(title: LocalString._too_many_recipients_title,
                                           message: String.init(format: LocalString._max_number_of_recipients_is_number,
-                                                               AppConstants.MaxNumberOfRecipients),
+                                                               Constants.App.MaxNumberOfRecipients),
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)

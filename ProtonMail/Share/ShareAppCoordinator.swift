@@ -1,6 +1,6 @@
 //
 //  ShareCoordinator.swift
-//  ProtonMail - Created on 10/31/18.
+//  Share - Created on 10/31/18.
 //
 //
 //  The MIT License
@@ -32,26 +32,32 @@ import Foundation
 /// Main entry point to the app
 class ShareAppCoordinator: CoordinatorNew {
     // navigation controller instance -- entry
-    internal var navigationController: UINavigationController
+    internal weak var navigationController: UINavigationController?
+    private var nextCoordinator: CoordinatorNew?
     
-    //    let serviceHolder: ServiceHolder = {
-    //        let helper = ServiceHolder()
-    //        helper.add(SeasonsServices.self, for: TestSeasonsServices.self)
-    //        return helper
-    //    }()
+    ///TODO::fixme move the inital to factory
+    let serviceHolder: ServiceFactory = {
+        let helper = ServiceFactory()
+        let addrService = AddressBookService()
+        helper.add(AddressBookService.self, for: addrService)
+        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+        helper.add(MessageDataService.self, for: MessageDataService())
+        //helper.add(UserDataService.self, for: UserDataService())
+        return helper
+    }()
     
     func start() {
         self.loadUnlockCheckView()
     }
     
-    init(navigation: UINavigationController) {
+    init(navigation: UINavigationController?) {
         self.navigationController = navigation
     }
     
     ///
     private func loadUnlockCheckView() {
         // create next coordinator
-        let unlock = ShareUnlockCoordinator(navigation: navigationController)
-        unlock.start()
+        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: serviceHolder)
+        self.nextCoordinator?.start()
     }
 }

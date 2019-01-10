@@ -1,10 +1,30 @@
 //
 //  ComposeViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 8/15/15.
 //
-//  Created by Yanfeng Zhang on 8/15/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import PromiseKit
@@ -15,7 +35,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
     enum RuntimeError : String, Error, CustomErrorVar {
         
         case no_address = "Can't find the public key for this address"
-        
         var code: Int {
             get {
                 return -1010
@@ -37,7 +56,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     // for the share target to init composer VM
-    init(subject: String, body: String, files: [FileData], action : ComposeMessageAction!) {
+    init(subject: String, body: String, files: [FileData], action : ComposeMessageAction) {
         super.init()
         self.message = nil
         self.setSubject(subject)
@@ -57,15 +76,19 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    init(msg: Message?, action : ComposeMessageAction!) {
+    
+    /// inital composer viewmodel
+    ///
+    /// - Parameters:
+    ///   - msg: optional value
+    ///   - action: tell is the draft new / open exsiting / reply etc
+    ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
+    init(msg: Message?, action : ComposeMessageAction) {
         super.init()
-        
-        if msg == nil || msg?.location == MessageLocation.draft {
+        if msg == nil || msg!.contains(label: .draft)  {
             self.message = msg
             self.setSubject(self.message?.title ?? "")
-        }
-        else
-        {
+        } else {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
@@ -92,7 +115,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
         
         self.setSubject(self.message?.title ?? "")
         self.messageAction = action
-        self.updateContacts(msg?.location)
+        
+        // get orignal message if from sent
+        let fromSent: Bool = msg?.sentHardCheck ??  false
+        self.updateContacts(fromSent)
     }
     
     deinit {
@@ -117,7 +143,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func uploadAtt(_ att: Attachment!) {
         self.updateDraft()
-        sharedMessageDataService.uploadAttachment(att)
+        sharedMessageDataService.upload(att: att)
         self.updateDraft()
     }
     
@@ -259,14 +285,14 @@ final class ComposeViewModelImpl : ComposeViewModel {
      
      contact group only shows up in draft, so the reply, reply all, etc., no contact group will show up
     */
-    fileprivate func updateContacts(_ oldLocation : MessageLocation?) {
-        if message != nil {
-            switch messageAction!
+    fileprivate func updateContacts(_ origFromSent: Bool) {
+        if let msg = message {
+            switch messageAction
             {
             case .newDraft, .forward, .newDraftFromShare:
                 break
             case .openDraft:
-                let toContacts = self.toContacts(self.message!.toList) // Json to contact/group objects
+                let toContacts = self.toContacts(msg.toList) // Json to contact/group objects
                 for cont in toContacts {
                     switch cont.modelType {
                     case .contact:
@@ -286,7 +312,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 }
                 
-                let ccContacts = self.toContacts(self.message!.ccList)
+                let ccContacts = self.toContacts(msg.ccList)
                 for cont in ccContacts {
                     switch cont.modelType {
                     case .contact:
@@ -306,7 +332,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 }
                 
-                let bccContacts = self.toContacts(self.message!.bccList)
+                let bccContacts = self.toContacts(msg.bccList)
                 for cont in bccContacts {
                     switch cont.modelType {
                     case .contact:
@@ -326,46 +352,46 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 }
             case .reply:
-                if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.toList)
+                if origFromSent {
+                    let toContacts = self.toContacts(msg.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
                 } else {
                     var senders: [ContactPickerModelProtocol] = []
-                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    let replytos = self.toContacts(msg.replyTos ?? "")
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.sender ?? "") {
+                        if let newSender = self.toContact(msg.sender ?? "") {
                             senders.append(newSender)
                         } else {
-                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
+                            //ignore
                         }
                     }
                     self.toSelectedContacts.append(contentsOf: senders)
                 }
             case .replyAll:
-                if oldLocation == .outbox {
-                    let toContacts = self.toContacts(self.message!.toList)
+                if origFromSent {
+                    let toContacts = self.toContacts(msg.toList)
                     for cont in toContacts {
                         self.toSelectedContacts.append(cont)
                     }
-                    let senderContacts = self.toContacts(self.message!.ccList)
+                    let senderContacts = self.toContacts(msg.ccList)
                     for cont in senderContacts {
                         self.ccSelectedContacts.append(cont)
                     }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
                     var senders = [ContactPickerModelProtocol]()
-                    let replytos = self.toContacts(self.message?.replyTos ?? "")
+                    let replytos = self.toContacts(msg.replyTos ?? "")
                     if replytos.count > 0 {
                         senders += replytos
                     } else {
-                        if let newSender = self.toContact(self.message!.sender ?? "") {
+                        if let newSender = self.toContact(msg.sender ?? "") {
                             senders.append(newSender)
                         } else {
-                            senders.append(ContactVO(id: "", name: self.message!.senderName, email: self.message!.senderAddress))
+                            //ignore
                         }
                     }
 
@@ -376,7 +402,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
 
-                    let toContacts = self.toContacts(self.message!.toList)
+                    let toContacts = self.toContacts(msg.toList)
                     for cont in toContacts {
                         if let cont = cont as? ContactVO,
                             !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -386,7 +412,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if self.toSelectedContacts.count <= 0 {
                         self.toSelectedContacts.append(contentsOf: senders)
                     }
-                    let senderContacts = self.toContacts(self.message!.ccList)
+                    let senderContacts = self.toContacts(msg.ccList)
                     for cont in senderContacts {
                         if let cont = cont as? ContactVO,
                             !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
@@ -408,8 +434,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
-            self.message = Message.messageWithLocation(MessageLocation.draft,
-                                                       recipientList: toJsonString(self.toSelectedContacts),
+            self.message = Message.messageWithLocation(recipientList: toJsonString(self.toSelectedContacts),
                                                        bccList: toJsonString(self.bccSelectedContacts),
                                                        ccList: toJsonString(self.ccSelectedContacts),
                                                        title: self.getSubject(),
@@ -435,7 +460,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
-            self.message?.setLabelLocation(.draft)
             Message.updateMessage(self.message!,
                                   expirationTimeInterval: expir,
                                   body: body,
@@ -476,10 +500,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func deleteDraft() {
-        if let tmpLocation = self.message?.location {
-            lastUpdatedStore.ReadMailboxMessage(tmpLocation)
-        }
-        sharedMessageDataService.deleteDraft(self.message);
+        sharedMessageDataService.delete(message: self.message!, label: Message.Location.draft.rawValue)
+
     }
     
     override func markAsRead() {
@@ -509,136 +531,133 @@ final class ComposeViewModelImpl : ComposeViewModel {
         let foot = "</body></html>"
         let htmlString = "\(defaultSignature) \(mobileSignature)"
         
-        if let msgAction = messageAction {
-            switch msgAction
-            {
-            case .openDraft:
-                var body = ""
-                do {
-                    body = try message?.decryptBodyIfNeeded() ?? ""
-                } catch let ex as NSError {
-                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                    body = self.message!.bodyToHtml()
-                }
-                
-                body = body.stringByStrippingStyleHTML()
-                body = body.stringByStrippingBodyStyle()
-                body = body.stringByPurifyHTML()
-                body = body.escaped
-                return body
-                
-            case .reply, .replyAll:
-                
-                var body = ""
-                do {
-                    body = try message!.decryptBodyIfNeeded() ?? ""
-                } catch let ex as NSError {
-                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                    body = self.message!.bodyToHtml()
-                }
-                
-                body = body.stringByStrippingStyleHTML()
-                body = body.stringByStrippingBodyStyle()
-                body = body.stringByPurifyHTML()
-                body = body.escaped
-                
-                let on = LocalString._composer_on
-                let at = LocalString._general_at_label
-                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-                let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
-                let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
-                let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
-                
-                var replyHeader = time + ", " + sn!
-                replyHeader = replyHeader + " &lt;<a href=\"mailto:"
-                replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
-                
-                replyHeader = replyHeader.stringByStrippingStyleHTML()
-                replyHeader = replyHeader.stringByStrippingBodyStyle()
-                replyHeader = replyHeader.stringByPurifyHTML()
-                let w = LocalString._composer_wrote
-                let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
-                
-                return " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
-            case .forward:
-                let on = LocalString._composer_on
-                let at = LocalString._general_at_label
-                let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
-                let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
-                
-                let fwdm = LocalString._composer_fwd_message
-                let from = LocalString._general_from_label
-                let dt = LocalString._composer_date_field
-                let sj = LocalString._composer_subject_field
-                let t = LocalString._general_to_label
-                let c = LocalString._general_cc_label
-                var forwardHeader =
-                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
-                
-                if message!.toList != "" {
-                    forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
-                }
-                
-                if message!.ccList != "" {
-                    forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
-                }
-                forwardHeader += ""
-                forwardHeader = forwardHeader.stringByStrippingStyleHTML()
-                forwardHeader = forwardHeader.stringByStrippingBodyStyle()
-                forwardHeader = forwardHeader.stringByPurifyHTML()
-                forwardHeader = forwardHeader.escaped
-                var body = ""
-                
-                do {
-                    body = try message!.decryptBodyIfNeeded() ?? ""
-                } catch let ex as NSError {
-                    PMLog.D("getHtmlBody OpenDraft error : \(ex)")
-                    body = self.message!.bodyToHtml()
-                }
-                
-                body = body.stringByStrippingStyleHTML()
-                body = body.stringByStrippingBodyStyle()
-                body = body.stringByPurifyHTML()
-                body = body.escaped
-                var sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
-                sp = sp.stringByStrippingStyleHTML()
-                sp = sp.stringByStrippingBodyStyle()
-                sp = sp.stringByPurifyHTML()
-                return "\(head)\(htmlString)\(sp)\(body)\(foot)"
-            case .newDraft:
-                if !self.body.isEmpty {
-                    let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
-                    self.body = ""
-                    return newhtmlString
-                } else {
-                    if htmlString.trim().isEmpty {
-                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
-                        return ret_body
-                    }
-                }
-                return htmlString
-            case .newDraftFromShare:
-                if !self.body.isEmpty {
-                    var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
-                    
-                    newhtmlString = newhtmlString.stringByStrippingStyleHTML()
-                    newhtmlString = newhtmlString.stringByStrippingBodyStyle()
-                    newhtmlString = newhtmlString.stringByPurifyHTML()
-                    newhtmlString = newhtmlString.escaped
-                    
-                    return newhtmlString
-                } else {
-                    if htmlString.trim().isEmpty {
-                        //add some space
-                        let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                        return ret_body
-                    }
-                }
-                return htmlString
+        switch messageAction
+        {
+        case .openDraft:
+            var body = ""
+            do {
+                body = try message?.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
             }
-
+            
+            body = body.stringByStrippingStyleHTML()
+            body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
+            body = body.escaped
+            return body
+            
+        case .reply, .replyAll:
+            
+            var body = ""
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
+            
+            body = body.stringByStrippingStyleHTML()
+            body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
+            body = body.escaped
+            
+            let on = LocalString._composer_on
+            let at = LocalString._general_at_label
+            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let time : String! = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            let sn : String! = (message?.managedObjectContext != nil) ? message!.senderContactVO.name : "unknow"
+            let se : String! = message?.managedObjectContext != nil ? message!.senderContactVO.email : "unknow"
+            
+            var replyHeader = time + ", " + sn!
+            replyHeader = replyHeader + " &lt;<a href=\"mailto:"
+            replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
+            
+            replyHeader = replyHeader.stringByStrippingStyleHTML()
+            replyHeader = replyHeader.stringByStrippingBodyStyle()
+            replyHeader = replyHeader.stringByPurifyHTML()
+            let w = LocalString._composer_wrote
+            let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
+            
+            return " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
+        case .forward:
+            let on = LocalString._composer_on
+            let at = LocalString._general_at_label
+            let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+            let time = message!.orginalTime?.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)") ?? ""
+            
+            let fwdm = LocalString._composer_fwd_message
+            let from = LocalString._general_from_label
+            let dt = LocalString._composer_date_field
+            let sj = LocalString._composer_subject_field
+            let t = LocalString._general_to_label
+            let c = LocalString._general_cc_label
+            var forwardHeader =
+                "---------- \(fwdm) ----------<br>\(from) " + message!.senderContactVO.name + "&lt;<a href=\"mailto:" + message!.senderContactVO.email + "\" class=\"\">" + message!.senderContactVO.email + "</a>&gt;<br>\(dt) \(time)<br>\(sj) \(message!.title)<br>"
+            
+            if message!.toList != "" {
+                forwardHeader += "\(t) \(message!.toList.formatJsonContact(true))<br>"
+            }
+            
+            if message!.ccList != "" {
+                forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
+            }
+            forwardHeader += ""
+            forwardHeader = forwardHeader.stringByStrippingStyleHTML()
+            forwardHeader = forwardHeader.stringByStrippingBodyStyle()
+            forwardHeader = forwardHeader.stringByPurifyHTML()
+            forwardHeader = forwardHeader.escaped
+            var body = ""
+            
+            do {
+                body = try message!.decryptBodyIfNeeded() ?? ""
+            } catch let ex as NSError {
+                PMLog.D("getHtmlBody OpenDraft error : \(ex)")
+                body = self.message!.bodyToHtml()
+            }
+            
+            body = body.stringByStrippingStyleHTML()
+            body = body.stringByStrippingBodyStyle()
+            body = body.stringByPurifyHTML()
+            body = body.escaped
+            var sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
+            sp = sp.stringByStrippingStyleHTML()
+            sp = sp.stringByStrippingBodyStyle()
+            sp = sp.stringByPurifyHTML()
+            return "\(head)\(htmlString)\(sp)\(body)\(foot)"
+        case .newDraft:
+            if !self.body.isEmpty {
+                let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                self.body = ""
+                return newhtmlString
+            } else {
+                if htmlString.trim().isEmpty {
+                    let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
+                    return ret_body
+                }
+            }
+            return htmlString
+        case .newDraftFromShare:
+            if !self.body.isEmpty {
+                var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                
+                newhtmlString = newhtmlString.stringByStrippingStyleHTML()
+                newhtmlString = newhtmlString.stringByStrippingBodyStyle()
+                newhtmlString = newhtmlString.stringByPurifyHTML()
+                newhtmlString = newhtmlString.escaped
+                
+                return newhtmlString
+            } else {
+                if htmlString.trim().isEmpty {
+                    //add some space
+                    let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
+                    return ret_body
+                }
+            }
+            return htmlString
         }
-        return htmlString
+        
     }
 }
 

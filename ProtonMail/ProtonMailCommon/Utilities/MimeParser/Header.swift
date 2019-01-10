@@ -24,6 +24,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentTransferEncoding = "content-transfer-encoding"
         case dkimSignature = "DKIM-Signature"
         case contentID = "content-id"
+        case contentDisposition = "content-disposition"
     }
     
     let raw: String

@@ -1,33 +1,51 @@
 //
 //  MenuItem.swift
-//  ProtonMail
+//  ProtonMail - Created on 8/10/15.
 //
-//  Created by Yanfeng Zhang on 8/10/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
-import UIKit
+
+import Foundation
 
 enum MenuItem: String {//change to Int later.
-    case bugs = "Report Bugs"
-    case inbox = "Inbox"
+    case bugs    = "Report Bugs"
+    case inbox   = "Inbox"
     case starred = "Starred"
     case archive = "Archive"
-    case drafts = "Drafts"
+    case drafts  = "Drafts"
     case allmail = "All Mail"
-    case sent = "Sent"
-    case trash = "Trash"
-    case spam = "Spam"
-    case contacts = "Contacts"
-    case settings = "Settings"
-    case signout = "Logout"
-    case feedback = "Feedback"
-    case lockapp = "Lock The App"
+    case sent    = "Sent"
+    case trash   = "Trash"
+    case spam    = "Spam"
+    case contacts    = "Contacts"
+    case settings    = "Settings"
+    case signout     = "Logout"
+    case feedback    = "Feedback"
+    case lockapp     = "Lock The App"
     case servicePlan = "Service Plan"
-    
-    //var identifier: String { return rawValue }
-    
-    var title: String {
+
+    var localizedTitle: String {
         switch self {
         case .bugs:
             return LocalString._menu_bugs_title
@@ -148,26 +166,26 @@ enum MenuItem: String {//change to Int later.
     }
     
     
-    var menuToLocation : MessageLocation {
+    var menuToLabel : Message.Location {
         switch self {
         case .inbox:
-            return .inbox
+            return Message.Location.inbox
         case .starred:
-            return .starred
+            return Message.Location.starred
         case .archive:
-            return .archive
+            return Message.Location.archive
         case .drafts:
-            return .draft
+            return Message.Location.draft
         case .sent:
-            return .outbox
+            return Message.Location.sent
         case .trash:
-            return .trash
+            return Message.Location.trash
         case .spam:
-            return .spam
+            return Message.Location.spam
         case .allmail:
-            return .allmail
+            return Message.Location.allmail
         default:
-            return .inbox
+            return Message.Location.inbox
         }
     }
 }

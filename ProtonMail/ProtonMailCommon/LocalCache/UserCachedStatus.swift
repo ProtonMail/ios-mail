@@ -1,10 +1,30 @@
 //
 //  MessageStatus.swift
-//  ProtonMail
+//  ProtonMail - Created on 5/4/15.
 //
-//  Created by Yanfeng Zhang on 5/4/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import UICKeyChainStore
@@ -17,7 +37,7 @@ let userCachedStatus = UserCachedStatus()
 final class UserCachedStatus : SharedCacheBase {
     struct Key {
         // inuse
-        static let lastCacheVersion = "last_cache_version" //user cache
+//        static let lastCacheVersion = "last_cache_version" //user cache
         static let isCheckSpaceDisabled = "isCheckSpaceDisabledKey" //user cache
         static let lastAuthCacheVersion = "last_auth_cache_version" //user cache
         static let cachedServerNotices = "cachedServerNotices" //user cache
@@ -102,49 +122,33 @@ final class UserCachedStatus : SharedCacheBase {
     
     func isSplashOk() -> Bool {
         let splashVersion = getShared().integer(forKey: Key.lastSplashViersion)
-        return splashVersion == AppConstants.SplashVersion
+        return splashVersion == Constants.App.SplashVersion
     }
     
     func isTourOk() -> Bool {
         let tourVersion = getShared().integer(forKey: Key.lastTourViersion)
-        return tourVersion == AppConstants.TourVersion
+        return tourVersion == Constants.App.TourVersion
     }
     
     func showTourNextTime() {
         setValue(0, forKey: Key.lastTourViersion)
     }
     
-    func isCacheOk() -> Bool {
-        let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-        return cachedVersion == AppConstants.CacheVersion
-    }
-    
-    var lastCacheVersion : Int {
-        get {
-            let cachedVersion = getShared().integer(forKey: Key.lastCacheVersion)
-            return cachedVersion
-        }
-    }
-    
     func isAuthCacheOk() -> Bool {
         let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
-        return cachedVersion == AppConstants.AuthCacheVersion
-    }
-    
-    func resetCache() -> Void {
-        setValue(AppConstants.CacheVersion, forKey: Key.lastCacheVersion)
+        return cachedVersion == Constants.App.AuthCacheVersion
     }
     
     func resetAuthCache() -> Void {
-        setValue(AppConstants.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
+        setValue(Constants.App.AuthCacheVersion, forKey: Key.lastAuthCacheVersion)
     }
     
     func resetSplashCache() -> Void {
-        setValue(AppConstants.SplashVersion, forKey: Key.lastSplashViersion)
+        setValue(Constants.App.SplashVersion, forKey: Key.lastSplashViersion)
     }
     
     func resetTourValue() {
-        setValue(AppConstants.TourVersion, forKey: Key.lastTourViersion)
+        setValue(Constants.App.TourVersion, forKey: Key.lastTourViersion)
     }
     
     var mobileSignature : String {
@@ -191,13 +195,11 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastFetchMessageTime)
         getShared().removeObject(forKey: Key.lastUpdateTime)
         getShared().removeObject(forKey: Key.historyTimeStamp)
-        getShared().removeObject(forKey: Key.lastCacheVersion)
         getShared().removeObject(forKey: Key.isCheckSpaceDisabled)
         getShared().removeObject(forKey: Key.cachedServerNotices)
         getShared().removeObject(forKey: Key.showServerNoticesNextTime)
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
-        
         
         //pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
@@ -257,6 +259,7 @@ extension UserCachedStatus {
         }
         set {
             sharedKeychain.keychain.setString("\(newValue.rawValue)", forKey: Key.autoLockTime)
+            keymaker.resetAutolock()
         }
     }
     
@@ -271,11 +274,11 @@ extension UserCachedStatus {
     
     func alreadyAskedEnableTouchID () -> Bool {
         let code = getShared().integer(forKey: Key.askEnableTouchID)
-        return code == AppConstants.AskTouchID
+        return code == Constants.App.AskTouchID
     }
     
     func resetAskedEnableTouchID() {
-        setValue(AppConstants.AskTouchID, forKey: Key.askEnableTouchID)
+        setValue(Constants.App.AskTouchID, forKey: Key.askEnableTouchID)
     }
 }
 

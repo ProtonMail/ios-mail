@@ -2,16 +2,29 @@
 //  AppDelegate.swift
 //  ProtonMail
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  The MIT License
 //
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 import SWRevealViewController
@@ -20,33 +33,66 @@ import AFNetworkActivityLogger
 import Keymaker
 import UserNotifications
 import Intents
+import DeviceCheck
+
+#if Enterprise
+import Fabric
+import Crashlytics
+#endif
 
 let sharedUserDataService = UserDataService()
+
+/// tempeary here.
+let sharedServices: ServiceFactory = {
+    let helper = ServiceFactory()
+    ///
+    helper.add(AppCacheService.self, for: AppCacheService())
+    helper.add(AddressBookService.self, for: AddressBookService())
+    ///
+    let addrService: AddressBookService = helper.get()
+    helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+    helper.add(BugDataService.self, for: BugDataService())
+    
+    ///
+    let msgService: MessageDataService = MessageDataService()
+    helper.add(MessageDataService.self, for: msgService)
+    
+    helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    
+    return helper
+}()
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
     lazy var coordinator = WindowsCoordinator()
 }
 
+// MARK: - this is workaround to track when the SWRevealViewController first time load
 extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "sw_front") {
+        if (segue.identifier == "sw_rear") {
+            if let menuViewController =  segue.destination as? MenuViewController {
+                let viewModel = MenuViewModelImpl()
+                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
+                menu.start()
+            }
+        } else if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    sharedVMService.mailbox(fromMenu: mailboxViewController, location: .inbox)
+                    ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
+                    sharedVMService.mailbox(fromMenu: mailboxViewController)
+                    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
+                    mailbox.start()                    
                 }
             }
         }
     }
 }
 
-// MARK: - UIApplicationDelegate
-
-//move to a manager class later
-let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
-//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
-
-extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
+// MARK: - consider move this to coordinator
+extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     func onLogout(animated: Bool) {
         self.coordinator.go(dest: .signInWindow)
     }
@@ -59,7 +105,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         content.title = "🦐 API ERROR"
         content.subtitle = error.localizedDescription
         content.body = error.userInfo.debugDescription
-
+        
         if let data = error.userInfo["com.alamofire.serialization.response.error.data"] as? Data,
             let resObj = String(data: data, encoding: .utf8)
         {
@@ -72,7 +118,97 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         error.alertToast()
         #endif
     }
+}
 
+//move to a manager class later
+let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
+//let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
+
+// MARK: - UIApplicationDelegate
+extension AppDelegate: UIApplicationDelegate {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let cacheService : AppCacheService = sharedServices.get()
+        cacheService.restoreCacheWhenAppStart()
+        
+        #if Enterprise
+        Fabric.with([Crashlytics.self])
+        #endif
+        
+        Analytics.shared.setup()
+        
+        #if DEBUG // will fire local notifications on errors instead of toasts
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+        }
+        #endif
+        
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        
+        ///TODO::fixme refactor
+        shareViewModelFactoy = ViewModelFactoryProduction()
+        sharedVMService.cleanLegacy()
+        sharedAPIService.delegate = self
+        
+        AFNetworkActivityIndicatorManager.shared().isEnabled = true
+        
+        //get build mode if debug mode enable network logging
+        let mode = UIApplication.shared.releaseMode()
+        //network debug options
+        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
+            logger.level = .AFLoggerLevelDebug;
+        }
+        AFNetworkActivityLogger.shared().startLogging()
+        
+        //start network notifier
+        sharedInternetReachability.startNotifier()
+        
+        sharedMessageDataService.launchCleanUpIfNeeded()
+        sharedUserDataService.delegate = self
+        
+        if mode != .dev && mode != .sim {
+            AFNetworkActivityLogger.shared().stopLogging()
+        }
+        AFNetworkActivityLogger.shared().stopLogging()
+        //setup language
+        LanguageManager.setupCurrentLanguage()
+        
+        ///TODO::fixme we don't need to register remote when start. we only need to register after user logged in
+        let pushService : PushNotificationService = sharedServices.get()
+        pushService.registerForRemoteNotifications()
+        pushService.setLaunchOptions(launchOptions)
+        
+        StoreKitManager.default.subscribeToPaymentQueue()
+        StoreKitManager.default.updateAvailableProductsList()
+        
+        if #available(iOS 12.0, *) {
+            let intent = WipeMainKeyIntent()
+            let suggestions = [INShortcut(intent: intent)!]
+            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        }
+        
+        if #available(iOS 11.0, *) {
+            //self.generateToken()
+        }
+        
+        self.coordinator.start()
+        return true
+    }
+    
+    @available(iOS 11.0, *)
+    func generateToken(){
+        let currentDevice = DCDevice.current
+        if currentDevice.isSupported {
+            currentDevice.generateToken(completionHandler: { (data, error) in
+                DispatchQueue.main.async {
+                    if let tokenData = data {
+                        PMLog.D(tokenData.base64EncodedString())
+                    }
+                }
+            })
+        }
+    }
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(window?.rootViewController)
     }
@@ -97,59 +233,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        AppVersion.migrate()
-        
-        Analytics.shared.setup()
-        
-        #if DEBUG // will fire local notifications on errors instead of toasts
-        if #available(iOS 10.0, *) { UNUserNotificationCenter.current().delegate = self }
-        #endif
-        
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-        
-        shareViewModelFactoy = ViewModelFactoryProduction()
-        sharedVMService.cleanLegacy()
-        sharedAPIService.delegate = self
-        
-        AFNetworkActivityIndicatorManager.shared().isEnabled = true
-        //get build mode if debug mode enable network logging
-        let mode = UIApplication.shared.releaseMode()
-        //network debug options
-        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
-            logger.level = .AFLoggerLevelDebug;
-        }
-        AFNetworkActivityLogger.shared().startLogging()
-        
-        //start network notifier
-        sharedInternetReachability.startNotifier()
-        
-        sharedMessageDataService.launchCleanUpIfNeeded()
-        sharedUserDataService.delegate = self
-        
-        if mode != .dev && mode != .sim {
-            AFNetworkActivityLogger.shared().stopLogging()
-        }
-         AFNetworkActivityLogger.shared().stopLogging()
-        //setup language
-        LanguageManager.setupCurrentLanguage()
-        
-        PushNotificationService.shared.registerForRemoteNotifications()
-        PushNotificationService.shared.setLaunchOptions(launchOptions)
-        
-        StoreKitManager.default.subscribeToPaymentQueue()
-        StoreKitManager.default.updateAvailableProductsList()
-        
-        if #available(iOS 12.0, *) {
-            let intent = WipeMainKeyIntent()
-            let suggestions = [INShortcut(intent: intent)!]
-            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
-        }
-        
-        self.coordinator.start()
-        
-        return true
-    }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
@@ -163,9 +246,9 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         guard let code = verifyObject.value else {
             return false
         }
-        
+        ///TODO::fixme change to deeplink
         let info : [String:String] = ["verifyCode" : code]
-        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
+        let notification = Notification(name: .customUrlSchema,
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
@@ -186,6 +269,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
         
         if SignInManager.shared.isSignedIn() {
+            sharedMessageDataService.updateMessageCount()
             sharedMessageDataService.backgroundFetch { delayedCompletion() }
         } else {
             delayedCompletion()
@@ -207,9 +291,7 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     // MARK: Background methods
-    func application(_ application: UIApplication,
-                     performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
-    {
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
         guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
             completionHandler(.noData)
@@ -227,16 +309,19 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
-
+        ///TODO::fixme deep link
+        let pushService: PushNotificationService = sharedServices.get()
         if UnlockManager.shared.isUnlocked() {
-            PushNotificationService.shared.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+            pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
-            PushNotificationService.shared.setNotificationOptions(userInfo)
+            pushService.setNotificationOptions(userInfo)
         }
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        PushNotificationService.shared.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        PMLog.D(deviceToken.stringFromToken())
+        let pushService: PushNotificationService = sharedServices.get()
+        pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -261,7 +346,8 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
                                 willPresent notification: UNNotification,
                                 withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
-        completionHandler([.alert, .sound]) // Display notification as regular alert and play sound
+        // Display notification as regular alert and play sound
+        completionHandler([.alert, .sound])
     }
 }
 #endif

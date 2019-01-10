@@ -1,16 +1,32 @@
 //
 //  ContactAddViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 9/13/17.
 //
-//  Created by Yanfeng Zhang on 9/13/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
-
-
-
-
 
 
 class ContactAddViewModelImpl : ContactEditViewModel {
@@ -191,6 +207,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
+            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
+            let authCredential = AuthCredential.fetchFromKeychain() else
+        {
+            complete(NSError.lockError())
+            return
+        }
+        
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
@@ -228,14 +252,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-            return; //with error
-        }
         PMLog.D(vcard2Str)
         //TODO:: fix the try?
         let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
                                                                 privateKey: userkey.private_key,
-                                                                passphrase: sharedUserDataService.mailboxPassword!,
+                                                                passphrase: mailboxPassword,
                                                                 trim: true)
         //card 2 object
         let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
@@ -354,7 +375,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                            privateKey: userkey.private_key,
-                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           passphrase: mailboxPassword,
                                                            trim: true)
         //card 3 object
         let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
@@ -365,6 +386,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         sharedContactDataService.add(cards: [cards],
+                                     authCredential: authCredential,
                                      completion:  { (contacts : [Contact]?, error : NSError?) in
                                         if error == nil {
                                             complete(nil)

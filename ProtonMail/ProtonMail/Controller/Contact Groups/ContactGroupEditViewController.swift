@@ -25,15 +25,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import UIKit
 import PromiseKit
 
 /**
  The design for now is no auto-saving
  */
-class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
 
-    typealias argType = ContactGroupEditViewModel
+    typealias viewModelType = ContactGroupEditViewModel
 
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"

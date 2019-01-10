@@ -18,6 +18,8 @@ PODS:
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.1):
     - PromiseKit (~> 6)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
   - CryptoSwift (0.12.0)
   - DKImagePickerController/Core (4.0.0-beta2):
     - DKImagePickerController/ImageDataManager
@@ -46,6 +48,7 @@ PODS:
   - DKPhotoGallery/Resource (0.0.11):
     - SDWebImage/GIF
   - EllipticCurveKeyPair (1.0.2)
+  - Fabric (1.9.0)
   - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
@@ -100,9 +103,11 @@ DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
   - AFNetworking (= 3.2.1)
   - AwaitKit (~> 5.0.0)
+  - Crashlytics
   - CryptoSwift (= 0.12.0)
   - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
   - EllipticCurveKeyPair (= 1.0.2)
+  - Fabric
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
   - MBProgressHUD (= 0.9.2)
@@ -123,10 +128,12 @@ SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - AFNetworking
     - AwaitKit
+    - Crashlytics
     - CryptoSwift
     - DKImagePickerController
     - DKPhotoGallery
     - EllipticCurveKeyPair
+    - Fabric
     - FLAnimatedImage
     - Groot
     - Masonry
@@ -167,10 +174,12 @@ SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
   DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
   DKPhotoGallery: e5fc53899345c26af4374503dd249caabac7d26a
   EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
@@ -190,6 +199,6 @@ SPEC CHECKSUMS:
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
   ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 8bd89194607616f9155898872c526396e28399f7
+PODFILE CHECKSUM: 0b44d6605109b8c93fe8746c304534266635a912
 
 COCOAPODS: 1.5.3

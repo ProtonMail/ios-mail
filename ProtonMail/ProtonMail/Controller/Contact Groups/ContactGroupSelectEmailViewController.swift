@@ -25,10 +25,11 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import UIKit
 
-class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocolNew {
-    typealias argType = ContactGroupSelectEmailViewModel
+class ContactGroupSelectEmailViewController: ProtonMailViewController, ViewModelProtocol {
+    typealias viewModelType = ContactGroupSelectEmailViewModel
     
     func set(viewModel: ContactGroupSelectEmailViewModel) {
         self.viewModel = viewModel
