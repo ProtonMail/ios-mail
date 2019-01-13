@@ -31,7 +31,7 @@ import JavaScriptCore
 
 class EmailBodyContents {
     internal let body: String
-    private let remoteContentMode: RemoteContentLoadingMode
+    internal let remoteContentMode: RemoteContentLoadingMode
     
     init(body: String, remoteContentMode: RemoteContentLoadingMode) {
         self.body = body
@@ -41,7 +41,7 @@ class EmailBodyContents {
     var contentSecurityPolicy: String {
         switch self.remoteContentMode {
         case .disallowed: // this cuts off all remote content
-            return "default-src 'none'; style-src 'self' 'unsafe-inline';"
+            return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data:;"
             
         case .allowed: // this cuts off only scripts and connections
             return "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
@@ -53,7 +53,9 @@ class EmailBodyContents {
     }
 }
 
-class HTMLSecureLoader: NSObject {
+
+class HTMLSecureLoader: NSObject, WKScriptMessageHandler {
+    private weak var webView: WKWebView?
     private var contents: EmailBodyContents?
     private lazy var loopbackScheme: String = "pm-incoming-mail"
     private lazy var loopbackUrl: URL = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
@@ -66,6 +68,7 @@ class HTMLSecureLoader: NSObject {
     }()
     
     func load(contents: EmailBodyContents, in webView: WKWebView) {
+        self.webView = webView
         self.prepareRendering(contents, into: webView.configuration)
         
         if #available(iOS 11.0, *) {
@@ -80,9 +83,16 @@ class HTMLSecureLoader: NSObject {
         
         let sanitizeRaw = """
         var dirty = document.documentElement.innerHTML.toString();
-        var clean1 = DOMPurify.sanitize(dirty);
-        var clean2 = DOMPurify.sanitize(clean1, { FORBID_TAGS: ['body', 'style']});
-        document.documentElement.innerHTML = clean2;
+        var config = {
+            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+            ADD_TAGS: ['proton-src', 'base'],
+            ADD_ATTR: ['target', 'proton-src'],
+            FORBID_TAGS: ['body', 'style', 'input', 'form'],
+            FORBID_ATTR: ['srcset']
+        };
+        var clean1 = DOMPurify.sanitize(dirty, config);
+        var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
+        document.documentElement.replaceWith(clean2)
 
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
@@ -98,6 +108,8 @@ class HTMLSecureLoader: NSObject {
         style.type = 'text/css';
         style.appendChild(document.createTextNode('\(HTMLSecureLoader.css)'));
         document.getElementsByTagName('head')[0].appendChild(style);
+        
+        window.webkit.messageHandlers.loaded.postMessage({'clearBody':document.documentElement.innerHTML});
         """
         
         let sanitize = WKUserScript(source: sanitizeRaw, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
@@ -106,7 +118,27 @@ class HTMLSecureLoader: NSObject {
         config.userContentController.addUserScript(sanitize)
     }
     
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        PMLog.D(any: message.body)
+        guard let dict = message.body as? Dictionary<String, String>,
+            let sanitized = dict["clearBody"],
+            let olderContents = self.contents,
+            let webView = self.webView,
+            sanitized != olderContents.body else
+        {
+            return
+        }
+        
+        // we have to stop loading to prevent WebView from requesting all the resources (even those purifier already filtered out) in a pipline.
+        webView.stopLoading()
+        
+        // and then reload - now purified - body again
+        let newerContents = EmailBodyContents(body: sanitized, remoteContentMode: olderContents.remoteContentMode)
+        self.load(contents: newerContents, in: webView)
+    }
+    
     func inject(into config: WKWebViewConfiguration) {
+        config.userContentController.add(self, name: "loaded")
         if #available(iOS 11.0, *) {
             config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
         }
@@ -128,7 +160,7 @@ class HTMLSecureLoader: NSObject {
             "Content-Security-Policy": contents.contentSecurityPolicy
         ]
         
-        let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/1.1", headerFields: headers)!
+        let response = HTTPURLResponse(url: self.loopbackUrl, statusCode: 200, httpVersion: "HTTP/2", headerFields: headers)!
         urlSchemeTask.didReceive(response)
         urlSchemeTask.didReceive(bodyData)
         urlSchemeTask.didFinish()

@@ -655,13 +655,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    func jsDemo3(_ body : String) {
-        if let functionGenerateLuckyNumbers = self.jsContext!.objectForKeyedSubscript("DOMPurify.sanitize") {
-            let out = functionGenerateLuckyNumbers.call(withArguments: [body.escaped])
-            Swift.print(out?.toString())
-        }
-    }
-    
     internal func showEmailLoading () {
         let body = LocalString._loading_
         let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
