@@ -49,7 +49,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     // Message header view
     var emailHeader : EmailHeaderView!
     
-    var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
+    weak var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
     
     // Message content
     var contentWebView: PMWebView!

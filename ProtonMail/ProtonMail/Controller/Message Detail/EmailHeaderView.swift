@@ -28,7 +28,7 @@
 
 import UIKit
 
-protocol EmailHeaderViewProtocol {
+protocol EmailHeaderViewProtocol: AnyObject {
     func updateSize()
 }
 
@@ -44,8 +44,8 @@ protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegat
 
 class EmailHeaderView: UIView {
     
-    var viewDelegate: EmailHeaderViewProtocol?
-    private var _delegate: EmailHeaderActionsProtocol?
+    weak var viewDelegate: EmailHeaderViewProtocol?
+    private weak var _delegate: EmailHeaderActionsProtocol?
     
     var delegate :EmailHeaderActionsProtocol? {
         get {
