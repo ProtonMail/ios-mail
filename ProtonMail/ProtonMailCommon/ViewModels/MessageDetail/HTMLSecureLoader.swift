@@ -30,44 +30,14 @@ import Foundation
 import JavaScriptCore
 
 class EmailBodyContents {
-    private let body: String
+    internal let body: String
     private let remoteContentMode: RemoteContentLoadingMode
-    
-    private lazy var vm = JSVirtualMachine()
-    private lazy var context: JSContext = {
-        let context = JSContext(virtualMachine: self.vm)!
-        context.exceptionHandler = { context, exception in
-            PMLog.D(exception.debugDescription)
-        }
-        return context
-    }()
     
     init(body: String, remoteContentMode: RemoteContentLoadingMode) {
         self.body = body
         self.remoteContentMode = remoteContentMode
     }
-    
-    var fullBody: String {
-        let css = try! String(contentsOfFile: Bundle.main.path(forResource: "editor", ofType: "css")!, encoding: String.Encoding.utf8)
-        let meta: String = {
-            if #available(iOS 11.0, *) {
-                // in this case we will use preferable way for CSP - HTTP headers
-                return """
-                <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)">
-                """
-            } else {
-                // older iOS versions of WKWebView will load html without http headers, so we have to fallback to meta tag for CSP
-                return """
-                <meta name="viewport" content="width=device-width, target-densitydpi=device-dpi, initial-scale=\(EmailView.kDefautWebViewScale)">
-                <meta http-equiv="Content-Security-Policy" content="\(self.contentSecurityPolicy)">
-                """
-            }
-        }()
-        
-        return "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(self.body)</div>"
-    }
-    
-    
+
     var contentSecurityPolicy: String {
         switch self.remoteContentMode {
         case .disallowed: // this cuts off all remote content
@@ -83,52 +53,70 @@ class EmailBodyContents {
     }
 }
 
-class HTMLSecureLoader: NSObject, WKScriptMessageHandler {
+class HTMLSecureLoader: NSObject {
     private var contents: EmailBodyContents?
     private lazy var loopbackScheme: String = "pm-incoming-mail"
     private lazy var loopbackUrl: URL = URL(string: self.loopbackScheme + "://" + UUID().uuidString + ".html")!
     private lazy var request: URLRequest = URLRequest(url: self.loopbackUrl)
     
+    private static var css: String = try! String(contentsOfFile: Bundle.main.path(forResource: "editor", ofType: "css")!, encoding: .utf8).replacingOccurrences(of: "\n", with: "")
+    private static var domPurifyConstructor: WKUserScript = {
+        let raw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
+        return WKUserScript(source: raw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+    
     func load(contents: EmailBodyContents, in webView: WKWebView) {
-        self.contents = contents
+        self.prepareRendering(contents, into: webView.configuration)
         
         if #available(iOS 11.0, *) {
             webView.load(self.request)
         } else {
-            webView.loadHTMLString(contents.fullBody, baseURL: URL(string: "about:blank")!)
+            webView.loadHTMLString(contents.body, baseURL: URL(string: "about:blank")!)
         }
+    }
+    
+    private func prepareRendering(_ contents: EmailBodyContents, into config: WKWebViewConfiguration) {
+        self.contents = contents
+        
+        let sanitizeRaw = """
+        var dirty = document.documentElement.innerHTML.toString();
+        var clean1 = DOMPurify.sanitize(dirty);
+        var clean2 = DOMPurify.sanitize(clean1, { FORBID_TAGS: ['body', 'style']});
+        document.documentElement.innerHTML = clean2;
+
+        var metaWidth = document.createElement('meta');
+        metaWidth.name = "viewport";
+        metaWidth.content = "width=device-width";
+        document.getElementsByTagName('head')[0].appendChild(metaWidth);
+        
+        var metaCSP = document.createElement('meta');
+        metaCSP.httpEquiv = "Content-Security-Policy";
+        metaCSP.content = "\(contents.contentSecurityPolicy)";
+        document.getElementsByTagName('head')[0].appendChild(metaCSP);
+
+        var style = document.createElement('style');
+        style.type = 'text/css';
+        style.appendChild(document.createTextNode('\(HTMLSecureLoader.css)'));
+        document.getElementsByTagName('head')[0].appendChild(style);
+        """
+        
+        let sanitize = WKUserScript(source: sanitizeRaw, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        config.userContentController.removeAllUserScripts()
+        config.userContentController.addUserScript(HTMLSecureLoader.domPurifyConstructor)
+        config.userContentController.addUserScript(sanitize)
     }
     
     func inject(into config: WKWebViewConfiguration) {
-        let domPurifyRaw = try! String(contentsOf: Bundle.main.url(forResource: "purify.min", withExtension: "js")!)
-        let domPurify = WKUserScript(source: domPurifyRaw, injectionTime: .atDocumentStart, forMainFrameOnly: false)
-        
-        let sanitizeRaw = """
-        var clear = DOMPurify.sanitize(document.documentElement.innerHTML.toString());
-        window.webkit.messageHandlers.loaded.postMessage({'clearBody':clear});
-        document.documentElement.innerHTML = clear;
-        """
-        let sanitize = WKUserScript(source: sanitizeRaw, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
-        
-        config.userContentController.add(self, name: "loaded")
-        config.userContentController.removeAllUserScripts()
-        config.userContentController.addUserScript(domPurify)
-        config.userContentController.addUserScript(sanitize)
-        
         if #available(iOS 11.0, *) {
             config.setURLSchemeHandler(self, forURLScheme: self.loopbackScheme)
         }
-    }
-    
-    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        PMLog.D(any: message.body)
     }
 }
 
 @available(iOS 11.0, *) extension HTMLSecureLoader: WKURLSchemeHandler {
     func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         guard let contents = self.contents,
-            let bodyData = contents.fullBody.data(using: .unicode) else
+            let bodyData = contents.body.data(using: .unicode) else
         {
             urlSchemeTask.didFinish()
             return

@@ -1,9 +1,3 @@
-/*
- editor.css
- ProtonMail
- 
- Created by Jason Stockman on 7/21/15.
- */
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
     display: block;
 }
@@ -26,11 +20,11 @@ html {
 }
 
 button,html,input,select,textarea {
-    font-family: "San Francisco",sans-serif;
+    font-family: -apple-system,sans-serif;
 }
 
 body {
-    font-family: "San Francisco",Helvetica,Arial,sans-serif;
+    font-family: -apple-system,Helvetica,Arial,sans-serif;
     font-weight: 400;
     margin: 0;
     width: 100%;
@@ -39,11 +33,6 @@ body {
     word-break: break-word;
     color: #505061;
 }
-
-/*div,*/
-/*span {*/
-/*    font-size: 1em !important;*/
-/*}*/
 
 blockquote {
     padding: 0 0 0 0.6rem !important;
@@ -140,7 +129,6 @@ q {
 }
 
 q:after,q:before {
-    content: "";
     content: none;
 }
 
@@ -182,17 +170,7 @@ nav ol,nav ul {
 img {
     border: 0;
     -ms-interpolation-mode: bicubic;
-    max-width: 100%; 
-    
-/*    */
-/*    /* Fills image into the parent element so it's fully covered. Contains aspect-ratio. */*/
-/*    object-fit: cover;*/
-/*    */
-/*    /* Fills image into the parent element so the img is fully shown. Can create letterboxes. */*/
-/*    object-fit: contain;*/
-/*    */
-/*    /* Fills image into the parent element so it's fully covered. Shrinks image, not respecting aspect-ratio. */*/
-/*    object-fit: fill;*/
+    max-width: 100%;
     
 }
 
@@ -200,18 +178,6 @@ td {
     width: auto;
     max-width: 100%;
 }
-
-/*table {*/
-/*    width: 100%;*/
-/*    table-layout: auto;*/
-/*}*/
-/**/
-/*table td {*/
-/*}*/
-/**/
-/*table td.absorbing-column {*/
-/*    width: 100%;*/
-/*}*/
 
 table img {
     max-width: none;
@@ -241,6 +207,3 @@ legend {
 .pm_font_larger {
     font-size: 1.8em;
 }
-
-
-
