@@ -53,7 +53,13 @@ class EmailView: UIView, UIScrollViewDelegate{
     
     // Message content
     var contentWebView: PMWebView!
-    private lazy var loader = HTMLSecureLoader()
+    private lazy var loader: HTMLSecureLoader = {
+        if #available(iOS 11.0, *) {
+            return BulletproofSecureLoader()
+        } else {
+            return LeakySecureLoader()
+        }
+    }()
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -112,7 +118,9 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
     
     func updateEmailContent(_ contents: EmailBodyContents) {
-        self.loader.load(contents: contents, in: self.contentWebView)
+        if #available(iOS 11.0, *) {
+            self.loader.load(contents: contents, in: self.contentWebView)
+        }
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
@@ -181,7 +189,9 @@ class EmailView: UIView, UIScrollViewDelegate{
         
         let config = WKWebViewConfiguration()
         config.preferences = preferences
-        self.loader.inject(into: config)
+        if #available(iOS 11.0, *) {
+            self.loader.inject(into: config)
+        }
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
             config.ignoresViewportScaleLimits = true
