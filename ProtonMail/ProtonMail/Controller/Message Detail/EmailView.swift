@@ -197,6 +197,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.contentWebView.scrollView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.bounces = true;
         self.contentWebView.navigationDelegate = self
+        self.contentWebView.uiDelegate = self
         self.contentWebView.scrollView.delegate = self
         let w = UIScreen.main.bounds.width
         self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height:100);
@@ -226,7 +227,12 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
 }
 
-extension EmailView: WKNavigationDelegate {
+extension EmailView: WKNavigationDelegate, WKUIDelegate {
+    @available(iOS 10.0, *)
+    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
+        return false
+    }
+    
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         switch navigationAction.navigationType {
         case .linkActivated where navigationAction.request.url?.scheme == "mailto":
