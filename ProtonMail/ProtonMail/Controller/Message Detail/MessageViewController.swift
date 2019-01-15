@@ -630,13 +630,14 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                 
                 if self.htmlBody == nil {
                     self.htmlBody = self.prepareHTMLBody(self.message)
-                    self.showEmbedImage()
-                }
-                
-                if self.autoLoadImageMode == .disallowed && !self.showedShowImageView{
-                    if self.htmlBody?.hasImage() == true {
-                        self.needShowShowImageView = true
+                    
+                    if self.autoLoadImageMode == .disallowed && !self.showedShowImageView{
+                        if self.htmlBody?.hasImage() == true {
+                            self.needShowShowImageView = true
+                        }
                     }
+                    
+                    self.showEmbedImage()
                 }
             }
         }
