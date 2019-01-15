@@ -1,3 +1,7 @@
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
     display: block;
 }

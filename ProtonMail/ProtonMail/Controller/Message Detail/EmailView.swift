@@ -219,20 +219,17 @@ class EmailView: UIView, UIScrollViewDelegate{
            return
         }
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, animations: { () -> Void in
+            let h = self.emailHeader.getHeight()
             for subview in self.contentWebView.scrollView.subviews {
-                let sub = subview 
-                if sub == self.emailHeader {
+                if subview == self.emailHeader {
                     continue
                 } else if subview is UIImageView {
                     continue
                 } else {
-                    // FIXME: this should be done for highlight overlay subview also
-                    
-                    let h = self.emailHeader.getHeight()
-                    sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-                    self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
+                    subview.frame = CGRect(x: subview.frame.origin.x, y: h, width: subview.frame.width, height: subview.frame.height);
                 }
             }
+            self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
         })
     }
 }
