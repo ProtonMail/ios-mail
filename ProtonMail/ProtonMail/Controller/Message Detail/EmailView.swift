@@ -53,11 +53,11 @@ class EmailView: UIView, UIScrollViewDelegate{
     
     // Message content
     var contentWebView: PMWebView!
-    private lazy var loader: HTMLSecureLoader = {
+    private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
-            return BulletproofSecureLoader()
+            return HTTPRequestSecureLoader()
         } else {
-            return LeakySecureLoader()
+            return HTMLStringSecureLoader()
         }
     }()
     
@@ -117,7 +117,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    func updateEmailContent(_ contents: EmailBodyContents) {
+    func updateEmailContent(_ contents: WebContents) {
         if #available(iOS 11.0, *) {
             self.loader.load(contents: contents, in: self.contentWebView)
         }

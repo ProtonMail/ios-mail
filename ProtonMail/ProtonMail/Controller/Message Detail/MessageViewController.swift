@@ -66,7 +66,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     private var bodyLoaded: Bool                             = false
     fileprivate var showedShowImageView : Bool               = false
     fileprivate var needShowShowImageView : Bool             = false
-    private lazy var autoLoadImageMode: EmailBodyContents.RemoteContentLoadingMode = {
+    private lazy var autoLoadImageMode: WebContents.RemoteContentPolicy = {
         return sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
     }()
 
@@ -658,13 +658,13 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     internal func showEmailLoading () {
         let body = LocalString._loading_
-        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents)
     }
     
     var contentLoaded = false
     internal func loadEmailBody(_ body : String) {
-        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents)
         
         self.updateHeader()
@@ -677,7 +677,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
 
         let body = NSLocalizedString(error, comment: "")
-        let contents = EmailBodyContents(body: body, remoteContentMode: self.autoLoadImageMode)
+        let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents)
     }
     
