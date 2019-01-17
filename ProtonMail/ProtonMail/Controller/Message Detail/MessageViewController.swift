@@ -33,7 +33,6 @@ import CoreData
 import PassKit
 import AwaitKit
 import PromiseKit
-import JavaScriptCore
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
@@ -72,30 +71,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
 
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
-
-    
-    let jsContext = JSContext()
-    func initJSContact() {
-        // Specify the path to the jssource.js file.
-        if let jsSourcePath = Bundle.main.path(forResource: "purify", ofType: "js") {
-            do {
-                // Load its contents to a String variable.
-                let jsSourceContents = try String(contentsOfFile: jsSourcePath)
-                
-                // Add the Javascript code that currently exists in the jsSourceContents to the Javascript Runtime through the jsContext object.
-                self.jsContext?.evaluateScript(jsSourceContents)
-            }
-            catch {
-            }
-        }
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        //self.initJSContact(
-        
         self.setupRightButtons()
         
         if message == nil || message.managedObjectContext == nil {
