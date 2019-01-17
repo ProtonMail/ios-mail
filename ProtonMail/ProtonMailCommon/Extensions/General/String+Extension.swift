@@ -237,24 +237,6 @@ extension String {
     }
     
     
-    func stringByStrippingStyleHTML() -> String {        
-        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: " ")
-        //out.preg_replace("\\s+", replaceto:" ") try this later if purifier doesnt work
-        let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
-        do {
-            let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
-            let replacedString = regex.stringByReplacingMatches(in: trimmed,
-                                                                options: NSRegularExpression.MatchingOptions(rawValue: 0),
-                                                                range: NSRange(location: 0, length: trimmed.count),
-                                                                withTemplate: "")
-            if !replacedString.isEmpty && replacedString.count > 0 {
-                return replacedString
-            }
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
-        }
-        return self
-    }
     
     func preg_replace_none_regex (_ partten: String, replaceto:String) -> String {
         return self.replacingOccurrences(of: partten, with: replaceto, options: NSString.CompareOptions.caseInsensitive, range: nil)
@@ -351,88 +333,7 @@ extension String {
         return self.preg_replace_none_regex(from, replaceto:to)
     }
     
-    func stringByPurifyHTML() -> String {
-        
-//
-        //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
-        var out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>|<[^>]*? on([a-z]+)\\s*=.*?>|<(\\/?animate.*?)>", replaceto: " ")
-        out = out.preg_replace("onload=alert", replaceto: "onload＝alert") //temp
-        out = out.preg_replace("onerror=alert", replaceto: "onload＝alert") //temp
-        //out = out.preg_replace("vbscript", replaceto: "Vbscript")
-        //out = out.preg_replace("vbscript", replaceto: "Vbscript")
-        //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
-        //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
-        //        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")
-        //
-        //        out = out.preg_replace("<(\\/?meta.*?)>", replaceto: "");
-        //        out = out.preg_replace("<object(.*?)<\\/object>", replaceto: "")
-        //        out = out.preg_replace("<(\\/?object.*?)>", replaceto: "")
-        //        //out = out.preg_replace("<(object.*?)>(.*?)<(\\/object.*?)>", replaceto: "");
-        //        //out = out.preg_replace("<(\\/?objec.*?)>", replaceto: "");
-        //        out = out.preg_replace("<input(.*?)<\\/input>", replaceto: "")
-        //        out = out.preg_replace("<(\\/?input.*?)>", replaceto: "");
-        //
-        //        //remove inline style optinal later
-        //        //out = out.preg_replace("(<[a-z ]*)(style=(\"|\')(.*?)(\"|\'))([a-z ]*>)", replaceto: "");
-        //        out = out.preg_replace("<(\\/?link.*?)>", replaceto: "");
-        //
-        //        out = out.preg_replace("<iframe(.*?)<\\/iframe>", replaceto: "");
-        //        //out = out.preg_replace("<style(.*?)<\\/style>", replaceto: "");
-        //        //out = out.preg_replace("\\s+", replaceto:" ")
-        //        //out = out.preg_replace("<[ ]+", replaceto:"<")
-        //        //out = out.preg_replace("<(style.*?)>(.*?)<(\\/style.*?)>", replaceto: "");
-        //        //out = out.preg_replace("<(\\/?style.*?)>", replaceto: "");
-        //        //        out = out.preg_replace("javascript", replaceto: "Javascript")
-        //        //        out = out.preg_replace("vbscript", replaceto: "Vbscript")
-        //        //        out = out.preg_replace("&#", replaceto: "&＃")
-        //        //        out = out.preg_replace("<(noframes.*?)>(.*?)<(\\/noframes.*?)>", replaceto: "")
-        //        //        out = out.preg_replace("<(\\/?noframes.*?)>", replaceto: "")
-        //        //        out = out.preg_replace("<(i?frame.*?)>(.*?)<(\\/i?frame.*?)>", replaceto: "")
-        //        //        out = out.preg_replace("<(\\/?i?frame.*?)>", replaceto: "")
-        //
-        //        //optional later
-        //        out = out.preg_replace("<video(.*?)<\\/video>", replaceto: "")
-        //        out = out.preg_replace("<audio(.*?)<\\/audio>", replaceto: "")
-        
-        
-        return out;
-        //        function htmltotxt($str){
-        //            $str = preg_replace( "@<script(.*?)</script>@is", "", $str );  //过滤js
-        //            $str = preg_replace( "@<iframe(.*?)</iframe>@is", "", $str ); //过滤frame
-        //            $str = preg_replace( "@<style(.*?)</style>@is", "", $str ); //过滤css
-        //            $str = preg_replace( "@<(.*?)>@is", "", $str ); //过滤标签
-        //            $str=preg_replace("/\s+/", " ", $str); //过滤多余回车
-        //            $str=preg_replace("/<[ ]+/si","<",$str); //过滤<__("<"号后面带空格)
-        //            $str=preg_replace("/<\!–.*?–>/si","",$str); //注释
-        //            $str=preg_replace("/<(\!.*?)>/si","",$str); //过滤DOCTYPE
-        //            $str=preg_replace("/<(\/?html.*?)>/si","",$str); //过滤html标签
-        //            $str=preg_replace("/<(\/?head.*?)>/si","",$str); //过滤head标签
-        //            $str=preg_replace("/<(\/?meta.*?)>/si","",$str); //过滤meta标签
-        //            $str=preg_replace("/<(\/?body.*?)>/si","",$str); //过滤body标签
-        //            $str=preg_replace("/<(\/?link.*?)>/si","",$str); //过滤link标签
-        //            $str=preg_replace("/<(\/?form.*?)>/si","",$str); //过滤form标签
-        //            $str=preg_replace("/cookie/si","COOKIE",$str); //过滤COOKIE标签
-        //            $str=preg_replace("/<(applet.*?)>(.*?)<(\/applet.*?)>/si","",$str); //过滤applet标签
-        //            $str=preg_replace("/<(\/?applet.*?)>/si","",$str); //过滤applet标签
-        //            $str=preg_replace("/<(style.*?)>(.*?)<(\/style.*?)>/si","",$str); //过滤style标签
-        //            $str=preg_replace("/<(\/?style.*?)>/si","",$str); //过滤style标签
-        //            $str=preg_replace("/<(title.*?)>(.*?)<(\/title.*?)>/si","",$str); //过滤title标签
-        //            $str=preg_replace("/<(\/?title.*?)>/si","",$str); //过滤title标签
-        //            $str=preg_replace("/<(object.*?)>(.*?)<(\/object.*?)>/si","",$str); //过滤object标签
-        //            $str=preg_replace("/<(\/?objec.*?)>/si","",$str); //过滤object标签
-        //            $str=preg_replace("/<(noframes.*?)>(.*?)<(\/noframes.*?)>/si","",$str); //过滤noframes标签
-        //            $str=preg_replace("/<(\/?noframes.*?)>/si","",$str); //过滤noframes标签
-        //            $str=preg_replace("/<(i?frame.*?)>(.*?)<(\/i?frame.*?)>/si","",$str); //过滤frame标签
-        //            $str=preg_replace("/<(\/?i?frame.*?)>/si","",$str); //过滤frame标签
-        //            $str=preg_replace("/<(script.*?)>(.*?)<(\/script.*?)>/si","",$str); //过滤script标签
-        //            $str=preg_replace("/<(\/?script.*?)>/si","",$str); //过滤script标签
-        //            $str=preg_replace("/javascript/si","Javascript",$str); //过滤script标签
-        //            $str=preg_replace("/vbscript/si","Vbscript",$str); //过滤script标签
-        //            $str=preg_replace("/on([a-z]+)\s*=/si","On\\1=",$str); //过滤script标签
-        //            $str=preg_replace("/&#/si","&＃",$str); //过滤script标签，如javAsCript:alert(
-        //            return $str;
-        //        }
-    }
+    
     
     func stringByEscapeHTML() -> String {
         var out = self.preg_replace("\'", replaceto: "\\\'")
@@ -442,36 +343,7 @@ extension String {
         return out
     }
     
-    func stringByStrippingBodyStyle() -> String {
-        let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
-        do {
-            let regexBody = try NSRegularExpression(pattern: "<body[^>]*>", options:options)
-            let matches = regexBody.matches(in: self,
-                                            options: NSRegularExpression.MatchingOptions(rawValue: 0),
-                                            range: NSRange(location: 0, length: self.count))
-            if let first = matches.first {
-                if first.numberOfRanges > 0 {
-                    let range = first.range(at: 0)
-                    if let nRange = self.range(from: range) {
-                        var bodyTag = String(self[nRange])
-                        if !bodyTag.isEmpty && bodyTag.count > 0  {
-                            let regexStyle = try NSRegularExpression(pattern: "style=\"[^\"]*\"", options:options)
-                            bodyTag = regexStyle.stringByReplacingMatches(in: bodyTag, options: NSRegularExpression.MatchingOptions(rawValue: 0), range: NSRange(location: 0, length: bodyTag.count), withTemplate: "")
-                            if !bodyTag.isEmpty && bodyTag.count > 0  {
-                                let newBody = self.replacingCharacters(in: nRange, with: bodyTag)
-                                if !newBody.isEmpty && newBody.count > 0  {
-                                    return newBody
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } catch let ex as NSError {
-            PMLog.D("\(ex)")
-        }
-        return self
-    }
+    
     
     static  func randomString(_ len:Int) -> String {
         let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

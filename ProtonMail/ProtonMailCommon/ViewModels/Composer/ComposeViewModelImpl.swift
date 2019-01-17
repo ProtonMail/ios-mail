@@ -543,6 +543,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = self.message!.bodyToHtml()
             }
             
+            body = body.escaped
             return .init(body: body, remoteContentMode: globalRemoteContentMode)
             
         case .reply, .replyAll:
@@ -566,10 +567,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             var replyHeader = time + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
-            
-            replyHeader = replyHeader.stringByStrippingStyleHTML()
-            replyHeader = replyHeader.stringByStrippingBodyStyle()
-            replyHeader = replyHeader.stringByPurifyHTML()
+
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
@@ -598,9 +596,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
             }
             forwardHeader += ""
-            forwardHeader = forwardHeader.stringByStrippingStyleHTML()
-            forwardHeader = forwardHeader.stringByStrippingBodyStyle()
-            forwardHeader = forwardHeader.stringByPurifyHTML()
             forwardHeader = forwardHeader.escaped
             var body = ""
             
@@ -610,15 +605,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
+
             body = body.escaped
             var sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
-            sp = sp.stringByStrippingStyleHTML()
-            sp = sp.stringByStrippingBodyStyle()
-            sp = sp.stringByPurifyHTML()
             return .init(body: "\(head)\(htmlString)\(sp)\(body)\(foot)", remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
@@ -635,10 +624,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
-                
-                newhtmlString = newhtmlString.stringByStrippingStyleHTML()
-                newhtmlString = newhtmlString.stringByStrippingBodyStyle()
-                newhtmlString = newhtmlString.stringByPurifyHTML()
                 newhtmlString = newhtmlString.escaped
                 
             return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
