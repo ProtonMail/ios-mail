@@ -33,3 +33,16 @@ protocol WebContentsSecureLoader {
     func load(contents: WebContents, in webView: WKWebView)
     func inject(into config: WKWebViewConfiguration)
 }
+extension WebContentsSecureLoader {
+    static var domPurifyConfiguration: String {
+        return """
+        {
+        ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+        ADD_TAGS: ['proton-src', 'base'],
+        ADD_ATTR: ['target', 'proton-src'],
+        FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+        FORBID_ATTR: ['srcset']
+        }
+        """.replacingOccurrences(of: "\n", with: "")
+    }
+}

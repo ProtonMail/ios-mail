@@ -91,15 +91,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         let sanitizeRaw = """
         var dirty = document.documentElement.outerHTML.toString();
-        var config = {
-            ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
-            ADD_TAGS: ['proton-src', 'base'],
-            ADD_ATTR: ['target', 'proton-src'],
-            FORBID_TAGS: ['body', 'style', 'input', 'form'],
-            FORBID_ATTR: ['srcset']
-        };
         var clean0 = DOMPurify.sanitize(dirty);
-        var clean1 = DOMPurify.sanitize(clean0, config);
+        var clean1 = DOMPurify.sanitize(clean0, \(HTMLStringSecureLoader.domPurifyConfiguration));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
         document.documentElement.replaceWith(clean2);
         

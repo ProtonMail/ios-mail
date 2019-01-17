@@ -51,7 +51,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     
     //
     private var isEditorLoaded: Bool = false
-    private var contentHTML: String = ""
+    private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown)
     private var contentHeight : CGFloat = 0
     
     //
@@ -144,22 +144,31 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         // Load editor 3 parts
         guard let htmlPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "html"),
             let html = try? String(contentsOfFile: htmlPath) else {
+                assert(false, "HtmlEditor.html not present in the bundle")
                 return //error
         }
         
         guard let cssPath = Bundle.main.path(forResource:  "HtmlEditor", ofType: "css"),
             let css = try? String(contentsOfFile: cssPath) else {
+                assert(false, "HtmlEditor.css not present in the bundle")
                 return //error
         }
         
         guard let jsPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "js"),
             let js = try? String(contentsOfFile: jsPath) else {
+                assert(false, "HtmlEditor.js not present in the bundle")
                 return //error
         }
         
-        let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css).preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: js)
-        //let baseURL = URL(fileURLWithPath: "https://protonmail.com")
-        self.webView.loadHTMLString(editor, baseURL: nil)
+        guard let purifierPath = Bundle.main.path(forResource: "purify.min", ofType: "js"),
+            let purifier = try? String(contentsOfFile: purifierPath) else {
+                assert(false, "purify.min.js not present in the bundle")
+                return // error
+        }
+        
+        let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
+                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: [js, purifier].joined(separator: "\n"))
+        self.webView.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
     }
 
     /// try to hide the input accessory from the wkwebview when keyboard appear
@@ -266,7 +275,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     }
 
     
-    func setHtml(body: String) {
+    func setHtml(body: WebContents) {
         contentHTML = body
         if isEditorLoaded {
             self.loadContent()
@@ -276,7 +285,9 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     private func loadContent() {
         self.updateHeaderHeight()
         firstly { () -> Promise<Void> in
-            self.run(with: "html_editor.setHtml('\(contentHTML)');")
+            self.run(with: "html_editor.setCSP(\"\(self.contentHTML.remoteContentMode.cspRaw)\");")
+        }.then { () -> Promise<Void> in
+            self.run(with: "html_editor.setHtml('\(self.contentHTML.body)', \(HTMLStringSecureLoader.domPurifyConfiguration));")
         }.then { (_) -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { (width) -> Promise<Void> in

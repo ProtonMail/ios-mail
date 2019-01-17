@@ -51,10 +51,10 @@ class WebContents {
                 return "default-src 'none';"
                 
             case .disallowed: // this cuts off all remote content
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data:;"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data:; script-src 'none';"
                 
             case .allowed: // this cuts off only scripts and connections
-                return "default-src 'self'; connect-src 'self' blob:; script-src 'none'; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:;"
+                return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
             }
         }
     }
