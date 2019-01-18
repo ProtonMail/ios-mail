@@ -42,6 +42,7 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         bestAttemptContent.body = "You received a new message!"
+        bestAttemptContent.sound = UNNotificationSound.default
         #if Enterprise
         bestAttemptContent.title = "You received a new message!"
         #endif
