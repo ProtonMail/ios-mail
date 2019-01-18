@@ -25,15 +25,16 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import UIKit
 import PromiseKit
 
 /**
  The design for now is no auto-saving
  */
-class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocolNew {
+class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtocol {
 
-    typealias argType = ContactGroupEditViewModel
+    typealias viewModelType = ContactGroupEditViewModel
 
     let kToContactGroupSelectColorSegue = "toContactGroupSelectColorSegue"
     let kToContactGroupSelectEmailSegue = "toContactGroupSelectEmailSegue"
@@ -115,6 +116,8 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
         contactGroupNameInstructionLabel.text = LocalString._contact_groups_group_name_instruction_label
         saveButton.title = LocalString._general_save_action
         cancelButton.title = LocalString._general_cancel_button
+        
+        contactGroupNameLabel.addBottomBorder()
     }
     
     func prepareContactGroupImage() {
@@ -186,7 +189,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
                                                              refreshHandler: refreshHandler)
         } else if segue.identifier == kToContactGroupSelectEmailSegue {
             let refreshHandler = {
-                (emailIDs: NSSet) -> Void in
+                (emailIDs: Set<Email>) -> Void in
                 
                 self.viewModel.setEmails(emails: emailIDs)
             }

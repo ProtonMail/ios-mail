@@ -24,6 +24,8 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+
+
 import UIKit
 import CoreData
 import PromiseKit
@@ -32,8 +34,8 @@ import PromiseKit
  When the core data that provides data to this controller has data changes,
  the update will be performed immediately and automatically by core data
  */
-class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocolNew {
-    typealias argType = ContactGroupsViewModel
+class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
+    typealias viewModelType = ContactGroupsViewModel
     
     private var viewModel: ContactGroupsViewModel!
     private var queryString = ""
@@ -371,7 +373,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                         groupID: contactGroup.labelID,
                                                         name: contactGroup.name,
                                                         color: contactGroup.color,
-                                                        emailIDs: contactGroup.emails)
+                                                        emailIDs: (contactGroup.emails as? Set<Email>) ?? Set<Email>())
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController)
@@ -388,12 +390,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
-                sharedVMService.newDraft(vmp: destination, with: contactGroupVO)
-                //TODO:: finish up here
-                let coordinator = ComposeCoordinator(vc: destination,
-                                                     vm: destination.viewModel) //set view model
-                coordinator.viewController = destination
-                destination.set(coordinator: coordinator)
+                sharedVMService.newDraft(vmp: destination)
+                //TODO::fixme finish up here fix services partservices
+                let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
+                viewModel.addToContacts(contactGroupVO)
+                let coordinator = ComposeCoordinator(vc: destination, vm: viewModel, services: ServiceFactory.default)
+                coordinator.start()
             }
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
@@ -632,11 +634,18 @@ extension ContactGroupsViewController: UITableViewDelegate
 }
 
 extension ContactGroupsViewController: UpgradeAlertVCDelegate {
+    func postToPlan() {
+        NotificationCenter.default.post(name: .switchView,
+                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+    }
     func goPlans() {
-        self.navigationController?.dismiss(animated: false, completion: {
-            NotificationCenter.default.post(name: .switchView,
-                                            object: MenuItem.servicePlan)
-        })
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true) {
+                self.postToPlan()
+            }
+        } else {
+            self.postToPlan()
+        }
     }
     
     func learnMore() {

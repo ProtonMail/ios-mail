@@ -1,18 +1,38 @@
 //
 //  ShareUnlockViewController.swift
-//  ProtonMail
+//  Share - Created on 7/13/17.
 //
-//  Created by Yanfeng Zhang on 7/13/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+
 import UIKit
-import LocalAuthentication
 
 var sharedUserDataService : UserDataService!
 
 class ShareUnlockViewController: UIViewController, CoordinatedNew {
     typealias coordinatorType = ShareUnlockCoordinator
-    private var coordinator: ShareUnlockCoordinator?
+    private weak var coordinator: ShareUnlockCoordinator?
     
     func set(coordinator: ShareUnlockCoordinator) {
         self.coordinator = coordinator
@@ -101,35 +121,35 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             let plainText = item.attributedContentText?.string
             if let attachments = item.attachments {
                 for att in attachments {
-                    if let itemProvider = att as? NSItemProvider {
-                        if let type = itemProvider.hasItem(types: file_types) {
-                            group.enter() //#1
-                            self.loadItem(itemProvider, type: type) {
-                                 group.leave() //#1
-                            }
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
-                            PMLog.D("1")
-                        } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
-                            group.enter()//#2
-                            itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
-                                defer {
-                                    group.leave()//#2
-                                }
-                                if let shareURL = url as? NSURL {
-                                    self.inputSubject = plainText ?? ""
-                                    let url = shareURL.absoluteString ?? ""
-                                    self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
-                                } else {
-                                    self.error(LocalString._cant_load_share_content)
-                                }
-                            }
-                        } else if let pt = plainText {
-                            self.inputSubject = ""
-                            self.inputContent = self.inputContent + "\n"  + pt
-                        } else {
-                            PMLog.D("4")
+                    let itemProvider = att
+                    if let type = itemProvider.hasItem(types: file_types) {
+                        group.enter() //#1
+                        self.loadItem(itemProvider, type: type) {
+                            group.leave() //#1
                         }
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
+                        PMLog.D("1")
+                    } else if itemProvider.hasItemConformingToTypeIdentifier(url_key) {
+                        group.enter()//#2
+                        itemProvider.loadItem(forTypeIdentifier: url_key, options: nil) { [unowned self] url, error in
+                            defer {
+                                group.leave()//#2
+                            }
+                            if let shareURL = url as? NSURL {
+                                self.inputSubject = plainText ?? ""
+                                let url = shareURL.absoluteString ?? ""
+                                self.inputContent = self.inputContent + "\n" + "<a href=\"\(url)\">\(url)</a>"
+                            } else {
+                                self.error(LocalString._cant_load_share_content)
+                            }
+                        }
+                    } else if let pt = plainText {
+                        self.inputSubject = ""
+                        self.inputContent = self.inputContent + "\n"  + pt
+                    } else {
+                        PMLog.D("4")
                     }
+                    
                 }
             }
         }
@@ -138,7 +158,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     private func loginCheck() {
         switch getViewFlow() {
         case .requirePin:
-            sharedUserDataService.isSignedIn = false
             pinUnlock.alpha = 1.0
             pinUnlock.isEnabled = true
             if userCachedStatus.isTouchIDEnabled {
@@ -147,7 +166,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             }
 
         case .requireTouchID:
-            sharedUserDataService.isSignedIn = false
             touchID.alpha = 1.0
             touchID.isEnabled = true
 
@@ -189,21 +207,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        guard sharedTouchID.showTouchIDOrPin() else {
-            return SignInUIFlow.restore
-        }
-        
-        if userCachedStatus.isPinCodeEnabled && !userCachedStatus.pinCode.isEmpty {
-            self.view.backgroundColor = UIColor.red
-            return SignInUIFlow.requirePin
-        } else {
-            //check touch id status
-            if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
-                return SignInUIFlow.requireTouchID
-            } else {
-                return SignInUIFlow.restore
-            }
-        }
+        return UnlockManager.shared.getUnlockFlow()
     }
     
     func signInIfRememberedCredentials() {
@@ -211,14 +215,9 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
             return
         }
-        userCachedStatus.lockedApp = false
-        sharedUserDataService.isSignedIn = true
         
         self.coordinator?.go(dest: .composer)
     }
-    
-
-
     
     @objc func cancelButtonTapped(sender: UIBarButtonItem) {
         self.hideExtensionWithCompletionHandler() { _ in
@@ -236,60 +235,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
     
     func authenticateUser() {
-        let context = LAContext() // Get the local authentication context
-        context.localizedFallbackTitle = ""
-        let reasonString = "\(LocalString._general_login): \(userCachedStatus.codedEmail())"
-        // Check if the device can evaluate the policy.
-        var error: NSError?
-        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
-            var alertString : String = "";
-            // If the security policy cannot be evaluated then show a short message depending on the error
-            switch error?.code {
-            case .some(LAError.Code.touchIDNotEnrolled.rawValue):
-                alertString = LocalString._general_touchid_not_enrolled
-                
-            case .some(LAError.Code.passcodeNotSet.rawValue):
-                alertString = LocalString._general_passcode_not_set
-                
-            default: // The LAError.TouchIDNotAvailable case
-                alertString = LocalString._general_touchid_not_available
-            }
-            
-            PMLog.D(alertString)
-            PMLog.D("\(String(describing: error?.localizedDescription))")
-            let alertController = alertString.alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-            
-            return
-        }
-        
-        let evaluationHandler: (Bool, Error?)->Void = { (success, evalPolicyError) in
-            DispatchQueue.main.async {
-                guard success else {
-                    switch evalPolicyError?._code {
-                    case .some(LAError.Code.systemCancel.rawValue):
-                        let alertController = LocalString._authentication_was_cancelled_by_the_system.alertController()
-                        alertController.addOKAction()
-                        self.present(alertController, animated: true, completion: nil)
-                    case .some(LAError.Code.userCancel.rawValue):
-                        PMLog.D("Authentication was cancelled by the user")
-                    case .some(LAError.Code.userFallback.rawValue):
-                        PMLog.D("User selected to enter custom password")
-                    default:
-                        PMLog.D("Authentication failed")
-                        let alertController = LocalString._authentication_failed.alertController()
-                        alertController.addOKAction()
-                        self.present(alertController, animated: true, completion: nil)
-                    }
-                    return
-                }
-                self.signInIfRememberedCredentials()
-            }
-        }
-        
-        context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: evaluationHandler)
-        
+        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) })
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
@@ -317,6 +263,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
 }
 
 extension ShareUnlockViewController: AttachmentController {
+    var barItem: UIBarButtonItem? {
+        return nil
+    }
+    
     func error(_ description: String) {
         self.localized_errors.append(description)
     }

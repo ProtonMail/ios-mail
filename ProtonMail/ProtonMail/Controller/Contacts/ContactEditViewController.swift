@@ -1,20 +1,41 @@
 //
 //  ContactEditViewController.swift
-//  ProtonMail
+//  ProtonMail - Created on 3/6/17.
 //
-//  Created by Yanfeng Zhang on 3/6/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
+import Photos
 
 protocol ContactEditViewControllerDelegate {
     func deleted()
     func updated()
 }
 
-class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew {
-    typealias argType = ContactEditViewModel
+class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
+    typealias viewModelType = ContactEditViewModel
     
     fileprivate var viewModel : ContactEditViewModel!
     
@@ -44,6 +65,8 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
     fileprivate let kToSelectContactGroupSegue: String = "toSelectContactGroupSegue"
     fileprivate let kToUpgradeAlertSegue : String     = "toUpgradeAlertSegue"
     
+    private var imagePicker: UIImagePickerController? = nil
+    
     //
     fileprivate var doneItem: UIBarButtonItem!
     @IBOutlet weak var cancelItem: UIBarButtonItem!
@@ -51,6 +74,36 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var tableViewBottomOffset: NSLayoutConstraint!
     
+    @IBOutlet weak var profilePictureImageView: UIImageView!
+    @IBOutlet weak var selectProfilePictureLabel: UILabel!
+    @IBAction func tappedSelectProfilePictureButton(_ sender: UIButton) {
+        func checkPermission() {
+            let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+            switch photoAuthorizationStatus {
+            case .authorized:
+                print("Access is granted by user")
+            case .notDetermined:
+                PHPhotoLibrary.requestAuthorization({
+                    (newStatus) in
+                    print("status is \(newStatus)")
+                    if newStatus == PHAuthorizationStatus.authorized {
+                        
+                    }
+                })
+            case .restricted:
+                print("User do not have access to photo album.")
+            case .denied:
+                print("User has denied the permission.")
+            }
+        }
+        checkPermission()
+        
+        if let imagePicker = self.imagePicker {
+            imagePicker.allowsEditing = false
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+    }
     
     var delegate : ContactEditViewControllerDelegate?
     
@@ -72,7 +125,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
                                         style: UIBarButtonItem.Style.plain,
                                         target: self, action: #selector(ContactEditViewController.doneAction))
         self.navigationItem.rightBarButtonItem = doneItem
-       
+        
         if viewModel.isNew() {
             self.title = LocalString._contacts_add_contact
         } else {
@@ -91,6 +144,23 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
         
         self.tableView.isEditing = true
         self.tableView.noSeparatorsBelowFooter()
+        
+        // profile image picker
+        self.imagePicker = UIImagePickerController()
+        self.imagePicker?.delegate = self
+        self.profilePictureImageView.layer.cornerRadius = self.profilePictureImageView.frame.size.height / 2
+        self.profilePictureImageView.layer.masksToBounds = true
+        self.profilePictureImageView.backgroundColor = UIColor.lightGray
+        
+        self.profilePictureImageView.image = viewModel.getProfilePicture()
+        if viewModel.getProfilePicture() != nil {
+            selectProfilePictureLabel.text = LocalString._contacts_edit_profile_picture
+        } else {
+            selectProfilePictureLabel.text = LocalString._contacts_add_profile_picture
+        }
+        
+        // name textfield bottom border
+        displayNameField.addBottomBorder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,6 +170,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
@@ -173,23 +244,23 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
         
         // check if we have empty contact group
         // It's confusing for the user, removing this feature for now
-//        let hasEmptyGroupResult = viewModel.hasEmptyGroups()
-//        if let emptiness = hasEmptyGroupResult {
-//            var groupString = ""
-//            for group in emptiness {
-//                groupString += groupString.count > 0 ? ", " : ""
-//                groupString += group
-//            }
-//
-//            let alert = UIAlertController.init(title: "Empty group error",
-//                                               message: "There must be at least one group member in contact groups \(groupString)",
-//                preferredStyle: .alert)
-//
-//            alert.addOKAction()
-//
-//            self.present(alert, animated: true)
-//            return
-//        }
+        //        let hasEmptyGroupResult = viewModel.hasEmptyGroups()
+        //        if let emptiness = hasEmptyGroupResult {
+        //            var groupString = ""
+        //            for group in emptiness {
+        //                groupString += groupString.count > 0 ? ", " : ""
+        //                groupString += group
+        //            }
+        //
+        //            let alert = UIAlertController.init(title: "Empty group error",
+        //                                               message: "There must be at least one group member in contact groups \(groupString)",
+        //                preferredStyle: .alert)
+        //
+        //            alert.addOKAction()
+        //
+        //            self.present(alert, animated: true)
+        //            return
+        //        }
         
         let v : UIView = self.navigationController?.view ?? self.view
         ActivityIndicatorHelper.showActivityIndicator(at: v)
@@ -211,7 +282,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
             self.activeText = nil
         }
     }
-
+    
     func shouldShowSideMenu() -> Bool {
         return false
     }
@@ -219,7 +290,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocolNew 
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
 extension ContactEditViewController: NSNotificationCenterKeyboardObserverProtocol {
-
+    
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         tableViewBottomOffset.constant = 0.0
@@ -340,11 +411,18 @@ extension ContactEditViewController : ContactUpgradeCellDelegate {
 }
 
 extension ContactEditViewController : UpgradeAlertVCDelegate {
+    func postToPlan() {
+        NotificationCenter.default.post(name: .switchView,
+                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
+    }
     func goPlans() {
-        self.navigationController?.dismiss(animated: false, completion: {
-            NotificationCenter.default.post(name: .switchView,
-                                            object: MenuItem.servicePlan)
-        })
+        if self.presentingViewController != nil {
+            self.dismiss(animated: true) {
+                self.postToPlan()
+            }
+        } else {
+            self.postToPlan()
+        }
     }
     
     func learnMore() {
@@ -355,7 +433,7 @@ extension ContactEditViewController : UpgradeAlertVCDelegate {
         self.showingUpgrade = false
     }
     
-
+    
 }
 
 
@@ -594,7 +672,7 @@ extension ContactEditViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         dismissKeyboard()
-
+        
         let section = indexPath.section
         let row = indexPath.row
         let sections = self.viewModel.getSections()
@@ -688,6 +766,8 @@ extension ContactEditViewController: UITableViewDelegate {
             cell.ConfigHeader(title: LocalString._contacts_encrypted_contact_details_title, signed: false)
         } else if sc == .delete || sc == .notes {
             return nil
+        } else if sc == .emails {
+            cell.ConfigHeader(title: LocalString._contacts_email_addresses_title, signed: false)
         }
         return cell
     }
@@ -696,7 +776,7 @@ extension ContactEditViewController: UITableViewDelegate {
         let sections = viewModel.getSections()
         let s = sections[section]
         switch s {
-        case .encrypted_header, .delete:
+        case .encrypted_header, .delete, .emails:
             return 38.0
         default:
             return 0.0
@@ -736,7 +816,7 @@ extension ContactEditViewController: UITableViewDelegate {
         }
         
         if sections[indexPath.section] == .upgrade {
-             return 200 //  280.0
+            return 200 //  280.0
         }
         
         if sections[indexPath.section] == .emails {
@@ -748,7 +828,7 @@ extension ContactEditViewController: UITableViewDelegate {
                 return 48.0 * 2
             }
         }
-
+        
         return 48.0
     }
     
@@ -865,4 +945,46 @@ extension ContactEditViewController: UITableViewDelegate {
         
     }
     
+}
+
+extension ContactEditViewController: UINavigationControllerDelegate
+{
+    
+}
+
+extension ContactEditViewController: UIImagePickerControllerDelegate
+{
+    @objc func imagePickerController(_ picker: UIImagePickerController,
+                                     didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        var newImage: UIImage?
+        
+        if let possibleImage = info[.editedImage] as? UIImage {
+            newImage = possibleImage
+        } else if let possibleImage = info[.originalImage] as? UIImage {
+            newImage = possibleImage
+        } else {
+            newImage = nil
+        }
+        
+        viewModel.setProfilePicture(image: newImage)
+        if viewModel.getProfilePicture() != nil {
+            selectProfilePictureLabel.text = LocalString._contacts_edit_profile_picture
+        } else {
+            selectProfilePictureLabel.text = LocalString._contacts_add_profile_picture
+        }
+        
+        if let image = newImage {
+            self.profilePictureImageView.backgroundColor = UIColor.clear
+            self.profilePictureImageView.image = image
+        } else {
+            self.profilePictureImageView.backgroundColor = UIColor.lightGray
+            self.profilePictureImageView.image = nil
+        }
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
 }

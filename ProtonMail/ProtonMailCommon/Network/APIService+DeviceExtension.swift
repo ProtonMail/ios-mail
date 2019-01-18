@@ -25,185 +25,70 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 
-/// DeviceExtension
-//TODO:: here need a refactor
+import Foundation
+import Crypto
+
 extension APIService {
-    
     fileprivate struct DevicePath {
         static let basePath = "/devices"
     }
-    func device(registerWith token: String, completion: CompletionBlock?) {
-        deviceToken = token
-        deviceUID = deviceID
+    
+    func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
         
-//        var env = 4
-//        if #available(iOS 10.0, *) { //encrypt
-//            env = 4
-//        } else { // not encrypt
-//            env = 5
-//        }
+        let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         #if Enterprise
             #if DEBUG
-//                let env = 20
-                let env = 17
+                //let env = 20
+                let env = 17  /// Enterprise dev certification build (fabric beta)
             #else
-//                let env = 21
-                let env = 7
+                //let env = 21
+                let env = 7 ///Enterprise release certification build
             #endif
         #else
-            // const PROVIDER_FCM_IOS = 4;
-            // const PROVIDER_FCM_IOS_BETA = 5;
+            // const PROVIDER_FCM_IOS = 4; // google firebase live
+            // const PROVIDER_FCM_IOS_BETA = 5; //google firebase beta
             #if DEBUG
-//                let env = 1
-                let env = 16
+                //let env = 1
+                let env = 16 /// apple store certificaiton dev build (dev)
             #else
-//                let env = 2
-                let env = 6
+                //let env = 2
+                let env = 6  /// apple store release build (for apple store submit)
             #endif
-            
+        
         #endif
-        var ver = "1.0.0"
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            ver = version
-        }
         let parameters = [
-            "DeviceUID" : deviceID,
-            "DeviceToken" : token,
+            "DeviceToken" : settings.token,
             "DeviceName" : UIDevice.current.name,
             "DeviceModel" : UIDevice.current.model,
             "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
-            "Environment" : env
+            "Environment" : env,
+            "PublicKey" : settings.encryptionKit.publicKey
         ] as [String : Any]
         
         request(method: .post,
-                path: AppConstants.API_PATH + DevicePath.basePath,
+                path: Constants.App.API_PATH + DevicePath.basePath,
                 parameters: parameters,
                 headers: ["x-pm-apiversion": 3],
                 completion: completion)
     }
     
-    func deviceUnregister() {
-        if !userCachedStatus.isForcedLogout {
-            if !deviceToken.isEmpty {
-                let parameters = [
-                    "DeviceUID": deviceUID,
-                    "DeviceToken": deviceToken
-                ]
-                let completionWrapper: CompletionBlock = {task, response, error in
-                    if error != nil {
-                        self.badToken = self.deviceToken
-                        self.badUID = self.deviceUID
-                    } else {
-                        self.deviceUID = ""
-                        self.deviceToken = ""
-                    }
-                }
-                request(method: .delete,
-                        path: AppConstants.API_PATH + DevicePath.basePath,
-                        parameters: parameters,
-                        headers: ["x-pm-apiversion": 3],
-                        completion: completionWrapper)
-            }
-        }
-    }
-    
-    func cleanBadKey(_ newToken : String) {
-        let newTokenString = newToken // stringFromToken(newToken)
-        let oldDeviceToken = self.deviceToken
-        if !oldDeviceToken.isEmpty {
-            if (!deviceUID.isEmpty && !deviceID.isEmpty && deviceUID != deviceID) || newTokenString != oldDeviceToken {
-                let parameters = [
-                    "DeviceUID": deviceUID,
-                    "DeviceToken": oldDeviceToken
-                ]
-                
-                let completionWrapper: CompletionBlock = {task, response, error in
-                    
-                }
-                request(method: .delete,
-                        path: AppConstants.API_PATH + DevicePath.basePath,
-                        parameters: parameters,
-                        headers: ["x-pm-apiversion": 3],
-                        completion: completionWrapper)
-            }
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock) {
+        guard !userCachedStatus.isForcedLogout else {
+            return
         }
         
-        if !badUID.isEmpty || !badToken.isEmpty {
-            let parameters = [
-                "DeviceUID": badUID,
-                "DeviceToken": badToken
-            ]
-            
-            request(method: .delete,
-                    path: AppConstants.API_PATH + DevicePath.basePath,
-                    parameters: parameters,
-                    headers: ["x-pm-apiversion": 3],
-                    completion:{ (task, response, error) -> Void in
-                if error == nil {
-                    self.badToken = ""
-                    self.badUID = ""
-                }
-            })
-        }
-    }
-    
-    // MARK: - Private methods
-    
-    fileprivate struct DeviceKey {
-        static let token = "DeviceTokenKey"
-        static let UID = "DeviceUID"
-        
-        static let badToken = "DeviceBadToken"
-        static let badUID = "DeviceBadUID"
-    }
-    
-    fileprivate var deviceID: String {
-        return UIDevice.current.identifierForVendor?.uuidString ?? ""
-    }
-    
-    fileprivate var deviceToken: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.token) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.token)
-        }
-    }
-    fileprivate var deviceUID: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.UID) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.UID)
-        }
-    }
-    
-    fileprivate var badToken: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badToken) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badToken)
-        }
-    }
-    fileprivate var badUID: String {
-        get {
-            return SharedCacheBase.getDefault().string(forKey: DeviceKey.badUID) ?? ""
-        }
-        set {
-            SharedCacheBase.getDefault().setValue(newValue, forKey: DeviceKey.badUID)
-        }
-    }
-    
-    fileprivate func stringFromToken(_ token: Data) -> String {
-        let tokenChars = (token as NSData).bytes.bindMemory(to: CChar.self, capacity: token.count)
-        var tokenString = ""
-        for i in 0 ..< token.count {
-            tokenString += String(format: "%02.2hhx", arguments: [tokenChars[i]])
-        }
-        return tokenString
+        let parameters = [
+            "DeviceToken": settings.token,
+            "UID": settings.UID
+        ]
+
+        request(method: .delete,
+                path: Constants.App.API_PATH + DevicePath.basePath,
+                parameters: parameters,
+                headers: ["x-pm-apiversion": 3],
+                authenticated: false,
+                completion: completion)
     }
 }

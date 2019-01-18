@@ -1,0 +1,3013 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="it">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="%d Minute" approved="yes">
+        <source>%d Minute</source>
+        <note>auto lock time format</note>
+        <target xml:lang="it" state="translated">%d minuto</target>
+      </trans-unit>
+      <trans-unit id="%d Minutes" approved="yes">
+        <source>%d Minutes</source>
+        <note>auto lock time format</note>
+        <target xml:lang="it" state="translated">%d minuti</target>
+      </trans-unit>
+      <trans-unit id="(2048 bit)" approved="yes">
+        <source>(2048 bit)</source>
+        <note>Key size text when setup key</note>
+        <target xml:lang="it" state="translated">(2048 bit)</target>
+      </trans-unit>
+      <trans-unit id="(4096 bit)" approved="yes">
+        <source>(4096 bit)</source>
+        <note>Key size text when setup key</note>
+        <target xml:lang="it" state="translated">(4096 bit)</target>
+      </trans-unit>
+      <trans-unit id="**********" approved="yes">
+        <source>**********</source>
+        <note>secret</note>
+        <target xml:lang="it" state="translated">**********</target>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL" approved="yes">
+        <source>*OPTIONAL</source>
+        <note>optional text field</note>
+        <target xml:lang="it" state="translated">*OPZIONALE</target>
+      </trans-unit>
+      <trans-unit id="2fa Authentication failed please try to login again" approved="yes">
+        <source>2fa Authentication failed please try to login again</source>
+        <note>2fa verification failed</note>
+        <target xml:lang="it" state="translated">Autenticazione in 2 passaggi fallita; per favore, tenta nuovamente l'accesso</target>
+        <alt-trans>
+          <target xml:lang="it">Autenticazione in 2 passaggi fallita; per favore, tenti nuovamente l'accesso</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">È disponibile una nuova versione dell'app di ProtonMail. Per favore, aggiorna all'ultima versione.</target>
+        <alt-trans>
+          <target xml:lang="it">È disponibile una nuova versione dell'app di ProtonMail, per favore aggiorna all'ultima versione.</target>
+        </alt-trans>
+        <alt-trans>
+          <target xml:lang="it">È disponibile una nuova versione dell'app di ProtonMail, per favore aggiorni all'ultima versione.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target xml:lang="it" state="translated">Non è stato impostato alcun codice di accesso, attivarlo nelle impostazioni di sistema</target>
+      </trans-unit>
+      <trans-unit id="API Server not reachable..." approved="yes">
+        <source>API Server not reachable...</source>
+        <note>when server not reachable</note>
+        <target xml:lang="it" state="translated">Il server delle API non è raggiungibile...</target>
+      </trans-unit>
+      <trans-unit id="ARCHIVE" approved="yes">
+        <source>ARCHIVE</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">ARCHIVIO</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <note>error message</note>
+        <target xml:lang="it" state="translated">L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore, accedi su protonmail.com per pagare la fattura pendente.</target>
+        <alt-trans>
+          <target xml:lang="it">L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore accedi su protonmail.com per pagare la fattura pendente.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add Anniversary" approved="yes">
+        <source>Add Anniversary</source>
+        <note>new contacts add Anniversary</note>
+        <target xml:lang="it" state="translated">Aggiungi anniversario</target>
+      </trans-unit>
+      <trans-unit id="Add Birthday" approved="yes">
+        <source>Add Birthday</source>
+        <note>new contacts add Birthday</note>
+        <target xml:lang="it" state="translated">Aggiungi compleanno</target>
+      </trans-unit>
+      <trans-unit id="Add Contact" approved="yes">
+        <source>Add Contact</source>
+        <note>Contacts add new contact</note>
+        <target xml:lang="it" state="translated">Aggiungi contatto</target>
+      </trans-unit>
+      <trans-unit id="Add Custom Label" approved="yes">
+        <source>Add Custom Label</source>
+        <note>add custom label type action</note>
+        <target xml:lang="it" state="translated">Aggiungi etichetta personalizzata</target>
+      </trans-unit>
+      <trans-unit id="Add Folder" approved="yes">
+        <source>Add Folder</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Aggiungi cartella</target>
+      </trans-unit>
+      <trans-unit id="Add Gender" approved="yes">
+        <source>Add Gender</source>
+        <note>new contacts add Gender</note>
+        <target xml:lang="it" state="translated">Aggiungi genere</target>
+      </trans-unit>
+      <trans-unit id="Add Label" approved="yes">
+        <source>Add Label</source>
+        <note>add label action</note>
+        <target xml:lang="it" state="translated">Aggiungi etichetta</target>
+      </trans-unit>
+      <trans-unit id="Add New Folder" approved="yes">
+        <source>Add New Folder</source>
+        <note>add a new folder</note>
+        <target xml:lang="it" state="translated">Aggiungi nuova cartella</target>
+      </trans-unit>
+      <trans-unit id="Add New Label" approved="yes">
+        <source>Add New Label</source>
+        <note>add a new folder</note>
+        <target xml:lang="it" state="translated">Aggiungi nuova etichetta</target>
+      </trans-unit>
+      <trans-unit id="Add Nickname" approved="yes">
+        <source>Add Nickname</source>
+        <note>new contacts add Nickname</note>
+        <target xml:lang="it" state="translated">Aggiungi soprannome</target>
+      </trans-unit>
+      <trans-unit id="Add Organization" approved="yes">
+        <source>Add Organization</source>
+        <note>new contacts add Organization</note>
+        <target xml:lang="it" state="translated">Aggiungi organizzazine</target>
+      </trans-unit>
+      <trans-unit id="Add Star" approved="yes">
+        <source>Add Star</source>
+        <note>mark message star</note>
+        <target xml:lang="it" state="translated">Aggiungi ai preferiti</target>
+      </trans-unit>
+      <trans-unit id="Add Title" approved="yes">
+        <source>Add Title</source>
+        <note>new contacts add Title</note>
+        <target xml:lang="it" state="translated">Aggiungi titolo</target>
+      </trans-unit>
+      <trans-unit id="Add new address" approved="yes">
+        <source>Add new address</source>
+        <note>add new address action</note>
+        <target xml:lang="it" state="translated">Aggiungi nuovo indirizzo</target>
+      </trans-unit>
+      <trans-unit id="Add new custom field" approved="yes">
+        <source>Add new custom field</source>
+        <note>new custom field action</note>
+        <target xml:lang="it" state="translated">Aggiungi nuovo campo personalizzato</target>
+      </trans-unit>
+      <trans-unit id="Add new email" approved="yes">
+        <source>Add new email</source>
+        <note>new email action</note>
+        <target xml:lang="it" state="translated">Aggiungi nuova email</target>
+      </trans-unit>
+      <trans-unit id="Add new field" approved="yes">
+        <source>Add new field</source>
+        <note>new field action</note>
+        <target xml:lang="it" state="translated">Aggiungi nuovo campo</target>
+      </trans-unit>
+      <trans-unit id="Add new phone number" approved="yes">
+        <source>Add new phone number</source>
+        <note>new phone action</note>
+        <target xml:lang="it" state="translated">Aggiungi un nuovo numero di telefono</target>
+      </trans-unit>
+      <trans-unit id="Add new url" approved="yes">
+        <source>Add new url</source>
+        <note>action</note>
+        <target xml:lang="it" state="translated">Aggiungi nuovo url</target>
+      </trans-unit>
+      <trans-unit id="Add to contacts" approved="yes">
+        <source>Add to contacts</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Aggiungi ai contatti</target>
+      </trans-unit>
+      <trans-unit id="Address" approved="yes">
+        <source>Address</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Indirizzo</target>
+      </trans-unit>
+      <trans-unit id="Alert" approved="yes">
+        <source>Alert</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Avviso</target>
+      </trans-unit>
+      <trans-unit id="All Mail" approved="yes">
+        <source>All Mail</source>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+        <target xml:lang="it" state="translated">Tutte le email</target>
+      </trans-unit>
+      <trans-unit id="All contacts are imported" approved="yes">
+        <source>All contacts are imported</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Tutti i contatti sono stati importati</target>
+      </trans-unit>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" approved="yes">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Tutte le tue mail cifrate presenti saranno perse per sempre, ma quelle non cifrate saranno ancora leggibili.\n\nQUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!</target>
+        <alt-trans>
+          <target xml:lang="it">Tutte le sue mail cifrate presenti saranno perse per sempre, ma quelle non cifrate saranno ancora leggibili.\n\nQUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Also Archive" approved="yes">
+        <source>Also Archive</source>
+        <note>archive when apply label</note>
+        <target xml:lang="it" state="translated">Anche archivia</target>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password." approved="yes">
+        <source>Also used to reset a forgotten password.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Usato anche per riazzerare una password dimenticata.</target>
+      </trans-unit>
+      <trans-unit id="Anniversary" approved="yes">
+        <source>Anniversary</source>
+        <note>contacts talbe cell Anniversary title</note>
+        <target xml:lang="it" state="translated">Anniversario</target>
+      </trans-unit>
+      <trans-unit id="Apply" approved="yes">
+        <source>Apply</source>
+        <note>Apply action</note>
+        <target xml:lang="it" state="translated">Applica</target>
+      </trans-unit>
+      <trans-unit id="Apply Labels" approved="yes">
+        <source>Apply Labels</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Applica etichette</target>
+      </trans-unit>
+      <trans-unit id="Archive" approved="yes">
+        <source>Archive</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="it" state="translated">Archivio</target>
+      </trans-unit>
+      <trans-unit id="Archived" approved="yes">
+        <source>Archived</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Archiviato</target>
+      </trans-unit>
+      <trans-unit id="Attachments" approved="yes">
+        <source>Attachments</source>
+        <note>VoiceOver: email has attachments</note>
+        <target xml:lang="it" state="translated">Allegati</target>
+      </trans-unit>
+      <trans-unit id="Authentication" approved="yes">
+        <source>Authentication</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Autenticazione</target>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
+        <source>Authentication Failed Wrong username or password</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Errore di autenticazione: nome utente o password errati</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Autenticazione fallita</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed please try to login again" approved="yes">
+        <source>Authentication failed please try to login again</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Errore di autenticazione, effettua nuovamente l'accesso</target>
+        <alt-trans>
+          <target xml:lang="it">Errore di autenticazione, effettui nuovamente l'accesso</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">L'autenticazione è stata annullata dal sistema</target>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto Lock Time</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Tempo di blocco automatico</target>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto Show Images</source>
+        <note>settings general section title</note>
+        <target xml:lang="it" state="translated">Mostrare immagini automaticamente</target>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <note>top left back button</note>
+        <target xml:lang="it" state="translated">Indietro</target>
+      </trans-unit>
+      <trans-unit id="Bad auth cache" approved="yes">
+        <source>Bad auth cache</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Cache di autenticazione sbagliata</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <note>Error title</note>
+        <target xml:lang="it" state="translated">Parametro non valido</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@" approved="yes">
+        <source>Bad parameter: %@</source>
+        <note>Error Description</note>
+        <target xml:lang="it" state="translated">Parametro non valido: %@</target>
+      </trans-unit>
+      <trans-unit id="Bad response" approved="yes">
+        <source>Bad response</source>
+        <note>Error Description</note>
+        <target xml:lang="it" state="translated">Risposta errata</target>
+      </trans-unit>
+      <trans-unit id="Bcc" approved="yes">
+        <source>Bcc</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Ccn</target>
+      </trans-unit>
+      <trans-unit id="Birthday" approved="yes">
+        <source>Birthday</source>
+        <note>contacts talbe cell Birthday title</note>
+        <target xml:lang="it" state="translated">Compleanno</target>
+      </trans-unit>
+      <trans-unit id="Bug Description" approved="yes">
+        <source>Bug Description</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Descrizione bug</target>
+      </trans-unit>
+      <trans-unit id="Bug Report Received" approved="yes">
+        <source>Bug Report Received</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Segnalazione di bug ricevuta</target>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our" approved="yes">
+        <source>By using protonmail, you agree to our</source>
+        <note>agree check box first part words</note>
+        <target xml:lang="it" state="translated">Utilizzando protonmail, accetti i nostri</target>
+        <alt-trans>
+          <target xml:lang="it">Utilizzando protonmail, accetta i nostri</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="CAPTCHA" approved="yes">
+        <source>CAPTCHA</source>
+        <note>human check option button</note>
+        <target xml:lang="it" state="translated">CAPTCHA</target>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup." approved="yes">
+        <source>Can take several minutes to setup.</source>
+        <note>key size note part 2</note>
+        <target xml:lang="it" state="translated">Può richiedere alcuni minuti per la configurazione.</target>
+      </trans-unit>
+      <trans-unit id="Can't copy the file" approved="yes">
+        <source>Can't copy the file</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile copiare il file</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client" approved="yes">
+        <source>Can't create a SRP Client</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">Non è possibile creare un client SRP</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!" approved="yes">
+        <source>Can't create a SRP verifier!</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">Non è possibile creare un verificatore SRP!</target>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!" approved="yes">
+        <source>Can't decrypt this attachment!</source>
+        <note>When quick look attachment but can't decrypt it!</note>
+        <target xml:lang="it" state="translated">Impossibile decifrare questo allegato!</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again." approved="yes">
+        <source>Can't download message body, please try again.</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile scaricare il corpo del messaggio. Si prega di riprovare.</target>
+        <alt-trans>
+          <target xml:lang="it">Impossibile scaricare il corpo del messaggio, si prega di riprovare.</target>
+        </alt-trans>
+        <alt-trans>
+          <target xml:lang="it">Impossibile scaricare il corpo del messaggio, per favore riprova.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!" approved="yes">
+        <source>Can't find the clicked message please try again!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile trovare il messaggio cliccato, si prega di riprovare!</target>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!" approved="yes">
+        <source>Can't find this attachment!</source>
+        <note>when quick look attachment but can't find the data</note>
+        <target xml:lang="it" state="translated">Impossibile trovare questo allegato!</target>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!" approved="yes">
+        <source>Can't get a Moduls ID!</source>
+        <note>update password error = typo:Modulus</note>
+        <target xml:lang="it" state="translated">Impossibile ottenere un ID Moduls!</target>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!" approved="yes">
+        <source>Can't get a Moduls!</source>
+        <note>update password error = typo:Modulus</note>
+        <target xml:lang="it" state="translated">Impossibile ottenere un Moduls!</target>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info" approved="yes">
+        <source>Can't get user auth info</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">Impossibile ottenere le informazioni d'autenticazione dell'utente</target>
+      </trans-unit>
+      <trans-unit id="Can't load share content!" approved="yes">
+        <source>Can't load share content!</source>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+        <target xml:lang="it" state="translated">Impossibile caricare il contenuto condiviso!</target>
+      </trans-unit>
+      <trans-unit id="Can't load the file" approved="yes">
+        <source>Can't load the file</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile caricare il file</target>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body" approved="yes">
+        <source>Can't not find the value from the response body</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile trovare il valore dal corpo della risposta</target>
+      </trans-unit>
+      <trans-unit id="Can't open the file" approved="yes">
+        <source>Can't open the file</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile aprire il file</target>
+      </trans-unit>
+      <trans-unit id="Cancel" approved="yes">
+        <source>Cancel</source>
+        <note>Cancel action</note>
+        <target xml:lang="it" state="translated">Annulla</target>
+      </trans-unit>
+      <trans-unit id="Cancel Check" approved="yes">
+        <source>Cancel Check</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Annulla il controllo</target>
+      </trans-unit>
+      <trans-unit id="Cancelling" approved="yes">
+        <source>Cancelling</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Annullando</target>
+      </trans-unit>
+      <trans-unit id="Cc" approved="yes">
+        <source>Cc</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Cc</target>
+      </trans-unit>
+      <trans-unit id="Cc:" approved="yes">
+        <source>Cc:</source>
+        <note>message Cc: feild</note>
+        <target xml:lang="it" state="translated">Cc:</target>
+      </trans-unit>
+      <trans-unit id="Cell phone number" approved="yes">
+        <source>Cell phone number</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Numero di telefono cellulare</target>
+      </trans-unit>
+      <trans-unit id="Change Login Password" approved="yes">
+        <source>Change Login Password</source>
+        <note>change password input label</note>
+        <target xml:lang="it" state="translated">Cambia la password d'accesso</target>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password" approved="yes">
+        <source>Change Mailbox Password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica della password della casella email</target>
+      </trans-unit>
+      <trans-unit id="Change Password" approved="yes">
+        <source>Change Password</source>
+        <note>update password error title</note>
+        <target xml:lang="it" state="translated">Modifica della password</target>
+      </trans-unit>
+      <trans-unit id="Change Pin" approved="yes">
+        <source>Change Pin</source>
+        <note>settings protection section title</note>
+        <target xml:lang="it" state="translated">Modifica del PIN</target>
+      </trans-unit>
+      <trans-unit id="Change Single Password" approved="yes">
+        <source>Change Single Password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica della password singola</target>
+      </trans-unit>
+      <trans-unit id="Change default address to .." approved="yes">
+        <source>Change default address to ..</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica dell'indirizzo predefinito in...</target>
+      </trans-unit>
+      <trans-unit id="Change left swipe action" approved="yes">
+        <source>Change left swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target xml:lang="it" state="translated">Modifica azione di scorrimento a sinistra</target>
+      </trans-unit>
+      <trans-unit id="Change right swipe action" approved="yes">
+        <source>Change right swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target xml:lang="it" state="translated">Modifica azione di scorrimento a destra</target>
+      </trans-unit>
+      <trans-unit id="Change sender address to .." approved="yes">
+        <source>Change sender address to ..</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica dell'indirizzo del mittente in...</target>
+      </trans-unit>
+      <trans-unit id="Check Again" approved="yes">
+        <source>Check Again</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Controlla di nuovo</target>
+      </trans-unit>
+      <trans-unit id="Checking ...." approved="yes">
+        <source>Checking ....</source>
+        <note>loading message</note>
+        <target xml:lang="it" state="translated">Controllando...</target>
+      </trans-unit>
+      <trans-unit id="Choose a Password" approved="yes">
+        <source>Choose a Password</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Scegli una password</target>
+      </trans-unit>
+      <trans-unit id="City" approved="yes">
+        <source>City</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Città</target>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache" approved="yes">
+        <source>Clear Local Message Cache</source>
+        <note>settings general section title</note>
+        <target xml:lang="it" state="translated">Cancella la cache dei messaggi locali</target>
+      </trans-unit>
+      <trans-unit id="Close" approved="yes">
+        <source>Close</source>
+        <note>general close action</note>
+        <target xml:lang="it" state="translated">Chiudi</target>
+      </trans-unit>
+      <trans-unit id="Compose" approved="yes">
+        <source>Compose</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Componi</target>
+      </trans-unit>
+      <trans-unit id="Compose to" approved="yes">
+        <source>Compose to</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Comporre a</target>
+      </trans-unit>
+      <trans-unit id="Confirm" approved="yes">
+        <source>Confirm</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Conferma</target>
+      </trans-unit>
+      <trans-unit id="Confirm Password" approved="yes">
+        <source>Confirm Password</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Conferma password</target>
+      </trans-unit>
+      <trans-unit id="Confirm new login password" approved="yes">
+        <source>Confirm new login password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Conferma della password di accesso</target>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password" approved="yes">
+        <source>Confirm new mailbox password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Conferma della nuova password della casella email</target>
+      </trans-unit>
+      <trans-unit id="Confirm new password" approved="yes">
+        <source>Confirm new password</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Conferma della nuova password</target>
+      </trans-unit>
+      <trans-unit id="Confirmation" approved="yes">
+        <source>Confirmation</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Conferma</target>
+      </trans-unit>
+      <trans-unit id="Congratulations!" approved="yes">
+        <source>Congratulations!</source>
+        <note>view top title</note>
+        <target xml:lang="it" state="translated">Congratulazioni!</target>
+      </trans-unit>
+      <trans-unit id="Contact Details" approved="yes">
+        <source>Contact Details</source>
+        <note>contact section title</note>
+        <target xml:lang="it" state="translated">Dettagli contatto</target>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team" approved="yes">
+        <source>Contact the ProtonMail team</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Contattare il team di ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="Contacts" approved="yes">
+        <source>Contacts</source>
+        <note>Action and title
+   menu title</note>
+        <target xml:lang="it" state="translated">Contatti</target>
+      </trans-unit>
+      <trans-unit id="Continue" approved="yes">
+        <source>Continue</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Continua</target>
+      </trans-unit>
+      <trans-unit id="Copy address" approved="yes">
+        <source>Copy address</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Copia indirizzo</target>
+      </trans-unit>
+      <trans-unit id="Copy name" approved="yes">
+        <source>Copy name</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Copia nome</target>
+      </trans-unit>
+      <trans-unit id="Country" approved="yes">
+        <source>Country</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Paese</target>
+      </trans-unit>
+      <trans-unit id="Create" approved="yes">
+        <source>Create</source>
+        <note>top right action text</note>
+        <target xml:lang="it" state="translated">Crea</target>
+      </trans-unit>
+      <trans-unit id="Create Account" approved="yes">
+        <source>Create Account</source>
+        <note>Create account button</note>
+        <target xml:lang="it" state="translated">Crea account</target>
+      </trans-unit>
+      <trans-unit id="Create User failed please try again" approved="yes">
+        <source>Create User failed please try again</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Creazione utente fallita. Per favore, riprova.</target>
+        <alt-trans>
+          <target xml:lang="it">Creazione utente fallita, per favore riprovare</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Create a new account" approved="yes">
+        <source>Create a new account</source>
+        <note>Signup top title</note>
+        <target xml:lang="it" state="translated">Crea un nuovo account</target>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options." approved="yes">
+        <source>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Crea e aggiungi etichette per organizzare la tua posta in arrivo. Tieni premuto su un messaggio per visualizzare tutte le opzioni.</target>
+      </trans-unit>
+      <trans-unit id="Create user failed" approved="yes">
+        <source>Create user failed</source>
+        <note>error message title when create new user</note>
+        <target xml:lang="it" state="translated">Creazione utente fallita</target>
+      </trans-unit>
+      <trans-unit id="Current Language is: " approved="yes">
+        <source>Current Language is: </source>
+        <note>Change language title</note>
+        <target xml:lang="it" state="translated">Lingua attuale: </target>
+      </trans-unit>
+      <trans-unit id="Current login password" approved="yes">
+        <source>Current login password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Password d'accesso attuale</target>
+      </trans-unit>
+      <trans-unit id="Current password" approved="yes">
+        <source>Current password</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Password attuale</target>
+      </trans-unit>
+      <trans-unit id="Custom" approved="yes">
+        <source>Custom</source>
+        <note>action sheet option
+   contacts default label type</note>
+        <target xml:lang="it" state="translated">Personalizzato</target>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX" approved="yes">
+        <source>DECRYPT MAILBOX</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">DECIFRATURA CASELLA EMAIL</target>
+      </trans-unit>
+      <trans-unit id="DRAFTS" approved="yes">
+        <source>DRAFTS</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">BOZZE</target>
+      </trans-unit>
+      <trans-unit id="Date:" approved="yes">
+        <source>Date:</source>
+        <note>message Date: text</note>
+        <target xml:lang="it" state="translated">Data:</target>
+      </trans-unit>
+      <trans-unit id="Date: %@" approved="yes">
+        <source>Date: %@</source>
+        <note>like Date: 2017-10-10</note>
+        <target xml:lang="it" state="translated">Data: %@</target>
+      </trans-unit>
+      <trans-unit id="Debug" approved="yes">
+        <source>Debug</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Debug</target>
+      </trans-unit>
+      <trans-unit id="Decrypt" approved="yes">
+        <source>Decrypt</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Decripta</target>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed please try again" approved="yes">
+        <source>Decrypt token failed please try again</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Errore nel token di decifrazione, si prega di riprovare</target>
+      </trans-unit>
+      <trans-unit id="Decryption error" approved="yes">
+        <source>Decryption error</source>
+        <note>error title</note>
+        <target xml:lang="it" state="translated">Errore di decriptazione</target>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed" approved="yes">
+        <source>Decryption of this content failed</source>
+        <note>error details</note>
+        <target xml:lang="it" state="translated">Decifratura di questo contenuto fallita</target>
+      </trans-unit>
+      <trans-unit id="Default" approved="yes">
+        <source>Default</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Predefinito</target>
+      </trans-unit>
+      <trans-unit id="Default error, please try again." approved="yes">
+        <source>Default error, please try again.</source>
+        <note>error message when create new user</note>
+        <target xml:lang="it" state="translated">Errore predefinito, si prega di riprovare.</target>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date" approved="yes">
+        <source>Define Expiration Date</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Definire la data di scadenza</target>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)" approved="yes">
+        <source>Define Hint (Optional)</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Definisci suggerimento (opzionale)</target>
+      </trans-unit>
+      <trans-unit id="Define Password" approved="yes">
+        <source>Define Password</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Impostare una password</target>
+      </trans-unit>
+      <trans-unit id="Delete" approved="yes">
+        <source>Delete</source>
+        <note>general delete action</note>
+        <target xml:lang="it" state="translated">Elimina</target>
+        <alt-trans>
+          <target xml:lang="it">Eliminazione</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Delete Contact" approved="yes">
+        <source>Delete Contact</source>
+        <note>Title-Contacts</note>
+        <target xml:lang="it" state="translated">Elimina contatto</target>
+      </trans-unit>
+      <trans-unit id="Deleted" approved="yes">
+        <source>Deleted</source>
+        <note>mail location desc</note>
+        <target xml:lang="it" state="translated">Eliminato</target>
+      </trans-unit>
+      <trans-unit id="Details" approved="yes">
+        <source>Details</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Dettagli</target>
+      </trans-unit>
+      <trans-unit id="Discard changes" approved="yes">
+        <source>Discard changes</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Annulla modifiche</target>
+      </trans-unit>
+      <trans-unit id="Discard draft" approved="yes">
+        <source>Discard draft</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Scarta bozza</target>
+      </trans-unit>
+      <trans-unit id="Display Name" approved="yes">
+        <source>Display Name</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nome visualizzato</target>
+      </trans-unit>
+      <trans-unit id="Display Name Updated" approved="yes">
+        <source>Display Name Updated</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nome visualizzato aggiornato</target>
+      </trans-unit>
+      <trans-unit id="DisplayName" approved="yes">
+        <source>DisplayName</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nome visualizzato</target>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?" approved="yes">
+        <source>Do you want to cancel the process?</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Vuoi annullare l'operazione?</target>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?" approved="yes">
+        <source>Do you want to save the unsaved changes?</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Salvare le modifiche non salvate?</target>
+      </trans-unit>
+      <trans-unit id="Don't Show Again" approved="yes">
+        <source>Don't Show Again</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Non visualizzare più</target>
+      </trans-unit>
+      <trans-unit id="Don't remind me again" approved="yes">
+        <source>Don't remind me again</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Non ricordarmelo più</target>
+      </trans-unit>
+      <trans-unit id="Done" approved="yes">
+        <source>Done</source>
+        <note>Done action</note>
+        <target xml:lang="it" state="translated">Completato</target>
+      </trans-unit>
+      <trans-unit id="Double tap to setup" approved="yes">
+        <source>Double tap to setup</source>
+        <note>VoiceOver action description</note>
+        <target xml:lang="it" state="translated">Doppio tocco per configurare</target>
+      </trans-unit>
+      <trans-unit id="Draft" approved="yes">
+        <source>Draft</source>
+        <note>Action
+   mail location desc</note>
+        <target xml:lang="it" state="translated">Bozza</target>
+      </trans-unit>
+      <trans-unit id="Drafts" approved="yes">
+        <source>Drafts</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Bozze</target>
+      </trans-unit>
+      <trans-unit id="Dutch" approved="yes">
+        <source>Dutch</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Olandese</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>Edit</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Modifica</target>
+      </trans-unit>
+      <trans-unit id="Edit Folder" approved="yes">
+        <source>Edit Folder</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica cartella</target>
+      </trans-unit>
+      <trans-unit id="Edit Label" approved="yes">
+        <source>Edit Label</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Modifica etichetta</target>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature" approved="yes">
+        <source>Edit mobile signature</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Modifica firma mobile</target>
+      </trans-unit>
+      <trans-unit id="Edit signature" approved="yes">
+        <source>Edit signature</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Modifica la firma</target>
+      </trans-unit>
+      <trans-unit id="Email" approved="yes">
+        <source>Email</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Email</target>
+      </trans-unit>
+      <trans-unit id="Email Verification" approved="yes">
+        <source>Email Verification</source>
+        <note>human check option button</note>
+        <target xml:lang="it" state="translated">Verifica via email</target>
+        <alt-trans>
+          <target xml:lang="it">Email di verifica</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Email address" approved="yes">
+        <source>Email address</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Indirizzo email</target>
+      </trans-unit>
+      <trans-unit id="Email address invalid" approved="yes">
+        <source>Email address invalid</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Indirizzo email non valido</target>
+      </trans-unit>
+      <trans-unit id="Email default signature" approved="yes">
+        <source>Email default signature</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Firma email predefinita</target>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty Folder</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Svuota la cartella</target>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature" approved="yes">
+        <source>Enable Default Signature</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Abilita firma predefinita</target>
+      </trans-unit>
+      <trans-unit id="Enable FaceID" approved="yes">
+        <source>Enable FaceID</source>
+        <note>settings protection section title</note>
+        <target xml:lang="it" state="translated">Attiva il FaceID</target>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature" approved="yes">
+        <source>Enable Mobile Signature</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Abilita firma mobile</target>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email" approved="yes">
+        <source>Enable Notification Email</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Attiva le notifiche email</target>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection" approved="yes">
+        <source>Enable Pin Protection</source>
+        <note>settings protection section title</note>
+        <target xml:lang="it" state="translated">Abilita protezione tramite PIN</target>
+      </trans-unit>
+      <trans-unit id="Enable TouchID" approved="yes">
+        <source>Enable TouchID</source>
+        <note>settings protection section title</note>
+        <target xml:lang="it" state="translated">Attiva il TouchID</target>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details" approved="yes">
+        <source>Encrypted Contact Details</source>
+        <note>contact section title</note>
+        <target xml:lang="it" state="translated">Dettagli criptati del contatto</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside" approved="yes">
+        <source>Encrypted for outside</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Crittografati per l'esterno</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply" approved="yes">
+        <source>Encrypted for outside reply</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Crittografati per risposta esterna</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside" approved="yes">
+        <source>Encrypted from outside</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Crittografato dall'esterno</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside pgp inline" approved="yes">
+        <source>Encrypted from outside pgp inline</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Criptato dall'esterno tramite inline pgp</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside pgp mime" approved="yes">
+        <source>Encrypted from outside pgp mime</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Cifrato dall'esterno tramite pgp mime</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed pgp mime" approved="yes">
+        <source>Encrypted from outside signed pgp mime</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Cifrato dall'esterno tramite pgp mime firmato</target>
+      </trans-unit>
+      <trans-unit id="Encrypted outside" approved="yes">
+        <source>Encrypted outside</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Crittografati all'esterno</target>
+      </trans-unit>
+      <trans-unit id="Encryption Setup" approved="yes">
+        <source>Encryption Setup</source>
+        <note>key setup top title</note>
+        <target xml:lang="it" state="translated">Impostazione crittografia</target>
+      </trans-unit>
+      <trans-unit id="End Time" approved="yes">
+        <source>End Time</source>
+        <note>settings option (End Time: 8am)</note>
+        <target xml:lang="it" state="translated">Orario di fine</target>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption" approved="yes">
+        <source>End-to-End Encryption</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Crittografia End-to-End</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted" approved="yes">
+        <source>End-to-end encrypted</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Crittografia end-to-end</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message" approved="yes">
+        <source>End-to-end encrypted message</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Messaggio crittografato end-to-end</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address" approved="yes">
+        <source>End-to-end encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Messaggio crittografato ent-to-end da un indirizzo verificato</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address" approved="yes">
+        <source>End-to-end encrypted to verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Indirizzo crittografato end-to-end verificato</target>
+      </trans-unit>
+      <trans-unit id="English" approved="yes">
+        <source>English</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Inglese</target>
+      </trans-unit>
+      <trans-unit id="Enter" approved="yes">
+        <source>Enter</source>
+        <note>Action in 2fa popup view</note>
+        <target xml:lang="it" state="translated">Inserisci</target>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code" approved="yes">
+        <source>Enter Verification Code</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Inserisci il codice di verifica</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN" approved="yes">
+        <source>Enter your PIN</source>
+        <note>set pin title</note>
+        <target xml:lang="it" state="translated">Inserisci il PIN</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox." approved="yes">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Inserisci il PIN per sbloccare la casella email.</target>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number" approved="yes">
+        <source>Enter your cell phone number</source>
+        <note>human verification top title</note>
+        <target xml:lang="it" state="translated">Inserisci il tuo numero di telefono cellulare</target>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address." approved="yes">
+        <source>Enter your existing email address.</source>
+        <note>top title</note>
+        <target xml:lang="it" state="translated">Inserisci il tuo indirizzo email esistente.</target>
+      </trans-unit>
+      <trans-unit id="Error Logs" approved="yes">
+        <source>Error Logs</source>
+        <note>settings debug section title</note>
+        <target xml:lang="it" state="translated">Log degli errori</target>
+      </trans-unit>
+      <trans-unit id="Every time enter app" approved="yes">
+        <source>Every time enter app</source>
+        <note>lock app option</note>
+        <target xml:lang="it" state="translated">Ogni volta che si apre l'applicazione</target>
+      </trans-unit>
+      <trans-unit id="Expires" approved="yes">
+        <source>Expires</source>
+        <note>VoiceOver: email can expire</note>
+        <target xml:lang="it" state="translated">Scadrà</target>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds" approved="yes">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <note>expiration time count down</note>
+        <target xml:lang="it" state="translated">Scadrà tra %1$d giorni %2$d ore %3$d minuti %4$d secondi</target>
+      </trans-unit>
+      <trans-unit id="Expiring Messages" approved="yes">
+        <source>Expiring Messages</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Scadenza messaggi</target>
+      </trans-unit>
+      <trans-unit id="Extreme Security" approved="yes">
+        <source>Extreme Security</source>
+        <note>Key size checkbox</note>
+        <target xml:lang="it" state="translated">Sicurezza estrema</target>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?" approved="yes">
+        <source>FORGOT PASSWORD?</source>
+        <note>login page forgot pwd</note>
+        <target xml:lang="it" state="translated">PASSWORD DIMENTICATA?</target>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data" approved="yes">
+        <source>Failed to initialize the application's saved data</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile inizializzare i dati salvati dell'applicazione</target>
+      </trans-unit>
+      <trans-unit id="Fax" approved="yes">
+        <source>Fax</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Fax</target>
+      </trans-unit>
+      <trans-unit id="Feedback" approved="yes">
+        <source>Feedback</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Suggerimento</target>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed" approved="yes">
+        <source>Fetch user info failed</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Recupero dei dati dell'utente non riuscito</target>
+      </trans-unit>
+      <trans-unit id="Folder" approved="yes">
+        <source>Folder</source>
+        <note>VoiceOver: email belongs to folder</note>
+        <target xml:lang="it" state="translated">Cartella</target>
+      </trans-unit>
+      <trans-unit id="Folder Name" approved="yes">
+        <source>Folder Name</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Nome cartella</target>
+      </trans-unit>
+      <trans-unit id="Forward" approved="yes">
+        <source>Forward</source>
+        <note>forward action</note>
+        <target xml:lang="it" state="translated">Inoltra</target>
+      </trans-unit>
+      <trans-unit id="Forwarded message" approved="yes">
+        <source>Forwarded message</source>
+        <note>forwarded message title</note>
+        <target xml:lang="it" state="translated">Messaggio inoltrato</target>
+      </trans-unit>
+      <trans-unit id="French" approved="yes">
+        <source>French</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Francese</target>
+      </trans-unit>
+      <trans-unit id="From" approved="yes">
+        <source>From</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Da</target>
+      </trans-unit>
+      <trans-unit id="From:" approved="yes">
+        <source>From:</source>
+        <note>message From: field text</note>
+        <target xml:lang="it" state="translated">Da:</target>
+      </trans-unit>
+      <trans-unit id="Fwd:" approved="yes">
+        <source>Fwd:</source>
+        <note>abbreviation of forward:</note>
+        <target xml:lang="it" state="translated">Fwd:</target>
+      </trans-unit>
+      <trans-unit id="Gender" approved="yes">
+        <source>Gender</source>
+        <note>contacts talbe cell gender title</note>
+        <target xml:lang="it" state="translated">Sesso</target>
+      </trans-unit>
+      <trans-unit id="General Settings" approved="yes">
+        <source>General Settings</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Impostazioni generali</target>
+      </trans-unit>
+      <trans-unit id="German" approved="yes">
+        <source>German</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Tedesco</target>
+      </trans-unit>
+      <trans-unit id="Get more information" approved="yes">
+        <source>Get more information</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Ottieni maggiori informazioni</target>
+      </trans-unit>
+      <trans-unit id="Go to inbox" approved="yes">
+        <source>Go to inbox</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Va' alla posta in arrivo</target>
+      </trans-unit>
+      <trans-unit id="Got it" approved="yes">
+        <source>Got it</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Va bene</target>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support" approved="yes">
+        <source>Help &amp; Support</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Aiuto &amp; Supporto</target>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input." approved="yes">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Aiutaci a migliorare ProtonMail con il tuo commento.</target>
+        <alt-trans>
+          <target xml:lang="it">Aiutaci a migliorare ProtonMail con un tuo commento.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web." approved="yes">
+        <source>Help us to make privacy the default in the web.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Aiutaci a far diventare la privacy la norma del web.</target>
+      </trans-unit>
+      <trans-unit id="Hide" approved="yes">
+        <source>Hide</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Nascondi</target>
+      </trans-unit>
+      <trans-unit id="Hide Details" approved="yes">
+        <source>Hide Details</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nascondi dettagli</target>
+      </trans-unit>
+      <trans-unit id="High Security" approved="yes">
+        <source>High Security</source>
+        <note>Key size checkbox</note>
+        <target xml:lang="it" state="translated">Sicurezza alta</target>
+      </trans-unit>
+      <trans-unit id="Hours" approved="yes">
+        <source>Hours</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Ore</target>
+      </trans-unit>
+      <trans-unit id="Human Check Failed" approved="yes">
+        <source>Human Check Failed</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Controllo umano non riuscito</target>
+      </trans-unit>
+      <trans-unit id="Human Check Warning" approved="yes">
+        <source>Human Check Warning</source>
+        <note>human check warning title</note>
+        <target xml:lang="it" state="translated">Avviso di controllo umano</target>
+      </trans-unit>
+      <trans-unit id="Human Verification" approved="yes">
+        <source>Human Verification</source>
+        <note>top title</note>
+        <target xml:lang="it" state="translated">Verifica umana</target>
+      </trans-unit>
+      <trans-unit id="INBOX" approved="yes">
+        <source>INBOX</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">POSTA IN ARRIVO</target>
+      </trans-unit>
+      <trans-unit id="Import Error" approved="yes">
+        <source>Import Error</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Errore di importazione</target>
+      </trans-unit>
+      <trans-unit id="Import File From..." approved="yes">
+        <source>Import File From...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Importa file da...</target>
+      </trans-unit>
+      <trans-unit id="Importing Contacts" approved="yes">
+        <source>Importing Contacts</source>
+        <note>import contact title</note>
+        <target xml:lang="it" state="translated">Importazione contatti</target>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service." approved="yes">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Per utilizzare i nostri servizi, è necessario accettare i termini di servizio di ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="Inbox" approved="yes">
+        <source>Inbox</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="it" state="translated">Posta in arrivo</target>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN," approved="yes">
+        <source>Incorrect PIN,</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">PIN errato,</target>
+      </trans-unit>
+      <trans-unit id="Incorrect password" approved="yes">
+        <source>Incorrect password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Password errata</target>
+      </trans-unit>
+      <trans-unit id="Input Display Name ..." approved="yes">
+        <source>Input Display Name ...</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Inserire il nome visualizzato...</target>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ..." approved="yes">
+        <source>Input Notification Email ...</source>
+        <note>place holder</note>
+        <target xml:lang="it" state="translated">Inserire l'email di notifica...</target>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">La creazione istantanea di account ProtonMail è stata temporaneamente disabilitata. Si prega di andare a https://protonmail.com/invite per richiedere un invito.</target>
+      </trans-unit>
+      <trans-unit id="Internet" approved="yes">
+        <source>Internet</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Internet</target>
+      </trans-unit>
+      <trans-unit id="Invalid Password" approved="yes">
+        <source>Invalid Password</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Password non valida</target>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!" approved="yes">
+        <source>Invalid UserName!</source>
+        <note>Error message</note>
+        <target xml:lang="it" state="translated">Nome utente non valido!</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin" approved="yes">
+        <source>Invalid access token please relogin</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Token di accesso non valido. Per favore, ritenta il login.</target>
+        <alt-trans>
+          <target xml:lang="it">Token di accesso non valido, per favore ritenta il login</target>
+        </alt-trans>
+        <alt-trans>
+          <target xml:lang="it">Token di accesso non valido, per favore ritenti il login</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Invalid credential" approved="yes">
+        <source>Invalid credential</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Credenziali non valide</target>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!" approved="yes">
+        <source>Invalid hashed password!</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">Password con hash non valido!</target>
+      </trans-unit>
+      <trans-unit id="Italian" approved="yes">
+        <source>Italian</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Italiano</target>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features" approved="yes">
+        <source>Keep me updated about new features</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Mantenermi aggiornato sulle nuove funzionalità</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed" approved="yes">
+        <source>Key generation failed</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Generazione delle chiavi non riuscita</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed please try again" approved="yes">
+        <source>Key generation failed please try again</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Generazione chiave fallita. Per favore, riprova.</target>
+        <alt-trans>
+          <target xml:lang="it">Generazione chiave fallita, per favore riprova</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Key invalid please go back try again" approved="yes">
+        <source>Key invalid please go back try again</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Chiave non valida. Per favore, torna indietro e riprova.</target>
+        <alt-trans>
+          <target xml:lang="it">Chiave non valida, per favore torna indietro e riprova</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Label Management" approved="yes">
+        <source>Label Management</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Gestione etichette</target>
+      </trans-unit>
+      <trans-unit id="Label Name" approved="yes">
+        <source>Label Name</source>
+        <note>createing lable input place holder</note>
+        <target xml:lang="it" state="translated">Nome dell'etichetta</target>
+      </trans-unit>
+      <trans-unit id="Label as..." approved="yes">
+        <source>Label as...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Etichettare come...</target>
+      </trans-unit>
+      <trans-unit id="Labels" approved="yes">
+        <source>Labels</source>
+        <note>VoiceOver: email has lables</note>
+        <target xml:lang="it" state="translated">Etichette</target>
+      </trans-unit>
+      <trans-unit id="Labels have been applied." approved="yes">
+        <source>Labels have been applied.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Le etichette sono state applicate.</target>
+      </trans-unit>
+      <trans-unit id="Labels/Folders" approved="yes">
+        <source>Labels/Folders</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Etichette/Cartelle</target>
+      </trans-unit>
+      <trans-unit id="Language" approved="yes">
+        <source>Language</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Lingua</target>
+      </trans-unit>
+      <trans-unit id="Learn more here" approved="yes">
+        <source>Learn more here</source>
+        <note>learn more button</note>
+        <target xml:lang="it" state="translated">Maggiori informazioni qui</target>
+      </trans-unit>
+      <trans-unit id="Load remote content" approved="yes">
+        <source>Load remote content</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Carica il contenuto remoto</target>
+      </trans-unit>
+      <trans-unit id="Loading..." approved="yes">
+        <source>Loading...</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="it" state="translated">Caricamento...</target>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password" approved="yes">
+        <source>Local cache can't find mailbox password</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La cache locale non riesce a trovare la password della casella email</target>
+      </trans-unit>
+      <trans-unit id="Lock The App" approved="yes">
+        <source>Lock The App</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Blocca l'app</target>
+      </trans-unit>
+      <trans-unit id="Login" approved="yes">
+        <source>Login</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Accedi</target>
+      </trans-unit>
+      <trans-unit id="Login Password" approved="yes">
+        <source>Login Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="it" state="translated">Password di accesso</target>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match" approved="yes">
+        <source>Login password doesn't match</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Le password di accesso non corrispondono</target>
+      </trans-unit>
+      <trans-unit id="Logout" approved="yes">
+        <source>Logout</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Disconnetti</target>
+      </trans-unit>
+      <trans-unit id="Logs" approved="yes">
+        <source>Logs</source>
+        <note>error title</note>
+        <target xml:lang="it" state="translated">Logs</target>
+      </trans-unit>
+      <trans-unit id="Looking to edit or disable your mobile signature?" approved="yes">
+        <source>Looking to edit or disable your mobile signature?</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">Stai provando a modificare o disabilitare la tua firma del dispositivo mobile?</target>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?" approved="yes">
+        <source>Looking to secure your contact's details?</source>
+        <note>Upgrade warning title</note>
+        <target xml:lang="it" state="translated">Stai cercando di mettere in sicurezza i dettagli del tuo contatto?</target>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt" approved="yes">
+        <source>MBContactPickerPrompt</source>
+        <note>Default Prompt text shown in the prompt cell</note>
+        <target xml:lang="it" state="translated">MBContactPickerPrompt</target>
+      </trans-unit>
+      <trans-unit id="Mailbox Password" approved="yes">
+        <source>Mailbox Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="it" state="translated">Password della casella email</target>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders" approved="yes">
+        <source>Manage Labels/Folders</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Gestione etichette/cartelle</target>
+      </trans-unit>
+      <trans-unit id="Mark Read" approved="yes">
+        <source>Mark Read</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Segna come letto</target>
+      </trans-unit>
+      <trans-unit id="Mark as unread" approved="yes">
+        <source>Mark as unread</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Segna come da leggere</target>
+      </trans-unit>
+      <trans-unit id="Message %@" approved="yes">
+        <source>Message %@</source>
+        <note>Message with title</note>
+        <target xml:lang="it" state="translated">Messaggio %@</target>
+      </trans-unit>
+      <trans-unit id="Message Password" approved="yes">
+        <source>Message Password</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Password del messaggio</target>
+      </trans-unit>
+      <trans-unit id="Message Queue" approved="yes">
+        <source>Message Queue</source>
+        <note>settings debug section title</note>
+        <target xml:lang="it" state="translated">Coda dei messaggi</target>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions" approved="yes">
+        <source>Message Swipe Actions</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Azioni di scorrimento per i messaggi</target>
+      </trans-unit>
+      <trans-unit id="Message expired" approved="yes">
+        <source>Message expired</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="it" state="translated">Messaggio scaduto</target>
+      </trans-unit>
+      <trans-unit id="Message has been deleted." approved="yes">
+        <source>Message has been deleted.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Il messaggio è stato eliminato.</target>
+      </trans-unit>
+      <trans-unit id="Message has been moved." approved="yes">
+        <source>Message has been moved.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Il messaggio è stato spostato.</target>
+      </trans-unit>
+      <trans-unit id="Message password does not match." approved="yes">
+        <source>Message password does not match.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La password del messaggio non corrisponde.</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again" approved="yes">
+        <source>Message sending failed please try again</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">L'invio del messaggio è fallito. Per favore, riprova.</target>
+        <alt-trans>
+          <target xml:lang="it">L'invio del messaggio è fallito, per favore riprova</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Message sent" approved="yes">
+        <source>Message sent</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Messaggio inviato</target>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period." approved="yes">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">I messaggi che spedisci possono essere predisposti per autocancellarsi dopo un certo periodo di tempo.</target>
+        <alt-trans>
+          <target xml:lang="it">I messaggi che spedisce possono essere predisposti per autocancellarsi dopo un certo periodo di tempo.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Mobile" approved="yes">
+        <source>Mobile</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Mobile</target>
+      </trans-unit>
+      <trans-unit id="Mobile Signature" approved="yes">
+        <source>Mobile Signature</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Firma mobile</target>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Le iscrizioni da dispositivo mobile sono temporaneamente disattivate. Per favore, ritenta più tardi oppure prova ad iscriverti su protonmail.com da un computer fisso o portatile.</target>
+      </trans-unit>
+      <trans-unit id="Move to AllMail" approved="yes">
+        <source>Move to AllMail</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta in tutti i messaggi</target>
+      </trans-unit>
+      <trans-unit id="Move to Archive" approved="yes">
+        <source>Move to Archive</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta nell'archivio</target>
+      </trans-unit>
+      <trans-unit id="Move to Draft" approved="yes">
+        <source>Move to Draft</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta in bozze</target>
+      </trans-unit>
+      <trans-unit id="Move to Folder" approved="yes">
+        <source>Move to Folder</source>
+        <note>folder apply - title</note>
+        <target xml:lang="it" state="translated">Sposta nella cartella</target>
+      </trans-unit>
+      <trans-unit id="Move to Inbox" approved="yes">
+        <source>Move to Inbox</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta in Posta in arrivo</target>
+      </trans-unit>
+      <trans-unit id="Move to Outbox" approved="yes">
+        <source>Move to Outbox</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta nella posta in uscita</target>
+      </trans-unit>
+      <trans-unit id="Move to Spam" approved="yes">
+        <source>Move to Spam</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta in spam</target>
+      </trans-unit>
+      <trans-unit id="Move to Trash" approved="yes">
+        <source>Move to Trash</source>
+        <note>move action</note>
+        <target xml:lang="it" state="translated">Sposta nel cestino</target>
+        <alt-trans>
+          <target xml:lang="it">Sposta nel Cestino</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Move to..." approved="yes">
+        <source>Move to...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Sposta in...</target>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses" approved="yes">
+        <source>Multiple Addresses</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Indirizzi multipli</target>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP." approved="yes">
+        <source>NEED AN ACCOUNT? SIGN UP.</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">HAI BISOGNO DI UN ACCOUNT? REGISTRATI.</target>
+      </trans-unit>
+      <trans-unit id="Name" approved="yes">
+        <source>Name</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Nome</target>
+      </trans-unit>
+      <trans-unit id="New login password" approved="yes">
+        <source>New login password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nuova password di accesso</target>
+      </trans-unit>
+      <trans-unit id="New mailbox password" approved="yes">
+        <source>New mailbox password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nuova password della casella di posta</target>
+      </trans-unit>
+      <trans-unit id="New password" approved="yes">
+        <source>New password</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Nuova password</target>
+      </trans-unit>
+      <trans-unit id="Nickname" approved="yes">
+        <source>Nickname</source>
+        <note>contacts talbe cell Nickname title</note>
+        <target xml:lang="it" state="translated">Soprannome</target>
+      </trans-unit>
+      <trans-unit id="No Messages" approved="yes">
+        <source>No Messages</source>
+        <note>message when mailbox doesnt have emailsß</note>
+        <target xml:lang="it" state="translated">Nessun messaggio</target>
+      </trans-unit>
+      <trans-unit id="No connectivity detected..." approved="yes">
+        <source>No connectivity detected...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nessuna connettività rilevata...</target>
+      </trans-unit>
+      <trans-unit id="None" approved="yes">
+        <source>None</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nessuno</target>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration" approved="yes">
+        <source>Not all recipients support message expiration</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">Non tutti i destinatari supportano messaggi con scadenza</target>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address." approved="yes">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <note>Signup user name notes</note>
+        <target xml:lang="it" state="translated">Nota: il nome utente è anche il tuo indirizzo di ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." approved="yes">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <note>setup password notes</note>
+        <target xml:lang="it" state="translated">Nota: questa password viene utilizzata per crittografare e decrittografare i messaggi. Non perderla, perché noi non siamo in grado di recuperarla.</target>
+        <alt-trans>
+          <target xml:lang="it">Nota: questa viene utilizzato per crittografare e decrittografare i messaggi. Non perdere questa password, noi non possiamo recuperarla.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account." approved="yes">
+        <source>Note: This is used to log you into your account.</source>
+        <note>setup password notes</note>
+        <target xml:lang="it" state="translated">Nota: questa password è utilizzata per accedere al tuo account.</target>
+        <alt-trans>
+          <target xml:lang="it">Nota: questa è utilizzata per accedere al tuo account.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Notes" approved="yes">
+        <source>Notes</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Note</target>
+      </trans-unit>
+      <trans-unit id="Notice" approved="yes">
+        <source>Notice</source>
+        <note>Alert title</note>
+        <target xml:lang="it" state="translated">Avviso</target>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email" approved="yes">
+        <source>Notification / Recovery Email</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Notifica / Email di recupero</target>
+      </trans-unit>
+      <trans-unit id="Notification Email" approved="yes">
+        <source>Notification Email</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Email di notifica</target>
+      </trans-unit>
+      <trans-unit id="Notification Snooze" approved="yes">
+        <source>Notification Snooze</source>
+        <note>title of action sheet</note>
+        <target xml:lang="it" state="translated">Silenzia notifica</target>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed" approved="yes">
+        <source>Notifications Are Snoozed</source>
+        <note>VoiceOver description</note>
+        <target xml:lang="it" state="translated">Le notifiche sono posticipate</target>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off" approved="yes">
+        <source>Notifications Snooze Off</source>
+        <note>VoiceOver description</note>
+        <target xml:lang="it" state="translated">Silenzia notifiche disattivato</target>
+      </trans-unit>
+      <trans-unit id="OK" approved="yes">
+        <source>OK</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Attivato</target>
+      </trans-unit>
+      <trans-unit id="Only a paid user can modify default mobile signature or turn it off!" approved="yes">
+        <source>Only a paid user can modify default mobile signature or turn it off!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Solo un utente pagante può disabilitare o modificare la firma mobile predefinita!</target>
+      </trans-unit>
+      <trans-unit id="OpenDraft" approved="yes">
+        <source>OpenDraft</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Apri bozza</target>
+      </trans-unit>
+      <trans-unit id="Organization" approved="yes">
+        <source>Organization</source>
+        <note>contacts talbe cell Organization title</note>
+        <target xml:lang="it" state="translated">Organizzazione</target>
+      </trans-unit>
+      <trans-unit id="Other" approved="yes">
+        <source>Other</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Altro</target>
+      </trans-unit>
+      <trans-unit id="Outbox" approved="yes">
+        <source>Outbox</source>
+        <note>mail location desc</note>
+        <target xml:lang="it" state="translated">Posta in uscita</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted" approved="yes">
+        <source>PGP-encrypted</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Crittografato con PGP</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message" approved="yes">
+        <source>PGP-encrypted message</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Messaggio PGP criptato</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address" approved="yes">
+        <source>PGP-encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Messaggio crittografato con PGP da un indirizzo verificato</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed" approved="yes">
+        <source>PGP-signed</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Firmato con PGP</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address" approved="yes">
+        <source>PGP-signed message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Messaggio firmato con PGP da un indirizzo verificato</target>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE" approved="yes">
+        <source>PREMIUM FEATURE</source>
+        <note>Upgrade warning title</note>
+        <target xml:lang="it" state="translated">CARATTERISTICA PREMIUM</target>
+      </trans-unit>
+      <trans-unit id="Password" approved="yes">
+        <source>Password</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Password</target>
+      </trans-unit>
+      <trans-unit id="Password Mismatch" approved="yes">
+        <source>Password Mismatch</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Password non corrispondente</target>
+      </trans-unit>
+      <trans-unit id="Password Updated" approved="yes">
+        <source>Password Updated</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Password aggiornata il</target>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty." approved="yes">
+        <source>Password cannot be empty.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La password non può essere vuota.</target>
+      </trans-unit>
+      <trans-unit id="Password update failed" approved="yes">
+        <source>Password update failed</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">Aggiornamento della password non riuscito</target>
+      </trans-unit>
+      <trans-unit id="Personal" approved="yes">
+        <source>Personal</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Personale</target>
+      </trans-unit>
+      <trans-unit id="Phone" approved="yes">
+        <source>Phone</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Telefono</target>
+      </trans-unit>
+      <trans-unit id="Phone Verification" approved="yes">
+        <source>Phone Verification</source>
+        <note>human check option button</note>
+        <target xml:lang="it" state="translated">Verifica telefonica</target>
+      </trans-unit>
+      <trans-unit id="Phone number" approved="yes">
+        <source>Phone number</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Numero di telefono</target>
+      </trans-unit>
+      <trans-unit id="Phone number invalid" approved="yes">
+        <source>Phone number invalid</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Numero di telefono non valido</target>
+      </trans-unit>
+      <trans-unit id="Photo Library" approved="yes">
+        <source>Photo Library</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Galleria</target>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty." approved="yes">
+        <source>Pin code can't be empty.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Il codice PIN non può essere vuoto.</target>
+      </trans-unit>
+      <trans-unit id="Plain text" approved="yes">
+        <source>Plain text</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Testo normale</target>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients" approved="yes">
+        <source>Please add a password for the following recipients</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">Per favore, aggiungi una password per i seguenti destinatari</target>
+        <alt-trans>
+          <target xml:lang="it">Aggiungi una password per i seguenti destinatari per favore</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code." approved="yes">
+        <source>Please check your cell phone for the verification code.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per favore, controlla il tuo telefono per il codice di verifica.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore controlla il tuo telefono per il codice di verifica.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code." approved="yes">
+        <source>Please check your email for the verification code.</source>
+        <note>error message</note>
+        <target xml:lang="it" state="translated">Per favore, controlla la tua email per il codice di verifica.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore controlla la tua email per il codice di verifica.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses" approved="yes">
+        <source>Please disable PGP Sending for following addresses</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">Per favore, disabilita l'invio con PGP per i seguenti indirizzi</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore disabilita l'invio con PGP per i seguenti indirizzi</target>
+        </alt-trans>
+        <alt-trans>
+          <target xml:lang="it">Disabilita l'invio con PGP per i seguenti indirizzi per favore</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number." approved="yes">
+        <source>Please input a valid cell phone number.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per favore, inserisci un numero di cellulare valido.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore inserisci un numero di cellulare valido.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address." approved="yes">
+        <source>Please input a valid email address.</source>
+        <note>error message</note>
+        <target xml:lang="it" state="translated">Per favore, inserisci un indirizzo email valido.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore inserisci un indirizzo email valido.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!" approved="yes">
+        <source>Please pick a user name first!</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Per favore, scegli prima un nome utente!</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore scegli prima un nome utente!</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:" approved="yes">
+        <source>Please select one of the following options:</source>
+        <note>human check select option title</note>
+        <target xml:lang="it" state="translated">Seleziona una delle seguenti opzioni:</target>
+      </trans-unit>
+      <trans-unit id="Please set a password." approved="yes">
+        <source>Please set a password.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per favore, imposta una password.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore imposta una password.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first" approved="yes">
+        <source>Please use ProtonMail App login first</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per favore, prima effettua il login nella app di ProtonMail</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore prima effettua il login nella app di ProtonMail</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password." approved="yes">
+        <source>Please use the web application to reset your password.</source>
+        <note>Alert</note>
+        <target xml:lang="it" state="translated">Per favore, usa la versione web dell'applicazione per resettare la password.</target>
+        <alt-trans>
+          <target xml:lang="it">Usa la versione web dell'applicazione per resettare la password per favore.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <note>Alert</note>
+        <target xml:lang="it" state="translated">Per favore, usa la versione web di ProtonMail per modificare le tue password!</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore usa la versione web di ProtonMail per modificare le tue password!</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in." approved="yes">
+        <source>Please use your new password when signing in.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per favore, utilizza la nuova password per accedere.</target>
+        <alt-trans>
+          <target xml:lang="it">Per favore utilizza la nuova password per accedere.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!" approved="yes">
+        <source>Please wait until the email downloaded!</source>
+        <note>The</note>
+        <target xml:lang="it" state="translated">Per favore attendi fino a quando il messaggio sarà stato scaricato!</target>
+      </trans-unit>
+      <trans-unit id="Polish" approved="yes">
+        <source>Polish</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Polacco</target>
+      </trans-unit>
+      <trans-unit id="Portuguese Brazil" approved="yes">
+        <source>Portuguese Brazil</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Portoghese brasiliano</target>
+      </trans-unit>
+      <trans-unit id="Print" approved="yes">
+        <source>Print</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Stampa</target>
+      </trans-unit>
+      <trans-unit id="Protection" approved="yes">
+        <source>Protection</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Protezione</target>
+      </trans-unit>
+      <trans-unit id="Protection Entire App" approved="yes">
+        <source>Protection Entire App</source>
+        <note>settings protection section title</note>
+        <target xml:lang="it" state="translated">Protezione dell'intera app</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail" approved="yes">
+        <source>ProtonMail</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature" approved="yes">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">È richiesto ProtonMail Plus per modificare la firma mobile</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <note>Upgrade warning message</note>
+        <target xml:lang="it" state="translated">ProtonMail Plus/Professional/Visionary ti permette di aggiungere e modificare i dettagli di contatto oltre al nome e all'email. Usando ProtonMail, questi dati saranno al sicuro come la tua casella di posta con cifratura end-to-end.</target>
+        <alt-trans>
+          <target xml:lang="it">ProtonMail Plus/Professional/Visionary ti permette di aggiungere e modificare i dettagli di contatto oltre il nome e l'email. Usando ProtonMail, questi dati saranno al sicuro come la tua casella di posta con cifratura end-to-end.</target>
+        </alt-trans>
+        <alt-trans>
+          <target xml:lang="it">ProtonMail Plus/Professional/Visionary ti permette di aggiungere e modificare piu dettagli per un contatto oltre il nome e la email. Usando ProtonMail, questi dati saranno al sicuro come la tua casella di posta con cifratura end-to-end.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature.</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">ProtonMail Plus/Professional/Visionary ti permette di personalizzare la tua firma per il dispositivo mobile.</target>
+        <alt-trans>
+          <target xml:lang="it">ProtonMail Plus/Professional/Visionary ti premette di personalizzare la tua firma per il dispositivo mobile.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." approved="yes">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">ProtonMail non vende pubblicità o abusa della tua privacy. Il tuo supporto è essenziale per mantenere ProtonMail attivo. Puoi effettuare un upgrade ad un account a pagamento o donare per supportare ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails" approved="yes">
+        <source>ProtonMail encrypted emails</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Messaggi ProtonMail crittografati</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" approved="yes">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">ProtonMail attualmente non è in linea, controlla il nostro account Twitter per conoscere lo stato attuale: https://twitter.com/protonmail</target>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions" approved="yes">
+        <source>Quick swipe actions</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Azioni rapide con gesti di scorrimento</target>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD" approved="yes">
+        <source>RESET MAILBOX PASSWORD</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">REIMPOSTA LA PASSWORD DELLA CASELLA EMAIL</target>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review" approved="yes">
+        <source>Rate &amp; Review</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Vota &amp; recensisci</target>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN" approved="yes">
+        <source>Re-Enter your PIN</source>
+        <note>set pin title</note>
+        <target xml:lang="it" state="translated">Reinserisci il tuo PIN</target>
+      </trans-unit>
+      <trans-unit id="Re:" approved="yes">
+        <source>Re:</source>
+        <note>abbreviation of reply:</note>
+        <target xml:lang="it" state="translated">Re:</target>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data..." approved="yes">
+        <source>Reading device contacts data...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Leggendo i dati dei contatti del dispositivo...</target>
+      </trans-unit>
+      <trans-unit id="Recovery Code" approved="yes">
+        <source>Recovery Code</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Codice di recupero</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email" approved="yes">
+        <source>Recovery Email</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Email di recupero</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning" approved="yes">
+        <source>Recovery Email Warning</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Avviso recupero email</target>
+      </trans-unit>
+      <trans-unit id="Remind Me Later" approved="yes">
+        <source>Remind Me Later</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Ricordamelo più tardi</target>
+      </trans-unit>
+      <trans-unit id="Remove" approved="yes">
+        <source>Remove</source>
+        <note>remove action</note>
+        <target xml:lang="it" state="translated">Rimuovi</target>
+      </trans-unit>
+      <trans-unit id="Remove Star" approved="yes">
+        <source>Remove Star</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Rimuovi dai preferiti</target>
+      </trans-unit>
+      <trans-unit id="Repeat" approved="yes">
+        <source>Repeat</source>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+        <target xml:lang="it" state="translated">Ripeti</target>
+      </trans-unit>
+      <trans-unit id="Reply" approved="yes">
+        <source>Reply</source>
+        <note>reply action</note>
+        <target xml:lang="it" state="translated">Rispondi</target>
+      </trans-unit>
+      <trans-unit id="Reply All" approved="yes">
+        <source>Reply All</source>
+        <note>reply all action</note>
+        <target xml:lang="it" state="translated">Rispondi a tutti</target>
+      </trans-unit>
+      <trans-unit id="Report Bugs" approved="yes">
+        <source>Report Bugs</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Segnalazione bug</target>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ..." approved="yes">
+        <source>Resetting message cache ...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Ripristino della cache dei messaggi...</target>
+      </trans-unit>
+      <trans-unit id="Retry" approved="yes">
+        <source>Retry</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Riprova</target>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds" approved="yes">
+        <source>Retry after %d seconds</source>
+        <note>email verify code resend count down</note>
+        <target xml:lang="it" state="translated">Riprova tra %d secondo/i</target>
+      </trans-unit>
+      <trans-unit id="Russian" approved="yes">
+        <source>Russian</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Russo</target>
+      </trans-unit>
+      <trans-unit id="SENT" approved="yes">
+        <source>SENT</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">INVIATA</target>
+      </trans-unit>
+      <trans-unit id="SPAM" approved="yes">
+        <source>SPAM</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">SPAM</target>
+      </trans-unit>
+      <trans-unit id="SRP Client" approved="yes">
+        <source>SRP Client</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Client SRP</target>
+      </trans-unit>
+      <trans-unit id="SRP Server" approved="yes">
+        <source>SRP Server</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Server SRP</target>
+      </trans-unit>
+      <trans-unit id="STARRED" approved="yes">
+        <source>STARRED</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">PREFERITI</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Salva</target>
+      </trans-unit>
+      <trans-unit id="Save Changes" approved="yes">
+        <source>Save Changes</source>
+        <note>title</note>
+        <target xml:lang="it" state="translated">Salva le modifiche</target>
+      </trans-unit>
+      <trans-unit id="Save draft" approved="yes">
+        <source>Save draft</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Salva la bozza</target>
+      </trans-unit>
+      <trans-unit id="Scheduled" approved="yes">
+        <source>Scheduled</source>
+        <note>action sheet option</note>
+        <target xml:lang="it" state="translated">Programmato</target>
+      </trans-unit>
+      <trans-unit id="Search" approved="yes">
+        <source>Search</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Cercare</target>
+      </trans-unit>
+      <trans-unit id="Send" approved="yes">
+        <source>Send</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Invia</target>
+      </trans-unit>
+      <trans-unit id="Send Verification Code" approved="yes">
+        <source>Send Verification Code</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Invia codice di verifica</target>
+      </trans-unit>
+      <trans-unit id="Send anyway" approved="yes">
+        <source>Send anyway</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Invia comunque</target>
+      </trans-unit>
+      <trans-unit id="Send message without subject?" approved="yes">
+        <source>Send message without subject?</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Inviare il messaggio senza oggetto?</target>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc" approved="yes">
+        <source>Send plain but stored enc</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Invio in chiaro, ma memorizzato cifrato</target>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed" approved="yes">
+        <source>Sender Verification Failed</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Verifica del mittente fallita</target>
+      </trans-unit>
+      <trans-unit id="Sending Message" approved="yes">
+        <source>Sending Message</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Invio del messaggio</target>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" approved="yes">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target xml:lang="it" state="translated">L'invio dei messaggi dall'indirizzo %1$@ è una funzionalità a pagamento. Il messaggio sarà inviato dal tuo indirizzo predefinito %2$@</target>
+      </trans-unit>
+      <trans-unit id="Sent" approved="yes">
+        <source>Sent</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Inviata</target>
+      </trans-unit>
+      <trans-unit id="Sent Failed" approved="yes">
+        <source>Sent Failed</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Invio non riuscito</target>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
+        <source>Sent by you with end-to-end encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Inviato da te con la crittografia end-to-end</target>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!" approved="yes">
+        <source>Server proofs not valid!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Il nome del server non è valido!</target>
+      </trans-unit>
+      <trans-unit id="Set Password" approved="yes">
+        <source>Set Password</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Impostazione password</target>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users." approved="yes">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Imposta una password per criptare questo messaggio per gli utenti non-ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="Set passwords" approved="yes">
+        <source>Set passwords</source>
+        <note>Signup passwords top title</note>
+        <target xml:lang="it" state="translated">Imposta le password</target>
+      </trans-unit>
+      <trans-unit id="Settings" approved="yes">
+        <source>Settings</source>
+        <note>menu title</note>
+        <target xml:lang="it" state="translated">Impostazioni</target>
+      </trans-unit>
+      <trans-unit id="Share Alert" approved="yes">
+        <source>Share Alert</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Avviso di condivisione</target>
+      </trans-unit>
+      <trans-unit id="Share Contact" approved="yes">
+        <source>Share Contact</source>
+        <note>action</note>
+        <target xml:lang="it" state="translated">Condividi contatto</target>
+        <alt-trans>
+          <target xml:lang="it">Condividi Contatto</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Share it with your friends" approved="yes">
+        <source>Share it with your friends</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Condividi con gli amici</target>
+      </trans-unit>
+      <trans-unit id="Sign Out" approved="yes">
+        <source>Sign Out</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Esci</target>
+      </trans-unit>
+      <trans-unit id="Signature" approved="yes">
+        <source>Signature</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Firma</target>
+      </trans-unit>
+      <trans-unit id="Signature Updated" approved="yes">
+        <source>Signature Updated</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Firma aggiornata</target>
+      </trans-unit>
+      <trans-unit id="Single Password" approved="yes">
+        <source>Single Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="it" state="translated">Password singola</target>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications" approved="yes">
+        <source>Snooze Notifications</source>
+        <note>settings option</note>
+        <target xml:lang="it" state="translated">Rinvia le notifiche</target>
+      </trans-unit>
+      <trans-unit id="Snoozed for" approved="yes">
+        <source>Snoozed for</source>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+        <target xml:lang="it" state="translated">Rimandata per</target>
+      </trans-unit>
+      <trans-unit id="Snoozed till" approved="yes">
+        <source>Snoozed till</source>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+        <target xml:lang="it" state="translated">Rimandata fino alle</target>
+        <alt-trans>
+          <target xml:lang="it">Rimandata alle</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Space Warning" approved="yes">
+        <source>Space Warning</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Avviso di spazio</target>
+      </trans-unit>
+      <trans-unit id="Spam" approved="yes">
+        <source>Spam</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="it" state="translated">Spam</target>
+      </trans-unit>
+      <trans-unit id="Spammed" approved="yes">
+        <source>Spammed</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Spammato</target>
+      </trans-unit>
+      <trans-unit id="Spanish" approved="yes">
+        <source>Spanish</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Spagnolo</target>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!" approved="yes">
+        <source>Srp single password keyslat invalid!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Sale della chiave della password unica SRP non valido!</target>
+      </trans-unit>
+      <trans-unit id="Star" approved="yes">
+        <source>Star</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Preferito</target>
+      </trans-unit>
+      <trans-unit id="Starred" approved="yes">
+        <source>Starred</source>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+        <target xml:lang="it" state="translated">Preferito</target>
+      </trans-unit>
+      <trans-unit id="Start Time" approved="yes">
+        <source>Start Time</source>
+        <note>settings option (Start Time: 8am)</note>
+        <target xml:lang="it" state="translated">Orario d'inizio</target>
+        <alt-trans>
+          <target xml:lang="it">Ora d'inizio</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="State" approved="yes">
+        <source>State</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Stato</target>
+      </trans-unit>
+      <trans-unit id="Storage" approved="yes">
+        <source>Storage</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Archiviazione</target>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption" approved="yes">
+        <source>Stored with zero access encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="it" state="translated">Memorizzato con crittografia zero access</target>
+      </trans-unit>
+      <trans-unit id="Street" approved="yes">
+        <source>Street</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">Via</target>
+      </trans-unit>
+      <trans-unit id="Subject" approved="yes">
+        <source>Subject</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Oggetto</target>
+      </trans-unit>
+      <trans-unit id="Subject:" approved="yes">
+        <source>Subject:</source>
+        <note>subject: text when forward</note>
+        <target xml:lang="it" state="translated">Oggetto:</target>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail" approved="yes">
+        <source>Support ProtonMail</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Sostieni ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right" approved="yes">
+        <source>Swipe Left to Right</source>
+        <note>settings swipe actions section title</note>
+        <target xml:lang="it" state="translated">Scorrimento da sinistra a destra</target>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left" approved="yes">
+        <source>Swipe Right to Left</source>
+        <note>settings swipe actions section title</note>
+        <target xml:lang="it" state="translated">Scorrimento da destra a sinistra</target>
+      </trans-unit>
+      <trans-unit id="System can't copy the file" approved="yes">
+        <source>System can't copy the file</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Il sistema non può copiare il file</target>
+      </trans-unit>
+      <trans-unit id="TRASH" approved="yes">
+        <source>TRASH</source>
+        <note>mail location title</note>
+        <target xml:lang="it" state="translated">CESTINO</target>
+      </trans-unit>
+      <trans-unit id="Take a Photo" approved="yes">
+        <source>Take a Photo</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Scattare una foto</target>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients" approved="yes">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <note>alert description</note>
+        <target xml:lang="it" state="translated">Tocca invia ugualmente per inviare senza scadenza a questi destinatari</target>
+        <alt-trans>
+          <target xml:lang="it">L'invio tramite Tap invierà senza scadenza a questi destinatari</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="it" state="translated">Grazie per averci inviato una segnalazione di bug. La abbiamo aggiunta al nostro sistema di tracciamento dei bug.</target>
+      </trans-unit>
+      <trans-unit id="The Password is wrong." approved="yes">
+        <source>The Password is wrong.</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">La password è sbagliata.</target>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline..." approved="yes">
+        <source>The ProtonMail current offline...</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">ProtonMail è attualmente non in linea...</target>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid." approved="yes">
+        <source>The authentication credentials are invalid.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Le credenziali di autenticazione non sono valide.</target>
+      </trans-unit>
+      <trans-unit id="The current standard" approved="yes">
+        <source>The current standard</source>
+        <note>key size notes</note>
+        <target xml:lang="it" state="translated">Lo standard corrente</target>
+      </trans-unit>
+      <trans-unit id="The display name is now %@." approved="yes">
+        <source>The display name is now %@.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Il nome visualizzato è %@.</target>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken please try again" approved="yes">
+        <source>The draft cache is broken please try again</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La cache della bozza è danneggiata. Per favore, prova nuovamente.</target>
+        <alt-trans>
+          <target xml:lang="it">La cache della bozza è danneggiata, per favore prova nuovamente</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!" approved="yes">
+        <source>The draft format incorrectly sending failed!</source>
+        <note>error when sending the message</note>
+        <target xml:lang="it" state="translated">Il formato della bozza non è corretto. Invio non riuscito!</target>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available." approved="yes">
+        <source>The highest level of encryption available.</source>
+        <note>key size note part 1</note>
+        <target xml:lang="it" state="translated">Il massimo livello di crittografia disponibile.</target>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect." approved="yes">
+        <source>The mailbox password is incorrect.</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">La password della casella email non è corretta.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty." approved="yes">
+        <source>The new password can't empty.</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">La nuova password non può essere vuota.</target>
+      </trans-unit>
+      <trans-unit id="The new password not match." approved="yes">
+        <source>The new password not match.</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">La nuova password non corrisponde.</target>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it." approved="yes">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <note>recovery email notes</note>
+        <target xml:lang="it" state="translated">L'indirizzo email di recupero opzionale ti consente di reimpostare la password d'accesso se è stata dimenticata.</target>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password." approved="yes">
+        <source>The password you entered does not match the current password.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La password immessa non corrisponde alla password attuale.</target>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match." approved="yes">
+        <source>The passwords you entered do not match.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Le password inserite non corrispondono.</target>
+      </trans-unit>
+      <trans-unit id="The private key update failed." approved="yes">
+        <source>The private key update failed.</source>
+        <note>update password error</note>
+        <target xml:lang="it" state="translated">L'aggiornamento della chiave privata non è riuscito.</target>
+      </trans-unit>
+      <trans-unit id="The request timed out." approved="yes">
+        <source>The request timed out.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">La richiesta è scaduta.</target>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB" approved="yes">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La dimensione totale degli allegati non può essere più grande di 25MB</target>
+      </trans-unit>
+      <trans-unit id="The verification failed!" approved="yes">
+        <source>The verification failed!</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Verifica non riuscita!</target>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data." approved="yes">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">C'è stato un'errore nella creazione o nel caricamento dei dati salvati dell'applicazione.</target>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target xml:lang="it" state="translated">Questa email ha fallito l'autenticazione del proprio dominio. Potrebbe essere falsa o non correttamente inoltrata!</target>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target xml:lang="it" state="translated">Questa email sembra provenire da un indirizzo ProtonMail, ma arriva dall'esterno del nostro sistema e ha fallito la nostra prova di autenticazione. Potrebbe essere falsa o non correttamente inoltrata!</target>
+      </trans-unit>
+      <trans-unit id="Title" approved="yes">
+        <source>Title</source>
+        <note>contacts talbe cell Title title</note>
+        <target xml:lang="it" state="translated">Titolo</target>
+      </trans-unit>
+      <trans-unit id="To" approved="yes">
+        <source>To</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">A</target>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,\r\n we need to verify that you are human." approved="yes">
+        <source>To prevent abuse of ProtonMail,\r\n we need to verify that you are human.</source>
+        <note>human verification notes</note>
+        <target xml:lang="it" state="translated">Per prevenire abusi di ProtonMail,\r\n abbiamo bisogno di verificare che tu sia umano.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Per resettare la password della tua casella email, utilizza la versione web di ProtonMail su protonmail.com</target>
+      </trans-unit>
+      <trans-unit id="To:" approved="yes">
+        <source>To:</source>
+        <note>message To: feild</note>
+        <target xml:lang="it" state="translated">A:</target>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target xml:lang="it" state="translated">TouchID non è attivo, attivalo nelle impostazioni di sistema</target>
+      </trans-unit>
+      <trans-unit id="TouchID not available" approved="yes">
+        <source>TouchID not available</source>
+        <note>settings touchid/faceid error</note>
+        <target xml:lang="it" state="translated">TouchID non disponibile</target>
+      </trans-unit>
+      <trans-unit id="Trash" approved="yes">
+        <source>Trash</source>
+        <note>mail location desc
+   menu title
+   move action</note>
+        <target xml:lang="it" state="translated">Cestina</target>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide" approved="yes">
+        <source>Trouble shooting guide</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Guida per risolvere i problemi</target>
+      </trans-unit>
+      <trans-unit id="Turkish" approved="yes">
+        <source>Turkish</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Turco</target>
+      </trans-unit>
+      <trans-unit id="Turn Off" approved="yes">
+        <source>Turn Off</source>
+        <note>action sheet option</note>
+        <target xml:lang="it" state="translated">Spegni</target>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail" approved="yes">
+        <source>Tweet about ProtonMail</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Tweet su ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="Two Factor Code" approved="yes">
+        <source>Two Factor Code</source>
+        <note>Placeholder</note>
+        <target xml:lang="it" state="translated">Codice d'autenticazione in due passaggi</target>
+      </trans-unit>
+      <trans-unit id="URL" approved="yes">
+        <source>URL</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="USER LOGIN" approved="yes">
+        <source>USER LOGIN</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">LOGIN UTENTE</target>
+      </trans-unit>
+      <trans-unit id="Ukrainian" approved="yes">
+        <source>Ukrainian</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Ucraino</target>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server" approved="yes">
+        <source>Unable to connect to the server</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Non è stato possibile connettersi al server</target>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!" approved="yes">
+        <source>Unable to create SRP Client!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile creare un client SRP!</target>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message." approved="yes">
+        <source>Unable to decrypt message.</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile decrittografare il messaggio.</target>
+      </trans-unit>
+      <trans-unit id="Unable to generate hash password!" approved="yes">
+        <source>Unable to generate hash password!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile generare l'hash della password!</target>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts" approved="yes">
+        <source>Unable to get contacts</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile ottenere i contatti</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!" approved="yes">
+        <source>Unable to parse authentication info!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare le informazioni di autenticazione!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!" approved="yes">
+        <source>Unable to parse authentication token!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare il token di autenticazione!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse cased authentication token!" approved="yes">
+        <source>Unable to parse cased authentication token!</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare il token di autenticazione!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse response" approved="yes">
+        <source>Unable to parse response</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare la risposta</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:\n%@" approved="yes">
+        <source>Unable to parse the response object:\n%@</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare l'oggetto della risposta:\n%@</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse token" approved="yes">
+        <source>Unable to parse token</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare il token</target>
+      </trans-unit>
+      <trans-unit id="Unable to send the email" approved="yes">
+        <source>Unable to send the email</source>
+        <note>error when sending the message</note>
+        <target xml:lang="it" state="translated">Impossibile inviare l'email</target>
+      </trans-unit>
+      <trans-unit id="Undo" approved="yes">
+        <source>Undo</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Annulla</target>
+      </trans-unit>
+      <trans-unit id="Unknow Error" approved="yes">
+        <source>Unknow Error</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Errore sconosciuto</target>
+      </trans-unit>
+      <trans-unit id="Unknown" approved="yes">
+        <source>Unknown</source>
+        <note>title, default display name</note>
+        <target xml:lang="it" state="translated">Sconosciuto</target>
+      </trans-unit>
+      <trans-unit id="Unknown Error" approved="yes">
+        <source>Unknown Error</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Errore sconosciuto</target>
+      </trans-unit>
+      <trans-unit id="Unread" approved="yes">
+        <source>Unread</source>
+        <note>VoiceOver: email is not read yet</note>
+        <target xml:lang="it" state="translated">Da leggere</target>
+      </trans-unit>
+      <trans-unit id="Update" approved="yes">
+        <source>Update</source>
+        <note>like top right action text</note>
+        <target xml:lang="it" state="translated">Aggiorna</target>
+      </trans-unit>
+      <trans-unit id="Update Contact" approved="yes">
+        <source>Update Contact</source>
+        <note>Contacts Update contact</note>
+        <target xml:lang="it" state="translated">Aggiorna contatto</target>
+      </trans-unit>
+      <trans-unit id="Update Notification Email" approved="yes">
+        <source>Update Notification Email</source>
+        <note>update notification email error title</note>
+        <target xml:lang="it" state="translated">Email di notifica di aggiornamento</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">Effettua l'upgrade ad un piano a pagamento per inviare dal tuo indirizzo %@</target>
+      </trans-unit>
+      <trans-unit id="Upgrading is not possible in the app." approved="yes">
+        <source>Upgrading is not possible in the app.</source>
+        <note>Upgrade warning message</note>
+        <target xml:lang="it" state="translated">L'upgrade non è possibile dall'app.</target>
+      </trans-unit>
+      <trans-unit id="Upload Contacts" approved="yes">
+        <source>Upload Contacts</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">Carica contatti</target>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?" approved="yes">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Caricare i contatti di iOS su ProtonMail?</target>
+      </trans-unit>
+      <trans-unit id="Url" approved="yes">
+        <source>Url</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Url</target>
+      </trans-unit>
+      <trans-unit id="User already exist!" approved="yes">
+        <source>User already exist!</source>
+        <note>error when user already exist</note>
+        <target xml:lang="it" state="translated">Utente già esistente!</target>
+      </trans-unit>
+      <trans-unit id="User is available!" approved="yes">
+        <source>User is available!</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="it" state="translated">L'utente è disponibile!</target>
+      </trans-unit>
+      <trans-unit id="Username" approved="yes">
+        <source>Username</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Nome utente</target>
+      </trans-unit>
+      <trans-unit id="Verification code request failed" approved="yes">
+        <source>Verification code request failed</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Richiesta di codice di verifica non riuscita</target>
+      </trans-unit>
+      <trans-unit id="Verification code sent" approved="yes">
+        <source>Verification code sent</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Codice di verifica inviato</target>
+      </trans-unit>
+      <trans-unit id="Verification error" approved="yes">
+        <source>Verification error</source>
+        <note>error title</note>
+        <target xml:lang="it" state="translated">Errore di verifica</target>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed" approved="yes">
+        <source>Verification of this content’s signature failed</source>
+        <note>error details</note>
+        <target xml:lang="it" state="translated">Verifica della firma di questo contenuto fallita</target>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <note>human check warning description</note>
+        <target xml:lang="it" state="translated">Attenzione: prima di passare il controllo umano, non è possibile inviare messaggi!!!</target>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" approved="yes">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Attenzione: non è stata impostata alcuna email di recupero e il recupero dell'account è impossibile se si dimentica la password. Procedere senza email di recupero?</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above." approved="yes">
+        <source>We will send a verification code to the cell phone above.</source>
+        <note>text field notes</note>
+        <target xml:lang="it" state="translated">Ti invieremo un codice di verifica al telefono cellulare qui sopra.</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above." approved="yes">
+        <source>We will send a verification code to the email address above.</source>
+        <note>email field notes</note>
+        <target xml:lang="it" state="translated">Ti invieremo un codice di verifica all'indirizzo email indicato sopra.</target>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better." approved="yes">
+        <source>We would like to know what we can do better.</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Ci piacerebbe sapere che cosa possiamo fare di meglio.</target>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!" approved="yes">
+        <source>Welcome to ProtonMail!</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Benvenuto in ProtonMail!</target>
+      </trans-unit>
+      <trans-unit id="What people see in the \&quot;From\&quot; field." approved="yes">
+        <source>What people see in the \"From\" field.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Quello che la gente vede nel campo \"Da\".</target>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field." approved="yes">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <note>display name notes</note>
+        <target xml:lang="it" state="translated">Quando invii un'email, questo è il nome che compare nel campo del mittente.</target>
+      </trans-unit>
+      <trans-unit id="Work" approved="yes">
+        <source>Work</source>
+        <note>default vcard types</note>
+        <target xml:lang="it" state="translated">Lavoro</target>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">È possibile personalizzare i gesti di scorrimento nelle impostazioni di ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Puoi ricevere aiuto e assistenza su protonmail.com/support. I bug possono essere segnalati anche tramite l'app.</target>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target xml:lang="it" state="translated">Non puoi impostare l'indirizzo %@ come predefinito perché è una funzionalità a pagamento.</target>
+        <alt-trans>
+          <target xml:lang="it">Non puoi impostare l'indirizzo %@ come predefinito perché é una funzionalità a pagamento.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." approved="yes">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <note>description</note>
+        <target xml:lang="it" state="translated">Hai abilitato i messaggi con scadenza, ma non tutti i destinatari li supportano. Aggiungi una password e/o disabilita l'invio con PGP per abilitare la scadenza per tutti i destinatari.</target>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!" approved="yes">
+        <source>You have %d new emails!</source>
+        <note>Message</note>
+        <target xml:lang="it" state="translated">Hai %d nuovi messaggi!</target>
+      </trans-unit>
+      <trans-unit id="You have a new email!" approved="yes">
+        <source>You have a new email!</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">Hai un nuovo messaggio!</target>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?" approved="yes">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <note>Confirmation message</note>
+        <target xml:lang="it" state="translated">Hai delle modifiche non salvate, vorresti salvarle?</target>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@)." approved="yes">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Hai usato il %1$d%% del tuo spazio di archiviazione (%2$@).</target>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@)." approved="yes">
+        <source>You have used up all of your storage space (%@).</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Hai usato tutto lo spazio di archiviazione (%@).</target>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send" approved="yes">
+        <source>You need at least one recipient to send</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Hai bisogno di almeno un destinatario per inviare</target>
+      </trans-unit>
+      <trans-unit id="Your Country Code" approved="yes">
+        <source>Your Country Code</source>
+        <note>view top title</note>
+        <target xml:lang="it" state="translated">Codice del tuo paese</target>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." approved="yes">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La tua casella di posta è ora protetta con la crittografia end-to-end. Per inviare email sicure ai tuoi amici, invitali ad usare ProtonMail! Puoi crittografare manualmente i messaggi inviati a loro anche se non stanno usando ProtonMail.</target>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages." approved="yes">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">Il tuo nuovo account di posta elettronica crittografata è stato impostato ed è pronto per inviare e ricevere messaggi crittografati.</target>
+      </trans-unit>
+      <trans-unit id="Your new secure email\r\n account is ready." approved="yes">
+        <source>Your new secure email\r\n account is ready.</source>
+        <note>view top title</note>
+        <target xml:lang="it" state="translated">Il tuo nuovo account\r\ndi email sicura è disponibile.</target>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated." approved="yes">
+        <source>Your signature has been updated.</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">La tua firma è stata aggiornata.</target>
+      </trans-unit>
+      <trans-unit id="ZIP" approved="yes">
+        <source>ZIP</source>
+        <note>contact placeholder</note>
+        <target xml:lang="it" state="translated">CAP</target>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <note>agree check box middle word</note>
+        <target xml:lang="it" state="translated">e</target>
+      </trans-unit>
+      <trans-unit id="at" approved="yes">
+        <source>at</source>
+        <note>like at 10:00pm</note>
+        <target xml:lang="it" state="translated">alle</target>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!" approved="yes">
+        <source>attempt remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">tentativi restanti prima della cancellazione sicura dei dati!</target>
+      </trans-unit>
+      <trans-unit id="attempts remaining" approved="yes">
+        <source>attempts remaining</source>
+        <note>Description</note>
+        <target xml:lang="it" state="translated">tentativi restanti</target>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!" approved="yes">
+        <source>attempts remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target xml:lang="it" state="translated">tentativi restanti prima della cancellazione sicura dei dati!</target>
+      </trans-unit>
+      <trans-unit id="close tour" approved="yes">
+        <source>close tour</source>
+        <note>Action</note>
+        <target xml:lang="it" state="translated">termina tour</target>
+      </trans-unit>
+      <trans-unit id="days" approved="yes">
+        <source>days</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">giorni</target>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!" approved="yes">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <note>contacts api error when fetch</note>
+        <target xml:lang="it" state="translated">ottenimento di contacts() fallito, peopleOrderedByUsersPreference ha restituito null!!</target>
+      </trans-unit>
+      <trans-unit id="inline attachments" approved="yes">
+        <source>inline attachments</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">allegati inline</target>
+      </trans-unit>
+      <trans-unit id="no object" approved="yes">
+        <source>no object</source>
+        <note>no object error, local only , this could be not translated!</note>
+        <target xml:lang="it" state="translated">nessun oggetto</target>
+      </trans-unit>
+      <trans-unit id="normal attachments" approved="yes">
+        <source>normal attachments</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">allegati normali</target>
+      </trans-unit>
+      <trans-unit id="privacy policy." approved="yes">
+        <source>privacy policy.</source>
+        <note>agree check box privacy</note>
+        <target xml:lang="it" state="translated">informativa sulla privacy.</target>
+      </trans-unit>
+      <trans-unit id="terms and conditions" approved="yes">
+        <source>terms and conditions</source>
+        <note>agree check box terms</note>
+        <target xml:lang="it" state="translated">termini e condizioni</target>
+      </trans-unit>
+      <trans-unit id="wrote:" approved="yes">
+        <source>wrote:</source>
+        <note>Title</note>
+        <target xml:lang="it" state="translated">ha scritto:</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="it">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>ProtonMail</source>
+        <note>Bundle display name</note>
+        <target xml:lang="it" state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="it" state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/en.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="it">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS" approved="yes">
+        <source>App Extension API is not available in this version of iOS</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">L'estensione dell'app per l'API non è disponibile in questa versione di iOS</target>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension" approved="yes">
+        <source>Failed to contact the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile contattare l'estensione password</target>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information" approved="yes">
+        <source>Failed to execute script that collects web page information</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile eseguire lo script che raccoglie informazioni sulla pagina web</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated" approved="yes">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile riempire la pagina web perché lo script non può essere valutato</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing" approved="yes">
+        <source>Failed to fill web page because script is missing</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile riempire la pagina web perché lo script non è stato trovato</target>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension" approved="yes">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile ottenere la stringa URL dalla vista web. La vista web deve essere caricata completamente quando si avvia l'estensione password</target>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension" approved="yes">
+        <source>Failed to parse information returned by Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">Impossibile analizzare le informazioni restituite dall'estensione password</target>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user" approved="yes">
+        <source>Password Extension was cancelled by the user</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="it" state="translated">L'estensione password è stata annullata dall'utente</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

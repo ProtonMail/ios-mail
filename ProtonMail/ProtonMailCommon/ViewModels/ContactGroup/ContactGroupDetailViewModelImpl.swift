@@ -1,16 +1,35 @@
 //
 //  ContactGroupDetailViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/9/10.
 //
-//  Created by Chun-Hung Tseng on 2018/9/10.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import PromiseKit
 
-class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
-{
+class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
     /// the contact group label ID
     let groupID: String
     
@@ -21,7 +40,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     var color: String
     
     /// the contact group's emails (in NSSet)
-    var emailIDs: NSSet {
+    var emailIDs: Set<Email> {
         didSet {
             setupEmailIDsArray()
         }
@@ -30,7 +49,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
     
-    init(groupID: String, name: String, color: String, emailIDs: NSSet) {
+    init(groupID: String, name: String, color: String, emailIDs: Set<Email>) {
         self.groupID = groupID
         self.name = name
         self.color = color
@@ -41,17 +60,13 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
     }
     
     private func setupEmailIDsArray() {
-        if let emailIDs = emailIDs.allObjects as? [Email] {
-            emailIDsArray = emailIDs
-            emailIDsArray.sort{
-                (first: Email, second: Email) -> Bool in
-                if first.name == second.name {
-                    return first.email < second.email
-                }
-                return first.name < second.name
+        emailIDsArray = emailIDs.map{$0}
+        emailIDsArray.sort{
+            (first: Email, second: Email) -> Bool in
+            if first.name == second.name {
+                return first.email < second.email
             }
-        } else {
-            PMLog.D("EmailIDs conversion error")
+            return first.name < second.name
         }
     }
     
@@ -71,7 +86,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
         return emailIDs.count
     }
     
-    func getEmailIDs() -> NSSet {
+    func getEmailIDs() -> Set<Email> {
         return emailIDs
     }
     
@@ -103,12 +118,11 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel
      - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
      */
     func reload() -> Promise<Bool> {
-        if let context = sharedCoreDataService.mainManagedObjectContext,
-            let label = Label.labelForLableID(groupID,
-                                              inManagedObjectContext: context) {
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let label = Label.labelForLableID(groupID, inManagedObjectContext: context) {
             name = label.name
             color = label.color
-            emailIDs = label.emails
+            emailIDs = (label.emails as? Set<Email>) ?? Set<Email>()
             
             return .value(false)
         } else {

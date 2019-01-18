@@ -1,10 +1,30 @@
 //
 //  StringExtension.swift
-//  ProtonMail
+//  ProtonMail - Created on 2/23/15.
 //
-//  Created by Diego Santiviago on 2/23/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -218,7 +238,8 @@ extension String {
     
     
     func stringByStrippingStyleHTML() -> String {        
-        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: "")
+        let trimmed = self.preg_replace_none_regex("\r\n", replaceto: " ")
+        //out.preg_replace("\\s+", replaceto:" ") try this later if purifier doesnt work
         let options : NSRegularExpression.Options = [.caseInsensitive, .dotMatchesLineSeparators]
         do {
             let regex = try NSRegularExpression(pattern: "<style[^>]*?>.*?</style>", options:options)
@@ -331,8 +352,14 @@ extension String {
     }
     
     func stringByPurifyHTML() -> String {
+        
+//
         //|<(\\/?link.*?)>   <[^>]*?alert.*?>| |<[^>]*?confirm.*?> //the comment out part case hpylink have those key works been filtered out
-        let out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>|<[^>]*? on([a-z]+)\\s*=.*?>", replaceto: " ")
+        var out = self.preg_replace("<style[^>]*?>.*?</style>|<script(.*?)<\\/script>|<(\\/?script.*?)>|<(\\/?meta.*?)>|<object(.*?)<\\/object>|<(\\/?object.*?)>|<input(.*?)<\\/input>|<(\\/?input.*?)>|<iframe(.*?)<\\/iframe>|<video(.*?)<\\/video>|<audio(.*?)<\\/audio>|<[^>]*?onload.*?>|<input(.*?)<\\/input>|<[^>]*?prompt.*?>|<img.*?.onerror=alert.*?>|<link[^>]*.href.[^>]*>|<[^>]*? on([a-z]+)\\s*=.*?>|<(\\/?animate.*?)>", replaceto: " ")
+        out = out.preg_replace("onload=alert", replaceto: "onload＝alert") //temp
+        out = out.preg_replace("onerror=alert", replaceto: "onload＝alert") //temp
+        //out = out.preg_replace("vbscript", replaceto: "Vbscript")
+        //out = out.preg_replace("vbscript", replaceto: "Vbscript")
         //        var out = self.preg_replace("<script(.*?)<\\/script>", replaceto: "")
         //        //out = out.preg_replace("<(script.*?)>(.*?)<(\\/script.*?)>", replaceto: "")
         //        out = out.preg_replace("<(\\/?script.*?)>", replaceto: "")

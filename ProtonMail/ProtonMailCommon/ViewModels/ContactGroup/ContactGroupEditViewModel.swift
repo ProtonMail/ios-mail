@@ -1,10 +1,30 @@
 //
 //  ContactGroupEditViewModel.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/8/21.
 //
-//  Created by Chun-Hung Tseng on 2018/8/21.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import PromiseKit
@@ -13,8 +33,7 @@ protocol ContactGroupEditViewControllerDelegate: class {
     func update()
 }
 
-enum ContactGroupEditError: Error
-{
+enum ContactGroupEditError: Error {
     case noEmailInGroup
     case noNameForGroup
     
@@ -59,21 +78,21 @@ struct ContactGroupData
     var ID: String?
     var name: String?
     var color: String
-    var emailIDs: NSMutableSet
+    var emailIDs: Set<Email>
     
     let originalName: String?
     let originalColor: String
-    let originalEmailIDs: NSSet
+    let originalEmailIDs: Set<Email>
     
     init(ID: String?,
          name: String?,
          color: String?,
-         emailIDs: NSSet)
+         emailIDs: Set<Email>)
     {
         self.ID = ID
         self.name = name
         self.color = color ?? ColorManager.getRandomColor()
-        self.emailIDs = NSMutableSet(set: emailIDs)
+        self.emailIDs = emailIDs
         
         self.originalEmailIDs = emailIDs
         self.originalName = self.name
@@ -89,12 +108,8 @@ struct ContactGroupData
             return true
         }
         
-        if let originalEmailIDs = originalEmailIDs as? Set<Email>,
-            let currentEmailIDs = emailIDs as? Set<Email> {
-            if originalEmailIDs != currentEmailIDs {
-                return true
-            }
-        } else {
+        let currentEmailIDs = emailIDs
+        if originalEmailIDs != currentEmailIDs {
             return true
         }
         
@@ -108,7 +123,7 @@ protocol ContactGroupEditViewModel {
     
     // set operations
     func setName(name: String)
-    func setEmails(emails: NSSet)
+    func setEmails(emails: Set<Email>)
     func setColor(newColor: String)
     
     func removeEmail(emailID: String)
@@ -118,7 +133,7 @@ protocol ContactGroupEditViewModel {
     func getName() -> String
     func getContactGroupID() -> String?
     func getColor() -> String
-    func getEmails() -> NSSet
+    func getEmails() -> Set<Email>
     func getSectionTitle(for: Int) -> String
     
     // create and edit

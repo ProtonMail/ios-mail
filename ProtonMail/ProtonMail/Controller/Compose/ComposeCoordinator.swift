@@ -31,30 +31,32 @@ class ComposeCoordinator : DefaultCoordinator {
     typealias VC = ComposeViewController
 
     weak var viewController: ComposeViewController?
-    let viewModel : ComposeViewModel
+    weak var navigationController: UINavigationController?
     
-    init(vc: ComposeViewController, vm: ComposeViewModel) {
+    let viewModel : ComposeViewModel
+    var services: ServiceFactory
+    
+    init(vc: ComposeViewController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
+        self.services = services
     }
     
-    internal var navigationController: UINavigationController?
-    init(navigation: UINavigationController, vm: ComposeViewModel) {
+    init(navigation: UINavigationController, vm: ComposeViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.navigationController = navigation
+        self.services = services
         let rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: .composer)!
         let composer = rootViewController.children[0] as! ComposeViewController
-        composer.set(viewModel: vm)
-        composer.set(coordinator: self)
         self.viewController = composer
     }
     
     weak var delegate: CoordinatorDelegate?
 
     enum Destination : String {
-        case password = "to_eo_password_segue"
+        case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
-        case subSelection = "toContactGroupSubSelection"
+        case subSelection      = "toContactGroupSubSelection"
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -85,8 +87,7 @@ class ComposeCoordinator : DefaultCoordinator {
             }
             popup.delegate = self
             let nonePMEmail = vc.encryptionPassword.count <= 0 ? vc.headerView.nonePMEmails : [String]()
-            popup.config(needPwd: nonePMEmail,
-                         pgp: vc.headerView.pgpEmails)
+            popup.config(needPwd: nonePMEmail, pgp: vc.headerView.pgpEmails)
         case .subSelection:
             guard let destination = destination as? ContactGroupSubSelectionViewController else {
                 return false
@@ -106,6 +107,9 @@ class ComposeCoordinator : DefaultCoordinator {
     }
     
     func start() {
+        viewController?.set(viewModel: self.viewModel)
+        viewController?.set(coordinator: self)
+        
         if let navigation = self.navigationController, let vc = self.viewController {
             navigation.setViewControllers([vc], animated: true)
         }
@@ -160,16 +164,7 @@ extension ComposeCoordinator: ExpirationWarningVCDelegate{
     
     func learnMore() {
         #if !APP_EXTENSION
-        UIApplication.shared.openURL(.kEOLearnMore)
+        UIApplication.shared.openURL(.eoLearnMore)
         #endif
     }
 }
-
-//
-//override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//if segue.identifier == kExpirationWarningSegue {
-
-//    } else if segue.identifier == kToContactGroupSubSelection {
-
-//    }
-//}

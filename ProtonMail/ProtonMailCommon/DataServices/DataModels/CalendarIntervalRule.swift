@@ -1,10 +1,30 @@
 //
 //  CalendarIntervalRule.swift
-//  ProtonMail
+//  ProtonMail - Created on 03/06/2018.
 //
-//  Created by Anatoly Rosencrantz on 03/06/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -27,15 +47,25 @@ struct CalendarIntervalRule: Codable, Equatable {
     
     internal func intersects(with dateOfInterest: Date) -> Bool {
         // interval already started
-        guard let recentStart = Calendar.current.nextDate(after: dateOfInterest, matching: self.startMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .backward), // and there is an end of interval in future
-            let _ = Calendar.current.nextDate(after: dateOfInterest, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .forward) else
-        {
+        guard let recentStart = Calendar.current.nextDate(after: dateOfInterest,
+                                                          matching: self.startMatching,
+                                                          matchingPolicy: .strict,
+                                                          repeatedTimePolicy: .first,
+                                                          direction: .backward), // and there is an end of interval in future
+            let _ = Calendar.current.nextDate(after: dateOfInterest,
+                                              matching: self.endMatching,
+                                              matchingPolicy: .strict,
+                                              repeatedTimePolicy: .first,
+                                              direction: .forward) else {
             return false
         }
         
         // if there is an end of interval in the past...
-        guard let recentEnd = Calendar.current.nextDate(after: dateOfInterest, matching: self.endMatching, matchingPolicy: .strict, repeatedTimePolicy: .first, direction: .backward) else
-        {
+        guard let recentEnd = Calendar.current.nextDate(after: dateOfInterest,
+                                                        matching: self.endMatching,
+                                                        matchingPolicy: .strict,
+                                                        repeatedTimePolicy: .first,
+                                                        direction: .backward) else {
             return true
         }
         

@@ -1,22 +1,49 @@
 //
 //  MessageViewController.swift
-//  ProtonMail
+//  ProtonMail - on 7/27/15.
 //
-//  Created by Yanfeng Zhang on 7/27/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 import QuickLook
 import Foundation
 import CoreData
 import PassKit
-import Crashlytics
-import Fabric
 import AwaitKit
 import PromiseKit
+import JavaScriptCore
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
+    typealias viewModelType = MessageViewModel
+    func set(viewModel: MessageViewModel) {
+        
+    }
+    func inactiveViewModel() {
+        latestPresentedView?.dismiss(animated: true, completion: nil)
+        self.navigationController?.popToRootViewController(animated: true)
+    }
     
     
     fileprivate let kToComposerSegue : String    = "toCompose"
@@ -42,17 +69,29 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate var needShowShowImageView : Bool             = false
     private var actionTapped : Bool                          = false
     fileprivate var latestPresentedView : UIViewController?  = nil
+
     
-    func setViewModel(_ vm: Any) {
-    }
-    
-    func inactiveViewModel() {
-        latestPresentedView?.dismiss(animated: true, completion: nil)
-        self.navigationController?.popToRootViewController(animated: true)
+    let jsContext = JSContext()
+    func initJSContact() {
+        // Specify the path to the jssource.js file.
+        if let jsSourcePath = Bundle.main.path(forResource: "purify", ofType: "js") {
+            do {
+                // Load its contents to a String variable.
+                let jsSourceContents = try String(contentsOfFile: jsSourcePath)
+                
+                // Add the Javascript code that currently exists in the jsSourceContents to the Javascript Runtime through the jsContext object.
+                self.jsContext?.evaluateScript(jsSourceContents)
+            }
+            catch {
+            }
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
+        //self.initJSContact(
         
         self.setupRightButtons()
         
@@ -64,25 +103,24 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         
         self.updateHeader()
         
-        if (self.message.numAttachments.int32Value > 0) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
         
-        self.emailView?.showDetails(show: self.message.hasLocation(location: .outbox))
+        self.emailView?.backgroundColor = UIColor.ProtonMail.Gray_E2E6E8
+        
+        self.emailView?.showDetails(show: false)
         self.emailView!.initLayouts()
         self.emailView!.bottomActionView.delegate = self
         self.emailView!.emailHeader.delegate = self
         self.emailView?.delegate = self
         self.emailView?.emailHeader.updateAttConstraints(false)
-        self.updateBadgeNumberWhenRead(message, unRead: false)
         loadMessageDetailes()
         
     }
     
     internal func loadMessageDetailes () {
         showEmailLoading()
-        message.fetchDetailIfNeeded() { _, _, msg, error in
+        message.fetchDetailIfNeeded() { _, _, _, error in
             if let error = error {
                 self.processError(error: error)
             } else {
@@ -157,15 +195,15 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         PMLog.D("connectionRequired : \(connectionRequired)")
         switch (netStatus)
         {
-        case NotReachable:
+        case .NotReachable:
             PMLog.D("Access Not Available")
             if !message.isDetailDownloaded {
                 self.emailView?.showNoInternetErrorMessage()
             }
-        case ReachableViaWWAN:
+        case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             recheckMessageDetails ()
-        case ReachableViaWiFi:
+        case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             recheckMessageDetails ()
         default:
@@ -191,14 +229,14 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                                              to: self.message.toList.toContacts(),
                                              cc: self.message.ccList.toContacts(),
                                              bcc: self.message.bccList.toContacts(),
-                                             isStarred: self.message.isStarred,
+                                             isStarred: self.message.starred,
                                              time: self.message.time,
                                              encType: self.message.encryptType,
                                              labels : self.message.labels.allObjects as? [Label],
                                              showShowImages: self.needShowShowImageView,
                                              expiration: self.message.expirationTime,
                                              score: self.message.getScore(),
-                                             isSent: self.message.hasLocation(location: .outbox))
+                                             isSent: self.message.contains(label: Message.Location.sent))
         } else {
             PMLog.D(" MessageViewController self.message.managedObjectContext == nil")
         }
@@ -237,15 +275,12 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     @objc internal func removeButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            switch(message.location) {
-            case .trash, .spam:
-                if self.message.managedObjectContext != nil {
-                    self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.deleted, keepSent: true)
-                    self.messagesSetValue(setValue: MessageLocation.deleted.rawValue, forKey: Message.Attributes.locationNumber)
+            if message.contains(label: .trash) || message.contains(label: .spam) {
+                sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
+            } else {
+                if let label = message.firstValidFolder() {
+                    sharedMessageDataService.move(message: message, from: label, to: Message.Location.trash.rawValue)
                 }
-            default:
-                self.message.removeLocationFromLabels(currentlocation: message.location, location: MessageLocation.trash, keepSent: true)
-                self.messagesSetValue(setValue: MessageLocation.trash.rawValue, forKey: Message.Attributes.locationNumber)
             }
             popViewController()
         }
@@ -260,50 +295,38 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     internal func spamButtonTapped() {
         if !actionTapped {
             actionTapped = true
-            
-            self.message.removeLocationFromLabels(currentlocation: self.message.location, location: .spam, keepSent: true)
-            self.messagesSetValue(setValue: MessageLocation.spam.rawValue, forKey: Message.Attributes.locationNumber)
+            if let label = message.firstValidFolder() {
+                sharedMessageDataService.move(message: message, from: label, to: Message.Location.spam.rawValue)
+            }
             self.popViewController()
         }
     }
     
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
-
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        let locations: [MessageLocation : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
+        let locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
         for (location, style) in locations {
-            if !message.hasLocation(location: location) {
-                if self.message.location == .outbox && location == .inbox {
+            if !message.contains(label: location) {
+                if self.message.contains(label: .sent) && location == .inbox {
                     continue
                 }
-                
+
                 alertController.addAction(UIAlertAction(title: location.actionTitle,
                                                         style: style,
                                                         handler: { (action) -> Void in
-                                                            
-                    var toLocation = location
-                    if location == .inbox {
-                        if self.message.hasLocation(location: .outbox)  {
-                            toLocation = .outbox
-                        }
-                        if self.message.hasLocation(location: .draft) {
-                            toLocation = .draft
-                        }
+                    if let label = self.message.firstValidFolder() {
+                        sharedMessageDataService.move(message: self.message, from: label, to: location.rawValue)
                     }
-                    self.message.removeLocationFromLabels(currentlocation: self.message.location,
-                                                          location: toLocation,
-                                                          keepSent: true)
-                    self.messagesSetValue(setValue: toLocation.rawValue, forKey: Message.Attributes.locationNumber)
                     self.popViewController()
                 }))
             }
         }
-        
+
         alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
             self.print(webView : self.emailView!.contentWebView)
         }))
-        
+
         alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
             let headers = self.message.header
             let formatter = DateFormatter()
@@ -319,13 +342,13 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             self.latestPresentedView = previewQL
             self.present(previewQL, animated: true, completion: nil)
         }))
-        
+
         alertController.addAction(UIAlertAction(title: LocalString._report_phishing, style: .destructive, handler: { (action) -> Void in
             let alert = UIAlertController(title: LocalString._confirm_phishing_report,
                                           message: LocalString._reporting_a_message_as_a_phishing_,
                                           preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { (action) in
-                
+
             }))
             alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
                 ActivityIndicatorHelper.showActivityIndicator(at: self.view)
@@ -341,17 +364,17 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                         }
                     }
                 }
-                
+
             }))
             self.present(alert, animated: true, completion: {
-                
+
             })
         }))
-        
-        
+
+
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
-        
+
         latestPresentedView = alertController
         self.present(alertController, animated: true, completion: nil)
     }
@@ -400,40 +423,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     fileprivate func messagesSetRead(unRead: Bool) {
-        if let context = message.managedObjectContext {
-            self.updateBadgeNumberWhenRead(message, unRead: unRead)
-            message.unRead = unRead
-            message.needsUpdate = true
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
-            }
-        }
-    }
-    
-    func updateBadgeNumberWhenRead(_ message : Message, unRead : Bool) {
-        let location = message.location
-        
-        if message.unRead == unRead {
-            return
-        }
-        var count = lastUpdatedStore.UnreadCountForKey(location)
-        count = count + (unRead ? 1 : -1)
-        if count < 0 {
-            count = 0
-        }
-        lastUpdatedStore.updateUnreadCountForKey(location, count: count)
-        
-        if message.isStarred {
-            var staredCount = lastUpdatedStore.UnreadCountForKey(.starred)
-            staredCount = staredCount + (unRead ? 1 : -1)
-            if staredCount < 0 {
-                staredCount = 0
-            }
-            lastUpdatedStore.updateUnreadCountForKey(.starred, count: staredCount)
-        }
-        if location == .inbox {
-            UIApplication.setBadge(badge: count)
-        }
+        sharedMessageDataService.mark(message: message, unRead: unRead)
     }
     
     override var shouldAutorotate : Bool {
@@ -441,32 +431,88 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if segue.identifier == kToComposerSegue {
             if let contact = sender as? ContactVO {
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: contact)
-                //TODO:: finish up here
+                sharedVMService.newDraft(vmp: composeViewController)
+                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+                viewModel.addToContacts(contact)
                 let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
             } else if let enumRaw = sender as? Int, let tapped = ComposeMessageAction(rawValue: enumRaw), tapped != .newDraft {
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: message, action: tapped)
-                //TODO:: finish up here
+                sharedVMService.newDraft(vmp: composeViewController)
+                let viewModel = ComposeViewModelImpl(msg: message, action: tapped)
                 let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
             } else {
                 let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController, with: self.url)
+                sharedVMService.newDraft(vmp: composeViewController)
+                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+                if let mailTo : NSURL = self.url as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
+                    var rawURLparts = resSpecifier.components(separatedBy: "?")
+                    if (rawURLparts.count > 2) {
+                        
+                    } else {
+                        let defaultRecipient = rawURLparts[0]
+                        if defaultRecipient.count > 0 { //default to
+                            if defaultRecipient.isValidEmail() {
+                                viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
+                            }
+                            PMLog.D("to: \(defaultRecipient)")
+                        }
+                        
+                        if (rawURLparts.count == 2) {
+                            let queryString = rawURLparts[1]
+                            let params = queryString.components(separatedBy: "&")
+                            for param in params {
+                                var keyValue = param.components(separatedBy: "=")
+                                if (keyValue.count != 2) {
+                                    continue
+                                }
+                                let key = keyValue[0].lowercased()
+                                var value = keyValue[1]
+                                value = value.removingPercentEncoding ?? ""
+                                if key == "subject" {
+                                    PMLog.D("subject: \(value)")
+                                    viewModel.setSubject(value)
+                                }
+                                
+                                if key == "body" {
+                                    PMLog.D("body: \(value)")
+                                    viewModel.setBody(value)
+                                }
+                                
+                                if key == "to" {
+                                    PMLog.D("to: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addToContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "cc" {
+                                    PMLog.D("cc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addCcContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "bcc" {
+                                    PMLog.D("bcc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addBccContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 //TODO:: finish up here
                 let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: composeViewController.viewModel) //set view model
-                coordinator.viewController = composeViewController
-                composeViewController.set(coordinator: coordinator)
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
             }
         } else if segue.identifier == kSegueToApplyLabels {
             let popup = segue.destination as! LablesViewController
@@ -500,17 +546,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                                                selector: #selector(MessageViewController.reachabilityChanged(_:)),
                                                name: .reachabilityChanged,
                                                object: nil)
-        
-        if message != nil {
-            if let context = message.managedObjectContext {
-                message.unRead = false
-                message.needsUpdate = true
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
-            }
-        }
-        
+
         self.emailView?.contentWebView.isUserInteractionEnabled = true;
         self.emailView?.contentWebView.becomeFirstResponder()
         
@@ -581,39 +617,38 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK : private function
     fileprivate func updateEmailBody (force forceReload : Bool = false) {
-        if (self.message.numAttachments.int32Value > 0) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+        
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
         
-        //let offset = Int64(NSEC_PER_SEC) / 2
-       DispatchQueue.global(qos:.default).asyncAfter(deadline: DispatchTime.now() + Double(0) / Double(NSEC_PER_SEC), execute: { () -> Void in
-            if (!self.bodyLoaded || forceReload) && self.emailView != nil {
-                if self.message.isDetailDownloaded {  //&& forceReload == false
-                    self.bodyLoaded = true
-                    
-                    if self.fixedBody == nil {
-                        self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
-                        DispatchQueue.main.async {
-                            self.showEmbedImage()
-                        }
+        if (!self.bodyLoaded || forceReload) && self.emailView != nil {
+            if self.message.isDetailDownloaded {  //&& forceReload == false
+                self.bodyLoaded = true
+                
+                if self.fixedBody == nil {
+                    self.fixedBody = self.purifyEmailBody(self.message, autoloadimage: self.isAutoLoadImage)
+                    DispatchQueue.main.async {
+                        let atts = self.message.attachments.allObjects as? [Attachment]
+                        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+                        self.showEmbedImage()
+                        self.emailView?.emailHeader.updateAttConstraints(true)
                     }
-                    
-                    if !self.isAutoLoadImage && !self.showedShowImageView{
-                        if self.bodyHasImages {
-                            self.needShowShowImageView = true
-                        }
+                }
+                
+                if !self.isAutoLoadImage && !self.showedShowImageView{
+                    if self.bodyHasImages {
+                        self.needShowShowImageView = true
                     }
                 }
             }
-            if self.fixedBody != nil {
-                DispatchQueue.main.async {
-                    self.loadEmailBody(self.fixedBody ?? "")
-                }
+        }
+        if self.fixedBody != nil {
+            DispatchQueue.main.async {
+                self.loadEmailBody(self.fixedBody ?? "")
             }
-        })
+        }
     }
     
     internal func purifyEmailBody(_ message : Message!, autoloadimage : Bool) -> String? {
@@ -626,10 +661,18 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
             if !autoloadimage {
                 bodyText = bodyText.stringByPurifyImages()
             }
+            //self.jsDemo3(bodyText)
             return bodyText
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
             return self.message.bodyToHtml()
+        }
+    }
+    
+    func jsDemo3(_ body : String) {
+        if let functionGenerateLuckyNumbers = self.jsContext!.objectForKeyedSubscript("DOMPurify.sanitize") {
+            let out = functionGenerateLuckyNumbers.call(withArguments: [body.escaped])
+            Swift.print(out?.toString())
         }
     }
     
@@ -650,10 +693,9 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     
     // MARK : private function
     fileprivate func updateEmailBodyWithError (_ error:String) {
-        if (self.message.numAttachments.int32Value > 0 ) {
-            let atts = self.message.attachments.allObjects as! [Attachment]
-            self.emailView?.updateEmailAttachment(atts);
-        }
+        let atts = self.message.attachments.allObjects as? [Attachment]
+        self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+        
         let bodyText = NSLocalizedString(error, comment: "")
         let meta1 : String = "<meta name=\"viewport\" content=\"width=device-width, target-densitydpi=device-dpi, initial-scale=1.0\" content=\"yes\">"
         
@@ -689,9 +731,9 @@ extension MessageViewController : TopMessageViewDelegate {
     }
 }
 
-// MARK
-extension MessageViewController : MessageDetailBottomViewProtocol {
-    func replyClicked() {
+// MARK -- impl MessageDetailBottomViewDelegate
+extension MessageViewController : MessageDetailBottomViewDelegate {
+    func replyAction() {
         if self.message.isDetailDownloaded {
             self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.reply.rawValue)
         } else {
@@ -699,7 +741,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
         }
     }
     
-    func replyAllClicked() {
+    func replyAllAction() {
         if self.message.isDetailDownloaded {
             self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.replyAll.rawValue)
         } else {
@@ -707,7 +749,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
         }
     }
     
-    func forwardClicked() {
+    func forwardAction() {
         if self.message.isDetailDownloaded {
             self.performSegue(withIdentifier: kToComposerSegue, sender: ComposeMessageAction.forward.rawValue)
         } else {
@@ -715,7 +757,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
         }
     }
     
-    func showAlertWhenNoDetails() {
+    private func showAlertWhenNoDetails() {
         let alert = LocalString._please_wait_until_the_email_downloaded.alertController();
         alert.addOKAction()
         latestPresentedView = alert
@@ -723,7 +765,7 @@ extension MessageViewController : MessageDetailBottomViewProtocol {
     }
 }
 
-// MARK
+// MARK -- impl EmailViewActionsProtocol
 
 extension MessageViewController :  EmailViewActionsProtocol {
     func mailto(_ url: Foundation.URL?) {
@@ -746,7 +788,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         } else {
             //TODO:: put this to view model
             if let c = model as? ContactVO {
-                if self.message.hasLocation(location: .outbox) {
+                if self.message.contains(label: .sent) {
                     c.pgpType = self.message.getSentLockType(email: c.displayEmail ?? "")
                     complete?(nil, -1)
                 } else {
@@ -764,14 +806,14 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
                                 complete?(nil, -1)
                                 return
                             }
-                            let context = sharedCoreDataService.newManagedObjectContext()
+                            let context = sharedCoreDataService.backgroundManagedObjectContext
                             let getEmail = UserEmailPubKeys(email: emial).run()
                             let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                                 //internal emails
                                 if keyRes.recipientType == 1 {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
                                         switch status {
                                         case .ok:
                                             c.pgpType = .internal_trusted_key
@@ -823,7 +865,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
 //                                    }
                                 } else {
                                     if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-                                        let status = self.message.verifyBody(verifier: pgpKeys)
+                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
                                         switch status {
                                         case .ok:
                                             if c.pgpType == .zero_access_store {
@@ -860,7 +902,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
-
+        
         guard let data: Data = try? Data(contentsOf: tempfile) else {
             let alert = LocalString._cant_find_this_attachment.alertController()
             alert.addOKAction()
@@ -871,7 +913,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         
         do {
             tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!),
+            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys),
                 let _ = try? decryptData.write(to: tempFileUri!, options: [.atomic]) else
             {
                 throw NSError()
@@ -910,20 +952,41 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         }
     }
     
+    func quickLook(file : URL, fileName:String, type: String) {
+        tempFileUri = file
+        //TODO:: the hard code string need change it to enum later
+        guard (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+            let pkfile = try? Data(contentsOf: tempFileUri!) else
+        {
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+            return
+        }
+        
+        //TODO:: I add some change here for conflict but not sure if it is ok -- from Feng
+        guard let pass = try? PKPass(data: pkfile),
+            let vc = PKAddPassesViewController(pass: pass),
+            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+            (vc as UIViewController?) != nil else
+        {
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            latestPresentedView = previewQL
+            self.present(previewQL, animated: true, completion: nil)
+            return
+        }
+        
+        self.present(vc, animated: true, completion: nil)
+    }
+    
     func star(changed isStarred: Bool) {
         if isStarred {
-            self.message.setLabelLocation(.starred)
-            if let context = message.managedObjectContext {
-                context.perform {
-                    if let error = context.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    }
-                }
-            }
+            sharedMessageDataService.label(message: message, label: Message.Location.starred.rawValue, apply: true)
         } else {
-            self.message.removeLocationFromLabels(currentlocation: .starred, location: .deleted, keepSent: true)
+            sharedMessageDataService.label(message: message, label: Message.Location.starred.rawValue, apply: false)
         }
-        self.messagesSetValue(setValue: isStarred, forKey: Message.Attributes.isStarred)
     }
     
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {
@@ -958,7 +1021,7 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
     }
     
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
-        let notes = model.notes(type: self.message.hasLocation(location: .outbox) ? 2 : 1)
+        let notes = model.notes(type: self.message.contains(label: .sent) ? 2 : 1)
         notes.alertToastBottom()
     }
     

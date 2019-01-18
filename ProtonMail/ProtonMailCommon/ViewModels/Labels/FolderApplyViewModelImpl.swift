@@ -1,20 +1,30 @@
 //
 //  FolderApplyViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 3/2/17.
 //
-//  Created by Yanfeng Zhang on 3/2/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
-import Foundation
-
-//
-//  LabelApplayViewModel.swift
-//  ProtonMail
-//
-//  Created by Yanfeng Zhang on 10/19/16.
-//  Copyright © 2016 ProtonMail. All rights reserved.
-//
 
 import Foundation
 import CoreData
@@ -95,8 +105,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        var changed : Bool = false
-        let context = sharedCoreDataService.newMainManagedObjectContext()
+        let context = sharedCoreDataService.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }
@@ -104,40 +113,14 @@ final class FolderApplyViewModelImpl : LabelViewModel {
                 api.call(nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
-                        let labelObjs = mm.mutableSetValue(forKey: "labels")
-                        var needsDelete : [Label] = []
-                        for lo in labelObjs {
-                            if let l = lo as? Label {
-                                switch l.labelID {
-                                case "0", "3", "4", "6":
-                                    needsDelete.append(l)
-                                    changed = true
-                                default:
-                                    if l.exclusive == true {
-                                        needsDelete.append(l)
-                                        changed = true
-                                    }
-                                    break
-                                }
-                                
-                            }
-                        }
-                        for l in needsDelete {
-                            labelObjs.remove(l)
-                            changed = true
-                        }
-                        labelObjs.add(value.label)
-                        mm.setValue(labelObjs, forKey: "labels")
+                        let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
+                        let id = mm.selfSent(labelID: flable)
+                        sharedMessageDataService.move(message: mm, from: id ?? flable, to: key, queue: false)
                     }
                 }
             }
-            
-            let error = context.saveUpstreamIfNeeded()
-            if let error = error {
-                PMLog.D("error: \(error)")
-            }
         }
-        return changed
+        return true
     }
     
     override func getTitle() -> String {

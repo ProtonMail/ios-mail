@@ -25,12 +25,12 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 
 extension Message {
-    static func messageWithLocation (_ location: MessageLocation,
-                                     recipientList: String,
+    static func messageWithLocation (recipientList: String,
                                      bccList: String,
                                      ccList: String,
                                      title: String,
@@ -44,7 +44,6 @@ extension Message {
         
         let message = Message(context: context)
         message.messageID = UUID().uuidString
-        message.location = location
         message.toList = recipientList
         message.bccList = bccList
         message.ccList = ccList
@@ -54,6 +53,7 @@ extension Message {
         message.isEncrypted = 1
         message.expirationOffset = Int32(expirationTimeInterval)
         message.messageStatus = 1
+        message.setAsDraft()
         
         if expirationTimeInterval > 0 {
             message.expirationTime = Date(timeIntervalSinceNow: expirationTimeInterval)

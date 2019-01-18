@@ -2,123 +2,215 @@
 //  AppDelegate.swift
 //  ProtonMail
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  The MIT License
 //
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
-import Fabric
-import Crashlytics
 import SWRevealViewController
 import AFNetworking
 import AFNetworkActivityLogger
+import Keymaker
+import UserNotifications
+import Intents
+import DeviceCheck
+
+#if Enterprise
+import Fabric
+import Crashlytics
+#endif
 
 let sharedUserDataService = UserDataService()
 
+/// tempeary here.
+let sharedServices: ServiceFactory = {
+    let helper = ServiceFactory()
+    ///
+    helper.add(AppCacheService.self, for: AppCacheService())
+    helper.add(AddressBookService.self, for: AddressBookService())
+    ///
+    let addrService: AddressBookService = helper.get()
+    helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
+    helper.add(BugDataService.self, for: BugDataService())
+    
+    ///
+    let msgService: MessageDataService = MessageDataService()
+    helper.add(MessageDataService.self, for: msgService)
+    
+    helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    
+    return helper
+}()
+
 @UIApplicationMain
 class AppDelegate: UIResponder {
-    
-    //FIXME: tempory
-    var upgradeView : ForceUpgradeView?
-    
-    deinit{
-        // MARK: FIXME: from the doc, we don't need to do this in the deint.  //
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    var window: UIWindow?
-    func instantiateRootViewController() -> UIViewController? {
-        let storyboard = UIStoryboard.Storyboard.signIn
-        return UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-    }
-    
-    func setupWindow() {
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = instantiateRootViewController()
-        window?.makeKeyAndVisible()
-    }
-    
-    // MARK: - Public methods
-    func switchTo(storyboard: UIStoryboard.Storyboard, animated: Bool) {
-        guard let window = window else {
-            return //
-        }
-        
-        guard let rootViewController = window.rootViewController,
-            rootViewController.restorationIdentifier != storyboard.restorationIdentifier else {
-            return //
-        }
-        
-        if !animated {
-            window.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
-        } else {
-            UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                           delay: 0,
-                           options: UIView.AnimationOptions(),
-                           animations: { () -> Void in
-                            rootViewController.view.alpha = 0
-            }, completion: { (finished) -> Void in
-                guard let viewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
-                    return
-                }
-                if let oldView = window.rootViewController as? SWRevealViewController {
-                    if let navigation = oldView.frontViewController as? UINavigationController {
-                        if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                            mailboxViewController.resetFetchedResultsController()
-                            //TODO:: fix later, this logic change to viewModel service
-                        }
-                    }
-                }
-                viewController.view.alpha = 0
-                window.rootViewController = viewController
-                
-                UIView.animate(withDuration: ViewDefined.animationDuration/2,
-                               delay: 0, options: UIView.AnimationOptions(),
-                               animations: { () -> Void in
-                                viewController.view.alpha = 1.0
-                }, completion: nil)
-            })
-        }
-        
-    }
+    lazy var coordinator = WindowsCoordinator()
 }
 
+// MARK: - this is workaround to track when the SWRevealViewController first time load
 extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if (segue.identifier == "sw_front") {
+        if (segue.identifier == "sw_rear") {
+            if let menuViewController =  segue.destination as? MenuViewController {
+                let viewModel = MenuViewModelImpl()
+                let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
+                menu.start()
+            }
+        } else if (segue.identifier == "sw_front") {
             if let navigation = segue.destination as? UINavigationController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
-                    sharedVMService.mailbox(fromMenu: mailboxViewController, location: .inbox)
+                    ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
+                    sharedVMService.mailbox(fromMenu: mailboxViewController)
+                    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
+                    mailbox.start()                    
                 }
             }
         }
     }
 }
 
-// MARK: - UIApplicationDelegate
+// MARK: - consider move this to coordinator
+extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
+    func onLogout(animated: Bool) {
+        self.coordinator.go(dest: .signInWindow)
+    }
+    
+    func onError(error: NSError) {
+        #if DEBUG
+        guard #available(iOS 10.0, *) else { return }
+        let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+        let content = UNMutableNotificationContent()
+        content.title = "🦐 API ERROR"
+        content.subtitle = error.localizedDescription
+        content.body = error.userInfo.debugDescription
+        
+        if let data = error.userInfo["com.alamofire.serialization.response.error.data"] as? Data,
+            let resObj = String(data: data, encoding: .utf8)
+        {
+            content.body = resObj + content.body
+        }
+        
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: timeTrigger)
+        UNUserNotificationCenter.current().add(request) { error in }
+        #else
+        error.alertToast()
+        #endif
+    }
+}
 
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
 //let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
 
-extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServiceDelegate {
-    func onLogout(animated: Bool) {
-        self.switchTo(storyboard: .signIn, animated: animated)
+// MARK: - UIApplicationDelegate
+extension AppDelegate: UIApplicationDelegate {
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let cacheService : AppCacheService = sharedServices.get()
+        cacheService.restoreCacheWhenAppStart()
+        
+        #if Enterprise
+        Fabric.with([Crashlytics.self])
+        #endif
+        
+        Analytics.shared.setup()
+        
+        #if DEBUG // will fire local notifications on errors instead of toasts
+        if #available(iOS 10.0, *) {
+            UNUserNotificationCenter.current().delegate = self
+        }
+        #endif
+        
+        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
+        
+        ///TODO::fixme refactor
+        shareViewModelFactoy = ViewModelFactoryProduction()
+        sharedVMService.cleanLegacy()
+        sharedAPIService.delegate = self
+        
+        AFNetworkActivityIndicatorManager.shared().isEnabled = true
+        
+        //get build mode if debug mode enable network logging
+        let mode = UIApplication.shared.releaseMode()
+        //network debug options
+        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
+            logger.level = .AFLoggerLevelDebug;
+        }
+        AFNetworkActivityLogger.shared().startLogging()
+        
+        //start network notifier
+        sharedInternetReachability.startNotifier()
+        
+        sharedMessageDataService.launchCleanUpIfNeeded()
+        sharedUserDataService.delegate = self
+        
+        if mode != .dev && mode != .sim {
+            AFNetworkActivityLogger.shared().stopLogging()
+        }
+        AFNetworkActivityLogger.shared().stopLogging()
+        //setup language
+        LanguageManager.setupCurrentLanguage()
+        
+        ///TODO::fixme we don't need to register remote when start. we only need to register after user logged in
+        let pushService : PushNotificationService = sharedServices.get()
+        pushService.registerForRemoteNotifications()
+        pushService.setLaunchOptions(launchOptions)
+        
+        StoreKitManager.default.subscribeToPaymentQueue()
+        StoreKitManager.default.updateAvailableProductsList()
+        
+        if #available(iOS 12.0, *) {
+            let intent = WipeMainKeyIntent()
+            let suggestions = [INShortcut(intent: intent)!]
+            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+        }
+        
+        if #available(iOS 11.0, *) {
+            //self.generateToken()
+        }
+        
+        self.coordinator.start()
+        return true
     }
     
-    func onError(error: NSError) {
-        error.alertToast()
+    @available(iOS 11.0, *)
+    func generateToken(){
+        let currentDevice = DCDevice.current
+        if currentDevice.isSupported {
+            currentDevice.generateToken(completionHandler: { (data, error) in
+                DispatchQueue.main.async {
+                    if let tokenData = data {
+                        PMLog.D(tokenData.base64EncodedString())
+                    }
+                }
+            })
+        }
     }
-
+    
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.checkOrientation(self.window?.rootViewController)
+        return self.checkOrientation(window?.rootViewController)
     }
     
     func checkOrientation (_ viewController: UIViewController?) -> UIInterfaceOrientationMask {
@@ -141,58 +233,6 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         }
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        Fabric.with([Crashlytics()])
-        application.registerForRemoteNotifications()
-        
-        UIApplication.shared.setMinimumBackgroundFetchInterval(300)
-        
-        shareViewModelFactoy = ViewModelFactoryProduction()
-        sharedVMService.cleanLegacy()
-        sharedAPIService.delegate = self
-        
-        AFNetworkActivityIndicatorManager.shared().isEnabled = true
-        //get build mode if debug mode enable network logging
-        let mode = UIApplication.shared.releaseMode()
-        //network debug options
-        if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
-            logger.level = .AFLoggerLevelDebug;
-        }
-        AFNetworkActivityLogger.shared().startLogging()
-        
-        //start network notifier
-        sharedInternetReachability.startNotifier()
-        
-        setupWindow()
-        sharedMessageDataService.launchCleanUpIfNeeded()
-        sharedUserDataService.delegate = self
-        sharedPushNotificationService.registerForRemoteNotifications()
-        
-        if mode != .dev && mode != .sim {
-            AFNetworkActivityLogger.shared().stopLogging()
-        }
-         AFNetworkActivityLogger.shared().stopLogging()
-        //setup language
-        LanguageManager.setupCurrentLanguage()
-        
-        //TODO::remove from here. load after user login/restore from cache
-        ServicePlanDataService.shared.updateServicePlans()
-        
-        sharedPushNotificationService.setLaunchOptions(launchOptions)
-        StoreKitManager.default.subscribeToPaymentQueue()
-        StoreKitManager.default.updateAvailableProductsList()
-        
-        
-        //TODO:: Tempory later move it into App coordinator
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(self.performForceUpgrade(_:)),
-            name: .forceUpgrade,
-            object: nil)
-
-        
-        return true
-    }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
@@ -206,9 +246,9 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         guard let code = verifyObject.value else {
             return false
         }
-        
+        ///TODO::fixme change to deeplink
         let info : [String:String] = ["verifyCode" : code]
-        let notification = Notification(name: Notification.Name(rawValue: NotificationDefined.CustomizeURLSchema),
+        let notification = Notification(name: .customUrlSchema,
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
@@ -216,118 +256,77 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
     }
     
     func applicationDidEnterBackground(_ application: UIApplication) {
-        Snapshot().didEnterBackground(application)
-        if sharedUserDataService.isSignedIn {
-            let timeInterval : Int = Int(Date().timeIntervalSince1970)
-            userCachedStatus.exitTime = "\(timeInterval)";
-        }
-        var taskID : UIBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask {
-            //timed out
-        }
+        keymaker.updateAutolockCountdownStart()
         sharedMessageDataService.purgeOldMessages()
-        if sharedUserDataService.isUserCredentialStored {
-            sharedMessageDataService.backgroundFetch {
-                delay(3, closure: {
-                    PMLog.D("End Background Task")
-                    application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
-                })
+        
+        var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
+        taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
+        let delayedCompletion: ()->Void = {
+            delay(3) {
+                PMLog.D("End Background Task")
+                application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskID.rawValue))
             }
-        } else {
-            delay(3, closure: {
-                application.endBackgroundTask(convertToUIBackgroundTaskIdentifier(taskID.rawValue))
-            })
         }
         
+        if SignInManager.shared.isSignedIn() {
+            sharedMessageDataService.updateMessageCount()
+            sharedMessageDataService.backgroundFetch { delayedCompletion() }
+        } else {
+            delayedCompletion()
+        }
         PMLog.D("Enter Background")
     }
     
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        Snapshot().willEnterForeground(application)
-        if sharedTouchID.showTouchIDOrPin() {
-            sharedVMService.resetView()
-            (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .signIn, animated: false)
-        }
-    }
-    
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    }
-    
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        // Saves changes in the application's managed object context before the application terminates.
         //TODO::here need change to notify composer to save editing draft
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            context.perform {
-                let _ = context.saveUpstreamIfNeeded()
-            }
+        let mainContext = sharedCoreDataService.mainManagedObjectContext
+        mainContext.performAndWait {
+            let _ = mainContext.saveUpstreamIfNeeded()
+        }
+        
+        let backgroundContext = sharedCoreDataService.mainManagedObjectContext
+        backgroundContext.performAndWait {
+            let _ = backgroundContext.saveUpstreamIfNeeded()
         }
     }
     
-    // MARK: Background methods`
+    // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        if sharedUserDataService.isUserCredentialStored {
-            //sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil) { (task, nil, nil ) in
-            sharedMessageDataService.backgroundFetch {
-                completionHandler(.newData)
-            }
-        } else {
+        // this feature can only work if user did not lock the app
+        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
             completionHandler(.noData)
+            return
+        }
+        sharedMessageDataService.backgroundFetch {
+            completionHandler(.newData)
         }
     }
     
     // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Answers.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
-        sharedPushNotificationService.didFailToRegisterForRemoteNotificationsWithError(error as NSError)
+        Analytics.shared.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         PMLog.D("receive \(userInfo)")
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            var timeIndex : Int = -1
-            if let t = Int(userCachedStatus.lockTime) {
-                timeIndex = t
-            }
-            if timeIndex == 0 {
-                sharedPushNotificationService.setNotificationOptions(userInfo);
-            } else if timeIndex > 0 {
-                var exitTime : Int = 0
-                if let t = Int(userCachedStatus.exitTime) {
-                    exitTime = t
-                }
-                let timeInterval : Int = Int(Date().timeIntervalSince1970)
-                let diff = timeInterval - exitTime
-                if diff > (timeIndex*60) || diff <= 0 {
-                    sharedPushNotificationService.setNotificationOptions(userInfo);
-                } else {
-                    sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-                }
-            } else {
-                sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-            }
+        ///TODO::fixme deep link
+        let pushService: PushNotificationService = sharedServices.get()
+        if UnlockManager.shared.isUnlocked() {
+            pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
         } else {
-            sharedPushNotificationService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+            pushService.setNotificationOptions(userInfo)
         }
     }
     
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        sharedPushNotificationService.didRegisterUserNotificationSettings(notificationSettings)
-    }
-    
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        sharedPushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
+        PMLog.D(deviceToken.stringFromToken())
+        let pushService: PushNotificationService = sharedServices.get()
+        pushService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken.stringFromToken())
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
-            let point = touch.location(in: self.window)
+            let point = touch.location(in: UIApplication.shared.keyWindow)
             let statusBarFrame = UIApplication.shared.statusBarFrame
             if (statusBarFrame.contains(point)) {
                 self.touchStatusBar()
@@ -339,63 +338,16 @@ extension AppDelegate: UIApplicationDelegate, APIServiceDelegate, UserDataServic
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
-    
-    @objc func performForceUpgrade(_ notification: Notification) {
-        guard let keywindow = UIApplication.shared.keyWindow else {
-            return
-        }
-        
-        if let exsitView = upgradeView {
-            keywindow.bringSubviewToFront(exsitView)
-            return
-        }
-        
-        let view = ForceUpgradeView(frame: keywindow.bounds)
-        self.upgradeView = view
-        if let msg = notification.object as? String {
-            view.messageLabel.text = msg
-        }
-        view.delegate = self
-        UIView.transition(with: keywindow, duration: 0.25,
-                          options: .transitionCrossDissolve, animations: {
-            keywindow.addSubview(view)
-        }, completion: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(AppDelegate.rotated),
-                                               name: UIDevice.orientationDidChangeNotification,
-                                               object: nil)
-    }
-    
-    @objc func rotated() {
-        if let view = self.upgradeView {
-            guard let keywindow = UIApplication.shared.keyWindow else {
-                return
-            }
-            
-            UIView.animate(withDuration: 0.25, delay: 0.0,
-                           options: UIView.AnimationOptions.layoutSubviews, animations: {
-                view.frame = keywindow.frame
-                view.layoutIfNeeded()
-            }, completion: nil)
-        }
-    }
 }
 
-extension AppDelegate : ForceUpgradeViewDelegate {
-    func learnMore() {
-        if UIApplication.shared.canOpenURL(.kbUpdateRequired) {
-            UIApplication.shared.openURL(.kbUpdateRequired)
-        }
-    }
-    func update() {
-        if UIApplication.shared.canOpenURL(.appleStore) {
-            UIApplication.shared.openURL(.appleStore)
-        }
+#if DEBUG
+@available(iOS 10.0, *) extension AppDelegate: UNUserNotificationCenterDelegate {
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        // Display notification as regular alert and play sound
+        completionHandler([.alert, .sound])
     }
 }
-
-// Helper function inserted by Swift 4.2 migrator.
-fileprivate func convertToUIBackgroundTaskIdentifier(_ input: Int) -> UIBackgroundTaskIdentifier {
-	return UIBackgroundTaskIdentifier(rawValue: input)
-}
+#endif

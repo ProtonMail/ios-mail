@@ -1,15 +1,33 @@
 //
 //  NotificationService.swift
-//  PushServiceDev
+//  PushService - Created on 11/14/17.
 //
-//  Created by Yanfeng Zhang on 11/14/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UserNotifications
 import Crypto
-
-var sharedUserDataService : UserDataService!
 
 @available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
@@ -19,73 +37,66 @@ class NotificationService: UNNotificationServiceExtension {
     
     override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
         self.contentHandler = contentHandler
-        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-        
-        if let bestAttemptContent = bestAttemptContent {
-            #if Enterprise
-            bestAttemptContent.body = "You received a new message! ."
-            #endif
-            let pgp = CryptoPmCrypto()
-            _ = pgp?.getTime()
-            sharedUserDataService = UserDataService()
-            if sharedUserDataService.isUserCredentialStored {
-                if let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String {
-                    bestAttemptContent.body = encrypted
-                    if let userkey = sharedUserDataService.userInfo?.firstUserKey(), let password = sharedUserDataService.mailboxPassword {
-                        do {
-                            let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
-                                                                             privateKey: userkey.private_key,
-                                                                             passphrase: password)
-                            if let push = PushData.parse(with: plaintext) {
-                                //bestAttemptContent.title = push.title // "\(bestAttemptContent.title) [modified]"
-                                if let _ = push.sound {
-                                    //right now it is a integer should be sound name put default for now
-                                }
-                                
-                                bestAttemptContent.sound = UNNotificationSound.default
-                                //if let sub = push.subTitle {
-                                //  bestAttemptContent.subtitle = sub
-                                //}
-                                
-                                if let body = push.body {
-                                    bestAttemptContent.body = body
-                                } else {
-                                    #if Enterprise
-                                    bestAttemptContent.body = "You received a new message!..."
-                                    #endif
-                                }
-                                
-                                if let badge = push.badge, badge.intValue > 0 {
-                                    bestAttemptContent.badge = badge
-                                }
-                            } else {
-                                #if Enterprise
-                                bestAttemptContent.body = "You received a new message!."
-                                #endif
-                            }
-                        } catch let error {
-                            NSLog("APNS: catched error -- " + error.localizedDescription)
-                            #if Enterprise
-                            bestAttemptContent.body = "You received a new message!.."
-                            #endif
-                        }
-                    } else {
-                        #if Enterprise
-                        bestAttemptContent.body = "You received a new message! ..."
-                        #endif
-                    }
-                } else {
-                    #if Enterprise
-                    bestAttemptContent.body = "You received a new message!!"
-                    #endif
-                }
-            } else {
-                #if Enterprise
-                bestAttemptContent.body = "You received a new message! .."
-                #endif
-            }
-            contentHandler(bestAttemptContent)
+        guard let bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent) else {
+            contentHandler(request.content)
+            return
         }
+        bestAttemptContent.body = "You received a new message!"
+        #if Enterprise
+        bestAttemptContent.title = "You received a new message!"
+        #endif
+
+        guard let UID = bestAttemptContent.userInfo["UID"] as? String else {
+            #if Enterprise
+            bestAttemptContent.body = "without UID"
+            #endif
+            contentHandler(bestAttemptContent)
+            return
+        }
+        
+        guard let encryptionKit = PushNotificationDecryptor.encryptionKit(forSession: UID) else {
+            PushNotificationDecryptor.markForUnsubscribing(uid: UID)
+            #if Enterprise
+            bestAttemptContent.body = "no encryption kit for UID"
+            #endif
+            contentHandler(bestAttemptContent)
+            return
+        }
+
+        guard let encrypted = bestAttemptContent.userInfo["encryptedMessage"] as? String else {
+            #if Enterprise
+            bestAttemptContent.body = "no encrypted message in push"
+            #endif
+            contentHandler(bestAttemptContent)
+            return
+        }
+        
+        do {
+            let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
+                                                             privateKey: encryptionKit.privateKey,
+                                                             passphrase: encryptionKit.passphrase)
+            
+            guard let push = PushData.parse(with: plaintext) else {
+                #if Enterprise
+                bestAttemptContent.body = "failed to decrypt"
+                #endif
+                contentHandler(bestAttemptContent)
+                return
+            }
+            
+            bestAttemptContent.title = push.sender.name.isEmpty ? push.sender.address : push.sender.name
+            bestAttemptContent.body = push.body
+            
+            if push.badge > 0 {
+                bestAttemptContent.badge = NSNumber(value: push.badge)
+            }
+        } catch let error {
+            #if Enterprise
+            bestAttemptContent.body = "error: \(error.localizedDescription)"
+            #endif
+        }
+        
+        contentHandler(bestAttemptContent)
     }
     
     override func serviceExtensionTimeWillExpire() {

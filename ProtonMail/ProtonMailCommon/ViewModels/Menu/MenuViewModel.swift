@@ -1,87 +1,54 @@
 //
 //  MenuViewModel.swift
-//  ProtonMail
+//  ProtonMail - Created on 11/20/17.
 //
-//  Created by Yanfeng Zhang on 11/20/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
+
 import Foundation
 import CoreData
 
-enum MenuViewError: Error {
-    
-}
-
 enum MenuSection {
     case inboxes    //general inbox list
-    case others      //other options contacts, settings, signout
-    case labels      //label inbox
+    case others     //other options contacts, settings, signout
+    case labels     //label inbox
     case unknown    //do nothing by default
 }
 
-extension Mirror { // TODO: unused, consider removing
+protocol MenuViewModel : AnyObject {
     
-    private func toDictionary() -> [String: Any] {
-        var dict = [String: Any]()
-        
-        // Properties of this instance:
-        for attr in self.children {
-            if let propertyName = attr.label {
-                dict[propertyName] = attr.value
-            }
-        }
-        
-        // Add properties of superclass:
-        if let parent = self.superclassMirror {
-            for (propertyName, value) in parent.toDictionary() {
-                dict[propertyName] = value
-            }
-        }
-        
-        return dict
-    }
-}
-
-class MenuViewModel {
+    func updateMenuItems()
+    func setupLabels(delegate: NSFetchedResultsControllerDelegate?)
+    func sectionCount() -> Int
+    func section(at: Int) -> MenuSection
     
-    init() { }
+    func inboxesCount() -> Int
+    func othersCount() -> Int
+    func labelsCount() -> Int
+    func label(at : Int) -> Label?
+    func item(inboxes at: Int ) ->MenuItem
+    func item(others at: Int ) ->MenuItem
     
-    //
-    func setupMenu() {
-        fatalError("This method must be overridden")
-    }
-    func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        fatalError("This method must be overridden")
-    }
-
-    //
-    func sectionCount() -> Int {
-        fatalError("This method must be overridden")
-    }
-    func section(at: Int) -> MenuSection {
-        fatalError("This method must be overridden")
-    }
-    func inboxesCount() -> Int {
-        fatalError("This method must be overridden")
-    }
-    func othersCount() -> Int {
-        fatalError("This method must be overridden")
-    }
-    func labelsCount() -> Int {
-        fatalError("This method must be overridden")
-    }
-    func label(at : Int) -> Label? {
-        fatalError("This method must be overridden")
-    }
-    func item(inboxes at: Int ) ->MenuItem {
-        fatalError("This method must be overridden")
-    }
-    func item(others at: Int ) ->MenuItem {
-        fatalError("This method must be overridden")
-    }
-    
-    func find( section : MenuSection, item : MenuItem) -> IndexPath {
-        fatalError("This method must be overridden")
-    }
-    
+    func find( section : MenuSection, item : MenuItem) -> IndexPath
 }

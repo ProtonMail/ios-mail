@@ -1,13 +1,32 @@
 //
 //  SignupViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 3/29/16.
 //
-//  Created by Yanfeng Zhang on 3/29/16.
-//  Copyright (c) 2016 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
-
 
 final class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
@@ -40,11 +59,14 @@ final class SignupViewModelImpl : SignupViewModel {
     override init() {
         super.init()
         //register observer
-        NotificationCenter.default.addObserver(self, selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)), name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(SignupViewModelImpl.notifyReceiveURLSchema(_:)),
+                                               name: .customUrlSchema,
+                                               object:nil)
     }
     deinit {
         //unregister observer
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: NotificationDefined.CustomizeURLSchema), object:nil)
+        NotificationCenter.default.removeObserver(self, name: .customUrlSchema, object:nil)
     }
     
     @objc internal func notifyReceiveURLSchema (_ notify: Notification) {
@@ -142,7 +164,7 @@ final class SignupViewModelImpl : SignupViewModel {
         if let key = self.newPrivateKey {
             {
                 do {
-                    let authModuls = try AuthModulusRequest().syncCall()
+                    let authModuls = try AuthModulusRequest(authCredential: nil).syncCall()
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
@@ -190,7 +212,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             let setupAddrApi = try SetupAddressRequest(domain_name: self.domain).syncCall()
                                             
                                             //need setup keys
-                                            let authModuls_for_key = try AuthModulusRequest().syncCall()
+                                            let authModuls_for_key = try AuthModulusRequest(authCredential: nil).syncCall()
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
                                                 throw SignUpCreateUserError.invalidModulsID.error
                                             }
@@ -218,16 +240,16 @@ final class SignupViewModelImpl : SignupViewModel {
                                                 PMLog.D("signup seupt key error")
                                             }
                                             
-                                            //setup swipe function
-                                            let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive).syncCall()
-                                            let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash).syncCall()
+                                            //setup swipe function, will use default auth credential
+                                            let _ = try UpdateSwiftLeftAction(action: MessageSwipeAction.archive, authCredential: nil).syncCall()
+                                            let _ = try UpdateSwiftRightAction(action: MessageSwipeAction.trash, authCredential: nil).syncCall()
 
                                             sharedLabelsDataService.fetchLabels()
                                             ServicePlanDataService.shared.updateCurrentSubscription()
                                             sharedUserDataService.fetchUserInfo().done(on: .main) { info in
                                                 if info != nil {
                                                     sharedUserDataService.isNewUser = true
-                                                    sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil, isRemembered: true)
+                                                    sharedUserDataService.setMailboxPassword(self.keypwd_with_keysalt, keysalt: nil)
                                                     //alway signle password mode when signup
                                                     sharedUserDataService.passwordMode = 1
                                                     complete(true, true, "", nil)
@@ -284,7 +306,7 @@ final class SignupViewModelImpl : SignupViewModel {
         }
         
         if !self.recoverEmail.isEmpty {
-            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: sharedUserDataService.password ?? "", twoFACode: nil) { _, _, error in
+            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: self.plaintext_password, twoFACode: nil) { _, _, error in
 
             }
         }

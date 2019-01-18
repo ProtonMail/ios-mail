@@ -1,6 +1,6 @@
 //
 //  Threading.swift
-//  SwiftThreading
+//  ProtonMail
 //
 //
 //  The MIT License
@@ -25,16 +25,30 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import Dispatch
 import UIKit
+
+enum MainThread {
+    static func auto(_ block: @escaping (() -> Void)) {
+        if Thread.isMainThread {
+            block()
+        } else {
+            DispatchQueue.main.async {
+                block()
+            }
+        }
+        
+    }
+}
 
 enum ThreadType {
     case main
     case async
 }
 
-public func main(_ left: @escaping () -> Void) {
+func main(_ left: @escaping () -> Void) {
     OperationQueue.main.addOperation {
         left()
     }

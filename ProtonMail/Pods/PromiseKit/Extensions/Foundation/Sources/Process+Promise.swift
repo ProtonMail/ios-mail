@@ -72,11 +72,55 @@ extension Process {
                 self.waitUntilExit()
 
                 guard self.terminationReason == .exit, self.terminationStatus == 0 else {
-                    return seal.reject(PMKError.execution(self))
+                    let stdoutData = try? self.readDataFromPipe(stdout)
+                    let stderrData = try? self.readDataFromPipe(stderr)
+
+                    let stdoutString = stdoutData.flatMap { (data: Data) -> String? in String(data: data, encoding: .utf8) }
+                    let stderrString = stderrData.flatMap { (data: Data) -> String? in String(data: data, encoding: .utf8) }
+
+                    return seal.reject(PMKError.execution(process: self, standardOutput: stdoutString, standardError: stderrString))
                 }
                 seal.fulfill((stdout, stderr))
             }
         }
+    }
+
+    private func readDataFromPipe(_ pipe: Pipe) throws -> Data {
+        let handle = pipe.fileHandleForReading
+        defer { handle.closeFile() }
+
+        // Someday, NSFileHandle will probably be updated with throwing equivalents to its read and write methods,
+        // as NSTask has, to avoid raising exceptions and crashing the app.
+        // Unfortunately that day has not yet come, so use the underlying BSD calls for now.
+
+        let fd = handle.fileDescriptor
+
+        let bufsize = 1024 * 8
+        let buf = UnsafeMutablePointer<UInt8>.allocate(capacity: bufsize)
+
+        #if swift(>=4.1)
+            defer { buf.deallocate() }
+        #else
+            defer { buf.deallocate(capacity: bufsize) }
+        #endif
+
+        var data = Data()
+
+        while true {
+            let bytesRead = read(fd, buf, bufsize)
+
+            if bytesRead == 0 {
+                break
+            }
+
+            if bytesRead < 0 {
+                throw POSIXError.Code(rawValue: errno).map { POSIXError($0) } ?? CocoaError(.fileReadUnknown)
+            }
+
+            data.append(buf, count: bytesRead)
+        }
+
+        return data
     }
 
     /**
@@ -85,7 +129,7 @@ extension Process {
     public enum PMKError {
         /// NOT AVAILABLE ON 10.13 and above because Apple provide this error handling themselves
         case notExecutable(String?)
-        case execution(Process)
+        case execution(process: Process, standardOutput: String?, standardError: String?)
     }
 }
 
@@ -97,7 +141,7 @@ extension Process.PMKError: LocalizedError {
             return "File not executable: \(path)"
         case .notExecutable(nil):
             return "No launch path specified"
-        case .execution(let task):
+        case .execution(process: let task, standardOutput: _, standardError: _):
             return "Failed executing: `\(task)` (\(task.terminationStatus))."
         }
     }

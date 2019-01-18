@@ -1,14 +1,30 @@
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  SearchViewController.swift
+//  ProtonMail
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 import CoreData
@@ -27,21 +43,44 @@ class SearchViewController: ProtonMailViewController {
     fileprivate let kSearchCellHeight: CGFloat = 64.0
     fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
-
-    // MARK: - Private attributes
     
-    fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
-    fileprivate var managedObjectContext: NSManagedObjectContext?
-    
-    fileprivate var currentPage = 0;
-    fileprivate var stop : Bool = false;
-
-    fileprivate var query: String = "" {
+    // TODO: need better UI solution for this progress bar
+    private lazy var progressBar: UIProgressView = {
+        let bar = UIProgressView()
+        bar.trackTintColor = .black
+        bar.progressTintColor = .white
+        bar.progressViewStyle = .bar
+        
+        let label = UILabel.init(font: UIFont.italicSystemFont(ofSize: UIFont.smallSystemFontSize), text: "Indexing local messages", textColor: .gray)
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        bar.addSubview(label)
+        bar.topAnchor.constraint(equalTo: label.topAnchor).isActive = true
+        bar.leadingAnchor.constraint(equalTo: label.leadingAnchor).isActive = true
+        bar.trailingAnchor.constraint(equalTo: label.trailingAnchor).isActive = true
+        
+        return bar
+    }()
+    private let localObjectIndexing: Progress = Progress(totalUnitCount: 1)
+    private var localObjectsIndexingObserver: NSKeyValueObservation? {
         didSet {
-            handleFromLocal(query)
+            DispatchQueue.main.async { [weak self] in
+                self?.progressBar.isHidden = (self?.localObjectsIndexingObserver == nil)
+            }
         }
     }
     
+    // MARK: - Private attributes
+    typealias LocalObjectsIndexRow = Dictionary<String, Any>
+    private var dbContents: Array<LocalObjectsIndexRow> = []
+    fileprivate var searchResult: [Message] = [] {
+        didSet { self.tableView.reloadData() }
+    }
+    
+    fileprivate var currentPage = 0;
+
+    fileprivate var query: String = ""
+
     override func viewDidLoad() {
         super.viewDidLoad()
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
@@ -68,19 +107,26 @@ class SearchViewController: ProtonMailViewController {
                 NSAttributedString.Key.font: Fonts.h3.light
             ])
         
-        managedObjectContext = sharedCoreDataService.newMainManagedObjectContext()
-        
-        if let context = managedObjectContext {
-            fetchedResultsController = fetchedResultsControllerForSearch(managedObjectContext: context)
-            fetchedResultsController?.delegate = self
-        }
-        
         searchTextField.becomeFirstResponder()
+        
+        self.progressBar.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.progressBar)
+        self.progressBar.topAnchor.constraint(equalTo: self.tableView.topAnchor).isActive = true
+        self.progressBar.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.progressBar.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.progressBar.heightAnchor.constraint(equalToConstant: UIFont.smallSystemFontSize).isActive = true
+        
+        self.indexLocalObjects {
+            if self.searchResult.isEmpty, !self.query.isEmpty {
+                self.fetchLocalObjects()
+            }
+        }
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        self.localObjectIndexing.cancel() // switches off indexing of Messages in local db
     }
     
     // my selector that was defined above
@@ -115,97 +161,152 @@ class SearchViewController: ProtonMailViewController {
         self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;//.Blue_475F77
     }
     
-    func fetchedResultsControllerForSearch(managedObjectContext context: NSManagedObjectContext) -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func indexLocalObjects(_ completion: @escaping ()->Void) {
+        let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
+        var count = 0
+        context.performAndWait {
+            do {
+                let overallCountRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: Message.Attributes.entityName)
+                overallCountRequest.resultType = .countResultType
+                let result = try context.fetch(overallCountRequest)
+                count = (result.first as? Int) ?? 1
+            } catch let error {
+                PMLog.D(" performFetch error: \(error)")
+                assert(false, "Failed to fetch message dicts")
+            }
+        }
+        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
+        fetchRequest.resultType = .dictionaryResultType
+
+        let objectId = NSExpressionDescription()
+        objectId.name = "objectID"
+        objectId.expression = NSExpression.expressionForEvaluatedObject()
+        objectId.expressionResultType = NSAttributeType.objectIDAttributeType
         
-        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context, sectionNameKeyPath: nil, cacheName: nil)
-    }
-    
-    func handleFromLocal(_ query: String) {
-        if managedObjectContext != nil {
-            if let fetchedResultsController = fetchedResultsController {
-                fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
-                fetchedResultsController.delegate = nil
-                do {
-                    try fetchedResultsController.performFetch()
-                }catch {
-                    PMLog.D(" performFetch error: \(error)")
-                }
-                
-                tableView.reloadData()
-                showHideNoresult()
-                fetchedResultsController.delegate = self
-            }
-            
-            if query.isEmpty {
+        fetchRequest.propertiesToFetch = [objectId,
+                                          Message.Attributes.title,
+                                          Message.Attributes.sender,
+                                          Message.Attributes.toList]
+        let async = NSAsynchronousFetchRequest(fetchRequest: fetchRequest, completionBlock: { [weak self] result in
+            self?.dbContents = result.finalResult as? Array<LocalObjectsIndexRow> ?? []
+            self?.localObjectsIndexingObserver = nil
+            completion()
+        })
+        
+        context.perform {
+            self.localObjectIndexing.becomeCurrent(withPendingUnitCount: 1)
+            guard let indexRaw = try? context.execute(async),
+                let index = indexRaw as? NSPersistentStoreAsynchronousResult else
+            {
+                self.localObjectIndexing.resignCurrent()
                 return
             }
+            
+            self.localObjectIndexing.resignCurrent()
+            self.localObjectsIndexingObserver = index.progress?.observe(\Progress.completedUnitCount, options: NSKeyValueObservingOptions.new, changeHandler: { [weak self] (progress, change) in
+                DispatchQueue.main.async {
+                    let completionRate = Float(progress.completedUnitCount) / Float(count)
+                    self?.progressBar.setProgress(completionRate, animated: true)
+                }
+            })
+        }
+    }
+    
+    func fetchLocalObjects() {
+        // TODO: this filter can be better. Can we lowercase and glue together all the strings via NSExpression during fetch?
+        let messageIds: [NSManagedObjectID] = self.dbContents.compactMap {
+            if let title = $0["title"] as? String,
+                let _ = title.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            if let senderName = $0["senderName"]  as? String,
+                let _ = senderName.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            if let sender = $0["sender"]  as? String,
+                let _ = sender.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            if let toList = $0["toList"]  as? String,
+                let _ = toList.range(of: self.query, options: [.caseInsensitive, .diacriticInsensitive])
+            {
+                return $0["objectID"] as? NSManagedObjectID
+            }
+            return nil
+        }
+        
+        let context = sharedCoreDataService.mainManagedObjectContext
+        context.performAndWait {
+            let messages = messageIds.compactMap { oldId -> Message? in
+                let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
+                guard let newId = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uri) else {
+                    return nil
+                }
+                return context.object(with: newId) as? Message
+            }
+            self.searchResult = messages
+            
+            self.showHideNoresult()
         }
     }
     
     func showHideNoresult(){
         noResultLabel.isHidden = false
-        if let count = fetchedResultsController?.numberOfRows(in: 0) {
-            if count > 0 {
-                noResultLabel.isHidden = true
-            }
+        if self.searchResult.count > 0 {
+            noResultLabel.isHidden = true
         }
     }
     
-    func handleQuery(_ query: String) {
-        //let context = sharedCoreDataService.newMainManagedObjectContext()
-//        if let fetchedResultsController = fetchedResultsController {
-//            fetchedResultsController.fetchRequest.predicate = predicateForSearch(query)
-//            fetchedResultsController.delegate = nil
-//            
-//            var error: NSError?
-//            if !fetchedResultsController.performFetch(&error) {
-//                PMLog.D(" performFetch error: \(error!)")
-//            }
-//            
-//            tableView.reloadData()
-//            
-//            fetchedResultsController.delegate = self
-//        }
-        if query.isEmpty || stop {
+    func fetchRemoteObjects(_ query: String,
+                            page: Int? = nil)
+    {
+        let pageToLoad = page ?? 0
+        if query.count < 3 {
+            self.searchResult = []
+            self.currentPage = 0
             return
         }
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
+        sharedMessageDataService.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
+            DispatchQueue.main.async {
+                self.tableView.hideLoadingFooter()
+            }
         
-        sharedMessageDataService.search(query, page: currentPage, completion: { (messages, error) -> Void in
-            self.tableView.hideLoadingFooter()
+            guard error == nil, let messages = messageBoxes else {
+                PMLog.D(" search error: \(String(describing: error))")
+                
+                if pageToLoad == 0 {
+                    self.fetchLocalObjects()
+                }
+                return
+            }
+            self.currentPage = pageToLoad
+            guard !messages.isEmpty else {
+                return
+            }
             
-            if messages?.count > 0 {
-                self.currentPage += 1
-                if error != nil {
-                    PMLog.D(" search error: \(String(describing: error))")
+            let context = sharedCoreDataService.mainManagedObjectContext
+            context.perform {
+                let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
+                if pageToLoad > 0 {
+                    self.searchResult.append(contentsOf: mainQueueMessages)
                 } else {
-                    
-                }
-            } else {
-                self.stop = true
-            }
-            
-            self.handleFromLocal(query)
-        })
-    }
-    
-    func predicateForSearch(_ query: String) -> NSPredicate? {
-        return NSPredicate(format: "(%K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@ OR %K CONTAINS[cd] %@) AND (%K != -1) AND (%K != 1)", Message.Attributes.title, query, Message.Attributes.senderName, query, Message.Attributes.toList, query, Message.Attributes.sender, query, Message.Attributes.locationNumber, Message.Attributes.locationNumber)
-    }
-    
-    func fetchMessagesIfNeededForIndexPath(_ indexPath: IndexPath) {
-        if let fetchedResultsController = fetchedResultsController {
-            if let last = fetchedResultsController.fetchedObjects?.last as? Message {
-                if let current = fetchedResultsController.object(at: indexPath) as? Message {
-                    if last == current {
-                        handleQuery(query)
-                    }
+                    self.searchResult = mainQueueMessages
                 }
             }
+        }
+    }
+    
+    func initiateFetchIfCloseToBottom(_ indexPath: IndexPath) {
+        if (self.searchResult.count - 1) <= indexPath.row {
+            self.fetchRemoteObjects(query, page: self.currentPage + 1)
         }
     }
 
@@ -225,9 +326,7 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                if let message = fetchedResultsController?.object(at: indexPathForSelectedRow) as? Message {
-                    messageDetailViewController.message = message
-                }
+                messageDetailViewController.message = self.searchResult[indexPathForSelectedRow.row]
             } else {
                 PMLog.D("No selected row.")
             }
@@ -235,79 +334,33 @@ class SearchViewController: ProtonMailViewController {
     }
 }
 
-
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension SearchViewController: NSFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
-    }
-    
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
-        switch(type) {
-        case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
-        case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
-        default:
-            return
-        }
-    }
-    
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        switch(type) {
-        case .delete:
-            if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .insert:
-            if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
-            }
-        case .update:
-            if let indexPath = indexPath {
-                if let cell = tableView.cellForRow(at: indexPath) as? MailboxMessageCell {
-                    if let message = fetchedResultsController?.object(at: indexPath) as? Message {
-                        cell.configureCell(message, showLocation: true, ignoredTitle: "")
-                    }
-                }
-            }
-        default:
-            return
-        }
-    }
-}
-
-
 // MARK: - UITableViewDataSource
 
 extension SearchViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return fetchedResultsController?.numberOfSections() ?? 0
+        return self.searchResult.isEmpty ? 0 : 1
     }
 
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController?.numberOfRows(in: section) ?? 0
+        return self.searchResult.count
     }
     
     @objc func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as! MailboxMessageCell
-        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
-            if let message = fetchedResultsController?.object(at: indexPath) as? Message {
-                mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
-            }
+        guard let mailboxCell = tableView.dequeueReusableCell(withIdentifier: MailboxMessageCell.Constant.identifier, for: indexPath) as? MailboxMessageCell else
+        {
+            assert(false)
+            return UITableViewCell()
         }
+        
+        let message = self.searchResult[indexPath.row]
+        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
         return mailboxCell
     }
     
     @objc func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.zeroMargin()
-        fetchMessagesIfNeededForIndexPath(indexPath)
+        self.initiateFetchIfCloseToBottom(indexPath)
     }
 }
 
@@ -317,11 +370,7 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if self.fetchedResultsController?.numberOfRows(in: indexPath.section) > indexPath.row {
-            if let _ = fetchedResultsController?.object(at: indexPath) as? Message {
-                self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
-            }
-        }
+        self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
     }
     
     @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -342,10 +391,7 @@ extension SearchViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-        
-        self.stop = false
-        handleQuery(query)
-        
+        self.fetchRemoteObjects(self.query)
         return true
     }
 }

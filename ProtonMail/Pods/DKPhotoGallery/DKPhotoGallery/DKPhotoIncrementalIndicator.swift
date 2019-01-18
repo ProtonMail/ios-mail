@@ -60,7 +60,7 @@ class DKPhotoIncrementalIndicator: UIView {
         
         super.init(frame: .zero)
         
-        self.replicatorLayer = self.layer as! CAReplicatorLayer
+        self.replicatorLayer = self.layer as? CAReplicatorLayer
         self.replicatorLayer.instanceCount = 0
         self.replicatorLayer.instanceDelay = CFTimeInterval(1 / Float(self.maxInstanceCount))
         self.replicatorLayer.instanceColor = UIColor.white.cgColor

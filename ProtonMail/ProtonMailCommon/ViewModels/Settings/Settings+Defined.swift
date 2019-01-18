@@ -1,15 +1,34 @@
 //
 //  Settings+Defined.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/5/17.
 //
-//  Created by Yanfeng Zhang on 6/5/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
 //settings language item  ***!!! this need match with LanguageManager.h
-
 extension ELanguage {
     
     public var nativeDescription : String {
@@ -37,6 +56,20 @@ extension ELanguage {
                 return "Italiano"
             case .portugueseBrazil:
                 return "Portuguese Brazil"
+            case .chineseSimplified:
+                return "简体中文"
+            case .chineseTraditional:
+                return "繁體中文"
+            case .catalan:
+                return "Català"
+            case .danish:
+                return "dansk"
+            case  .czech:
+                return "Čeština"
+            case .portuguese:
+                return "português"
+            case .romanian:
+                return "românesc"
             case .count:
                 return ""
             }
@@ -68,6 +101,20 @@ extension ELanguage {
                 return LocalString._italian
             case .portugueseBrazil:
                 return LocalString._portuguese_brazil
+            case .chineseSimplified:
+                return LocalString._chinese_simplified
+            case .chineseTraditional:
+                return LocalString._chinese_traditional
+            case .catalan:
+                return LocalString._catalan
+            case .danish:
+                return LocalString._danish
+            case .czech:
+                return LocalString._czech
+            case .portuguese:
+                return LocalString._portuguese
+            case .romanian:
+                return LocalString._romanian
             case .count:
                 return ""
             }
@@ -99,6 +146,20 @@ extension ELanguage {
                 return "it_IT"
             case .portugueseBrazil:
                 return "pt_BR"
+            case .chineseSimplified:
+                return "zh_CN"
+            case .chineseTraditional:
+                return "zh_TW"
+            case .catalan:
+                return "ca_ES"
+            case .danish:
+                return "da_DK"
+            case .czech:
+                return "cs_CZ"
+            case .portuguese:
+                return "pt_PT"
+            case .romanian:
+                return "ro_RO"
             case .count:
                 return "en_US"
             }
@@ -131,38 +192,67 @@ extension ELanguage {
                 return "it"
             case .portugueseBrazil:
                 return "pt-BR"
+            case .chineseSimplified:
+                return "zh-Hans"
+            case .chineseTraditional:
+                return "zh-Hant"
+            case .catalan:
+                return "ca"
+            case .danish:
+                return "da"
+            case .czech:
+                return "cs"
+            case .portuguese:
+                return "pt"
+            case .romanian:
+                return "ro"
             case .count:
                 return "en"
             }
         }
     }
 
-    static public func allItemsCode() -> [String] {
-        return [ELanguage.english.code,
-                ELanguage.german.code,
-                ELanguage.french.code,
-                ELanguage.russian.code,
-                ELanguage.spanish.code,
-                ELanguage.turkish.code,
-                ELanguage.polish.code,
-                ELanguage.ukrainian.code,
-                ELanguage.dutch.code,
-                ELanguage.italian.code,
-                ELanguage.portugueseBrazil.code
-        ]
-    }
+//    static public func allItemsCode() -> [String] {
+//        return [ELanguage.english.code,
+//                ELanguage.german.code,
+//                ELanguage.french.code,
+//                ELanguage.russian.code,
+//                ELanguage.spanish.code,
+//                ELanguage.turkish.code,
+//                ELanguage.polish.code,
+//                ELanguage.ukrainian.code,
+//                ELanguage.dutch.code,
+//                ELanguage.italian.code,
+//                ELanguage.portugueseBrazil.code,
+//                ELanguage.chineseSimplified.code,
+//                ELanguage.chineseTraditional.code,
+//                ELanguage.catalan.code,
+//                ELanguage.danish.code,
+//                ELanguage.czech.code,
+//                ELanguage.portuguese.code,
+//                ELanguage.romanian.code
+//        ]
+//    }
     static public func allItems() -> [ELanguage] {
-        return [.english,
-                .german,
-                .french,
-                .russian,
-                .spanish,
-                .turkish,
-                .polish,
-                .ukrainian,
-                .dutch,
-                .italian,
-                .portugueseBrazil
+        return [
+            .catalan,
+            .czech,
+            .chineseSimplified,
+            .chineseTraditional,
+            .danish,
+            .dutch,
+            .english,
+            .french,
+            .german,
+            .italian,
+            .polish,
+            .portuguese,
+            .portugueseBrazil,
+            .romanian,
+            .russian,
+            .spanish,
+            .turkish,
+            .ukrainian,
         ]
     }
 }

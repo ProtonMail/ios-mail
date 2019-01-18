@@ -3,20 +3,33 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import CoreData
 
+//TODO::fixme
 let sharedMonitorSavesDataService = MonitorSavesDataService()
 
 class MonitorSavesDataService {
@@ -27,8 +40,18 @@ class MonitorSavesDataService {
     fileprivate var monitorQueue: [NSManagedObject : [HandlerBlock]] = [:]
     
     init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.didSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: sharedCoreDataService.mainManagedObjectContext)
-        NotificationCenter.default.addObserver(self, selector: #selector(MonitorSavesDataService.willSaveNotification(_:)), name: NSNotification.Name.NSManagedObjectContextWillSave, object: sharedCoreDataService.mainManagedObjectContext)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MonitorSavesDataService.didSaveNotification(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextDidSave,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(MonitorSavesDataService.willSaveNotificationMain(_:)),
+                                               name: NSNotification.Name.NSManagedObjectContextWillSave,
+                                               object: nil)
+//        NotificationCenter.default.addObserver(self,
+//                                               selector: #selector(MonitorSavesDataService.willSaveNotificationBackground(_:)),
+//                                               name: NSNotification.Name.NSManagedObjectContextWillSave,
+//                                               object: nil)
     }
     
     deinit {
@@ -99,19 +122,27 @@ class MonitorSavesDataService {
         clearMonitorQueue()
     }
     
-    @objc func willSaveNotification(_ notification: Notification) {
+    @objc func willSaveNotificationMain(_ notification: Notification) {
+        let updatedObjects = sharedCoreDataService.mainManagedObjectContext.updatedObjects
+        self.willSaveNotification(notification, updatedObjects: updatedObjects)
+    }
+    
+//    @objc func willSaveNotificationBackground(_ notification: Notification) {
+//        let updatedObjects = sharedCoreDataService.backgroundManagedObjectContext.updatedObjects
+//        self.willSaveNotification(notification, updatedObjects: updatedObjects)
+//    }
+    
+    func willSaveNotification(_ notification: Notification, updatedObjects: Set<NSManagedObject>) {
         clearMonitorQueue()
         
-        if let updatedObjects = sharedCoreDataService.mainManagedObjectContext?.updatedObjects {
-            for (entityName, attributeHandlerDictionary) in handlers {
-                if let filteredObjects = filterUpdatedObjects(updatedObjects as NSSet, forEntityName: entityName) {
-                    
-                    for managedObject in filteredObjects {
-                        let changedValues = (managedObject as AnyObject).changedValues()
-                        for (attribute, handler) in attributeHandlerDictionary {
-                            if changedValues[attribute] != nil {
-                                addMonitorQueueHandler(handler, forManagedObject: managedObject as! NSManagedObject)
-                            }
+        for (entityName, attributeHandlerDictionary) in handlers {
+            if let filteredObjects = filterUpdatedObjects(updatedObjects as NSSet, forEntityName: entityName) {
+                
+                for managedObject in filteredObjects {
+                    let changedValues = (managedObject as AnyObject).changedValues()
+                    for (attribute, handler) in attributeHandlerDictionary {
+                        if changedValues[attribute] != nil {
+                            addMonitorQueueHandler(handler, forManagedObject: managedObject as! NSManagedObject)
                         }
                     }
                 }

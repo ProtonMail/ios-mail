@@ -1,10 +1,30 @@
 //
 //  StoreKitManager.swift
-//  ProtonMail
+//  ProtonMail - Created on 21/08/2018.
 //
-//  Created by Anatoly Rosencrantz on 21/08/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import StoreKit
@@ -14,8 +34,12 @@ class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
     private override init() {
         super.init()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(reachabilityChanged), name: .reachabilityChanged, object: nil)
     }
-    
+    private lazy var isOffline: Bool = {
+        return sharedInternetReachability.currentReachabilityStatus() == .NotReachable
+    }()
     private var productIds = Set([ServicePlan.plus.storeKitProductId!])
     private var availableProducts: [SKProduct] = []
     private var request: SKProductsRequest!
@@ -26,12 +50,32 @@ class StoreKitManager: NSObject {
         return queue
     }()
     
+    internal var refreshHandler: (()->Void)?
     private var successCompletion: (()->Void)?
     private var deferredCompletion: (()->Void)?
-    private var errorCompletion: (Error)->Void = { error in
+    private lazy var errorCompletion: (Error)->Void = { error in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
             let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_ok_action, style: .cancel, handler: nil))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+        }
+    }
+    private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            guard let currentUsername = sharedUserDataService.username else {
+                self.errorCompletion(Errors.noActiveUsernameInUserDataService)
+                return
+            }
+            
+            let message = """
+            \(error.localizedDescription)
+            \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
+            """
+            let alert = UIAlertController(title: LocalString._warning, message: message, preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._yes_bypass_validation + currentUsername,
+                                  style: .destructive,
+                                  handler: { _ in completion()} ))
+            alert.addAction(.init(title: LocalString._no_dont_bypass_validation, style: .cancel, handler: nil))
             UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
@@ -55,7 +99,11 @@ class StoreKitManager: NSObject {
     
     internal func readyToPurchaseProduct() -> Bool {
         // no matter which user is logged in now, if there is any unfinished transaction - we do not want to give opportunity to start new purchase. BE currently can process only last transaction in Receipts, so we do not want to mess up the older ones.
-        return SKPaymentQueue.default().transactions.isEmpty && (self.applicationUsername() != nil)
+        return (!self.hasUnfinishedPurchase()) && (self.applicationUsername() != nil)
+    }
+    
+    internal func hasUnfinishedPurchase() -> Bool {
+        return !SKPaymentQueue.default().transactions.filter { $0.transactionState != .failed }.isEmpty
     }
     
     internal func purchaseProduct(withId id: String,
@@ -83,26 +131,51 @@ class StoreKitManager: NSObject {
         SKPaymentQueue.default().add(payment)
     }
     
+    @objc internal func reachabilityChanged(_ note : Notification) {
+        guard let current = note.object as? Reachability else {
+            return
+        }
+        switch current.currentReachabilityStatus() {
+        case .ReachableViaWiFi where self.isOffline,
+             .ReachableViaWWAN where self.isOffline:
+            self.processAllTransactions()
+            self.isOffline = false
+            
+        case .NotReachable:
+            self.isOffline = true
+            
+        default: break
+        }
+    }
+}
+
+extension StoreKitManager {
     enum Errors: LocalizedError {
         case unavailableProduct
-        case recieptLost
+        case receiptLost
         case haveTransactionOfAnotherUser
         case alreadyPurchasedPlanDoesNotMatchBackend
         case sandboxReceipt
         case noHashedUsernameArrivedInTransaction
         case noActiveUsernameInUserDataService
         case transactionFailedByUnknownReason
+        case noNewSubscriptionInSuccessfullResponse
+        case appIsLocked
+        case pleaseSignIn
         
         var errorDescription: String? {
             switch self {
             case .unavailableProduct: return LocalString._unavailable_product
-            case .recieptLost: return LocalString._reciept_lost
+            case .receiptLost: return LocalString._reciept_lost
             case .haveTransactionOfAnotherUser: return LocalString._another_user_transaction
             case .alreadyPurchasedPlanDoesNotMatchBackend: return LocalString._backend_mismatch
             case .sandboxReceipt: return LocalString._sandbox_receipt
             case .noHashedUsernameArrivedInTransaction: return LocalString._no_hashed_username_arrived_in_transaction
             case .noActiveUsernameInUserDataService: return LocalString._no_active_username_in_user_data_service
             case .transactionFailedByUnknownReason: return LocalString._transaction_failed_by_unknown_reason
+            case .noNewSubscriptionInSuccessfullResponse: return LocalString._no_new_subscription_in_response
+            case .appIsLocked: return LocalString._unlock_to_proceed_with_iap
+            case .pleaseSignIn: return LocalString._please_sign_in_iap
             }
         }
     }
@@ -163,100 +236,162 @@ extension StoreKitManager: SKProductsRequestDelegate {
 extension StoreKitManager: SKPaymentTransactionObserver {
     // this will be called right after the purchase and after relaunch
     internal func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
-        self.processTransactions()
+        self.processAllTransactions()
     }
     
     // this will be called after relogin and from the method above
-    internal func processTransactions() {
+    internal func processAllTransactions() {
         self.transactionsQueue.cancelAllOperations()
         SKPaymentQueue.default().transactions.forEach { transaction in
             self.transactionsQueue.addOperation { self.process(transaction) }
         }
     }
     
-    // TODO: break down into multiple methods
-    private func process(_ transaction: SKPaymentTransaction) {
+    private func process(_ transaction: SKPaymentTransaction, shouldVerifyPurchaseWasForSameAccount shouldVerify: Bool = true) {
         switch transaction.transactionState {
         case .failed:
-            let error = transaction.error as NSError?
-            switch error {
-            case .some(SKError.paymentCancelled): break // no need to do anything
-            case .some(let error): self.errorCompletion(error)
-            case .none: self.errorCompletion(Errors.transactionFailedByUnknownReason)
-            }
-            SKPaymentQueue.default().finishTransaction(transaction)
+            self.proceed(withFailed: transaction)
             
         case .purchased:
-            guard let hashedUsername = transaction.payment.applicationUsername else {
-                self.errorCompletion(Errors.noHashedUsernameArrivedInTransaction)
-                return
-            }
-            guard let currentUsername = self.applicationUsername() else {
-                self.errorCompletion(Errors.noActiveUsernameInUserDataService)
-                return
-            }
-            guard hashedUsername == self.hash(username: currentUsername) ||
-                self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
-            {
-                self.errorCompletion(Errors.haveTransactionOfAnotherUser)
-                return
-            }
-            
-            guard let receiptUrl = Bundle.main.appStoreReceiptURL,
-                !receiptUrl.lastPathComponent.contains("sandbox") else
-            {
+            do {
+                guard SignInManager.shared.isSignedIn() else {
+                    throw Errors.pleaseSignIn
+                }
+                guard UnlockManager.shared.isUnlocked() else {
+                    throw Errors.appIsLocked
+                }
+                try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify)
+                
+            } catch Errors.noHashedUsernameArrivedInTransaction { // storekit bug
+                self.confirmUserValidationBypass(Errors.noHashedUsernameArrivedInTransaction) {
+                    self.transactionsQueue.addOperation { self.process(transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+                }
+                
+            } catch Errors.haveTransactionOfAnotherUser { // user login error
+                self.confirmUserValidationBypass(Errors.haveTransactionOfAnotherUser) {
+                    self.transactionsQueue.addOperation { self.process(transaction, shouldVerifyPurchaseWasForSameAccount: false) }
+                }
+            } catch Errors.sandboxReceipt {  // receipt error
                 self.errorCompletion(Errors.sandboxReceipt)
                 SKPaymentQueue.default().finishTransaction(transaction)
-                return
+                
+            } catch Errors.receiptLost { // receipt error
+                self.errorCompletion(Errors.receiptLost)
+                SKPaymentQueue.default().finishTransaction(transaction)
+
+            } catch Errors.noNewSubscriptionInSuccessfullResponse { // error on BE
+                self.errorCompletion(Errors.noNewSubscriptionInSuccessfullResponse)
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } catch let error { // other errors
+                self.errorCompletion(error)
             }
             
-            guard let reciept = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
-                self.errorCompletion(Errors.recieptLost)
-                SKPaymentQueue.default().finishTransaction(transaction)
-                return
-            }
-            do {
-                guard let plan = ServicePlan(storeKitProductId: transaction.payment.productIdentifier),
-                    let details = plan.fetchDetails(),
-                    let planId = details.iD else
-                {
-                    throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
-                }
-                let serverUpdateApi = PostRecieptRequest(reciept: reciept, andActivatePlanWithId: planId)
-                let serverUpdateRes = try await(serverUpdateApi.run())
-                if let newSubscription = serverUpdateRes.newSubscription {
-                    ServicePlanDataService.shared.currentSubscription = newSubscription
-                }
-                self.successCompletion?()
-                SKPaymentQueue.default().finishTransaction(transaction)
-            } catch let error {
-                switch (error as NSError).code {
-                case 22101:
-                    // Amount mismatch - try report only credits without activating the plan
-                    do {
-                        let serverUpdateApi = PostCreditRequest(reciept: reciept)
-                        let _ = try await(serverUpdateApi.run())
-                        self.successCompletion?()
-                        SKPaymentQueue.default().finishTransaction(transaction)
-                    } catch let error {
-                        if (error as NSError).code == 22915 { // Apple payment already registered
-                            SKPaymentQueue.default().finishTransaction(transaction)
-                        } else {
-                            self.errorCompletion(error)
-                        }
-                    }
-//                case 22914: //TODO:: need to handle this properly
-//                    SKPaymentQueue.default().finishTransaction(transaction)
-//                    self.successCompletion?()
-                default:
-                    self.errorCompletion(error)
-                }
-            }
         case .deferred, .purchasing:
             self.deferredCompletion?()
-            
         case .restored:
             break // never happens in our flow
         }
+    }
+    
+    private func proceed(withFailed transaction: SKPaymentTransaction) {
+        SKPaymentQueue.default().finishTransaction(transaction)
+        let error = transaction.error as NSError?
+        switch error {
+        case .some(SKError.paymentCancelled):
+            self.refreshHandler?()
+        case .some(let error):
+            self.errorCompletion(error)
+            self.refreshHandler?()
+        case .none:
+            self.errorCompletion(Errors.transactionFailedByUnknownReason)
+        }
+    }
+    
+    private func proceed(withPurchased transaction: SKPaymentTransaction,
+                                      shouldVerifyPurchaseWasForSameAccount: Bool = true) throws
+    {
+        if shouldVerifyPurchaseWasForSameAccount {
+            try self.verifyCurrentCredentialsMatch(usernameFromTransaction: transaction.payment.applicationUsername)
+        }
+        let receipt = try self.readReceipt()
+        let planId = try servicePlan(for: transaction.payment.productIdentifier)
+        
+        do {  // payments/subscription
+            let serverUpdateApi = PostRecieptRequest(reciept: receipt, andActivatePlanWithId: planId)
+            let serverUpdateRes = try await(serverUpdateApi.run())
+            if let newSubscription = serverUpdateRes.newSubscription {
+                ServicePlanDataService.shared.currentSubscription = newSubscription
+                self.successCompletion?()
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } else {
+                throw Errors.noNewSubscriptionInSuccessfullResponse
+            }
+            
+        } catch let error as NSError where error.code == 22101 {
+            // Amount mismatch - try report only credits without activating the plan
+            do {  // payments/credits
+                let serverUpdateApi = PostCreditRequest(reciept: receipt)
+                let _ = try await(serverUpdateApi.run())
+                self.successCompletion?()
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } catch let error as NSError where error.code == 22916 {
+                // Apple payment already registered
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } catch let error {
+                self.errorCompletion(error)
+            }
+            
+        } catch let error as NSError where error.code == 22914 {
+            // Sandbox receipt sent to prod BE
+            SKPaymentQueue.default().finishTransaction(transaction)
+            self.errorCompletion(error)
+                
+        } catch let error as NSError where error.code == 22916 {
+            // Apple payment already registered
+            SKPaymentQueue.default().finishTransaction(transaction)
+                
+        } catch let error {
+            throw error // local errors
+        }
+    }
+}
+
+extension StoreKitManager {
+    private func verifyCurrentCredentialsMatch(usernameFromTransaction applicationUsername: String?) throws {
+        guard let currentUsername = self.applicationUsername() else {
+            throw Errors.noActiveUsernameInUserDataService
+        }
+        guard let hashedUsername = applicationUsername else {
+            throw Errors.noHashedUsernameArrivedInTransaction
+        }
+        guard hashedUsername == self.hash(username: currentUsername) ||
+            self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
+        {
+            throw Errors.haveTransactionOfAnotherUser
+        }
+    }
+    
+    func readReceipt() throws -> String {
+        guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+            !receiptUrl.lastPathComponent.contains("sandbox") else
+        {
+            throw Errors.sandboxReceipt
+        }
+        PMLog.D(receiptUrl.path) // make use of this thing so maybe compiler will not screw it up while optimising
+        guard let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString() else {
+            throw Errors.receiptLost
+        }
+        
+        return receipt
+    }
+    
+    func servicePlan(for productId: String) throws -> String {
+        guard let plan = ServicePlan(storeKitProductId: productId),
+            let details = plan.fetchDetails(),
+            let planId = details.iD else
+        {
+            throw Errors.alreadyPurchasedPlanDoesNotMatchBackend
+        }
+        return planId
     }
 }

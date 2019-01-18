@@ -1,10 +1,30 @@
 //
 //  PaymentsAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 29/08/2018.
 //
-//  Created by Anatoly Rosencrantz on 29/08/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -153,7 +173,7 @@ final class AppleTier : ApiResponse {
 
 
 final class GetSubscriptionResponse: ApiResponse {
-    var subscription: Subscription?
+    var subscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -172,7 +192,7 @@ final class GetSubscriptionResponse: ApiResponse {
         let plans = plansParser.availableServicePlans
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = Subscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
+        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
         
         return true
     }
@@ -288,7 +308,7 @@ final class PostCreditRequest: ApiRequestNew<PostCreditResponse> {
 }
 
 final class PostCreditResponse: ApiResponse {
-    var newSubscription: Subscription?
+    var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
@@ -332,7 +352,7 @@ final class PostRecieptRequest: ApiRequestNew<PostRecieptResponse> {
 }
 
 final class PostRecieptResponse: ApiResponse {
-    var newSubscription: Subscription?
+    var newSubscription: ServicePlanSubscription?
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))

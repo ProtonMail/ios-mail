@@ -3,16 +3,28 @@
 //  ProtonMail
 //
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  The MIT License
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
+//  Copyright (c) 2018 Proton Technologies AG
 //
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import MBProgressHUD
@@ -27,7 +39,6 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var backgroundImage: UIImageView!
 
     @IBOutlet weak var passwordManagerButton: UIButton!
-    var isRemembered: Bool = sharedUserDataService.isRememberMailboxPassword
     var isShowpwd : Bool = false;
     
     //define
@@ -160,87 +171,17 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     func decryptPassword() {
-        isRemembered = true
-        let password = (passwordTextField.text ?? "") //.trim()
-        var mailbox_password = password
-        if let keysalt = AuthCredential.getKeySalt(), !keysalt.isEmpty {
-            let keysalt_byte : Data = keysalt.decodeBase64()
-            mailbox_password = PasswordUtils.getMailboxPassword(password, salt: keysalt_byte)
-        }
-        if sharedUserDataService.isMailboxPasswordValid(mailbox_password, privateKey: AuthCredential.getPrivateKey()) {
-            if sharedUserDataService.isSet {
-                sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
-                (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-            } else {
-                do {
-                    try AuthCredential.setupToken(mailbox_password, isRememberMailbox: self.isRemembered)
-                    MBProgressHUD.showAdded(to: view, animated: true)
-                    sharedLabelsDataService.fetchLabels()
-                    ServicePlanDataService.shared.updateCurrentSubscription()
-                    sharedUserDataService.fetchUserInfo().done(on: .main) { info in
-                        MBProgressHUD.hide(for: self.view, animated: true)
-                        if info != nil {
-                            if info!.delinquent < 3 {
-                                userCachedStatus.pinFailedCount = 0;
-                                sharedUserDataService.setMailboxPassword(mailbox_password, keysalt: nil, isRemembered: self.isRemembered)
-                                self.restoreBackup()
-                                self.loadContent()
-                                NotificationCenter.default.post(name: Notification.Name(rawValue: NotificationDefined.didSignIn), object: self)
-                            } else {
-                                let alertController = LocalString._general_account_disabled_non_payment.alertController() 
-                                alertController.addAction(UIAlertAction.okAction({ (action) -> Void in
-                                    let _ = self.navigationController?.popViewController(animated: true)
-                                }))
-                                self.present(alertController, animated: true, completion: nil)
-                            }
-                        } else {
-                            let alertController = NSError.unknowError().alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-                    }.catch(on: .main) { (error) in
-                        MBProgressHUD.hide(for: self.view, animated: true)
-                        if let error = error as NSError? {
-                            let alertController = error.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
-                            if error.domain == APIServiceErrorDomain && error.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                                let _ = self.navigationController?.popViewController(animated: true)
-                            }
-                        }
-                    }
-                } catch let ex as NSError {
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    let message = (ex.userInfo["MONExceptionReason"] as? String) ?? LocalString._the_mailbox_password_is_incorrect
-                    let alertController = UIAlertController(title: LocalString._incorrect_password, message: NSLocalizedString(message, comment: ""), preferredStyle: .alert)
-                    alertController.addOKAction()
-                    present(alertController, animated: true, completion: nil)
-                }
-            }
-        } else {
-            let alert = UIAlertController(title: LocalString._incorrect_password, message: LocalString._the_mailbox_password_is_incorrect, preferredStyle: .alert)
-            alert.addAction((UIAlertAction.okAction()))
-            present(alert, animated: true, completion: nil)
-        }
-    }
-    
-    func restoreBackup () {
-        UserTempCachedStatus.restore()
-    }
-    
-    fileprivate func loadContent() {
-        self.loadContactsAfterInstall()
-        (UIApplication.shared.delegate as! AppDelegate).switchTo(storyboard: .inbox, animated: true)
-    }
-    
-    func loadContactsAfterInstall() {
-        sharedContactDataService.fetchContacts { (contacts, error) in
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            } else {
-                PMLog.D("Contacts count: \(contacts!.count)")
-            }
-        }
+        let password = (passwordTextField.text ?? "")
+        let mailbox_password = SignInManager.shared.mailboxPassword(from: password)
+        
+        MBProgressHUD.showAdded(to: view, animated: true)
+        SignInManager.shared.proceedWithMailboxPassword(mailbox_password,
+                                 onError: { error in
+                                    MBProgressHUD.hide(for: self.view, animated: true)
+                                    let alert = error.alertController()
+                                    alert.addAction((UIAlertAction.okAction()))
+                                    self.present(alert, animated: true, completion: nil)
+        })
     }
     
     func updateButton(_ button: UIButton) {
@@ -261,11 +202,6 @@ class MailboxPasswordViewController: UIViewController {
     
     @IBAction func decryptAction(_ sender: UIButton) {
         decryptPassword()
-    }
-    
-    @IBAction func rememberButtonAction(_ sender: UIButton) {
-        self.isRemembered = !isRemembered
-        self.isRemembered = true;
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {

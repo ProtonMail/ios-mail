@@ -1,10 +1,30 @@
 //
 //  ServiceLevelViewModel.swift
-//  ProtonMail
+//  ProtonMail - Created on 12/08/2018.
 //
-//  Created by Anatoly Rosencrantz on 12/08/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 
@@ -13,6 +33,7 @@ protocol ServiceLevelDataSource {
     var title: String { get }
     var sections: [Section<UIView>] { get }
     func shouldPerformSegue(byItemOn: IndexPath) -> ServiceLevelCoordinator.Destination?
+    func reload()
 }
 
 extension ServiceLevelDataSource {
@@ -24,12 +45,17 @@ extension ServiceLevelDataSource {
 
 class BuyMoreDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
-    
-    let title = LocalString._more_credits
+    internal let title = LocalString._more_credits
     internal var sections: [Section<UIView>] = []
+    private var subscription: Subscription
+    
+    internal func reload() {
+        self.setup(with: self.subscription)
+    }
     
     init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription!) {
         self.delegate = delegate
+        self.subscription = subscription
         self.setup(with: subscription)
     }
     
@@ -45,9 +71,18 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
     internal var sections: [Section<UIView>] = []
     internal var title: String
     
+    private var plan: ServicePlan
+    
+    internal func reload() {
+        if let details = plan.fetchDetails() {
+            self.setup(with: self.plan, details: details)
+        }
+    }
+    
     init(delegate: ServiceLevelDataSourceDelegate, plan: ServicePlan) {
         self.delegate = delegate
         self.title = String(format: LocalString._get_plan, plan.subheader.0)
+        self.plan = plan
         guard let details = plan.fetchDetails() else {
             return
         }
@@ -77,7 +112,14 @@ class PlanDetailsDataSource: ServiceLevelDataSource {
 class PlanAndLinksDataSource: ServiceLevelDataSource {
     weak var delegate: ServiceLevelDataSourceDelegate!
     internal var sections: [Section<UIView>] = []
-    let title = LocalString._menu_service_plan_title
+    internal let title = LocalString._menu_service_plan_title
+    private var subscription: Subscription?
+    
+    internal func reload() {
+        if let subscription = subscription {
+            self.setup(with: subscription)
+        }
+    }
     
     init(delegate: ServiceLevelDataSourceDelegate, subscription: Subscription?) {
         self.delegate = delegate
@@ -85,6 +127,7 @@ class PlanAndLinksDataSource: ServiceLevelDataSource {
             self.sections = [ServiceLevelDataFactory.makeLinksSection()]
             return
         }
+        self.subscription = subscription
         self.setup(with: subscription)
     }
     

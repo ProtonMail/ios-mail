@@ -1,10 +1,30 @@
 //
 //  ContactsDefined.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/9/17.
 //
-//  Created by Yanfeng Zhang on 6/9/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -142,26 +162,22 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            let emailObject = Email.EmailForAddressWithContact(self.newEmail,
-                                                               contactID: contactID,
-                                                               inManagedObjectContext: context)
-            if let emailObject = emailObject {
-                if let contactGroups = emailObject.labels.allObjects as? [Label] {
-                    for contactGroup in contactGroups {
-                        origContactGroupIDs.insert(contactGroup.labelID)
-                    }
-                } else {
-                    // TODO: handle error
-                    PMLog.D("Can't get contact groups")
+        let context = sharedCoreDataService.mainManagedObjectContext
+        let emailObject = Email.EmailForAddressWithContact(self.newEmail,
+                                                           contactID: contactID,
+                                                           inManagedObjectContext: context)
+        if let emailObject = emailObject {
+            if let contactGroups = emailObject.labels.allObjects as? [Label] {
+                for contactGroup in contactGroups {
+                    origContactGroupIDs.insert(contactGroup.labelID)
                 }
             } else {
                 // TODO: handle error
-                PMLog.D("Can't get email from address")
+                PMLog.D("Can't get contact groups")
             }
         } else {
             // TODO: handle error
-            PMLog.D("Can't get main context")
+            PMLog.D("Can't get email from address")
         }
         
         newContactGroupIDs = origContactGroupIDs
@@ -170,17 +186,12 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            if let context = sharedCoreDataService.mainManagedObjectContext {
-                if let label = Label.labelForLableID(labelID,
-                                                     inManagedObjectContext: context) {
-                    result.append(label.name)
-                } else {
-                    // TODO: handle error
-                    PMLog.D(("Can't get label from ID"))
-                }
+            let context = sharedCoreDataService.mainManagedObjectContext
+            if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                result.append(label.name)
             } else {
                 // TODO: handle error
-                PMLog.D(("Can't get main context"))
+                PMLog.D(("Can't get label from ID"))
             }
         }
         
@@ -201,20 +212,16 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            for ID in newContactGroupIDs {
-                let label = Label.labelForLableID(ID, inManagedObjectContext: context)
-                
-                if let label = label {
-                    colors.append(label.color)
-                } else {
-                    // TODO: handle error
-                    PMLog.D("Can't retrieve label by ID")
-                }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        for ID in newContactGroupIDs {
+            let label = Label.labelForLableID(ID, inManagedObjectContext: context)
+            
+            if let label = label {
+                colors.append(label.color)
+            } else {
+                // TODO: handle error
+                PMLog.D("Can't retrieve label by ID")
             }
-        } else {
-            // TODO: handle error
-            PMLog.D("Can't get context")
         }
         
         return colors

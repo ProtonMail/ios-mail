@@ -1,10 +1,30 @@
 //
 //  ContactImportViewController.swift
-//  ProtonMail
+//  ProtonMail - Created on 2/7/18.
 //
-//  Created by Yanfeng Zhang on 2/7/18.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import UIKit
 import Contacts
@@ -74,6 +94,7 @@ class ContactImportViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.cancelled = true
+        self.dismiss()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
@@ -112,7 +133,6 @@ class ContactImportViewController: UIViewController {
         }
     }
     
-    @available(iOS 9.0, *)
     internal func getContacts() {
         let store = CNContactStore()
         switch CNContactStore.authorizationStatus(for: .contacts) {
@@ -133,7 +153,6 @@ class ContactImportViewController: UIViewController {
         }
     }
     
-    @available(iOS 9.0, *)
     lazy var contacts: [CNContact] = {
         let contactStore = CNContactStore()
         let keysToFetch : [CNKeyDescriptor] = [
@@ -171,8 +190,14 @@ class ContactImportViewController: UIViewController {
         return results
     }()
     
-    @available(iOS 9.0, *)
     internal func retrieveContactsWithStore(store: CNContactStore) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
+            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
+            let authCredential = AuthCredential.fetchFromKeychain() else
+        {
+            NSError.lockError().alertToast()
+            return
+        }
         
         {
             var pre_contacts : [[CardData]] = []
@@ -264,13 +289,9 @@ class ContactImportViewController: UIViewController {
                                     continue
                                 }
                                 
-                                guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-                                    continue //with error
-                                }
-                                
                                 let signed_vcard2 = try sharedOpenPGP.signTextDetached(vcard2Str,
                                                                                        privateKey: userkey.private_key,
-                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       passphrase: mailboxPassword,
                                                                                        trim: true)
                                 
                                 //card 2 object
@@ -289,7 +310,7 @@ class ContactImportViewController: UIViewController {
                                 let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
                                 let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
                                                                                        privateKey: userkey.private_key,
-                                                                                       passphrase: sharedUserDataService.mailboxPassword!,
+                                                                                       passphrase: mailboxPassword,
                                                                                        trim: true)
                                 //card 3 object
                                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
@@ -322,7 +343,7 @@ class ContactImportViewController: UIViewController {
                     self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
                 } ~> .main
                 
-                sharedContactDataService.imports(cards: pre_contacts, cancel: { () -> Bool in
+                sharedContactDataService.imports(cards: pre_contacts, authCredential: authCredential, cancel: { () -> Bool in
                     return self.cancelled
                 }, update: { (processed) in
                     {

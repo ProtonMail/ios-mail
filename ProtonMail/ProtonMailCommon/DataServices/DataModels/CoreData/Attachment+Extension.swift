@@ -25,12 +25,13 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+
 import Foundation
 import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
-
+//TODO::fixme import header
 extension Attachment {
     
     struct Attributes {
@@ -58,16 +59,11 @@ extension Attachment {
         return localURL != nil
     }
     
-    fileprivate var passphrase: String {
-        return sharedUserDataService.mailboxPassword ?? ""
-    }
-    
-    
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id: String, mailbox_pwd: String) -> ModelsEncryptedSplit? {
+    func encrypt(byAddrID sender_address_id: String, mailbox_pwd: String, key: String) -> ModelsEncryptedSplit? {
         do {
             if let clearData = self.fileData {
-                return try clearData.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd)
+                return try clearData.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd, key: key)
             }
             
             guard let localURL = self.localURL,
@@ -76,7 +72,7 @@ extension Attachment {
                 return nil
             }
             
-            let encryptor = try Data.makeEncryptAttachmentProcessor(sender_address_id, fileName: self.fileName, totalSize: totalSize)
+            let encryptor = try Data.makeEncryptAttachmentProcessor(sender_address_id, fileName: self.fileName, totalSize: totalSize, key: key)
             let fileHandle = try FileHandle(forReadingFrom: localURL)
             
             let chunkSize = 1000000 // 1 mb
@@ -98,9 +94,9 @@ extension Attachment {
         }
     }
     
-    func sign(byAddrID sender_address_id : String, mailbox_pwd: String) -> Data? {
+    func sign(byAddrID sender_address_id : String, mailbox_pwd: String, key: String) -> Data? {
         do {
-            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd) else {
+            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd, key: key) else {
                 return nil
             }
             var error : NSError?
@@ -115,12 +111,15 @@ extension Attachment {
         }
     }
     
-    func getSession() throws -> ModelsSessionSplit? {
-        if self.keyPacket == nil {
+    func getSession(keys: Data) throws -> ModelsSessionSplit? {
+        guard let keyPacket = self.keyPacket,
+            let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
+        {
             return nil
         }
-        let data: Data = Data(base64Encoded: self.keyPacket!, options: NSData.Base64DecodingOptions(rawValue: 0))!
-        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase)
+        
+        let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
         return sessionKey
     }
     
@@ -167,7 +166,10 @@ extension Attachment {
                 }
                 
                 self.localURL = nil
-                sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+                sharedMessageDataService.fetchAttachmentForAttachment(self,
+                                                                      customAuthCredential: self.message.cachedAuthCredential,
+                                                                      downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
+                                                                      completion: { (_, url, error) -> Void in
                     self.localURL = url;
                     seal.fulfill(self.base64DecryptAttachment())
                     if error != nil {
@@ -180,12 +182,20 @@ extension Attachment {
     }
     
     func base64DecryptAttachment() -> String {
+        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
+            case let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys else
+        {
+            return ""
+        }
+        
         if let localURL = self.localURL {
             if let data : Data = try? Data(contentsOf: localURL as URL) {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            if let decryptData = try data.decryptAttachment(keydata,
+                                                                            passphrase: passphrase,
+                                                                            privKeys: privKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -198,7 +208,9 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata, passphrase: sharedUserDataService.mailboxPassword!) {
+                            if let decryptData = try data.decryptAttachment(keydata,
+                                                                            passphrase: passphrase,
+                                                                            privKeys: privKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }

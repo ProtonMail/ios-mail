@@ -364,6 +364,7 @@ let index_64 : [Int8]  = [
 
 // MARK: -
 
+@available(*, deprecated, message: "remove me after gmp")
 class JKBCrypt: NSObject {
     
     // MARK: Property List
@@ -425,6 +426,8 @@ class JKBCrypt: NSObject {
      
      :returns: String?  The hashed password.
      */
+    
+    @available(*, deprecated, message: "remove me after gmp")
     class func hashPassword(_ password: String, withSalt salt: String) -> String? {
         var bCrypt         : JKBCrypt
         var realSalt       : String

@@ -1,16 +1,32 @@
 //
 //  SharePinUnlockViewController.swift
-//  ProtonMail
+//  Share - Created on 7/26/17.
 //
-//  Created by Yanfeng Zhang on 7/26/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
 
 
 import UIKit
-import Fabric
-import Crashlytics
-import LocalAuthentication
 
 protocol SharePinUnlockViewControllerDelegate : AnyObject {
     func cancel()
@@ -20,7 +36,7 @@ protocol SharePinUnlockViewControllerDelegate : AnyObject {
 
 class SharePinUnlockViewController : UIViewController, CoordinatedNew {
     typealias coordinatorType = SharePinUnlockCoordinator
-    private var coordinator: SharePinUnlockCoordinator?
+    private weak var coordinator: SharePinUnlockCoordinator?
     var viewModel : PinCodeViewModel!
     weak var delegate : SharePinUnlockViewControllerDelegate?
     
@@ -75,7 +91,7 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
     }
     
     func doEnterForeground(){
-        if (!userCachedStatus.touchIDEmail.isEmpty && userCachedStatus.isTouchIDEnabled) {
+        if userCachedStatus.isTouchIDEnabled {
             
         }
     }
@@ -105,26 +121,28 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
             if step != .done {
                 self.setUpView(true)
             } else {
-                if self.viewModel.isPinMatched() {
-                    self.pinCodeView.hideAttempError(true)
-                    self.viewModel.done()
-                    self.delegate?.next()
-                    self.dismiss(animated: true, completion: {
-                    })
-                } else {
-                    let count = self.viewModel.getPinFailedRemainingCount()
-                    if count == 11 { //when setup
-                        self.pinCodeView.resetPin()
-                        self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
-                    } else if count < 10 {
-                        if count <= 0 {
-                            Cancel()
-                        } else {
-                            self.pinCodeView.resetPin()
-                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                self.viewModel.isPinMatched() { matched in
+                    if matched {
+                        self.pinCodeView.hideAttempError(true)
+                        self.viewModel.done() { _ in
+                            self.delegate?.next()
+                            self.dismiss(animated: true, completion: { })
                         }
+                    } else {
+                        let count = self.viewModel.getPinFailedRemainingCount()
+                        if count == 11 { //when setup
+                            self.pinCodeView.resetPin()
+                            self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
+                        } else if count < 10 {
+                            if count <= 0 {
+                                self.Cancel()
+                            } else {
+                                self.pinCodeView.resetPin()
+                                self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
+                            }
+                        }
+                        self.pinCodeView.showError()
                     }
-                    self.pinCodeView.showError()
                 }
             }
         }

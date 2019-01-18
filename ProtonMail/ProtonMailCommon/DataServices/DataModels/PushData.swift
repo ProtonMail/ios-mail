@@ -1,139 +1,60 @@
 //
 //  PushData.swift
-//  ProtonMail
+//  ProtonMail - Created on 12/13/17.
 //
-//  Created by Yanfeng Zhang on 12/13/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
-public class PushData {
+public struct PushData: Codable {
+    let badge: Int
+    let body: String
+    let sender: Sender
+    let messageId: String
+    // Unused on iOS fields:
+    //    let title: String
+    //    let subtitle: String
+    //    let vibrate: Int
+    //    let sound: Int
+    //    let largeIcon: String
+    //    let smallIcon: String
     
-    //in data object
-    let title: String
-    let subTitle: String?
-    let body: String?
-    let vibrate: Int?
-    let sound: Int?
-    let largeIcon: String?
-    let smallIcon: String?
-    let badge: NSNumber?
-    let msgID: String
-    
-    //
-    let type: String?
-    let version: Int?
-    
-    init(title: String,
-         subTitle: String?,
-         body: String?,
-         vibrate: Int?,
-         sound: Int?,
-         largeIcon: String?,
-         smallIcon: String?,
-         badge: NSNumber?,
-         msgID: String,
-         type: String?,
-         version: Int?) {
-        self.title = title
-        self.subTitle = subTitle
-        self.body = body
-        self.vibrate = vibrate
-        self.sound = sound
-        self.largeIcon = largeIcon
-        self.smallIcon = smallIcon
-        self.badge = badge
-        self.msgID = msgID
-        self.type = type
-        self.version = version
-    }
-    
-    //
-    func log() -> String {
-        return ""
-    }
     
     static func parse(with json: String) -> PushData? {
-        guard let obj: [String: Any] = json.parseObjectAny() else {
+        guard let data = json.data(using: .utf8),
+            let push = try? JSONDecoder().decode(Push.self, from: data) else
+        {
             return nil
         }
-        return self.parse(dict: obj)
+        return push.data
     }
-    
-    static func parse(dataString json: String, version: Int?, type: String?) -> PushData? {
-        guard let obj: [String: Any] = json.parseObjectAny() else {
-            return nil
-        }
-        return self.parse(dataDict: obj, version: version, type: type)
-    }
-    
-    static func parse(dataDict data: [String: Any], version: Int?, type: String?) -> PushData? {
+}
 
-        guard let title = data["title"] as? String else {
-            return nil
-        }
-        
-        guard let msgID = data["messageId"] as? String else {
-            return nil
-        }
-        
-        let subtitle = data["subtitle"] as? String
-        let body = data["body"] as? String
-        let vibrate = data["vibrate"] as? Int
-        let sound = data["sound"] as? Int
-        let lIcon = data["largeIcon"] as? String
-        let sIcon = data["smallIcon"] as? String
-        let badge = data["badge"] as? NSNumber
-        
-        return PushData(title: title,
-                        subTitle: subtitle,
-                        body: body,
-                        vibrate: vibrate,
-                        sound: sound,
-                        largeIcon: lIcon,
-                        smallIcon: sIcon,
-                        badge: badge,
-                        msgID: msgID,
-                        type: type,
-                        version: version)
-    }
-    
-    static func parse(dict obj: [String: Any]) -> PushData? {
-        
-        let v = obj["version"] as? Int
-        let type = obj["type"] as? String
-        
-        guard let data = obj["data"] as? [String: Any] else {
-            return nil
-        }
-        
-        guard let title = data["title"] as? String else {
-            return nil
-        }
-        
-        guard let msgID = data["messageId"] as? String else {
-            return nil
-        }
-
-        let subtitle = data["subtitle"] as? String
-        let body = data["body"] as? String
-        let vibrate = data["vibrate"] as? Int
-        let sound = data["sound"] as? Int
-        let lIcon = data["largeIcon"] as? String
-        let sIcon = data["smallIcon"] as? String
-        let badge = data["badge"] as? NSNumber
-        
-        return PushData(title: title,
-                        subTitle: subtitle,
-                        body: body,
-                        vibrate: vibrate,
-                        sound: sound,
-                        largeIcon: lIcon,
-                        smallIcon: sIcon,
-                        badge: badge,
-                        msgID: msgID,
-                        type: type,
-                        version: v)
-    }
+public struct Push: Codable {
+    let data: PushData
+    // Unused on iOS fields
+    //    let type: String
+    //    let version: Int
 }

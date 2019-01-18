@@ -1,18 +1,37 @@
 //
 //  ContactEditViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 5/3/17.
 //
-//  Created by Yanfeng Zhang on 5/3/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
 
 
 class ContactEditViewModelImpl : ContactEditViewModel {
-    var sections : [ContactEditSectionType] = [.display_name,
-                                               .emails,
+    var sections : [ContactEditSectionType] = [.emails,
                                                .encrypted_header,
                                                .cellphone,
                                                .home_address,
@@ -31,7 +50,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var urls : [ContactEditUrl] = []
     var contactGroupData: [String:(name: String, color: String, count: Int)] = [:]
-    //var profilePicture: UIImage? = nil
+    var profilePicture: UIImage? = nil
+    var origProfilePicture: UIImage? = nil
     
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
@@ -219,16 +239,17 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                     self.urls.append(cu)
                                     order += 1
                                 }
-//                            case "Photo":
-//                                let photo = vcard.getPhoto()
-//                                print("photo", photo?.getEncodedData() ?? "",
-//                                      photo?.getRawData() ?? "",
-//                                      photo?.getImageType() ?? "",
-//                                      photo?.getIsBinary() ?? "")
-//                                if let image = photo?.getRawData() {
-//                                    let data = Data.init(bytes: image)
-//                                    self.profilePicture = UIImage.init(data: data)
-//                                }
+                            case "Photo":
+                                let photo = vcard.getPhoto()
+                                print("photo", photo?.getEncodedData() ?? "",
+                                      photo?.getRawData() ?? "",
+                                      photo?.getImageType() ?? "",
+                                      photo?.getIsBinary() ?? "")
+                                if let image = photo?.getRawData() {
+                                    let data = Data.init(bytes: image)
+                                    self.profilePicture = UIImage.init(data: data)
+                                    self.origProfilePicture = self.profilePicture
+                                }
                                 //case "Agent":
                                 //case "Birthday":
                                 //case "CalendarRequestUri":
@@ -374,6 +395,23 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     
     override func getProfile() -> ContactEditProfile {
         return profile
+    }
+    
+    override func getProfilePicture() -> UIImage? {
+        return self.profilePicture
+    }
+    
+    override func setProfilePicture(image: UIImage?) {
+        self.profilePicture = image
+    }
+    
+    override func profilePictureNeedsUpdate() -> Bool {
+        if let orig = self.origProfilePicture {
+            return !orig.isEqual(self.profilePicture)
+        } else {
+            // orig is nil
+            return self.profilePicture != nil
+        }
     }
     
     override func getUrls() -> [ContactEditUrl] {
@@ -706,14 +744,18 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     uid = uuid
                 }
                 
-//                vcard3.clearPhotos()
-//                if let profilePicture = profilePicture,
-//                    let pngData = profilePicture.pngData() {
-//                    let image = PMNIPhoto.createInstance(pngData,
-//                                                         type: "PNG",
-//                                                         isBinary: true)
-//                    vcard3.setPhoto(image)
-//                }
+                // profile image
+                vcard3.clearPhotos()
+                if let profilePicture = profilePicture,
+                    let compressedImage = UIImage.resize(image: profilePicture,
+                                                         targetSize: CGSize.init(width: 30, height: 30)),
+                    let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+                    let image = PMNIPhoto.createInstance(jpegData,
+                                                         type: "JPEG",
+                                                         isBinary: true)
+                    vcard3.setPhoto(image)
+                    isCard3Set = true
+                }
                 
                 let vcard3Str = PMNIEzvcard.write(vcard3)
                 PMLog.D(vcard3Str);

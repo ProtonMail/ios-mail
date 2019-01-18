@@ -1,0 +1,2937 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="nl">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="%d Minute" approved="yes">
+        <source>%d Minute</source>
+        <note>auto lock time format</note>
+        <target xml:lang="nl">%d minuut</target>
+      </trans-unit>
+      <trans-unit id="%d Minutes" approved="yes">
+        <source>%d Minutes</source>
+        <note>auto lock time format</note>
+        <target xml:lang="nl">%d minuten</target>
+      </trans-unit>
+      <trans-unit id="(2048 bit)" approved="yes">
+        <source>(2048 bit)</source>
+        <note>Key size text when setup key</note>
+        <target xml:lang="nl">(2048 bit)</target>
+      </trans-unit>
+      <trans-unit id="(4096 bit)" approved="yes">
+        <source>(4096 bit)</source>
+        <note>Key size text when setup key</note>
+        <target xml:lang="nl">(4096 bit)</target>
+      </trans-unit>
+      <trans-unit id="**********" approved="yes">
+        <source>**********</source>
+        <note>secret</note>
+        <target xml:lang="nl">**********</target>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL" approved="yes">
+        <source>*OPTIONAL</source>
+        <note>optional text field</note>
+        <target xml:lang="nl">*OPTIONEEL</target>
+      </trans-unit>
+      <trans-unit id="2fa Authentication failed please try to login again" approved="yes">
+        <source>2fa Authentication failed please try to login again</source>
+        <note>2fa verification failed</note>
+        <target xml:lang="nl">Tweestapsauthenticatie mislukt, probeer opnieuw in te loggen</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Er is een nieuwe versie van de ProtonMail-app beschikbaar, update de app.</target>
+        <alt-trans>
+          <target xml:lang="nl">Er is een nieuwe versie van de ProtonMail app beschikbaar, update de app.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target xml:lang="nl">Er is geen wachtwoord ingesteld, stel er een in in de systeem instellingen</target>
+      </trans-unit>
+      <trans-unit id="API Server not reachable..." approved="yes">
+        <source>API Server not reachable...</source>
+        <note>when server not reachable</note>
+        <target xml:lang="nl">API server is onbereikbaar...</target>
+      </trans-unit>
+      <trans-unit id="ARCHIVE" approved="yes">
+        <source>ARCHIVE</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">ARCHIEF</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <note>error message</note>
+        <target xml:lang="nl">Toegang tot dit account is geblokkeerd als gevolg van onbetaalde facturen. Gelieve aan te melden via protonmail.com om uw onbetaalde factuur te betalen.</target>
+      </trans-unit>
+      <trans-unit id="Add Anniversary" approved="yes">
+        <source>Add Anniversary</source>
+        <note>new contacts add Anniversary</note>
+        <target xml:lang="nl">Jubileum toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Birthday" approved="yes">
+        <source>Add Birthday</source>
+        <note>new contacts add Birthday</note>
+        <target xml:lang="nl">Verjaardag toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Contact" approved="yes">
+        <source>Add Contact</source>
+        <note>Contacts add new contact</note>
+        <target xml:lang="nl">Voeg contactpersoon toe</target>
+      </trans-unit>
+      <trans-unit id="Add Custom Label" approved="yes">
+        <source>Add Custom Label</source>
+        <note>add custom label type action</note>
+        <target xml:lang="nl">Aangepast label toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Folder" approved="yes">
+        <source>Add Folder</source>
+        <note>Action</note>
+        <target xml:lang="nl">Map Toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Gender" approved="yes">
+        <source>Add Gender</source>
+        <note>new contacts add Gender</note>
+        <target xml:lang="nl">Alle geslachten</target>
+      </trans-unit>
+      <trans-unit id="Add Label" approved="yes">
+        <source>Add Label</source>
+        <note>add label action</note>
+        <target xml:lang="nl">Label toevoegen</target>
+        <alt-trans>
+          <target xml:lang="nl">Voeg label toe</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add New Folder" approved="yes">
+        <source>Add New Folder</source>
+        <note>add a new folder</note>
+        <target xml:lang="nl">Nieuwe map toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add New Label" approved="yes">
+        <source>Add New Label</source>
+        <note>add a new folder</note>
+        <target xml:lang="nl">Nieuw label toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Nickname" approved="yes">
+        <source>Add Nickname</source>
+        <note>new contacts add Nickname</note>
+        <target xml:lang="nl">Bijnaam toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Organization" approved="yes">
+        <source>Add Organization</source>
+        <note>new contacts add Organization</note>
+        <target xml:lang="nl">Organisatie toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Star" approved="yes">
+        <source>Add Star</source>
+        <note>mark message star</note>
+        <target xml:lang="nl">Ster toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add Title" approved="yes">
+        <source>Add Title</source>
+        <note>new contacts add Title</note>
+        <target xml:lang="nl">Titel toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new address" approved="yes">
+        <source>Add new address</source>
+        <note>add new address action</note>
+        <target xml:lang="nl">Nieuw adres toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new custom field" approved="yes">
+        <source>Add new custom field</source>
+        <note>new custom field action</note>
+        <target xml:lang="nl">Nieuw aangepast veld toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new email" approved="yes">
+        <source>Add new email</source>
+        <note>new email action</note>
+        <target xml:lang="nl">Nieuw e-mailadres toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new field" approved="yes">
+        <source>Add new field</source>
+        <note>new field action</note>
+        <target xml:lang="nl">Nieuw veld toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new phone number" approved="yes">
+        <source>Add new phone number</source>
+        <note>new phone action</note>
+        <target xml:lang="nl">Nieuw telefoonnummer toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add new url" approved="yes">
+        <source>Add new url</source>
+        <note>action</note>
+        <target xml:lang="nl">Nieuwe URL toevoegen</target>
+      </trans-unit>
+      <trans-unit id="Add to contacts" approved="yes">
+        <source>Add to contacts</source>
+        <note>Title</note>
+        <target xml:lang="nl">Toevoegen aan contactpersonen</target>
+      </trans-unit>
+      <trans-unit id="Address" approved="yes">
+        <source>Address</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Adres</target>
+      </trans-unit>
+      <trans-unit id="Alert" approved="yes">
+        <source>Alert</source>
+        <note>Title</note>
+        <target xml:lang="nl">Waarschuwing</target>
+      </trans-unit>
+      <trans-unit id="All Mail" approved="yes">
+        <source>All Mail</source>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+        <target xml:lang="nl">Alle berichten</target>
+      </trans-unit>
+      <trans-unit id="All contacts are imported" approved="yes">
+        <source>All contacts are imported</source>
+        <note>Title</note>
+        <target xml:lang="nl">Alle contactpersonen zijn geïmporteerd</target>
+      </trans-unit>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" approved="yes">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Al uw bestaande versleutelde e-mails zullen voorgoed verloren gaan, maar u zal nog steeds uw onversleutelde e-mails kunnen bekijken. 
+
+DEZE ACTIE KAN NIET ONGEDAAN WORDEN GEMAAKT!</target>
+      </trans-unit>
+      <trans-unit id="Also Archive" approved="yes">
+        <source>Also Archive</source>
+        <note>archive when apply label</note>
+        <target xml:lang="nl">Ook archiveren</target>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password." approved="yes">
+        <source>Also used to reset a forgotten password.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Ook gebruikt om een vergeten wachtwoord opnieuw in te stellen.</target>
+      </trans-unit>
+      <trans-unit id="Anniversary" approved="yes">
+        <source>Anniversary</source>
+        <note>contacts talbe cell Anniversary title</note>
+        <target xml:lang="nl">Jubileum</target>
+      </trans-unit>
+      <trans-unit id="Apply" approved="yes">
+        <source>Apply</source>
+        <note>Apply action</note>
+        <target xml:lang="nl">Toepassen</target>
+      </trans-unit>
+      <trans-unit id="Apply Labels" approved="yes">
+        <source>Apply Labels</source>
+        <note>Title</note>
+        <target xml:lang="nl">Labels toepassen</target>
+      </trans-unit>
+      <trans-unit id="Archive" approved="yes">
+        <source>Archive</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="nl">Archief</target>
+      </trans-unit>
+      <trans-unit id="Archived" approved="yes">
+        <source>Archived</source>
+        <note>Description</note>
+        <target xml:lang="nl">Gearchiveerd</target>
+      </trans-unit>
+      <trans-unit id="Attachments" approved="yes">
+        <source>Attachments</source>
+        <note>VoiceOver: email has attachments</note>
+        <target xml:lang="nl">Bijlagen</target>
+      </trans-unit>
+      <trans-unit id="Authentication" approved="yes">
+        <source>Authentication</source>
+        <note>Title</note>
+        <target xml:lang="nl">Authenticatie</target>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
+        <source>Authentication Failed Wrong username or password</source>
+        <note>Description</note>
+        <target xml:lang="nl">Authenticatie mislukt: Foutieve gebruikersnaam of wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <note>Description</note>
+        <target xml:lang="nl">Authenticatie mislukt</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed please try to login again" approved="yes">
+        <source>Authentication failed please try to login again</source>
+        <note>Error</note>
+        <target xml:lang="nl">Authenticatie mislukt, probeer opnieuw in te loggen</target>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <note>Description</note>
+        <target xml:lang="nl">Authenticatie is geannuleerd door het systeem</target>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto Lock Time</source>
+        <note>Title</note>
+        <target xml:lang="nl">Tijd tot automatische vergrendeling</target>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto Show Images</source>
+        <note>settings general section title</note>
+        <target xml:lang="nl">Afbeeldingen automatisch weergeven</target>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <note>top left back button</note>
+        <target xml:lang="nl">Vorige</target>
+      </trans-unit>
+      <trans-unit id="Bad auth cache" approved="yes">
+        <source>Bad auth cache</source>
+        <note>Error</note>
+        <target xml:lang="nl">Foutieve authenticatiecache</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <note>Error title</note>
+        <target xml:lang="nl">Foutieve parameter</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@" approved="yes">
+        <source>Bad parameter: %@</source>
+        <note>Error Description</note>
+        <target xml:lang="nl">Foutieve parameter %@</target>
+      </trans-unit>
+      <trans-unit id="Bad response" approved="yes">
+        <source>Bad response</source>
+        <note>Error Description</note>
+        <target xml:lang="nl">Foutieve reactie</target>
+      </trans-unit>
+      <trans-unit id="Bcc" approved="yes">
+        <source>Bcc</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bcc</target>
+      </trans-unit>
+      <trans-unit id="Birthday" approved="yes">
+        <source>Birthday</source>
+        <note>contacts talbe cell Birthday title</note>
+        <target xml:lang="nl">Verjaardag</target>
+      </trans-unit>
+      <trans-unit id="Bug Description" approved="yes">
+        <source>Bug Description</source>
+        <note>Title</note>
+        <target xml:lang="nl">Omschrijving van de bug</target>
+      </trans-unit>
+      <trans-unit id="Bug Report Received" approved="yes">
+        <source>Bug Report Received</source>
+        <note>Title</note>
+        <target xml:lang="nl">Melding ontvangen</target>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our" approved="yes">
+        <source>By using protonmail, you agree to our</source>
+        <note>agree check box first part words</note>
+        <target xml:lang="nl">Door protonmail te gebruiken, gaat u akkoord met onze</target>
+      </trans-unit>
+      <trans-unit id="CAPTCHA" approved="yes">
+        <source>CAPTCHA</source>
+        <note>human check option button</note>
+        <target xml:lang="nl">CAPTCHA</target>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup." approved="yes">
+        <source>Can take several minutes to setup.</source>
+        <note>key size note part 2</note>
+        <target xml:lang="nl">Kan enkele minuten duren om in te stellen.</target>
+      </trans-unit>
+      <trans-unit id="Can't copy the file" approved="yes">
+        <source>Can't copy the file</source>
+        <note>Error</note>
+        <target xml:lang="nl">Kan het bestand niet kopiëren</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client" approved="yes">
+        <source>Can't create a SRP Client</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Kan geen SRP client maken</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!" approved="yes">
+        <source>Can't create a SRP verifier!</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Kan geen SRP verificator maken!</target>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!" approved="yes">
+        <source>Can't decrypt this attachment!</source>
+        <note>When quick look attachment but can't decrypt it!</note>
+        <target xml:lang="nl">Kan deze bijlage niet ontcijferen!</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again." approved="yes">
+        <source>Can't download message body, please try again.</source>
+        <note>Error</note>
+        <target xml:lang="nl">Kan de inhoud van het bericht niet downloaden, probeer opnieuw.</target>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!" approved="yes">
+        <source>Can't find the clicked message please try again!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Kan het aangeklikte bericht niet vinden, probeer opnieuw!</target>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!" approved="yes">
+        <source>Can't find this attachment!</source>
+        <note>when quick look attachment but can't find the data</note>
+        <target xml:lang="nl">Kan deze bijlage niet vinden!</target>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!" approved="yes">
+        <source>Can't get a Moduls ID!</source>
+        <note>update password error = typo:Modulus</note>
+        <target xml:lang="nl">Kan geen Moduls ID verkrijgen!</target>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!" approved="yes">
+        <source>Can't get a Moduls!</source>
+        <note>update password error = typo:Modulus</note>
+        <target xml:lang="nl">Kan geen Moduls verkrijgen!</target>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info" approved="yes">
+        <source>Can't get user auth info</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Kan geen informatie over de gebruikersauthenticatie verkrijgen</target>
+      </trans-unit>
+      <trans-unit id="Can't load share content!" approved="yes">
+        <source>Can't load share content!</source>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+        <target xml:lang="nl">Kan gedeelde inhoud niet laden!</target>
+      </trans-unit>
+      <trans-unit id="Can't load the file" approved="yes">
+        <source>Can't load the file</source>
+        <note>Error</note>
+        <target xml:lang="nl">Kan het bestand niet laden</target>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body" approved="yes">
+        <source>Can't not find the value from the response body</source>
+        <note>Description</note>
+        <target xml:lang="nl">Kan de waarde in de reactietekst niet vinden</target>
+      </trans-unit>
+      <trans-unit id="Can't open the file" approved="yes">
+        <source>Can't open the file</source>
+        <note>Error</note>
+        <target xml:lang="nl">Kan het bestand niet openen</target>
+      </trans-unit>
+      <trans-unit id="Cancel" approved="yes">
+        <source>Cancel</source>
+        <note>Cancel action</note>
+        <target xml:lang="nl">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="Cancel Check" approved="yes">
+        <source>Cancel Check</source>
+        <note>Action</note>
+        <target xml:lang="nl">Annuleer controle</target>
+      </trans-unit>
+      <trans-unit id="Cancelling" approved="yes">
+        <source>Cancelling</source>
+        <note>Title</note>
+        <target xml:lang="nl">Annuleren</target>
+      </trans-unit>
+      <trans-unit id="Cc" approved="yes">
+        <source>Cc</source>
+        <note>Title</note>
+        <target xml:lang="nl">Cc</target>
+      </trans-unit>
+      <trans-unit id="Cc:" approved="yes">
+        <source>Cc:</source>
+        <note>message Cc: feild</note>
+        <target xml:lang="nl">Cc:</target>
+      </trans-unit>
+      <trans-unit id="Cell phone number" approved="yes">
+        <source>Cell phone number</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Telefoonnummer</target>
+      </trans-unit>
+      <trans-unit id="Change Login Password" approved="yes">
+        <source>Change Login Password</source>
+        <note>change password input label</note>
+        <target xml:lang="nl">Wijzig inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password" approved="yes">
+        <source>Change Mailbox Password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wijzig mailboxwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Change Password" approved="yes">
+        <source>Change Password</source>
+        <note>update password error title</note>
+        <target xml:lang="nl">Wachtwoord wijzigen</target>
+      </trans-unit>
+      <trans-unit id="Change Pin" approved="yes">
+        <source>Change Pin</source>
+        <note>settings protection section title</note>
+        <target xml:lang="nl">PIN wijzigen</target>
+      </trans-unit>
+      <trans-unit id="Change Single Password" approved="yes">
+        <source>Change Single Password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wijzig inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Change default address to .." approved="yes">
+        <source>Change default address to ..</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wijzig standaardadres naar...</target>
+      </trans-unit>
+      <trans-unit id="Change left swipe action" approved="yes">
+        <source>Change left swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target xml:lang="nl">Wijzig actie links vegen</target>
+      </trans-unit>
+      <trans-unit id="Change right swipe action" approved="yes">
+        <source>Change right swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target xml:lang="nl">Wijzig actie rechts vegen</target>
+      </trans-unit>
+      <trans-unit id="Change sender address to .." approved="yes">
+        <source>Change sender address to ..</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wijzig afzenderadres naar...</target>
+      </trans-unit>
+      <trans-unit id="Check Again" approved="yes">
+        <source>Check Again</source>
+        <note>Action</note>
+        <target xml:lang="nl">Controleer opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Checking ...." approved="yes">
+        <source>Checking ....</source>
+        <note>loading message</note>
+        <target xml:lang="nl">Controleren...</target>
+      </trans-unit>
+      <trans-unit id="Choose a Password" approved="yes">
+        <source>Choose a Password</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Kies een wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="City" approved="yes">
+        <source>City</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Plaats</target>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache" approved="yes">
+        <source>Clear Local Message Cache</source>
+        <note>settings general section title</note>
+        <target xml:lang="nl">Lokale berichtencache legen</target>
+      </trans-unit>
+      <trans-unit id="Close" approved="yes">
+        <source>Close</source>
+        <note>general close action</note>
+        <target xml:lang="nl">Sluiten</target>
+      </trans-unit>
+      <trans-unit id="Compose" approved="yes">
+        <source>Compose</source>
+        <note>Action</note>
+        <target xml:lang="nl">Opstellen</target>
+      </trans-unit>
+      <trans-unit id="Compose to" approved="yes">
+        <source>Compose to</source>
+        <note>Title</note>
+        <target xml:lang="nl">Opstellen aan</target>
+      </trans-unit>
+      <trans-unit id="Confirm" approved="yes">
+        <source>Confirm</source>
+        <note>Action</note>
+        <target xml:lang="nl">Bevestigen</target>
+      </trans-unit>
+      <trans-unit id="Confirm Password" approved="yes">
+        <source>Confirm Password</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Wachtwoord bevestigen</target>
+      </trans-unit>
+      <trans-unit id="Confirm new login password" approved="yes">
+        <source>Confirm new login password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bevestig nieuw inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password" approved="yes">
+        <source>Confirm new mailbox password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bevestig nieuw mailboxwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Confirm new password" approved="yes">
+        <source>Confirm new password</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Bevestig nieuw wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Confirmation" approved="yes">
+        <source>Confirmation</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bevestiging</target>
+      </trans-unit>
+      <trans-unit id="Congratulations!" approved="yes">
+        <source>Congratulations!</source>
+        <note>view top title</note>
+        <target xml:lang="nl">Gefeliciteerd!</target>
+      </trans-unit>
+      <trans-unit id="Contact Details" approved="yes">
+        <source>Contact Details</source>
+        <note>contact section title</note>
+        <target xml:lang="nl">Contactgegevens</target>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team" approved="yes">
+        <source>Contact the ProtonMail team</source>
+        <note>Title</note>
+        <target xml:lang="nl">Neem contact op met het ProtonMail-team</target>
+      </trans-unit>
+      <trans-unit id="Contacts" approved="yes">
+        <source>Contacts</source>
+        <note>Action and title
+   menu title</note>
+        <target xml:lang="nl">Contacten</target>
+      </trans-unit>
+      <trans-unit id="Continue" approved="yes">
+        <source>Continue</source>
+        <note>Action</note>
+        <target xml:lang="nl">Volgende</target>
+      </trans-unit>
+      <trans-unit id="Copy address" approved="yes">
+        <source>Copy address</source>
+        <note>Title</note>
+        <target xml:lang="nl">Adres kopiëren</target>
+      </trans-unit>
+      <trans-unit id="Copy name" approved="yes">
+        <source>Copy name</source>
+        <note>Title</note>
+        <target xml:lang="nl">Naam kopiëren</target>
+      </trans-unit>
+      <trans-unit id="Country" approved="yes">
+        <source>Country</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Land</target>
+      </trans-unit>
+      <trans-unit id="Create" approved="yes">
+        <source>Create</source>
+        <note>top right action text</note>
+        <target xml:lang="nl">Aanmaken</target>
+      </trans-unit>
+      <trans-unit id="Create Account" approved="yes">
+        <source>Create Account</source>
+        <note>Create account button</note>
+        <target xml:lang="nl">Account aanmaken</target>
+      </trans-unit>
+      <trans-unit id="Create User failed please try again" approved="yes">
+        <source>Create User failed please try again</source>
+        <note>Error</note>
+        <target xml:lang="nl">Gebruiker aanmaken is mislukt, probeer het opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Create a new account" approved="yes">
+        <source>Create a new account</source>
+        <note>Signup top title</note>
+        <target xml:lang="nl">Account aanmaken</target>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options." approved="yes">
+        <source>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Voeg labels toe om uw inbox te ordenen. Houd een bericht ingedrukt voor alle opties.</target>
+      </trans-unit>
+      <trans-unit id="Create user failed" approved="yes">
+        <source>Create user failed</source>
+        <note>error message title when create new user</note>
+        <target xml:lang="nl">Gebruiker aanmaken mislukt</target>
+      </trans-unit>
+      <trans-unit id="Current Language is: " approved="yes">
+        <source>Current Language is: </source>
+        <note>Change language title</note>
+        <target xml:lang="nl">Huidige taal is: </target>
+      </trans-unit>
+      <trans-unit id="Current login password" approved="yes">
+        <source>Current login password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Huidig inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Current password" approved="yes">
+        <source>Current password</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Huidig wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Custom" approved="yes">
+        <source>Custom</source>
+        <note>action sheet option
+   contacts default label type</note>
+        <target xml:lang="nl">Aangepast</target>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX" approved="yes">
+        <source>DECRYPT MAILBOX</source>
+        <note>Title</note>
+        <target xml:lang="nl">MAILBOX ONTSLEUTELEN</target>
+      </trans-unit>
+      <trans-unit id="DRAFTS" approved="yes">
+        <source>DRAFTS</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">CONCEPTEN</target>
+      </trans-unit>
+      <trans-unit id="Date:" approved="yes">
+        <source>Date:</source>
+        <note>message Date: text</note>
+        <target xml:lang="nl">Datum:</target>
+      </trans-unit>
+      <trans-unit id="Date: %@" approved="yes">
+        <source>Date: %@</source>
+        <note>like Date: 2017-10-10</note>
+        <target xml:lang="nl">Datum: %@</target>
+      </trans-unit>
+      <trans-unit id="Debug" approved="yes">
+        <source>Debug</source>
+        <note>Title</note>
+        <target xml:lang="nl">Foutoplossing</target>
+      </trans-unit>
+      <trans-unit id="Decrypt" approved="yes">
+        <source>Decrypt</source>
+        <note>Action</note>
+        <target xml:lang="nl">Ontsleutelen</target>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed please try again" approved="yes">
+        <source>Decrypt token failed please try again</source>
+        <note>Description</note>
+        <target xml:lang="nl">Token ontcijferen mislukt, probeer opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Decryption error" approved="yes">
+        <source>Decryption error</source>
+        <note>error title</note>
+        <target xml:lang="nl">Ontcijferingsfout</target>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed" approved="yes">
+        <source>Decryption of this content failed</source>
+        <note>error details</note>
+        <target xml:lang="nl">Ontcijferen van deze inhoud is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Default" approved="yes">
+        <source>Default</source>
+        <note>Title</note>
+        <target xml:lang="nl">Standaard</target>
+      </trans-unit>
+      <trans-unit id="Default error, please try again." approved="yes">
+        <source>Default error, please try again.</source>
+        <note>error message when create new user</note>
+        <target xml:lang="nl">Standaardfout, probeer alstublieft opnieuw.</target>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date" approved="yes">
+        <source>Define Expiration Date</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Definieer de vervaldatum</target>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)" approved="yes">
+        <source>Define Hint (Optional)</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Hint opgeven (optioneel)</target>
+      </trans-unit>
+      <trans-unit id="Define Password" approved="yes">
+        <source>Define Password</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Definieer wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Delete" approved="yes">
+        <source>Delete</source>
+        <note>general delete action</note>
+        <target xml:lang="nl">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="Delete Contact" approved="yes">
+        <source>Delete Contact</source>
+        <note>Title-Contacts</note>
+        <target xml:lang="nl">Contactpersoon verwijderen</target>
+      </trans-unit>
+      <trans-unit id="Deleted" approved="yes">
+        <source>Deleted</source>
+        <note>mail location desc</note>
+        <target xml:lang="nl">Verwijderd</target>
+      </trans-unit>
+      <trans-unit id="Details" approved="yes">
+        <source>Details</source>
+        <note>Title</note>
+        <target xml:lang="nl">Details</target>
+      </trans-unit>
+      <trans-unit id="Discard changes" approved="yes">
+        <source>Discard changes</source>
+        <note>Action</note>
+        <target xml:lang="nl">Wijzigingen niet opslaan</target>
+      </trans-unit>
+      <trans-unit id="Discard draft" approved="yes">
+        <source>Discard draft</source>
+        <note>Action</note>
+        <target xml:lang="nl">Concept verwijderen</target>
+      </trans-unit>
+      <trans-unit id="Display Name" approved="yes">
+        <source>Display Name</source>
+        <note>Title</note>
+        <target xml:lang="nl">Weergavenaam</target>
+      </trans-unit>
+      <trans-unit id="Display Name Updated" approved="yes">
+        <source>Display Name Updated</source>
+        <note>Title</note>
+        <target xml:lang="nl">Weergavenaam bijgewerkt</target>
+      </trans-unit>
+      <trans-unit id="DisplayName" approved="yes">
+        <source>DisplayName</source>
+        <note>Title</note>
+        <target xml:lang="nl">Weergavenaam</target>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?" approved="yes">
+        <source>Do you want to cancel the process?</source>
+        <note>Description</note>
+        <target xml:lang="nl">Wilt u het proces annuleren?</target>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?" approved="yes">
+        <source>Do you want to save the unsaved changes?</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wilt u de wijzigingen opslaan?</target>
+      </trans-unit>
+      <trans-unit id="Don't Show Again" approved="yes">
+        <source>Don't Show Again</source>
+        <note>Title</note>
+        <target xml:lang="nl">Niet meer tonen</target>
+      </trans-unit>
+      <trans-unit id="Don't remind me again" approved="yes">
+        <source>Don't remind me again</source>
+        <note>Action</note>
+        <target xml:lang="nl">Niet opnieuw herinneren</target>
+      </trans-unit>
+      <trans-unit id="Done" approved="yes">
+        <source>Done</source>
+        <note>Done action</note>
+        <target xml:lang="nl">Gereed</target>
+      </trans-unit>
+      <trans-unit id="Double tap to setup" approved="yes">
+        <source>Double tap to setup</source>
+        <note>VoiceOver action description</note>
+        <target xml:lang="nl">Dubbeltikken voor configuratie</target>
+      </trans-unit>
+      <trans-unit id="Draft" approved="yes">
+        <source>Draft</source>
+        <note>Action
+   mail location desc</note>
+        <target xml:lang="nl">Concept</target>
+      </trans-unit>
+      <trans-unit id="Drafts" approved="yes">
+        <source>Drafts</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Concepten</target>
+      </trans-unit>
+      <trans-unit id="Dutch" approved="yes">
+        <source>Dutch</source>
+        <note>Action</note>
+        <target xml:lang="nl">Nederlands</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>Edit</source>
+        <note>Action</note>
+        <target xml:lang="nl">Bewerken</target>
+      </trans-unit>
+      <trans-unit id="Edit Folder" approved="yes">
+        <source>Edit Folder</source>
+        <note>Title</note>
+        <target xml:lang="nl">Map bewerken</target>
+      </trans-unit>
+      <trans-unit id="Edit Label" approved="yes">
+        <source>Edit Label</source>
+        <note>Title</note>
+        <target xml:lang="nl">Label bewerken</target>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature" approved="yes">
+        <source>Edit mobile signature</source>
+        <note>title</note>
+        <target xml:lang="nl">Wijzig mobiele handtekening</target>
+      </trans-unit>
+      <trans-unit id="Edit signature" approved="yes">
+        <source>Edit signature</source>
+        <note>title</note>
+        <target xml:lang="nl">Handtekening bewerken</target>
+      </trans-unit>
+      <trans-unit id="Email" approved="yes">
+        <source>Email</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">E-mail</target>
+      </trans-unit>
+      <trans-unit id="Email Verification" approved="yes">
+        <source>Email Verification</source>
+        <note>human check option button</note>
+        <target xml:lang="nl">E-mailverificatie</target>
+      </trans-unit>
+      <trans-unit id="Email address" approved="yes">
+        <source>Email address</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">E-mailadres</target>
+      </trans-unit>
+      <trans-unit id="Email address invalid" approved="yes">
+        <source>Email address invalid</source>
+        <note>Title</note>
+        <target xml:lang="nl">Ongeldig e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="Email default signature" approved="yes">
+        <source>Email default signature</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Standaard e-mailhandtekening</target>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty Folder</source>
+        <note>Action</note>
+        <target xml:lang="nl">Map leegmaken</target>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature" approved="yes">
+        <source>Enable Default Signature</source>
+        <note>Title</note>
+        <target xml:lang="nl">Activeer standaard e-mailhandtekening</target>
+      </trans-unit>
+      <trans-unit id="Enable FaceID" approved="yes">
+        <source>Enable FaceID</source>
+        <note>settings protection section title</note>
+        <target xml:lang="nl">Activeer FaceID</target>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature" approved="yes">
+        <source>Enable Mobile Signature</source>
+        <note>Title</note>
+        <target xml:lang="nl">Activeer mobiele handtekening</target>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email" approved="yes">
+        <source>Enable Notification Email</source>
+        <note>Title</note>
+        <target xml:lang="nl">Activeer e-mailnotificatie</target>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection" approved="yes">
+        <source>Enable Pin Protection</source>
+        <note>settings protection section title</note>
+        <target xml:lang="nl">Activeer PIN-beveiliging</target>
+      </trans-unit>
+      <trans-unit id="Enable TouchID" approved="yes">
+        <source>Enable TouchID</source>
+        <note>settings protection section title</note>
+        <target xml:lang="nl">Activeer TouchID</target>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details" approved="yes">
+        <source>Encrypted Contact Details</source>
+        <note>contact section title</note>
+        <target xml:lang="nl">Versleutelde contactpersoonsgegevens</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside" approved="yes">
+        <source>Encrypted for outside</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld voor extern</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply" approved="yes">
+        <source>Encrypted for outside reply</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld voor extern antwoord</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside" approved="yes">
+        <source>Encrypted from outside</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld vanaf extern</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside pgp inline" approved="yes">
+        <source>Encrypted from outside pgp inline</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld vanaf externe inline pgp</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside pgp mime" approved="yes">
+        <source>Encrypted from outside pgp mime</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld vanaf externe pgp/mime</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed pgp mime" approved="yes">
+        <source>Encrypted from outside signed pgp mime</source>
+        <note>Title</note>
+        <target xml:lang="nl">Versleuteld vanaf extern ondertekende pgp/mime</target>
+      </trans-unit>
+      <trans-unit id="Encrypted outside" approved="yes">
+        <source>Encrypted outside</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">Versleuteld voor extern</target>
+      </trans-unit>
+      <trans-unit id="Encryption Setup" approved="yes">
+        <source>Encryption Setup</source>
+        <note>key setup top title</note>
+        <target xml:lang="nl">Versleutelingsconfiguratie</target>
+      </trans-unit>
+      <trans-unit id="End Time" approved="yes">
+        <source>End Time</source>
+        <note>settings option (End Time: 8am)</note>
+        <target xml:lang="nl">Eindtijd</target>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption" approved="yes">
+        <source>End-to-End Encryption</source>
+        <note>Title</note>
+        <target xml:lang="nl">End-to-End versleuteling</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted" approved="yes">
+        <source>End-to-end encrypted</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">End-to-end versleuteld</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message" approved="yes">
+        <source>End-to-end encrypted message</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">End-to-end versleuteld bericht</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address" approved="yes">
+        <source>End-to-end encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">End-to-end versleuteld bericht van geverifieerd e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address" approved="yes">
+        <source>End-to-end encrypted to verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">End-to-end versleuteld naar geverifieerd e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="English" approved="yes">
+        <source>English</source>
+        <note>Action</note>
+        <target xml:lang="nl">Engels</target>
+      </trans-unit>
+      <trans-unit id="Enter" approved="yes">
+        <source>Enter</source>
+        <note>Action in 2fa popup view</note>
+        <target xml:lang="nl">Invoeren</target>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code" approved="yes">
+        <source>Enter Verification Code</source>
+        <note>Title</note>
+        <target xml:lang="nl">Voer verificatiecode in</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN" approved="yes">
+        <source>Enter your PIN</source>
+        <note>set pin title</note>
+        <target xml:lang="nl">Voer uw PIN in</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox." approved="yes">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Voer uw pincode in om uw inbox te ontgrendelen.</target>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number" approved="yes">
+        <source>Enter your cell phone number</source>
+        <note>human verification top title</note>
+        <target xml:lang="nl">Voer uw mobiele telefoonnummer in</target>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address." approved="yes">
+        <source>Enter your existing email address.</source>
+        <note>top title</note>
+        <target xml:lang="nl">Voer uw bestaande e-mailadres in.</target>
+      </trans-unit>
+      <trans-unit id="Error Logs" approved="yes">
+        <source>Error Logs</source>
+        <note>settings debug section title</note>
+        <target xml:lang="nl">Foutenlogboek</target>
+      </trans-unit>
+      <trans-unit id="Every time enter app" approved="yes">
+        <source>Every time enter app</source>
+        <note>lock app option</note>
+        <target xml:lang="nl">Elke keer als u de app opent</target>
+      </trans-unit>
+      <trans-unit id="Expires" approved="yes">
+        <source>Expires</source>
+        <note>VoiceOver: email can expire</note>
+        <target xml:lang="nl">Verloopt</target>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds" approved="yes">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <note>expiration time count down</note>
+        <target xml:lang="nl">Verloopt in %1$d dagen %2$d uur %3$d minuten %4$d seconden</target>
+      </trans-unit>
+      <trans-unit id="Expiring Messages" approved="yes">
+        <source>Expiring Messages</source>
+        <note>Title</note>
+        <target xml:lang="nl">Verlooptijd</target>
+      </trans-unit>
+      <trans-unit id="Extreme Security" approved="yes">
+        <source>Extreme Security</source>
+        <note>Key size checkbox</note>
+        <target xml:lang="nl">Extreme Beveiliging</target>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?" approved="yes">
+        <source>FORGOT PASSWORD?</source>
+        <note>login page forgot pwd</note>
+        <target xml:lang="nl">WACHTWOORD VERGETEN?</target>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data" approved="yes">
+        <source>Failed to initialize the application's saved data</source>
+        <note>Description</note>
+        <target xml:lang="nl">Het initialiseren van de applicatiedata is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Fax" approved="yes">
+        <source>Fax</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Fax</target>
+      </trans-unit>
+      <trans-unit id="Feedback" approved="yes">
+        <source>Feedback</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Feedback</target>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed" approved="yes">
+        <source>Fetch user info failed</source>
+        <note>Error</note>
+        <target xml:lang="nl">Ophalen van gebruikersgegevens is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Folder" approved="yes">
+        <source>Folder</source>
+        <note>VoiceOver: email belongs to folder</note>
+        <target xml:lang="nl">Map</target>
+      </trans-unit>
+      <trans-unit id="Folder Name" approved="yes">
+        <source>Folder Name</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Naam van de map</target>
+      </trans-unit>
+      <trans-unit id="Forward" approved="yes">
+        <source>Forward</source>
+        <note>forward action</note>
+        <target xml:lang="nl">Doorsturen</target>
+      </trans-unit>
+      <trans-unit id="Forwarded message" approved="yes">
+        <source>Forwarded message</source>
+        <note>forwarded message title</note>
+        <target xml:lang="nl">Doorgestuurd bericht</target>
+      </trans-unit>
+      <trans-unit id="French" approved="yes">
+        <source>French</source>
+        <note>Action</note>
+        <target xml:lang="nl">Frans</target>
+      </trans-unit>
+      <trans-unit id="From" approved="yes">
+        <source>From</source>
+        <note>Title</note>
+        <target xml:lang="nl">Van</target>
+      </trans-unit>
+      <trans-unit id="From:" approved="yes">
+        <source>From:</source>
+        <note>message From: field text</note>
+        <target xml:lang="nl">Van:</target>
+      </trans-unit>
+      <trans-unit id="Fwd:" approved="yes">
+        <source>Fwd:</source>
+        <note>abbreviation of forward:</note>
+        <target xml:lang="nl">Fwd:</target>
+      </trans-unit>
+      <trans-unit id="Gender" approved="yes">
+        <source>Gender</source>
+        <note>contacts talbe cell gender title</note>
+        <target xml:lang="nl">Geslacht</target>
+      </trans-unit>
+      <trans-unit id="General Settings" approved="yes">
+        <source>General Settings</source>
+        <note>Title</note>
+        <target xml:lang="nl">Algemene instellingen</target>
+      </trans-unit>
+      <trans-unit id="German" approved="yes">
+        <source>German</source>
+        <note>Action</note>
+        <target xml:lang="nl">Duits</target>
+      </trans-unit>
+      <trans-unit id="Get more information" approved="yes">
+        <source>Get more information</source>
+        <note>Action</note>
+        <target xml:lang="nl">Meer informatie</target>
+      </trans-unit>
+      <trans-unit id="Go to inbox" approved="yes">
+        <source>Go to inbox</source>
+        <note>Action</note>
+        <target xml:lang="nl">Ga naar inbox</target>
+      </trans-unit>
+      <trans-unit id="Got it" approved="yes">
+        <source>Got it</source>
+        <note>Action</note>
+        <target xml:lang="nl">Begrepen</target>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support" approved="yes">
+        <source>Help &amp; Support</source>
+        <note>Title</note>
+        <target xml:lang="nl">Hulp &amp; Ondersteuning</target>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input." approved="yes">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Help ons om met uw input ProtonMail te verbeteren.</target>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web." approved="yes">
+        <source>Help us to make privacy the default in the web.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Help ons om privacy op het web de standaard te maken.</target>
+      </trans-unit>
+      <trans-unit id="Hide" approved="yes">
+        <source>Hide</source>
+        <note>Action</note>
+        <target xml:lang="nl">Verbergen</target>
+      </trans-unit>
+      <trans-unit id="Hide Details" approved="yes">
+        <source>Hide Details</source>
+        <note>Title</note>
+        <target xml:lang="nl">Details verbergen</target>
+      </trans-unit>
+      <trans-unit id="High Security" approved="yes">
+        <source>High Security</source>
+        <note>Key size checkbox</note>
+        <target xml:lang="nl">Strikte beveiliging</target>
+      </trans-unit>
+      <trans-unit id="Hours" approved="yes">
+        <source>Hours</source>
+        <note>Title</note>
+        <target xml:lang="nl">Uren</target>
+      </trans-unit>
+      <trans-unit id="Human Check Failed" approved="yes">
+        <source>Human Check Failed</source>
+        <note>Description</note>
+        <target xml:lang="nl">Persoonsverificatie Mislukt</target>
+        <alt-trans>
+          <target xml:lang="nl">Menselijke Controle Mislukt</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Human Check Warning" approved="yes">
+        <source>Human Check Warning</source>
+        <note>human check warning title</note>
+        <target xml:lang="nl">Waarschuwing van persoonsverificatie</target>
+        <alt-trans>
+          <target xml:lang="nl">Menselijke Controle Waarschuwing</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Human Verification" approved="yes">
+        <source>Human Verification</source>
+        <note>top title</note>
+        <target xml:lang="nl">Persoonsverificatie</target>
+      </trans-unit>
+      <trans-unit id="INBOX" approved="yes">
+        <source>INBOX</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">INBOX</target>
+      </trans-unit>
+      <trans-unit id="Import Error" approved="yes">
+        <source>Import Error</source>
+        <note>Action</note>
+        <target xml:lang="nl">Fout bij importeren</target>
+      </trans-unit>
+      <trans-unit id="Import File From..." approved="yes">
+        <source>Import File From...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bestand importeren uit...</target>
+      </trans-unit>
+      <trans-unit id="Importing Contacts" approved="yes">
+        <source>Importing Contacts</source>
+        <note>import contact title</note>
+        <target xml:lang="nl">Contactpersonen importeren</target>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service." approved="yes">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <note>Error</note>
+        <target xml:lang="nl">Om onze diensten te gebruiken, moet u akkoord gaan met de ProtonMail gebruiksvoorwaarden.</target>
+      </trans-unit>
+      <trans-unit id="Inbox" approved="yes">
+        <source>Inbox</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="nl">Inbox</target>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN," approved="yes">
+        <source>Incorrect PIN,</source>
+        <note>Error</note>
+        <target xml:lang="nl">Onjuiste pincode,</target>
+      </trans-unit>
+      <trans-unit id="Incorrect password" approved="yes">
+        <source>Incorrect password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Onjuist wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Input Display Name ..." approved="yes">
+        <source>Input Display Name ...</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Weergavenaam invoeren...</target>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ..." approved="yes">
+        <source>Input Notification Email ...</source>
+        <note>place holder</note>
+        <target xml:lang="nl">Notificatie e-mailadres invoeren ...</target>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <note>Error</note>
+        <target xml:lang="nl">Het direct aanmaken van een ProtonMail-account is tijdelijk uitgeschakeld. Ga naar https://protonmail.com/invite om een uitnodiging aan te vragen.</target>
+      </trans-unit>
+      <trans-unit id="Internet" approved="yes">
+        <source>Internet</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Internet</target>
+      </trans-unit>
+      <trans-unit id="Invalid Password" approved="yes">
+        <source>Invalid Password</source>
+        <note>Error</note>
+        <target xml:lang="nl">Ongeldig wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!" approved="yes">
+        <source>Invalid UserName!</source>
+        <note>Error message</note>
+        <target xml:lang="nl">Ongeldige gebruikersnaam!</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin" approved="yes">
+        <source>Invalid access token please relogin</source>
+        <note>Description</note>
+        <target xml:lang="nl">Ongeldige toegangstoken, log opnieuw in</target>
+      </trans-unit>
+      <trans-unit id="Invalid credential" approved="yes">
+        <source>Invalid credential</source>
+        <note>Error</note>
+        <target xml:lang="nl">Inloggegevens ongeldig</target>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!" approved="yes">
+        <source>Invalid hashed password!</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Ongeldige wachtwoordhash!</target>
+      </trans-unit>
+      <trans-unit id="Italian" approved="yes">
+        <source>Italian</source>
+        <note>Action</note>
+        <target xml:lang="nl">Italiaans</target>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features" approved="yes">
+        <source>Keep me updated about new features</source>
+        <note>Title</note>
+        <target xml:lang="nl">Houd mij op de hoogte van nieuwe functionaliteiten</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed" approved="yes">
+        <source>Key generation failed</source>
+        <note>Error</note>
+        <target xml:lang="nl">Aanmaken van sleutels is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed please try again" approved="yes">
+        <source>Key generation failed please try again</source>
+        <note>Error</note>
+        <target xml:lang="nl">Aanmaken van sleutels mislukt, probeer het opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Key invalid please go back try again" approved="yes">
+        <source>Key invalid please go back try again</source>
+        <note>Error</note>
+        <target xml:lang="nl">Sleutel is ongeldig, ga terug en probeer het opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Label Management" approved="yes">
+        <source>Label Management</source>
+        <note>Title</note>
+        <target xml:lang="nl">Labelbeheer</target>
+      </trans-unit>
+      <trans-unit id="Label Name" approved="yes">
+        <source>Label Name</source>
+        <note>createing lable input place holder</note>
+        <target xml:lang="nl">Labelnaam</target>
+      </trans-unit>
+      <trans-unit id="Label as..." approved="yes">
+        <source>Label as...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Labelen als...</target>
+      </trans-unit>
+      <trans-unit id="Labels" approved="yes">
+        <source>Labels</source>
+        <note>VoiceOver: email has lables</note>
+        <target xml:lang="nl">Labels</target>
+      </trans-unit>
+      <trans-unit id="Labels have been applied." approved="yes">
+        <source>Labels have been applied.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Labels zijn toegepast.</target>
+      </trans-unit>
+      <trans-unit id="Labels/Folders" approved="yes">
+        <source>Labels/Folders</source>
+        <note>Title</note>
+        <target xml:lang="nl">Labels/Mappen</target>
+        <alt-trans>
+          <target xml:lang="nl">Labels/mappen</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Language" approved="yes">
+        <source>Language</source>
+        <note>Title</note>
+        <target xml:lang="nl">Taal</target>
+      </trans-unit>
+      <trans-unit id="Learn more here" approved="yes">
+        <source>Learn more here</source>
+        <note>learn more button</note>
+        <target xml:lang="nl">Lees hier meer</target>
+        <alt-trans>
+          <target xml:lang="nl">Leer hier meer</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Load remote content" approved="yes">
+        <source>Load remote content</source>
+        <note>Action</note>
+        <target xml:lang="nl">Externe inhoud laden</target>
+      </trans-unit>
+      <trans-unit id="Loading..." approved="yes">
+        <source>Loading...</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="nl">Laden...</target>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password" approved="yes">
+        <source>Local cache can't find mailbox password</source>
+        <note>Description</note>
+        <target xml:lang="nl">Lokale cache kan het mailbox-wachtwoord niet vinden</target>
+      </trans-unit>
+      <trans-unit id="Lock The App" approved="yes">
+        <source>Lock The App</source>
+        <note>menu title</note>
+        <target xml:lang="nl">App vergrendelen</target>
+      </trans-unit>
+      <trans-unit id="Login" approved="yes">
+        <source>Login</source>
+        <note>Title</note>
+        <target xml:lang="nl">Login</target>
+      </trans-unit>
+      <trans-unit id="Login Password" approved="yes">
+        <source>Login Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="nl">Inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match" approved="yes">
+        <source>Login password doesn't match</source>
+        <note>Error</note>
+        <target xml:lang="nl">Inlogwachtwoord komt niet overeen</target>
+      </trans-unit>
+      <trans-unit id="Logout" approved="yes">
+        <source>Logout</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Afmelden</target>
+      </trans-unit>
+      <trans-unit id="Logs" approved="yes">
+        <source>Logs</source>
+        <note>error title</note>
+        <target xml:lang="nl">Logs</target>
+      </trans-unit>
+      <trans-unit id="Looking to edit or disable your mobile signature?" approved="yes">
+        <source>Looking to edit or disable your mobile signature?</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Zoekt u naar het bewerken of uitzetten van uw mobiele handtekening?</target>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?" approved="yes">
+        <source>Looking to secure your contact's details?</source>
+        <note>Upgrade warning title</note>
+        <target xml:lang="nl">Op zoek naar het beveiligen van de gegevens van uw contactpersonen?</target>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <note>Default Prompt text shown in the prompt cell</note>
+        <target xml:lang="nl" state="needs-translation">MBContactPickerPrompt</target>
+      </trans-unit>
+      <trans-unit id="Mailbox Password" approved="yes">
+        <source>Mailbox Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="nl">Mailbox-wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders" approved="yes">
+        <source>Manage Labels/Folders</source>
+        <note>Title</note>
+        <target xml:lang="nl">Beheer labels/mappen</target>
+      </trans-unit>
+      <trans-unit id="Mark Read" approved="yes">
+        <source>Mark Read</source>
+        <note>Action</note>
+        <target xml:lang="nl">Markeer als gelezen</target>
+      </trans-unit>
+      <trans-unit id="Mark as unread" approved="yes">
+        <source>Mark as unread</source>
+        <note>Action</note>
+        <target xml:lang="nl">Markeer als ongelezen</target>
+      </trans-unit>
+      <trans-unit id="Message %@" approved="yes">
+        <source>Message %@</source>
+        <note>Message with title</note>
+        <target xml:lang="nl">Bericht %@</target>
+      </trans-unit>
+      <trans-unit id="Message Password" approved="yes">
+        <source>Message Password</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Wachtwoord van bericht</target>
+      </trans-unit>
+      <trans-unit id="Message Queue" approved="yes">
+        <source>Message Queue</source>
+        <note>settings debug section title</note>
+        <target xml:lang="nl">Berichtenwachtrij</target>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions" approved="yes">
+        <source>Message Swipe Actions</source>
+        <note>Title</note>
+        <target xml:lang="nl">Acties bericht vegen</target>
+      </trans-unit>
+      <trans-unit id="Message expired" approved="yes">
+        <source>Message expired</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="nl">Bericht is verlopen</target>
+      </trans-unit>
+      <trans-unit id="Message has been deleted." approved="yes">
+        <source>Message has been deleted.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bericht is verwijderd.</target>
+      </trans-unit>
+      <trans-unit id="Message has been moved." approved="yes">
+        <source>Message has been moved.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bericht is verplaatst.</target>
+      </trans-unit>
+      <trans-unit id="Message password does not match." approved="yes">
+        <source>Message password does not match.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Wachtwoord van bericht komt niet overeen.</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again" approved="yes">
+        <source>Message sending failed please try again</source>
+        <note>Description</note>
+        <target xml:lang="nl">Bericht versturen mislukt, probeer het opnieuw</target>
+      </trans-unit>
+      <trans-unit id="Message sent" approved="yes">
+        <source>Message sent</source>
+        <note>Description</note>
+        <target xml:lang="nl">Bericht is verzonden</target>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period." approved="yes">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Berichten die u verstuurt kunnen na een bepaalde tijd automatisch verwijderd worden.</target>
+      </trans-unit>
+      <trans-unit id="Mobile" approved="yes">
+        <source>Mobile</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Mobiel</target>
+      </trans-unit>
+      <trans-unit id="Mobile Signature" approved="yes">
+        <source>Mobile Signature</source>
+        <note>Title</note>
+        <target xml:lang="nl">Mobiele handtekening</target>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Mobiele aanmeldingen zijn tijdelijk uitgeschakeld. Probeer het later opnieuw of meld u aan via ProtonMail.com op een PC of laptop.</target>
+      </trans-unit>
+      <trans-unit id="Move to AllMail" approved="yes">
+        <source>Move to AllMail</source>
+        <note>move action</note>
+        <target xml:lang="nl">Verplaats naar Alle Berichten</target>
+      </trans-unit>
+      <trans-unit id="Move to Archive" approved="yes">
+        <source>Move to Archive</source>
+        <note>move action</note>
+        <target xml:lang="nl">Naar archief verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to Draft" approved="yes">
+        <source>Move to Draft</source>
+        <note>move action</note>
+        <target xml:lang="nl">Naar concepten verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to Folder" approved="yes">
+        <source>Move to Folder</source>
+        <note>folder apply - title</note>
+        <target xml:lang="nl">Naar map verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to Inbox" approved="yes">
+        <source>Move to Inbox</source>
+        <note>move action</note>
+        <target xml:lang="nl">Verplaats naar inbox</target>
+      </trans-unit>
+      <trans-unit id="Move to Outbox" approved="yes">
+        <source>Move to Outbox</source>
+        <note>move action</note>
+        <target xml:lang="nl">Naar uitgaande berichten verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to Spam" approved="yes">
+        <source>Move to Spam</source>
+        <note>move action</note>
+        <target xml:lang="nl">Naar spam verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to Trash" approved="yes">
+        <source>Move to Trash</source>
+        <note>move action</note>
+        <target xml:lang="nl">Naar prullenbak verplaatsen</target>
+      </trans-unit>
+      <trans-unit id="Move to..." approved="yes">
+        <source>Move to...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Verplaats naar...</target>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses" approved="yes">
+        <source>Multiple Addresses</source>
+        <note>Title</note>
+        <target xml:lang="nl">Meerdere adressen</target>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP." approved="yes">
+        <source>NEED AN ACCOUNT? SIGN UP.</source>
+        <note>Action</note>
+        <target xml:lang="nl">EEN ACCOUNT NODIG? AANMAKEN.</target>
+      </trans-unit>
+      <trans-unit id="Name" approved="yes">
+        <source>Name</source>
+        <note>title</note>
+        <target xml:lang="nl">Naam</target>
+      </trans-unit>
+      <trans-unit id="New login password" approved="yes">
+        <source>New login password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Nieuw inlogwachtwoord</target>
+      </trans-unit>
+      <trans-unit id="New mailbox password" approved="yes">
+        <source>New mailbox password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Nieuw mailbox-wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="New password" approved="yes">
+        <source>New password</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Nieuw wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Nickname" approved="yes">
+        <source>Nickname</source>
+        <note>contacts talbe cell Nickname title</note>
+        <target xml:lang="nl">Bijnaam</target>
+      </trans-unit>
+      <trans-unit id="No Messages" approved="yes">
+        <source>No Messages</source>
+        <note>message when mailbox doesnt have emailsß</note>
+        <target xml:lang="nl">Geen berichten</target>
+      </trans-unit>
+      <trans-unit id="No connectivity detected..." approved="yes">
+        <source>No connectivity detected...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Geen netwerkverbinding gedetecteerd...</target>
+      </trans-unit>
+      <trans-unit id="None" approved="yes">
+        <source>None</source>
+        <note>Title</note>
+        <target xml:lang="nl">Geen</target>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration" approved="yes">
+        <source>Not all recipients support message expiration</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Niet alle geadresseerden ondersteunen verlopende berichten</target>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address." approved="yes">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <note>Signup user name notes</note>
+        <target xml:lang="nl">Opmerking: De gebruikersnaam is ook uw ProtonMail-adres.</target>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." approved="yes">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <note>setup password notes</note>
+        <target xml:lang="nl">Opmerking: Dit wachtwoord wordt gebruikt om uw berichten te versleutelen en ontcijferen. Verlies dit wachtwoord daarom niet, wij kunnen het niet herstellen.</target>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account." approved="yes">
+        <source>Note: This is used to log you into your account.</source>
+        <note>setup password notes</note>
+        <target xml:lang="nl">Opmerking: Dit gebruikt u om aan te melden op uw account.</target>
+      </trans-unit>
+      <trans-unit id="Notes" approved="yes">
+        <source>Notes</source>
+        <note>title</note>
+        <target xml:lang="nl">Notities</target>
+      </trans-unit>
+      <trans-unit id="Notice" approved="yes">
+        <source>Notice</source>
+        <note>Alert title</note>
+        <target xml:lang="nl">Melding</target>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email" approved="yes">
+        <source>Notification / Recovery Email</source>
+        <note>Title</note>
+        <target xml:lang="nl">Notificatie / Herstel e-mail</target>
+      </trans-unit>
+      <trans-unit id="Notification Email" approved="yes">
+        <source>Notification Email</source>
+        <note>Title</note>
+        <target xml:lang="nl">Notificatie e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="Notification Snooze" approved="yes">
+        <source>Notification Snooze</source>
+        <note>title of action sheet</note>
+        <target xml:lang="nl">Notificaties uitstellen</target>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed" approved="yes">
+        <source>Notifications Are Snoozed</source>
+        <note>VoiceOver description</note>
+        <target xml:lang="nl">Notificaties zijn uitgesteld</target>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off" approved="yes">
+        <source>Notifications Snooze Off</source>
+        <note>VoiceOver description</note>
+        <target xml:lang="nl">Notificaties uitstellen uitzetten</target>
+      </trans-unit>
+      <trans-unit id="OK" approved="yes">
+        <source>OK</source>
+        <note>Action</note>
+        <target xml:lang="nl">OK</target>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <note>Title</note>
+        <target xml:lang="nl">Aan</target>
+      </trans-unit>
+      <trans-unit id="Only a paid user can modify default mobile signature or turn it off!" approved="yes">
+        <source>Only a paid user can modify default mobile signature or turn it off!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Alleen een betaalde gebruiker kan de standaard mobiele handtekening wijzigen of uitschakelen!</target>
+      </trans-unit>
+      <trans-unit id="OpenDraft" approved="yes">
+        <source>OpenDraft</source>
+        <note>Action</note>
+        <target xml:lang="nl">OpenDraft</target>
+      </trans-unit>
+      <trans-unit id="Organization" approved="yes">
+        <source>Organization</source>
+        <note>contacts talbe cell Organization title</note>
+        <target xml:lang="nl">Organisatie</target>
+      </trans-unit>
+      <trans-unit id="Other" approved="yes">
+        <source>Other</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Overig</target>
+      </trans-unit>
+      <trans-unit id="Outbox" approved="yes">
+        <source>Outbox</source>
+        <note>mail location desc</note>
+        <target xml:lang="nl">Postvak uit</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted" approved="yes">
+        <source>PGP-encrypted</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">PGP-versleuteld</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message" approved="yes">
+        <source>PGP-encrypted message</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">PGP-versleuteld bericht</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address" approved="yes">
+        <source>PGP-encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">PGP-versleuteld bericht van geverifieerd e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed" approved="yes">
+        <source>PGP-signed</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">PGP-ondertekend</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address" approved="yes">
+        <source>PGP-signed message from verified address</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">PGP-ondertekend bericht van geverifieerd e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE" approved="yes">
+        <source>PREMIUM FEATURE</source>
+        <note>Upgrade warning title</note>
+        <target xml:lang="nl">PREMIUM FUNCTIONALITEIT</target>
+      </trans-unit>
+      <trans-unit id="Password" approved="yes">
+        <source>Password</source>
+        <note>title</note>
+        <target xml:lang="nl">Wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Password Mismatch" approved="yes">
+        <source>Password Mismatch</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wachtwoord komt niet overeen</target>
+      </trans-unit>
+      <trans-unit id="Password Updated" approved="yes">
+        <source>Password Updated</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wachtwoord bijgewerkt</target>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty." approved="yes">
+        <source>Password cannot be empty.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Wachtwoord kan niet leeg zijn.</target>
+      </trans-unit>
+      <trans-unit id="Password update failed" approved="yes">
+        <source>Password update failed</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Wachtwoord wijzigen mislukt</target>
+      </trans-unit>
+      <trans-unit id="Personal" approved="yes">
+        <source>Personal</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Persoonlijk</target>
+      </trans-unit>
+      <trans-unit id="Phone" approved="yes">
+        <source>Phone</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Telefoonnummer</target>
+      </trans-unit>
+      <trans-unit id="Phone Verification" approved="yes">
+        <source>Phone Verification</source>
+        <note>human check option button</note>
+        <target xml:lang="nl">Telefonische verificatie</target>
+      </trans-unit>
+      <trans-unit id="Phone number" approved="yes">
+        <source>Phone number</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Telefoonnummer</target>
+      </trans-unit>
+      <trans-unit id="Phone number invalid" approved="yes">
+        <source>Phone number invalid</source>
+        <note>Title</note>
+        <target xml:lang="nl">Telefoonnummer is ongeldig</target>
+      </trans-unit>
+      <trans-unit id="Photo Library" approved="yes">
+        <source>Photo Library</source>
+        <note>Title</note>
+        <target xml:lang="nl">Galerij</target>
+        <alt-trans>
+          <target xml:lang="nl">Fotobibliotheek</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty." approved="yes">
+        <source>Pin code can't be empty.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Pin-code kan niet leeg zijn.</target>
+      </trans-unit>
+      <trans-unit id="Plain text" approved="yes">
+        <source>Plain text</source>
+        <note>Title</note>
+        <target xml:lang="nl">Onopgemaakte tekst</target>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients" approved="yes">
+        <source>Please add a password for the following recipients</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Voeg s.v.p. een wachtwoord toe voor de volgende ontvangers</target>
+        <alt-trans>
+          <target xml:lang="nl">Voeg een wachtwoord toe voor de volgende ontvangers</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code." approved="yes">
+        <source>Please check your cell phone for the verification code.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Controleer uw telefoon voor de verificatiecode.</target>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code." approved="yes">
+        <source>Please check your email for the verification code.</source>
+        <note>error message</note>
+        <target xml:lang="nl">Controleer uw e-mail voor de verificatiecode.</target>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses" approved="yes">
+        <source>Please disable PGP Sending for following addresses</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Schakel PGP s.v.p. uit om naar de volgende adressen te verzenden</target>
+        <alt-trans>
+          <target xml:lang="nl">Schakel PGP uit voor het verzenden naar de volgende adressen</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number." approved="yes">
+        <source>Please input a valid cell phone number.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Voer een geldig telefoonnummer in.</target>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address." approved="yes">
+        <source>Please input a valid email address.</source>
+        <note>error message</note>
+        <target xml:lang="nl">Voer een geldig e-mailadres in.</target>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!" approved="yes">
+        <source>Please pick a user name first!</source>
+        <note>Error</note>
+        <target xml:lang="nl">Kies eerst een gebruikersnaam!</target>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:" approved="yes">
+        <source>Please select one of the following options:</source>
+        <note>human check select option title</note>
+        <target xml:lang="nl">Gelieve één van de volgende opties te kiezen:</target>
+      </trans-unit>
+      <trans-unit id="Please set a password." approved="yes">
+        <source>Please set a password.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Stel s.v.p. een wachtwoord in.</target>
+        <alt-trans>
+          <target xml:lang="nl">Stel een wachtwoord in.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first" approved="yes">
+        <source>Please use ProtonMail App login first</source>
+        <note>Description</note>
+        <target xml:lang="nl">Gebruik eerst de inloggegevens van de ProtonMail-app</target>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password." approved="yes">
+        <source>Please use the web application to reset your password.</source>
+        <note>Alert</note>
+        <target xml:lang="nl">Gebruik de webversie om uw wachtwoord te herstellen.</target>
+        <alt-trans>
+          <target xml:lang="nl">Gebruik de webgebaseerde versie om uw wachtwoord te herstellen.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <note>Alert</note>
+        <target xml:lang="nl">Gebruik de webversie van ProtonMail om uw wachtwoorden te wijzigen!</target>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in." approved="yes">
+        <source>Please use your new password when signing in.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Gebruik uw nieuwe wachtwoord om in te loggen.</target>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!" approved="yes">
+        <source>Please wait until the email downloaded!</source>
+        <note>The</note>
+        <target xml:lang="nl">Wacht totdat de e-mail gedownload is!</target>
+      </trans-unit>
+      <trans-unit id="Polish" approved="yes">
+        <source>Polish</source>
+        <note>Action</note>
+        <target xml:lang="nl">Pools</target>
+      </trans-unit>
+      <trans-unit id="Portuguese Brazil" approved="yes">
+        <source>Portuguese Brazil</source>
+        <note>Action</note>
+        <target xml:lang="nl">Portugees Brazilië</target>
+      </trans-unit>
+      <trans-unit id="Print" approved="yes">
+        <source>Print</source>
+        <note>Action</note>
+        <target xml:lang="nl">Afdrukken</target>
+      </trans-unit>
+      <trans-unit id="Protection" approved="yes">
+        <source>Protection</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bescherming</target>
+      </trans-unit>
+      <trans-unit id="Protection Entire App" approved="yes">
+        <source>Protection Entire App</source>
+        <note>settings protection section title</note>
+        <target xml:lang="nl">Bescherming van de gehele app</target>
+        <alt-trans>
+          <target xml:lang="nl">Bescherming gehele app</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail" approved="yes">
+        <source>ProtonMail</source>
+        <note>Title</note>
+        <target xml:lang="nl">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature" approved="yes">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <note>Description</note>
+        <target xml:lang="nl">ProtonMail Plus is vereist om uw mobiele handtekening te kunnen wijzigen</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <note>Upgrade warning message</note>
+        <target xml:lang="nl">Met ProtonMail Plus, Professional of Visionary kunt u meer details over uw contactpersonen opslaan dan alleen namen en e-mailadressen. Door hiervoor ProtonMail te gebruiken is deze data net zo veilig als uw end-to-end-versleutelde e-mails.</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature.</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Met ProtonMail Plus/Professional/visionair kunt u uw mobiele handtekening aanpassen.</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." approved="yes">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <note>Description</note>
+        <target xml:lang="nl">ProtonMail verkoopt geen advertenties en maakt geen misbruik van uw privacy. Uw steun is essentieel om ProtonMail draaiende te houden. U kunt upgraden naar een betaald account of doneren om ProtonMail te steunen.</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails" approved="yes">
+        <source>ProtonMail encrypted emails</source>
+        <note>Title</note>
+        <target xml:lang="nl">ProtonMail versleutelde e-mails</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" approved="yes">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <note>Description</note>
+        <target xml:lang="nl">ProtonMail is momenteel offline, kijk op ons Twitter-account voor de meer informatie: https://twitter.com/protonmail</target>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions" approved="yes">
+        <source>Quick swipe actions</source>
+        <note>Title</note>
+        <target xml:lang="nl">Snelle veegacties</target>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD" approved="yes">
+        <source>RESET MAILBOX PASSWORD</source>
+        <note>Action</note>
+        <target xml:lang="nl">MAILBOX-WACHTWOORD OPNIEUW INSTELLEN</target>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review" approved="yes">
+        <source>Rate &amp; Review</source>
+        <note>Title</note>
+        <target xml:lang="nl">Beoordeel ons</target>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN" approved="yes">
+        <source>Re-Enter your PIN</source>
+        <note>set pin title</note>
+        <target xml:lang="nl">Vul uw PIN nogmaals in</target>
+      </trans-unit>
+      <trans-unit id="Re:" approved="yes">
+        <source>Re:</source>
+        <note>abbreviation of reply:</note>
+        <target xml:lang="nl">Re:</target>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data..." approved="yes">
+        <source>Reading device contacts data...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Bezig met lezen van de contactpersonen op uw apparaat...</target>
+      </trans-unit>
+      <trans-unit id="Recovery Code" approved="yes">
+        <source>Recovery Code</source>
+        <note>Title</note>
+        <target xml:lang="nl">Herstelcode</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email" approved="yes">
+        <source>Recovery Email</source>
+        <note>Title</note>
+        <target xml:lang="nl">Herstel-e-mailadres</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning" approved="yes">
+        <source>Recovery Email Warning</source>
+        <note>Title</note>
+        <target xml:lang="nl">Herstel e-mail waarschuwing</target>
+      </trans-unit>
+      <trans-unit id="Remind Me Later" approved="yes">
+        <source>Remind Me Later</source>
+        <note>Title</note>
+        <target xml:lang="nl">Herinner mij later</target>
+      </trans-unit>
+      <trans-unit id="Remove" approved="yes">
+        <source>Remove</source>
+        <note>remove action</note>
+        <target xml:lang="nl">Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="Remove Star" approved="yes">
+        <source>Remove Star</source>
+        <note>Action</note>
+        <target xml:lang="nl">Ster verwijderen</target>
+      </trans-unit>
+      <trans-unit id="Repeat" approved="yes">
+        <source>Repeat</source>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+        <target xml:lang="nl">Herhalen</target>
+      </trans-unit>
+      <trans-unit id="Reply" approved="yes">
+        <source>Reply</source>
+        <note>reply action</note>
+        <target xml:lang="nl">Beantwoorden</target>
+      </trans-unit>
+      <trans-unit id="Reply All" approved="yes">
+        <source>Reply All</source>
+        <note>reply all action</note>
+        <target xml:lang="nl">Allen beantwoorden</target>
+      </trans-unit>
+      <trans-unit id="Report Bugs" approved="yes">
+        <source>Report Bugs</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Fouten melden</target>
+        <alt-trans>
+          <target xml:lang="nl">Fout melden</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ..." approved="yes">
+        <source>Resetting message cache ...</source>
+        <note>Title</note>
+        <target xml:lang="nl">Berichten cache legen...</target>
+      </trans-unit>
+      <trans-unit id="Retry" approved="yes">
+        <source>Retry</source>
+        <note>Action</note>
+        <target xml:lang="nl">Opnieuw proberen</target>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds" approved="yes">
+        <source>Retry after %d seconds</source>
+        <note>email verify code resend count down</note>
+        <target xml:lang="nl">Probeer opnieuw over %d seconden</target>
+        <alt-trans>
+          <target xml:lang="nl">Probeer opnieuw na %d seconden</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Russian" approved="yes">
+        <source>Russian</source>
+        <note>Action</note>
+        <target xml:lang="nl">Russisch</target>
+      </trans-unit>
+      <trans-unit id="SENT" approved="yes">
+        <source>SENT</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">VERZONDEN</target>
+      </trans-unit>
+      <trans-unit id="SPAM" approved="yes">
+        <source>SPAM</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">SPAM</target>
+      </trans-unit>
+      <trans-unit id="SRP Client" approved="yes">
+        <source>SRP Client</source>
+        <note>Error</note>
+        <target xml:lang="nl">SRP-client</target>
+      </trans-unit>
+      <trans-unit id="SRP Server" approved="yes">
+        <source>SRP Server</source>
+        <note>Error</note>
+        <target xml:lang="nl">SRP-server</target>
+      </trans-unit>
+      <trans-unit id="STARRED" approved="yes">
+        <source>STARRED</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">MET STER</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <note>Title</note>
+        <target xml:lang="nl">Opslaan</target>
+      </trans-unit>
+      <trans-unit id="Save Changes" approved="yes">
+        <source>Save Changes</source>
+        <note>title</note>
+        <target xml:lang="nl">Wijzigingen opslaan</target>
+      </trans-unit>
+      <trans-unit id="Save draft" approved="yes">
+        <source>Save draft</source>
+        <note>Action</note>
+        <target xml:lang="nl">Concept opslaan</target>
+      </trans-unit>
+      <trans-unit id="Scheduled" approved="yes">
+        <source>Scheduled</source>
+        <note>action sheet option</note>
+        <target xml:lang="nl">Gepland</target>
+      </trans-unit>
+      <trans-unit id="Search" approved="yes">
+        <source>Search</source>
+        <note>Title</note>
+        <target xml:lang="nl">Zoeken</target>
+      </trans-unit>
+      <trans-unit id="Send" approved="yes">
+        <source>Send</source>
+        <note>Action</note>
+        <target xml:lang="nl">Verzenden</target>
+      </trans-unit>
+      <trans-unit id="Send Verification Code" approved="yes">
+        <source>Send Verification Code</source>
+        <note>Title</note>
+        <target xml:lang="nl">Verzend verificatiecode</target>
+      </trans-unit>
+      <trans-unit id="Send anyway" approved="yes">
+        <source>Send anyway</source>
+        <note>Action</note>
+        <target xml:lang="nl">Toch verzenden</target>
+      </trans-unit>
+      <trans-unit id="Send message without subject?" approved="yes">
+        <source>Send message without subject?</source>
+        <note>Description</note>
+        <target xml:lang="nl">Bericht versturen zonder onderwerp?</target>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc" approved="yes">
+        <source>Send plain but stored enc</source>
+        <note>Title</note>
+        <target xml:lang="nl">Verzend zonder versleuteling maar bewaar het versleuteld</target>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed" approved="yes">
+        <source>Sender Verification Failed</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">Verificatie van afzender is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Sending Message" approved="yes">
+        <source>Sending Message</source>
+        <note>Description</note>
+        <target xml:lang="nl">Bericht wordt verzonden</target>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" approved="yes">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target xml:lang="nl">Het verzenden van berichten vanaf het adres %1$@ is een betaalde functionaliteit. Uw bericht zal vanaf uw standaard e-mailadres %2$@ verzonden worden</target>
+      </trans-unit>
+      <trans-unit id="Sent" approved="yes">
+        <source>Sent</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Verzonden</target>
+      </trans-unit>
+      <trans-unit id="Sent Failed" approved="yes">
+        <source>Sent Failed</source>
+        <note>Description</note>
+        <target xml:lang="nl">Verzenden mislukt</target>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
+        <source>Sent by you with end-to-end encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">Verzonden door u met end-to-end-versleuteling</target>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!" approved="yes">
+        <source>Server proofs not valid!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Serverbewijzen ongeldig!</target>
+      </trans-unit>
+      <trans-unit id="Set Password" approved="yes">
+        <source>Set Password</source>
+        <note>Title</note>
+        <target xml:lang="nl">Stel wachtwoord in</target>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users." approved="yes">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Stel een wachtwoord in om dit bericht te versleutelen voor niet-ProtonMail gebruikers.</target>
+      </trans-unit>
+      <trans-unit id="Set passwords" approved="yes">
+        <source>Set passwords</source>
+        <note>Signup passwords top title</note>
+        <target xml:lang="nl">Wachtwoorden instellen</target>
+      </trans-unit>
+      <trans-unit id="Settings" approved="yes">
+        <source>Settings</source>
+        <note>menu title</note>
+        <target xml:lang="nl">Instellingen</target>
+      </trans-unit>
+      <trans-unit id="Share Alert" approved="yes">
+        <source>Share Alert</source>
+        <note>Title</note>
+        <target xml:lang="nl">Waarschuwing delen</target>
+      </trans-unit>
+      <trans-unit id="Share Contact" approved="yes">
+        <source>Share Contact</source>
+        <note>action</note>
+        <target xml:lang="nl">Contacten delen</target>
+      </trans-unit>
+      <trans-unit id="Share it with your friends" approved="yes">
+        <source>Share it with your friends</source>
+        <note>Title</note>
+        <target xml:lang="nl">Deel het met uw vrienden</target>
+      </trans-unit>
+      <trans-unit id="Sign Out" approved="yes">
+        <source>Sign Out</source>
+        <note>Action</note>
+        <target xml:lang="nl">Afmelden</target>
+      </trans-unit>
+      <trans-unit id="Signature" approved="yes">
+        <source>Signature</source>
+        <note>Title</note>
+        <target xml:lang="nl">Handtekening</target>
+      </trans-unit>
+      <trans-unit id="Signature Updated" approved="yes">
+        <source>Signature Updated</source>
+        <note>Title</note>
+        <target xml:lang="nl">Handtekening bijgewerkt</target>
+      </trans-unit>
+      <trans-unit id="Single Password" approved="yes">
+        <source>Single Password</source>
+        <note>settings general section title</note>
+        <target xml:lang="nl">Enkel wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications" approved="yes">
+        <source>Snooze Notifications</source>
+        <note>settings option</note>
+        <target xml:lang="nl">Snooze notificaties</target>
+      </trans-unit>
+      <trans-unit id="Snoozed for" approved="yes">
+        <source>Snoozed for</source>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+        <target xml:lang="nl">Uitgesteld voor</target>
+      </trans-unit>
+      <trans-unit id="Snoozed till" approved="yes">
+        <source>Snoozed till</source>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+        <target xml:lang="nl">Uitgesteld tot</target>
+      </trans-unit>
+      <trans-unit id="Space Warning" approved="yes">
+        <source>Space Warning</source>
+        <note>Title</note>
+        <target xml:lang="nl">Waarschuwing van opslagruimte</target>
+      </trans-unit>
+      <trans-unit id="Spam" approved="yes">
+        <source>Spam</source>
+        <note>mail location desc
+   menu title</note>
+        <target xml:lang="nl">Ongewenst</target>
+      </trans-unit>
+      <trans-unit id="Spammed" approved="yes">
+        <source>Spammed</source>
+        <note>Description</note>
+        <target xml:lang="nl">Spam</target>
+      </trans-unit>
+      <trans-unit id="Spanish" approved="yes">
+        <source>Spanish</source>
+        <note>Action</note>
+        <target xml:lang="nl">Spaans</target>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!">
+        <source>Srp single password keyslat invalid!</source>
+        <note>Description</note>
+        <target xml:lang="nl" state="needs-translation">Srp single password keyslat invalid!</target>
+      </trans-unit>
+      <trans-unit id="Star" approved="yes">
+        <source>Star</source>
+        <note>Title</note>
+        <target xml:lang="nl">Ster</target>
+      </trans-unit>
+      <trans-unit id="Starred" approved="yes">
+        <source>Starred</source>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+        <target xml:lang="nl">Met ster</target>
+      </trans-unit>
+      <trans-unit id="Start Time" approved="yes">
+        <source>Start Time</source>
+        <note>settings option (Start Time: 8am)</note>
+        <target xml:lang="nl">Starttijd</target>
+      </trans-unit>
+      <trans-unit id="State" approved="yes">
+        <source>State</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Land/Staat</target>
+      </trans-unit>
+      <trans-unit id="Storage" approved="yes">
+        <source>Storage</source>
+        <note>Title</note>
+        <target xml:lang="nl">Opslagruimte</target>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption" approved="yes">
+        <source>Stored with zero access encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="nl">Opgeslagen met zero-access versleuteling</target>
+      </trans-unit>
+      <trans-unit id="Street" approved="yes">
+        <source>Street</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Straat</target>
+      </trans-unit>
+      <trans-unit id="Subject" approved="yes">
+        <source>Subject</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Onderwerp</target>
+      </trans-unit>
+      <trans-unit id="Subject:" approved="yes">
+        <source>Subject:</source>
+        <note>subject: text when forward</note>
+        <target xml:lang="nl">Onderwerp:</target>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail" approved="yes">
+        <source>Support ProtonMail</source>
+        <note>Action</note>
+        <target xml:lang="nl">ProtonMail steunen</target>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right" approved="yes">
+        <source>Swipe Left to Right</source>
+        <note>settings swipe actions section title</note>
+        <target xml:lang="nl">Veeg van links naar rechts</target>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left" approved="yes">
+        <source>Swipe Right to Left</source>
+        <note>settings swipe actions section title</note>
+        <target xml:lang="nl">Veeg van rechts naar links</target>
+      </trans-unit>
+      <trans-unit id="System can't copy the file" approved="yes">
+        <source>System can't copy the file</source>
+        <note>Error</note>
+        <target xml:lang="nl">Het systeem kan het bestand niet kopiëren</target>
+      </trans-unit>
+      <trans-unit id="TRASH" approved="yes">
+        <source>TRASH</source>
+        <note>mail location title</note>
+        <target xml:lang="nl">PRULLENBAK</target>
+      </trans-unit>
+      <trans-unit id="Take a Photo" approved="yes">
+        <source>Take a Photo</source>
+        <note>Title</note>
+        <target xml:lang="nl">Neem een foto</target>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients" approved="yes">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <note>alert description</note>
+        <target xml:lang="nl">Door alsnog op verzenden te tikken kiest u er voor om het bericht naar deze ontvangers te verzenden zonder het gebruik van een verlooptijd</target>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="nl">Bedankt voor het indienen van een foutmelding. We hebben uw verslag toegevoegd aan ons bug tracking-systeem.</target>
+      </trans-unit>
+      <trans-unit id="The Password is wrong." approved="yes">
+        <source>The Password is wrong.</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Het wachtwoord is onjuist.</target>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline..." approved="yes">
+        <source>The ProtonMail current offline...</source>
+        <note>Title</note>
+        <target xml:lang="nl">ProtonMail is momenteel offline...</target>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid." approved="yes">
+        <source>The authentication credentials are invalid.</source>
+        <note>Description</note>
+        <target xml:lang="nl">De inloggegevens zijn ongeldig.</target>
+      </trans-unit>
+      <trans-unit id="The current standard" approved="yes">
+        <source>The current standard</source>
+        <note>key size notes</note>
+        <target xml:lang="nl">De huidige standaard</target>
+      </trans-unit>
+      <trans-unit id="The display name is now %@." approved="yes">
+        <source>The display name is now %@.</source>
+        <note>Description</note>
+        <target xml:lang="nl">De weergavenaam is nu %@.</target>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken please try again" approved="yes">
+        <source>The draft cache is broken please try again</source>
+        <note>Description</note>
+        <target xml:lang="nl">De concepten-cache is beschadigd, probeer het opnieuw</target>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!" approved="yes">
+        <source>The draft format incorrectly sending failed!</source>
+        <note>error when sending the message</note>
+        <target xml:lang="nl">Het formaat van het concept is onjuist. Verzenden is mislukt!</target>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available." approved="yes">
+        <source>The highest level of encryption available.</source>
+        <note>key size note part 1</note>
+        <target xml:lang="nl">Het hoogste niveau van versleuteling beschikbaar.</target>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect." approved="yes">
+        <source>The mailbox password is incorrect.</source>
+        <note>Error</note>
+        <target xml:lang="nl">Het mailbox-wachtwoord is onjuist.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty." approved="yes">
+        <source>The new password can't empty.</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Het nieuwe wachtwoord kan niet leeg zijn.</target>
+      </trans-unit>
+      <trans-unit id="The new password not match." approved="yes">
+        <source>The new password not match.</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Het nieuwe wachtwoord komt niet overeen.</target>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it." approved="yes">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <note>recovery email notes</note>
+        <target xml:lang="nl">Met het optionele herstel-e-mailadres kunt u uw inlogwachtwoord opnieuw instellen wanneer u deze bent vergeten.</target>
+        <alt-trans>
+          <target xml:lang="nl">Met het optionele herstel e-mailadres kunt u uw inlogwachtwoord opnieuw instellen wanneer u deze bent vergeten.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password." approved="yes">
+        <source>The password you entered does not match the current password.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Het opgegeven wachtwoord komt niet overeen met het huidige wachtwoord.</target>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match." approved="yes">
+        <source>The passwords you entered do not match.</source>
+        <note>Description</note>
+        <target xml:lang="nl">De ingevoerde wachtwoorden komen niet overeen.</target>
+      </trans-unit>
+      <trans-unit id="The private key update failed." approved="yes">
+        <source>The private key update failed.</source>
+        <note>update password error</note>
+        <target xml:lang="nl">Updaten van de geheime sleutel is mislukt.</target>
+      </trans-unit>
+      <trans-unit id="The request timed out." approved="yes">
+        <source>The request timed out.</source>
+        <note>Title</note>
+        <target xml:lang="nl">De aanvraag duurde te lang.</target>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB" approved="yes">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <note>Description</note>
+        <target xml:lang="nl">De totale grootte van de bijlagen kan niet groter zijn dan 25MB</target>
+      </trans-unit>
+      <trans-unit id="The verification failed!" approved="yes">
+        <source>The verification failed!</source>
+        <note>Error</note>
+        <target xml:lang="nl">De verificatie is mislukt!</target>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data." approved="yes">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Er is een fout opgetreden tijdens het aanmaken of laden van de applicatiegegevens.</target>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target xml:lang="nl">Deze e-mail voldoet niet aan de authenticatievereisten van de domeinnaam. Mogelijk werd deze gespoofed of onjuist doorgestuurd!</target>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target xml:lang="nl">Deze e-mail lijkt afkomstig te zijn van een ProtonMail-adres maar kwam van buiten ons systeem en voldoet niet aan onze authenticatie-vereisten. Mogelijk werd deze gespoofed of onjuist doorgestuurd!</target>
+      </trans-unit>
+      <trans-unit id="Title" approved="yes">
+        <source>Title</source>
+        <note>contacts talbe cell Title title</note>
+        <target xml:lang="nl">Aanhef</target>
+      </trans-unit>
+      <trans-unit id="To" approved="yes">
+        <source>To</source>
+        <note>Title</note>
+        <target xml:lang="nl">Aan</target>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,\r\n we need to verify that you are human." approved="yes">
+        <source>To prevent abuse of ProtonMail,\r\n we need to verify that you are human.</source>
+        <note>human verification notes</note>
+        <target xml:lang="nl">Om misbruik van ProtonMail te voorkomen,\r\n moeten we verifiëren dat u een natuurlijk persoon bent.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note>Description</note>
+        <target xml:lang="nl">Om uw mailbox-wachtwoord opnieuw in te stellen dient u de webversie van ProtonMail te gebruiken via ProtonMail.com</target>
+      </trans-unit>
+      <trans-unit id="To:" approved="yes">
+        <source>To:</source>
+        <note>message To: feild</note>
+        <target xml:lang="nl">Aan:</target>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target xml:lang="nl">TouchID is niet actief, activeer het in de systeeminstellingen</target>
+      </trans-unit>
+      <trans-unit id="TouchID not available" approved="yes">
+        <source>TouchID not available</source>
+        <note>settings touchid/faceid error</note>
+        <target xml:lang="nl">TouchID is niet beschikbaar</target>
+      </trans-unit>
+      <trans-unit id="Trash" approved="yes">
+        <source>Trash</source>
+        <note>mail location desc
+   menu title
+   move action</note>
+        <target xml:lang="nl">Prullenbak</target>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide" approved="yes">
+        <source>Trouble shooting guide</source>
+        <note>Title</note>
+        <target xml:lang="nl">Foutoplossingsgids</target>
+      </trans-unit>
+      <trans-unit id="Turkish" approved="yes">
+        <source>Turkish</source>
+        <note>Action</note>
+        <target xml:lang="nl">Turks</target>
+      </trans-unit>
+      <trans-unit id="Turn Off" approved="yes">
+        <source>Turn Off</source>
+        <note>action sheet option</note>
+        <target xml:lang="nl">Uitschakelen</target>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail" approved="yes">
+        <source>Tweet about ProtonMail</source>
+        <note>Title</note>
+        <target xml:lang="nl">Tweet over ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="Two Factor Code" approved="yes">
+        <source>Two Factor Code</source>
+        <note>Placeholder</note>
+        <target xml:lang="nl">Tweestapsverificatiecode</target>
+      </trans-unit>
+      <trans-unit id="URL" approved="yes">
+        <source>URL</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Website</target>
+        <alt-trans>
+          <target xml:lang="nl">URL</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="USER LOGIN" approved="yes">
+        <source>USER LOGIN</source>
+        <note>Title</note>
+        <target xml:lang="nl">GEBRUIKERSLOGIN</target>
+      </trans-unit>
+      <trans-unit id="Ukrainian" approved="yes">
+        <source>Ukrainian</source>
+        <note>Action</note>
+        <target xml:lang="nl">Oekraïens</target>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server" approved="yes">
+        <source>Unable to connect to the server</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om met de server te verbinden</target>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!" approved="yes">
+        <source>Unable to create SRP Client!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om een SRP-client te maken!</target>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message." approved="yes">
+        <source>Unable to decrypt message.</source>
+        <note>Error</note>
+        <target xml:lang="nl">Niet in staat om het bericht te ontcijferen.</target>
+      </trans-unit>
+      <trans-unit id="Unable to generate hash password!" approved="yes">
+        <source>Unable to generate hash password!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om een wachtwoordhash te maken!</target>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts" approved="yes">
+        <source>Unable to get contacts</source>
+        <note>Error</note>
+        <target xml:lang="nl">Niet in staat om de contactpersonen op te halen</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!" approved="yes">
+        <source>Unable to parse authentication info!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om authenticatiegegevens te verwerken!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!" approved="yes">
+        <source>Unable to parse authentication token!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om de authenticatietoken te verwerken!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse cased authentication token!" approved="yes">
+        <source>Unable to parse cased authentication token!</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet mogelijk om de authenticatietoken te verwerken!</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse response" approved="yes">
+        <source>Unable to parse response</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om de reactie te verwerken</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:\n%@" approved="yes">
+        <source>Unable to parse the response object:\n%@</source>
+        <note>Description</note>
+        <target xml:lang="nl">Niet in staat om het antwoord-object te verwerken:\n%@</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse token" approved="yes">
+        <source>Unable to parse token</source>
+        <note>Error</note>
+        <target xml:lang="nl">Niet in staat om de token te verwerken</target>
+      </trans-unit>
+      <trans-unit id="Unable to send the email" approved="yes">
+        <source>Unable to send the email</source>
+        <note>error when sending the message</note>
+        <target xml:lang="nl">E-mail kon niet worden verzonden</target>
+      </trans-unit>
+      <trans-unit id="Undo" approved="yes">
+        <source>Undo</source>
+        <note>Action</note>
+        <target xml:lang="nl">Ongedaan maken</target>
+      </trans-unit>
+      <trans-unit id="Unknow Error" approved="yes">
+        <source>Unknow Error</source>
+        <note>Description</note>
+        <target xml:lang="nl">Onbekende fout</target>
+      </trans-unit>
+      <trans-unit id="Unknown" approved="yes">
+        <source>Unknown</source>
+        <note>title, default display name</note>
+        <target xml:lang="nl">Onbekend</target>
+      </trans-unit>
+      <trans-unit id="Unknown Error" approved="yes">
+        <source>Unknown Error</source>
+        <note>Error</note>
+        <target xml:lang="nl">Onbekende fout</target>
+      </trans-unit>
+      <trans-unit id="Unread" approved="yes">
+        <source>Unread</source>
+        <note>VoiceOver: email is not read yet</note>
+        <target xml:lang="nl">Ongelezen</target>
+      </trans-unit>
+      <trans-unit id="Update" approved="yes">
+        <source>Update</source>
+        <note>like top right action text</note>
+        <target xml:lang="nl">Bijwerken</target>
+      </trans-unit>
+      <trans-unit id="Update Contact" approved="yes">
+        <source>Update Contact</source>
+        <note>Contacts Update contact</note>
+        <target xml:lang="nl">Contactpersoon bijwerken</target>
+      </trans-unit>
+      <trans-unit id="Update Notification Email" approved="yes">
+        <source>Update Notification Email</source>
+        <note>update notification email error title</note>
+        <target xml:lang="nl">Notificatie-e-mailadres bijwerken</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <note>Error</note>
+        <target xml:lang="nl">Upgrade naar een betaald abonnement om te kunnen verzenden vanaf uw adres %@</target>
+        <alt-trans>
+          <target xml:lang="nl">Upgrade naar een betaald abonnement om te verzenden vanaf uw adres %@</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Upgrading is not possible in the app." approved="yes">
+        <source>Upgrading is not possible in the app.</source>
+        <note>Upgrade warning message</note>
+        <target xml:lang="nl">Upgraden is niet mogelijk in de app.</target>
+      </trans-unit>
+      <trans-unit id="Upload Contacts" approved="yes">
+        <source>Upload Contacts</source>
+        <note>Action</note>
+        <target xml:lang="nl">Contacten uploaden</target>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?" approved="yes">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <note>Description</note>
+        <target xml:lang="nl">Contactpersonen in iOS naar ProtonMail uploaden?</target>
+      </trans-unit>
+      <trans-unit id="Url" approved="yes">
+        <source>Url</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Website</target>
+        <alt-trans>
+          <target xml:lang="nl">URL</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="User already exist!" approved="yes">
+        <source>User already exist!</source>
+        <note>error when user already exist</note>
+        <target xml:lang="nl">Gebruiker bestaat reeds!</target>
+      </trans-unit>
+      <trans-unit id="User is available!" approved="yes">
+        <source>User is available!</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="nl">Gebruiker is beschikbaar!</target>
+      </trans-unit>
+      <trans-unit id="Username" approved="yes">
+        <source>Username</source>
+        <note>Title</note>
+        <target xml:lang="nl">Gebruikersnaam</target>
+      </trans-unit>
+      <trans-unit id="Verification code request failed" approved="yes">
+        <source>Verification code request failed</source>
+        <note>Title</note>
+        <target xml:lang="nl">Aanvraag van verificatiecode is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Verification code sent" approved="yes">
+        <source>Verification code sent</source>
+        <note>Title</note>
+        <target xml:lang="nl">Verificatiecode is verzonden</target>
+      </trans-unit>
+      <trans-unit id="Verification error" approved="yes">
+        <source>Verification error</source>
+        <note>error title</note>
+        <target xml:lang="nl">Verificatiefout</target>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed" approved="yes">
+        <source>Verification of this content’s signature failed</source>
+        <note>error details</note>
+        <target xml:lang="nl">Verificatie van de handtekening van deze inhoud is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <note>human check warning description</note>
+        <target xml:lang="nl">Waarschuwing: Voordat u bewezen heeft een natuurlijk persoon te zijn kunt u geen e-mails versturen!!!</target>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" approved="yes">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <note>Description</note>
+        <target xml:lang="nl">Waarschuwing: U heeft geen herstel-e-mailadres ingesteld, hierdoor is accountherstel niet mogelijk als u uw wachtwoord vergeet. Doorgaan zonder herstel-e-mailadres?</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above." approved="yes">
+        <source>We will send a verification code to the cell phone above.</source>
+        <note>text field notes</note>
+        <target xml:lang="nl">Wij zullen een verificatiecode sturen naar bovenstaand telefoonnummer.</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above." approved="yes">
+        <source>We will send a verification code to the email address above.</source>
+        <note>email field notes</note>
+        <target xml:lang="nl">Wij zullen een verificatiecode sturen naar bovenstaand e-mailadres.</target>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better." approved="yes">
+        <source>We would like to know what we can do better.</source>
+        <note>Title</note>
+        <target xml:lang="nl">Wij horen graag wat wij kunnen verbeteren.</target>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!" approved="yes">
+        <source>Welcome to ProtonMail!</source>
+        <note>Title</note>
+        <target xml:lang="nl">Welkom bij ProtonMail!</target>
+      </trans-unit>
+      <trans-unit id="What people see in the \&quot;From\&quot; field." approved="yes">
+        <source>What people see in the \"From\" field.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Wat anderen in het veld \"Van\" zien.</target>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field." approved="yes">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <note>display name notes</note>
+        <target xml:lang="nl">Wanneer u een e-mail verstuurt is dit de naam die als 'afzender' verschijnt.</target>
+      </trans-unit>
+      <trans-unit id="Work" approved="yes">
+        <source>Work</source>
+        <note>default vcard types</note>
+        <target xml:lang="nl">Werk</target>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <note>Description</note>
+        <target xml:lang="nl">U kunt onder "Instellingen" in de ProtonMail-app veeggebaren instellen.</target>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <note>Description</note>
+        <target xml:lang="nl">U kunt hulp en ondersteuning krijgen via ProtonMail.com/support. U kunt ook bugs melden via de app.</target>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target xml:lang="nl">U kunt het e-mailadres %@ niet als standaard instellen omdat dit een betaalde functionaliteit is.</target>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." approved="yes">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <note>description</note>
+        <target xml:lang="nl">U heeft verlopend bericht ingeschakeld, maar niet alle ontvangers ondersteunen dit. Voeg een wachtwoord toe en/of schakel PGP uit om verlopende berichten te kunnen gebruiken voor alle geadresseerden.</target>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!" approved="yes">
+        <source>You have %d new emails!</source>
+        <note>Message</note>
+        <target xml:lang="nl">U heeft %d nieuwe e-mails!</target>
+      </trans-unit>
+      <trans-unit id="You have a new email!" approved="yes">
+        <source>You have a new email!</source>
+        <note>Title</note>
+        <target xml:lang="nl">U heeft een nieuwe e-mail!</target>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?" approved="yes">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <note>Confirmation message</note>
+        <target xml:lang="nl">U heeft nog niet-opgeslagen wijzigingen. Wilt u deze opslaan?</target>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@)." approved="yes">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <note>Description</note>
+        <target xml:lang="nl">U heeft %1$d%% van uw opslagruimte gebruikt (%2$@).</target>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@)." approved="yes">
+        <source>You have used up all of your storage space (%@).</source>
+        <note>Description</note>
+        <target xml:lang="nl">U heeft al uw opslagruimte gebruikt (%@).</target>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send" approved="yes">
+        <source>You need at least one recipient to send</source>
+        <note>Description</note>
+        <target xml:lang="nl">U moet minstens één ontvanger invoeren om het bericht te verzenden</target>
+      </trans-unit>
+      <trans-unit id="Your Country Code" approved="yes">
+        <source>Your Country Code</source>
+        <note>view top title</note>
+        <target xml:lang="nl">Uw landcode</target>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." approved="yes">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Uw inbox is nu met end-to-end versleuteling beveiligd. Om automatisch veilig met uw vrienden te e-mailen moeten zij ook ProtonMail gebruiken! U kunt ook handmatig berichten versleutelen als zij geen ProtonMail gebruiken.</target>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages." approved="yes">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Uw nieuwe versleutelde e-mailaccount is aangemaakt, u kunt nu versleutelde berichten verzenden en ontvangen.</target>
+      </trans-unit>
+      <trans-unit id="Your new secure email\r\n account is ready." approved="yes">
+        <source>Your new secure email\r\n account is ready.</source>
+        <note>view top title</note>
+        <target xml:lang="nl">Uw nieuwe beveiligde e-mail\r\naccount is gebruiksklaar.</target>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated." approved="yes">
+        <source>Your signature has been updated.</source>
+        <note>Description</note>
+        <target xml:lang="nl">Uw handtekening is bijgewerkt.</target>
+      </trans-unit>
+      <trans-unit id="ZIP" approved="yes">
+        <source>ZIP</source>
+        <note>contact placeholder</note>
+        <target xml:lang="nl">Postcode</target>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <note>agree check box middle word</note>
+        <target xml:lang="nl">en</target>
+      </trans-unit>
+      <trans-unit id="at" approved="yes">
+        <source>at</source>
+        <note>like at 10:00pm</note>
+        <target xml:lang="nl">om</target>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!" approved="yes">
+        <source>attempt remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target xml:lang="nl">poging over tot het vernietigen van alle gegevens!</target>
+      </trans-unit>
+      <trans-unit id="attempts remaining" approved="yes">
+        <source>attempts remaining</source>
+        <note>Description</note>
+        <target xml:lang="nl">pogingen resterend</target>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!" approved="yes">
+        <source>attempts remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target xml:lang="nl">pogingen over tot het vernietigen van alle gegevens!</target>
+      </trans-unit>
+      <trans-unit id="close tour" approved="yes">
+        <source>close tour</source>
+        <note>Action</note>
+        <target xml:lang="nl">rondleiding sluiten</target>
+      </trans-unit>
+      <trans-unit id="days" approved="yes">
+        <source>days</source>
+        <note>Title</note>
+        <target xml:lang="nl">dagen</target>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <note>contacts api error when fetch</note>
+        <target xml:lang="nl" state="needs-translation">get contacts() failed, peopleOrderedByUsersPreference return null!!</target>
+      </trans-unit>
+      <trans-unit id="inline attachments" approved="yes">
+        <source>inline attachments</source>
+        <note>Title</note>
+        <target xml:lang="nl">inline-bijlagen</target>
+      </trans-unit>
+      <trans-unit id="no object">
+        <source>no object</source>
+        <note>no object error, local only , this could be not translated!</note>
+        <target xml:lang="nl" state="needs-translation">no object</target>
+      </trans-unit>
+      <trans-unit id="normal attachments" approved="yes">
+        <source>normal attachments</source>
+        <note>Title</note>
+        <target xml:lang="nl">normale bijlagen</target>
+      </trans-unit>
+      <trans-unit id="privacy policy." approved="yes">
+        <source>privacy policy.</source>
+        <note>agree check box privacy</note>
+        <target xml:lang="nl">privacybeleid.</target>
+      </trans-unit>
+      <trans-unit id="terms and conditions" approved="yes">
+        <source>terms and conditions</source>
+        <note>agree check box terms</note>
+        <target xml:lang="nl">algemene voorwaarden</target>
+      </trans-unit>
+      <trans-unit id="wrote:" approved="yes">
+        <source>wrote:</source>
+        <note>Title</note>
+        <target xml:lang="nl">schreef:</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="nl">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>ProtonMail</source>
+        <note>Bundle display name</note>
+        <target xml:lang="nl">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="nl">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/en.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="nl">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS" approved="yes">
+        <source>App Extension API is not available in this version of iOS</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">App Extension API is niet beschikbaar in deze iOS versie</target>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension" approved="yes">
+        <source>Failed to contact the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Wachtwoord-extensie bereiken is mislukt</target>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information" approved="yes">
+        <source>Failed to execute script that collects web page information</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Uitvoeren van script dat informatie over de webpagina verzamelt mislukt</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated" approved="yes">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Webpagina vullen mislukt omdat script niet kon worden uitgevoerd</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing" approved="yes">
+        <source>Failed to fill web page because script is missing</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Webpagina invullen mislukt omdat er een script ontbreekt</target>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension" approved="yes">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Niet geslaagd om de URL string van de web-weergave te verkrijgen. De web-weergave moet volledig geladen zijn wanneer de wachtwoord-extensie wordt aangeroepen</target>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension" approved="yes">
+        <source>Failed to parse information returned by Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Verwerken van informatie wachtwoord-extensie mislukt</target>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user" approved="yes">
+        <source>Password Extension was cancelled by the user</source>
+        <note>Password Extension Error Message</note>
+        <target xml:lang="nl">Wachtwoord-extensie was geannuleerd door de gebruiker</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

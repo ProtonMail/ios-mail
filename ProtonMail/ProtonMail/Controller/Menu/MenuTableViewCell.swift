@@ -1,14 +1,30 @@
 //
-// Copyright 2015 ArcTouch, Inc.
-// All rights reserved.
+//  MenuTableViewCell.swift
+//  ProtonMail
 //
-// This file, its contents, concepts, methods, behavior, and operation
-// (collectively the "Software") are protected by trade secret, patent,
-// and copyright laws. The use of the Software is governed by a license
-// agreement. Disclosure of the Software to third parties, in any form,
-// in whole or in part, is expressly prohibited except as authorized by
-// the license agreement.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -36,7 +52,7 @@ class MenuTableViewCell: UITableViewCell {
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
-        titleLabel.text = item.title;
+        titleLabel.text = item.localizedTitle;
         
         let defaultImage = UIImage(named: item.image)
         let selectedImage = UIImage(named: item.imageSelected)
@@ -47,7 +63,7 @@ class MenuTableViewCell: UITableViewCell {
     }
     
     func configUnreadCount () {
-        let count = lastUpdatedStore.UnreadCountForKey(self.item.menuToLocation)
+        let count = lastUpdatedStore.unreadCountForKey(self.item.menuToLabel.rawValue)
         if count > 0 {
             unreadLabel.text = "\(count)";
             unreadLabel.isHidden = false;

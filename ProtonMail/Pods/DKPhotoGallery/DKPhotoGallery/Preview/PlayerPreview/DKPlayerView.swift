@@ -148,7 +148,11 @@ open class DKPlayerView: UIView {
     private let durationLabel = UILabel()
     private var tapGesture: UITapGestureRecognizer!
     private lazy var bufferingIndicator: UIActivityIndicatorView = {
+        #if swift(>=4.2)
         return UIActivityIndicatorView(style: .gray)
+        #else
+        return UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        #endif
     }()
     
     private var playerLayer: AVPlayerLayer {
@@ -165,8 +169,13 @@ open class DKPlayerView: UIView {
         set {
             guard let _ = self.player.currentItem else { return }
             
+            #if swift(>=4.2)
             let newTime = CMTimeMakeWithSeconds(Double(Int64(newValue)), preferredTimescale: 1)
             self.player.seek(to: newTime, toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+            #else
+            let newTime = CMTimeMakeWithSeconds(Double(Int64(newValue)), 1)
+            self.player.seek(to: newTime, toleranceBefore: kCMTimeZero, toleranceAfter: kCMTimeZero)
+            #endif
         }
     }
     
@@ -730,7 +739,11 @@ open class DKPlayerView: UIView {
             if let newDurationAsValue = change?[NSKeyValueChangeKey.newKey] as? NSValue {
                 newDuration = newDurationAsValue.timeValue
             } else {
+                #if swift(>=4.2)
                 newDuration = CMTime.zero
+                #else
+                newDuration = kCMTimeZero
+                #endif
             }
             
             let hasValidDuration = newDuration.isNumeric && newDuration.value != 0
@@ -758,10 +771,18 @@ open class DKPlayerView: UIView {
              Handle `NSNull` value for `NSKeyValueChangeNewKey`, i.e. when
              `player.currentItem` is nil.
              */
+            #if swift(>=4.2)
             let newStatus: AVPlayerItem.Status
+            #else
+            let newStatus: AVPlayerItemStatus
+            #endif
             
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
+                #if swift(>=4.2)
                 newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue)!
+                #else
+                newStatus = AVPlayerItemStatus(rawValue: newStatusAsNumber.intValue)!
+                #endif
             } else {
                 newStatus = .unknown
             }

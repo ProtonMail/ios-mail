@@ -1,10 +1,30 @@
 //
 //  ServicePlanDataService.swift
-//  ProtonMail
+//  ProtonMail - Created on 17/08/2018.
 //
-//  Created by Anatoly Rosencrantz on 17/08/2018.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import AwaitKit
@@ -13,15 +33,13 @@ protocol ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
     var isIAPAvailable: Bool { get set }
     var defaultPlanDetails: ServicePlanDetails? { get set }
-    var currentSubscription: Subscription? { get set }
+    var currentSubscription: ServicePlanSubscription? { get set }
 }
 
-class ServicePlanDataService: NSObject {
-    typealias CompletionHandler = ()->Void
+class ServicePlanDataService: NSObject, Service {
     
     static var shared = ServicePlanDataService(localStorage: userCachedStatus)
-    private let localStorage: ServicePlanDataStorage
-
+    
     internal init(localStorage: ServicePlanDataStorage) {
         self.localStorage = localStorage
         self.allPlanDetails = localStorage.servicePlansDetails ?? []
@@ -30,6 +48,9 @@ class ServicePlanDataService: NSObject {
         self.currentSubscription = localStorage.currentSubscription
         super.init()
     }
+    
+    typealias CompletionHandler = ()->Void
+    private let localStorage: ServicePlanDataStorage
     
     private var allPlanDetails: [ServicePlanDetails] {
         willSet { userCachedStatus.servicePlansDetails = newValue }
@@ -43,7 +64,7 @@ class ServicePlanDataService: NSObject {
         willSet { userCachedStatus.defaultPlanDetails = newValue }
     }
     
-    @objc dynamic var currentSubscription: Subscription? {
+    @objc dynamic var currentSubscription: ServicePlanSubscription? {
         willSet { userCachedStatus.currentSubscription = newValue }
     }
     
@@ -115,7 +136,7 @@ extension ServicePlanDataService {
             completion?()
         }.catch { error in
             if (error as NSError).code == 22110 { // no subscription stands for free/default plan
-                self.currentSubscription = Subscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
+                self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
             }
             completion?()
         }.finally {

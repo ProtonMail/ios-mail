@@ -1,10 +1,30 @@
 //
 //  ContactGroupEditViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/8/21.
 //
-//  Created by Chun-Hung Tseng on 2018/8/21.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 import PromiseKit
@@ -45,7 +65,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
          groupID: String? = nil,
          name: String?,
          color: String?,
-         emailIDs: NSSet) {
+         emailIDs: Set<Email>) {
         self.state = state
         self.emailsInGroup = []
         self.tableContent = []
@@ -110,26 +130,19 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     
     /**
      Load email content and prepare the tableView for displaying them
-    */
+     */
     private func prepareEmails() {
-        // get email as an array
-        if let emailIDs = contactGroup.emailIDs.allObjects as? [Email] {
-            // sort
-            self.emailsInGroup = emailIDs
-            self.emailsInGroup.sort {
-                if $0.name == $1.name {
-                    return $0.email < $1.email
-                }
-                return $0.name < $1.name
+        self.emailsInGroup = contactGroup.emailIDs.map{$0}
+        self.emailsInGroup.sort {
+            if $0.name == $1.name {
+                return $0.email < $1.email
             }
-            
-            // update
-            updateTableContent(emailCount: self.emailsInGroup.count)
-            self.delegate?.update()
-        } else {
-            // TODO: handle error
-            PMLog.D("Can't convert NSSet to [Email]")
+            return $0.name < $1.name
         }
+        
+        // update
+        updateTableContent(emailCount: self.emailsInGroup.count)
+        self.delegate?.update()
     }
     
     /**
@@ -157,14 +170,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /**
      - Parameter emails: Set the emails that will be in the contact group
      */
-    func setEmails(emails: NSSet)
+    func setEmails(emails: Set<Email>)
     {
-        contactGroup.emailIDs = NSMutableSet(set: emails)
+        contactGroup.emailIDs = emails
     }
     
     /**
      Remove an email from the listing in the contact group.
-    */
+     */
     func removeEmail(emailID: String) {
         for emailObj in emailsInGroup {
             if emailObj.emailID == emailID {
@@ -218,13 +231,13 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /**
      - Returns: the emails in the contact group
      */
-    func getEmails() -> NSSet {
+    func getEmails() -> Set<Email> {
         return contactGroup.emailIDs
     }
     
     /**
      - Returns: the section title
-    */
+     */
     func getSectionTitle(for section: Int) -> String {
         guard section < tableSectionTitle.count else {
             return ""
@@ -287,7 +300,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     
     /**
      Returns true if the contact group is modified
-    */
+     */
     func hasUnsavedChanges() -> Bool {
         return self.contactGroup.hasChanged()
     }
@@ -304,14 +317,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     private func createContactGroupDetail(name: String,
                                           color: String,
-                                          emailList: NSSet) -> Promise<Void> {
+                                          emailList: Set<Email>) -> Promise<Void> {
         return firstly {
             return sharedContactGroupsDataService.createContactGroup(name: name, color: color)
             }.then {
                 (ID: String) -> Promise<Void> in
                 self.contactGroup.ID = ID
                 return self.addEmailsToContactGroup(emailList: emailList)
-            }
+        }
     }
     
     /**
@@ -326,39 +339,31 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      */
     private func updateContactGroupDetail(name: String,
                                           color: String,
-                                          updatedEmailList: NSSet) -> Promise<Void> {
+                                          updatedEmailList: Set<Email>) -> Promise<Void> {
         
         return firstly {
-                () -> Promise<Void> in
+            () -> Promise<Void> in
             
-                if let ID = contactGroup.ID {
-                    // update contact group
-                    return sharedContactGroupsDataService.editContactGroup(groupID: ID,
-                                                                           name: name,
-                                                                           color: color)
-                } else {
-                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
-                }
+            if let ID = contactGroup.ID {
+                // update contact group
+                return sharedContactGroupsDataService.editContactGroup(groupID: ID,
+                                                                       name: name,
+                                                                       color: color)
+            } else {
+                return Promise.init(error: ContactGroupEditError.TypeCastingError)
+            }
             }.then {
                 () -> Promise<Void> in
                 
-                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
-                    let updated = updatedEmailList as? Set<Email> {
-                    let toAdd = updated.subtracting(original)
-                    return self.addEmailsToContactGroup(emailList: toAdd as NSSet)
-                } else {
-                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
-                }
+                let original = self.contactGroup.originalEmailIDs
+                let toAdd = updatedEmailList.subtracting(original)
+                return self.addEmailsToContactGroup(emailList: toAdd)
             }.then {
                 () -> Promise<Void> in
-
-                if let original = self.contactGroup.originalEmailIDs as? Set<Email>,
-                    let updated = updatedEmailList as? Set<Email> {
-                    let toDelete = original.subtracting(updated)
-                    return self.removeEmailsFromContactGroup(emailList: toDelete as NSSet)
-                } else {
-                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
-                }
+                
+                let original = self.contactGroup.originalEmailIDs
+                let toDelete = original.subtracting(updatedEmailList)
+                return self.removeEmailsFromContactGroup(emailList: toDelete)
         }
     }
     
@@ -366,7 +371,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      Deletes the contact group on the server and cache
      
      - Returns: Promise<Void>
-    */
+     */
     func deleteContactGroup() -> Promise<Void> {
         return firstly {
             () -> Promise<Void> in
@@ -386,20 +391,17 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      - Returns: Promise<Void>
      */
-    func addEmailsToContactGroup(emailList: NSSet) -> Promise<Void> {
+    func addEmailsToContactGroup(emailList: Set<Email>) -> Promise<Void> {
         return firstly {
             () -> Promise<Void> in
-                if let emails = emailList.allObjects as? [Email] {
-                    if let ID = contactGroup.ID {
-                        return sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
-                                                                                      emailList: emails)
-                    } else {
-                        return Promise.init(error: ContactGroupEditError.InternalError)
-                    }
-                } else {
-                    return Promise.init(error: ContactGroupEditError.TypeCastingError)
-                }
+            let emails = emailList.map{$0}
+            if let ID = contactGroup.ID {
+                return sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
+                                                                              emailList: emails)
+            } else {
+                return Promise.init(error: ContactGroupEditError.InternalError)
             }
+        }
     }
     
     /**
@@ -409,19 +411,16 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
      
      - Returns: Promise<Void>
      */
-    func removeEmailsFromContactGroup(emailList: NSSet) -> Promise<Void> {
+    func removeEmailsFromContactGroup(emailList: Set<Email>) -> Promise<Void> {
         return firstly {
             () -> Promise<Void> in
             
-            if let emails = emailList.allObjects as? [Email] {
-                if let ID = contactGroup.ID {
-                    return sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
-                                                                                       emailList: emails)
-                } else {
-                    return Promise.init(error: ContactGroupEditError.InternalError)
-                }
+            let emails = emailList.map{$0}
+            if let ID = contactGroup.ID {
+                return sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
+                                                                                   emailList: emails)
             } else {
-                return Promise.init(error: ContactGroupEditError.TypeCastingError)
+                return Promise.init(error: ContactGroupEditError.InternalError)
             }
         }
     }

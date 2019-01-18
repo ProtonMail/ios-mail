@@ -25,8 +25,8 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
 
+import Foundation
 
 extension Message {
     //
@@ -88,7 +88,7 @@ extension Message {
             return left.name == "X-Autoreply"
         }
         
-        if self.senderAddress == email {
+        if self.senderContactVO.email == email {
             var autoreply = false
             if let body = autoReply?.body, body == "yes" {
                 autoreply = true

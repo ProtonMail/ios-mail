@@ -1,10 +1,30 @@
 //
 //  ContactGroupSubSelectionViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/10/13.
 //
-//  Created by Chun-Hung Tseng on 2018/10/13.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -34,54 +54,50 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
         
-        if let context = sharedCoreDataService.mainManagedObjectContext {
-            // (1)
-            if let label = Label.labelForLabelName(self.groupName,
-                                                   inManagedObjectContext: context),
-                let emails = label.emails.allObjects as? [Email] {
-                self.groupColor = label.color
-                
-                for email in emails {
-                    emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
-                                                                                           name: email.name))
-                }
-            } else {
-                // the group might be renamed or deleted
-                self.groupColor = ColorManager.defaultColor
-            }
+        let context = sharedCoreDataService.mainManagedObjectContext
+        // (1)
+        if let label = Label.labelForLabelName(self.groupName,
+                                               inManagedObjectContext: context),
+            let emails = label.emails.allObjects as? [Email] {
+            self.groupColor = label.color
             
-            // (2)
-            for member in selectedEmails {
-                var found = false
-                for (i, candidate) in emailData.enumerated() {
-                    if member.email == candidate.email &&
-                        member.name == candidate.name &&
-                        emailData[i].isSelected == false { // case: >= 2 identical name-email pair occurs
-                        emailData[i].isSelected = true
-                        found = true
-                        break
-                    }
-                }
-                
-                if found {
-                    continue
-                }
-                
-                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
-                                                                                  name: member.name,
-                                                                                  isSelected: true))
-            }
-            
-            // (3)
-            emailData.sort {
-                if $0.name == $1.name {
-                    return $0.email < $1.email
-                }
-                return $0.name < $1.name
+            for email in emails {
+                emailData.append(ContactGroupSubSelectionViewModelEmailInfomation.init(email: email.email,
+                                                                                       name: email.name))
             }
         } else {
-            // TODO: handle error
+            // the group might be renamed or deleted
             self.groupColor = ColorManager.defaultColor
+        }
+        
+        // (2)
+        for member in selectedEmails {
+            var found = false
+            for (i, candidate) in emailData.enumerated() {
+                if member.email == candidate.email &&
+                    member.name == candidate.name &&
+                    emailData[i].isSelected == false { // case: >= 2 identical name-email pair occurs
+                    emailData[i].isSelected = true
+                    found = true
+                    break
+                }
+            }
+            
+            if found {
+                continue
+            }
+            
+            emailData.append(ContactGroupSubSelectionViewModelEmailInfomation(email: member.email,
+                                                                              name: member.name,
+                                                                              isSelected: true))
+        }
+        
+        // (3)
+        emailData.sort {
+            if $0.name == $1.name {
+                return $0.email < $1.email
+            }
+            return $0.name < $1.name
         }
         
         emailArray = emailData // query

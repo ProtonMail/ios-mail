@@ -1,21 +1,36 @@
 //
 //  ContactAddViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 9/13/17.
 //
-//  Created by Yanfeng Zhang on 9/13/17.
-//  Copyright © 2017 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
 
-
-
-
-
 class ContactAddViewModelImpl : ContactEditViewModel {
-    var sections: [ContactEditSectionType] = [.display_name,
-                                              .emails,
+    var sections: [ContactEditSectionType] = [.emails,
                                               .encrypted_header,
                                               .cellphone,
                                               .home_address,
@@ -32,6 +47,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var fields : [ContactEditField] = []
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: true)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
+    var profilePicture: UIImage? = nil
     
     override init() {
         super.init()
@@ -86,6 +102,18 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func getProfile() -> ContactEditProfile {
         return profile
+    }
+    
+    override func getProfilePicture() -> UIImage? {
+        return self.profilePicture
+    }
+    
+    override func setProfilePicture(image: UIImage?) {
+        self.profilePicture = image
+    }
+    
+    override func profilePictureNeedsUpdate() -> Bool {
+        return self.profilePicture != nil
     }
     
     override func getUrls() -> [ContactEditUrl] {
@@ -179,6 +207,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
+        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
+            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
+            let authCredential = AuthCredential.fetchFromKeychain() else
+        {
+            complete(NSError.lockError())
+            return
+        }
+        
         //add
         var a_emails: [ContactEmail] = []
         for e in getEmails() {
@@ -216,14 +252,11 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         
         // add others later
         let vcard2Str = PMNIEzvcard.write(vcard2)
-        guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
-            return; //with error
-        }
         PMLog.D(vcard2Str)
         //TODO:: fix the try?
         let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
                                                                 privateKey: userkey.private_key,
-                                                                passphrase: sharedUserDataService.mailboxPassword!,
+                                                                passphrase: mailboxPassword,
                                                                 trim: true)
         //card 2 object
         let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2 ?? "")
@@ -320,6 +353,19 @@ class ContactAddViewModelImpl : ContactEditViewModel {
             isCard3Set = true
         }
         
+        // profile image
+        vcard3.clearPhotos()
+        if let profilePicture = profilePicture,
+            let compressedImage = UIImage.resize(image: profilePicture,
+                                                 targetSize: CGSize.init(width: 30, height: 30)),
+            let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+            let image = PMNIPhoto.createInstance(jpegData,
+                                                 type: "JPEG",
+                                                 isBinary: true)
+            vcard3.setPhoto(image)
+            isCard3Set = true
+        }
+        
         vcard3.setUid(uuid)
         
         let vcard3Str = PMNIEzvcard.write(vcard3)
@@ -329,7 +375,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         PMLog.D(encrypted_vcard3 ?? "")
         let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                            privateKey: userkey.private_key,
-                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           passphrase: mailboxPassword,
                                                            trim: true)
         //card 3 object
         let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3 )
@@ -340,6 +386,7 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         }
         
         sharedContactDataService.add(cards: [cards],
+                                     authCredential: authCredential,
                                      completion:  { (contacts : [Contact]?, error : NSError?) in
                                         if error == nil {
                                             complete(nil)

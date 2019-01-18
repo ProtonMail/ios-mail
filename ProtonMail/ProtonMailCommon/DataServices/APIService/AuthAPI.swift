@@ -1,10 +1,30 @@
 //
 //  AuthAPI.swift
-//  ProtonMail
+//  ProtonMail - Created on 6/17/15.
 //
-//  Created by Yanfeng Zhang on 6/17/15.
-//  Copyright (c) 2015 ArcTouch. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -27,26 +47,19 @@ struct AuthKey {
     static let twoFactor = "TwoFactorCode"
 }
 
-struct Constants {
-    // FIXME: These values would be obtainable by inspecting the binary code, but to make thins a little more difficult, we probably don't want to these values visible when the source code is distributed.  We will probably want to come up with a way to pass in these values as pre-compiler macros.  Swift doesn't support pre-compiler macros, but we have Objective-C and can still use them.  The values would be passed in by the build scripts at build time.  Or, these values could be cleared before publishing the code.
-    static let clientID = "iOS"
-    static let clientSecret = "db85d1c1a3021b8371ebdedd6f2fe354"
-    static let rediectURL = "https://protonmail.ch"
-}
-
 final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     var username : String!
     
-    init(username : String) {
+    init(username : String, authCredential: AuthCredential?) {
         super.init()
         self.username = username;
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            AuthKey.clientID : Constants.clientID,
-            AuthKey.clientSecret : Constants.clientSecret,
+            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username
         ]
         return out
@@ -57,7 +70,7 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/info" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/info" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -71,13 +84,16 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
 
 
 final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
-    
+    init(authCredential: AuthCredential?) {
+        super.init()
+        self.authCredential = authCredential
+    }
     override func method() -> APIService.HTTPMethod {
         return .get
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/modulus" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/modulus" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -125,8 +141,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
-            AuthKey.clientID : Constants.clientID,
-            AuthKey.clientSecret : Constants.clientSecret,
+            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username,
             
             AuthKey.ephemeral : clientEphemeral,
@@ -146,7 +161,7 @@ final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -172,7 +187,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            "ClientID": Constants.clientID,
+            "ClientID": Constants.App.clientID,
             "ResponseType": "token",
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",
@@ -188,7 +203,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + "/refresh" + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + "/refresh" + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {
@@ -210,7 +225,7 @@ final class AuthDeleteRequest : ApiRequest<ApiResponse> {
     }
     
     override func path() -> String {
-        return AuthAPI.path + AppConstants.DEBUG_OPTION
+        return AuthAPI.path + Constants.App.DEBUG_OPTION
     }
     
     override func getIsAuthFunction() -> Bool {

@@ -1,10 +1,30 @@
 //
 //  ContactGroupSelectEmailViewModelImpl.swift
-//  ProtonMail
+//  ProtonMail - Created on 2018/8/27.
 //
-//  Created by Chun-Hung Tseng on 2018/8/27.
-//  Copyright © 2018 ProtonMail. All rights reserved.
 //
+//  The MIT License
+//
+//  Copyright (c) 2018 Proton Technologies AG
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to deal
+//  in the Software without restriction, including without limitation the rights
+//  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+//  copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+//  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+//  THE SOFTWARE.
+
 
 import Foundation
 
@@ -21,12 +41,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     private var selectedEmails: Set<Email>
     
     /// after saving the email list, we refresh the edit view controller's data
-    private let refreshHandler: (NSSet) -> Void
+    private let refreshHandler: (Set<Email>) -> Void
     
     /**
      Initializes a new ContactGroupSelectEmailViewModel
      */
-    init(selectedEmails: NSSet, refreshHandler: @escaping (NSSet) -> Void) {
+    init(selectedEmails: Set<Email>, refreshHandler: @escaping (Set<Email>) -> Void) {
         self.allEmails = sharedContactDataService.allEmails()
         self.allEmails.sort {
             if $0.name == $1.name {
@@ -36,7 +56,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
         }
         self.emailsForDisplay = self.allEmails
         
-        self.selectedEmails = selectedEmails as! Set
+        self.selectedEmails = selectedEmails
         self.refreshHandler = refreshHandler
     }
     
@@ -75,12 +95,12 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
      Return the selected emails to the contact group
      */
     func save() {
-        refreshHandler(selectedEmails as NSSet)
+        refreshHandler(selectedEmails)
     }
     
     /**
      Add the emailID from the selection state
-    */
+     */
     func selectEmail(ID: String) {
         for email in allEmails {
             if email.emailID == ID {
@@ -92,7 +112,7 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     
     /**
      Remove the emailID from the selection state
-    */
+     */
     func deselectEmail(ID: String) {
         for email in allEmails {
             if email.emailID == ID {
