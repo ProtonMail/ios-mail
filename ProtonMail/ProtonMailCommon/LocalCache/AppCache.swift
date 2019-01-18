@@ -149,6 +149,11 @@ extension AppCache {
         }
         
         // AuthCredential
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")
+        NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ShareDev.AuthCredential")
+        // see explanation why we need those NSKeyedUnarchiver.setClass(_:forClassName:) calls in AuthCredential.swift
         if let credentialRaw = sharedKeychain.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
             let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
         {
