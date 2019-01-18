@@ -253,7 +253,7 @@ extension UserCachedStatus {
             guard let string = sharedKeychain.keychain.string(forKey: Key.autoLockTime),
                 let number = Int(string) else
             {
-                return .never
+                return .always
             }
             return AutolockTimeout(rawValue: number)
         }
