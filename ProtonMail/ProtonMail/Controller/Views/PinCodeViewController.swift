@@ -66,13 +66,13 @@ class PinCodeViewController : UIViewController {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
+        pinCodeView.updateCorner()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
         NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
-        pinCodeView.updateCorner()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
