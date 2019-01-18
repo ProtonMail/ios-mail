@@ -1,0 +1,3 @@
+[submodule "DOMPurify"]
+	path = DOMPurify
+	url = https://github.com/cure53/DOMPurify

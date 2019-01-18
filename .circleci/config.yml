@@ -16,6 +16,9 @@ jobs:
         steps:
             - checkout
             - run:
+                name: checkout DOMPurify
+                command: git submodule init; git submodule update
+            - run:
                 name: install xUnique
                 command: sudo pip install xUnique
             - run:

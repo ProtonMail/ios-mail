@@ -29,9 +29,10 @@
 import Foundation
 import UIKit
 import QuickLook
+import WebKit
 
-extension UIDataDetectorTypes {
-    public static var pm_email: UIDataDetectorTypes = [.phoneNumber, .link]
+@available(iOS 10.0, *) extension WKDataDetectorTypes {
+    public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
 }
 
 protocol EmailViewActionsProtocol {
@@ -39,19 +40,26 @@ protocol EmailViewActionsProtocol {
 }
 
 /// this veiw is all subviews container
-class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
+class EmailView: UIView, UIScrollViewDelegate{
     
-    var kDefautWebViewScale : CGFloat = 0.9
+    static let kDefautWebViewScale : CGFloat = 0.9
     //
     fileprivate let kMoreOptionsViewHeight: CGFloat = 123.0
     
     // Message header view
     var emailHeader : EmailHeaderView!
     
-    var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
+    weak var delegate: (EmailViewActionsProtocol&TopMessageViewDelegate)?
     
     // Message content
-    var contentWebView: UIWebView!
+    var contentWebView: PMWebView!
+    private lazy var loader: WebContentsSecureLoader = {
+        if #available(iOS 11.0, *) {
+            return HTTPRequestSecureLoader()
+        } else {
+            return HTMLStringSecureLoader()
+        }
+    }()
     
     // Message bottom actions view
     var bottomActionView : MessageDetailBottomView!
@@ -60,7 +68,6 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     
     fileprivate let kAnimationDuration : TimeInterval = 0.25
     //
-    var subWebview : UIView?
     
     fileprivate var isViewingMoreOptions: Bool = false
 
@@ -110,12 +117,10 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    func updateEmailBody (_ body : String, meta : String) {
-        let bundle = Bundle.main
-        let path = bundle.path(forResource: "editor", ofType: "css")
-        let css = try! String(contentsOfFile: path!, encoding: String.Encoding.utf8)
-        let htmlString = "<style>\(css)</style>\(meta)<div id='pm-body' class='inbox-body'>\(body)</div>"
-        self.contentWebView.loadHTMLString(htmlString, baseURL: nil)
+    func updateEmailContent(_ contents: WebContents) {
+        if #available(iOS 11.0, *) {
+            self.loader.load(contents: contents, in: self.contentWebView)
+        }
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
@@ -178,18 +183,31 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
     }
     
     fileprivate func setupContentView() {
-        self.contentWebView = PMWebView()
-        self.contentWebView.scalesPageToFit = true;
+        let preferences = WKPreferences()
+        preferences.javaScriptEnabled = false
+        preferences.javaScriptCanOpenWindowsAutomatically = false
+        
+        let config = WKWebViewConfiguration()
+        config.preferences = preferences
+        if #available(iOS 11.0, *) {
+            self.loader.inject(into: config)
+        }
+        if #available(iOS 10.0, *) {
+            config.dataDetectorTypes = .pm_email
+            config.ignoresViewportScaleLimits = true
+        }
+        
+        self.contentWebView = PMWebView(frame: .zero, configuration: config)
         self.addSubview(contentWebView)
         
-        self.contentWebView.dataDetectorTypes = .pm_email
         self.contentWebView.backgroundColor = UIColor.white
         self.contentWebView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.isScrollEnabled = true
         self.contentWebView.scrollView.alwaysBounceVertical = true
         self.contentWebView.scrollView.isUserInteractionEnabled = true
         self.contentWebView.scrollView.bounces = true;
-        self.contentWebView.delegate = self
+        self.contentWebView.navigationDelegate = self
+        self.contentWebView.uiDelegate = self
         self.contentWebView.scrollView.delegate = self
         let w = UIScreen.main.bounds.width
         self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height:100);
@@ -201,50 +219,45 @@ class EmailView: UIView, UIWebViewDelegate, UIScrollViewDelegate{
            return
         }
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, animations: { () -> Void in
+            let h = self.emailHeader.getHeight()
             for subview in self.contentWebView.scrollView.subviews {
-                let sub = subview 
-                if sub == self.emailHeader {
+                if subview == self.emailHeader {
                     continue
                 } else if subview is UIImageView {
                     continue
                 } else {
-                    self.subWebview = sub
-                    let h = self.emailHeader.getHeight()
-                    sub.frame = CGRect(x: sub.frame.origin.x, y: h, width: sub.frame.width, height: sub.frame.height);
-                    self.attY = sub.frame.origin.y + sub.frame.height;
+                    subview.frame = CGRect(x: subview.frame.origin.x, y: h, width: subview.frame.width, height: subview.frame.height);
                 }
             }
+            self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
         })
     }
-    
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        if navigationType == .linkClicked {
-            if request.url?.scheme == "mailto" {
-                self.delegate?.mailto(request.url)
-                return false
-            } else {
-                UIApplication.shared.openURL(request.url!)
-                return false
-            }
-        }
-        return true
+}
+
+extension EmailView: WKNavigationDelegate, WKUIDelegate {
+    @available(iOS 10.0, *)
+    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
+        return false
     }
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        
-        //contentWebView.scrollView.subviews.first?.becomeFirstResponder()
-        contentWebView.becomeFirstResponder()
-        
-        let contentSize = webView.scrollView.contentSize
-        let viewSize = webView.bounds.size
-        var zoom = viewSize.width / contentSize.width
-        if zoom < 1 {
-            zoom = zoom * self.kDefautWebViewScale - 0.05
-            self.kDefautWebViewScale = zoom
-            PMLog.D("\(zoom)")
-            let js = "var t=document.createElement('meta'); t.name=\"viewport\"; t.content=\"target-densitydpi=device-dpi, width=device-width, initial-scale=\(self.kDefautWebViewScale), maximum-scale=3.0\"; document.getElementsByTagName('head')[0].appendChild(t);";
-            webView.stringByEvaluatingJavaScript(from: js);
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated where navigationAction.request.url?.scheme == "mailto":
+            self.delegate?.mailto(navigationAction.request.url)
+            decisionHandler(.cancel)
+            
+        case .linkActivated where navigationAction.request.url != nil:
+            UIApplication.shared.openURL(navigationAction.request.url!)
+            decisionHandler(.cancel)
+            
+        default:
+            decisionHandler(.allow)
         }
+    }
+
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        contentWebView.becomeFirstResponder()
         self.emailLoaded = true
         self.updateContentLayout(false)        
     }

@@ -517,7 +517,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func getHtmlBody() -> String {
+    override func getHtmlBody() -> WebContents {
+        let globalRemoteContentMode: WebContents.RemoteContentPolicy = sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
         //sharedUserDataService.signature
         var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
         // sometimes user will input 's in signature. we have to escape it first. need to make sure not to escape twice
@@ -542,11 +543,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 body = self.message!.bodyToHtml()
             }
             
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
             body = body.escaped
-            return body
+            return .init(body: body, remoteContentMode: globalRemoteContentMode)
             
         case .reply, .replyAll:
             
@@ -557,10 +555,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
             body = body.escaped
             
             let on = LocalString._composer_on
@@ -573,14 +567,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
             var replyHeader = time + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
-            
-            replyHeader = replyHeader.stringByStrippingStyleHTML()
-            replyHeader = replyHeader.stringByStrippingBodyStyle()
-            replyHeader = replyHeader.stringByPurifyHTML()
+
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
-            return " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
+            let result = " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
+            return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .forward:
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
@@ -604,9 +596,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
             }
             forwardHeader += ""
-            forwardHeader = forwardHeader.stringByStrippingStyleHTML()
-            forwardHeader = forwardHeader.stringByStrippingBodyStyle()
-            forwardHeader = forwardHeader.stringByPurifyHTML()
             forwardHeader = forwardHeader.escaped
             var body = ""
             
@@ -616,46 +605,36 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            
-            body = body.stringByStrippingStyleHTML()
-            body = body.stringByStrippingBodyStyle()
-            body = body.stringByPurifyHTML()
+
             body = body.escaped
             var sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
-            sp = sp.stringByStrippingStyleHTML()
-            sp = sp.stringByStrippingBodyStyle()
-            sp = sp.stringByPurifyHTML()
-            return "\(head)\(htmlString)\(sp)\(body)\(foot)"
+            return .init(body: "\(head)\(htmlString)\(sp)\(body)\(foot)", remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
                 self.body = ""
-                return newhtmlString
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             } else {
                 if htmlString.trim().isEmpty {
                     let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
-                    return ret_body
+                    return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
                 }
             }
-            return htmlString
+            return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
-                
-                newhtmlString = newhtmlString.stringByStrippingStyleHTML()
-                newhtmlString = newhtmlString.stringByStrippingBodyStyle()
-                newhtmlString = newhtmlString.stringByPurifyHTML()
                 newhtmlString = newhtmlString.escaped
                 
-                return newhtmlString
+            return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             } else {
                 if htmlString.trim().isEmpty {
                     //add some space
                     let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-                    return ret_body
+            return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
                 }
             }
-            return htmlString
+            return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
         }
         
     }

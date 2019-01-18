@@ -1,6 +1,6 @@
 //
-//  PMWebView.swift
-//  ProtonMail - Created on 6/20/16.
+//  HTMLSecureLoader.swift
+//  ProtonMail - Created on 06/01/2019.
 //
 //
 //  The MIT License
@@ -24,14 +24,25 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
+import WebKit
 
-
-class  PMWebView: WKWebView {
-    
-    override var canBecomeFirstResponder : Bool {
-        return true
+protocol WebContentsSecureLoader {
+    func load(contents: WebContents, in webView: WKWebView)
+    func inject(into config: WKWebViewConfiguration)
+}
+extension WebContentsSecureLoader {
+    static var domPurifyConfiguration: String {
+        return """
+        {
+        ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|blob|xmpp|data):|[^a-z]|[a-z+.\\-]+(?:[^a-z+.\\-:]|$))/i,
+        ADD_TAGS: ['proton-src', 'base'],
+        ADD_ATTR: ['target', 'proton-src'],
+        FORBID_TAGS: ['body', 'style', 'input', 'form', 'video', 'audio'],
+        FORBID_ATTR: ['srcset']
+        }
+        """.replacingOccurrences(of: "\n", with: "")
     }
 }

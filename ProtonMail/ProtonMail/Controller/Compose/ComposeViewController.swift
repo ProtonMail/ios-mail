@@ -262,7 +262,7 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         if viewModel.getActionType() != .openDraft {
             self.viewModel.collectDraft (
                 self.viewModel.getSubject(),
-                body: body,
+                body: body.body,
                 expir: self.headerView.expirationTimeInterval,
                 pwd:self.encryptionPassword,
                 pwdHit:self.encryptionPasswordHint

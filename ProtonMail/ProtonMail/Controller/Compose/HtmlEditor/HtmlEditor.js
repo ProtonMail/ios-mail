@@ -23,8 +23,9 @@ html_editor.editor_header = document.getElementById('editor_header');
 html_editor.cachedCIDs = "";
 
 /// set html body
-html_editor.setHtml = function(htmlBody) {
-    html_editor.editor.innerHTML = htmlBody;
+html_editor.setHtml = function(htmlBody, sanitizeConfig) {
+    var cleanByConfig = DOMPurify.sanitize(htmlBody, sanitizeConfig);
+    html_editor.editor.innerHTML = DOMPurify.sanitize(cleanByConfig);
     // could update the viewport width here in the future.
 };
 
@@ -36,6 +37,11 @@ html_editor.getHtml = function() {
 /// get clear test
 html_editor.getText = function() {
     return html_editor.editor.innerText;
+};
+
+html_editor.setCSP = function(content) {
+    var mvp = document.getElementById('myCSP');
+    mvp.setAttribute('content', content);
 };
 
 /// update view port width. set to the content size otherwise the text selection will not work

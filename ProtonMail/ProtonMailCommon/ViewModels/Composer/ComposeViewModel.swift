@@ -192,9 +192,9 @@ class ComposeViewModel {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func getHtmlBody() -> String {
+    func getHtmlBody() -> WebContents {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
-        return ""
+        return WebContents(body: "", remoteContentMode: .lockdown)
     }
     
     func collectDraft(_ title:String, body:String, expir:TimeInterval, pwd:String, pwdHit:String) -> Void {
