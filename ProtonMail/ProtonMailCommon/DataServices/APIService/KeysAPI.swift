@@ -197,7 +197,7 @@ final class PasswordAuth : Package {
 
 
 //MARK : update user's private keys
-final class UpdatePrivateKeyRequest<T : ApiResponse> : ApiRequest<T> {
+final class UpdatePrivateKeyRequest : ApiRequest<ApiResponse> {
     
     let clientEphemeral : String! //base64 encoded
     let clientProof : String! //base64 encoded

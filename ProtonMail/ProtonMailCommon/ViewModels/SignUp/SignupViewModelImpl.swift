@@ -27,6 +27,7 @@
 
 
 import Foundation
+import Srp
 
 final class SignupViewModelImpl : SignupViewModel {
     fileprivate var userName : String = ""
@@ -168,18 +169,17 @@ final class SignupViewModelImpl : SignupViewModel {
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw SignUpCreateUserError.invalidModulsID.error
                     }
-                    guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
+                    guard let new_moduls = authModuls?.Modulus else {
                         throw SignUpCreateUserError.invalidModuls.error
                     }
                     //generat new verifier
-                    let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
                     let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-                    guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt, modulus: new_decodedModulus) else {
+                    
+                    var error : NSError?
+                    guard let auth = try SrpAuthForVerifier(self.plaintext_password, new_moduls, new_salt) else {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
-                    guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                        throw SignUpCreateUserError.cantGenerateVerifier.error
-                    }
+                    let verifier = try auth.generateVerifier(2048)
                     
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
@@ -216,21 +216,21 @@ final class SignupViewModelImpl : SignupViewModel {
                                             guard let moduls_id_for_key = authModuls_for_key?.ModulusID else {
                                                 throw SignUpCreateUserError.invalidModulsID.error
                                             }
-                                            guard let new_moduls_for_key = authModuls_for_key?.Modulus, let new_encodedModulus_for_key = try new_moduls_for_key.getSignature() else {
+                                            guard let new_moduls_for_key = authModuls_for_key?.Modulus else {
                                                 throw SignUpCreateUserError.invalidModuls.error
                                             }
                                             //generat new verifier
-                                            let new_decodedModulus_for_key : Data = new_encodedModulus_for_key.decodeBase64()
                                             let new_salt_for_key : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-                                            guard let new_hashed_password_for_key = PasswordUtils.hashPasswordVersion4(self.plaintext_password, salt: new_salt_for_key, modulus: new_decodedModulus_for_key) else {
+                                            guard let auth_for_key = try SrpAuthForVerifier(self.plaintext_password, new_moduls_for_key,
+                                                                                           new_salt_for_key) else {
                                                 throw SignUpCreateUserError.cantHashPassword.error
                                             }
-                                            guard let verifier_for_key = try generateVerifier(2048, modulus: new_decodedModulus_for_key, hashedPassword: new_hashed_password_for_key) else {
-                                                throw SignUpCreateUserError.cantGenerateVerifier.error
-                                            }
+                                            let verifier_for_key = try auth_for_key.generateVerifier(2048)
                                             
                                             let addr_id = setupAddrApi?.addresses.first?.address_id
-                                            let pwd_auth = PasswordAuth(modulus_id: moduls_id_for_key,salt: new_salt_for_key.encodeBase64(), verifer: verifier_for_key.encodeBase64())
+                                            let pwd_auth = PasswordAuth(modulus_id: moduls_id_for_key,
+                                                                        salt: new_salt_for_key.encodeBase64(),
+                                                                        verifer: verifier_for_key.encodeBase64())
                                             
                                             let setupKeyApi = try SetupKeyRequest<ApiResponse>(address_id: addr_id,
                                                                                                private_key: key,
