@@ -69,12 +69,12 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
-        pinCodeView.updateCorner()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
+        pinCodeView.updateCorner()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -95,7 +95,6 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
             
         }
     }
-    
 }
 
 extension SharePinUnlockViewController : PinCodeViewDelegate {
