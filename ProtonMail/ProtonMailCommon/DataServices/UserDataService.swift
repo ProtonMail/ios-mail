@@ -299,7 +299,7 @@ class UserDataService : Service {
     }
     
     var isMailboxPasswordStored: Bool {
-        return mailboxPassword != nil
+        return sharedKeychain.keychain.data(forKey: Key.mailboxPassword) != nil
     }
     
     var isNewUser : Bool = false
