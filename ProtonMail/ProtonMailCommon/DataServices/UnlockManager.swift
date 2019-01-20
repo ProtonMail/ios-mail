@@ -112,7 +112,7 @@ class UnlockManager: NSObject {
             return
         }
         
-        guard sharedUserDataService.isMailboxPasswordStored else { // this will provoke mainKey obtention
+        guard sharedUserDataService.mailboxPassword != nil else { // this will provoke mainKey obtention
             requestMailboxPassword()
             return
         }

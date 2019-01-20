@@ -63,7 +63,7 @@ class SignInManager: NSObject {
     }
     
     internal func isSignedIn() -> Bool {
-        return sharedUserDataService.isUserCredentialStored
+        return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
     }
     
     internal func mailboxPassword(from cleartextPassword: String) -> String {
