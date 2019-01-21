@@ -48,13 +48,16 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     private var contents: WebContents?
     
     private static var loopbackScheme: String = "pm-incoming-mail"
+    private var loopbacks: Dictionary<URL, Data> = [:]
     
     func load(contents: WebContents, in webView: WKWebView) {
         self.webView = webView
         
         let urlString = (UUID().uuidString + ".proton").lowercased()
-        var request = URLRequest(url: URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!)
-        request.httpBody = contents.body.data(using: .unicode)
+        let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
+        let request = URLRequest(url: url)
+        let data = contents.body.data(using: .unicode)
+        self.loopbacks[url] = data
         
         let blockRules = """
         [{
@@ -124,8 +127,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         {
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
-            var request = URLRequest(url: URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + UUID().uuidString + ".html")!)
-            request.httpBody = sanitized.data(using: .unicode)
+            
+            let urlString = (UUID().uuidString + ".proton").lowercased()
+            let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
+            let request = URLRequest(url: url)
+            let data = sanitized.data(using: .unicode)
+            self.loopbacks[url] = data
+            
             self.webView?.load(request)
             return
         }
@@ -152,9 +160,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         let response = HTTPURLResponse(url: urlSchemeTask.request.url!, statusCode: 200, httpVersion: "HTTP/2", headerFields: headers)!
         urlSchemeTask.didReceive(response)
-        if let bodyData = urlSchemeTask.request.httpBody {
-            urlSchemeTask.didReceive(bodyData)
-        }
+        urlSchemeTask.didReceive(self.loopbacks[urlSchemeTask.request.url!]!)
         urlSchemeTask.didFinish()
     }
     
