@@ -47,10 +47,17 @@ struct AuthKey {
     static let twoFactor = "TwoFactorCode"
 }
 
+
+/// Description
 final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     var username : String!
     
+    /// inital
+    ///
+    /// - Parameters:
+    ///   - username: user name
+    ///   - authCredential: auto credential
     init(username : String, authCredential: AuthCredential?) {
         super.init()
         self.username = username;
@@ -119,7 +126,7 @@ final class AuthModulusResponse : ApiResponse {
 
 
 // MARK : Get messages part
-final class AuthRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthRequest : ApiRequest<AuthResponse> {
     
     var username : String!
     var clientEphemeral : String! //base64

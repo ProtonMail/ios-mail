@@ -27,6 +27,7 @@
 
 
 import Foundation
+import Srp
 
 
 /// Auth extension
@@ -57,29 +58,27 @@ extension APIService {
                     guard let authVersion = res?.Version, let modulus = res?.Modulus, let ephemeral = res?.ServerEphemeral, let salt = res?.Salt, let session = res?.SRPSession else {
                         return completion(task, nil, .resCheck, NSError.authUnableToParseAuthInfo())
                     }
-                    
+ 
                     do {
-                        guard let encodedModulus = try modulus.getSignature() else {
-                            return completion(task, nil, .resCheck, NSError.authUnableToParseAuthInfo())
-                        }
-                        let decodedModulus : Data = encodedModulus.decodeBase64()
-                        let decodedSalt : Data = salt.decodeBase64()
-                        let serverEphemeral : Data = ephemeral.decodeBase64()
                         if authVersion <= 2 && !forceRetry {
                             forceRetry = true
                             forceRetryVersion = 2
                         }
+                        
+                        let versionNumber = SrpVersionNumber()
                         //init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                        guard let hashedPassword = PasswordUtils.getHashedPwd(hashVersion, password: password, username: username, decodedSalt: decodedSalt, decodedModulus: decodedModulus) else {
+                        //move the error to the wrapper
+                        guard let auth = try SrpAuth(hashVersion, username, password, salt, modulus, ephemeral) else {
                             return completion(task, nil, .resCheck, NSError.authUnableToGeneratePwd())
                         }
-                        
-                        guard let srpClient = try generateSrpProofs(2048, modulus: decodedModulus, serverEphemeral: serverEphemeral, hashedPassword: hashedPassword), srpClient.isValid() == true else {
-                            return completion(task, nil, .resCheck, NSError.authUnableToGenerateSRP())
-                        }
-                        
-                        let api = AuthRequest<AuthResponse>(username: username, ephemeral: srpClient.clientEphemeral, proof: srpClient.clientProof, session: session, serverProof: srpClient.expectedServerProof, code: twoFACode);
+                        let srpClient = try auth.generateProofs(2048)
+                        let api = AuthRequest(username: username,
+                                              ephemeral: srpClient.clientEphemeral(),
+                                              proof: srpClient.clientProof(),
+                                              session: session,
+                                              serverProof: srpClient.expectedServerProof(),
+                                              code: twoFACode);
                         let completionWrapper: (_ task: URLSessionDataTask?, _ res: AuthResponse?, _ hasError : Bool) -> Void = { (task, res, hasError) in
                             if hasError {
                                 if let error = res?.error {

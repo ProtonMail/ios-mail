@@ -27,26 +27,27 @@
 
 
 import Foundation
+import Srp
 
 
-func generateSrpProofs (_ bit : Int32, modulus: Data, serverEphemeral: Data, hashedPassword :Data) throws -> PMNSrpProofs? {
-    var dec_out_att : PMNSrpProofs?
-    try ObjC.catchException {
-        dec_out_att = PMNSrpClient.generateProofs(bit, modulusRepr: modulus, serverEphemeralRepr: serverEphemeral, hashedPasswordRepr: hashedPassword)
+func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
+              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
+    var error : NSError?
+    let outAuth = SrpNewAuth(hashVersion, userName, password, salt, signedModulus, serverEphemeral, &error)
+    if let err = error {
+        throw err
     }
-    
-    return dec_out_att
+    return outAuth
 }
 
-func generateVerifier (_ bit : Int32, modulus: Data, hashedPassword :Data) throws -> Data? {
-    var data_out : Data?
-    try ObjC.catchException {
-        data_out = PMNSrpClient.generateVerifier(bit, modulusRepr: modulus, hashedPasswordRepr: hashedPassword)
+func SrpAuthForVerifier(_ password: String, _ signedModulus: String, _ rawSalt: Data) throws -> SrpAuth? {
+    var error : NSError?
+    let outAuth = SrpNewAuthForVerifier(password, signedModulus, rawSalt, &error)
+    if let err = error {
+        throw err
     }
-    
-    return data_out
+    return outAuth
 }
-
 
 extension PMNSrpProofs {
     func isValid() -> Bool {

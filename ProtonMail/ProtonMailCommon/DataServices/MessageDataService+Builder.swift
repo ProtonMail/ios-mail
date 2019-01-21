@@ -30,6 +30,7 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
+import Srp
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
@@ -532,22 +533,21 @@ class EOAddressBuilder : PackageBuilder {
             guard let moduls_id = authModuls?.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }
-            guard let new_moduls = authModuls?.Modulus, let new_encodedModulus = try new_moduls.getSignature() else {
+            guard let new_moduls = authModuls?.Modulus else {
                 throw UpdatePasswordError.invalidModulus.error
             }
+            
             //generat new verifier
-            let new_decodedModulus : Data = new_encodedModulus.decodeBase64()
             let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-            guard let new_hashed_password = PasswordUtils.hashPasswordVersion4(self.password, salt: new_lpwd_salt, modulus: new_decodedModulus) else {
+            
+            guard let auth = try SrpAuthForVerifier(self.password, new_moduls, new_lpwd_salt) else {
                 throw UpdatePasswordError.cantHashPassword.error
             }
-            guard let verifier = try generateVerifier(2048, modulus: new_decodedModulus, hashedPassword: new_hashed_password) else {
-                throw UpdatePasswordError.cantGenerateVerifier.error
-            }
+            
+            let verifier = try auth.generateVerifier(2048)
             let authPacket = PasswordAuth(modulus_id: moduls_id,
                                           salt: new_lpwd_salt.encodeBase64(),
                                           verifer: verifier.encodeBase64())
-            
             // encrypt keys use key
             var attPack : [AttachmentPackage] = []
             for att in self.preAttachments {
