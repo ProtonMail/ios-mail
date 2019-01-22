@@ -131,12 +131,10 @@ class PinCodeView : PMView {
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
     
-    func hideAttempError(_ reset : Bool) {
+    func hideAttempError(_ hide : Bool) {
         pinDisplayView.textColor = UIColor.lightGray
         whiteLineView.backgroundColor = UIColor.white
-        if reset {
-            attempsLabel.isHidden = false
-        }
+        attempsLabel.isHidden = hide
     }
     
     internal func add(_ number : Int) {
@@ -176,13 +174,13 @@ class PinCodeView : PMView {
     }
     
     @IBAction func buttonActions(_ sender: UIButton) {
-        self.hideAttempError(false)
+        self.hideAttempError(true)
         let numberClicked = sender.tag
         self.add(numberClicked)
     }
     
     @IBAction func deleteAction(_ sender: UIButton) {
-        self.hideAttempError(false)
+        self.hideAttempError(true)
         self.remove()
     }
     

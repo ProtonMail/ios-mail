@@ -89,4 +89,8 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
     override func checkTouchID() -> Bool {
         return true
     }
+    
+    override func done(completion: @escaping (Bool)->Void) {
+        completion(false)
+    }
 }

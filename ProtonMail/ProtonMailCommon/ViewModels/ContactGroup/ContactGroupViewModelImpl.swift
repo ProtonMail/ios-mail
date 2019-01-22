@@ -155,25 +155,18 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
     /**
      Fetch all contact groups from the server using API
      */
-    func fetchLatestContactGroup() -> Promise<Void>
-    {
+    func fetchLatestContactGroup() -> Promise<Void> {
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                
-                //TODO::fixme
-//                sharedMessageDataService.fetchNewMessagesForLocation(.inbox,
-//                                                                     notificationMessageID: nil,
-//                                                                     completion: { (task, res, error) in
-//                                                                        self.isFetching = false
-//
-//                                                                        if let error = error {
-//                                                                            seal.reject(error)
-//                                                                        } else {
-//                                                                            seal.fulfill(())
-//                                                                        }
-//                })
-                
+                sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                    self.isFetching = false
+                    if let error = error {
+                        seal.reject(error)
+                    } else {
+                        seal.fulfill(())
+                    }
+                })
                 sharedContactDataService.fetchContacts { (_, error) in
                     
                 }
@@ -195,10 +188,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel
         if isFetching == false {
             isFetching = true
             
-            //TODO::Fixme
-//            sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
-//                self.isFetching = false
-//            })
+            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+            })
         }
     }
     

@@ -95,7 +95,6 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
             
         }
     }
-    
 }
 
 extension SharePinUnlockViewController : PinCodeViewDelegate {

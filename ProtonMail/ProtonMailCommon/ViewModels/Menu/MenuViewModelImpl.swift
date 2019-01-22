@@ -38,13 +38,14 @@ class MenuViewModelImpl : MenuViewModel {
     private let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred,
                                                .archive, .spam, .trash, .allmail]
     //menu other actions rather than inboxes
-    private var otherItems : [MenuItem] = [.contacts, .settings, .servicePlan, .bugs, /*MenuItem.feedback,*/ .lockapp, .signout]
+    private var otherItems : [MenuItem] = []
     
     //fetch request result
     private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
     
     func updateMenuItems() {
+        otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }

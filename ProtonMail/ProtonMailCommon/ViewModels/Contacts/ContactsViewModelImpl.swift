@@ -155,13 +155,10 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-            
-            //TODO::fixme
-//            sharedMessageDataService.fetchNewMessagesForLocation(.inbox, notificationMessageID: nil, completion: { (task, res, error) in
-//                self.isFetching = false
-//                self.fetchComplete?(nil, nil)
-//            })
-            
+            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.isFetching = false
+                self.fetchComplete?(nil, nil)
+            })
             sharedContactDataService.fetchContacts { (_, error) in
                 
             }

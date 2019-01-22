@@ -150,7 +150,7 @@ extension AppCache {
         
         // AuthCredential
         if let credentialRaw = sharedKeychain.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
-            let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
+            let credential = AuthCredential.unarchive(data: credentialRaw as NSData)
         {
             credential.storeInKeychain()
         }

@@ -66,13 +66,13 @@ class PinCodeViewController : UIViewController {
         let value = UIInterfaceOrientation.portrait.rawValue
         UIDevice.current.setValue(value, forKey: "orientation")
         navigationController?.setNavigationBarHidden(true, animated: true)
+        pinCodeView.updateCorner()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
         NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
-        pinCodeView.updateCorner()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -96,9 +96,11 @@ class PinCodeViewController : UIViewController {
     
     func authenticateUser() {
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.viewModel.done() { _ in
+            self.viewModel.done() { shouldPop in
                 self.delegate?.Next()
-                let _ = self.navigationController?.popViewController(animated: true)
+                if shouldPop {
+                    let _ = self.navigationController?.popViewController(animated: true)
+                }
             }
         })
     }
@@ -134,10 +136,12 @@ extension PinCodeViewController : PinCodeViewDelegate {
             } else {
                 self.viewModel.isPinMatched() { matched in
                     if matched {
-                        self.viewModel.done() { _ in
-                            self.pinCodeView.hideAttempError(true)
+                        self.pinCodeView.hideAttempError(true)
+                        self.viewModel.done() { shouldPop in
                             self.delegate?.Next()
-                            let _ = self.navigationController?.popViewController(animated: true)
+                            if shouldPop {
+                                self.navigationController?.popViewController(animated: true)
+                            }
                         }
                     } else {
                         let count = self.viewModel.getPinFailedRemainingCount()
