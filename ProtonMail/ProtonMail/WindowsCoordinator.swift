@@ -34,6 +34,8 @@ class WindowsCoordinator: CoordinatorNew {
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow?
     
+    private var lockWindow: UIWindow?
+    
     var currentWindow: UIWindow! {
         didSet {
             self.currentWindow.makeKeyAndVisible()
@@ -101,12 +103,14 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func unlock() {
+        self.lockWindow = nil
         guard SignInManager.shared.isSignedIn() else {
             self.go(dest: .signInWindow)
             return
         }
         self.go(dest: .appWindow)
     }
+    
     
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
@@ -115,7 +119,11 @@ class WindowsCoordinator: CoordinatorNew {
                 self.appWindow = nil
                 self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
             case .lockWindow:
-                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
+                if self.lockWindow == nil {
+                    let lock = UIWindow(storyboard: .signIn)
+                    self.navigate(from: self.currentWindow, to: lock)
+                    self.lockWindow = lock
+                }
             case .appWindow:
                 let next = self.appWindow ?? UIWindow(storyboard: .inbox)
                 self.appWindow = next

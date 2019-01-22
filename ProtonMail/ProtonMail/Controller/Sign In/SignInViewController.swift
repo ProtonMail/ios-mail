@@ -89,21 +89,6 @@ class SignInViewController: ProtonMailViewController {
         setupTextFields()
         setupButtons()
         setupVersionLabel()
-
-        if !showingTouchID {
-            showingTouchID = true
-            let signinFlow = UnlockManager.shared.getUnlockFlow()
-            signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
-            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {
-                                                    self.showingTouchID = false
-                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                                requestMailboxPassword: {
-                                                    self.showingTouchID = false
-                                                    self.isRemembered = true
-                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
-        }
     }
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
@@ -253,6 +238,24 @@ class SignInViewController: ProtonMailViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.showingTouchID = false
+        //workaround, when lock the app by clicking power button this will be called in background and it breaks the touch id popup
+        //this could be controlled by window coordinator.
+        let state = UIApplication.shared.applicationState
+        if state != UIApplication.State.inactive && state != UIApplication.State.background {
+            showingTouchID = true
+            let signinFlow = UnlockManager.shared.getUnlockFlow()
+            signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
+            UnlockManager.shared.initiateUnlock(flow: signinFlow,
+                                                requestPin: {
+                                                    self.showingTouchID = false
+                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                requestMailboxPassword: {
+                                                    self.showingTouchID = false
+                                                    self.isRemembered = true
+                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+            })
+        }
+        
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
