@@ -197,7 +197,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
                 self.present(alertController, animated: true, completion: nil)
             }
             self.refreshControl.endRefreshing()
-            self.tableView.reloadData()
         }
     }
 }

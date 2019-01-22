@@ -1959,6 +1959,10 @@ class MessageDataService : Service {
                                 context.delete(tempContact)
                             }
                         }
+                        //save it earily
+                        if let error = context.saveUpstreamIfNeeded()  {
+                            PMLog.D(" error: \(error)")
+                        }
                     case .insert, .update:
                         do {
                             if let outContacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -1971,13 +1975,14 @@ class MessageDataService : Service {
                         } catch let ex as NSError {
                             PMLog.D(" error: \(ex)")
                         }
+                        if let error = context.saveUpstreamIfNeeded() {
+                            PMLog.D(" error: \(error)")
+                        }
                     default:
                         PMLog.D(" unknown type in contact: \(contact)")
                     }
                 }
-                if let error = context.saveUpstreamIfNeeded()  {
-                    PMLog.D(" error: \(error)")
-                }
+       
             }
         }
     }
