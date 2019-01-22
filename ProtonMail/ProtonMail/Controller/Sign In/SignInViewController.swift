@@ -89,6 +89,8 @@ class SignInViewController: ProtonMailViewController {
         setupTextFields()
         setupButtons()
         setupVersionLabel()
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
     }
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
