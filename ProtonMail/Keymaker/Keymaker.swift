@@ -121,7 +121,9 @@ public class Keymaker: NSObject {
             NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
             return false
         }
-        let _ = self.mainKey
+        if let _ = self.mainKey {
+            self.resetAutolock()
+        }
         return true
     }
     
