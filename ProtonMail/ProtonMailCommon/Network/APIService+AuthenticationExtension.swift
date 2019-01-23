@@ -27,8 +27,6 @@
 
 
 import Foundation
-import Srp
-
 
 /// Auth extension
 extension APIService {
@@ -64,8 +62,7 @@ extension APIService {
                             forceRetry = true
                             forceRetryVersion = 2
                         }
-                        
-                        let versionNumber = SrpVersionNumber()
+
                         //init api calls
                         let hashVersion = forceRetry ? forceRetryVersion : authVersion
                         //move the error to the wrapper

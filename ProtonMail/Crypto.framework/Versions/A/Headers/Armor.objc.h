@@ -17,14 +17,26 @@ FOUNDATION_EXPORT NSString* const ArmorMESSAGE_HEADER;
 FOUNDATION_EXPORT NSString* const ArmorPRIVATE_KEY_HEADER;
 FOUNDATION_EXPORT NSString* const ArmorPUBLIC_KEY_HEADER;
 
+/**
+ * ArmorKey make bytes input key to armor format
+ */
 FOUNDATION_EXPORT NSString* ArmorArmorKey(NSData* input, NSError** error);
 
+/**
+ * ArmorWithType make bytes input to armor format
+ */
 FOUNDATION_EXPORT NSString* ArmorArmorWithType(NSData* input, NSString* armorType, NSError** error);
 
+/**
+ * ReadClearSignedMessage read clear message from a clearsign package
+ */
 FOUNDATION_EXPORT NSString* ArmorReadClearSignedMessage(NSString* signedMessage, NSError** error);
 
 FOUNDATION_EXPORT ModelsEncryptedSplit* ArmorSplitArmor(NSString* encrypted, NSError** error);
 
+/**
+ * Unarmor an armored key to bytes key
+ */
 FOUNDATION_EXPORT NSData* ArmorUnarmor(NSString* input, NSError** error);
 
 #endif

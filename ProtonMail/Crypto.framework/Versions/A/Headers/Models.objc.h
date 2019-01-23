@@ -15,20 +15,35 @@
 @class ModelsEncryptedSplit;
 @class ModelsSessionSplit;
 
+/**
+ * DecryptSignedVerify decrypt_sign_verify
+ */
 @interface ModelsDecryptSignedVerify : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) id _ref;
 
 - (instancetype)initWithRef:(id)ref;
 - (instancetype)init;
+/**
+ * clear text
+ */
 - (NSString*)plaintext;
 - (void)setPlaintext:(NSString*)v;
+/**
+ * bitmask verify status : 0
+ */
 - (long)verify;
 - (void)setVerify:(long)v;
+/**
+ * error message if verify failed
+ */
 - (NSString*)message;
 - (void)setMessage:(NSString*)v;
 @end
 
+/**
+ * EncryptedSigned encrypt_sign_package
+ */
 @interface ModelsEncryptedSigned : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) id _ref;
@@ -41,6 +56,9 @@
 - (void)setSignature:(NSString*)v;
 @end
 
+/**
+ * EncryptedSplit when encrypt attachemt
+ */
 @interface ModelsEncryptedSplit : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) id _ref;
@@ -55,6 +73,9 @@
 - (void)setAlgo:(NSString*)v;
 @end
 
+/**
+ * SessionSplit split session
+ */
 @interface ModelsSessionSplit : NSObject <goSeqRefInterface> {
 }
 @property(strong, readonly) id _ref;

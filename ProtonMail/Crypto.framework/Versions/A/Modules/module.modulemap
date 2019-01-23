@@ -5,7 +5,8 @@ framework module "Crypto" {
     header "Constants.objc.h"
     header "Key.objc.h"
     header "Models.objc.h"
-    header "universe.objc.h"
+    header "Srp.objc.h"
+    header "Universe.objc.h"
     header "Crypto.h"
 
     export *

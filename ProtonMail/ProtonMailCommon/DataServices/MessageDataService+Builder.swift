@@ -30,7 +30,6 @@ import Foundation
 import PromiseKit
 import AwaitKit
 import Crypto
-import Srp
 
 extension Data {
     var html2AttributedString: NSAttributedString? {
