@@ -270,31 +270,21 @@ public class PushNotificationService: Service {
             return
         }
         
-        guard let revealViewController = application.keyWindow?.rootViewController as? SWRevealViewController else {  // FIXME: via WindowCoordinator?
-            completionHandler(.failed)
-            return
-        }
-        
-        //revealViewController
         messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler(.failed)
                 return
             }
-            
-            //TODO::fixme change to deeplink
-            if let front = revealViewController.frontViewController as? UINavigationController,
-                let mailboxViewController: MailboxViewController = front.viewControllers.first as? MailboxViewController
-            {
-                self.messageService.pushNotificationMessageID = messageid
-                mailboxViewController.performSegueForMessageFromNotification()
-            }
+            let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
+            link.append(MailboxCoordinator.Destination.detailsFromNotify.rawValue)
+            self.messageService.pushNotificationMessageID = messageid
+            NotificationCenter.default.post(name: .switchView,
+                                            object: link)
             completionHandler(.newData)
         }
     }
     
     // MARK: - Private methods
-    
     private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
         if let encrypted = userInfo["encryptedMessage"] as? String {
             guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
