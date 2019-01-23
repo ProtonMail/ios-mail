@@ -69,7 +69,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
-        metaWidth.content = "width=device-width";
+        metaWidth.content = "width=device-width, initial-scale=" + document.body.offsetWidth/document.body.scrollWidth;
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         
         var metaCSP = document.createElement('meta');
