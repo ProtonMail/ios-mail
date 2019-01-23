@@ -40,7 +40,7 @@ public struct PinProtection: ProtectionStrategy {
     }
     
     private static let saltKeychainKey = String(describing: PinProtection.self) + ".salt"
-    private static let numberOfIterations: Int = 2000 // bigger number works very slow on iPhone 5S
+    private static let numberOfIterations: Int = 32768
     enum Errors: Error {
         case saltNotFound
         case failedToDeriveKey
@@ -49,7 +49,7 @@ public struct PinProtection: ProtectionStrategy {
     public func lock(value: Keymaker.Key) throws {
         let salt = PinProtection.generateRandomValue(length: 8)
         var error: NSError?
-        guard let ethemeralKey = CryptoDeriveKey(pin, Data(bytes: salt), 32768, &error) else {
+        guard let ethemeralKey = CryptoDeriveKey(pin, Data(bytes: salt), PinProtection.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey.bytes)
@@ -63,7 +63,7 @@ public struct PinProtection: ProtectionStrategy {
             throw Errors.saltNotFound
         }
         var error: NSError?
-        guard let ethemeralKey = CryptoDeriveKey(pin, salt, 32768, &error) else {
+        guard let ethemeralKey = CryptoDeriveKey(pin, salt, PinProtection.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         do {
