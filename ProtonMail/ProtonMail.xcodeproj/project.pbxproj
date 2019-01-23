@@ -1082,7 +1082,6 @@
 		A2AB5608642643551D4CFD6903A63FD1 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		A2DA90A10988330492D489C99CCB230B /* MultiSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FFA6941585C1A3968EFF2FFC1080F6 /* MultiSet.swift */; };
 		A2F388AE5C22FA0F4A94A7FD64EB7225 /* ViewModelTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 320C7A81F18DD5275FF6DFE4F141BDAD /* ViewModelTimer.swift */; };
-		A2FF44104ADA87045BD9A447E110F4C9 /* Srp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1143705C07121504753D948C3B2B15 /* Srp.framework */; };
 		A33AB81CFB24DF699DA49DDE56659F52 /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		A34C37B43A37A7F335F1C6984F1FBE82 /* SplashSignInSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13E4F4D1468CCEA2F32B1C38858CC1B1 /* SplashSignInSegue.swift */; };
 		A375428D87EB3F0762E4EC1C21F7BC42 /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 380360BB9B1BCDAA8C4DBCC0B027C134 /* ContactGroupsViewCell.xib */; };
@@ -1315,7 +1314,6 @@
 		C3760E39AED88C1BA3038C6C563F11B1 /* NSFetchedResultsController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */; };
 		C382896EFCD962D2D4C6D87B57753C4F /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */; };
 		C38CCA400FBBB72DC7D0A889A8C644D3 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3257AE4FCDEE33D1DFC2202B2856779D /* RecaptchaViewController.swift */; };
-		C3C9E37273D97C1C438DE575A6FAFD07 /* Srp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1143705C07121504753D948C3B2B15 /* Srp.framework */; };
 		C3D0F75EF0E316DBD18EAA98EA5DBE27 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		C419004F4F7E4D18B149C8517D337260 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA071210F74AE37131F94504B5A0384 /* SignUpPasswordViewController.swift */; };
 		C42888E34AB2F5F0830226505F79BA93 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
@@ -1391,7 +1389,6 @@
 		CED030FCC0CF908F3B36CBA0D265A340 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
 		CEEC1AB99D604C034D4FFA8D3BF231BD /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F6534536F0C3BB4E2D2782B5F8674 /* Hash.swift */; };
 		CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */; };
-		CF1804EDF2EB8FFCCD89B367E8416A66 /* Srp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1143705C07121504753D948C3B2B15 /* Srp.framework */; };
 		CF31D73AC1A95AF58DA6F2B7BC66103F /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		CF558E4762636DF0D00E0E633B65235E /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C178973BACB0B6484835660600335F4 /* MailboxMessageCell.swift */; };
 		CF593E70929EF96622D405EF532AC4EF /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DF425774FBF5566AC74C2E3EBE83 /* ContactCollectionViewEntryCell.swift */; };
@@ -1410,7 +1407,6 @@
 		D06C8E40AB7932124738AA83520E1614 /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
 		D0901BBAEB31D2C8C2CE6407C90217BC /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E20C729B58B3E8CDD72CE5DCB2AD4CFF /* ProtonMail-Bridging-Header.cpp */; };
 		D093BBD13671D3C6615B7FB6EBA5C7C3 /* String+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B134B304EA7B3B50AB022AD491099FA /* String+Mime.swift */; };
-		D0B99012BAE3DB2BB6DC3F09D3A2FA73 /* Srp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C1143705C07121504753D948C3B2B15 /* Srp.framework */; };
 		D0BA1EC3CE0DCB2FE56023639331C1A3 /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */; };
 		D0E6F54C99854B36E16A024FD4716F34 /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		D0FB3E303496F596311F88039A9A5E42 /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C51DC65328A7CEC55ECB5D02FF357E1 /* NSString+Extension.swift */; };
@@ -2263,7 +2259,6 @@
 		7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
 		7A60B2BD68461E88AE5BEBF3DE57C7D4 /* APIError+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIError+Auth.swift"; sourceTree = "<group>"; };
 		7B90F79FC4C0701C7112CE195C0D4646 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		7C1143705C07121504753D948C3B2B15 /* Srp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Srp.framework; sourceTree = "<group>"; };
 		7C178973BACB0B6484835660600335F4 /* MailboxMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxMessageCell.swift; sourceTree = "<group>"; };
 		7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeErrorView.swift; sourceTree = "<group>"; };
 		7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningEmailCell.swift; sourceTree = "<group>"; };
@@ -2702,7 +2697,6 @@
 				B92B52A3EC3D04481FDEA095F42E3EC2 /* Keymaker.framework in Frameworks */,
 				61F9DB611ECBEF296940B1E438C9AAFC /* Pods_ProtonMail.framework in Frameworks */,
 				0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */,
-				CF1804EDF2EB8FFCCD89B367E8416A66 /* Srp.framework in Frameworks */,
 				BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */,
 				48D5E369E1DD804DC3794800139A18DD /* libc++.tbd in Frameworks */,
 			);
@@ -2733,7 +2727,6 @@
 			files = (
 				D496F72DA8FC94D1B72754BA271FA250 /* Keymaker.framework in Frameworks */,
 				4E1CCBDCF9F890CF0D017BCFBFB3F439 /* Pods_ShareDev.framework in Frameworks */,
-				D0B99012BAE3DB2BB6DC3F09D3A2FA73 /* Srp.framework in Frameworks */,
 				76C35B3294C518656907C56752FD4800 /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2745,7 +2738,6 @@
 				2DA9A5296BCA9CE8897B37FB502B325E /* Keymaker.framework in Frameworks */,
 				09D86FB462391753724C8C78707A0B1F /* Pods_ProtonMailDev.framework in Frameworks */,
 				B4889BBA7F90BA058CD16A5A8F7806A7 /* Social.framework in Frameworks */,
-				A2FF44104ADA87045BD9A447E110F4C9 /* Srp.framework in Frameworks */,
 				162DF13E122DAC3901024E4C6EEBF248 /* StoreKit.framework in Frameworks */,
 				8C6D429B0F2BF92F5C082627D93E9878 /* libc++.tbd in Frameworks */,
 			);
@@ -2776,7 +2768,6 @@
 			files = (
 				14B45EEEF11C4D7C89ADDD7436652B5D /* Keymaker.framework in Frameworks */,
 				58F4F4F777E23217BF18ED6C75481736 /* Pods_Share.framework in Frameworks */,
-				C3C9E37273D97C1C438DE575A6FAFD07 /* Srp.framework in Frameworks */,
 				B15303EDE7A8F7741B7B5E15465ECA65 /* libc++.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4072,7 +4063,6 @@
 				A076C738684BFFC293CBA3752782EA09 /* Pods_Siri.framework */,
 				02B874B017458C7227D9E2D4617DD04D /* Pods_SiriDev.framework */,
 				C0A2F260039163C3214BBFA3487444F0 /* Social.framework */,
-				7C1143705C07121504753D948C3B2B15 /* Srp.framework */,
 				B08BFFFD2CA0201C07034095A949C11A /* StoreKit.framework */,
 				3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */,
 				2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */,

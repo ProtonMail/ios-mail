@@ -114,8 +114,8 @@ class CryptoTests: XCTestCase {
             
         self.measure() {
             var error: NSError?
-            
-            let derivedKey = CryptoDeriveKey(secret, salt, &error)
+            // 32768 is PinProtection.numberOfIterations
+            let derivedKey = CryptoDeriveKey(secret, salt, 32768, &error)
             XCTAssertNil(error, "Failed to derive key: \(error!.localizedDescription)")
             XCTAssertNotNil(derivedKey)
         }

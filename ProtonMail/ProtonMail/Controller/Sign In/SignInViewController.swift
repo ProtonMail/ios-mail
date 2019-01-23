@@ -90,19 +90,28 @@ class SignInViewController: ProtonMailViewController {
         setupButtons()
         setupVersionLabel()
 
-        if !showingTouchID {
-            showingTouchID = true
-            let signinFlow = UnlockManager.shared.getUnlockFlow()
-            signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
-            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {
-                                                    self.showingTouchID = false
-                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                                requestMailboxPassword: {
-                                                    self.showingTouchID = false
-                                                    self.isRemembered = true
-                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
+        
+        if signinFlow == .requirePin {
+            self.showingTouchID = false
+            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        } else {
+            //workaround, when lock the app by clicking power button this will be called in background and it breaks the touch id popup
+            //this could be controlled by window coordinator.
+            let state = UIApplication.shared.applicationState
+            if state != UIApplication.State.inactive && state != UIApplication.State.background {
+                showingTouchID = true
+                UnlockManager.shared.initiateUnlock(flow: signinFlow,
+                                                    requestPin: {
+                                                        self.showingTouchID = false
+                                                        self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                    requestMailboxPassword: {
+                                                        self.showingTouchID = false
+                                                        self.isRemembered = true
+                                                        self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+                })
+            }
         }
     }
     
