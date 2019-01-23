@@ -118,9 +118,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
     
     func updateEmailContent(_ contents: WebContents) {
-        if #available(iOS 11.0, *) {
-            self.loader.load(contents: contents, in: self.contentWebView)
-        }
+        self.loader.load(contents: contents, in: self.contentWebView)
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {
@@ -189,9 +187,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         
         let config = WKWebViewConfiguration()
         config.preferences = preferences
-        if #available(iOS 11.0, *) {
-            self.loader.inject(into: config)
-        }
+        self.loader.inject(into: config)
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
             config.ignoresViewportScaleLimits = true
