@@ -186,4 +186,10 @@ class MailboxCoordinator : DefaultCoordinator {
     func go(to dest: Destination, sender: Any? = nil) {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
+    
+    func go(to deepLink: DeepLink) {
+        if let path = deepLink.pop, let dest = Destination(rawValue: path.destination) {
+            self.go(to: dest)
+        }
+    }
 }

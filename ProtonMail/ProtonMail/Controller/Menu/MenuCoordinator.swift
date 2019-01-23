@@ -130,7 +130,12 @@ class MenuCoordinatorNew: DefaultCoordinator {
     
     func go(to deepLink: DeepLink) {
         if let path = deepLink.pop, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
-            self.go(to: dest, sender: deepLink)
+            // resue the exist mailbox
+            if let latest = lastestCoordinator as? MailboxCoordinator {
+                latest.go(to: deepLink)
+            } else {
+                self.go(to: dest, sender: deepLink)
+            }
         }
     }
     
@@ -157,6 +162,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
             let viewModel = MailboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
+            self.lastestCoordinator = mailbox
             mailbox.start()
         case .label:
             guard let next = navigation?.firstViewController() as? MailboxViewController else {
@@ -174,6 +180,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 }
             }
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
+            self.lastestCoordinator = mailbox
             mailbox.start()
             
         case .settings:

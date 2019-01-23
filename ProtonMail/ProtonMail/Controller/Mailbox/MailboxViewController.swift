@@ -297,11 +297,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .folder, sender: self.viewModel.selectedMessages(selected: self.selectedIDs))
     }
     
-    //TODO:: this is a global message should move it to the
-    func performSegueForMessageFromNotification() {
-        self.coordinator?.go(to: .detailsFromNotify)
-    }
-
     /// unread tapped, this is the button in navigation bar 
     @objc internal func unreadTapped() {
         self.viewModel.mark(IDs: self.selectedIDs, unread: true)
