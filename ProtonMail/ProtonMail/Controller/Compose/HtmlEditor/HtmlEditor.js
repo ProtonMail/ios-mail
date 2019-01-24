@@ -71,9 +71,10 @@ html_editor.delegate = function(event) {
 };
 
 //this is for update protonmail email signature
-html_editor.updateSignature = function(html) {
+html_editor.updateSignature = function(html, sanitizeConfig) {
     var signature = document.getElementById('protonmail_signature_block');
-    signature.innerHTML = html
+    var cleanByConfig = DOMPurify.sanitize(html, sanitizeConfig);
+    signature.innerHTML = DOMPurify.sanitize(cleanByConfig);
 }
 
 html_editor.updateEmbedImage = function(cid, blobdata) {
