@@ -21,4 +21,4 @@ when people touch those make sure in clude those resources in to main app copy b
 
 2. We use xUnique (ver 4.1.4) in order to prevent merge conflicts in ProtonMail.xcodeproj file. Each shared scheme has post-build action, and builds will fail on machenes with no xUnique installed. Please read Installation section: https://github.com/truebit/xUnique
 
-3. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules
+3. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules. In order to update DOMPurify release you have to manually checkout the tagged commit `git checkout 1.0.9` in  submodule directory and then update it locally.
