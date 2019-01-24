@@ -65,12 +65,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         var clean0 = DOMPurify.sanitize(dirty);
         var clean1 = DOMPurify.sanitize(clean0, \(HTMLStringSecureLoader.domPurifyConfiguration));
         var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
-        document.documentElement.replaceWith(clean2)
-        
-        var metaWidth = document.createElement('meta');
-        metaWidth.name = "viewport";
-        metaWidth.content = "width=device-width, initial-scale=" + document.body.offsetWidth/document.body.scrollWidth;
-        document.getElementsByTagName('head')[0].appendChild(metaWidth);
+        document.documentElement.replaceWith(clean2);
         
         var metaCSP = document.createElement('meta');
         metaCSP.httpEquiv = "Content-Security-Policy";
@@ -81,6 +76,15 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         style.type = 'text/css';
         style.appendChild(document.createTextNode('\(WebContents.css)'));
         document.getElementsByTagName('head')[0].appendChild(style);
+        
+        var metaWidth = document.createElement('meta');
+        metaWidth.name = "viewport";
+        metaWidth.content = "width=device-width";
+        var ratio = document.body.offsetWidth/document.body.scrollWidth;
+        if (ratio < 1) {
+        metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+        };
+        document.getElementsByTagName('head')[0].appendChild(metaWidth);
         
         window.webkit.messageHandlers.loaded.postMessage({'clearBody':document.documentElement.innerHTML});
         """
