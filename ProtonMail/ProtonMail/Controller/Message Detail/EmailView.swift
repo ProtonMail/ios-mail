@@ -117,8 +117,14 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.updateHeaderLayout()
     }
     
-    func updateEmailContent(_ contents: WebContents) {
-        self.loader.load(contents: contents, in: self.contentWebView)
+    func updateEmailContent(_ contents: WebContents, bypassSecurity: Bool = false) {
+        if bypassSecurity {
+            let meta = "<meta name=\"viewport\" content=\"width=device-width\">"
+            let htmlString = "<html><head>\(meta)</head><body style='color:grey;'>\(contents.body)</body></html>"
+            self.contentWebView.loadHTMLString(htmlString, baseURL: URL(string: "about:blank"))
+        } else {
+            self.loader.load(contents: contents, in: self.contentWebView)
+        }
     }
     
     func updateEmail(attachments atts : [Attachment]?, inline: [AttachmentInfo]?) {

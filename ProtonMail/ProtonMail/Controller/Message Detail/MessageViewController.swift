@@ -634,13 +634,12 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         }
     }
     
-    internal func showEmailLoading () {
+    internal func showEmailLoading() {
         let body = LocalString._loading_
-        let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
-        self.emailView?.updateEmailContent(contents)
+        let contents = WebContents(body: body, remoteContentMode: .lockdown)
+        self.emailView?.updateEmailContent(contents, bypassSecurity: true)
     }
     
-    var contentLoaded = false
     internal func loadEmailBody(_ body : String) {
         let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
         self.emailView?.updateEmailContent(contents)
@@ -654,9 +653,8 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         let atts = self.message.attachments.allObjects as? [Attachment]
         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
 
-        let body = NSLocalizedString(error, comment: "")
-        let contents = WebContents(body: body, remoteContentMode: self.autoLoadImageMode)
-        self.emailView?.updateEmailContent(contents)
+        let contents = WebContents(body: NSLocalizedString(error, comment: ""), remoteContentMode: .lockdown)
+        self.emailView?.updateEmailContent(contents, bypassSecurity: true)
     }
     
     override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
