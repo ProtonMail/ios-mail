@@ -160,7 +160,10 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         
         let response = HTTPURLResponse(url: urlSchemeTask.request.url!, statusCode: 200, httpVersion: "HTTP/2", headerFields: headers)!
         urlSchemeTask.didReceive(response)
-        urlSchemeTask.didReceive(self.loopbacks[urlSchemeTask.request.url!]!)
+        if let url = urlSchemeTask.request.url,
+            let found = self.loopbacks[url] {
+            urlSchemeTask.didReceive(found)
+        }
         urlSchemeTask.didFinish()
     }
     

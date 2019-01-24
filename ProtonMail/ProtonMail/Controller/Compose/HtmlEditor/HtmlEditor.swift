@@ -327,7 +327,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     ///
     /// - Parameter html: the html signatue, don't need to escape
     func update(signature html : String) {
-        self.run(with: "html_editor.updateSignature('\(html.escaped)');").catch { (error) in
+        self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTMLStringSecureLoader.domPurifyConfiguration));").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
