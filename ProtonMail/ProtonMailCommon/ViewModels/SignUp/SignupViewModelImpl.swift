@@ -27,6 +27,7 @@
 
 
 import Foundation
+import Crypto
 
 
 final class SignupViewModelImpl : SignupViewModel {
@@ -232,10 +233,32 @@ final class SignupViewModelImpl : SignupViewModel {
                                                                         salt: new_salt_for_key.encodeBase64(),
                                                                         verifer: verifier_for_key.encodeBase64())
                                             
-                                            let setupKeyApi = try SetupKeyRequest<ApiResponse>(address_id: addr_id,
-                                                                                               private_key: key,
-                                                                                               keysalt: self.keysalt!.encodeBase64(),
-                                                                                               auth: pwd_auth).syncCall()
+                                            
+                                            guard let fingerprint = KeyGetFingerprint(key, nil) else {
+                                                //TODO:: change to a key error
+                                                throw SignUpCreateUserError.cantHashPassword.error
+                                            }
+                                            let keylist : [String: Any] = [
+                                                "Fingerprint" :  fingerprint,
+                                                "Primary" : 1,
+                                                "Flags" : 3
+                                            ]
+                                            
+                                            let jsonKeylist = keylist.json()
+                                            let signed = try! sharedOpenPGP.signTextDetached(jsonKeylist,
+                                                                                                    privateKey: key,
+                                                                                                    passphrase: self.keypwd_with_keysalt,
+                                                                                                    trim: true)
+                                            let signedKeyList : [String: Any] = [
+                                                "Data" : jsonKeylist,
+                                                "Signature" : signed
+                                            ]
+                                            
+                                            let setupKeyApi = try SetupKeyRequest(address_id: addr_id!,
+                                                                                  private_key: key,
+                                                                                  keysalt: self.keysalt!.encodeBase64(),
+                                                                                  signedKL: signedKeyList,
+                                                                                  auth: pwd_auth).syncCall()
                                             if setupKeyApi?.error != nil {
                                                 PMLog.D("signup seupt key error")
                                             }

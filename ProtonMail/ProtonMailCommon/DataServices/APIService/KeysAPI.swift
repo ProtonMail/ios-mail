@@ -289,28 +289,33 @@ final class UpdatePrivateKeyRequest : ApiRequest<ApiResponse> {
 
 
 //MARK : update user's private keys
-final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
+final class SetupKeyRequest : ApiRequest<ApiResponse> {
     
-    let addressID : String!
-    let privateKey : String!
-    let keySalt : String! //base64 encoded need random value
+    let addressID : String
+    let privateKey : String
+    let signedKeyList: [String: Any]
+    let keySalt : String //base64 encoded need random value
     
-    let auth : PasswordAuth!
+    let auth : PasswordAuth
     
     
-    init(address_id: String!, private_key : String!, keysalt:String!,
-         auth: PasswordAuth!
-        ) {
+    init(address_id: String,
+         private_key : String,
+         keysalt : String,
+         signedKL : [String: Any],
+         auth : PasswordAuth ) {
         self.keySalt = keysalt
         self.addressID = address_id
         self.privateKey = private_key
+        self.signedKeyList = signedKL
         self.auth = auth
     }
     
     override func toDictionary() -> [String : Any]? {
         let address : [String: Any] = [
             "AddressID" : self.addressID,
-            "PrivateKey" : self.privateKey
+            "PrivateKey" : self.privateKey,
+            "SignedKeyList" : self.signedKeyList
         ]
         
         let out : [String : Any] = [
@@ -320,6 +325,8 @@ final class SetupKeyRequest<T : ApiResponse> : ApiRequest<T> {
             "Auth" : self.auth.toDictionary()!
         ]
 
+        PMLog.D(out.json(prettyPrinted: true))
+        
         return out
     }
     

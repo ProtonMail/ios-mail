@@ -235,6 +235,16 @@ class UserDataService : Service {
         return nil
     }
     
+    
+    var firstUserPrivateKey: String? {
+        if let keys = userInfo?.userKeys, keys.count > 0 {
+            for k in keys {
+                return k.private_key
+            }
+        }
+        return nil
+    }
+    
     func getAddressPrivKey(address_id : String) -> String {
         let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
         return addr?.keys.first?.private_key ?? ""
