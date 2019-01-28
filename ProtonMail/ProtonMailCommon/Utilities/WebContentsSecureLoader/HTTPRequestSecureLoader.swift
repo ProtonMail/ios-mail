@@ -112,11 +112,26 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
         };
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
+        """
+        let spacer: String = { () -> String in
+            if #available(iOS 12.0, *) {
+                return ""
+            } else {
+                return """
+                var div = document.createElement('p');
+                div.style.width = '100%';
+                div.style.height = 1000/ratio + 'px';
+                div.style.display = 'block';
+                document.body.appendChild(div);
+                """
+            }
+        }()
         
+        let message = """
         window.webkit.messageHandlers.loaded.postMessage({'clearBody': document.documentElement.outerHTML.toString()});
         """
         
-        let sanitize = WKUserScript(source: sanitizeRaw, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         config.userContentController.removeAllUserScripts()
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
         config.userContentController.addUserScript(sanitize)

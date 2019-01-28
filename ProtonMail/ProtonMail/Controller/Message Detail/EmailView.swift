@@ -231,7 +231,10 @@ class EmailView: UIView, UIScrollViewDelegate{
                     subview.frame = CGRect(x: subview.frame.origin.x, y: h, width: subview.frame.width, height: subview.frame.height);
                 }
             }
-            self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
+            if #available(iOS 12.0, *) {
+                // on iOS 8-10 this line makes bottom h of viewport irresponsible to tap gestures (Apple's bug)
+                self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
+            }
         })
     }
 }
