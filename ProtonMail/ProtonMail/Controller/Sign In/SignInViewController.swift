@@ -100,7 +100,7 @@ class SignInViewController: ProtonMailViewController {
             //workaround, when lock the app by clicking power button this will be called in background and it breaks the touch id popup
             //this could be controlled by window coordinator.
             let state = UIApplication.shared.applicationState
-            if state != UIApplication.State.inactive && state != UIApplication.State.background {
+            if state != UIApplication.State.background {
                 showingTouchID = true
                 UnlockManager.shared.initiateUnlock(flow: signinFlow,
                                                     requestPin: {
