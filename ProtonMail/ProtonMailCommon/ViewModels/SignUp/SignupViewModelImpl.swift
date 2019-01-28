@@ -238,11 +238,11 @@ final class SignupViewModelImpl : SignupViewModel {
                                                 //TODO:: change to a key error
                                                 throw SignUpCreateUserError.cantHashPassword.error
                                             }
-                                            let keylist : [String: Any] = [
+                                            let keylist : [[String: Any]] = [[
                                                 "Fingerprint" :  fingerprint,
                                                 "Primary" : 1,
                                                 "Flags" : 3
-                                            ]
+                                            ]]
                                             
                                             let jsonKeylist = keylist.json()
                                             let signed = try! sharedOpenPGP.signTextDetached(jsonKeylist,
