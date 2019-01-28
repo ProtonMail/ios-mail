@@ -307,7 +307,10 @@ class SignInViewController: ProtonMailViewController {
         
         if sharedUserDataService.isNewUser {
             sharedUserDataService.isNewUser = false
-            if sharedUserDataService.isUserCredentialStored {
+            /// This logic is when creating new user success but the setup key is failed.
+            /// when creating user success the isUserCredentialStored will be true but isTouchIDEnabled and isPinCodeEnabled should be all false
+            /// this also fixed the user see the mailbox password view after created the new account and enable the pin/face in the same session.
+            if sharedUserDataService.isUserCredentialStored && !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
                 UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: {
                     self.isRemembered = true
                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
