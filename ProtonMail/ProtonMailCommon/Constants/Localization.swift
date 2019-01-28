@@ -1643,7 +1643,7 @@ class LocalizedString {
     lazy var _iap_disclamer = NSLocalizedString(self._iap_disclamer_private, comment: "Terms of purchase")
     private lazy var _iap_disclamer_private = """
     Upon confirming your purchase, your iTunes account will be charged the amount displayed, which includes ProtonMail Plus, and Apple's in-app purchase fee (Apple charges a fee of approximately 30% on purchases made through your iPhone/iPad).
-    After making the purchse, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
+    After making the purchase, you will automatically be upgraded to ProtonMail Plus for one year period, after which time you can renew or cancel, either online or through our iOS app.
     """
 
     lazy var _more_credits = NSLocalizedString("More Credits", comment: "Screen header")
