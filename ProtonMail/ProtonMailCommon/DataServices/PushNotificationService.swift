@@ -224,22 +224,9 @@ public class PushNotificationService: Service {
         }
     }
     
-    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?) {
+    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         self.launchOptions = userInfo
-        guard let revealViewController =  UIApplication.shared.keyWindow?.rootViewController as? SWRevealViewController else { // FIXME: via WindowCoordinator?
-            return
-        }
-        guard let front = revealViewController.frontViewController as? UINavigationController else {
-            return
-        }
-        
-        if let view = front.viewControllers.first {
-            if view.isKind(of: MailboxViewController.self) ||
-                view.isKind(of: ContactsViewController.self) ||
-                view.isKind(of: SettingsTableViewController.self) {
-                self.launchOptions = nil
-            }
-        }
+        completionHandler(.noData)
     }
     
     public func processCachedLaunchOptions() {

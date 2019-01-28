@@ -311,10 +311,13 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("receive \(userInfo)")
         ///TODO::fixme deep link
         let pushService: PushNotificationService = sharedServices.get()
-        if UnlockManager.shared.isUnlocked() {
+        if UnlockManager.shared.isUnlocked() { // unlocked and foreground
             pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        } else if application.applicationState == .inactive { // opened by push
+            pushService.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
         } else {
-            pushService.setNotificationOptions(userInfo)
+            // app is locked and not opened from push - nothing to do here
+            completionHandler(.failed)
         }
     }
     
