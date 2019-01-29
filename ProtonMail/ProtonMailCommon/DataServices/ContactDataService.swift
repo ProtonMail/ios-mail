@@ -455,7 +455,7 @@ class ContactDataService: Service  {
         if self.retries > 3 {
             lastUpdatedStore.contactsCached = 0
             self.isFetching = false;
-            
+            self.retries = 0
             {
                 "Retried too many times when fetching contacts.".alertToast()
                  completion?(nil, nil)
