@@ -298,8 +298,9 @@ extension ContactsViewController: UITableViewDelegate {
                                                             })
                 }))
                 
-                alertController.popoverPresentationController?.sourceView = self.view
-                alertController.popoverPresentationController?.sourceRect = self.view.frame
+                alertController.popoverPresentationController?.sourceView = self.tableView
+                alertController.popoverPresentationController?.sourceRect = CGRect(x: self.tableView.bounds.midX, y: self.tableView.bounds.maxY - 100, width: 0, height: 0)
+                
                 self.present(alertController, animated: true, completion: nil)
             }
         }
