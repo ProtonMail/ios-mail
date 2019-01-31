@@ -643,7 +643,18 @@ class MessageDataService : Service {
                             msg.removeValue(forKey: "Location")
                             msg.removeValue(forKey: "Starred")
                             msg.removeValue(forKey: "test")
+                            
                             do {
+                                if message.isDetailDownloaded, let time = msg["Time"] as? TimeInterval, let oldtime = message.time?.timeIntervalSince1970 {
+                                    // remote time and local time are not empty
+                                    if oldtime > time {
+                                        DispatchQueue.main.async {
+                                            completion(task, response, Message.ObjectIDContainer(message), error)
+                                        }
+                                        return
+                                    }
+                                }
+                                
                                 try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg, in: context)
                                 message.isDetailDownloaded = true
                                 message.messageStatus = 1
