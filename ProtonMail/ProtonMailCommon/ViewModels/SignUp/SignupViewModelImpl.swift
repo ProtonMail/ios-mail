@@ -176,7 +176,6 @@ final class SignupViewModelImpl : SignupViewModel {
                     //generat new verifier
                     let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
                     
-                    var error : NSError?
                     guard let auth = try SrpAuthForVerifier(self.plaintext_password, new_moduls, new_salt) else {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
@@ -184,7 +183,7 @@ final class SignupViewModelImpl : SignupViewModel {
                     
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
-                                            email: self.recoverEmail, news: self.news,
+                                            email: self.recoverEmail,
                                             modulusID: moduls_id,
                                             salt: new_salt.encodeBase64(),
                                             verifer: verifier.encodeBase64())
@@ -323,8 +322,14 @@ final class SignupViewModelImpl : SignupViewModel {
         self.displayName = displayName
         
         if !self.displayName.isEmpty {
-            sharedUserDataService.updateDisplayName(displayName) { _, _, error in
-
+            if let addr = sharedUserDataService.userAddresses.defaultAddress() {
+                sharedUserDataService.updateAddress(addr.address_id, displayName: displayName, signature: addr.signature, completion: { (_, _, error) in
+                    
+                })
+            } else {
+                sharedUserDataService.updateDisplayName(displayName) { _, _, error in
+                    
+                }
             }
         }
         
@@ -334,11 +339,9 @@ final class SignupViewModelImpl : SignupViewModel {
             }
         }
         
-        if self.news {
-            let newsApi = UpdateNewsRequest(news: self.news)
-            newsApi.call { (task, response, hasError) -> Void in
-                
-            }
+        let newsApi = UpdateNewsRequest(news: self.news)
+        newsApi.call { (task, response, hasError) -> Void in
+            
         }
     }
     
@@ -360,7 +363,7 @@ final class SignupViewModelImpl : SignupViewModel {
     
     override func setCodeEmail(_ email: String) {
         self.destination = email
-        self.recoverEmail = email
+        //self.recoverEmail = email
         self.news = true
     }
     

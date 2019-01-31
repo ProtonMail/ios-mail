@@ -517,6 +517,7 @@ class UserDataService : Service {
         clearAuthToken()
     }
     
+    @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
     func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
         guard let authCredential = AuthCredential.fetchFromKeychain(),
             let userInfo = self.userInfo,

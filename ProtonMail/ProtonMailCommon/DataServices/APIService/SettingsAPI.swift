@@ -227,7 +227,7 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
     }
     
     override func toDictionary() -> [String : Any]? {
-        let receiveNews = self.news == true ? 1 : 0
+        let receiveNews = self.news == true ? 255 : 0
         let out : [String : Any] = ["News" : receiveNews]
         return out
     }

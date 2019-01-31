@@ -36,30 +36,27 @@ typealias SendVerificationCodeBlock = (Bool, NSError?) -> Void
 // MARK : update right swipe action
 class CreateNewUser : ApiRequest<ApiResponse> {
     
-    let userName : String!
-    let recaptchaToken : String!
-    let email : String!
-    let news : Bool!
-    let tokenType : String!
+    let userName : String
+    let recaptchaToken : String
+    let email : String
+    let tokenType : String
     
-    let modulusID : String! //encrypted_id
-    let salt : String! //base64_encoded_salt
-    let verifer : String! //base64_encoded_verifier
+    let modulusID : String //encrypted_id
+    let salt : String //base64_encoded_salt
+    let verifer : String //base64_encoded_verifier
     
-    init(token : String!,
-         type : String!,
-         username :String!,
-         email:String!,
-         news:Bool!,
+    init(token : String,
+         type : String,
+         username :String,
+         email:String,
          
-         modulusID : String!,
-         salt : String!,
-         verifer : String!) {
+         modulusID : String,
+         salt : String,
+         verifer : String) {
         self.recaptchaToken = token
         self.tokenType = type
         self.userName = username
         self.email = email
-        self.news = news
         
         self.modulusID = modulusID
         self.salt = salt
@@ -79,9 +76,9 @@ class CreateNewUser : ApiRequest<ApiResponse> {
             "TokenType" : self.tokenType,
             "Username" : self.userName,
             "Email" : self.email,
-            "News" : self.news == true ? 1 : 0,
             "Token" : self.recaptchaToken,
-            "Auth" : auth
+            "Auth" : auth,
+            "Type" : 1   //hard code to 1 for mail
         ]
         return out
     }
