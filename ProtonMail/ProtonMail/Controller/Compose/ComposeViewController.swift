@@ -512,6 +512,12 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     }
     
     @objc func autoSaveTimer() {
+        #if APP_EXTENSION
+        // we do not need to save draft after we've already started sending.
+        // this is not relevant to main target because it dismisses the controller once Send is tapped.
+        guard !self.isSending else { return}
+        #endif
+        
         self.updateCIDs().then {
             self.collectDraftData()
         }.done {
