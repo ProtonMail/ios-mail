@@ -107,8 +107,8 @@ extension NSError {
     public class func lockError() -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,
-            localizedDescription: "Parameter locked or cache unaccessible",
-            localizedFailureReason: "Parameter locked or cache unaccessible")
+            localizedDescription: "App was locked",
+            localizedFailureReason: "You had locked the app before it managed to finish its task. Please try again")
     }
     
     public class func unableToParseResponse(_ response: Any?) -> NSError {
