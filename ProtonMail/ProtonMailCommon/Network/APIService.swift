@@ -35,6 +35,7 @@ let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
 protocol APIServiceDelegate {
     func onError(error: NSError)
+    func isReachable() -> Bool
 }
 
 let sharedAPIService = APIService()
@@ -280,9 +281,29 @@ class APIService {
             
                 var uploadTask: URLSessionDataTask? = nil
                 uploadTask = self.sessionManager.uploadTask(withStreamedRequest: request as URLRequest, progress: { (progress) in
-                    //
+                    // nothing
                 }, completionHandler: { (response, responseObject, error) in
                     self.debugError(error)
+                    
+                    // reachability temporarily failed because was switching from WiFi to Cellular
+                    if (error as NSError?)?.code == -1005,
+                        self.delegate?.isReachable() == true
+                    {
+                        // retry task asynchonously
+                        DispatchQueue.global(qos: .utility).async {
+                            self.upload(byUrl: url,
+                                    parameters: parameters,
+                                    keyPackets: keyPackets,
+                                    dataPacket: dataPacket,
+                                    signature: signature,
+                                    headers: headers,
+                                    authenticated: authenticated,
+                                    customAuthCredential: customAuthCredential,
+                                    completion: completion)
+                        }
+                        return
+                    }
+                    
                     let resObject = responseObject as? [String : Any]
                     completion(uploadTask, resObject, error as NSError?)
                 })
