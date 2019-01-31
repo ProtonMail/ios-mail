@@ -36,18 +36,7 @@ protocol PinCodeViewDelegate : AnyObject {
 }
 
 class PinCodeView : PMView {
-    
-    @IBOutlet weak var oneButton: UIButton!
-    @IBOutlet weak var twoButton: UIButton!
-    @IBOutlet weak var threeButton: UIButton!
-    @IBOutlet weak var fourButton: UIButton!
-    @IBOutlet weak var fiveButton: UIButton!
-    @IBOutlet weak var sixButton: UIButton!
-    @IBOutlet weak var sevButton: UIButton!
-    @IBOutlet weak var eightButton: UIButton!
-    @IBOutlet weak var nineButton: UIButton!
-    @IBOutlet weak var zeroButton: UIButton!
-    @IBOutlet weak var goButton: UIButton!
+    @IBOutlet var roundButtons: [RoundButton]!
     
     @IBOutlet weak var pinView: UIView!
     @IBOutlet weak var pinDisplayView: UITextField!
@@ -95,18 +84,6 @@ class PinCodeView : PMView {
     }
     
     func updateCorner() {
-        self.setCorner(oneButton)
-        self.setCorner(twoButton)
-        self.setCorner(threeButton)
-        self.setCorner(fourButton)
-        self.setCorner(fiveButton)
-        self.setCorner(sixButton)
-        self.setCorner(sevButton)
-        self.setCorner(eightButton)
-        self.setCorner(nineButton)
-        self.setCorner(zeroButton)
-        self.setCorner(goButton)
-        
         logoutButton.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
         logoutButton.titleLabel?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
         logoutButton.imageView?.transform = CGAffineTransform(scaleX: -1.0, y: 1.0);
@@ -164,15 +141,6 @@ class PinCodeView : PMView {
         pinCode = ""
     }
     
-    func setCorner(_ button : UIView) {
-        let w = button.frame.size.width
-        button.layer.cornerRadius = w/2
-        button.clipsToBounds = true
-        
-        button.layer.borderColor = UIColor.white.cgColor
-        button.layer.borderWidth = 1.0
-    }
-    
     @IBAction func buttonActions(_ sender: UIButton) {
         self.hideAttempError(true)
         let numberClicked = sender.tag
@@ -208,4 +176,20 @@ class PinCodeView : PMView {
         
     }
     
+}
+
+class RoundButton: UIButton {
+    override func draw(_ rect: CGRect) {
+        let path = UIBezierPath.init(ovalIn: rect)
+        let sublayer = CAShapeLayer()
+        
+        sublayer.strokeColor = UIColor.white.cgColor
+        sublayer.fillColor = UIColor.clear.cgColor
+        sublayer.borderWidth = 1.0
+        sublayer.path = path.cgPath
+        sublayer.name = "pm_border"
+        
+        self.layer.sublayers?.first(where: { $0.name == "pm_border" })?.removeFromSuperlayer()
+        self.layer.addSublayer(sublayer)
+    }
 }
