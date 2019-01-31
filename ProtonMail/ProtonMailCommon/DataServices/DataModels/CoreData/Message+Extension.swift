@@ -633,6 +633,7 @@ extension Message {
         newMessage.title = message.title
         newMessage.time = Date()
         newMessage.body = message.body
+        
         newMessage.isEncrypted = message.isEncrypted
         newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
@@ -658,10 +659,28 @@ extension Message {
             key = addr.keys.first
         }
         
+        var body : String?
+        do {
+            body = try newMessage.decryptBodyIfNeeded()
+        } catch _ {
+            //ignore it
+        }
+        
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
                 if att.inline() || copyAtts {
+                    /// this logic to filter out the inline messages without cid in the message body
+                    if let b = body { //if body is nil. copy att by default
+                        if let cid = att.contentID(), b.contains(check: cid) { //if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
+                            
+                        } else {
+                            if !copyAtts {
+                                continue
+                            }
+                        }
+                    }
+                    
                     let attachment = Attachment(context: newMessage.managedObjectContext!)
                     attachment.attachmentID = att.attachmentID
                     attachment.message = newMessage
