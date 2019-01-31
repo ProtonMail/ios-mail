@@ -54,8 +54,6 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         }
-
-       
     }
     
     /// restore some cache after login/authorized
@@ -104,9 +102,15 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func unlock() {
         self.lockWindow = nil
+        
         guard SignInManager.shared.isSignedIn() else {
             self.go(dest: .signInWindow)
             return
+        }
+        
+        if sharedUserDataService.isNewUser {
+            sharedUserDataService.isNewUser = false
+            self.appWindow = nil
         }
         self.go(dest: .appWindow)
     }
