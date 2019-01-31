@@ -437,6 +437,9 @@ class UserDataService : Service {
                 user.userAddresses.remove(at: index)
             }
             user.userAddresses.append(address)
+            user.userAddresses.sort(by: { (v1, v2) -> Bool in
+                return v1.order < v2.order
+            })
             self.userInfo = user
         }
     }
