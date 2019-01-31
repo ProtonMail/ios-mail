@@ -936,7 +936,11 @@ class UserDataService : Service {
     }
     
     func updateSignature(_ signature: String, completion: UserInfoBlock?) {
-        sharedAPIService.settingUpdateSignature(signature, completion: completionForUserInfo(completion))
+        guard let authCredential = AuthCredential.fetchFromKeychain() else {
+            completion?(nil, nil, NSError.lockError())
+            return
+        }
+        sharedAPIService.settingUpdateSignature(signature, authCredential: authCredential, completion: completionForUserInfo(completion))
     }
     
     // MARK: - Private methods
