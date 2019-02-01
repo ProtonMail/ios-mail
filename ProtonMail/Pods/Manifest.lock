@@ -83,7 +83,6 @@ PODS:
   - PromiseKit/UIKit (6.7.0):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
-  - RichEditorView (5.0.0)
   - SDWebImage/Core (4.4.3)
   - SDWebImage/GIF (4.4.3):
     - FLAnimatedImage (~> 1.0)
@@ -97,7 +96,6 @@ PODS:
     - "UIColor+Hex/NSColor (= 1.0.1)"
     - "UIColor+Hex/UIColor (= 1.0.1)"
   - "UIColor+Hex/UIColor (1.0.1)"
-  - ZSSRichTextEditor (0.5.2.1)
 
 DEPENDENCIES:
   - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
@@ -117,12 +115,10 @@ DEPENDENCIES:
   - OpenPGP (from `../OpenPGP`)
   - PromiseKit (~> 6.0)
   - RHAddressBook (= 1.1.1)
-  - RichEditorView (= 5.0.0)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
   - UICKeyChainStore (= 2.1.1)
   - "UIColor+Hex (= 1.0.1)"
-  - ZSSRichTextEditor (from `../ZSSRichTextEditor`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -143,7 +139,6 @@ SPEC REPOS:
     - OpenSSL
     - PromiseKit
     - RHAddressBook
-    - RichEditorView
     - SDWebImage
     - Sentry
     - SWRevealViewController
@@ -159,8 +154,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
     :path: "../OpenPGP"
-  ZSSRichTextEditor:
-    :path: "../ZSSRichTextEditor"
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
@@ -191,14 +184,12 @@ SPEC CHECKSUMS:
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 453ddcc947fe7b302f3ef41882b81d31c554df7f
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
-  RichEditorView: 1bbb07b87ca2d479ac29a6877014b38b8df233ef
   SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
-  ZSSRichTextEditor: 53fd660ed37df3ccc3752ab15a04a4fdca35e6d2
 
-PODFILE CHECKSUM: 0b44d6605109b8c93fe8746c304534266635a912
+PODFILE CHECKSUM: e6d1eb9195b2dbc8aebbb9de29f4d47bb0ef61cd
 
 COCOAPODS: 1.5.3

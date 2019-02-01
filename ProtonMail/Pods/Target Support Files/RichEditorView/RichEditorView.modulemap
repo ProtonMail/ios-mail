@@ -1,6 +1,0 @@
-framework module RichEditorView {
-  umbrella header "RichEditorView-umbrella.h"
-
-  export *
-  module * { export * }
-}
