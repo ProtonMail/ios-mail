@@ -87,6 +87,8 @@ class SignUpEmailViewController: UIViewController {
         recoveryEmailNoteLabel.text = LocalString._the_optional_recovery_email_address_allows_you_to_reset_your_login_password_if_you_forget_it
         checkButton.setTitle(LocalString._keep_me_updated_about_new_features, for: .normal)
         goInboxButton.setTitle(LocalString._go_to_inbox, for: .normal)
+        
+        checkButton.isSelected = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
