@@ -237,15 +237,6 @@ class MessageDataService : Service {
     }
     
     // MAKR : upload attachment
-    func uploadAttachment(_ att: Attachment!) {
-        let context = sharedCoreDataService.mainManagedObjectContext
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-            self.dequeueIfNeeded()
-        } else {
-            self.queue(att, action: .uploadAtt)
-        }
-    }
     
     /// MARK -- Refactored functions
     

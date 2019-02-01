@@ -97,6 +97,10 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
         self.coordinator.go(dest: .signInWindow)
     }
     
+    func isReachable() -> Bool {
+        return sharedInternetReachability.currentReachabilityStatus() != NetworkStatus.NotReachable
+    }
+    
     func onError(error: NSError) {
         #if DEBUG
         guard #available(iOS 10.0, *) else { return }

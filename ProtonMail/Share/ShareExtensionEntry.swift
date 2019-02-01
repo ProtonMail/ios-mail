@@ -28,10 +28,15 @@
 
 import Foundation
 import UIKit
+import AFNetworking
 
 @objc(ShareExtensionEntry)
 class ShareExtensionEntry : UINavigationController {
-    
+    var reachabilityManager: AFNetworkReachabilityManager = {
+        let manager = AFNetworkReachabilityManager.shared()
+        manager.startMonitoring()
+        return manager
+    }()
     var appCoordinator : ShareAppCoordinator?
 
     required init(coder aDecoder: NSCoder) {
@@ -46,11 +51,23 @@ class ShareExtensionEntry : UINavigationController {
     
     private func setup() {
         appCoordinator = ShareAppCoordinator(navigation: self)
+        sharedAPIService.delegate = self
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         self.appCoordinator?.start()
+    }
+}
+
+extension ShareExtensionEntry: APIServiceDelegate {
+    func onError(error: NSError) {
+        // alert
+        error.alertErrorToast()
+    }
+    
+    func isReachable() -> Bool {
+        return self.reachabilityManager.isReachable
     }
 }
