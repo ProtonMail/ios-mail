@@ -1670,7 +1670,7 @@ class MessageDataService : Service {
                     
                 } else if statusCode == 200 && error?.code > 1000 {
                     let _ = sharedMessageQueue.remove(elementID)
-                } else if statusCode == 200 && error?.code < 200 {
+                } else if statusCode == 200 && error?.code < 200 && !isInternetIssue {
                     let _ = sharedMessageQueue.remove(elementID)
                 }
                 
