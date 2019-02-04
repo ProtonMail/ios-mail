@@ -93,6 +93,7 @@ class SignInManager: NSObject {
             try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: true)
         } catch let ex as NSError {
             onError(ex)
+            return
         }
         
         sharedLabelsDataService.fetchLabels()
@@ -111,6 +112,7 @@ class SignInManager: NSObject {
             UserTempCachedStatus.restore()
             UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
         }.catch(on: .main) { (error) in
+            onError(error as NSError)
             self.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
