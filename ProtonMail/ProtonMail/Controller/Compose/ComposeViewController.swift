@@ -711,6 +711,7 @@ extension ComposeViewController : ComposeViewDelegate {
 
     func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
         //TODO:: change this to segue
+        self.autoSaveTimer()
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
             if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
                 attachmentsViewController.delegate = self
