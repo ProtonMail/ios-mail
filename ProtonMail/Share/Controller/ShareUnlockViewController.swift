@@ -168,18 +168,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         case .requireTouchID:
             touchID.alpha = 1.0
             touchID.isEnabled = true
+            self.authenticateUser()
 
         case .restore:
             self.signInIfRememberedCredentials()
-        }
-    }
-    
-    private func tryTouchID() {
-        switch getViewFlow() {
-        case .requireTouchID:
-            self.authenticateUser()
-        case .restore, .requirePin:
-            break
         }
     }
     
@@ -196,14 +188,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         }
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
-    }
-
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        delay(0.3) {
-            self.tryTouchID()
-        }
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
