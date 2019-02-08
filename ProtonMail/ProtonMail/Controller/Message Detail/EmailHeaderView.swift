@@ -93,6 +93,8 @@ class EmailHeaderView: UIView {
     fileprivate var LabelFour: UILabel!
     fileprivate var LabelFive: UILabel!
     
+    private var labelsView: LabelsCollectionView!
+    
     fileprivate var emailFavoriteButton: UIButton!
     fileprivate var emailHasAttachmentsImageView: UIImageView!
     fileprivate var emailAttachmentsAmount: UILabel!
@@ -787,6 +789,11 @@ class EmailHeaderView: UIView {
         self.LabelOne.font = Fonts.h7.light
         self.addSubview(LabelOne)
         
+        
+        self.labelsView = LabelsCollectionView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
+        labelsView.backgroundColor = UIColor.red
+        self.addSubview(labelsView)
+        
         self.LabelTwo = UILabel()
         self.LabelTwo.sizeToFit()
         self.LabelTwo.clipsToBounds = true
@@ -951,10 +958,20 @@ class EmailHeaderView: UIView {
         LabelOne.sizeToFit()
         let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
         let lbHeight = self.showLabels ? self.LabelOne.frame.size.height : 0
+        
+        let labelViewHeight = labelsView.getContentSize().height
+        self.labelsView.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
+            make?.left.equalTo()(self.emailHeaderView)
+            make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+            make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
+            make?.height.equalTo()(labelViewHeight)
+        }
+        
         LabelOne.mas_makeConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self.emailHeaderView)
-            let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+            let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lbOffset)
             let _ = make?.width.equalTo()(self.LabelOne.frame.size.width)
             let _ = make?.height.equalTo()(lbHeight)
         }
@@ -965,7 +982,7 @@ class EmailHeaderView: UIView {
         LabelTwo.mas_makeConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelOne.mas_right)?.with().offset()(2)
-            let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb2Offset)
+            let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb2Offset)
             let _ = make?.width.equalTo()(self.LabelTwo.frame.size.width)
             let _ = make?.height.equalTo()(lb2Height)
         }
@@ -976,7 +993,7 @@ class EmailHeaderView: UIView {
         LabelThree.mas_makeConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelTwo.mas_right)?.with().offset()(2)
-            let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb3Offset)
+            let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb3Offset)
             let _ = make?.width.equalTo()(self.LabelThree.frame.size.width)
             let _ = make?.height.equalTo()(lb3Height)
         }
@@ -987,7 +1004,7 @@ class EmailHeaderView: UIView {
         LabelFour.mas_makeConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelThree.mas_right)?.with().offset()(2)
-            let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb4Offset)
+            let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb4Offset)
             let _ = make?.width.equalTo()(self.LabelFour.frame.size.width)
             let _ = make?.height.equalTo()(lb4Height)
         }
@@ -998,7 +1015,7 @@ class EmailHeaderView: UIView {
         LabelFive.mas_makeConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.left.equalTo()(self.LabelFour.mas_right)?.with().offset()(2)
-            let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb5Offset)
+            let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb5Offset)
             let _ = make?.width.equalTo()(self.LabelFive.frame.size.width)
             let _ = make?.height.equalTo()(lb5Height)
         }
@@ -1159,13 +1176,24 @@ class EmailHeaderView: UIView {
                 let _ = make?.height.equalTo()(self.emailDetailDateLabel.frame.size.height)
             }
             
+            
             LabelOne.sizeToFit()
             let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
             let lbHeight = self.showLabels ? self.LabelOne.frame.size.height : 0
+            
+            let labelViewHeight = labelsView.getContentSize().height
+            self.labelsView.mas_makeConstraints { (make) -> Void in
+                make?.removeExisting = true
+                make?.left.equalTo()(self.emailHeaderView)
+                make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+                make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
+                make?.height.equalTo()(labelViewHeight)
+            }
+            
             LabelOne.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailDetailView)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lbOffset)
                 let _ = make?.width.equalTo()(self.LabelOne.frame.size.width)
                 let _ = make?.height.equalTo()(lbHeight)
             }
@@ -1176,7 +1204,7 @@ class EmailHeaderView: UIView {
             LabelTwo.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.LabelOne.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb2Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb2Offset)
                 let _ = make?.width.equalTo()(self.LabelTwo.frame.size.width)
                 let _ = make?.height.equalTo()(lb2Height)
             }
@@ -1187,7 +1215,7 @@ class EmailHeaderView: UIView {
             LabelThree.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.LabelTwo.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb3Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb3Offset)
                 let _ = make?.width.equalTo()(self.LabelThree.frame.size.width)
                 let _ = make?.height.equalTo()(lb3Height)
             }
@@ -1197,7 +1225,7 @@ class EmailHeaderView: UIView {
             let lb4Height = self.showLabels ? self.LabelFour.frame.size.height : 0
             LabelFour.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.LabelThree.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb4Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb4Offset)
                 let _ = make?.width.equalTo()(self.LabelFour.frame.size.width)
                 let _ = make?.height.equalTo()(lb4Height)
             }
@@ -1208,7 +1236,7 @@ class EmailHeaderView: UIView {
             LabelFive.mas_updateConstraints { (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.LabelFour.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb5Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb5Offset)
                 let _ = make?.width.equalTo()(self.LabelFive.frame.size.width)
                 let _ = make?.height.equalTo()(lb5Height)
             }
@@ -1339,9 +1367,19 @@ class EmailHeaderView: UIView {
             LabelOne.sizeToFit()
             let lbOffset = self.showLabels ? kEmailRecipientsViewMarginTop : 0
             let lbHeight = self.showLabels ? self.LabelOne.frame.size.height : 0
+            
+            let labelViewHeight = labelsView.getContentSize().height
+            self.labelsView.mas_makeConstraints { (make) -> Void in
+                make?.removeExisting = true
+                make?.left.equalTo()(self.emailHeaderView)
+                make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+                make?.right.equalTo()(self)?.with()?.offset()(kEmailHeaderViewMarginRight)
+                make?.height.equalTo()(labelViewHeight)
+            }
+            
             LabelOne.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.emailHeaderView)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lbOffset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lbOffset)
                 let _ = make?.width.equalTo()(self.LabelOne.frame.size.width)
                 let _ = make?.height.equalTo()(lbHeight)
             }
@@ -1351,7 +1389,7 @@ class EmailHeaderView: UIView {
             let lb2Height = self.showLabels ? self.LabelTwo.frame.size.height : 0
             LabelTwo.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.LabelOne.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb2Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb2Offset)
                 let _ = make?.width.equalTo()(self.LabelTwo.frame.size.width)
                 let _ = make?.height.equalTo()(lb2Height)
             }
@@ -1361,7 +1399,7 @@ class EmailHeaderView: UIView {
             let lb3Height = self.showLabels ? self.LabelThree.frame.size.height : 0
             LabelThree.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.LabelTwo.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb3Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb3Offset)
                 let _ = make?.width.equalTo()(self.LabelThree.frame.size.width)
                 let _ = make?.height.equalTo()(lb3Height)
             }
@@ -1371,7 +1409,7 @@ class EmailHeaderView: UIView {
             let lb4Height = self.showLabels ? self.LabelFour.frame.size.height : 0
             LabelFour.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.LabelThree.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb4Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb4Offset)
                 let _ = make?.width.equalTo()(self.LabelFour.frame.size.width)
                 let _ = make?.height.equalTo()(lb4Height)
             }
@@ -1381,7 +1419,7 @@ class EmailHeaderView: UIView {
             let lb5Height = self.showLabels ? self.LabelFive.frame.size.height : 0
             LabelFive.mas_updateConstraints { (make) -> Void in
                 let _ = make?.left.equalTo()(self.LabelFour.mas_right)?.with().offset()(2)
-                let _ = make?.top.equalTo()(self.emailDetailView.mas_bottom)?.with().offset()(lb5Offset)
+                let _ = make?.top.equalTo()(self.labelsView.mas_bottom)?.with().offset()(lb5Offset)
                 let _ = make?.width.equalTo()(self.LabelFive.frame.size.width)
                 let _ = make?.height.equalTo()(lb5Height)
             }
