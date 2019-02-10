@@ -37,25 +37,11 @@ class LabelsCollectionView: PMView {
         return "LabelsCollectionView"
     }
     
-    //@IBOutlet weak var fromLabel: UILabel!
-   // @IBOutlet weak var tableView: UITableView!
-    
-    ///
-    var promptString : String?
-    var labelValue : String?
-    
-    var showLocker : Bool = true
-    
-    var labelSize : CGSize?
-    
-    var contacts : [ContactVO]?
-    
-    weak var delegate : RecipientViewDelegate?
-    
-    
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    var labels : [Label]?
+    
     override func setup() {
-        
         let nib = UINib(nibName: "\(LabelCell.self)", bundle: Bundle.main)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "\(LabelCell.self)")
     }
@@ -72,18 +58,19 @@ class LabelsCollectionView: PMView {
 extension LabelsCollectionView: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return labels == nil ? 0 : 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return labels?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(LabelCell.self)", for: indexPath)
        
         cell.backgroundColor = UIColor.blue
-        cell.layer.cornerRadius = 17;
+        cell.layer.borderWidth = 1
+        cell.layer.borderColor = UIColor.red.cgColor
 
         return cell
     }
@@ -98,7 +85,6 @@ extension LabelsCollectionView: UICollectionViewDelegateFlowLayout, UICollection
 //        newCell?.layer.borderWidth = 4
 //        newCell?.layer.borderColor = UIColor.darkGray.cgColor
 //        self.selected = indexPath
-//
 //        self.dismissKeyboard()
     }
     
@@ -107,7 +93,7 @@ extension LabelsCollectionView: UICollectionViewDelegateFlowLayout, UICollection
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 34, height: 34)
+        return CGSize(width: 40, height: 26)
     }
 }
 
