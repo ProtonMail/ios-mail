@@ -320,7 +320,7 @@ class ContactImportViewController: UIViewController {
                                 pre_contacts.append(cards)
                             } catch {
                                 // upload vcardStr when see error
-                                BugDataService().debugReport("VCARD", vcardStr, completion: nil)
+                                BugDataService.debugReport("VCARD", vcardStr, completion: nil)
                             }
                         }
                     }

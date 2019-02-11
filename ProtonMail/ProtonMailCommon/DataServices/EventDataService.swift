@@ -32,7 +32,7 @@ import Foundation
 class EventDataService {
     typealias FetchEventComplete = APIService.CompletionBlock
     func fetchEvents(completion: FetchEventComplete?) {
-        let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
+        let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
         eventAPI.call() { task, _eventsRes, _hasEventsError in
             
         }

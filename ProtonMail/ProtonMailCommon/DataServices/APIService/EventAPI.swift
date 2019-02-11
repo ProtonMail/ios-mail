@@ -30,7 +30,7 @@ import Foundation
 
     
 // MARK : Get messages part
-final class EventCheckRequest<T : ApiResponse> : ApiRequest<T>{
+final class EventCheckRequest: ApiRequest<EventCheckResponse>{
     let eventID : String
     
     init(eventID : String) {

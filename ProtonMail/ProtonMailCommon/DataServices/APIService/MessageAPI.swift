@@ -138,26 +138,23 @@ final class FetchMessages : ApiRequest<ApiResponse> {
 }
 
 final class FetchMessagesByID : ApiRequest<ApiResponse> {
-    let messages : [Message]!
-    init(messages: [Message]) {
-        self.messages = messages
+    let msgIDs : [String]
+    init(msgIDs: [String]) {
+        self.msgIDs = msgIDs
     }
     
     internal func buildURL () -> String {
-        var out = "";
-        
-        for message in self.messages {
-            if message.managedObjectContext != nil {
-                if !out.isEmpty {
-                    out = out + "&"
-                }
-                out = out + "ID[]=\(message.messageID)"
+        var out = ""
+        for msgID in self.msgIDs {
+            if !out.isEmpty {
+                out = out + "&"
             }
+            out = out + "ID[]=\(msgID)"
         }
         if !out.isEmpty {
             out = "?" + out
         }
-        return out;
+        return out
     }
     
     override func path() -> String {
