@@ -398,26 +398,10 @@ class EmailHeaderView: UIView {
         let tm = self.date.formattedWith("'\(LocalString._composer_on)' EE, MMM d, yyyy '\(at)' \(timeformat)")
         self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
-//        let lockType : LockTypes = encType.lockType
-//        switch (lockType) {
-//        case .plainTextLock:
-//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock")
-//            self.emailIsEncryptedImageView.isHighlighted = true
-//            break
-//        case .encryptLock:
-//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock")
-//            self.emailIsEncryptedImageView.isHighlighted = false
-//            break
-//        case .pgpLock:
-//            self.emailIsEncryptedImageView.image = UIImage(named: "mail_lock-pgpmime")
-//            self.emailIsEncryptedImageView.isHighlighted = false
-//            break
-//        }
-        
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if l.exclusive == false {
+                if !l.exclusive, !l.name.isEmpty {
                     tmplabels.append(l)
                 }
             }
