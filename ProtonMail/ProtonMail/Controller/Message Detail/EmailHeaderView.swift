@@ -57,6 +57,7 @@ class EmailHeaderView: UIView {
             self.emailFromTable.delegate = self._delegate
             self.emailToTable.delegate = self._delegate
             self.emailCcTable.delegate = self._delegate
+            self.emailBccTable.delegate = self._delegate
             self.showImageView.delegate = self._delegate
         }
     }
@@ -74,6 +75,9 @@ class EmailHeaderView: UIView {
     
     fileprivate var emailCc: UILabel!    //cc
     fileprivate var emailCcTable: RecipientView!
+    
+    fileprivate var emailBcc: UILabel!    //bcc
+    fileprivate var emailBccTable: RecipientView!
     
     fileprivate var emailShortTime: UILabel!
     
@@ -256,6 +260,21 @@ class EmailHeaderView: UIView {
         }
     }
     
+    fileprivate var bccShortAttr : NSMutableAttributedString! {
+        get {
+            let bc = LocalString._general_bcc_label
+            let bcc = "\(bc) "
+            let formRange = NSRange (location: 0, length: bcc.count)
+            let attributedString = NSMutableAttributedString(string: bcc,
+                                                             attributes: [NSAttributedString.Key.font : Fonts.h6.medium,
+                                                                          NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#838897")])
+            attributedString.setAttributes([NSAttributedString.Key.font : Fonts.h6.medium,
+                                            NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#C0C4CE")],
+                                           range: formRange)
+            return attributedString
+        }
+    }
+    
     fileprivate var showTo : Bool {
         get {
             return  (self.toList?.count ?? 0) > 0 ? true : false
@@ -364,9 +383,12 @@ class EmailHeaderView: UIView {
         self.emailToTable.showLock(isShow: self.isSentFolder)
         self.emailCcTable.contacts = ccList
         self.emailCcTable.showLock(isShow: self.isSentFolder)
+        self.emailBccTable.contacts = bccList
+        self.emailBccTable.showLock(isShow: self.isSentFolder)
         
         self.emailTo.attributedText = toSinglelineAttr
         self.emailCc.attributedText = ccShortAttr
+        self.emailBcc.attributedText = bccShortAttr
         
         self.emailFavoriteButton.isSelected = self.starred
         
@@ -601,6 +623,15 @@ class EmailHeaderView: UIView {
         self.emailCcTable = RecipientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
         self.emailCcTable.alpha = 0.0
         self.emailHeaderView.addSubview(emailCcTable)
+        
+        self.emailBcc = UILabel()
+        self.emailBcc.alpha = 0.0
+        self.emailBcc.numberOfLines = 1
+        self.emailHeaderView.addSubview(emailBcc)
+        
+        self.emailBccTable = RecipientView(frame: CGRect(x: 0, y: 0, width: self.frame.width, height: 0))
+        self.emailBccTable.alpha = 0.0
+        self.emailHeaderView.addSubview(emailBccTable)
         
         self.emailShortTime = UILabel()
         self.emailShortTime.font = Fonts.h6.medium
@@ -883,6 +914,21 @@ class EmailHeaderView: UIView {
             let _ = make?.top.equalTo()(self.emailTo.mas_bottom)?.with().offset()(ccOffset)
             let _ = make?.height.equalTo()(self.emailCc)
         }
+
+        let bccOffset = self.showBcc ? kEmailRecipientsViewMarginTop : 0
+        emailBcc.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
+            let _ = make?.left.equalTo()(self.emailHeaderView)
+            let _ = make?.right.equalTo()(self.emailTitle)
+            let _ = make?.top.equalTo()(self.emailCc.mas_bottom)?.with().offset()(bccOffset)
+        }
+        emailBccTable.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
+            let _ = make?.left.equalTo()(36)
+            let _ = make?.right.equalTo()(self.emailHeaderView)
+            let _ = make?.top.equalTo()(self.emailCc.mas_bottom)?.with().offset()(bccOffset)
+            let _ = make?.height.equalTo()(self.emailBcc)
+        }
         
         emailShortTime.sizeToFit()
         emailShortTime.mas_makeConstraints { (make) -> Void in
@@ -1028,11 +1074,14 @@ class EmailHeaderView: UIView {
                 self.emailFrom.attributedText = self.fromShortAttr
                 self.emailTo.attributedText = self.toShortAttr
                 self.emailCc.attributedText = self.ccShortAttr
+                self.emailBcc.attributedText = self.bccShortAttr
                 self.emailFromTable.alpha = 1.0
                 self.emailTo.alpha = self.showTo ? 1.0 : 0.0
                 self.emailToTable.alpha = self.showTo ? 1.0 : 0.0
                 self.emailCc.alpha = self.showCc ? 1.0 : 0.0
                 self.emailCcTable.alpha = self.showCc ? 1.0 : 0.0
+                self.emailBcc.alpha = self.showBcc ? 1.0 : 0.0
+                self.emailBccTable.alpha = self.showBcc ? 1.0 : 0.0
                 
                 }, completion: nil)
             
@@ -1082,12 +1131,30 @@ class EmailHeaderView: UIView {
                 let _ = make?.height.equalTo()(ecch)
             }
             
+            let bccOffset = self.showBcc ? kEmailRecipientsViewMarginTop : 0
+            let bccHeight = self.showBcc ? 16 : 0
+            emailBcc.mas_updateConstraints { (make) -> Void in
+                make?.removeExisting = true
+                let _ = make?.left.equalTo()(self.emailHeaderView)
+                let _ = make?.right.equalTo()(self.emailTitle)
+                let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(bccOffset)
+                let _ = make?.height.equalTo()(bccHeight)
+            }
+            let ebcch = emailBccTable.getContentSize().height
+            emailBccTable.mas_makeConstraints { (make) -> Void in
+                make?.removeExisting = true
+                let _ = make?.left.equalTo()(36)
+                let _ = make?.right.equalTo()(self.emailHeaderView)
+                let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(bccOffset)
+                let _ = make?.height.equalTo()(ebcch)
+            }
+            
             self.emailShortTime.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.left.equalTo()(self.emailHeaderView)
                 let _ = make?.width.equalTo()(0)
                 let _ = make?.height.equalTo()(self.emailShortTime.frame.size.height)
-                let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
+                let _ = make?.top.equalTo()(self.emailBccTable.mas_bottom)?.with().offset()(self.kEmailTimeViewMarginTop)
             })
             
             self.emailDetailButton.setTitle(LocalString._hide_details, for: UIControl.State())
@@ -1179,6 +1246,8 @@ class EmailHeaderView: UIView {
                 self.emailToTable.alpha = 0.0
                 self.emailCc.alpha = 0.0
                 self.emailCcTable.alpha = 0.0
+                self.emailBcc.alpha = 0.0
+                self.emailBccTable.alpha = 0.0
                 }, completion: nil)
             
             let efh = emailFromTable.getContentSize().height
@@ -1221,6 +1290,20 @@ class EmailHeaderView: UIView {
                 let _ = make?.left.equalTo()(36)
                 let _ = make?.right.equalTo()(self.emailHeaderView)
                 let _ = make?.top.equalTo()(self.emailCc)?.with().offset()(self.kEmailRecipientsViewMarginTop)
+                let _ = make?.height.equalTo()(0)
+            }
+            emailBcc.mas_updateConstraints { (make) -> Void in
+                make?.removeExisting = true
+                let _ = make?.left.equalTo()(self.emailHeaderView)
+                let _ = make?.right.equalTo()(self.emailTitle)
+                let _ = make?.top.equalTo()(self.emailCcTable.mas_bottom)?.with().offset()(0)
+                let _ = make?.height.equalTo()(0)
+            }
+            emailBccTable.mas_makeConstraints { (make) -> Void in
+                make?.removeExisting = true
+                let _ = make?.left.equalTo()(36)
+                let _ = make?.right.equalTo()(self.emailHeaderView)
+                let _ = make?.top.equalTo()(self.emailBcc)?.with().offset()(self.kEmailRecipientsViewMarginTop)
                 let _ = make?.height.equalTo()(0)
             }
             
