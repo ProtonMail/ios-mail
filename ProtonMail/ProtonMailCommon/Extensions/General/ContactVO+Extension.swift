@@ -35,25 +35,13 @@ extension ContactVO {
     /// - Parameter addresses: addresses check addresses
     /// - Returns: true | false
     func isDuplicated(_ addresses : [Address]) -> Bool {
-        if addresses.map({ $0.email }).index(of: self.email) != nil {
-            return true
-        }
-        return false
+        return addresses.contains(where: { $0.email.lowercased() == self.email.lowercased() })
     }
     
     /**
      Checks if the current ContactVO is in the address list
     */
     func isDuplicatedWithContacts(_ addresses : [ContactPickerModelProtocol]) -> Bool {
-        if addresses.map({
-            if let contact = $0 as? ContactVO {
-                return contact.email
-            } else {
-                return nil
-            }
-        }).index(of: self.email) != nil {
-            return true
-        }
-        return false
+        return addresses.contains(where: { ($0 as? ContactVO)?.email.lowercased() == self.email.lowercased() })
     }
 }
