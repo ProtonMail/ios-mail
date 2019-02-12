@@ -298,6 +298,11 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.headerView.viewDidAppear(animated)
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.headerView.notifyViewSize(false)
@@ -836,6 +841,10 @@ extension ComposeViewController : ComposeViewDataSource {
 
     func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
+    }
+    
+    func ccBccIsShownInitially() -> Bool {
+        return !self.viewModel.ccSelectedContacts.isEmpty || !self.viewModel.bccSelectedContacts.isEmpty
     }
 
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
