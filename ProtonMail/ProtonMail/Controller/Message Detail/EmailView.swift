@@ -96,8 +96,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
     
     func rotate() {
-        let w = UIScreen.main.bounds.width
-        self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
+        self.emailHeader.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.emailHeader.getHeight())
         self.emailHeader.makeConstraints()
         self.emailHeader.updateHeaderLayout()
     }
@@ -178,8 +177,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.backgroundColor = UIColor.white
         self.emailHeader.viewDelegate = self
         self.contentWebView.scrollView.addSubview(self.emailHeader)
-        let w = UIScreen.main.bounds.width
-        self.emailHeader.frame = CGRect(x: 0, y: 0, width: w, height: self.emailHeader.getHeight())
+        self.emailHeader.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.emailHeader.getHeight())
     }
     
     func showDetails(show : Bool ) {
@@ -211,8 +209,7 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.contentWebView.navigationDelegate = self
         self.contentWebView.uiDelegate = self
         self.contentWebView.scrollView.delegate = self
-        let w = UIScreen.main.bounds.width
-        self.contentWebView.frame = CGRect(x: 0, y: 0, width: w, height:100);
+        self.contentWebView.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height:100);
     }
     
     fileprivate var attY : CGFloat = 0;
@@ -236,6 +233,11 @@ class EmailView: UIView, UIScrollViewDelegate{
                 self.contentWebView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: h, right: 0)
             }
         })
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        // for iPad in multitasking mode - change width of header
+        self.emailHeader.frame = CGRect(x: self.emailHeader.frame.origin.x, y: self.emailHeader.frame.origin.y, width: self.bounds.width, height: self.emailHeader.frame.height)
     }
 }
 

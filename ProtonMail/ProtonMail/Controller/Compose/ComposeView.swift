@@ -57,6 +57,7 @@ protocol ComposeViewDelegate: class {
 }
 
 protocol ComposeViewDataSource: class {
+    func ccBccIsShownInitially() -> Bool
     func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
     func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
 }
@@ -269,6 +270,9 @@ class ComposeView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        if let showCcBcc = self.datasource?.ccBccIsShownInitially(), showCcBcc {
+            self.setShowingCcBccView(to: showCcBcc)
+        }
         self.notifyViewSize( false )
     }
     
@@ -420,16 +424,8 @@ class ComposeView: UIViewController {
         
     }
     
-    internal func plusButtonHandle() {
-        if (isShowingCcBccView) {
-            UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
-                self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
-                self.ccContactPicker.alpha = 0.0
-                self.bccContactPicker.alpha = 0.0
-                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), for:UIControl.State() )
-                self.view.layoutIfNeeded()
-            })
-        } else {
+    internal func setShowingCcBccView(to show: Bool) {
+        if (show) {
             UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
                 self.ccContactPicker.alpha = 1.0
                 self.bccContactPicker.alpha = 1.0
@@ -437,9 +433,22 @@ class ComposeView: UIViewController {
                 self.showCcBccButton.setImage(UIImage(named: "compose_minuscontact"), for:UIControl.State() )
                 self.view.layoutIfNeeded()
             })
+        } else {
+            UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
+                self.fakeContactPickerHeightConstraint.constant = self.toContactPicker.currentContentHeight
+                self.ccContactPicker.alpha = 0.0
+                self.bccContactPicker.alpha = 0.0
+                self.showCcBccButton.setImage(UIImage(named: "compose_pluscontact"), for:UIControl.State() )
+                self.view.layoutIfNeeded()
+            })
+            
         }
         
-        isShowingCcBccView = !isShowingCcBccView
+        isShowingCcBccView = show
+    }
+    
+    internal func plusButtonHandle() {
+        self.setShowingCcBccView(to: !isShowingCcBccView)
     }
     
     @objc internal func didTapConfirmExpirationButton() {

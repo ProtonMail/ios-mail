@@ -455,6 +455,8 @@ class LocalizedString {
     lazy var _general_to_label        = NSLocalizedString("To:", comment: "message To: feild")
     /// "Cc:"
     lazy var _general_cc_label        = NSLocalizedString("Cc:", comment: "message Cc: feild")
+    /// "Cc:"
+    lazy var _general_bcc_label        = NSLocalizedString("Bcc:", comment: "message Bcc: feild")
     /// "at"
     lazy var _general_at_label        = NSLocalizedString("at", comment: "like at 10:00pm")
     /// "Delete"

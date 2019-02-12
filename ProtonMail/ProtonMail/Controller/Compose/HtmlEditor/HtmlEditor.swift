@@ -369,7 +369,7 @@ extension HtmlEditor: UIScrollViewDelegate {
         if #available(iOS 11.0, *) {
             let inset = self.webView.safeAreaInsets
             let offsetW = inset.left + inset.right
-            width = UIScreen.main.bounds.width - offsetW
+            width = self.bounds.width - offsetW
             offsetX = offsetX + inset.left
         }
         var f = header.frame

@@ -95,6 +95,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }()
     
     func buildAttachments() {
+        let attachments = self.attachments.sorted(by: { $0.objectID.uriRepresentation().lastPathComponent > $1.objectID.uriRepresentation().lastPathComponent })
         normalAttachments = attachments.filter { !$0.inline() }
         inlineAttachments = attachments.filter { $0.inline() }
 

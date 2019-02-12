@@ -47,9 +47,9 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func customFilterPredicate(searchString: String) -> NSPredicate
 }
 
-class ContactPicker: UIView {
+class ContactPicker: UIView, WindowOverlayDelegate {
     private var keyboardFrame: CGRect = .zero
-    private var searchWindow: UIWindow?
+    private var searchWindow: WindowOverlay?
     private var searchTableViewController: ContactSearchTableViewController?
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
@@ -320,10 +320,11 @@ class ContactPicker: UIView {
         }
         guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
-        self.searchWindow = self.searchWindow ?? UIWindow(frame: self.frameForContactSearch)
+        self.searchWindow = self.searchWindow ?? WindowOverlay(frame: self.frameForContactSearch)
         self.searchWindow?.rootViewController = self.searchTableViewController
         self.searchWindow?.isHidden = false
         self.searchWindow?.windowLevel = UIWindow.Level.normal
+        self.searchWindow?.delegate = self
         #if APP_EXTENSION
          // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
         self.window?.addSubview(searchWindow!)
@@ -332,7 +333,7 @@ class ContactPicker: UIView {
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
-    private func hideSearchTableView() {
+    internal func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
         self.searchWindow?.rootViewController = nil
@@ -441,3 +442,19 @@ extension ContactPicker : ContactCollectionViewDelegate {
     }
 }
 
+protocol WindowOverlayDelegate: class {
+    func hideSearchTableView()
+    func resignFirstResponder() -> Bool
+}
+class WindowOverlay: UIWindow {
+    weak var delegate: WindowOverlayDelegate?
+    
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if !self.isHidden, !self.bounds.contains(point) {
+            let _ = self.delegate?.resignFirstResponder()
+            self.delegate?.hideSearchTableView()
+        }
+        
+        return super.hitTest(point, with: event)
+    }
+}

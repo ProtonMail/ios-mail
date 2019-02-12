@@ -285,23 +285,21 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     @objc internal func moreButtonTapped(_ sender : UIBarButtonItem) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-        let locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default, .spam : .default, .archive : .default]
-        for (location, style) in locations {
-            if !message.contains(label: location) {
-                if self.message.contains(label: .sent) && location == .inbox {
-                    continue
+        
+        let locations: Array<Message.Location> = [.inbox, .spam, .archive]
+        locations.filter { location in
+            return !message.contains(label: location) &&
+                 !(self.message.contains(label: .sent) && location == .inbox)
+        }.map { location in
+           return UIAlertAction(title: location.actionTitle,
+                                                    style: .default,
+                                                    handler: { (action) -> Void in
+                if let label = self.message.firstValidFolder() {
+                    sharedMessageDataService.move(message: self.message, from: label, to: location.rawValue)
                 }
-
-                alertController.addAction(UIAlertAction(title: location.actionTitle,
-                                                        style: style,
-                                                        handler: { (action) -> Void in
-                    if let label = self.message.firstValidFolder() {
-                        sharedMessageDataService.move(message: self.message, from: label, to: location.rawValue)
-                    }
-                    self.popViewController()
-                }))
-            }
-        }
+                self.popViewController()
+            })
+        }.forEach(alertController.addAction)
 
         alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { (action) -> Void in
             self.print(webView : self.emailView!.contentWebView)
