@@ -39,11 +39,13 @@ class LabelsCollectionView: PMView {
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    var labels : [Label]?
+    private var labels : [Label]?
     
     override func setup() {
         let nib = UINib(nibName: "\(LabelCell.self)", bundle: Bundle.main)
         self.collectionView.register(nib, forCellWithReuseIdentifier: "\(LabelCell.self)")
+        
+//        collectionView.collectionViewLayout
     }
     
     func getContentSize() -> CGSize{
@@ -51,6 +53,10 @@ class LabelsCollectionView: PMView {
         self.collectionView.layoutIfNeeded();
         let s = self.collectionView.contentSize
         return s;
+    }
+    
+    func update( _ labels: [Label]?) {
+        self.labels = labels
     }
 }
 
@@ -67,33 +73,76 @@ extension LabelsCollectionView: UICollectionViewDelegateFlowLayout, UICollection
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "\(LabelCell.self)", for: indexPath)
-       
-        cell.backgroundColor = UIColor.blue
-        cell.layer.borderWidth = 1
-        cell.layer.borderColor = UIColor.red.cgColor
-
+        if let label = self.labels?[indexPath.row], let labelCell = cell as? LabelCell {
+            labelCell.config(color: label.color, text: label.name)
+        }
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if let index = selected {
-//            let oldCell = collectionView.cellForItem(at: index)
-//            oldCell?.layer.borderWidth = 0
-//        }
-//
-//        let newCell = collectionView.cellForItem(at: indexPath)
-//        newCell?.layer.borderWidth = 4
-//        newCell?.layer.borderColor = UIColor.darkGray.cgColor
-//        self.selected = indexPath
-//        self.dismissKeyboard()
+
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets.init(top: 0,left: 0,bottom: 0,right: 0);
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 40, height: 26)
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if let label = self.labels?[indexPath.row] {
+            let size = LabelCell.estimateSize(label.name)
+            return CGSize(width: size.width.rounded(.up), height: size.height.rounded(.up))
+        }
+        return CGSize(width: 0, height: 0)
     }
+    
 }
 
+
+/// make it more generic later since only used ini labels view
+class LeftAlignLayout: UICollectionViewFlowLayout {
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.setup()
+    }
+    
+    private func setup() {
+        self.minimumInteritemSpacing = 2
+        self.minimumLineSpacing = 4
+        self.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
+    override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+        
+        guard let superlayoutAttributes = super.layoutAttributesForElements(in: rect) else {
+            return nil
+        }
+        let layoutAttributes = superlayoutAttributes.map { $0.copy() as! UICollectionViewLayoutAttributes }
+        // must vertical
+        guard scrollDirection == .vertical else {
+            return layoutAttributes
+        }
+        
+        // Filter attributes to compute only cell attributes
+        let cellAttributes = layoutAttributes.filter({ $0.representedElementCategory == .cell })
+        
+        // Group cell attributes by row (cells with same vertical center) and loop on those groups
+        for (_, attributes) in Dictionary(grouping: cellAttributes, by: { ($0.center.y / 10).rounded(.up) * 10 }) {
+            // Set the initial left inset
+            var leftInset = sectionInset.left
+            
+            // Loop on cells to adjust each cell's origin and prepare leftInset for the next cell
+            for attribute in attributes {
+                attribute.frame.origin.x = leftInset
+                leftInset = attribute.frame.maxX + minimumInteritemSpacing
+            }
+        }
+        
+        return layoutAttributes
+    }
+    
+}

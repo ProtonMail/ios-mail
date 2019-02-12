@@ -32,14 +32,22 @@ import CoreData
 
 public class Label: NSManagedObject {
     
-    @NSManaged public var color: String
-    @NSManaged public var isDisplay: Bool
     @NSManaged public var labelID: String
     @NSManaged public var name: String
+    
+    /// label color
+    @NSManaged public var color: String
+    
+    /// 0 = show the label in the sidebar, 1 = hide label from sidebar.
+    @NSManaged public var isDisplay: Bool
+    
+    /// 1 => Message Labels (default), 2 => Contact Groups
     @NSManaged public var type: NSNumber
+    
+    /// 0 => inclusive (label), 1 => exclusive (folder), message type only
     @NSManaged public var exclusive: Bool
     
- /// start at 1 , lower number on the top
+    /// start at 1 , lower number on the top
     @NSManaged public var order: NSNumber
     
     @NSManaged public var messages: NSSet

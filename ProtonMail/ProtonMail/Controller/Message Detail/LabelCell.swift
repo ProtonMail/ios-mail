@@ -30,9 +30,42 @@ import UIKit
 
 class LabelCell: UICollectionViewCell {
 
+    @IBOutlet weak var label: UILabel!
+    
+    /// expose this later
+    private static let font = Fonts.h6.light
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        self.label.sizeToFit()
+        self.label.clipsToBounds = true
+        self.label.layer.borderWidth = 1
+        self.label.layer.cornerRadius = 2
+        self.label.font = LabelCell.font
     }
 
+    func config(color: String, text: String) {
+        self.label.text = LabelCell.buildText(text)
+        self.label.textColor = UIColor(hexString: color, alpha: 1.0)
+        self.label.layer.borderColor = UIColor(hexString: color, alpha: 1.0).cgColor
+    }
+    
+    func size() -> CGSize {
+        return self.label.sizeThatFits(CGSize.zero)
+    }
+    
+    class private func buildText(_ text: String) -> String {
+        if text.isEmpty {
+            return text
+        }
+        return "  \(text)  "
+    }
+    
+    class func estimateSize(_ text: String) -> CGSize {
+         let size = buildText(text).size(withAttributes: [NSAttributedString.Key.font: font])
+        
+        return size
+    }
+    
 }

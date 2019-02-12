@@ -403,12 +403,17 @@ class EmailHeaderView: UIView {
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
-                if !l.exclusive, !l.name.isEmpty {
-                    tmplabels.append(l)
+                if l.exclusive == false {
+                    if l.name.isEmpty || l.color.isEmpty { //will also check the lable id
+                    } else {
+                        tmplabels.append(l)
+                    }
                 }
             }
         }
+        
         self.labels = tmplabels
+        
         if let labels = self.labels {
             let lc = labels.count - 1
             for i in 0 ... 4 {
@@ -448,6 +453,9 @@ class EmailHeaderView: UIView {
                 }
             }
         }
+        
+        self.labelsView.update(tmplabels)
+        
         self.updateExpirationDate(expiration)
         hasShowImageCheck = showShowImages
         

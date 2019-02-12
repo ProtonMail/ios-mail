@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="730" height="191"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfZ-3B-qZs">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" numberOfLines="0" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfZ-3B-qZs">
                         <rect key="frame" x="0.0" y="0.0" width="730" height="191"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="textColor"/>
@@ -33,7 +33,10 @@
                 <constraint firstAttribute="bottom" secondItem="gfZ-3B-qZs" secondAttribute="bottom" id="vSo-KL-khO"/>
             </constraints>
             <size key="customSize" width="730" height="191"/>
-            <point key="canvasLocation" x="-411.19999999999999" y="146.17691154422789"/>
+            <connections>
+                <outlet property="label" destination="gfZ-3B-qZs" id="m2I-VL-eTj"/>
+            </connections>
+            <point key="canvasLocation" x="13" y="53"/>
         </collectionViewCell>
     </objects>
 </document>
