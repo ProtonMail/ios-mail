@@ -46,7 +46,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ до цього облікового запису призупинено через несплату. Будь ласка, увійдіть в систему, використовуючи protonmail.com, щоб оплатити рахунок.";
 
 /* (No Comment) */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ до цього облікового запису вимкнено через неплатежі.  \n\nБудь ласка, відвідайте <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">наші бази знань</a> для отримання додаткової інформації.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ до цього облікового запису вимкнено через неплатежі.\n\nБудь ласка, відвідайте <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">наші бази знань</a> для отримання додаткової інформації.";
 
 /* (No Comment) */
 "Account password invalid" = "Пароль облікового запису невірний";

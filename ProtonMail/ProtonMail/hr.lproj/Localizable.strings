@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.
-
-Molimo posjetite <a href="https://protonmail.com/support/knowledge-base/delinquency/">našu bazu znanja</a> za više informacija.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.\n Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Molimo posjetite <a href="https://protonmail.com/support/knowledge-base/delinque
 "All contacts are imported" = "Svi kontakti su uvezeni";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Sve vaše postojeće šifrirane poruke e-pošte biti će zauvijek izgubljene, ali i dalje ćete moći vidjeti svoje nešifrirane poruke e-pošte.
-
-OVA AKCIJA SE NE MOŽE PONIŠTITI!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails. \n\n THIS ACTION CANNOT BE UNDONE!" = "Sve vaše postojeće šifrirane poruke e-pošte biti će zauvijek izgubljene, ali i dalje ćete moći vidjeti svoje nešifrirane poruke e-pošte. \n\n OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* archive when apply label */
 "Also Archive" = "Također i arhivu";
@@ -1831,9 +1825,7 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMail-a,&#13;
- morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMail-a,\r\n morate potvrditi da ste čovjek.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com";
@@ -1924,9 +1916,7 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "Unable to parse response" = "Nije moguće parsirati odgovor";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nije moguće parsirati objekt odgovora:
-%@";
+"Unable to parse the response object: \n%@" = "Nije moguće parsirati objekt odgovora:\n%@";
 
 /* Error */
 "Unable to parse token" = "Nije moguće parsirati token";
@@ -2067,7 +2057,7 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "Welcome to ProtonMail!" = "Dobro došli na ProtonMail";
 
 /* Description */
-"What people see in the "From" field." = "Što ljudi vide u polju "Od".";
+"What people see in the \"From\" field." = "Što ljudi vide u polju \"Od\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Kada pošaljete poruku e-pošte, ovo je naziv koji se pojavljuje u polju pošiljatelja.";

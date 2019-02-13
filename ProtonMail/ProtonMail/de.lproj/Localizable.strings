@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Der Zugriff auf dieses Konto ist aufgrund der Nichtzahlung deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.
-
-Bitte besuchen Sie <a href="https://protonmail.com/support/knowledge-base/delinquency/">unsere Wissensdatenbank</a> für weitere Informationen.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.\n Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">unsere Wissensdatenbank</a> für weitere Informationen.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Bitte besuchen Sie <a href="https://protonmail.com/support/knowledge-base/delinq
 "All contacts are imported" = "Alle Kontakte wurden importiert";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Alle Ihre vorhandenen verschlüsselten Nachrichtens werden für immer verloren gehen, aber Sie können Ihre unverschlüsselten E-Mails weiterhin anzeigen.
-
-Diese Aktion kann NICHT widerrufen werden!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Alle Ihre vorhandenen verschlüsselten Nachrichtens werden für immer verloren gehen, aber Sie können Ihre unverschlüsselten E-Mails weiterhin anzeigen.\n\n Diese Aktion kann NICHT widerrufen werden!";
 
 /* archive when apply label */
 "Also Archive" = "Auch archivieren";
@@ -1831,9 +1825,7 @@ Diese Aktion kann NICHT widerrufen werden!";
 "To" = "An";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,&#13;
- müssen wir sicherstellen, dass Sie ein Mensch sind.";
+"To prevent abuse of ProtonMail, \n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com";
@@ -1924,9 +1916,7 @@ Diese Aktion kann NICHT widerrufen werden!";
 "Unable to parse response" = "Fehler beim Verarbeiten der Antwort";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Das Antwortobjekt konnte nicht verarbeitet werden:
-%@";
+"Unable to parse the response object:\n%@" = "Das Antwortobjekt konnte nicht verarbeitet werden:\n%@";
 
 /* Error */
 "Unable to parse token" = "Fehler beim Verarbeiten des Tokens";
@@ -2067,7 +2057,7 @@ Diese Aktion kann NICHT widerrufen werden!";
 "Welcome to ProtonMail!" = "Willkommen bei ProtonMail!";
 
 /* Description */
-"What people see in the "From" field." = "Was anderen im Feld „Von” angezeigt wird.";
+"What people see in the \"From\" field." = "Was anderen im Feld „Von” angezeigt wird.";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Wenn Sie eine E-Mail senden, ist dies der Name, der im Feld „Absender” angezeigt wird.";

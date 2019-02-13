@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accesso a questo account è disabilitato a causa di mancato pagamento. Per favore, accedi su protonmail.com per pagare la fattura pendente.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accesso a questo account è stato annullato a causa di un mancato pagamento.
-
-Per favore visita <a href="https://protonmail.com/support/knowledge-base/delinquency/">conoscenze di base</a> per maggiori informazioni.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accesso a questo account è stato annullato a causa di un mancato pagamento. \n Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">conoscenze di base</a> per maggiori informazioni.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Per favore visita <a href="https://protonmail.com/support/knowledge-base/delinqu
 "All contacts are imported" = "Tutti i contatti sono stati importati";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Tutte le tue mail cifrate presenti saranno perse per sempre, ma quelle non cifrate saranno ancora leggibili.
-
-QUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\n THIS ACTION CANNOT BE UNDONE!" = "Tutte le tue mail cifrate presenti saranno perse per sempre, ma quelle non cifrate saranno ancora leggibili. \n\n QUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!";
 
 /* archive when apply label */
 "Also Archive" = "Anche archivia";
@@ -2067,7 +2061,7 @@ QUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!";
 "Welcome to ProtonMail!" = "Benvenuto in ProtonMail!";
 
 /* Description */
-"What people see in the "From" field." = "Quello che la gente vede nel campo "Da".";
+"What people see in the \"From\" field." = "Quello che la gente vede nel campo \"Da\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quando invii un'email, questo è il nome che compare nel campo del mittente.";

@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Dostęp do tego konta jest wyłączony z powodu braku płatności. Zaloguj się za pomocą protonmail.com, aby zapłacić niezapłacone faktury.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Dostęp do tego konta jest wyłączony z powodu braku płatności.
-
-Odwiedź <a href="https://protonmail.com/support/knowledge-base/delinquency/">naszą bazę wiedzy</a>, aby uzyskać więcej informacji.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Dostęp do tego konta jest wyłączony z powodu braku płatności.\n Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">naszą bazę wiedzy</a>, aby uzyskać więcej informacji.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Odwiedź <a href="https://protonmail.com/support/knowledge-base/delinquency/">na
 "All contacts are imported" = "Wszystkie kontakty zostały zaimportowane";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Wszystkie zaszyfrowane wiadomości e-mail zostaną utracone, ale nadal będziesz mógł wyświetlać niezaszyfrowane wiadomości.
-
-TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\n THIS ACTION CANNOT BE UNDONE!" = "Wszystkie zaszyfrowane wiadomości e-mail zostaną utracone, ale nadal będziesz mógł wyświetlać niezaszyfrowane wiadomości.\n\n TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 
 /* archive when apply label */
 "Also Archive" = "Również archiwizuj";
@@ -1719,7 +1713,7 @@ TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 "Take a Photo" = "Zrób zdjęcie";
 
 /* alert description */
-"Tap send anyway to send without expiration to these recipients" = "Wybierz "wyślij mimo to", aby wysłać bez wygasania do tych odbiorców";
+"Tap send anyway to send without expiration to these recipients" = "Wybierz \"wyślij mimo to\", aby wysłać bez wygasania do tych odbiorców";
 
 /* None */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Dziękujemy za przesłanie zgłoszenia. Twój raport dodaliśmy do naszego systemu śledzenia błędów.";
@@ -1831,9 +1825,7 @@ TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 "To" = "Do";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, &#13;
- musimy sprawdzić, czy jesteś człowiekiem.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Aby zapobiec nadużyciom poczty ProtonMail, \n musimy sprawdzić, czy jesteś człowiekiem.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Aby zresetować hasło skrzynki pocztowej, użyj strony protonmail.com";
@@ -1924,9 +1916,7 @@ TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 "Unable to parse response" = "Nie można przetworzyć odpowiedzi";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Nie można przetworzyć tego obiektu odpowiedzi:
-%@";
+"Unable to parse the response object:\n%@" = "Nie można przetworzyć tego obiektu odpowiedzi:\n%@";
 
 /* Error */
 "Unable to parse token" = "Nie można przetworzyć tokenu";
@@ -2067,7 +2057,7 @@ TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 "Welcome to ProtonMail!" = "Witamy w ProtonMail!";
 
 /* Description */
-"What people see in the "From" field." = "To, co odbiorca widzi w polu "Od".";
+"What people see in the \"From\" field." = "To, co odbiorca widzi w polu \"Od\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Kiedy wysyłasz wiadomość, ta nazwa pojawia się w oknie nadawcy.";
@@ -2125,9 +2115,7 @@ TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Twoje nowe szyfrowane konto e-mail jest zarejestrowane i gotowe do przesyłania i odbioru szyfrowanych wiadomości.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Twoje nowe, bezpieczne&#13;
- konto e-mail jest gotowe.";
+"Your new secure email\n account is ready." = "Twoje nowe, bezpieczne\n konto e-mail jest gotowe.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Twój plan jest aktywny do";

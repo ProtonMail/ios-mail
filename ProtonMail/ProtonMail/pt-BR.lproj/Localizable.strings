@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "O acesso a esta conta está desativado devido a falta de pagamento. Por favor, entre através do protonmail.com para pagar sua fatura não paga.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Acesso a esta conta está desativado devido a falta de pagamento.
-
-Por favor visite <a href="https://protonmail.com/support/knowledge-base/delinquency/">nossa base de conhecimento</a> para obter mais informações.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Acesso a esta conta está desativado devido a falta de pagamento. \n Por favor visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">nossa base de conhecimento</a> para obter mais informações.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Por favor visite <a href="https://protonmail.com/support/knowledge-base/delinque
 "All contacts are imported" = "Todos os contatos foram importados";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Todos seus e-mails criptografados existentes serão perdidos para sempre, mas você ainda será capaz de ver os seus e-mails não criptografados. 
-
-ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Todos seus e-mails criptografados existentes serão perdidos para sempre, mas você ainda será capaz de ver os seus e-mails não criptografados. \n\n ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* archive when apply label */
 "Also Archive" = "Também arquivar";
@@ -2068,7 +2062,7 @@ precisamos verificar se você é realmente humano.";
 "Welcome to ProtonMail!" = "Bem-vindo ao ProtonMail!";
 
 /* Description */
-"What people see in the "From" field." = "O que as pessoas vêem no campo "De".";
+"What people see in the \"From\" field." = "O que as pessoas vêem no campo \"De\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Quando você enviar um e-mail, este é o nome que aparecerá no campo do remetente.";

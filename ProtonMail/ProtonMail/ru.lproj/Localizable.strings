@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Доступ к этой учётной записи приостановлен из-за неуплаты. Пожалуйста, войдите в систему, используя protonmail.com, чтобы оплатить счёт.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учётной записи приостановлен из-за неуплаты.
-
-Пожалуйста, посетите <a href="https://protonmail.com/support/knowledge-base/delinquency/">нашу базу знаний</a> для получения дополнительной информации.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Доступ к этой учётной записи приостановлен из-за неуплаты. \n Пожалуйста, посетите <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">нашу базу знаний</a> для получения дополнительной информации.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@
 "All contacts are imported" = "Все контакты импортированы";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные письма будут утеряны навсегда, но вы по-прежнему сможете смотреть свои нешифрованные письма.
-
-ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\n THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные письма будут утеряны навсегда, но вы по-прежнему сможете смотреть свои нешифрованные письма.\n\n ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
 
 /* archive when apply label */
 "Also Archive" = "Перенести в архив";
@@ -895,13 +889,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Hours" = "часов";
 
 /* Description */
-"Human Check Failed" = "Проверка "Я не робот" не пройдена";
+"Human Check Failed" = "Проверка \"Я не робот\" не пройдена";
 
 /* human check warning title */
-"Human Check Warning" = "Предупреждение о проверке "Я не робот"";
+"Human Check Warning" = "Предупреждение о проверке \"Я не робот\"";
 
 /* top title */
-"Human Verification" = "Проверка "Я не робот"";
+"Human Verification" = "Проверка \"Я не робот\"";
 
 /* Service plan capability */
 "IMAP/SMTP Support via ProtonMail Bridge" = "Поддержка IMAP/SMTP через ProtonMail Bridge";
@@ -1719,7 +1713,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Take a Photo" = "Сделать фотографию";
 
 /* alert description */
-"Tap send anyway to send without expiration to these recipients" = "Нажмите "Всё равно отправить", чтобы отправить без срока действия этим получателям";
+"Tap send anyway to send without expiration to these recipients" = "Нажмите \"Всё равно отправить\", чтобы отправить без срока действия этим получателям";
 
 /* None */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Благодарим вас за отправку отчёта об ошибке.  Мы добавили отчёт в нашу систему отслеживания ошибок.";
@@ -1831,9 +1825,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "To" = "Кому";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail&#13;
- нам необходимо убедиться, что вы - человек.";
+"To prevent abuse of ProtonMail,\n we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail\n нам необходимо убедиться, что вы - человек.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Для сброса пароля почтового ящика, пожалуйста, используйте веб-версию ProtonMail по адресу protonmail.com";
@@ -1924,9 +1916,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Unable to parse response" = "Невозможно разобрать ответ";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Невозможно разобрать ответный объект:
-%@";
+"Unable to parse the response object:\n%@" = "Невозможно разобрать ответный объект:\n%@";
 
 /* Error */
 "Unable to parse token" = "Невозможно разобрать токен";
@@ -2043,7 +2033,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Warning" = "Предупреждение";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Внимание: вы не можете отправлять почту, не пройдя проверку "Я не робот"!!!";
+"Warning: Before you pass the human check you can't sent email!!!" = "Внимание: вы не можете отправлять почту, не пройдя проверку \"Я не робот\"!!!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Предупреждение: вы не задали адрес эл. почты для восстановления доступа, и поэтому он невозможен в случае, если вы забудете свой пароль. Продолжить без адреса для восстановления?";
@@ -2067,7 +2057,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Welcome to ProtonMail!" = "Добро пожаловать в ProtonMail";
 
 /* Description */
-"What people see in the "From" field." = "То, что люди видят в поле "От".";
+"What people see in the \"From\" field." = "То, что люди видят в поле \"От\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Когда вы отправляете письмо, указанное имя будет отображено в графе отправителя.";
@@ -2125,9 +2115,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ваша новая учётная запись зашифрованной электронной почты уже настроена и готова отправлять и принимать шифрованные сообщения.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Ваша новая учётная запись&#13;
- защищённой эл. почты готова.";
+"Your new secure email\n account is ready." = "Ваша новая учётная запись\n защищённой эл. почты готова.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ваш тариф сейчас активен до";

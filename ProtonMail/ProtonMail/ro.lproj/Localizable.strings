@@ -75,9 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Accesul la acest cont este dezactivat din cauza neplății. Vă rugăm să vă conectați prin protonmail.com pentru plata facturii restante.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății.
-
-Vă rugăm să vizitați <a href="https://protonmail.com/support/knowledge-base/delinquency/">baza de cunoștințe</a> pentru mai multe informații.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Accesul la acest cont este dezactivat din cauza neplății. \n Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">baza de cunoștințe</a> pentru mai multe informații.";
 
 /* 
  & title */
@@ -167,11 +165,7 @@ Vă rugăm să vizitați <a href="https://protonmail.com/support/knowledge-base/
 "All contacts are imported" = "S-au importat toate contactele";
 
 /* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. 
-
-ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\n THIS ACTION CANNOT BE UNDONE!" = "Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. \n\n ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* archive when apply label */
 "Also Archive" = "Și arhivează";
@@ -2067,7 +2061,7 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "Welcome to ProtonMail!" = "Bine ați venit la ProtonMail!";
 
 /* Description */
-"What people see in the "From" field." = "Ceea ce văd destinatarii în câmpul "De la".";
+"What people see in the \"From\" field." = "Ceea ce văd destinatarii în câmpul \"De la\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Când trimiteți un e-mail, acesta este numele care apare în câmpul expeditorului.";
