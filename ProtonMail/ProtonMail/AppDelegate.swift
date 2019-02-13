@@ -237,6 +237,9 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
     
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        return self.application(app, handleOpen: url)
+    }
     
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
