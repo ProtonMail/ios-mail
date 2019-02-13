@@ -769,8 +769,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                             self.tableView.contentOffset = CGPoint(x: 0, y: 0)
                         }
                     })
+                    
+                    //temperay to check message status and fetch metadata
+                    sharedMessageDataService.purgeOldMessages()
                 }
-                
             }
             
             if (updateTime.isNew) {

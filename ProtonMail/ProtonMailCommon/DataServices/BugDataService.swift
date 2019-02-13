@@ -55,7 +55,7 @@ public class BugDataService: Service {
         }
     }
     
-    public func debugReport(_ title: String, _ bug: String, completion: ((NSError?) -> Void)?) {
+    public class func debugReport(_ title: String, _ bug: String, completion: ((NSError?) -> Void)?) {
         let userInfo = [
             NSLocalizedDescriptionKey: "ProtonMail App bug debugging.",
             NSLocalizedFailureReasonErrorKey: "Parser issue.",

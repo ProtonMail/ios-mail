@@ -350,7 +350,7 @@ class MessageDataService : Service {
     ///   - completion: async complete handler
     func fetchEvents(byLable labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
         queue {
-            let eventAPI = EventCheckRequest<EventCheckResponse>(eventID: lastUpdatedStore.lastEventID)
+            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
             eventAPI.call() { task, response, hasError in
                 if let eventsRes = response {
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
@@ -544,11 +544,12 @@ class MessageDataService : Service {
         }
     }
     
-    /// fetch message with message obj
+    let reportTitle = "FetchMetadata"
+    /// fetch message meta data with message obj
     ///
     /// - Parameter messages: Message
-    func fetchMessagesWithIDs (_ messages : [Message]) {
-        if messages.count > 0 {
+    private func fetchMetadata(with messageIDs : [String]) {
+        if messageIDs.count > 0 {
             queue {
                 let completionWrapper: CompletionBlock = { task, responseDict, error in
                     if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
@@ -561,20 +562,24 @@ class MessageDataService : Service {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
+                                        error.upload(toAnalytics: self.reportTitle)
                                     }
                                 } else {
+                                    BugDataService.debugReport(self.reportTitle, "insert empty", completion: nil)
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
-                            } catch {
-                                PMLog.D("fetchMessagesWithIDs failed \(error)")
+                            } catch let err as NSError {
+                                err.upload(toAnalytics: self.reportTitle)
+                                PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }
                     } else {
+                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages", completion: nil)
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
                 
-                let request = FetchMessagesByID(messages: messages)
+                let request = FetchMessagesByID(msgIDs: messageIDs)
                 sharedAPIService.GET(request, completion: completionWrapper)
             }
         }
@@ -968,7 +973,11 @@ class MessageDataService : Service {
             do {
                 
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
-                    self.fetchMessagesWithIDs(badMessages)
+                    var badIDs : [String] = []
+                    for message in badMessages {
+                        badIDs.append(message.messageID)
+                    }
+                    self.fetchMetadata(with: badIDs)
                 }
             } catch let ex as NSError {
                 ex.upload(toAnalytics: "purgeOldMessages")
@@ -1824,7 +1833,7 @@ class MessageDataService : Service {
             let context = sharedCoreDataService.backgroundManagedObjectContext
             context.perform { () -> Void in
                 var error: NSError?
-                var messagesNoCache : [Message] = []
+                var messagesNoCache : [String] = []
                 for message in messages {
                     let msg = MessageEvent(event: message)
                     switch(msg.Action) {
@@ -1877,6 +1886,7 @@ class MessageDataService : Service {
                                 }
                             }
                         }
+                        
                         do {
                             if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
                                 // apply the label changes
@@ -1913,16 +1923,27 @@ class MessageDataService : Service {
                                 
                                 if messageObject.messageStatus == 0 {
                                     if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(messageObject)
+                                        messagesNoCache.append(messageObject.messageID)
                                     } else {
                                         messageObject.messageStatus = 1
                                     }
                                 }
                             } else {
+                                // when GRTJSONSerialization inset returns no thing
+                                if let messageid = msg.message?["ID"] as? String {
+                                    messagesNoCache.append(messageid)
+                                }
                                 PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
+                                BugDataService.debugReport("GRTJSONSerialization Insert", "insert empty", completion: nil)
+                                
                             }
-                        } catch {
-                            PMLog.D(" error: \(error)")
+                        } catch let err as NSError {
+                            // when GRTJSONSerialization insert failed
+                            if let messageid = msg.message?["ID"] as? String {
+                                messagesNoCache.append(messageid)
+                            }
+                            err.upload(toAnalytics: "GRTJSONSerialization Insert")
+                            PMLog.D(" error: \(err)")
                         }
                     default:
                         PMLog.D(" unknown type in message: \(message)")
@@ -1930,12 +1951,12 @@ class MessageDataService : Service {
                 }
                 
                 error = context.saveUpstreamIfNeeded()
-                
                 if error != nil  {
+                    error?.upload(toAnalytics: "GRTJSONSerialization Save")
                     PMLog.D(" error: \(String(describing: error))")
                 }
                 
-                self.fetchMessagesWithIDs(messagesNoCache)
+                self.fetchMetadata(with: messagesNoCache)
                 
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
