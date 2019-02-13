@@ -646,12 +646,6 @@ class EmailHeaderView: UIView {
         
         self.configureEmailDetailDateLabel()
         
-//        self.emailIsEncryptedImageView = UIImageView(image: UIImage(named: "mail_lock"))
-//        self.emailIsEncryptedImageView.highlightedImage = UIImage(named: "mail_lock-outside")
-//        self.emailIsEncryptedImageView.contentMode = UIViewContentMode.center
-//        self.emailIsEncryptedImageView.sizeToFit()
-//        self.emailHeaderView.addSubview(emailIsEncryptedImageView)
-        
         self.emailHasAttachmentsImageView = UIImageView(image: UIImage(named: "mail_attachment"))
         self.emailHasAttachmentsImageView.contentMode = UIView.ContentMode.center
         self.emailHasAttachmentsImageView.sizeToFit()
@@ -839,11 +833,12 @@ class EmailHeaderView: UIView {
     fileprivate func makeHeaderConstraints() {
         emailHeaderView.mas_updateConstraints { (make) -> Void in
             make?.removeExisting = true
-            let _ = make?.top.equalTo()(self)?.with().offset()(0)
-            let _ = make?.left.equalTo()(self)?.with().offset()(self.kEmailHeaderViewMarginLeft)
-            let _ = make?.right.equalTo()(self)?.with().offset()(0)
-            let _ = make?.bottom.equalTo()(self.emailDetailView)
+            make?.top.equalTo()(self)
+            make?.left.equalTo()(self)?.offset()(self.kEmailHeaderViewMarginLeft)
+            make?.right.equalTo()(self)
+            make?.bottom.equalTo()(self.emailDetailView)
         }
+        
         emailFavoriteButton.mas_updateConstraints { (make) -> Void in
             make?.removeExisting = true
             let _ = make?.top.equalTo()(self.emailHeaderView)
