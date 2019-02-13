@@ -1,19 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
-  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="ro">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ro">
     <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
     </header>
     <body>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="ro" state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ro">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>ProtonMail</source>
+        <note>Bundle display name</note>
+        <target xml:lang="ro" state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="ro" state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription" approved="yes">
+        <source>Required for attaching media to the email.</source>
+        <note>Privacy - Media Library Usage Description</note>
+        <target xml:lang="ro" state="translated">Obligatoriu pentru atașarea de media la e-mail.</target>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Camera Usage Description</note>
+        <target xml:lang="ro" state="translated">Obligatoriu pentru atașarea imaginilor la e-mail.</target>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription" approved="yes">
+        <source>Required for email autocomplete.</source>
+        <note>Privacy - Contacts Usage Description</note>
+        <target xml:lang="ro" state="translated">Obligatoriu pentru autocompletarea adresei de e-mail.</target>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription" approved="yes">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <note>Privacy - Face ID Usage Description</note>
+        <target xml:lang="ro" state="translated">Permite deblocarea rapidă și sigură a aplicației.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription" approved="yes">
+        <source>Required for saving image attachments to photo library.</source>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+        <target xml:lang="ro" state="translated">Obligatoriu pentru salvarea imaginilor atașate în galeria de imagini.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Photo Library Usage Description</note>
+        <target xml:lang="ro" state="translated">Obligatoriu pentru atașarea imaginilor la e-mail.</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="ro">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id=" within our iOS application." approved="yes">
+        <source> within our iOS application.</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="ro" state="translated"> în cadrul aplicației noastre iOS.</target>
+      </trans-unit>
+      <trans-unit id="%@ storage capacity" approved="yes">
+        <source>%@ storage capacity</source>
+        <note>Service plan capability</note>
+        <target xml:lang="ro" state="translated">Spațiu de stocare %@</target>
+      </trans-unit>
+      <trans-unit id="%d Member" approved="yes">
+        <source>%d Member</source>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+        <target xml:lang="ro" state="translated">%d membru</target>
+      </trans-unit>
+      <trans-unit id="%d Members" approved="yes">
+        <source>%d Members</source>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+        <target xml:lang="ro" state="translated">%d membri</target>
+      </trans-unit>
       <trans-unit id="%d Minute" approved="yes">
-        <source>%d Minute</source>
+        <source>%d minute</source>
         <note>auto lock time format</note>
         <target xml:lang="ro" state="translated">Un minut</target>
       </trans-unit>
       <trans-unit id="%d Minutes" approved="yes">
-        <source>%d Minutes</source>
+        <source>%d minutes</source>
         <note>auto lock time format</note>
         <target xml:lang="ro" state="translated">%d minute</target>
+      </trans-unit>
+      <trans-unit id="%d Selected" approved="yes">
+        <source>%d Selected</source>
+        <note>The string that describes how many contact groups are currently selected</note>
+        <target xml:lang="ro" state="translated">Selectate: %d</target>
+      </trans-unit>
+      <trans-unit id="%i email address" approved="yes">
+        <source>%i email address</source>
+        <note>Service plan capability; i = 1</note>
+        <target xml:lang="ro" state="translated">%i adresă de e-mail</target>
+      </trans-unit>
+      <trans-unit id="%i email addresses" approved="yes">
+        <source>%i email addresses</source>
+        <note>Service plan capability; i = 5 or 50</note>
+        <target xml:lang="ro" state="translated">%i adrese de e-mail</target>
       </trans-unit>
       <trans-unit id="(2048 bit)" approved="yes">
         <source>(2048 bit)</source>
@@ -25,6 +119,11 @@
         <note>Key size text when setup key</note>
         <target xml:lang="ro" state="translated">(4096 de biți)</target>
       </trans-unit>
+      <trans-unit id="(total)" approved="yes">
+        <source>(total)</source>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+        <target xml:lang="ro" state="translated">(total)</target>
+      </trans-unit>
       <trans-unit id="**********" approved="yes">
         <source>**********</source>
         <note>secret</note>
@@ -35,15 +134,41 @@
         <note>optional text field</note>
         <target xml:lang="ro" state="translated">*OPȚIONAL</target>
       </trans-unit>
-      <trans-unit id="2fa Authentication failed please try to login again" approved="yes">
-        <source>2fa Authentication failed please try to login again</source>
+      <trans-unit id="/user" approved="yes">
+        <source>/user</source>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+        <target xml:lang="ro" state="translated">/utilizator</target>
+      </trans-unit>
+      <trans-unit id="2fa Authentication failed. Please try to login again." approved="yes">
+        <source>2fa Authentication failed. Please try to login again.</source>
         <note>2fa verification failed</note>
-        <target xml:lang="ro" state="translated">Autentificarea cu doi factori a eșuat. Vă rugăm reîncercați.</target>
+        <target xml:lang="ro" state="translated">Autentificarea cu 2 factori a eșuat. Mai încercați.</target>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;" approved="yes">
+        <source>&lt;no object&gt;</source>
+        <note>default empty object</note>
+        <target xml:lang="ro" state="translated">&lt;lipsă obiect&gt;</target>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels" approved="yes">
+        <source>A message cannot have more than 5 labels</source>
+        <note>*
+ *  LabelTableViewCell</note>
+        <target xml:lang="ro" state="translated">Un mesaj nu poate avea mai mult de 5 etichete</target>
       </trans-unit>
       <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
         <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <note>"Alert" = "Alert";</note>
+        <target xml:lang="ro" state="translated">O nouă versiune a aplicației ProtonMail este disponibilă. Vă rugăm să actualizați la ultima versiune.</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available. Please update to latest version.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">O nouă versiune a aplicației ProtonMail este disponibilă. Vă rugăm să actualizați la ultima versiune.</target>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature" approved="yes">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <note>alert description</note>
+        <target xml:lang="ro" state="translated">Pentru a folosi această funcție trebuie să aveți un plan plătit</target>
       </trans-unit>
       <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
         <source>A passcode has not been set, enable it in the system Settings</source>
@@ -56,7 +181,7 @@
         <target xml:lang="ro" state="translated">Serverul API nu poate fi contactat...</target>
       </trans-unit>
       <trans-unit id="ARCHIVE" approved="yes">
-        <source>ARCHIVE</source>
+        <source>Archive</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">ARHIVĂ</target>
       </trans-unit>
@@ -64,6 +189,26 @@
         <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
         <note>error message</note>
         <target xml:lang="ro" state="translated">Accesul la acest cont este dezactivat din cauza neplății. Vă rugăm să vă conectați prin protonmail.com pentru plata facturii restante.</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
+        <source>Access to this account is disabled due to non-payment.
+
+Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Accesul la acest cont este dezactivat din cauza neplății.
+
+Vă rugăm să vizitați &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;baza de cunoștințe&lt;/a&gt; pentru mai multe informații.</target>
+      </trans-unit>
+      <trans-unit id="Account password invalid" approved="yes">
+        <source>Invalid account password</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="ro" state="translated">Parola contului este greșită</target>
+      </trans-unit>
+      <trans-unit id="Add" approved="yes">
+        <source>Add</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Adăugare</target>
       </trans-unit>
       <trans-unit id="Add Anniversary" approved="yes">
         <source>Add Anniversary</source>
@@ -95,6 +240,11 @@
         <note>new contacts add Gender</note>
         <target xml:lang="ro" state="translated">Adăugare sex</target>
       </trans-unit>
+      <trans-unit id="Add Group" approved="yes">
+        <source>Add Group</source>
+        <note>The title for the contact group creation view</note>
+        <target xml:lang="ro" state="translated">Adăugare grup</target>
+      </trans-unit>
       <trans-unit id="Add Label" approved="yes">
         <source>Add Label</source>
         <note>add label action</note>
@@ -119,6 +269,11 @@
         <source>Add Organization</source>
         <note>new contacts add Organization</note>
         <target xml:lang="ro" state="translated">Adăugare organizație</target>
+      </trans-unit>
+      <trans-unit id="Add Photo" approved="yes">
+        <source>Add Photo</source>
+        <note>The button text for add profile picture</note>
+        <target xml:lang="ro" state="translated">Adăugare fotografie</target>
       </trans-unit>
       <trans-unit id="Add Star" approved="yes">
         <source>Add Star</source>
@@ -187,10 +342,14 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">S-au importat toate contactele</target>
       </trans-unit>
-      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" approved="yes">
-        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!</source>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.&#10;&#10;THIS ACTION CANNOT BE UNDONE!" approved="yes">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</source>
         <note>Description</note>
-        <target xml:lang="ro" state="translated">Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate.\n\nACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!</target>
+        <target xml:lang="ro" state="translated">Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. 
+
+ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!</target>
       </trans-unit>
       <trans-unit id="Also Archive" approved="yes">
         <source>Also Archive</source>
@@ -206,6 +365,36 @@
         <source>Anniversary</source>
         <note>contacts talbe cell Anniversary title</note>
         <target xml:lang="ro" state="translated">Aniversare</target>
+      </trans-unit>
+      <trans-unit id="App is locked" approved="yes">
+        <source>App is locked</source>
+        <note>Error</note>
+        <target xml:lang="ro" state="translated">Aplicația este blocată</target>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee" approved="yes">
+        <source>Apple in-app purchase fee</source>
+        <note>Price breakdown</note>
+        <target xml:lang="ro" state="translated">Taxa Apple de achiziție în aplicație</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase." approved="yes">
+        <source>Apple informed us they could not process the purchase.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Apple ne-a informat că nu poate procesa achiziția.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Apple ne-a informat că ați trecut la alt plan al serviciului, dar nu ați specificat care cont ProtonMail să fie modificat în cazul în care aveți mai multe.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Apple ne-a informat că ați trecut la alt plan al serviciului, dar lipsesc unele date tehnice. Completați raportul de erori și echipa de suport vă va contacta.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Apple ne-a informat că ați trecut la alt plan al serviciului, dar am detectat că v-ați deconectat din cont de atunci.</target>
       </trans-unit>
       <trans-unit id="Apply" approved="yes">
         <source>Apply</source>
@@ -239,7 +428,7 @@
         <target xml:lang="ro" state="translated">Autentificare</target>
       </trans-unit>
       <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
-        <source>Authentication Failed Wrong username or password</source>
+        <source>Authentication failed: wrong username or password.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Conectare nereușită: nume de utilizator sau parolă greșită</target>
       </trans-unit>
@@ -248,10 +437,15 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Autentificare eșuată</target>
       </trans-unit>
-      <trans-unit id="Authentication failed please try to login again" approved="yes">
-        <source>Authentication failed please try to login again</source>
+      <trans-unit id="Authentication failed. Please try to login again." approved="yes">
+        <source>Authentication failed. Please try to login again.</source>
         <note>Error</note>
-        <target xml:lang="ro" state="translated">Autentificare eșuată. Vă rugăm reîncercați autentificarea.</target>
+        <target xml:lang="ro" state="translated">Autentificare eșuată. Reîncercați autentificarea.</target>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked" approved="yes">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <note>Description</note>
+        <target xml:lang="ro" state="translated">Semnătura de autentificare nu este disponibilă fiindcă aplicația este blocată</target>
       </trans-unit>
       <trans-unit id="Authentication was cancelled by the system" approved="yes">
         <source>Authentication was cancelled by the system</source>
@@ -259,12 +453,12 @@
         <target xml:lang="ro" state="translated">Autentificarea a fost anulată de sistem</target>
       </trans-unit>
       <trans-unit id="Auto Lock Time" approved="yes">
-        <source>Auto Lock Time</source>
+        <source>Auto lock time</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Timp autoblocare</target>
       </trans-unit>
       <trans-unit id="Auto Show Images" approved="yes">
-        <source>Auto Show Images</source>
+        <source>Auto show images</source>
         <note>settings general section title</note>
         <target xml:lang="ro" state="translated">Afișare automată imagini</target>
       </trans-unit>
@@ -288,13 +482,18 @@
         <note>Error Description</note>
         <target xml:lang="ro" state="translated">Parametru greșit: %@</target>
       </trans-unit>
+      <trans-unit id="Bad path" approved="yes">
+        <source>Bad path</source>
+        <note>title</note>
+        <target xml:lang="ro" state="translated">Cale incorectă</target>
+      </trans-unit>
       <trans-unit id="Bad response" approved="yes">
         <source>Bad response</source>
         <note>Error Description</note>
         <target xml:lang="ro" state="translated">Răspuns greșit</target>
       </trans-unit>
       <trans-unit id="Bcc" approved="yes">
-        <source>Bcc</source>
+        <source>BCC</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Bcc</target>
       </trans-unit>
@@ -309,9 +508,14 @@
         <target xml:lang="ro" state="translated">Descriere eroare</target>
       </trans-unit>
       <trans-unit id="Bug Report Received" approved="yes">
-        <source>Bug Report Received</source>
+        <source>Bug report received</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Raport eroare primit</target>
+      </trans-unit>
+      <trans-unit id="Buy More Credits" approved="yes">
+        <source>Buy More Credits</source>
+        <note>Link to More Credits screen</note>
+        <target xml:lang="ro" state="translated">Cumpărare credite</target>
       </trans-unit>
       <trans-unit id="By using protonmail, you agree to our" approved="yes">
         <source>By using protonmail, you agree to our</source>
@@ -322,6 +526,11 @@
         <source>CAPTCHA</source>
         <note>human check option button</note>
         <target xml:lang="ro" state="translated">CAPTCHA</target>
+      </trans-unit>
+      <trans-unit id="Call Contact" approved="yes">
+        <source>Call Contact</source>
+        <note>Call the contact (button title text)</note>
+        <target xml:lang="ro" state="translated">Apelare contact</target>
       </trans-unit>
       <trans-unit id="Can take several minutes to setup." approved="yes">
         <source>Can take several minutes to setup.</source>
@@ -348,15 +557,41 @@
         <note>When quick look attachment but can't decrypt it!</note>
         <target xml:lang="ro" state="translated">Atașamentul nu poate fi decriptat!</target>
       </trans-unit>
+      <trans-unit id="Can't delete contact group" approved="yes">
+        <source>Can't delete contact group</source>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+        <target xml:lang="ro" state="translated">Nu se poate șterge grupul de contacte</target>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API" approved="yes">
+        <source>Can't delete contact group through API</source>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+        <target xml:lang="ro" state="translated">Nu se poate șterge grupul de contacte folosind API</target>
+      </trans-unit>
       <trans-unit id="Can't download message body, please try again." approved="yes">
         <source>Can't download message body, please try again.</source>
+        <note>*
+ *  MessageViewController</note>
+        <target xml:lang="ro" state="translated">Corpul mesajului nu poate fi descărcat. Reîncercați.</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again." approved="yes">
+        <source>Can't download message body. Please try again.</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Corpul mesajului nu poate fi descărcat. Reîncercați.</target>
       </trans-unit>
+      <trans-unit id="Can't fetch contact groups" approved="yes">
+        <source>Can't fetch contact groups</source>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+        <target xml:lang="ro" state="translated">Nu se poate prelua grupul de contacte</target>
+      </trans-unit>
       <trans-unit id="Can't find the clicked message please try again!" approved="yes">
         <source>Can't find the clicked message please try again!</source>
-        <note>Description</note>
+        <note/>
         <target xml:lang="ro" state="translated">Nu se poate găsi mesajul selectat. Reîncercați!</target>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message. Please try again." approved="yes">
+        <source>Can't find the clicked message. Please try again.</source>
+        <note>Description</note>
+        <target xml:lang="ro" state="translated">Nu se poate găsi mesajul selectat. Mai încercați.</target>
       </trans-unit>
       <trans-unit id="Can't find this attachment!" approved="yes">
         <source>Can't find this attachment!</source>
@@ -364,7 +599,7 @@
         <target xml:lang="ro" state="translated">Atașamentul nu poate fi găsit!</target>
       </trans-unit>
       <trans-unit id="Can't get a Moduls ID!" approved="yes">
-        <source>Can't get a Moduls ID!</source>
+        <source>Can't get a Modulus ID!</source>
         <note>update password error = typo:Modulus</note>
         <target xml:lang="ro" state="translated">Nu se poate obține ID coeficient!</target>
       </trans-unit>
@@ -398,6 +633,16 @@
         <note>Error</note>
         <target xml:lang="ro" state="translated">Fișierul nu poate fi deschis</target>
       </trans-unit>
+      <trans-unit id="Can't save contact group" approved="yes">
+        <source>Can't save contact group</source>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+        <target xml:lang="ro" state="translated">Nu se poate salva grupul de contacte</target>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through API" approved="yes">
+        <source>Can't update contact group through API</source>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+        <target xml:lang="ro" state="translated">Nu se poate actualiza grupul de contacte folosind API</target>
+      </trans-unit>
       <trans-unit id="Cancel" approved="yes">
         <source>Cancel</source>
         <note>Cancel action</note>
@@ -413,8 +658,18 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Anulare</target>
       </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!" approved="yes">
+        <source>Unable to decrypt this attachment.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Atașamentul nu poate fi decriptat.</target>
+      </trans-unit>
+      <trans-unit id="Catalan" approved="yes">
+        <source>Catalan</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Catalană</target>
+      </trans-unit>
       <trans-unit id="Cc" approved="yes">
-        <source>Cc</source>
+        <source>CC</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Cc</target>
       </trans-unit>
@@ -439,12 +694,12 @@
         <target xml:lang="ro" state="translated">Schimbare parolă mesaje</target>
       </trans-unit>
       <trans-unit id="Change Password" approved="yes">
-        <source>Change Password</source>
+        <source>Change password</source>
         <note>update password error title</note>
         <target xml:lang="ro" state="translated">Schimbare parolă</target>
       </trans-unit>
       <trans-unit id="Change Pin" approved="yes">
-        <source>Change Pin</source>
+        <source>Change PIN</source>
         <note>settings protection section title</note>
         <target xml:lang="ro" state="translated">Schimbare PIN</target>
       </trans-unit>
@@ -454,7 +709,7 @@
         <target xml:lang="ro" state="translated">Schimbare parolă unică</target>
       </trans-unit>
       <trans-unit id="Change default address to .." approved="yes">
-        <source>Change default address to ..</source>
+        <source>Change default address to...</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Schimbare adresă implicită cu ...</target>
       </trans-unit>
@@ -469,7 +724,7 @@
         <target xml:lang="ro" state="translated">Schimbare acțiune glisare spre dreapta</target>
       </trans-unit>
       <trans-unit id="Change sender address to .." approved="yes">
-        <source>Change sender address to ..</source>
+        <source>Change sender address to...</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Schimbare adresă expeditor cu ...</target>
       </trans-unit>
@@ -479,9 +734,19 @@
         <target xml:lang="ro" state="translated">Reverificare</target>
       </trans-unit>
       <trans-unit id="Checking ...." approved="yes">
-        <source>Checking ....</source>
+        <source>Checking...</source>
         <note>loading message</note>
         <target xml:lang="ro" state="translated">Se verifică ...</target>
+      </trans-unit>
+      <trans-unit id="Chinese Simplified" approved="yes">
+        <source>Chinese Simplified</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Chineză simplificată</target>
+      </trans-unit>
+      <trans-unit id="Chinese Traditional" approved="yes">
+        <source>Chinese Traditional</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Chineză tradițională</target>
       </trans-unit>
       <trans-unit id="Choose a Password" approved="yes">
         <source>Choose a Password</source>
@@ -494,13 +759,18 @@
         <target xml:lang="ro" state="translated">Oraș</target>
       </trans-unit>
       <trans-unit id="Clear Local Message Cache" approved="yes">
-        <source>Clear Local Message Cache</source>
+        <source>Clear local message cache</source>
         <note>settings general section title</note>
         <target xml:lang="ro" state="translated">Golire buffer mesaje locale</target>
       </trans-unit>
       <trans-unit id="Close" approved="yes">
         <source>Close</source>
         <note>general close action</note>
+        <target xml:lang="ro" state="translated">Închidere</target>
+      </trans-unit>
+      <trans-unit id="Closing" approved="yes">
+        <source>Closing</source>
+        <note>Alert title</note>
         <target xml:lang="ro" state="translated">Închidere</target>
       </trans-unit>
       <trans-unit id="Compose" approved="yes">
@@ -518,8 +788,18 @@
         <note>Action</note>
         <target xml:lang="ro" state="translated">Confirmare</target>
       </trans-unit>
+      <trans-unit id="Confirm Login Password" approved="yes">
+        <source>Confirm login password</source>
+        <note>"Login Password"</note>
+        <target xml:lang="ro" state="translated">Confirmare parolă conectare</target>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password" approved="yes">
+        <source>Confirm mailbox password</source>
+        <note>"Mailbox Password"</note>
+        <target xml:lang="ro" state="translated">Confirmare parolă mesaje</target>
+      </trans-unit>
       <trans-unit id="Confirm Password" approved="yes">
-        <source>Confirm Password</source>
+        <source>Confirm password</source>
         <note>Placeholder</note>
         <target xml:lang="ro" state="translated">Confirmare parolă</target>
       </trans-unit>
@@ -537,6 +817,11 @@
         <source>Confirm new password</source>
         <note>Placeholder</note>
         <target xml:lang="ro" state="translated">Confirmare parolă nouă</target>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report" approved="yes">
+        <source>Confirm phishing report</source>
+        <note>alert title</note>
+        <target xml:lang="ro" state="translated">Confirmare raportare înșelăciune</target>
       </trans-unit>
       <trans-unit id="Confirmation" approved="yes">
         <source>Confirmation</source>
@@ -579,6 +864,11 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Copiere nume</target>
       </trans-unit>
+      <trans-unit id="Could not connect to Store. Please, try later." approved="yes">
+        <source>Could not connect to Store. Please, try later.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Nu s-a putut conecta la Magazin. Mai încercați.</target>
+      </trans-unit>
       <trans-unit id="Country" approved="yes">
         <source>Country</source>
         <note>contact placeholder</note>
@@ -594,10 +884,10 @@
         <note>Create account button</note>
         <target xml:lang="ro" state="translated">Creare cont</target>
       </trans-unit>
-      <trans-unit id="Create User failed please try again" approved="yes">
-        <source>Create User failed please try again</source>
+      <trans-unit id="Create User failed. Please try again." approved="yes">
+        <source>Create User failed. Please try again.</source>
         <note>Error</note>
-        <target xml:lang="ro" state="translated">Crearea utilizatorului a eșuat. Reîncercați.</target>
+        <target xml:lang="ro" state="translated">Eșuare creare utilizator. Mai încercați.</target>
       </trans-unit>
       <trans-unit id="Create a new account" approved="yes">
         <source>Create a new account</source>
@@ -605,7 +895,7 @@
         <target xml:lang="ro" state="translated">Creare cont nou</target>
       </trans-unit>
       <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options." approved="yes">
-        <source>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Creați și adaugați etichete pentru organizarea mesajelor. Țineți apăsat pe un mesaj pentru opțiuni.</target>
       </trans-unit>
@@ -635,15 +925,25 @@
    contacts default label type</note>
         <target xml:lang="ro" state="translated">Personalizat</target>
       </trans-unit>
+      <trans-unit id="Czech" approved="yes">
+        <source>Czech</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Cehă</target>
+      </trans-unit>
       <trans-unit id="DECRYPT MAILBOX" approved="yes">
         <source>DECRYPT MAILBOX</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">DECRIPTARE MESAJE</target>
       </trans-unit>
       <trans-unit id="DRAFTS" approved="yes">
-        <source>DRAFTS</source>
+        <source>Drafts</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">CIORNE</target>
+      </trans-unit>
+      <trans-unit id="Danish" approved="yes">
+        <source>Danish</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Daneză</target>
       </trans-unit>
       <trans-unit id="Date:" approved="yes">
         <source>Date:</source>
@@ -665,8 +965,8 @@
         <note>Action</note>
         <target xml:lang="ro" state="translated">Decriptare</target>
       </trans-unit>
-      <trans-unit id="Decrypt token failed please try again" approved="yes">
-        <source>Decrypt token failed please try again</source>
+      <trans-unit id="Decrypt token failed. Please try again." approved="yes">
+        <source>Decrypt token failed. Please try again.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Eșuare decriptare semnătură de acces. Reîncercați.</target>
       </trans-unit>
@@ -685,10 +985,10 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Implicit</target>
       </trans-unit>
-      <trans-unit id="Default error, please try again." approved="yes">
-        <source>Default error, please try again.</source>
+      <trans-unit id="Default error. Please try again." approved="yes">
+        <source>Default error. Please try again.</source>
         <note>error message when create new user</note>
-        <target xml:lang="ro" state="translated">Eroare implicită. Reîncercați.</target>
+        <target xml:lang="ro" state="translated">Eroare implicită. Mai încercați.</target>
       </trans-unit>
       <trans-unit id="Define Expiration Date" approved="yes">
         <source>Define Expiration Date</source>
@@ -696,12 +996,12 @@
         <target xml:lang="ro" state="translated">Definire dată expirare</target>
       </trans-unit>
       <trans-unit id="Define Hint (Optional)" approved="yes">
-        <source>Define Hint (Optional)</source>
+        <source>Define hint (Optional)</source>
         <note>Placeholder</note>
         <target xml:lang="ro" state="translated">Definire indiciu (opţional)</target>
       </trans-unit>
       <trans-unit id="Define Password" approved="yes">
-        <source>Define Password</source>
+        <source>Define password</source>
         <note>place holder</note>
         <target xml:lang="ro" state="translated">Definire parolă</target>
       </trans-unit>
@@ -714,6 +1014,11 @@
         <source>Delete Contact</source>
         <note>Title-Contacts</note>
         <target xml:lang="ro" state="translated">Ștergere contact</target>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group" approved="yes">
+        <source>Delete Contact Group</source>
+        <note>The description of the button for deleting the contact group</note>
+        <target xml:lang="ro" state="translated">Ștergere grup contacte</target>
       </trans-unit>
       <trans-unit id="Deleted" approved="yes">
         <source>Deleted</source>
@@ -736,12 +1041,12 @@
         <target xml:lang="ro" state="translated">Aruncare ciornă</target>
       </trans-unit>
       <trans-unit id="Display Name" approved="yes">
-        <source>Display Name</source>
+        <source>Display name</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Nume afișat</target>
       </trans-unit>
       <trans-unit id="Display Name Updated" approved="yes">
-        <source>Display Name Updated</source>
+        <source>Display name updated</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Nume afișat actualizat</target>
       </trans-unit>
@@ -749,6 +1054,11 @@
         <source>DisplayName</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Nume afișat</target>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for " approved="yes">
+        <source>Do you want to activate the purchased service plan for </source>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+        <target xml:lang="ro" state="translated">Doriți să activați abonamentul cumpărat pentru </target>
       </trans-unit>
       <trans-unit id="Do you want to cancel the process?" approved="yes">
         <source>Do you want to cancel the process?</source>
@@ -801,15 +1111,31 @@
         <note>Action</note>
         <target xml:lang="ro" state="translated">Editare</target>
       </trans-unit>
+      <trans-unit id="Edit Contact" approved="yes">
+        <source>Edit contact</source>
+        <note>*
+ *  Edit Contact view controller</note>
+        <target xml:lang="ro" state="translated">Editare contact</target>
+      </trans-unit>
       <trans-unit id="Edit Folder" approved="yes">
         <source>Edit Folder</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Editare folder</target>
       </trans-unit>
+      <trans-unit id="Edit Group" approved="yes">
+        <source>Edit Group</source>
+        <note>The title for the contact group editing view</note>
+        <target xml:lang="ro" state="translated">Editare grup</target>
+      </trans-unit>
       <trans-unit id="Edit Label" approved="yes">
         <source>Edit Label</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Editare etichetă</target>
+      </trans-unit>
+      <trans-unit id="Edit Photo" approved="yes">
+        <source>Edit Photo</source>
+        <note>The button text for edit profile picture</note>
+        <target xml:lang="ro" state="translated">Editare foto</target>
       </trans-unit>
       <trans-unit id="Edit mobile signature" approved="yes">
         <source>Edit mobile signature</source>
@@ -825,6 +1151,16 @@
         <source>Email</source>
         <note>default vcard types</note>
         <target xml:lang="ro" state="translated">E-mail</target>
+      </trans-unit>
+      <trans-unit id="Email Addresses" approved="yes">
+        <source>Email Addresses</source>
+        <note>contact detail view, email addresses section title</note>
+        <target xml:lang="ro" state="translated">Adrese de e-mail</target>
+      </trans-unit>
+      <trans-unit id="Email Contact" approved="yes">
+        <source>Email Contact</source>
+        <note>Send an email to the current contact (button title text)</note>
+        <target xml:lang="ro" state="translated">Scrie contactului</target>
       </trans-unit>
       <trans-unit id="Email Verification" approved="yes">
         <source>Email Verification</source>
@@ -846,9 +1182,15 @@
         <note>place holder</note>
         <target xml:lang="ro" state="translated">Semnătură implicită e-mail</target>
       </trans-unit>
+      <trans-unit id="Email domain invalid" approved="yes">
+        <source>Invalid email domain</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="ro" state="translated">Domeniu e-mail nevalid</target>
+      </trans-unit>
       <trans-unit id="Empty Folder" approved="yes">
-        <source>Empty Folder</source>
-        <note>Action</note>
+        <source>Empty folder</source>
+        <note>empty folder, for spam and trash</note>
         <target xml:lang="ro" state="translated">Golire folder</target>
       </trans-unit>
       <trans-unit id="Enable Default Signature" approved="yes">
@@ -872,7 +1214,7 @@
         <target xml:lang="ro" state="translated">Activare e-mail de notificare</target>
       </trans-unit>
       <trans-unit id="Enable Pin Protection" approved="yes">
-        <source>Enable Pin Protection</source>
+        <source>Enable PIN protection</source>
         <note>settings protection section title</note>
         <target xml:lang="ro" state="translated">Activare protecție PIN</target>
       </trans-unit>
@@ -932,7 +1274,7 @@
         <target xml:lang="ro" state="translated">Oră oprire</target>
       </trans-unit>
       <trans-unit id="End-to-End Encryption" approved="yes">
-        <source>End-to-End Encryption</source>
+        <source>End-to-end encryption</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Criptare în ambele părți</target>
       </trans-unit>
@@ -967,7 +1309,7 @@
         <target xml:lang="ro" state="translated">Introducere</target>
       </trans-unit>
       <trans-unit id="Enter Verification Code" approved="yes">
-        <source>Enter Verification Code</source>
+        <source>Enter verification code</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Introducere cod de verificare</target>
       </trans-unit>
@@ -992,9 +1334,14 @@
         <target xml:lang="ro" state="translated">Introduceți adresa de e-mail curentă.</target>
       </trans-unit>
       <trans-unit id="Error Logs" approved="yes">
-        <source>Error Logs</source>
+        <source>Error logs</source>
         <note>settings debug section title</note>
         <target xml:lang="ro" state="translated">Jurnal de erori</target>
+      </trans-unit>
+      <trans-unit id="Error occured" approved="yes">
+        <source>Error occured</source>
+        <note>Error alert title</note>
+        <target xml:lang="ro" state="translated">A apărut o eroare</target>
       </trans-unit>
       <trans-unit id="Every time enter app" approved="yes">
         <source>Every time enter app</source>
@@ -1012,7 +1359,7 @@
         <target xml:lang="ro" state="translated">Expiră în %1$d zile %2$d ore %3$d minute %4$d secunde</target>
       </trans-unit>
       <trans-unit id="Expiring Messages" approved="yes">
-        <source>Expiring Messages</source>
+        <source>Expiring messages</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Mesaje care expiră</target>
       </trans-unit>
@@ -1022,9 +1369,19 @@
         <target xml:lang="ro" state="translated">Securitate extremă</target>
       </trans-unit>
       <trans-unit id="FORGOT PASSWORD?" approved="yes">
-        <source>FORGOT PASSWORD?</source>
+        <source>Forgot password?</source>
         <note>login page forgot pwd</note>
         <target xml:lang="ro" state="translated">V-AȚI UITAT PAROLA?</target>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file" approved="yes">
+        <source>Failed to determine type of file</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Eșuare determinare tip fișier</target>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore." approved="yes">
+        <source>Failed to get list of available products from AppStore.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Eșuare obținere listă de produse din AppStore.</target>
       </trans-unit>
       <trans-unit id="Failed to initialize the application's saved data" approved="yes">
         <source>Failed to initialize the application's saved data</source>
@@ -1055,6 +1412,26 @@
         <source>Folder Name</source>
         <note>place holder</note>
         <target xml:lang="ro" state="translated">Nume folder</target>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost" approved="yes">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <note>Service Plan description</note>
+        <target xml:lang="ro" state="translated">Pentru persoane ce doresc comunicații sigure fără cheltuieli</target>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features" approved="yes">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <note>Service Plan description</note>
+        <target xml:lang="ro" state="translated">Pentru persoane ce doresc mai mult spațiu, personalizare și funcții avansate</target>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features" approved="yes">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <note>Service Plan description</note>
+        <target xml:lang="ro" state="translated">Pentru organizații ce doresc suport multiutilizatori și funcții adiționale de productivitate</target>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy" approved="yes">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <note>Service Plan description</note>
+        <target xml:lang="ro" state="translated">Pentru utilizatori avansați și grupuri de persoane ce apreciază anonimatul și intimitatea</target>
       </trans-unit>
       <trans-unit id="Forward" approved="yes">
         <source>Forward</source>
@@ -1092,7 +1469,7 @@
         <target xml:lang="ro" state="translated">Sex</target>
       </trans-unit>
       <trans-unit id="General Settings" approved="yes">
-        <source>General Settings</source>
+        <source>General settings</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Setări generale</target>
       </trans-unit>
@@ -1100,6 +1477,11 @@
         <source>German</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Germană</target>
+      </trans-unit>
+      <trans-unit id="Get %@" approved="yes">
+        <source>Get %@</source>
+        <note>Screen header, like 'Get VISIONARY'</note>
+        <target xml:lang="ro" state="translated">Obțineți %@</target>
       </trans-unit>
       <trans-unit id="Get more information" approved="yes">
         <source>Get more information</source>
@@ -1115,6 +1497,21 @@
         <source>Got it</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Am înţeles</target>
+      </trans-unit>
+      <trans-unit id="Group Details" approved="yes">
+        <source>Group Details</source>
+        <note>The title for the contact group detail view</note>
+        <target xml:lang="ro" state="translated">Detalii grup</target>
+      </trans-unit>
+      <trans-unit id="Group Name" approved="yes">
+        <source>Group Name</source>
+        <note>The instruction label for the group name textfield</note>
+        <target xml:lang="ro" state="translated">Nume grup</target>
+      </trans-unit>
+      <trans-unit id="Groups" approved="yes">
+        <source>Groups</source>
+        <note>menu title (contact groups)</note>
+        <target xml:lang="ro" state="translated">Grupuri</target>
       </trans-unit>
       <trans-unit id="Help &amp; Support" approved="yes">
         <source>Help &amp; Support</source>
@@ -1137,7 +1534,7 @@
         <target xml:lang="ro" state="translated">Ascunde</target>
       </trans-unit>
       <trans-unit id="Hide Details" approved="yes">
-        <source>Hide Details</source>
+        <source>Hide details</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Ascunde detalii</target>
       </trans-unit>
@@ -1166,8 +1563,13 @@
         <note>top title</note>
         <target xml:lang="ro" state="translated">Verificare persoană</target>
       </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge" approved="yes">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <note>Service plan capability</note>
+        <target xml:lang="ro" state="translated">Suport IMAP/SMTP prin ProtonMail Bridge</target>
+      </trans-unit>
       <trans-unit id="INBOX" approved="yes">
-        <source>INBOX</source>
+        <source>Inbox</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">PRIMITE</target>
       </trans-unit>
@@ -1177,7 +1579,7 @@
         <target xml:lang="ro" state="translated">Eroare importare</target>
       </trans-unit>
       <trans-unit id="Import File From..." approved="yes">
-        <source>Import File From...</source>
+        <source>Import file from...</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Importare fișier din...</target>
       </trans-unit>
@@ -1222,6 +1624,11 @@
         <note>Error</note>
         <target xml:lang="ro" state="translated">Crearea unui cont de ProtonMail instant a fost dezactivat temporar. Vă rugăm să vizitați https://protonmail.com/invite pentru a solicita o invitație.</target>
       </trans-unit>
+      <trans-unit id="Internal Error" approved="yes">
+        <source>Internal Error</source>
+        <note>The preconditions are not met</note>
+        <target xml:lang="ro" state="translated">Eroare internă</target>
+      </trans-unit>
       <trans-unit id="Internet" approved="yes">
         <source>Internet</source>
         <note>default vcard types</note>
@@ -1232,6 +1639,11 @@
         <note>Error</note>
         <target xml:lang="ro" state="translated">Parolă nevalidă</target>
       </trans-unit>
+      <trans-unit id="Invalid UserName" approved="yes">
+        <source>Invalid username</source>
+        <note>title</note>
+        <target xml:lang="ro" state="translated">Nume de utilizator nevalid</target>
+      </trans-unit>
       <trans-unit id="Invalid UserName!" approved="yes">
         <source>Invalid UserName!</source>
         <note>Error message</note>
@@ -1239,6 +1651,11 @@
       </trans-unit>
       <trans-unit id="Invalid access token please relogin" approved="yes">
         <source>Invalid access token please relogin</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Semnătură de acces nevalidă. Reconectați-vă.</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin." approved="yes">
+        <source>Invalid access token. Please relogin.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Semnătură de acces nevalidă. Reconectați-vă.</target>
       </trans-unit>
@@ -1251,6 +1668,16 @@
         <source>Invalid hashed password!</source>
         <note>update password error</note>
         <target xml:lang="ro" state="translated">Parolă generată nevalidă!</target>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?" approved="yes">
+        <source>Is this bug report about an in-app purchase?</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Acest raport de eroare este despre o achiziție din aplicație?</target>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to " approved="yes">
+        <source>It is not possible to switch to </source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="ro" state="translated">Nu este posibilă schimbarea la </target>
       </trans-unit>
       <trans-unit id="Italian" approved="yes">
         <source>Italian</source>
@@ -1267,18 +1694,23 @@
         <note>Error</note>
         <target xml:lang="ro" state="translated">Eșuare generare cheie</target>
       </trans-unit>
-      <trans-unit id="Key generation failed please try again" approved="yes">
-        <source>Key generation failed please try again</source>
+      <trans-unit id="Key generation failed. Please try again." approved="yes">
+        <source>Key generation failed. Please try again.</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Eșuare generare cheie. Reîncercați.</target>
       </trans-unit>
-      <trans-unit id="Key invalid please go back try again" approved="yes">
-        <source>Key invalid please go back try again</source>
+      <trans-unit id="Key invalid. Please go back and try again." approved="yes">
+        <source>Key invalid. Please go back and try again.</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Cheie nevalidă. Reveniți și reîncercați.</target>
       </trans-unit>
+      <trans-unit id="LOGIN" approved="yes">
+        <source>Login</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Conectare</target>
+      </trans-unit>
       <trans-unit id="Label Management" approved="yes">
-        <source>Label Management</source>
+        <source>Label management</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Gestionare etichete</target>
       </trans-unit>
@@ -1302,6 +1734,11 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Eticheta a fost aplicată.</target>
       </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More" approved="yes">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <note>Service plan capability</note>
+        <target xml:lang="ro" state="translated">Etichete, foldere, filtre &amp; altele</target>
+      </trans-unit>
       <trans-unit id="Labels/Folders" approved="yes">
         <source>Labels/Folders</source>
         <note>Title</note>
@@ -1312,10 +1749,20 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Limba</target>
       </trans-unit>
+      <trans-unit id="Learn More" approved="yes">
+        <source>Learn More</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Aflați mai multe</target>
+      </trans-unit>
       <trans-unit id="Learn more here" approved="yes">
         <source>Learn more here</source>
         <note>learn more button</note>
         <target xml:lang="ro" state="translated">Detalii aici</target>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day" approved="yes">
+        <source>Limited to 150 messages sent/day</source>
+        <note>Service plan capability</note>
+        <target xml:lang="ro" state="translated">Maxim 150 de mesaje trimise/zi</target>
       </trans-unit>
       <trans-unit id="Load remote content" approved="yes">
         <source>Load remote content</source>
@@ -1324,13 +1771,19 @@
       </trans-unit>
       <trans-unit id="Loading..." approved="yes">
         <source>Loading...</source>
-        <note>No comment provided by engineer.</note>
+        <note/>
         <target xml:lang="ro" state="translated">Se încarcă...</target>
       </trans-unit>
       <trans-unit id="Local cache can't find mailbox password" approved="yes">
         <source>Local cache can't find mailbox password</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Nu se poate găsi parola mesajelor în bufferul local</target>
+      </trans-unit>
+      <trans-unit id="Localizable.strings" approved="yes">
+        <source>Base</source>
+        <note>*
+ *  file string type</note>
+        <target xml:lang="ro" state="translated">De bază</target>
       </trans-unit>
       <trans-unit id="Lock The App" approved="yes">
         <source>Lock The App</source>
@@ -1343,7 +1796,7 @@
         <target xml:lang="ro" state="translated">Conectare</target>
       </trans-unit>
       <trans-unit id="Login Password" approved="yes">
-        <source>Login Password</source>
+        <source>Login password</source>
         <note>settings general section title</note>
         <target xml:lang="ro" state="translated">Parolă de autentificare</target>
       </trans-unit>
@@ -1372,15 +1825,31 @@
         <note>Upgrade warning title</note>
         <target xml:lang="ro" state="translated">Doriți securizarea detaliilor contactelor?</target>
       </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD" approved="yes">
+        <source>Mailbox password</source>
+        <note>*
+ *  MailboxPasswordViewController</note>
+        <target xml:lang="ro" state="translated">Parolă mesaje</target>
+      </trans-unit>
       <trans-unit id="MBContactPickerPrompt">
         <source>MBContactPickerPrompt</source>
         <note>Default Prompt text shown in the prompt cell</note>
         <target xml:lang="ro" state="needs-translation">MBContactPickerPrompt</target>
       </trans-unit>
       <trans-unit id="Mailbox Password" approved="yes">
-        <source>Mailbox Password</source>
+        <source>Mailbox password</source>
         <note>settings general section title</note>
         <target xml:lang="ro" state="translated">Parolă mesaje</target>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match" approved="yes">
+        <source>Mailbox password doesn't match</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Parolele pentru mesaje nu coincid</target>
+      </trans-unit>
+      <trans-unit id="Manage Addresses" approved="yes">
+        <source>Manage Addresses</source>
+        <note>The title for the view where user can manage emails in the contact group</note>
+        <target xml:lang="ro" state="translated">Gestionare adrese</target>
       </trans-unit>
       <trans-unit id="Manage Labels/Folders" approved="yes">
         <source>Manage Labels/Folders</source>
@@ -1388,14 +1857,19 @@
         <target xml:lang="ro" state="translated">Gestionare etichete/foldere</target>
       </trans-unit>
       <trans-unit id="Mark Read" approved="yes">
-        <source>Mark Read</source>
-        <note>Action</note>
+        <source>Mark as read</source>
+        <note>mark message as read action</note>
         <target xml:lang="ro" state="translated">Marcare ca citit</target>
       </trans-unit>
       <trans-unit id="Mark as unread" approved="yes">
         <source>Mark as unread</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Marcare ca necitit</target>
+      </trans-unit>
+      <trans-unit id="Menu" approved="yes">
+        <source>Menu</source>
+        <note>menu title</note>
+        <target xml:lang="ro" state="translated">Meniu</target>
       </trans-unit>
       <trans-unit id="Message %@" approved="yes">
         <source>Message %@</source>
@@ -1408,7 +1882,7 @@
         <target xml:lang="ro" state="translated">Parolă mesaj</target>
       </trans-unit>
       <trans-unit id="Message Queue" approved="yes">
-        <source>Message Queue</source>
+        <source>Message queue</source>
         <note>settings debug section title</note>
         <target xml:lang="ro" state="translated">Mesaje în așteptare</target>
       </trans-unit>
@@ -1419,7 +1893,8 @@
       </trans-unit>
       <trans-unit id="Message expired" approved="yes">
         <source>Message expired</source>
-        <note>No comment provided by engineer.</note>
+        <note>*
+ *  Expiration View</note>
         <target xml:lang="ro" state="translated">Mesaj expirat</target>
       </trans-unit>
       <trans-unit id="Message has been deleted." approved="yes">
@@ -1439,6 +1914,11 @@
       </trans-unit>
       <trans-unit id="Message sending failed please try again" approved="yes">
         <source>Message sending failed please try again</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Trimitere mesaj eșuată. Reîncercați.</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again." approved="yes">
+        <source>Message sending failed. Please try again.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Trimitere mesaj eșuată. Reîncercați.</target>
       </trans-unit>
@@ -1458,7 +1938,7 @@
         <target xml:lang="ro" state="translated">Mobil</target>
       </trans-unit>
       <trans-unit id="Mobile Signature" approved="yes">
-        <source>Mobile Signature</source>
+        <source>Mobile signature</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Semnătură mobil</target>
       </trans-unit>
@@ -1466,6 +1946,11 @@
         <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Înscrierea de pe mobile este temporar dezactivată. Reîncercați mai târziu sau înscrieți-vă la protonmail.com de pe un calculator desktop sau laptop.</target>
+      </trans-unit>
+      <trans-unit id="More Credits" approved="yes">
+        <source>More Credits</source>
+        <note>Screen header</note>
+        <target xml:lang="ro" state="translated">Cumpărare credite</target>
       </trans-unit>
       <trans-unit id="Move to AllMail" approved="yes">
         <source>Move to AllMail</source>
@@ -1513,12 +1998,12 @@
         <target xml:lang="ro" state="translated">Mutare în...</target>
       </trans-unit>
       <trans-unit id="Multiple Addresses" approved="yes">
-        <source>Multiple Addresses</source>
+        <source>Multiple addresses</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Adrese multiple</target>
       </trans-unit>
       <trans-unit id="NEED AN ACCOUNT? SIGN UP." approved="yes">
-        <source>NEED AN ACCOUNT? SIGN UP.</source>
+        <source>Sign up for free</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">DORIȚI UN CONT? ÎNREGISTRAȚI-VĂ.</target>
       </trans-unit>
@@ -1557,10 +2042,26 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Nu există conexiune...</target>
       </trans-unit>
+      <trans-unit id="No, for another ProtonMail account" approved="yes">
+        <source>No, for another ProtonMail account</source>
+        <note>Warning message option when user want to relogin to another account</note>
+        <target xml:lang="ro" state="translated">Nu, pentru alt cont ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase" approved="yes">
+        <source>No, not related to in-app purchase</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Nu, fără legătură cu achizițiile din aplicație</target>
+      </trans-unit>
       <trans-unit id="None" approved="yes">
         <source>None</source>
-        <note>Title</note>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
         <target xml:lang="ro" state="translated">Nimic</target>
+      </trans-unit>
+      <trans-unit id="Not Now" approved="yes">
+        <source>Not Now</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Nu acum</target>
       </trans-unit>
       <trans-unit id="Not all recipients support message expiration" approved="yes">
         <source>Not all recipients support message expiration</source>
@@ -1598,7 +2099,7 @@
         <target xml:lang="ro" state="translated">E-mail recuperare/notificare</target>
       </trans-unit>
       <trans-unit id="Notification Email" approved="yes">
-        <source>Notification Email</source>
+        <source>Notification email</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">E-mail de notificare</target>
       </trans-unit>
@@ -1625,6 +2126,11 @@
         <note>Action</note>
         <target xml:lang="ro" state="translated">OK</target>
       </trans-unit>
+      <trans-unit id="OTHER SERVICE PLANS" approved="yes">
+        <source>OTHER SERVICE PLANS</source>
+        <note>Section header</note>
+        <target xml:lang="ro" state="translated">ALTE ABONAMENTE</target>
+      </trans-unit>
       <trans-unit id="On" approved="yes">
         <source>On</source>
         <note>Title</note>
@@ -1636,7 +2142,7 @@
         <target xml:lang="ro" state="translated">Doar utilizatorii cu plată pot modifica semnătura implicită a mobilului sau să o dezactiveze!</target>
       </trans-unit>
       <trans-unit id="OpenDraft" approved="yes">
-        <source>OpenDraft</source>
+        <source>Open draft</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Deschidere ciornă</target>
       </trans-unit>
@@ -1649,6 +2155,11 @@
         <source>Other</source>
         <note>default vcard types</note>
         <target xml:lang="ro" state="translated">Altele</target>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. It only helps us verify that the transaction was fulfilled on the AppStore's servers." approved="yes">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. It only helps us verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Echipa noastră de asistență pentru clienți va încerca să activeze manual abonamentul dacă sunteți de acord să atașați datele tehnice pe care AppStore le-a furnizat aplicației la momentul cumpărării. Aceste date nu includ detalii despre contul iTunes, ID-ul Apple, cardurile de credit asociate sau orice alte informații despre utilizator. Aceasta ne ajută doar să verificăm dacă tranzacția a fost îndeplinită pe serverele AppStore.</target>
       </trans-unit>
       <trans-unit id="Outbox" approved="yes">
         <source>Outbox</source>
@@ -1691,12 +2202,12 @@
         <target xml:lang="ro" state="translated">Parolă</target>
       </trans-unit>
       <trans-unit id="Password Mismatch" approved="yes">
-        <source>Password Mismatch</source>
+        <source>Passwords do not match</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Parolele nu se potrivesc</target>
       </trans-unit>
       <trans-unit id="Password Updated" approved="yes">
-        <source>Password Updated</source>
+        <source>Password updated</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Parolă actualizată</target>
       </trans-unit>
@@ -1750,10 +2261,10 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Text simplu</target>
       </trans-unit>
-      <trans-unit id="Please add a password for the following recipients" approved="yes">
-        <source>Please add a password for the following recipients</source>
+      <trans-unit id="Please add a password for the following recipients." approved="yes">
+        <source>Please add a password for the following recipients.</source>
         <note>alert description</note>
-        <target xml:lang="ro" state="translated">Adăugați o parolă pentru pentru următorii destinatari</target>
+        <target xml:lang="ro" state="translated">Adăugați o parolă pentru pentru următorii destinatari.</target>
       </trans-unit>
       <trans-unit id="Please check your cell phone for the verification code." approved="yes">
         <source>Please check your cell phone for the verification code.</source>
@@ -1765,10 +2276,10 @@
         <note>error message</note>
         <target xml:lang="ro" state="translated">Consultați-vă e-mailul pentru codul de verificare.</target>
       </trans-unit>
-      <trans-unit id="Please disable PGP Sending for following addresses" approved="yes">
-        <source>Please disable PGP Sending for following addresses</source>
+      <trans-unit id="Please disable PGP Sending for following addresses." approved="yes">
+        <source>Please disable PGP Sending for following addresses.</source>
         <note>alert description</note>
-        <target xml:lang="ro" state="translated">Dezactivați trimiterea PGP pentru următoarele adrese</target>
+        <target xml:lang="ro" state="translated">Dezactivați trimiterea PGP pentru următoarele adrese.</target>
       </trans-unit>
       <trans-unit id="Please input a valid cell phone number." approved="yes">
         <source>Please input a valid cell phone number.</source>
@@ -1780,10 +2291,35 @@
         <note>error message</note>
         <target xml:lang="ro" state="translated">Introduceți o adresă de e-mail validă.</target>
       </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Conectați-vă la contul ProtonMail pentru care modificați tipul de abonament pentru a putea finaliza tranzacția.</target>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Conectați-vă la contul ProtonMail pentru care modificați tipul de abonament pentru a putea finaliza activarea abonamentului.</target>
+      </trans-unit>
       <trans-unit id="Please pick a user name first!" approved="yes">
-        <source>Please pick a user name first!</source>
+        <source>Please pick a username first!</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Alegeți un nume de utilizator!</target>
+      </trans-unit>
+      <trans-unit id="Please provide a group name" approved="yes">
+        <source>Please provide a group name</source>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+        <target xml:lang="ro" state="translated">Furnizați numele grupului</target>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!" approved="yes">
+        <source>Please remove all attachments before changing the sender</source>
+        <note>when switch sender but email has attachments</note>
+        <target xml:lang="ro" state="translated">Eliminați toate fișierele atașate înainte de a schimba expeditorul</target>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group" approved="yes">
+        <source>Please select at least one email for the contact group</source>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+        <target xml:lang="ro" state="translated">Selectați cel puțin un membru pentru grupul de contacte</target>
       </trans-unit>
       <trans-unit id="Please select one of the following options:" approved="yes">
         <source>Please select one of the following options:</source>
@@ -1795,15 +2331,52 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Stabiliți o parolă.</target>
       </trans-unit>
-      <trans-unit id="Please use ProtonMail App login first" approved="yes">
-        <source>Please use ProtonMail App login first</source>
+      <trans-unit id="Please try a different domain." approved="yes">
+        <source>Please try a different domain.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Încercați un domeniu diferit.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different email address." approved="yes">
+        <source>Please try a different email address.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Încercați o adresă de e-mail diferită.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different password." approved="yes">
+        <source>Please try a different password.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Încercați o altă parolă.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different user name." approved="yes">
+        <source>Please try a different username.</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Alegeți alt nume de utilizator.</target>
+      </trans-unit>
+      <trans-unit id="Please try again." approved="yes">
+        <source>Please try again</source>
+        <note>
+
+</note>
+        <target xml:lang="ro" state="translated">Mai încercați</target>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation" approved="yes">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Deblocați aplicația pentru a continua activarea abonamentului</target>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first." approved="yes">
+        <source>Please use ProtonMail App login first.</source>
         <note>Description</note>
-        <target xml:lang="ro" state="translated">Folosiți mai întâi conectarea în aplicația ProtonMail</target>
+        <target xml:lang="ro" state="translated">Folosiți mai întâi conectarea în aplicația ProtonMail.</target>
       </trans-unit>
       <trans-unit id="Please use the web application to reset your password." approved="yes">
         <source>Please use the web application to reset your password.</source>
         <note>Alert</note>
         <target xml:lang="ro" state="translated">Folosiți aplicația web pentru a vă reseta parola.</target>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Folosiți versiunea web a ProtonMail pentru a modifica parola mesajelor!</target>
       </trans-unit>
       <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
         <source>Please use the web version of ProtonMail to change your passwords!</source>
@@ -1820,10 +2393,21 @@
         <note>The</note>
         <target xml:lang="ro" state="translated">Așteptați până se descarcă mesajul!</target>
       </trans-unit>
+      <trans-unit id="Please, manage it in your phone." approved="yes">
+        <source>Please, manage it in your phone.</source>
+        <note>
+ &amp; alert title</note>
+        <target xml:lang="ro" state="translated">Gestionarea se face în telefon.</target>
+      </trans-unit>
       <trans-unit id="Polish" approved="yes">
         <source>Polish</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Poloneză</target>
+      </trans-unit>
+      <trans-unit id="Portuguese" approved="yes">
+        <source>Portuguese</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Portugheză</target>
       </trans-unit>
       <trans-unit id="Portuguese Brazil" approved="yes">
         <source>Portuguese Brazil</source>
@@ -1841,7 +2425,7 @@
         <target xml:lang="ro" state="translated">Protecție</target>
       </trans-unit>
       <trans-unit id="Protection Entire App" approved="yes">
-        <source>Protection Entire App</source>
+        <source>Protection entire app</source>
         <note>settings protection section title</note>
         <target xml:lang="ro" state="translated">Protejare întreaga aplicație</target>
       </trans-unit>
@@ -1880,8 +2464,13 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">ProtonMail este momentan offline, pentru starea curentă verificați: https://twitter.com/protonmail</target>
       </trans-unit>
+      <trans-unit id="ProtonVPN included" approved="yes">
+        <source>ProtonVPN included</source>
+        <note>Service plan capability</note>
+        <target xml:lang="ro" state="translated">ProtonVPN inclus</target>
+      </trans-unit>
       <trans-unit id="Quick swipe actions" approved="yes">
-        <source>Quick swipe actions</source>
+        <source>Quick Swipe actions</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Acțiuni rapide glisare</target>
       </trans-unit>
@@ -1937,7 +2526,7 @@
       </trans-unit>
       <trans-unit id="Remove Star" approved="yes">
         <source>Remove Star</source>
-        <note>Action</note>
+        <note>un star message</note>
         <target xml:lang="ro" state="translated">Anulare marcare</target>
       </trans-unit>
       <trans-unit id="Repeat" approved="yes">
@@ -1955,10 +2544,30 @@
         <note>reply all action</note>
         <target xml:lang="ro" state="translated">Răspuns tuturor</target>
       </trans-unit>
+      <trans-unit id="Reply message" approved="yes">
+        <source>Reply message</source>
+        <note>composer view model impl</note>
+        <target xml:lang="ro" state="translated">Răspuns la mesaj</target>
+      </trans-unit>
+      <trans-unit id="ReplyAll" approved="yes">
+        <source>Reply all</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Răspuns tuturor</target>
+      </trans-unit>
       <trans-unit id="Report Bugs" approved="yes">
         <source>Report Bugs</source>
         <note>menu title</note>
         <target xml:lang="ro" state="translated">Raportare erori</target>
+      </trans-unit>
+      <trans-unit id="Report Phishing" approved="yes">
+        <source>Report Phishing</source>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+        <target xml:lang="ro" state="translated">Raportare înșelăciune</target>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." approved="yes">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <note>alert message</note>
+        <target xml:lang="ro" state="translated">Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.</target>
       </trans-unit>
       <trans-unit id="Resetting message cache ..." approved="yes">
         <source>Resetting message cache ...</source>
@@ -1975,18 +2584,23 @@
         <note>email verify code resend count down</note>
         <target xml:lang="ro" state="translated">Reîncercați după %d secunde</target>
       </trans-unit>
+      <trans-unit id="Romanian" approved="yes">
+        <source>Romanian</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Română</target>
+      </trans-unit>
       <trans-unit id="Russian" approved="yes">
         <source>Russian</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Rusă</target>
       </trans-unit>
       <trans-unit id="SENT" approved="yes">
-        <source>SENT</source>
+        <source>Sent</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">TRIMIS</target>
       </trans-unit>
       <trans-unit id="SPAM" approved="yes">
-        <source>SPAM</source>
+        <source>Spam</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">SPAM</target>
       </trans-unit>
@@ -2001,7 +2615,7 @@
         <target xml:lang="ro" state="translated">Server SRP</target>
       </trans-unit>
       <trans-unit id="STARRED" approved="yes">
-        <source>STARRED</source>
+        <source>Starred</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">MARCATE</target>
       </trans-unit>
@@ -2030,13 +2644,28 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Căutare</target>
       </trans-unit>
+      <trans-unit id="Select An Option" approved="yes">
+        <source>Select An Option</source>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+        <target xml:lang="ro" state="translated">Selectați o opțiune</target>
+      </trans-unit>
+      <trans-unit id="Select Color" approved="yes">
+        <source>Select Color</source>
+        <note>The title for the view where user can select the color for the group</note>
+        <target xml:lang="ro" state="translated">Selectare culoare</target>
+      </trans-unit>
+      <trans-unit id="Select your language" approved="yes">
+        <source>Select your language</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Selectare limbă</target>
+      </trans-unit>
       <trans-unit id="Send" approved="yes">
         <source>Send</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Trimite</target>
       </trans-unit>
       <trans-unit id="Send Verification Code" approved="yes">
-        <source>Send Verification Code</source>
+        <source>Send verification code</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Trimitere cod de verificare</target>
       </trans-unit>
@@ -2061,9 +2690,14 @@
         <target xml:lang="ro" state="translated">Verificare eșuată expeditor</target>
       </trans-unit>
       <trans-unit id="Sending Message" approved="yes">
-        <source>Sending Message</source>
+        <source>Sending message</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Se trimite mesajul</target>
+      </trans-unit>
+      <trans-unit id="Sending message" approved="yes">
+        <source>Sending message</source>
+        <note>Alert title</note>
+        <target xml:lang="ro" state="translated">Expediere mesaj</target>
       </trans-unit>
       <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" approved="yes">
         <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
@@ -2080,6 +2714,11 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Trimitere eșuată</target>
       </trans-unit>
+      <trans-unit id="Sent by ProtonMail with end-to-end encryption" approved="yes">
+        <source>Sent by ProtonMail with end-to-end encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="ro" state="translated">Trimis de ProtonMail cu criptare în ambele părți</target>
+      </trans-unit>
       <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
         <source>Sent by you with end-to-end encryption</source>
         <note>encryption lock description</note>
@@ -2089,6 +2728,11 @@
         <source>Server proofs not valid!</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Dovezile serverului nu sunt valide!</target>
+      </trans-unit>
+      <trans-unit id="Service Plan" approved="yes">
+        <source>Service Plan</source>
+        <note>menu title</note>
+        <target xml:lang="ro" state="translated">Abonament</target>
       </trans-unit>
       <trans-unit id="Set Password" approved="yes">
         <source>Set Password</source>
@@ -2126,7 +2770,7 @@
         <target xml:lang="ro" state="translated">Partajați-l cu prietenii</target>
       </trans-unit>
       <trans-unit id="Sign Out" approved="yes">
-        <source>Sign Out</source>
+        <source>Log out</source>
         <note>Action</note>
         <target xml:lang="ro" state="translated">Deconectare</target>
       </trans-unit>
@@ -2160,8 +2804,13 @@
         <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
         <target xml:lang="ro" state="translated">Amânare până la</target>
       </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" approved="yes">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <note>Error message for beta users</note>
+        <target xml:lang="ro" state="translated">Ne pare rău, nu putem procesa achizițiile în versiunea beta a aplicației. Vă mulțumim pentru participarea la testul nostru beta public!</target>
+      </trans-unit>
       <trans-unit id="Space Warning" approved="yes">
-        <source>Space Warning</source>
+        <source>Space warning</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Avertizare spațiu</target>
       </trans-unit>
@@ -2182,7 +2831,7 @@
         <target xml:lang="ro" state="translated">Spaniolă</target>
       </trans-unit>
       <trans-unit id="Srp single password keyslat invalid!" approved="yes">
-        <source>Srp single password keyslat invalid!</source>
+        <source>Srp single password keysalt invalid!</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Șirul unic al parolei unice SRP nevalid!</target>
       </trans-unit>
@@ -2238,6 +2887,11 @@
         <note>Action</note>
         <target xml:lang="ro" state="translated">Asistență ProtonMail</target>
       </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)" approved="yes">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <note>Service plan capability; i = 2</note>
+        <target xml:lang="ro" state="translated">Acceptare %i domenii personale (ex. nume@domeniuldvs.com)</target>
+      </trans-unit>
       <trans-unit id="Swipe Left to Right" approved="yes">
         <source>Swipe Left to Right</source>
         <note>settings swipe actions section title</note>
@@ -2254,12 +2908,12 @@
         <target xml:lang="ro" state="translated">Sistemul nu poate copia afișierul</target>
       </trans-unit>
       <trans-unit id="TRASH" approved="yes">
-        <source>TRASH</source>
+        <source>Trash</source>
         <note>mail location title</note>
         <target xml:lang="ro" state="translated">GUNOI</target>
       </trans-unit>
       <trans-unit id="Take a Photo" approved="yes">
-        <source>Take a Photo</source>
+        <source>Take photo</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Faceți o fotografie</target>
       </trans-unit>
@@ -2270,11 +2924,11 @@
       </trans-unit>
       <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
         <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
-        <note>No comment provided by engineer.</note>
+        <note/>
         <target xml:lang="ro" state="translated">Vă mulțumim pentru trimiterea raportului de erori.  V-am adăugat raportul la sistem nostru de urmărire a erorilor.</target>
       </trans-unit>
       <trans-unit id="The Password is wrong." approved="yes">
-        <source>The Password is wrong.</source>
+        <source>The password is wrong.</source>
         <note>update password error</note>
         <target xml:lang="ro" state="translated">Parola este greșită.</target>
       </trans-unit>
@@ -2283,10 +2937,22 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">ProtonMail este momentan offline...</target>
       </trans-unit>
+      <trans-unit id="The UserName have been taken." approved="yes">
+        <source>The username have been taken.</source>
+        <note>
+</note>
+        <target xml:lang="ro" state="translated">Numele de utilizator este deja luat.</target>
+      </trans-unit>
       <trans-unit id="The authentication credentials are invalid." approved="yes">
         <source>The authentication credentials are invalid.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Acreditările de autentificare nu sunt valide.</target>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired." approved="yes">
+        <source>The authentication token has expired.</source>
+        <note>
+</note>
+        <target xml:lang="ro" state="translated">Semnătura pentru autentificare a expirat.</target>
       </trans-unit>
       <trans-unit id="The current standard" approved="yes">
         <source>The current standard</source>
@@ -2298,13 +2964,13 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Numele afișat este acum %@.</target>
       </trans-unit>
-      <trans-unit id="The draft cache is broken please try again" approved="yes">
-        <source>The draft cache is broken please try again</source>
+      <trans-unit id="The draft cache is broken. Please try again." approved="yes">
+        <source>The draft cache is broken. Please try again.</source>
         <note>Description</note>
-        <target xml:lang="ro" state="translated">Bufferul ciornei este corupt. Reîncercați.</target>
+        <target xml:lang="ro" state="translated">Bufferul ciornei este corupt. Mai încercați.</target>
       </trans-unit>
       <trans-unit id="The draft format incorrectly sending failed!" approved="yes">
-        <source>The draft format incorrectly sending failed!</source>
+        <source>Sending failed. There was an error with the draft format.</source>
         <note>error when sending the message</note>
         <target xml:lang="ro" state="translated">Formatul ciornei nu este corect. Trimitere eșuată!</target>
       </trans-unit>
@@ -2313,15 +2979,41 @@
         <note>key size note part 1</note>
         <target xml:lang="ro" state="translated">Cel mai mare nivel de criptare disponibil.</target>
       </trans-unit>
+      <trans-unit id="The label name is duplicate" approved="yes">
+        <source>The label name is duplicate</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Numele etichetei există deja</target>
+      </trans-unit>
       <trans-unit id="The mailbox password is incorrect." approved="yes">
         <source>The mailbox password is incorrect.</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Parola mesajelor nu este corectă.</target>
       </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d" approved="yes">
+        <source>The maximum number of distinct recipients is %d</source>
+        <note>Alert message</note>
+        <target xml:lang="ro" state="translated">Se acceptă maxim %d destinatari unici.</target>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d." approved="yes">
+        <source>The maximum number of labels is %d.</source>
+        <note>*
+ *  LabelsViewController</note>
+        <target xml:lang="ro" state="translated">Se acceptă maxim %d etichete.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty" approved="yes">
+        <source>The new password can't be empty</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Parola nouă nu poate fi goală</target>
+      </trans-unit>
       <trans-unit id="The new password can't empty." approved="yes">
         <source>The new password can't empty.</source>
         <note>update password error</note>
         <target xml:lang="ro" state="translated">Parola nouă nu poate fi goală.</target>
+      </trans-unit>
+      <trans-unit id="The new password not match" approved="yes">
+        <source>Passwords do not match</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Parolele nu coincid</target>
       </trans-unit>
       <trans-unit id="The new password not match." approved="yes">
         <source>The new password not match.</source>
@@ -2358,6 +3050,12 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Dimensiunea totală a atașamentelor nu poate depăși 25 MB</target>
       </trans-unit>
+      <trans-unit id="The verification email invalid" approved="yes">
+        <source>Invalid verification email</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="ro" state="translated">E-mail de verificare nevalid</target>
+      </trans-unit>
       <trans-unit id="The verification failed!" approved="yes">
         <source>The verification failed!</source>
         <note>Error</note>
@@ -2367,6 +3065,16 @@
         <source>There was an error creating or loading the application's saved data.</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">A apărut o eroare la crearea sau încărcarea datelor salvate ale aplicației.</target>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app." approved="yes">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <note>Alert message</note>
+        <target xml:lang="ro" state="translated">Aceasta ar putea dura un timp. Nu închideți aplicația.</target>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book." approved="yes">
+        <source>This contact belongs to your address book.</source>
+        <note>alert desc</note>
+        <target xml:lang="ro" state="translated">Acest contact aparține agendei dvs.</target>
       </trans-unit>
       <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
         <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
@@ -2378,6 +3086,11 @@
         <note>spam score warning</note>
         <target xml:lang="ro" state="translated">Acest e-mail pare să fie de la o adresă ProtonMail, dar a venit din afara sistemului nostru și nu respectă cerințele de autenticitate. Ar putea fi falsificat sau redirecționat eronat!</target>
       </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." approved="yes">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <note>spam score warning</note>
+        <target xml:lang="ro" state="translated">Acest mesaj poate fi o încercare de înșelăciune. Verificați expeditorul și conținutul pentru a vă asigura că acestea sunt legitime.</target>
+      </trans-unit>
       <trans-unit id="Title" approved="yes">
         <source>Title</source>
         <note>contacts talbe cell Title title</note>
@@ -2388,10 +3101,17 @@
         <note>Title</note>
         <target xml:lang="ro" state="translated">Către</target>
       </trans-unit>
-      <trans-unit id="To prevent abuse of ProtonMail,\r\n we need to verify that you are human." approved="yes">
-        <source>To prevent abuse of ProtonMail,\r\n we need to verify that you are human.</source>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human." approved="yes">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
         <note>human verification notes</note>
-        <target xml:lang="ro" state="translated">Pentru a preveni abuzarea ProtonMail,\r\n verificăm dacă sunteți persoană.</target>
+        <target xml:lang="ro" state="translated">Pentru a preveni abuzarea ProtonMail,&amp;#13;
+ verificăm dacă sunteți persoană.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Pentru a reseta parola mesajelor, vă rugăm să folosiți versiunea web a ProtonMail de la protonmail.com</target>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
         <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
@@ -2402,6 +3122,17 @@
         <source>To:</source>
         <note>message To: feild</note>
         <target xml:lang="ro" state="translated">Către:</target>
+      </trans-unit>
+      <trans-unit id="Token expired" approved="yes">
+        <source>Token expired</source>
+        <note>*
+ *  API Error &amp; alert title</note>
+        <target xml:lang="ro" state="translated">Semnătură expirată</target>
+      </trans-unit>
+      <trans-unit id="Too many recipients" approved="yes">
+        <source>Too many recipients</source>
+        <note>Alert title</note>
+        <target xml:lang="ro" state="translated">Prea mulți destinatari</target>
       </trans-unit>
       <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
         <source>TouchID is not enrolled, enable it in the system Settings</source>
@@ -2445,13 +3176,18 @@
         <note>Placeholder</note>
         <target xml:lang="ro" state="translated">Cod doi factori</target>
       </trans-unit>
+      <trans-unit id="Type casting error" approved="yes">
+        <source>Type casting error</source>
+        <note>Internal type casting error</note>
+        <target xml:lang="ro" state="translated">Eroare de asociere</target>
+      </trans-unit>
       <trans-unit id="URL" approved="yes">
         <source>URL</source>
         <note>default vcard types</note>
         <target xml:lang="ro" state="translated">URL</target>
       </trans-unit>
       <trans-unit id="USER LOGIN" approved="yes">
-        <source>USER LOGIN</source>
+        <source>User log in</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">AUTENTIFICARE</target>
       </trans-unit>
@@ -2465,6 +3201,12 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Imposibil de conectat la server</target>
       </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@" approved="yes">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <note>
+</note>
+        <target xml:lang="ro" state="translated">Imposibil de construit o adresă URL validă cu următoarea cale: %@</target>
+      </trans-unit>
       <trans-unit id="Unable to create SRP Client!" approved="yes">
         <source>Unable to create SRP Client!</source>
         <note>Description</note>
@@ -2474,6 +3216,11 @@
         <source>Unable to decrypt message.</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Nu se poate decripta mesajul.</target>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline" approved="yes">
+        <source>Unable to edit this message offline</source>
+        <note>Description</note>
+        <target xml:lang="ro" state="translated">Acest mesaj nu poate fi editat deconectat</target>
       </trans-unit>
       <trans-unit id="Unable to generate hash password!" approved="yes">
         <source>Unable to generate hash password!</source>
@@ -2505,10 +3252,12 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Nu se poate prelucra răspunsul</target>
       </trans-unit>
-      <trans-unit id="Unable to parse the response object:\n%@" approved="yes">
-        <source>Unable to parse the response object:\n%@</source>
+      <trans-unit id="Unable to parse the response object:&#10;%@" approved="yes">
+        <source>Unable to parse the response object:
+%@</source>
         <note>Description</note>
-        <target xml:lang="ro" state="translated">Nu se poate prelucra răspunsul obiectului:\n%@</target>
+        <target xml:lang="ro" state="translated">Nu se poate analiza obiectul de răspuns:
+%@</target>
       </trans-unit>
       <trans-unit id="Unable to parse token" approved="yes">
         <source>Unable to parse token</source>
@@ -2516,7 +3265,7 @@
         <target xml:lang="ro" state="translated">Nu se poate prelucra semnătura</target>
       </trans-unit>
       <trans-unit id="Unable to send the email" approved="yes">
-        <source>Unable to send the email</source>
+        <source>Unable to send the email.</source>
         <note>error when sending the message</note>
         <target xml:lang="ro" state="translated">Mesajul nu poate fi trimis</target>
       </trans-unit>
@@ -2526,9 +3275,14 @@
         <target xml:lang="ro" state="translated">Revenire</target>
       </trans-unit>
       <trans-unit id="Unknow Error" approved="yes">
-        <source>Unknow Error</source>
+        <source>Unknown error</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Eroare necunoscută</target>
+      </trans-unit>
+      <trans-unit id="Unknow file" approved="yes">
+        <source>Unknown file</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Fișier necunoscut</target>
       </trans-unit>
       <trans-unit id="Unknown" approved="yes">
         <source>Unknown</source>
@@ -2540,10 +3294,31 @@
         <note>Error</note>
         <target xml:lang="ro" state="translated">Eroare necunoscută</target>
       </trans-unit>
+      <trans-unit id="Unkonw Version" approved="yes">
+        <source>Unknown version</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Versiune necunoscută</target>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day" approved="yes">
+        <source>Unlimited messages sent/day</source>
+        <note>Service plan capability;</note>
+        <target xml:lang="ro" state="translated">Mesaje trimise/zi nelimitate</target>
+      </trans-unit>
       <trans-unit id="Unread" approved="yes">
         <source>Unread</source>
-        <note>VoiceOver: email is not read yet</note>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
         <target xml:lang="ro" state="translated">Necitit</target>
+      </trans-unit>
+      <trans-unit id="Unsupported file type" approved="yes">
+        <source>Unsupported file type</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Tip de fișier nesuportat</target>
+      </trans-unit>
+      <trans-unit id="Up to %i users" approved="yes">
+        <source>Up to %i users</source>
+        <note>Service plan capability; i = 6</note>
+        <target xml:lang="ro" state="translated">Până la %i utilizatori</target>
       </trans-unit>
       <trans-unit id="Update" approved="yes">
         <source>Update</source>
@@ -2560,10 +3335,30 @@
         <note>update notification email error title</note>
         <target xml:lang="ro" state="translated">Actualizare e-mail de notificare</target>
       </trans-unit>
+      <trans-unit id="Update Now" approved="yes">
+        <source>Update Now</source>
+        <note>title</note>
+        <target xml:lang="ro" state="translated">Actualizați acum</target>
+      </trans-unit>
+      <trans-unit id="Update Required" approved="yes">
+        <source>Update Required</source>
+        <note>title</note>
+        <target xml:lang="ro" state="translated">Actualizare necesară</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features" approved="yes">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="ro" state="translated">Treceți la un plan plătit pentru a beneficia de mai multe funcții</target>
+      </trans-unit>
       <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
         <source>Upgrade to a paid plan to send from your %@ address</source>
         <note>Error</note>
         <target xml:lang="ro" state="translated">Treceți la un plan plătit pentru a trimite de la adresa %@</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features." approved="yes">
+        <source>Upgrade to get all paid features.</source>
+        <note>alert description</note>
+        <target xml:lang="ro" state="translated">Faceți upgrade pentru a avea toate funcțiile cu plată.</target>
       </trans-unit>
       <trans-unit id="Upgrading is not possible in the app." approved="yes">
         <source>Upgrading is not possible in the app.</source>
@@ -2586,14 +3381,26 @@
         <target xml:lang="ro" state="translated">URL</target>
       </trans-unit>
       <trans-unit id="User already exist!" approved="yes">
-        <source>User already exist!</source>
+        <source>Username already taken</source>
         <note>error when user already exist</note>
         <target xml:lang="ro" state="translated">Utilizatorul există deja!</target>
       </trans-unit>
       <trans-unit id="User is available!" approved="yes">
-        <source>User is available!</source>
-        <note>No comment provided by engineer.</note>
+        <source>Username is available</source>
+        <note/>
         <target xml:lang="ro" state="translated">Nume disponibil!</target>
+      </trans-unit>
+      <trans-unit id="User name exist" approved="yes">
+        <source>Username exist</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="ro" state="translated">Utilizator existent</target>
+      </trans-unit>
+      <trans-unit id="User name invalid" approved="yes">
+        <source>Invalid username</source>
+        <note>
+ &amp; alert title</note>
+        <target xml:lang="ro" state="translated">Utilizator nevalid</target>
       </trans-unit>
       <trans-unit id="Username" approved="yes">
         <source>Username</source>
@@ -2620,6 +3427,26 @@
         <note>error details</note>
         <target xml:lang="ro" state="translated">Verificarea semnăturii acestui conținut a eșuat</target>
       </trans-unit>
+      <trans-unit id="Version %@ %@" approved="yes">
+        <source>Version %@ %@</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Versiunea %@ %@</target>
+      </trans-unit>
+      <trans-unit id="View Headers" approved="yes">
+        <source>View Headers</source>
+        <note>message details-&gt; more action-&gt; view headers</note>
+        <target xml:lang="ro" state="translated">Afișare antete</target>
+      </trans-unit>
+      <trans-unit id="View Plans" approved="yes">
+        <source>View Plans</source>
+        <note>Action</note>
+        <target xml:lang="ro" state="translated">Afișare planuri</target>
+      </trans-unit>
+      <trans-unit id="Warning" approved="yes">
+        <source>Warning</source>
+        <note>Title</note>
+        <target xml:lang="ro" state="translated">Avertizare</target>
+      </trans-unit>
       <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
         <source>Warning: Before you pass the human check you can't sent email!!!</source>
         <note>human check warning description</note>
@@ -2629,6 +3456,16 @@
         <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
         <note>Description</note>
         <target xml:lang="ro" state="translated">Avertizare: Nu ați setat un e-mail de recuperare pentru a vă putea recuperarea contul dacă vă uitați parola. Continuați fără e-mail de recuperare?</target>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan." approved="yes">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">V-am activat cu succes abonamentul. Reporniți aplicația pentru a începe să utilizați noul tip de abonament.</target>
+      </trans-unit>
+      <trans-unit id="We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you." approved="yes">
+        <source>We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Nu am putut corela produsul din AppStore cumpărat cu vreunul din produsele de pe serverul nostru. Completați un raport de erori și echipa noastră de suport vă va contacta.</target>
       </trans-unit>
       <trans-unit id="We will send a verification code to the cell phone above." approved="yes">
         <source>We will send a verification code to the cell phone above.</source>
@@ -2646,14 +3483,14 @@
         <target xml:lang="ro" state="translated">Am dori să știm ce putem face mai bine.</target>
       </trans-unit>
       <trans-unit id="Welcome to ProtonMail!" approved="yes">
-        <source>Welcome to ProtonMail!</source>
+        <source>Welcome to ProtonMail</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">Bine ați venit la ProtonMail!</target>
       </trans-unit>
-      <trans-unit id="What people see in the \&quot;From\&quot; field." approved="yes">
-        <source>What people see in the \"From\" field.</source>
+      <trans-unit id="What people see in the &quot;From&quot; field." approved="yes">
+        <source>What people see in the "From" field.</source>
         <note>Description</note>
-        <target xml:lang="ro" state="translated">Ce văd destinatarii în câmpul \"De la\".</target>
+        <target xml:lang="ro" state="translated">Ceea ce văd destinatarii în câmpul "De la".</target>
       </trans-unit>
       <trans-unit id="When you send an email, this is the name that appears in the sender field." approved="yes">
         <source>When you send an email, this is the name that appears in the sender field.</source>
@@ -2664,6 +3501,22 @@
         <source>Work</source>
         <note>default vcard types</note>
         <target xml:lang="ro" state="translated">Serviciu</target>
+      </trans-unit>
+      <trans-unit id="Wrong verification code" approved="yes">
+        <source>Wrong verification code</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="ro" state="translated">Cod de verificare incorect</target>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for " approved="yes">
+        <source>Yes, activate it for </source>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+        <target xml:lang="ro" state="translated">Da, activare pentru </target>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment" approved="yes">
+        <source>Yes, attach details of payment</source>
+        <note>Error message</note>
+        <target xml:lang="ro" state="translated">Da, atașez detaliile plății</target>
       </trans-unit>
       <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
         <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
@@ -2730,10 +3583,22 @@
         <note>Description</note>
         <target xml:lang="ro" state="translated">Noul dvs. cont de e-mail criptat a fost setat și este pregătit pentru trimiterea și primirea mesajelor criptate.</target>
       </trans-unit>
-      <trans-unit id="Your new secure email\r\n account is ready." approved="yes">
-        <source>Your new secure email\r\n account is ready.</source>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready." approved="yes">
+        <source>Your new secure email&#13;
+ account is ready.</source>
         <note>view top title</note>
-        <target xml:lang="ro" state="translated">Noul cont de e-mail\r\n securizat este pregătit.</target>
+        <target xml:lang="ro" state="translated">Noul cont de e-mail&amp;#13;
+ securizat este gata.</target>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until" approved="yes">
+        <source>Your plan is currently active until</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="ro" state="translated">Abonamentul este activ până la</target>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on" approved="yes">
+        <source>Your plan will automatically renew on</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="ro" state="translated">Abonamentul se va autoreînnoi la</target>
       </trans-unit>
       <trans-unit id="Your signature has been updated." approved="yes">
         <source>Your signature has been updated.</source>
@@ -2776,14 +3641,24 @@
         <target xml:lang="ro" state="translated">închidere</target>
       </trans-unit>
       <trans-unit id="days" approved="yes">
-        <source>days</source>
+        <source>Days</source>
         <note>Title</note>
         <target xml:lang="ro" state="translated">zile</target>
+      </trans-unit>
+      <trans-unit id="for one year" approved="yes">
+        <source>for one year</source>
+        <note>Buy button second line</note>
+        <target xml:lang="ro" state="translated">pentru un an</target>
       </trans-unit>
       <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!" approved="yes">
         <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
         <note>contacts api error when fetch</note>
         <target xml:lang="ro" state="translated">get contacts() a eșuat, peopleOrderedByUsersPreference a returnat null!!</target>
+      </trans-unit>
+      <trans-unit id="hours" approved="yes">
+        <source>Hours</source>
+        <note/>
+        <target xml:lang="ro" state="translated">Ore</target>
       </trans-unit>
       <trans-unit id="inline attachments" approved="yes">
         <source>inline attachments</source>
@@ -2817,26 +3692,9 @@
       </trans-unit>
     </body>
   </file>
-  <file original="ProtonMail/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ro">
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="ro">
     <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
-    </header>
-    <body>
-      <trans-unit id="CFBundleDisplayName" approved="yes">
-        <source>ProtonMail</source>
-        <note>Bundle display name</note>
-        <target xml:lang="ro" state="translated">ProtonMail</target>
-      </trans-unit>
-      <trans-unit id="CFBundleName" approved="yes">
-        <source>$(PRODUCT_NAME)</source>
-        <note>Bundle name</note>
-        <target xml:lang="ro" state="translated">$(PRODUCT_NAME)</target>
-      </trans-unit>
-    </body>
-  </file>
-  <file original="ProtonMail/en.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="ro">
-    <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
     </header>
     <body>
       <trans-unit id="App Extension API is not available in this version of iOS" approved="yes">
@@ -2867,7 +3725,7 @@
       <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension" approved="yes">
         <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="ro" state="translated">Eșuare obținere URL din vizualizarea web. Vizualizarea web trebuie să fie complet încărcată când se apelează extensia pentru parole</target>
+        <target xml:lang="ro" state="translated">Eșuare obținere URL din vizualizarea web. Vizualizarea web trebuie să fie complet încărcată când se apelează extensia pentru parole.</target>
       </trans-unit>
       <trans-unit id="Failed to parse information returned by Password Extension" approved="yes">
         <source>Failed to parse information returned by Password Extension</source>
@@ -2877,7 +3735,24 @@
       <trans-unit id="Password Extension was cancelled by the user" approved="yes">
         <source>Password Extension was cancelled by the user</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="ro" state="translated">Extensia pentru parole a fost închisă de către utilizator</target>
+        <target xml:lang="ro" state="translated">Extensia pentru parole a fost anulată de către utilizator</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ro">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>Siri</source>
+        <note>Bundle display name</note>
+        <target xml:lang="ro" state="translated">Siri</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="ro" state="translated">$(PRODUCT_NAME)</target>
       </trans-unit>
     </body>
   </file>
