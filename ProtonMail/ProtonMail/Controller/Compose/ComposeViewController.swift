@@ -258,7 +258,6 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         let body = self.viewModel.getHtmlBody()
         self.htmlEditor.setHtml(body: body)
         
-        // update draft if first time create
         if viewModel.getActionType() != .openDraft {
             self.viewModel.collectDraft (
                 self.viewModel.getSubject(),
@@ -267,20 +266,24 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                 pwd:self.encryptionPassword,
                 pwdHit:self.encryptionPasswordHint
             )
-            self.viewModel.updateDraft()
         }
-        
+
         guard let addr = self.viewModel.getDefaultSendAddress() else {
             return
         }
+        
+        var isFromValid = true
         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
         if let origAddr = self.viewModel.fromAddress() {
             if origAddr.send == 0 {
                 self.viewModel.updateAddressID(addr.address_id).done {
                     //
                 }.catch({ (_) in
-                    
+                    if self.viewModel.getActionType() != .openDraft {
+                        self.viewModel.updateDraft()
+                    }
                 })
+                isFromValid = false
                 if origAddr.email.lowercased().range(of: "@pm.me") != nil {
                     guard userCachedStatus.isPMMEWarningDisabled == false else {
                         return
@@ -295,6 +298,10 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
+        }
+        // update draft if first time create
+        if viewModel.getActionType() != .openDraft && isFromValid {
+            self.viewModel.updateDraft()
         }
     }
     

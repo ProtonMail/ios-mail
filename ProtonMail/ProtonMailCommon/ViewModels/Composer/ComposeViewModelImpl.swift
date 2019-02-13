@@ -176,8 +176,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
                         
                         att.keyPacket = newKeyPack
                         att.keyChanged = true
-                    } catch {
-                        
+                    } catch let err as NSError{
+                        err.upload(toAnalytics: "updateAddressID atts")
                     }
                 }
                 
