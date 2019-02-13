@@ -220,21 +220,20 @@ class CheckUserExist : ApiRequest<CheckUserExistResponse> {
 
 class CheckUserExistResponse : ApiResponse {
     enum AvailabilityStatus {
-        case available                          // "Status" : 0
-        case invalidCharacters                  // "Status" : 1
-        case startWithSpecialCharacterForbidden // "Status" : 2
-        case endWithSpecialCharacterForbidden   // "Status" : 3
-        case tooLong                            // "Status" : 4
-        case unavailable(suggestions: [String]) // "Status" : 5
+        case available
+        case invalidCharacters
+        case startWithSpecialCharacterForbidden
+        case endWithSpecialCharacterForbidden
+        case tooLong
+        case unavailable(suggestions: [String])
         
         init?(code: Int, suggestions: [String]) {
             switch code {
-            case 0: self = .available
-            case 1: self = .invalidCharacters
-            case 2: self = .startWithSpecialCharacterForbidden
-            case 3: self = .endWithSpecialCharacterForbidden
-            case 4: self = .tooLong
-            case 5: self = .unavailable(suggestions: suggestions)
+            case 12102: self = .invalidCharacters
+            case 12103: self = .startWithSpecialCharacterForbidden
+            case 12104: self = .endWithSpecialCharacterForbidden
+            case 12105: self = .tooLong
+            case 12106: self = .unavailable(suggestions: suggestions)
             default: return nil
             }
         }
@@ -242,15 +241,22 @@ class CheckUserExistResponse : ApiResponse {
     
     internal var availabilityStatus : AvailabilityStatus?
     
+    override func ParseHttpError(_ error: NSError, response: [String : Any]?) {
+        guard let response = response else { return }
+        
+        PMLog.D(response.json(prettyPrinted: true))
+        guard let statusRaw = response["Code"] as? Int else {
+            return
+        }
+        let details = response["Details"] as? [String: Any]
+        let suggestions = details?["Suggestions"] as? [String]
+        
+        self.availabilityStatus = AvailabilityStatus(code: statusRaw, suggestions: suggestions ?? [])
+    }
+    
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         PMLog.D(response.json(prettyPrinted: true))
-        guard let statusRaw = response["Status"] as? Int,
-            let suggestions = response["Suggestions"] as? [String] else
-        {
-            return false
-        }
-        
-        self.availabilityStatus = AvailabilityStatus(code: statusRaw, suggestions: suggestions)
+        self.availabilityStatus = AvailabilityStatus.available
         return true
     }
 }
