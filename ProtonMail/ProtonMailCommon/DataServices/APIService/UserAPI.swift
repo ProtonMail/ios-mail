@@ -27,6 +27,7 @@
 
 
 import Foundation
+import PromiseKit
 
 typealias CheckUserNameBlock = (Result<CheckUserExistResponse.AvailabilityStatus>) -> Void
 typealias CreateUserBlock = (Bool, Bool, String, Error?) -> Void
