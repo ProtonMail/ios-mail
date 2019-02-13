@@ -118,7 +118,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var leftSwipeAction : MessageSwipeAction  = .archive
     private var rightSwipeAction : MessageSwipeAction = .trash
     
-    
+    //
+    private var lastNetworkStatus : NetworkStatus? = nil
     
     ///
     var selectedIDs: NSMutableSet = NSMutableSet()
@@ -1089,7 +1090,6 @@ extension MailboxViewController : TopMessageViewDelegate {
             }
         }
     }
-    
     internal func updateInterfaceWithReachability(_ reachability : Reachability) {
         let netStatus = reachability.currentReachabilityStatus()
         switch (netStatus){
@@ -1100,13 +1100,28 @@ extension MailboxViewController : TopMessageViewDelegate {
         case .ReachableViaWWAN:
             PMLog.D("Reachable WWAN")
             self.hideTopMessage()
-
+            self.afterNetworkChange(status: netStatus)
         case .ReachableViaWiFi:
             PMLog.D("Reachable WiFi")
             self.hideTopMessage()
-
+            self.afterNetworkChange(status: netStatus)
         default:
             PMLog.D("Reachable default unknow")
+        }
+        lastNetworkStatus = netStatus
+    }
+    
+    internal func afterNetworkChange(status: NetworkStatus) {
+        guard let oldStatus = lastNetworkStatus else {
+            return
+        }
+        
+        guard oldStatus == .NotReachable else {
+            return
+        }
+        
+        if status == .ReachableViaWWAN || status == .ReachableViaWiFi {
+            self.retry()
         }
     }
     
