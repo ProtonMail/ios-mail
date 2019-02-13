@@ -1,6 +1,6 @@
 //
-//  Label.swift
-//  ProtonMail
+//  LabelCell.swift
+//  ProtonMail - Created on 2/7/19.
 //
 //
 //  The MIT License
@@ -24,65 +24,48 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
-
-import Foundation
-import CoreData
-
-
-public class Label: NSManagedObject {
     
-    @NSManaged public var labelID: String
-    @NSManaged public var name: String
-    
-    /// label color
-    @NSManaged public var color: String
-    
-    /// 0 = show the label in the sidebar, 1 = hide label from sidebar.
-    @NSManaged public var isDisplay: Bool
-    
-    /// 1 => Message Labels (default), 2 => Contact Groups
-    @NSManaged public var type: NSNumber
-    
-    /// 0 => inclusive (label), 1 => exclusive (folder), message type only
-    @NSManaged public var exclusive: Bool
-    
-    /// start at 1 , lower number on the top
-    @NSManaged public var order: NSNumber
-    
-    @NSManaged public var messages: NSSet
-    @NSManaged public var emails: NSSet
-}
 
+import UIKit
 
-// lableID 
-//    case draft = 1
-//    case inbox = 0
-//    case outbox = 2
-//    case spam = 4
-//    case archive = 6
-//    case trash = 3
-//    case allmail = 5
-//    case starred = 10
+class LabelCell: UICollectionViewCell {
 
-
-extension Label {
+    @IBOutlet weak var label: UILabel!
     
-    var spam : Bool {
-        get {
-            return self.labelID == "4"
-        }
+    /// expose this later
+    private static let font = Fonts.h6.light
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.label.sizeToFit()
+        self.label.clipsToBounds = true
+        self.label.layer.borderWidth = 1
+        self.label.layer.cornerRadius = 2
+        self.label.font = LabelCell.font
+    }
+
+    func config(color: String, text: String) {
+        self.label.text = LabelCell.buildText(text)
+        self.label.textColor = UIColor(hexString: color, alpha: 1.0)
+        self.label.layer.borderColor = UIColor(hexString: color, alpha: 1.0).cgColor
     }
     
-    var trash : Bool {
-        get {
-            return self.labelID == "3"
-        }
+    func size() -> CGSize {
+        return self.label.sizeThatFits(CGSize.zero)
     }
     
-    var draft : Bool {
-        get {
-            return self.labelID == "1"
+    class private func buildText(_ text: String) -> String {
+        if text.isEmpty {
+            return text
         }
+        return "  \(text)  "
     }
+    
+    class func estimateSize(_ text: String) -> CGSize {
+         let size = buildText(text).size(withAttributes: [NSAttributedString.Key.font: font])
+        
+        return size
+    }
+    
 }

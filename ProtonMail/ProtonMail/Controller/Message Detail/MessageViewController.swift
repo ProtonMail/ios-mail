@@ -534,6 +534,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
         self.emailView?.emailHeader.updateAttConstraints(false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.emailView?.updateFrame()
+    }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self, name: .touchStatusBar, object: nil)

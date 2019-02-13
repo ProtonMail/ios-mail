@@ -89,6 +89,9 @@ class UpgradeAlertViewController: UIViewController, ViewModelProtocol {
     
     //TODO:: Rename to learnmore later
     @IBAction func cancelTapped(_ sender: Any) {
+        self.dismiss()
+    }
+    @IBAction func learnMore(_ sender: Any) {
         self.dismiss(animated: true, completion: {
             self.delegate?.learnMore()
         })

@@ -80,10 +80,10 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.emailHeader.makeConstraints()
         self.contentWebView.mas_updateConstraints { (make) -> Void in
             make?.removeExisting = true
-            let _ = make?.top.equalTo()(self)
-            let _ = make?.left.equalTo()(self)
-            let _ = make?.right.equalTo()(self)
-            let _ = make?.bottom.equalTo()(self.bottomActionView.mas_top)
+            make?.top.equalTo()(self)
+            make?.left.equalTo()(self)
+            make?.right.equalTo()(self)
+            make?.bottom.equalTo()(self.bottomActionView.mas_top)
         }
         
         self.bottomActionView.mas_makeConstraints { (make) in
@@ -95,8 +95,18 @@ class EmailView: UIView, UIScrollViewDelegate{
         }
     }
     
+    func updateFrame() {        
+        let offsetMargin = self.contentWebView.layoutMargins.left + self.contentWebView.layoutMargins.right
+        /// this handle the extra usless margin in iphone x. it related with MinimumLayoutMargins start ios 11. deal with it later.
+        let offset = (offsetMargin - 20) > 0 ? offsetMargin : 0
+        let width = self.bounds.width - offset
+        self.emailHeader.frame = CGRect(x: self.emailHeader.frame.origin.x,
+                                        y: self.emailHeader.frame.origin.y,
+                                        width: width, height: self.emailHeader.getHeight())
+    }
+    
     func rotate() {
-        self.emailHeader.frame = CGRect(x: 0, y: 0, width: self.bounds.width, height: self.emailHeader.getHeight())
+        self.updateFrame()
         self.emailHeader.makeConstraints()
         self.emailHeader.updateHeaderLayout()
     }
@@ -236,8 +246,7 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        // for iPad in multitasking mode - change width of header
-        self.emailHeader.frame = CGRect(x: self.emailHeader.frame.origin.x, y: self.emailHeader.frame.origin.y, width: self.bounds.width, height: self.emailHeader.frame.height)
+        self.updateFrame()
     }
 }
 

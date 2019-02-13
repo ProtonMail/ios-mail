@@ -182,9 +182,6 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             let popup = segue.destination as! UpgradeAlertViewController
             popup.delegate = self
             sharedVMService.upgradeAlert(contacts: popup)
-//            self.setPresentationStyleForSelfController(self,
-//                                                       presentingController: popup,
-//                                                       style: .overFullScreen)
         }
     }
     
