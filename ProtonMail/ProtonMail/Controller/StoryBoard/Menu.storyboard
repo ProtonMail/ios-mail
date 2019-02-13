@@ -3262,7 +3262,7 @@
                                             <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="cancelTapped:" destination="bwU-38-Jat" eventType="touchUpInside" id="wkw-Fa-et6"/>
+                                            <action selector="learnMore:" destination="bwU-38-Jat" eventType="touchUpInside" id="23M-RE-Gou"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpS-yb-mG5">
