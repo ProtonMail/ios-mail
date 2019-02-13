@@ -39,8 +39,7 @@
  *  MailboxPasswordViewController
  */
 "MAILBOX PASSWORD" = "Mailbox password";
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Access to this account is disabled due to non-payment.\n
-Please visit <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> for more information.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Access to this account is disabled due to non-payment.\n Please visit <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">our knowledge base</a> for more information.";
 "Incorrect password" = "Incorrect password";
 "The mailbox password is incorrect." = "The mailbox password is incorrect.";
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";

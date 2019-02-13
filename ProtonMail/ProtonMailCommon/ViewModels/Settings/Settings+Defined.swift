@@ -70,6 +70,8 @@ extension ELanguage {
                 return "português"
             case .romanian:
                 return "românesc"
+            case .croatian:
+                return "Hrvatski"
             case .count:
                 return ""
             }
@@ -115,6 +117,8 @@ extension ELanguage {
                 return LocalString._portuguese
             case .romanian:
                 return LocalString._romanian
+            case .croatian:
+                return LocalString._croatian
             case .count:
                 return ""
             }
@@ -160,6 +164,8 @@ extension ELanguage {
                 return "pt_PT"
             case .romanian:
                 return "ro_RO"
+            case .croatian:
+                return "hr-HR"
             case .count:
                 return "en_US"
             }
@@ -206,6 +212,8 @@ extension ELanguage {
                 return "pt"
             case .romanian:
                 return "ro"
+            case .croatian:
+                return "hr"
             case .count:
                 return "en"
             }
@@ -236,6 +244,7 @@ extension ELanguage {
     static public func allItems() -> [ELanguage] {
         return [
             .catalan,
+            .croatian,
             .czech,
             .chineseSimplified,
             .chineseTraditional,

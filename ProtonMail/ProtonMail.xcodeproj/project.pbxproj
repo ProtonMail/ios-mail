@@ -1899,6 +1899,7 @@
 		03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VCard+Extension.swift"; sourceTree = "<group>"; };
 		033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertAction+Extension.swift"; sourceTree = "<group>"; };
 		0350DB1CE5A6D9FB0346D24A0319EB2E /* NSError+Alert+Mail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+Alert+Mail.swift"; sourceTree = "<group>"; };
+		035BFF9AFA90B021BE0E9EBAD1236F39 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		03B667127BCF3FD74EC8B166FB8B49A5 /* DurationPickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DurationPickerViewController.xib; sourceTree = "<group>"; };
 		04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddressAPI.swift; sourceTree = "<group>"; };
 		041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = ProtonMail_to_1.12.0.xcmappingmodel; sourceTree = "<group>"; };
@@ -1989,6 +1990,7 @@
 		222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Response.swift"; sourceTree = "<group>"; };
 		227296580D62465EBB981626C208052D /* AuthAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthAPI.swift; sourceTree = "<group>"; };
 		2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIServiceRequest.swift; sourceTree = "<group>"; };
+		22A37E312FE97ACC46DD083957604078 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		22BE4DDF6BEBE920C194F8D16190C4ED /* zh-Hans */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		22D74412FBEEF02994B25A48A3347822 /* Locked.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Locked.swift; sourceTree = "<group>"; };
 		2311228F521C0D85D7EA882A10B49A40 /* LastUpdateCacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastUpdateCacheTests.swift; sourceTree = "<group>"; };
@@ -2628,6 +2630,7 @@
 		FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = "Message+Extension.swift"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		FB5505FE622849219F7CFD671821002B /* AppVersionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTests.swift; sourceTree = "<group>"; };
+		FB6FE969D6FCB1AE93F5B3400848BD18 /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomHeaderView.swift; sourceTree = "<group>"; };
 		FC5106BC75A0073888F6DE60DD7793BF /* LabelsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LabelsView.xib; sourceTree = "<group>"; };
 		FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MIMEMessage.swift; sourceTree = "<group>"; };
@@ -4687,6 +4690,7 @@
 				da,
 				cs,
 				pt,
+				hr,
 			);
 			mainGroup = C17EB90EF5076A849C4E2A0A715035BA;
 			productRefGroup = 7828F3448BB043564580FD2E6E5D5A54 /* Products */;
@@ -7116,6 +7120,7 @@
 				CEAFC4D23B2C4B8DE08F0D227F8C3505 /* en */,
 				AB275A21CF390F559BC01F46A9D5B244 /* es */,
 				276D5D0D0DF462C20A4420FB25780CE4 /* fr */,
+				035BFF9AFA90B021BE0E9EBAD1236F39 /* hr */,
 				18ADBB64D79C5384AB24B501F49BF6F2 /* id */,
 				A3B69A9A7E31F1994FD354E4E35A0260 /* it */,
 				6A9E73EDBDAD67A3D064D904162F3AEE /* ja */,
@@ -7145,6 +7150,7 @@
 				FF8BBCDD4B03C38833E9D72352FED8E8 /* en */,
 				56C38DB00341740E144292F28F667AF3 /* es */,
 				8F36F7EEABFEB170F2768799C6C0C5B7 /* fr */,
+				22A37E312FE97ACC46DD083957604078 /* hr */,
 				2AD90D6DB110B0BF31AF30BB8EBFDBB8 /* id */,
 				BB4FCA12934E1D935EB643C3B0DA76BE /* it */,
 				6FBC6EE538E36CA540D7168E394D88BA /* ja */,
@@ -7174,6 +7180,7 @@
 				82061900AD00D062F230AFE4937B3B1E /* en */,
 				2DF961B555DF4FBC7EEB1A85C1616C4A /* es */,
 				BFB5CCCB0EA86A485AFF69337731EF2D /* fr */,
+				FB6FE969D6FCB1AE93F5B3400848BD18 /* hr */,
 				75FFC0F937D149117E07B6ADFEF9186F /* id */,
 				98BD66C9EFFAF5D548DAD8881B24F620 /* it */,
 				8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */,

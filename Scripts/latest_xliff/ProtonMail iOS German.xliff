@@ -1,19 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
-  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="de">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
     <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
     </header>
     <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="de" state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>ProtonMail</source>
+        <note>Bundle display name</note>
+        <target xml:lang="de" state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="de" state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription">
+        <source>Required for attaching media to the email.</source>
+        <note>Privacy - Media Library Usage Description</note>
+        <target xml:lang="de" state="translated">Erforderlich für das Anhängen von Medien an die Nachricht.</target>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Camera Usage Description</note>
+        <target xml:lang="de" state="translated">Erforderlich für das Anhängen von Fotos an die Nachricht.</target>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription">
+        <source>Required for email autocomplete.</source>
+        <note>Privacy - Contacts Usage Description</note>
+        <target xml:lang="de" state="translated">Erforderlich für die automatische Vervollständigung von E-Mail-Adressen.</target>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <note>Privacy - Face ID Usage Description</note>
+        <target xml:lang="de" state="translated">Ermöglicht es Ihnen, Ihre Anwendung schnell und sicher freizuschalten.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription">
+        <source>Required for saving image attachments to photo library.</source>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+        <target xml:lang="de" state="translated">Erforderlich zum Speichern von Bildanhängen in der Fotobibliothek.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Photo Library Usage Description</note>
+        <target xml:lang="de" state="translated">Erforderlich für das Anhängen von Fotos an die Nachricht.</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="de">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id=" within our iOS application.">
+        <source> within our iOS application.</source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="de" state="translated"> innerhalb unserer iOS-App.</target>
+      </trans-unit>
+      <trans-unit id="%@ storage capacity">
+        <source>%@ storage capacity</source>
+        <note>Service plan capability</note>
+        <target xml:lang="de" state="translated">%@ Speicherkapazität</target>
+      </trans-unit>
+      <trans-unit id="%d Member">
+        <source>%d Member</source>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+        <target xml:lang="de" state="translated">%d Mitglied</target>
+      </trans-unit>
+      <trans-unit id="%d Members">
+        <source>%d Members</source>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+        <target xml:lang="de" state="translated">%d Mitglieder</target>
+      </trans-unit>
       <trans-unit id="%d Minute">
-        <source>%d Minute</source>
+        <source>%d minute</source>
         <note>auto lock time format</note>
         <target xml:lang="de" state="translated">%d Minute</target>
       </trans-unit>
       <trans-unit id="%d Minutes">
-        <source>%d Minutes</source>
+        <source>%d minutes</source>
         <note>auto lock time format</note>
         <target xml:lang="de" state="translated">%d Minuten</target>
+      </trans-unit>
+      <trans-unit id="%d Selected">
+        <source>%d Selected</source>
+        <note>The string that describes how many contact groups are currently selected</note>
+        <target xml:lang="de" state="translated">%d ausgewählt</target>
+      </trans-unit>
+      <trans-unit id="%i email address">
+        <source>%i email address</source>
+        <note>Service plan capability; i = 1</note>
+        <target xml:lang="de" state="translated">%i E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="%i email addresses">
+        <source>%i email addresses</source>
+        <note>Service plan capability; i = 5 or 50</note>
+        <target xml:lang="de" state="translated">%i E-Mail-Adressen</target>
       </trans-unit>
       <trans-unit id="(2048 bit)">
         <source>(2048 bit)</source>
@@ -25,6 +119,11 @@
         <note>Key size text when setup key</note>
         <target xml:lang="de" state="translated">(4096 bit)</target>
       </trans-unit>
+      <trans-unit id="(total)">
+        <source>(total)</source>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+        <target xml:lang="de" state="translated">(Gesamt)</target>
+      </trans-unit>
       <trans-unit id="**********">
         <source>**********</source>
         <note>secret</note>
@@ -35,15 +134,41 @@
         <note>optional text field</note>
         <target xml:lang="de" state="translated">*Optional</target>
       </trans-unit>
-      <trans-unit id="2fa Authentication failed please try to login again">
-        <source>2fa Authentication failed please try to login again</source>
+      <trans-unit id="/user">
+        <source>/user</source>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+        <target xml:lang="de" state="translated">/user</target>
+      </trans-unit>
+      <trans-unit id="2fa Authentication failed. Please try to login again.">
+        <source>2fa Authentication failed. Please try to login again.</source>
         <note>2fa verification failed</note>
-        <target xml:lang="de" state="translated">2FA-Authentifizierung fehlgeschlagen, bitte versuchen Sie es erneut</target>
+        <target xml:lang="de" state="translated">2FA-Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <note>default empty object</note>
+        <target xml:lang="de" state="translated">&lt;Kein Objekt&gt;</target>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels">
+        <source>A message cannot have more than 5 labels</source>
+        <note>*
+ *  LabelTableViewCell</note>
+        <target xml:lang="de" state="translated">Eine Nachricht darf nicht mehr als 5 Kategorien zugeordnet werden</target>
       </trans-unit>
       <trans-unit id="A new version of ProtonMail app is available, please update to latest version.">
         <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <note>"Alert" = "Alert";</note>
+        <target xml:lang="de" state="translated">Eine neue Version der ProtonMail-App ist verfügbar. Bitte auf neueste Version aktualisieren.</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to latest version.">
+        <source>A new version of ProtonMail app is available. Please update to latest version.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Eine neue Version der ProtonMail-App ist verfügbar. Bitte auf neueste Version aktualisieren.</target>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <note>alert description</note>
+        <target xml:lang="de" state="translated">Für die Nutzung dieser Funktion ist ein kostenpflichtiger ProtonMail-Tarif erforderlich.</target>
       </trans-unit>
       <trans-unit id="A passcode has not been set, enable it in the system Settings">
         <source>A passcode has not been set, enable it in the system Settings</source>
@@ -56,7 +181,7 @@
         <target xml:lang="de" state="translated">API-Server nicht erreichbar …</target>
       </trans-unit>
       <trans-unit id="ARCHIVE">
-        <source>ARCHIVE</source>
+        <source>Archive</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Archiv</target>
       </trans-unit>
@@ -64,6 +189,26 @@
         <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
         <note>error message</note>
         <target xml:lang="de" state="translated">Der Zugriff auf dieses Konto ist aufgrund der Nichtzahlung deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
+        <source>Access to this account is disabled due to non-payment.
+
+Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.
+
+Bitte besuchen Sie &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;unsere Wissensdatenbank&lt;/a&gt; für weitere Informationen.</target>
+      </trans-unit>
+      <trans-unit id="Account password invalid">
+        <source>Invalid account password</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="de" state="translated">Ungültiges Passwort</target>
+      </trans-unit>
+      <trans-unit id="Add">
+        <source>Add</source>
+        <note/>
+        <target xml:lang="de" state="translated">Hinzufügen</target>
       </trans-unit>
       <trans-unit id="Add Anniversary">
         <source>Add Anniversary</source>
@@ -95,6 +240,11 @@
         <note>new contacts add Gender</note>
         <target xml:lang="de" state="translated">Geschlecht hinzufügen</target>
       </trans-unit>
+      <trans-unit id="Add Group">
+        <source>Add Group</source>
+        <note>The title for the contact group creation view</note>
+        <target xml:lang="de" state="translated">Gruppe hinzufügen</target>
+      </trans-unit>
       <trans-unit id="Add Label">
         <source>Add Label</source>
         <note>add label action</note>
@@ -119,6 +269,11 @@
         <source>Add Organization</source>
         <note>new contacts add Organization</note>
         <target xml:lang="de" state="translated">Organisation hinzufügen</target>
+      </trans-unit>
+      <trans-unit id="Add Photo">
+        <source>Add Photo</source>
+        <note>The button text for add profile picture</note>
+        <target xml:lang="de" state="translated">Foto hinzufügen</target>
       </trans-unit>
       <trans-unit id="Add Star">
         <source>Add Star</source>
@@ -187,10 +342,14 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Alle Kontakte wurden importiert</target>
       </trans-unit>
-      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!">
-        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!</source>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.&#10;&#10;THIS ACTION CANNOT BE UNDONE!">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</source>
         <note>Description</note>
-        <target xml:lang="de" state="translated">Alle Ihre vorhandenen verschlüsselten Nachrichten werden für immer verloren gehen, aber Sie können Ihre unverschlüsselten E-Mails weiterhin anzeigen.\n\nDiese Aktion kann NICHT widerrufen werden!</target>
+        <target xml:lang="de" state="translated">Alle Ihre vorhandenen verschlüsselten Nachrichtens werden für immer verloren gehen, aber Sie können Ihre unverschlüsselten E-Mails weiterhin anzeigen.
+
+Diese Aktion kann NICHT widerrufen werden!</target>
       </trans-unit>
       <trans-unit id="Also Archive">
         <source>Also Archive</source>
@@ -206,6 +365,36 @@
         <source>Anniversary</source>
         <note>contacts talbe cell Anniversary title</note>
         <target xml:lang="de" state="translated">Jahrestag</target>
+      </trans-unit>
+      <trans-unit id="App is locked">
+        <source>App is locked</source>
+        <note>Error</note>
+        <target xml:lang="de" state="translated">App ist gesperrt</target>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee">
+        <source>Apple in-app purchase fee</source>
+        <note>Price breakdown</note>
+        <target xml:lang="de" state="translated">Apple In-App-Kaufgebühr</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase.">
+        <source>Apple informed us they could not process the purchase.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Apple informierte uns, dass sie den Kauf nicht verarbeiten konnten.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Apple informierte uns, dass Sie den Serviceplan aktualisiert haben, sagte aber nicht, welches Ihrer ProtonMail-Konten aktualisiert werden soll, falls Sie mehr als eines verwenden.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Apple hat uns mitgeteilt, dass Sie den Serviceplan aktualisiert haben, aber es fehlen einige technische Daten. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Apple hat uns mitgeteilt, dass Sie den Serviceplan aktualisiert haben, aber wir haben festgestellt, dass Sie sich seitdem vom Konto abgemeldet haben.</target>
       </trans-unit>
       <trans-unit id="Apply">
         <source>Apply</source>
@@ -239,7 +428,7 @@
         <target xml:lang="de" state="translated">Authentifizierung</target>
       </trans-unit>
       <trans-unit id="Authentication Failed Wrong username or password">
-        <source>Authentication Failed Wrong username or password</source>
+        <source>Authentication failed: wrong username or password.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Authentifizierung fehlgeschlagen: Benutzername oder Passwort ungültig</target>
       </trans-unit>
@@ -248,10 +437,15 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Authentifizierung fehlgeschlagen</target>
       </trans-unit>
-      <trans-unit id="Authentication failed please try to login again">
-        <source>Authentication failed please try to login again</source>
+      <trans-unit id="Authentication failed. Please try to login again.">
+        <source>Authentication failed. Please try to login again.</source>
         <note>Error</note>
-        <target xml:lang="de" state="translated">Authentifizierungsfehler. Bitte versuchen Sie sich erneut anzumelden</target>
+        <target xml:lang="de" state="translated">Authentifizierungsfehler. Bitte versuchen Sie sich erneut anzumelden.</target>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <note>Description</note>
+        <target xml:lang="de" state="translated">Authentifizierungstoken ist unzugänglich, da die App gesperrt ist</target>
       </trans-unit>
       <trans-unit id="Authentication was cancelled by the system">
         <source>Authentication was cancelled by the system</source>
@@ -259,12 +453,12 @@
         <target xml:lang="de" state="translated">Authentifizierung wurde vom System abgelehnt</target>
       </trans-unit>
       <trans-unit id="Auto Lock Time">
-        <source>Auto Lock Time</source>
+        <source>Auto lock time</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Zeit bis zur automatischen Sperrung</target>
       </trans-unit>
       <trans-unit id="Auto Show Images">
-        <source>Auto Show Images</source>
+        <source>Auto show images</source>
         <note>settings general section title</note>
         <target xml:lang="de" state="translated">Bilder automatisch anzeigen</target>
       </trans-unit>
@@ -288,13 +482,18 @@
         <note>Error Description</note>
         <target xml:lang="de" state="translated">Ungültiger Parameter: %@</target>
       </trans-unit>
+      <trans-unit id="Bad path">
+        <source>Bad path</source>
+        <note>title</note>
+        <target xml:lang="de" state="translated">Ungültiger Pfad</target>
+      </trans-unit>
       <trans-unit id="Bad response">
         <source>Bad response</source>
         <note>Error Description</note>
         <target xml:lang="de" state="translated">Ungültige Antwort</target>
       </trans-unit>
       <trans-unit id="Bcc">
-        <source>Bcc</source>
+        <source>BCC</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">BCC</target>
       </trans-unit>
@@ -309,9 +508,14 @@
         <target xml:lang="de" state="translated">Beschreibung des Fehlers</target>
       </trans-unit>
       <trans-unit id="Bug Report Received">
-        <source>Bug Report Received</source>
+        <source>Bug report received</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Fehlerbericht erhalten</target>
+      </trans-unit>
+      <trans-unit id="Buy More Credits">
+        <source>Buy More Credits</source>
+        <note>Link to More Credits screen</note>
+        <target xml:lang="de" state="translated">Mehr Guthaben erwerben</target>
       </trans-unit>
       <trans-unit id="By using protonmail, you agree to our">
         <source>By using protonmail, you agree to our</source>
@@ -322,6 +526,11 @@
         <source>CAPTCHA</source>
         <note>human check option button</note>
         <target xml:lang="de" state="translated">CAPTCHA</target>
+      </trans-unit>
+      <trans-unit id="Call Contact">
+        <source>Call Contact</source>
+        <note>Call the contact (button title text)</note>
+        <target xml:lang="de" state="translated">Kontakt anrufen</target>
       </trans-unit>
       <trans-unit id="Can take several minutes to setup.">
         <source>Can take several minutes to setup.</source>
@@ -348,15 +557,41 @@
         <note>When quick look attachment but can't decrypt it!</note>
         <target xml:lang="de" state="translated">Anhang konnte nicht entschlüsselt werden!</target>
       </trans-unit>
+      <trans-unit id="Can't delete contact group">
+        <source>Can't delete contact group</source>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+        <target xml:lang="de" state="translated">Kontaktgruppe konnte nicht gelöscht werden</target>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API">
+        <source>Can't delete contact group through API</source>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+        <target xml:lang="de" state="translated">Kontaktgruppe konnte nicht über die API gelöscht werden</target>
+      </trans-unit>
       <trans-unit id="Can't download message body, please try again.">
         <source>Can't download message body, please try again.</source>
+        <note>*
+ *  MessageViewController</note>
+        <target xml:lang="de" state="translated">Die Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal.</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again.">
+        <source>Can't download message body. Please try again.</source>
         <note>Error</note>
         <target xml:lang="de" state="translated">Die Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal.</target>
       </trans-unit>
+      <trans-unit id="Can't fetch contact groups">
+        <source>Can't fetch contact groups</source>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+        <target xml:lang="de" state="translated">Kontaktgruppen können nicht abgerufen werden</target>
+      </trans-unit>
       <trans-unit id="Can't find the clicked message please try again!">
         <source>Can't find the clicked message please try again!</source>
-        <note>Description</note>
+        <note/>
         <target xml:lang="de" state="translated">Die ausgewählte Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal!</target>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message. Please try again.">
+        <source>Can't find the clicked message. Please try again.</source>
+        <note>Description</note>
+        <target xml:lang="de" state="translated">Die ausgewählte Nachricht konnte nicht gefunden werden. Bitte versuchen Sie es erneut.</target>
       </trans-unit>
       <trans-unit id="Can't find this attachment!">
         <source>Can't find this attachment!</source>
@@ -364,7 +599,7 @@
         <target xml:lang="de" state="translated">Der Anhang konnte nicht gefunden werden!</target>
       </trans-unit>
       <trans-unit id="Can't get a Moduls ID!">
-        <source>Can't get a Moduls ID!</source>
+        <source>Can't get a Modulus ID!</source>
         <note>update password error = typo:Modulus</note>
         <target xml:lang="de" state="translated">Fehler beim Laden der Modulkennung!</target>
       </trans-unit>
@@ -398,6 +633,16 @@
         <note>Error</note>
         <target xml:lang="de" state="translated">Die Datei konnte nicht geöffnet werden</target>
       </trans-unit>
+      <trans-unit id="Can't save contact group">
+        <source>Can't save contact group</source>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+        <target xml:lang="de" state="translated">Kontaktgruppe konnte nicht gespeichert werden</target>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through API">
+        <source>Can't update contact group through API</source>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+        <target xml:lang="de" state="translated">Kontaktgruppe konnte nicht über die API aktualisiert werden</target>
+      </trans-unit>
       <trans-unit id="Cancel">
         <source>Cancel</source>
         <note>Cancel action</note>
@@ -413,8 +658,18 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Wird abgebrochen</target>
       </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!">
+        <source>Unable to decrypt this attachment.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Der Anhang konnte nicht entschlüsselt werden.</target>
+      </trans-unit>
+      <trans-unit id="Catalan">
+        <source>Catalan</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Katalanisch</target>
+      </trans-unit>
       <trans-unit id="Cc">
-        <source>Cc</source>
+        <source>CC</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">CC</target>
       </trans-unit>
@@ -439,12 +694,12 @@
         <target xml:lang="de" state="translated">Mailbox-Passwort ändern</target>
       </trans-unit>
       <trans-unit id="Change Password">
-        <source>Change Password</source>
+        <source>Change password</source>
         <note>update password error title</note>
         <target xml:lang="de" state="translated">Passwort ändern</target>
       </trans-unit>
       <trans-unit id="Change Pin">
-        <source>Change Pin</source>
+        <source>Change PIN</source>
         <note>settings protection section title</note>
         <target xml:lang="de" state="translated">PIN ändern</target>
       </trans-unit>
@@ -454,7 +709,7 @@
         <target xml:lang="de" state="translated">Einzelnes Passwort ändern</target>
       </trans-unit>
       <trans-unit id="Change default address to ..">
-        <source>Change default address to ..</source>
+        <source>Change default address to...</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Standardadresse ändern auf …</target>
       </trans-unit>
@@ -469,7 +724,7 @@
         <target xml:lang="de" state="translated">Nach-Rechts-Wischen-Aktion ändern</target>
       </trans-unit>
       <trans-unit id="Change sender address to ..">
-        <source>Change sender address to ..</source>
+        <source>Change sender address to...</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Absenderadresse ändern auf …</target>
       </trans-unit>
@@ -479,9 +734,19 @@
         <target xml:lang="de" state="translated">Erneut überprüfen</target>
       </trans-unit>
       <trans-unit id="Checking ....">
-        <source>Checking ....</source>
+        <source>Checking...</source>
         <note>loading message</note>
         <target xml:lang="de" state="translated">Wird überprüft …</target>
+      </trans-unit>
+      <trans-unit id="Chinese Simplified">
+        <source>Chinese Simplified</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Chinesisch (Vereinfacht)</target>
+      </trans-unit>
+      <trans-unit id="Chinese Traditional">
+        <source>Chinese Traditional</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Chinesisch (Traditionell)</target>
       </trans-unit>
       <trans-unit id="Choose a Password">
         <source>Choose a Password</source>
@@ -494,7 +759,7 @@
         <target xml:lang="de" state="translated">Stadt</target>
       </trans-unit>
       <trans-unit id="Clear Local Message Cache">
-        <source>Clear Local Message Cache</source>
+        <source>Clear local message cache</source>
         <note>settings general section title</note>
         <target xml:lang="de" state="translated">Lokalen Nachrichtenspeicher leeren</target>
       </trans-unit>
@@ -502,6 +767,11 @@
         <source>Close</source>
         <note>general close action</note>
         <target xml:lang="de" state="translated">Schließen</target>
+      </trans-unit>
+      <trans-unit id="Closing">
+        <source>Closing</source>
+        <note>Alert title</note>
+        <target xml:lang="de" state="translated">Wird geschlossen</target>
       </trans-unit>
       <trans-unit id="Compose">
         <source>Compose</source>
@@ -518,8 +788,18 @@
         <note>Action</note>
         <target xml:lang="de" state="translated">Bestätigen</target>
       </trans-unit>
+      <trans-unit id="Confirm Login Password">
+        <source>Confirm login password</source>
+        <note>"Login Password"</note>
+        <target xml:lang="de" state="translated">Anmeldepasswort bestätigen</target>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password">
+        <source>Confirm mailbox password</source>
+        <note>"Mailbox Password"</note>
+        <target xml:lang="de" state="translated">Mailbox-Passwort bestätigen</target>
+      </trans-unit>
       <trans-unit id="Confirm Password">
-        <source>Confirm Password</source>
+        <source>Confirm password</source>
         <note>Placeholder</note>
         <target xml:lang="de" state="translated">Passwort bestätigen</target>
       </trans-unit>
@@ -537,6 +817,11 @@
         <source>Confirm new password</source>
         <note>Placeholder</note>
         <target xml:lang="de" state="translated">Neues Passwort bestätigen</target>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report">
+        <source>Confirm phishing report</source>
+        <note>alert title</note>
+        <target xml:lang="de" state="translated">Phishing-Bericht bestätigen</target>
       </trans-unit>
       <trans-unit id="Confirmation">
         <source>Confirmation</source>
@@ -579,6 +864,11 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Name kopieren</target>
       </trans-unit>
+      <trans-unit id="Could not connect to Store. Please, try later.">
+        <source>Could not connect to Store. Please, try later.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Die Verbindung zum Store konnte nicht hergestellt werden. Bitte, versuchen Sie es später erneut.</target>
+      </trans-unit>
       <trans-unit id="Country">
         <source>Country</source>
         <note>contact placeholder</note>
@@ -594,10 +884,10 @@
         <note>Create account button</note>
         <target xml:lang="de" state="translated">Konto erstellen</target>
       </trans-unit>
-      <trans-unit id="Create User failed please try again">
-        <source>Create User failed please try again</source>
+      <trans-unit id="Create User failed. Please try again.">
+        <source>Create User failed. Please try again.</source>
         <note>Error</note>
-        <target xml:lang="de" state="translated">Erstellen des Benutzer fehlgeschlagen. Bitte versuchen Sie es erneut</target>
+        <target xml:lang="de" state="translated">Erstellen des Benutzer fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
       </trans-unit>
       <trans-unit id="Create a new account">
         <source>Create a new account</source>
@@ -605,7 +895,7 @@
         <target xml:lang="de" state="translated">Neues Konto erstellen</target>
       </trans-unit>
       <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options.">
-        <source>Create and add Labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Erstellen und Hinzufügen von Kategorien, um Ihren Posteingang zu organisieren.</target>
       </trans-unit>
@@ -635,15 +925,25 @@
    contacts default label type</note>
         <target xml:lang="de" state="translated">Benutzerdefiniert</target>
       </trans-unit>
+      <trans-unit id="Czech">
+        <source>Czech</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Tschechisch</target>
+      </trans-unit>
       <trans-unit id="DECRYPT MAILBOX">
         <source>DECRYPT MAILBOX</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Mailbox entschlüsseln</target>
       </trans-unit>
       <trans-unit id="DRAFTS">
-        <source>DRAFTS</source>
+        <source>Drafts</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Entwürfe</target>
+      </trans-unit>
+      <trans-unit id="Danish">
+        <source>Danish</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Dänisch</target>
       </trans-unit>
       <trans-unit id="Date:">
         <source>Date:</source>
@@ -665,10 +965,10 @@
         <note>Action</note>
         <target xml:lang="de" state="translated">Entschlüsseln</target>
       </trans-unit>
-      <trans-unit id="Decrypt token failed please try again">
-        <source>Decrypt token failed please try again</source>
+      <trans-unit id="Decrypt token failed. Please try again.">
+        <source>Decrypt token failed. Please try again.</source>
         <note>Description</note>
-        <target xml:lang="de" state="translated">Entschlüsselung der Sicherheitskette fehlgeschlagen. Bitte erneut versuchen</target>
+        <target xml:lang="de" state="translated">Entschlüsselung der Sicherheitskette fehlgeschlagen. Bitte erneut versuchen.</target>
       </trans-unit>
       <trans-unit id="Decryption error">
         <source>Decryption error</source>
@@ -685,10 +985,10 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Standard</target>
       </trans-unit>
-      <trans-unit id="Default error, please try again.">
-        <source>Default error, please try again.</source>
+      <trans-unit id="Default error. Please try again.">
+        <source>Default error. Please try again.</source>
         <note>error message when create new user</note>
-        <target xml:lang="de" state="translated">Fehler, bitte versuchen Sie es erneut.</target>
+        <target xml:lang="de" state="translated">Standardfehler. Bitte versuchen Sie es erneut.</target>
       </trans-unit>
       <trans-unit id="Define Expiration Date">
         <source>Define Expiration Date</source>
@@ -696,12 +996,12 @@
         <target xml:lang="de" state="translated">Verfallsdatum festlegen</target>
       </trans-unit>
       <trans-unit id="Define Hint (Optional)">
-        <source>Define Hint (Optional)</source>
+        <source>Define hint (Optional)</source>
         <note>Placeholder</note>
         <target xml:lang="de" state="translated">Hinweis angeben (optional)</target>
       </trans-unit>
       <trans-unit id="Define Password">
-        <source>Define Password</source>
+        <source>Define password</source>
         <note>place holder</note>
         <target xml:lang="de" state="translated">Passwort festlegen</target>
       </trans-unit>
@@ -714,6 +1014,11 @@
         <source>Delete Contact</source>
         <note>Title-Contacts</note>
         <target xml:lang="de" state="translated">Kontakt löschen</target>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group">
+        <source>Delete Contact Group</source>
+        <note>The description of the button for deleting the contact group</note>
+        <target xml:lang="de" state="translated">Kontaktgruppe löschen</target>
       </trans-unit>
       <trans-unit id="Deleted">
         <source>Deleted</source>
@@ -736,12 +1041,12 @@
         <target xml:lang="de" state="translated">Entwurf verwerfen</target>
       </trans-unit>
       <trans-unit id="Display Name">
-        <source>Display Name</source>
+        <source>Display name</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Anzeigename</target>
       </trans-unit>
       <trans-unit id="Display Name Updated">
-        <source>Display Name Updated</source>
+        <source>Display name updated</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Anzeigenamen aktualisiert</target>
       </trans-unit>
@@ -749,6 +1054,11 @@
         <source>DisplayName</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Anzeigename</target>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for ">
+        <source>Do you want to activate the purchased service plan for </source>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+        <target xml:lang="de" state="translated">Möchten Sie den gekauften Servicetarif aktivieren für </target>
       </trans-unit>
       <trans-unit id="Do you want to cancel the process?">
         <source>Do you want to cancel the process?</source>
@@ -801,15 +1111,31 @@
         <note>Action</note>
         <target xml:lang="de" state="translated">Bearbeiten</target>
       </trans-unit>
+      <trans-unit id="Edit Contact">
+        <source>Edit contact</source>
+        <note>*
+ *  Edit Contact view controller</note>
+        <target xml:lang="de" state="translated">Kontakt bearbeiten</target>
+      </trans-unit>
       <trans-unit id="Edit Folder">
         <source>Edit Folder</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Ordner bearbeiten</target>
       </trans-unit>
+      <trans-unit id="Edit Group">
+        <source>Edit Group</source>
+        <note>The title for the contact group editing view</note>
+        <target xml:lang="de" state="translated">Gruppe bearbeiten</target>
+      </trans-unit>
       <trans-unit id="Edit Label">
         <source>Edit Label</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Kategorie bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="Edit Photo">
+        <source>Edit Photo</source>
+        <note>The button text for edit profile picture</note>
+        <target xml:lang="de" state="translated">Foto bearbeiten</target>
       </trans-unit>
       <trans-unit id="Edit mobile signature">
         <source>Edit mobile signature</source>
@@ -825,6 +1151,16 @@
         <source>Email</source>
         <note>default vcard types</note>
         <target xml:lang="de" state="translated">E-Mail-Adresse</target>
+      </trans-unit>
+      <trans-unit id="Email Addresses">
+        <source>Email Addresses</source>
+        <note>contact detail view, email addresses section title</note>
+        <target xml:lang="de" state="translated">E-Mail-Adressen</target>
+      </trans-unit>
+      <trans-unit id="Email Contact">
+        <source>Email Contact</source>
+        <note>Send an email to the current contact (button title text)</note>
+        <target xml:lang="de" state="translated">E-Mail an Kontakt</target>
       </trans-unit>
       <trans-unit id="Email Verification">
         <source>Email Verification</source>
@@ -846,9 +1182,15 @@
         <note>place holder</note>
         <target xml:lang="de" state="translated">E-Mail-Standard-Signatur</target>
       </trans-unit>
+      <trans-unit id="Email domain invalid">
+        <source>Invalid email domain</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="de" state="translated">Ungültige E-Mail-Domäne</target>
+      </trans-unit>
       <trans-unit id="Empty Folder">
-        <source>Empty Folder</source>
-        <note>Action</note>
+        <source>Empty folder</source>
+        <note>empty folder, for spam and trash</note>
         <target xml:lang="de" state="translated">Ordner leeren</target>
       </trans-unit>
       <trans-unit id="Enable Default Signature">
@@ -872,7 +1214,7 @@
         <target xml:lang="de" state="translated">Benachrichtigungen aktivieren</target>
       </trans-unit>
       <trans-unit id="Enable Pin Protection">
-        <source>Enable Pin Protection</source>
+        <source>Enable PIN protection</source>
         <note>settings protection section title</note>
         <target xml:lang="de" state="translated">PIN-Schutz aktivieren</target>
       </trans-unit>
@@ -935,7 +1277,7 @@
         <target xml:lang="de" state="translated">Endzeitpunkt</target>
       </trans-unit>
       <trans-unit id="End-to-End Encryption">
-        <source>End-to-End Encryption</source>
+        <source>End-to-end encryption</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Ende-zu-Ende-Verschlüsselung</target>
       </trans-unit>
@@ -970,7 +1312,7 @@
         <target xml:lang="de" state="translated">Eingeben</target>
       </trans-unit>
       <trans-unit id="Enter Verification Code">
-        <source>Enter Verification Code</source>
+        <source>Enter verification code</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Bestätigungscode eingeben</target>
       </trans-unit>
@@ -995,9 +1337,14 @@
         <target xml:lang="de" state="translated">Geben Sie Ihre bereits bestehende E-Mail-Adresse ein</target>
       </trans-unit>
       <trans-unit id="Error Logs">
-        <source>Error Logs</source>
+        <source>Error logs</source>
         <note>settings debug section title</note>
         <target xml:lang="de" state="translated">Fehlerprotokolle</target>
+      </trans-unit>
+      <trans-unit id="Error occured">
+        <source>Error occured</source>
+        <note>Error alert title</note>
+        <target xml:lang="de" state="translated">Fehler aufgetreten</target>
       </trans-unit>
       <trans-unit id="Every time enter app">
         <source>Every time enter app</source>
@@ -1015,7 +1362,7 @@
         <target xml:lang="de" state="translated">Läuft ab in %1$d Tagen, %2$d Stunden, %3$d Minuten und %4$d Sekunden</target>
       </trans-unit>
       <trans-unit id="Expiring Messages">
-        <source>Expiring Messages</source>
+        <source>Expiring messages</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Verfallende Nachrichten</target>
       </trans-unit>
@@ -1025,9 +1372,19 @@
         <target xml:lang="de" state="translated">Höchste Sicherheit</target>
       </trans-unit>
       <trans-unit id="FORGOT PASSWORD?">
-        <source>FORGOT PASSWORD?</source>
+        <source>Forgot password?</source>
         <note>login page forgot pwd</note>
         <target xml:lang="de" state="translated">Passwort vergessen?</target>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file">
+        <source>Failed to determine type of file</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Dateityp konnte nicht bestimmt werden</target>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore.">
+        <source>Failed to get list of available products from AppStore.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Die Liste der verfügbaren Produkte im AppStore konnte nicht abgerufen werden.</target>
       </trans-unit>
       <trans-unit id="Failed to initialize the application's saved data">
         <source>Failed to initialize the application's saved data</source>
@@ -1058,6 +1415,26 @@
         <source>Folder Name</source>
         <note>place holder</note>
         <target xml:lang="de" state="translated">Ordnername</target>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <note>Service Plan description</note>
+        <target xml:lang="de" state="translated">Für Einzelpersonen, die von einer sicheren und kostenlosen Kommunikation profitieren möchten.</target>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <note>Service Plan description</note>
+        <target xml:lang="de" state="translated">Für Personen, die mehr Kapazität, Anpassung und erweiterte Funktionen benötigen.</target>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <note>Service Plan description</note>
+        <target xml:lang="de" state="translated">Für Unternehmen, die Unterstützung für mehrere Benutzer und zusätzliche Produktivitätsfunktionen benötigen.</target>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <note>Service Plan description</note>
+        <target xml:lang="de" state="translated">Für Power-User und Personengruppen, die Wert auf volle Anonymität und Privatsphäre legen.</target>
       </trans-unit>
       <trans-unit id="Forward">
         <source>Forward</source>
@@ -1095,7 +1472,7 @@
         <target xml:lang="de" state="translated">Geschlecht</target>
       </trans-unit>
       <trans-unit id="General Settings">
-        <source>General Settings</source>
+        <source>General settings</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Allgemeine Einstellungen</target>
       </trans-unit>
@@ -1103,6 +1480,11 @@
         <source>German</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Deutsch</target>
+      </trans-unit>
+      <trans-unit id="Get %@">
+        <source>Get %@</source>
+        <note>Screen header, like 'Get VISIONARY'</note>
+        <target xml:lang="de" state="translated">%@ abrufen</target>
       </trans-unit>
       <trans-unit id="Get more information">
         <source>Get more information</source>
@@ -1118,6 +1500,21 @@
         <source>Got it</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Verstanden</target>
+      </trans-unit>
+      <trans-unit id="Group Details">
+        <source>Group Details</source>
+        <note>The title for the contact group detail view</note>
+        <target xml:lang="de" state="translated">Gruppeninformationen</target>
+      </trans-unit>
+      <trans-unit id="Group Name">
+        <source>Group Name</source>
+        <note>The instruction label for the group name textfield</note>
+        <target xml:lang="de" state="translated">Gruppenname</target>
+      </trans-unit>
+      <trans-unit id="Groups">
+        <source>Groups</source>
+        <note>menu title (contact groups)</note>
+        <target xml:lang="de" state="translated">Gruppen</target>
       </trans-unit>
       <trans-unit id="Help &amp; Support">
         <source>Help &amp; Support</source>
@@ -1140,7 +1537,7 @@
         <target xml:lang="de" state="translated">Ausblenden</target>
       </trans-unit>
       <trans-unit id="Hide Details">
-        <source>Hide Details</source>
+        <source>Hide details</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Details ausblenden</target>
       </trans-unit>
@@ -1169,8 +1566,13 @@
         <note>top title</note>
         <target xml:lang="de" state="translated">Menschliche Überprüfung</target>
       </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <note>Service plan capability</note>
+        <target xml:lang="de" state="translated">IMAP/SMTP-Unterstützung über ProtonMail Bridge</target>
+      </trans-unit>
       <trans-unit id="INBOX">
-        <source>INBOX</source>
+        <source>Inbox</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Posteingang</target>
       </trans-unit>
@@ -1180,7 +1582,7 @@
         <target xml:lang="de" state="translated">Fehler beim Importieren</target>
       </trans-unit>
       <trans-unit id="Import File From...">
-        <source>Import File From...</source>
+        <source>Import file from...</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Datei importieren von …</target>
       </trans-unit>
@@ -1225,6 +1627,11 @@
         <note>Error</note>
         <target xml:lang="de" state="translated">Das sofortige Erstellen von ProtonMail-Accounts wurde temporär deaktiviert. Bitte besuchen Sie https://protonmail.com/invite um eine Einladung anzufragen.</target>
       </trans-unit>
+      <trans-unit id="Internal Error">
+        <source>Internal Error</source>
+        <note>The preconditions are not met</note>
+        <target xml:lang="de" state="translated">Interner Fehler</target>
+      </trans-unit>
       <trans-unit id="Internet">
         <source>Internet</source>
         <note>default vcard types</note>
@@ -1235,6 +1642,11 @@
         <note>Error</note>
         <target xml:lang="de" state="translated">Ungültiges Passwort</target>
       </trans-unit>
+      <trans-unit id="Invalid UserName">
+        <source>Invalid username</source>
+        <note>title</note>
+        <target xml:lang="de" state="translated">Ungültiger Benutzername</target>
+      </trans-unit>
       <trans-unit id="Invalid UserName!">
         <source>Invalid UserName!</source>
         <note>Error message</note>
@@ -1242,8 +1654,13 @@
       </trans-unit>
       <trans-unit id="Invalid access token please relogin">
         <source>Invalid access token please relogin</source>
-        <note>Description</note>
+        <note/>
         <target xml:lang="de" state="translated">Ungültiger Zugangstoken. Bitte erneut anmelden</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin.">
+        <source>Invalid access token. Please relogin.</source>
+        <note>Description</note>
+        <target xml:lang="de" state="translated">Ungültige Zugriffssicherheitskette. Bitte erneut anmelden.</target>
       </trans-unit>
       <trans-unit id="Invalid credential">
         <source>Invalid credential</source>
@@ -1254,6 +1671,16 @@
         <source>Invalid hashed password!</source>
         <note>update password error</note>
         <target xml:lang="de" state="translated">Ungültiger Passwordhash!</target>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?">
+        <source>Is this bug report about an in-app purchase?</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Betrifft dieser Fehlerbericht einen In-App-Kauf?</target>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to ">
+        <source>It is not possible to switch to </source>
+        <note>No comment provided by engineer.</note>
+        <target xml:lang="de" state="translated">Es ist nicht möglich, zu wechseln zu </target>
       </trans-unit>
       <trans-unit id="Italian">
         <source>Italian</source>
@@ -1270,18 +1697,23 @@
         <note>Error</note>
         <target xml:lang="de" state="translated">Schlüsselgenerierung fehlgeschlagen</target>
       </trans-unit>
-      <trans-unit id="Key generation failed please try again">
-        <source>Key generation failed please try again</source>
+      <trans-unit id="Key generation failed. Please try again.">
+        <source>Key generation failed. Please try again.</source>
         <note>Error</note>
-        <target xml:lang="de" state="translated">Schlüsselgenerierung fehlgeschlagen. Bitte erneut versuchen</target>
+        <target xml:lang="de" state="translated">Schlüsselgenerierung fehlgeschlagen. Bitte erneut versuchen.</target>
       </trans-unit>
-      <trans-unit id="Key invalid please go back try again">
-        <source>Key invalid please go back try again</source>
+      <trans-unit id="Key invalid. Please go back and try again.">
+        <source>Key invalid. Please go back and try again.</source>
         <note>Error</note>
-        <target xml:lang="de" state="translated">Ungültiger Schlüssel. Bitte zurückgehen und erneut versuchen</target>
+        <target xml:lang="de" state="translated">Schlüssel ungültig. Bitte gehen Sie zurück und versuchen Sie es erneut.</target>
+      </trans-unit>
+      <trans-unit id="LOGIN">
+        <source>Login</source>
+        <note/>
+        <target xml:lang="de" state="translated">Anmelden</target>
       </trans-unit>
       <trans-unit id="Label Management">
-        <source>Label Management</source>
+        <source>Label management</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Kategorieverwaltung</target>
       </trans-unit>
@@ -1305,6 +1737,11 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Kategorie wurden zugewiesen.</target>
       </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <note>Service plan capability</note>
+        <target xml:lang="de" state="translated">Kategorien, Ordner, Filter &amp; Mehr</target>
+      </trans-unit>
       <trans-unit id="Labels/Folders">
         <source>Labels/Folders</source>
         <note>Title</note>
@@ -1315,10 +1752,20 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Sprache</target>
       </trans-unit>
+      <trans-unit id="Learn More">
+        <source>Learn More</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Weitere Informationen</target>
+      </trans-unit>
       <trans-unit id="Learn more here">
         <source>Learn more here</source>
         <note>learn more button</note>
         <target xml:lang="de" state="translated">Hier erfahren Sie mehr</target>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day">
+        <source>Limited to 150 messages sent/day</source>
+        <note>Service plan capability</note>
+        <target xml:lang="de" state="translated">Beschränkt auf 150 gesendete Nachrichten/Tag</target>
       </trans-unit>
       <trans-unit id="Load remote content">
         <source>Load remote content</source>
@@ -1327,13 +1774,19 @@
       </trans-unit>
       <trans-unit id="Loading...">
         <source>Loading...</source>
-        <note>No comment provided by engineer.</note>
+        <note/>
         <target xml:lang="de" state="translated">Wird geladen …</target>
       </trans-unit>
       <trans-unit id="Local cache can't find mailbox password">
         <source>Local cache can't find mailbox password</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Lokaler Zwischenspeicher konnte das Passwort nicht finden</target>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>Base</source>
+        <note>*
+ *  file string type</note>
+        <target xml:lang="de" state="translated">Basis</target>
       </trans-unit>
       <trans-unit id="Lock The App">
         <source>Lock The App</source>
@@ -1346,7 +1799,7 @@
         <target xml:lang="de" state="translated">Anmelden</target>
       </trans-unit>
       <trans-unit id="Login Password">
-        <source>Login Password</source>
+        <source>Login password</source>
         <note>settings general section title</note>
         <target xml:lang="de" state="translated">Anmeldepasswort</target>
       </trans-unit>
@@ -1375,15 +1828,31 @@
         <note>Upgrade warning title</note>
         <target xml:lang="de" state="translated">Möchten Sie Ihre Kontaktdaten sichern?</target>
       </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD">
+        <source>Mailbox password</source>
+        <note>*
+ *  MailboxPasswordViewController</note>
+        <target xml:lang="de" state="translated">Passwort des Kontos</target>
+      </trans-unit>
       <trans-unit id="MBContactPickerPrompt">
         <source>MBContactPickerPrompt</source>
         <note>Default Prompt text shown in the prompt cell</note>
         <target xml:lang="de" state="needs-translation">MBContactPickerPrompt</target>
       </trans-unit>
       <trans-unit id="Mailbox Password">
-        <source>Mailbox Password</source>
+        <source>Mailbox password</source>
         <note>settings general section title</note>
         <target xml:lang="de" state="translated">Postfach-Passwort</target>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match">
+        <source>Mailbox password doesn't match</source>
+        <note/>
+        <target xml:lang="de" state="translated">Passwörter sind nicht identisch</target>
+      </trans-unit>
+      <trans-unit id="Manage Addresses">
+        <source>Manage Addresses</source>
+        <note>The title for the view where user can manage emails in the contact group</note>
+        <target xml:lang="de" state="translated">Adressen verwalten</target>
       </trans-unit>
       <trans-unit id="Manage Labels/Folders">
         <source>Manage Labels/Folders</source>
@@ -1391,14 +1860,19 @@
         <target xml:lang="de" state="translated">Kategorien/Ordner verwalten</target>
       </trans-unit>
       <trans-unit id="Mark Read">
-        <source>Mark Read</source>
-        <note>Action</note>
+        <source>Mark as read</source>
+        <note>mark message as read action</note>
         <target xml:lang="de" state="translated">Als gelesen markieren</target>
       </trans-unit>
       <trans-unit id="Mark as unread">
         <source>Mark as unread</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Als „Ungelesen” markieren</target>
+      </trans-unit>
+      <trans-unit id="Menu">
+        <source>Menu</source>
+        <note>menu title</note>
+        <target xml:lang="de" state="translated">Menü</target>
       </trans-unit>
       <trans-unit id="Message %@">
         <source>Message %@</source>
@@ -1411,7 +1885,7 @@
         <target xml:lang="de" state="translated">Nachrichtenpasswort</target>
       </trans-unit>
       <trans-unit id="Message Queue">
-        <source>Message Queue</source>
+        <source>Message queue</source>
         <note>settings debug section title</note>
         <target xml:lang="de" state="translated">Nachrichtenwarteschlange</target>
       </trans-unit>
@@ -1422,7 +1896,8 @@
       </trans-unit>
       <trans-unit id="Message expired">
         <source>Message expired</source>
-        <note>No comment provided by engineer.</note>
+        <note>*
+ *  Expiration View</note>
         <target xml:lang="de" state="translated">Nachricht ist abgelaufen</target>
       </trans-unit>
       <trans-unit id="Message has been deleted.">
@@ -1442,8 +1917,13 @@
       </trans-unit>
       <trans-unit id="Message sending failed please try again">
         <source>Message sending failed please try again</source>
-        <note>Description</note>
+        <note/>
         <target xml:lang="de" state="translated">Nachricht senden fehlgeschlagen. Bitte erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again.">
+        <source>Message sending failed. Please try again.</source>
+        <note>Description</note>
+        <target xml:lang="de" state="translated">Senden der Nachricht fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
       </trans-unit>
       <trans-unit id="Message sent">
         <source>Message sent</source>
@@ -1461,7 +1941,7 @@
         <target xml:lang="de" state="translated">Mobiltelefon</target>
       </trans-unit>
       <trans-unit id="Mobile Signature">
-        <source>Mobile Signature</source>
+        <source>Mobile signature</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Signatur auf Mobilgeräten</target>
       </trans-unit>
@@ -1469,6 +1949,11 @@
         <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Mobile Anmeldungen sind vorübergehend deaktiviert. Bitte versuchen Sie es später erneut, oder melden Sie sich bei protonmail.com mit einem Desktop oder Laptop-Rechner an.</target>
+      </trans-unit>
+      <trans-unit id="More Credits">
+        <source>More Credits</source>
+        <note>Screen header</note>
+        <target xml:lang="de" state="translated">Weiteres Guthaben</target>
       </trans-unit>
       <trans-unit id="Move to AllMail">
         <source>Move to AllMail</source>
@@ -1516,12 +2001,12 @@
         <target xml:lang="de" state="translated">Verschieben nach …</target>
       </trans-unit>
       <trans-unit id="Multiple Addresses">
-        <source>Multiple Addresses</source>
+        <source>Multiple addresses</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Mehrere Adressen</target>
       </trans-unit>
       <trans-unit id="NEED AN ACCOUNT? SIGN UP.">
-        <source>NEED AN ACCOUNT? SIGN UP.</source>
+        <source>Sign up for free</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Sie benötigen ein Konto? Hier anmelden.</target>
       </trans-unit>
@@ -1560,10 +2045,26 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Keine Verbindung erkannt …</target>
       </trans-unit>
+      <trans-unit id="No, for another ProtonMail account">
+        <source>No, for another ProtonMail account</source>
+        <note>Warning message option when user want to relogin to another account</note>
+        <target xml:lang="de" state="translated">Nein, für ein anderes ProtonMail-Konto</target>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase">
+        <source>No, not related to in-app purchase</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Nein, nicht im Zusammenhang mit dem In-App-Kauf</target>
+      </trans-unit>
       <trans-unit id="None">
         <source>None</source>
-        <note>Title</note>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
         <target xml:lang="de" state="translated">Keine</target>
+      </trans-unit>
+      <trans-unit id="Not Now">
+        <source>Not Now</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Nicht jetzt</target>
       </trans-unit>
       <trans-unit id="Not all recipients support message expiration">
         <source>Not all recipients support message expiration</source>
@@ -1601,7 +2102,7 @@
         <target xml:lang="de" state="translated">Benachrichtigung / E-Mail Wiederherstellung</target>
       </trans-unit>
       <trans-unit id="Notification Email">
-        <source>Notification Email</source>
+        <source>Notification email</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">E-Mail-Benachrichtigung</target>
       </trans-unit>
@@ -1625,6 +2126,11 @@
         <note>Action</note>
         <target xml:lang="de" state="translated">OK</target>
       </trans-unit>
+      <trans-unit id="OTHER SERVICE PLANS">
+        <source>OTHER SERVICE PLANS</source>
+        <note>Section header</note>
+        <target xml:lang="de" state="translated">Weitere Tarifangebote</target>
+      </trans-unit>
       <trans-unit id="On">
         <source>On</source>
         <note>Title</note>
@@ -1636,7 +2142,7 @@
         <target xml:lang="de" state="translated">Nur ein zahlender Nutzer kann die mobile Standardsignatur ändern oder deaktivieren!</target>
       </trans-unit>
       <trans-unit id="OpenDraft">
-        <source>OpenDraft</source>
+        <source>Open draft</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Entwurf öffnen</target>
       </trans-unit>
@@ -1649,6 +2155,11 @@
         <source>Other</source>
         <note>default vcard types</note>
         <target xml:lang="de" state="translated">Weitere</target>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. It only helps us verify that the transaction was fulfilled on the AppStore's servers.">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. It only helps us verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Unser Kundendienstteam wird versuchen, Ihren Serviceplan manuell zu aktivieren, wenn Sie damit einverstanden sind, technische Daten, die der App Store der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat, anzuhängen. Diese Daten enthalten weder Angaben zu Ihrem iTunes-Konto, noch Ihrer Apple ID, und auch keine verknüpften Kreditkarten oder anderen Benutzerinformationen. Es hilft uns nur zu überprüfen, ob die Abwicklung auf den Servern des App Stores durchgeführt wurde.</target>
       </trans-unit>
       <trans-unit id="Outbox">
         <source>Outbox</source>
@@ -1691,12 +2202,12 @@
         <target xml:lang="de" state="translated">Passwort</target>
       </trans-unit>
       <trans-unit id="Password Mismatch">
-        <source>Password Mismatch</source>
+        <source>Passwords do not match</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Passwort stimmt nicht überein</target>
       </trans-unit>
       <trans-unit id="Password Updated">
-        <source>Password Updated</source>
+        <source>Password updated</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Passwort aktualisiert</target>
       </trans-unit>
@@ -1750,10 +2261,10 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Reintext</target>
       </trans-unit>
-      <trans-unit id="Please add a password for the following recipients">
-        <source>Please add a password for the following recipients</source>
+      <trans-unit id="Please add a password for the following recipients.">
+        <source>Please add a password for the following recipients.</source>
         <note>alert description</note>
-        <target xml:lang="de" state="translated">Bitte ein Passwort für folgende Empfänger hinzufügen</target>
+        <target xml:lang="de" state="translated">Bitte Passwort für folgende Empfänger hinzufügen.</target>
       </trans-unit>
       <trans-unit id="Please check your cell phone for the verification code.">
         <source>Please check your cell phone for the verification code.</source>
@@ -1765,10 +2276,10 @@
         <note>error message</note>
         <target xml:lang="de" state="translated">Bitte überprüfen Sie Ihre E-Mails für den Bestätigungscode.</target>
       </trans-unit>
-      <trans-unit id="Please disable PGP Sending for following addresses">
-        <source>Please disable PGP Sending for following addresses</source>
+      <trans-unit id="Please disable PGP Sending for following addresses.">
+        <source>Please disable PGP Sending for following addresses.</source>
         <note>alert description</note>
-        <target xml:lang="de" state="translated">Bitte deaktivieren Sie das Senden über PGP für folgende Adressen</target>
+        <target xml:lang="de" state="translated">Bitte das Senden über PGP für folgende Adressen deaktivieren</target>
       </trans-unit>
       <trans-unit id="Please input a valid cell phone number.">
         <source>Please input a valid cell phone number.</source>
@@ -1780,10 +2291,35 @@
         <note>error message</note>
         <target xml:lang="de" state="translated">Bitte eine gültige E-Mail-Adresse eingeben.</target>
       </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Bitte melden Sie sich bei dem ProtonMail-Konto an, für das Sie den Serviceplan aktualisieren möchten, damit wir den Kauf abschließen können.</target>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Bitte melden Sie sich bei dem ProtonMail-Konto an, für das Sie den Serviceplan aktualisieren möchten, damit wir die Aktivierung des Serviceplans abschließen können.</target>
+      </trans-unit>
       <trans-unit id="Please pick a user name first!">
-        <source>Please pick a user name first!</source>
+        <source>Please pick a username first!</source>
         <note>Error</note>
         <target xml:lang="de" state="translated">Bitte zunächst einen Benutzernamen festlegen!</target>
+      </trans-unit>
+      <trans-unit id="Please provide a group name">
+        <source>Please provide a group name</source>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+        <target xml:lang="de" state="translated">Bitte einen Gruppennamen angeben</target>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!">
+        <source>Please remove all attachments before changing the sender</source>
+        <note>when switch sender but email has attachments</note>
+        <target xml:lang="de" state="translated">Bitte vor dem Ändern des Absenders alle Anhänge entfernen</target>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group">
+        <source>Please select at least one email for the contact group</source>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+        <target xml:lang="de" state="translated">Bitte mindestens eine E-Mail-Adresse für die Kontaktgruppe auswählen</target>
       </trans-unit>
       <trans-unit id="Please select one of the following options:">
         <source>Please select one of the following options:</source>
@@ -1795,15 +2331,52 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Bitte ein Passwort festlegen.</target>
       </trans-unit>
-      <trans-unit id="Please use ProtonMail App login first">
-        <source>Please use ProtonMail App login first</source>
+      <trans-unit id="Please try a different domain.">
+        <source>Please try a different domain.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Bitte eine andere Domain versuchen</target>
+      </trans-unit>
+      <trans-unit id="Please try a different email address.">
+        <source>Please try a different email address.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Bitte eine andere E-Mail-Adresse versuchen</target>
+      </trans-unit>
+      <trans-unit id="Please try a different password.">
+        <source>Please try a different password.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Bitte ein anderes Passwort versuchen</target>
+      </trans-unit>
+      <trans-unit id="Please try a different user name.">
+        <source>Please try a different username.</source>
+        <note/>
+        <target xml:lang="de" state="translated">Bitte einen anderen Benutzernamen versuchen</target>
+      </trans-unit>
+      <trans-unit id="Please try again.">
+        <source>Please try again</source>
+        <note>
+
+</note>
+        <target xml:lang="de" state="translated">Bitte erneut versuchen</target>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Bitte entsperren Sie die App, um mit der Aktivierung Ihres Serviceplans fortzufahren.</target>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first.">
+        <source>Please use ProtonMail App login first.</source>
         <note>Description</note>
-        <target xml:lang="de" state="translated">Bitte zuerst die Anmeldung der ProtonMail-App verwenden</target>
+        <target xml:lang="de" state="translated">Bitte zuerst die Anmeldung in der App ProtonMail verwenden.</target>
       </trans-unit>
       <trans-unit id="Please use the web application to reset your password.">
         <source>Please use the web application to reset your password.</source>
         <note>Alert</note>
         <target xml:lang="de" state="translated">Bitte verwenden Sie die Webanwendung, um Ihr Passwort zurückzusetzen.</target>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <note/>
+        <target xml:lang="de" state="translated">Verwenden Sie die Web-Version von ProtonMail, um Ihr Mailbox-Passwort zu ändern!</target>
       </trans-unit>
       <trans-unit id="Please use the web version of ProtonMail to change your passwords!">
         <source>Please use the web version of ProtonMail to change your passwords!</source>
@@ -1820,10 +2393,21 @@
         <note>The</note>
         <target xml:lang="de" state="translated">Bitte warten, bis die Nachricht heruntergeladen wurde!</target>
       </trans-unit>
+      <trans-unit id="Please, manage it in your phone.">
+        <source>Please, manage it in your phone.</source>
+        <note>
+ &amp; alert title</note>
+        <target xml:lang="de" state="translated">Bitte verwalten Sie es in Ihrem Handy.</target>
+      </trans-unit>
       <trans-unit id="Polish">
         <source>Polish</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Polnisch</target>
+      </trans-unit>
+      <trans-unit id="Portuguese">
+        <source>Portuguese</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Portugiesisch</target>
       </trans-unit>
       <trans-unit id="Portuguese Brazil">
         <source>Portuguese Brazil</source>
@@ -1841,7 +2425,7 @@
         <target xml:lang="de" state="translated">Schutz</target>
       </trans-unit>
       <trans-unit id="Protection Entire App">
-        <source>Protection Entire App</source>
+        <source>Protection entire app</source>
         <note>settings protection section title</note>
         <target xml:lang="de" state="translated">Gesamte App schützen</target>
       </trans-unit>
@@ -1880,8 +2464,13 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">ProtonMail ist zur Zeit offline, schauen Sie auf Twitter nach unserem derzeitigen Status: https://twitter.com/protonmail</target>
       </trans-unit>
+      <trans-unit id="ProtonVPN included">
+        <source>ProtonVPN included</source>
+        <note>Service plan capability</note>
+        <target xml:lang="de" state="translated">ProtonVPN enthalten</target>
+      </trans-unit>
       <trans-unit id="Quick swipe actions">
-        <source>Quick swipe actions</source>
+        <source>Quick Swipe actions</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Aktionen für Wischgesten</target>
       </trans-unit>
@@ -1937,7 +2526,7 @@
       </trans-unit>
       <trans-unit id="Remove Star">
         <source>Remove Star</source>
-        <note>Action</note>
+        <note>un star message</note>
         <target xml:lang="de" state="translated">Kennzeichnung entfernen</target>
       </trans-unit>
       <trans-unit id="Repeat">
@@ -1955,10 +2544,30 @@
         <note>reply all action</note>
         <target xml:lang="de" state="translated">Allen antworten</target>
       </trans-unit>
+      <trans-unit id="Reply message">
+        <source>Reply message</source>
+        <note>composer view model impl</note>
+        <target xml:lang="de" state="translated">Nachricht beantworten</target>
+      </trans-unit>
+      <trans-unit id="ReplyAll">
+        <source>Reply all</source>
+        <note/>
+        <target xml:lang="de" state="translated">Allen antworten</target>
+      </trans-unit>
       <trans-unit id="Report Bugs">
         <source>Report Bugs</source>
         <note>menu title</note>
         <target xml:lang="de" state="translated">Fehler melden</target>
+      </trans-unit>
+      <trans-unit id="Report Phishing">
+        <source>Report Phishing</source>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+        <target xml:lang="de" state="translated">Phishing melden</target>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <note>alert message</note>
+        <target xml:lang="de" state="translated">Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.</target>
       </trans-unit>
       <trans-unit id="Resetting message cache ...">
         <source>Resetting message cache ...</source>
@@ -1975,18 +2584,23 @@
         <note>email verify code resend count down</note>
         <target xml:lang="de" state="translated">Nach %d Sekunden erneut versuchen</target>
       </trans-unit>
+      <trans-unit id="Romanian">
+        <source>Romanian</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Rumänisch</target>
+      </trans-unit>
       <trans-unit id="Russian">
         <source>Russian</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Russisch</target>
       </trans-unit>
       <trans-unit id="SENT">
-        <source>SENT</source>
+        <source>Sent</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Gesendet</target>
       </trans-unit>
       <trans-unit id="SPAM">
-        <source>SPAM</source>
+        <source>Spam</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Spam</target>
       </trans-unit>
@@ -2001,7 +2615,7 @@
         <target xml:lang="de" state="translated">SRP-Server</target>
       </trans-unit>
       <trans-unit id="STARRED">
-        <source>STARRED</source>
+        <source>Starred</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Gekennzeichnet</target>
       </trans-unit>
@@ -2030,13 +2644,28 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">Suchen</target>
       </trans-unit>
+      <trans-unit id="Select An Option">
+        <source>Select An Option</source>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+        <target xml:lang="de" state="translated">Wähle Sie eine Option</target>
+      </trans-unit>
+      <trans-unit id="Select Color">
+        <source>Select Color</source>
+        <note>The title for the view where user can select the color for the group</note>
+        <target xml:lang="de" state="translated">Farbe wählen</target>
+      </trans-unit>
+      <trans-unit id="Select your language">
+        <source>Select your language</source>
+        <note/>
+        <target xml:lang="de" state="translated">Sprache auswählen</target>
+      </trans-unit>
       <trans-unit id="Send">
         <source>Send</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Senden</target>
       </trans-unit>
       <trans-unit id="Send Verification Code">
-        <source>Send Verification Code</source>
+        <source>Send verification code</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Verifizierungs-Code senden</target>
       </trans-unit>
@@ -2061,8 +2690,13 @@
         <target xml:lang="de" state="translated">Die Überprüfung des Absenders ist fehlgeschlagen</target>
       </trans-unit>
       <trans-unit id="Sending Message">
-        <source>Sending Message</source>
+        <source>Sending message</source>
         <note>Description</note>
+        <target xml:lang="de" state="translated">Nachricht wird gesendet</target>
+      </trans-unit>
+      <trans-unit id="Sending message">
+        <source>Sending message</source>
+        <note>Alert title</note>
         <target xml:lang="de" state="translated">Nachricht wird gesendet</target>
       </trans-unit>
       <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@">
@@ -2080,6 +2714,11 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Senden fehlgeschlagen</target>
       </trans-unit>
+      <trans-unit id="Sent by ProtonMail with end-to-end encryption">
+        <source>Sent by ProtonMail with end-to-end encryption</source>
+        <note>encryption lock description</note>
+        <target xml:lang="de" state="translated">Von ProtonMail mit Ende-zu-Ende-Verschlüsselung gesendet</target>
+      </trans-unit>
       <trans-unit id="Sent by you with end-to-end encryption">
         <source>Sent by you with end-to-end encryption</source>
         <note>encryption lock description</note>
@@ -2089,6 +2728,11 @@
         <source>Server proofs not valid!</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Servernachweise ungültig!</target>
+      </trans-unit>
+      <trans-unit id="Service Plan">
+        <source>Service Plan</source>
+        <note>menu title</note>
+        <target xml:lang="de" state="translated">Serviceplan</target>
       </trans-unit>
       <trans-unit id="Set Password">
         <source>Set Password</source>
@@ -2126,7 +2770,7 @@
         <target xml:lang="de" state="translated">Mit Freunden teilen</target>
       </trans-unit>
       <trans-unit id="Sign Out">
-        <source>Sign Out</source>
+        <source>Log out</source>
         <note>Action</note>
         <target xml:lang="de" state="translated">Abmelden</target>
       </trans-unit>
@@ -2160,8 +2804,13 @@
         <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
         <target xml:lang="de" state="translated">Stummgeschaltet bis</target>
       </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <note>Error message for beta users</note>
+        <target xml:lang="de" state="translated">Leider können wir in der Beta-Version der iOS-App keine Bestellungen verarbeiten. Vielen Dank für Ihre Teilnahme an unserer Public Beta!</target>
+      </trans-unit>
       <trans-unit id="Space Warning">
-        <source>Space Warning</source>
+        <source>Space warning</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Speicherplatz-Warnung</target>
       </trans-unit>
@@ -2182,9 +2831,9 @@
         <target xml:lang="de" state="translated">Spanisch</target>
       </trans-unit>
       <trans-unit id="Srp single password keyslat invalid!">
-        <source>Srp single password keyslat invalid!</source>
+        <source>Srp single password keysalt invalid!</source>
         <note>Description</note>
-        <target xml:lang="de" state="needs-translation">Srp single password keyslat invalid!</target>
+        <target xml:lang="de" state="needs-translation">Srp single password keysalt invalid!</target>
       </trans-unit>
       <trans-unit id="Star">
         <source>Star</source>
@@ -2238,6 +2887,11 @@
         <note>Action</note>
         <target xml:lang="de" state="translated">ProtonMail unterstützen</target>
       </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <note>Service plan capability; i = 2</note>
+        <target xml:lang="de" state="translated">Unterstützung für %i benutzerdefinierte Domains (z.B. user@yourdomain.com)</target>
+      </trans-unit>
       <trans-unit id="Swipe Left to Right">
         <source>Swipe Left to Right</source>
         <note>settings swipe actions section title</note>
@@ -2254,12 +2908,12 @@
         <target xml:lang="de" state="translated">System konnte nicht die Datei kopieren</target>
       </trans-unit>
       <trans-unit id="TRASH">
-        <source>TRASH</source>
+        <source>Trash</source>
         <note>mail location title</note>
         <target xml:lang="de" state="translated">Papierkorb</target>
       </trans-unit>
       <trans-unit id="Take a Photo">
-        <source>Take a Photo</source>
+        <source>Take photo</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Foto aufnehmen</target>
       </trans-unit>
@@ -2270,11 +2924,11 @@
       </trans-unit>
       <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system.">
         <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
-        <note>No comment provided by engineer.</note>
+        <note/>
         <target xml:lang="de" state="translated">Vielen Dank für Ihren Fehlerbericht. Wir haben Ihren Bericht zu unserem Fehlerverfolgungssystem hinzugefügt.</target>
       </trans-unit>
       <trans-unit id="The Password is wrong.">
-        <source>The Password is wrong.</source>
+        <source>The password is wrong.</source>
         <note>update password error</note>
         <target xml:lang="de" state="translated">Ungültiges Passwort</target>
       </trans-unit>
@@ -2283,10 +2937,22 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">ProtonMail ist momentan Offline …</target>
       </trans-unit>
+      <trans-unit id="The UserName have been taken.">
+        <source>The username have been taken.</source>
+        <note>
+</note>
+        <target xml:lang="de" state="translated">Dieser Benutzername ist bereits vergeben.</target>
+      </trans-unit>
       <trans-unit id="The authentication credentials are invalid.">
         <source>The authentication credentials are invalid.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Die Authentifizierungsinformationen sind ungültig.</target>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired.">
+        <source>The authentication token has expired.</source>
+        <note>
+</note>
+        <target xml:lang="de" state="translated">Die Authentifizierungskette ist abgelaufen.</target>
       </trans-unit>
       <trans-unit id="The current standard">
         <source>The current standard</source>
@@ -2298,13 +2964,13 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Der Anzeigename ist jetzt %@.</target>
       </trans-unit>
-      <trans-unit id="The draft cache is broken please try again">
-        <source>The draft cache is broken please try again</source>
+      <trans-unit id="The draft cache is broken. Please try again.">
+        <source>The draft cache is broken. Please try again.</source>
         <note>Description</note>
-        <target xml:lang="de" state="translated">Der Entwurfscache ist beschädigt. Bitte versuchen Sie es erneut.</target>
+        <target xml:lang="de" state="translated">Der Entwurfs-Zwischenspeicher ist beschädigt. Bitte versuchen Sie es erneut.</target>
       </trans-unit>
       <trans-unit id="The draft format incorrectly sending failed!">
-        <source>The draft format incorrectly sending failed!</source>
+        <source>Sending failed. There was an error with the draft format.</source>
         <note>error when sending the message</note>
         <target xml:lang="de" state="translated">Das Entwurfsformat ist fehlerhaft. Senden fehlgeschlagen!</target>
       </trans-unit>
@@ -2313,15 +2979,41 @@
         <note>key size note part 1</note>
         <target xml:lang="de" state="translated">Die höchstmögliche Verschlüsselung, die zur Verfügung steht.</target>
       </trans-unit>
+      <trans-unit id="The label name is duplicate">
+        <source>The label name is duplicate</source>
+        <note/>
+        <target xml:lang="de" state="translated">Der Kategoriename wurde dupliziert</target>
+      </trans-unit>
       <trans-unit id="The mailbox password is incorrect.">
         <source>The mailbox password is incorrect.</source>
         <note>Error</note>
         <target xml:lang="de" state="translated">Das Mailbox-Passwort ist ungültig.</target>
       </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d">
+        <source>The maximum number of distinct recipients is %d</source>
+        <note>Alert message</note>
+        <target xml:lang="de" state="translated">Die maximale Anzahl unterschiedlicher Empfänger beträgt %d</target>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d.">
+        <source>The maximum number of labels is %d.</source>
+        <note>*
+ *  LabelsViewController</note>
+        <target xml:lang="de" state="translated">Die maximale Kategorieanzahl beträgt %d.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty">
+        <source>The new password can't be empty</source>
+        <note/>
+        <target xml:lang="de" state="translated">Bitte das neue Passwort eingeben</target>
+      </trans-unit>
       <trans-unit id="The new password can't empty.">
         <source>The new password can't empty.</source>
         <note>update password error</note>
         <target xml:lang="de" state="translated">Das neue Passwort darf nicht leer sein.</target>
+      </trans-unit>
+      <trans-unit id="The new password not match">
+        <source>Passwords do not match</source>
+        <note/>
+        <target xml:lang="de" state="translated">Passwörter stimmen nicht überein</target>
       </trans-unit>
       <trans-unit id="The new password not match.">
         <source>The new password not match.</source>
@@ -2358,6 +3050,12 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Die Gesamtgröße der Anhänge darf 25MB nicht überschreiten</target>
       </trans-unit>
+      <trans-unit id="The verification email invalid">
+        <source>Invalid verification email</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="de" state="translated">Ungültige Wiederherstellungs-E-Mail</target>
+      </trans-unit>
       <trans-unit id="The verification failed!">
         <source>The verification failed!</source>
         <note>Error</note>
@@ -2367,6 +3065,16 @@
         <source>There was an error creating or loading the application's saved data.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Beim Erstellen oder Laden der gespeicherten Anwendungsdaten ist ein Fehler aufgetreten.</target>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app.">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <note>Alert message</note>
+        <target xml:lang="de" state="translated">Bitte haben Sie ein wenig Geduld. Bitte die App nicht beenden.</target>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book.">
+        <source>This contact belongs to your address book.</source>
+        <note>alert desc</note>
+        <target xml:lang="de" state="translated">Dieser Kontakt gehört zu Ihrem Adressbuch.</target>
       </trans-unit>
       <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!">
         <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
@@ -2378,6 +3086,11 @@
         <note>spam score warning</note>
         <target xml:lang="de" state="translated">Diese E-Mail scheint von einer ProtonMail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!</target>
       </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <note>spam score warning</note>
+        <target xml:lang="de" state="translated">Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfen Sie den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.</target>
+      </trans-unit>
       <trans-unit id="Title">
         <source>Title</source>
         <note>contacts talbe cell Title title</note>
@@ -2388,10 +3101,17 @@
         <note>Title</note>
         <target xml:lang="de" state="translated">An</target>
       </trans-unit>
-      <trans-unit id="To prevent abuse of ProtonMail,\r\n we need to verify that you are human.">
-        <source>To prevent abuse of ProtonMail,\r\n we need to verify that you are human.</source>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human.">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
         <note>human verification notes</note>
-        <target xml:lang="de" state="translated">Um Missbrauch von ProtonMail zu vermeiden,\r\nmüssen wir sicherstellen, dass Sie ein Mensch sind.</target>
+        <target xml:lang="de" state="translated">Um den Missbrauch von ProtonMail zu verhindern,&amp;#13;
+ müssen wir sicherstellen, dass Sie ein Mensch sind.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note/>
+        <target xml:lang="de" state="translated">Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com</target>
       </trans-unit>
       <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
         <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
@@ -2402,6 +3122,17 @@
         <source>To:</source>
         <note>message To: feild</note>
         <target xml:lang="de" state="translated">An:</target>
+      </trans-unit>
+      <trans-unit id="Token expired">
+        <source>Token expired</source>
+        <note>*
+ *  API Error &amp; alert title</note>
+        <target xml:lang="de" state="translated">Token abgelaufen</target>
+      </trans-unit>
+      <trans-unit id="Too many recipients">
+        <source>Too many recipients</source>
+        <note>Alert title</note>
+        <target xml:lang="de" state="translated">Zu viele Empfänger</target>
       </trans-unit>
       <trans-unit id="TouchID is not enrolled, enable it in the system Settings">
         <source>TouchID is not enrolled, enable it in the system Settings</source>
@@ -2445,13 +3176,18 @@
         <note>Placeholder</note>
         <target xml:lang="de" state="translated">Zwei-Faktor-Code</target>
       </trans-unit>
+      <trans-unit id="Type casting error">
+        <source>Type casting error</source>
+        <note>Internal type casting error</note>
+        <target xml:lang="de" state="needs-translation">Type casting error</target>
+      </trans-unit>
       <trans-unit id="URL">
         <source>URL</source>
         <note>default vcard types</note>
         <target xml:lang="de" state="translated">URL</target>
       </trans-unit>
       <trans-unit id="USER LOGIN">
-        <source>USER LOGIN</source>
+        <source>User log in</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Benutzeranmeldung</target>
       </trans-unit>
@@ -2465,6 +3201,12 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Die Verbindung zum Server ist fehlgeschlagen</target>
       </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <note>
+</note>
+        <target xml:lang="de" state="translated">Fehler beim Erstellen einer URL mit folgendem Pfad: %@</target>
+      </trans-unit>
       <trans-unit id="Unable to create SRP Client!">
         <source>Unable to create SRP Client!</source>
         <note>Description</note>
@@ -2474,6 +3216,11 @@
         <source>Unable to decrypt message.</source>
         <note>Error</note>
         <target xml:lang="de" state="translated">Nachricht konnte nicht entschlüsselt werden.</target>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline">
+        <source>Unable to edit this message offline</source>
+        <note>Description</note>
+        <target xml:lang="de" state="translated">Diese Nachricht kann nicht ohne Internetverbindung bearbeitet werden.</target>
       </trans-unit>
       <trans-unit id="Unable to generate hash password!">
         <source>Unable to generate hash password!</source>
@@ -2505,10 +3252,12 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Fehler beim Verarbeiten der Antwort</target>
       </trans-unit>
-      <trans-unit id="Unable to parse the response object:\n%@">
-        <source>Unable to parse the response object:\n%@</source>
+      <trans-unit id="Unable to parse the response object:&#10;%@">
+        <source>Unable to parse the response object:
+%@</source>
         <note>Description</note>
-        <target xml:lang="de" state="translated">Fehler beim Verarbeiten des Antwortobjekts:\n%@</target>
+        <target xml:lang="de" state="translated">Das Antwortobjekt konnte nicht verarbeitet werden:
+%@</target>
       </trans-unit>
       <trans-unit id="Unable to parse token">
         <source>Unable to parse token</source>
@@ -2516,7 +3265,7 @@
         <target xml:lang="de" state="translated">Fehler beim Verarbeiten des Tokens</target>
       </trans-unit>
       <trans-unit id="Unable to send the email">
-        <source>Unable to send the email</source>
+        <source>Unable to send the email.</source>
         <note>error when sending the message</note>
         <target xml:lang="de" state="translated">Fehler beim Senden der Nachricht</target>
       </trans-unit>
@@ -2526,9 +3275,14 @@
         <target xml:lang="de" state="translated">Widerrufen</target>
       </trans-unit>
       <trans-unit id="Unknow Error">
-        <source>Unknow Error</source>
+        <source>Unknown error</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Unbekannter Fehler</target>
+      </trans-unit>
+      <trans-unit id="Unknow file">
+        <source>Unknown file</source>
+        <note/>
+        <target xml:lang="de" state="translated">Unbekannte Datei</target>
       </trans-unit>
       <trans-unit id="Unknown">
         <source>Unknown</source>
@@ -2540,10 +3294,31 @@
         <note>Error</note>
         <target xml:lang="de" state="translated">Unbekannter Fehler</target>
       </trans-unit>
+      <trans-unit id="Unkonw Version">
+        <source>Unknown version</source>
+        <note/>
+        <target xml:lang="de" state="translated">Unbekannte Version</target>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day">
+        <source>Unlimited messages sent/day</source>
+        <note>Service plan capability;</note>
+        <target xml:lang="de" state="translated">Unbegrenzte Anzahl von zu sendenden Nachrichten/Tag</target>
+      </trans-unit>
       <trans-unit id="Unread">
         <source>Unread</source>
-        <note>VoiceOver: email is not read yet</note>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
         <target xml:lang="de" state="translated">Ungelesen</target>
+      </trans-unit>
+      <trans-unit id="Unsupported file type">
+        <source>Unsupported file type</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Nicht unterstützter Dateityp</target>
+      </trans-unit>
+      <trans-unit id="Up to %i users">
+        <source>Up to %i users</source>
+        <note>Service plan capability; i = 6</note>
+        <target xml:lang="de" state="translated">Bis zu %i Nutzer</target>
       </trans-unit>
       <trans-unit id="Update">
         <source>Update</source>
@@ -2560,10 +3335,30 @@
         <note>update notification email error title</note>
         <target xml:lang="de" state="translated">Benachrichtigungs-E-Mail-Adresse aktualisieren</target>
       </trans-unit>
+      <trans-unit id="Update Now">
+        <source>Update Now</source>
+        <note>title</note>
+        <target xml:lang="de" state="translated">Jetzt aktualisieren</target>
+      </trans-unit>
+      <trans-unit id="Update Required">
+        <source>Update Required</source>
+        <note>title</note>
+        <target xml:lang="de" state="translated">Aktualisierung erforderlich</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="de" state="translated">Auf ein kostenpflichtiges Abonnement umsteigen, um weiteren Funktionen nutzen zu können.</target>
+      </trans-unit>
       <trans-unit id="Upgrade to a paid plan to send from your %@ address">
         <source>Upgrade to a paid plan to send from your %@ address</source>
         <note>Error</note>
         <target xml:lang="de" state="translated">Auf ein kostenpflichtiges Abonnement aktualisieren, um von Ihrer Adresse „%@” senden zu können</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features.">
+        <source>Upgrade to get all paid features.</source>
+        <note>alert description</note>
+        <target xml:lang="de" state="translated">Aktualisieren, um alle kostenpflichtigen Funktionen zu erhalten.</target>
       </trans-unit>
       <trans-unit id="Upgrading is not possible in the app.">
         <source>Upgrading is not possible in the app.</source>
@@ -2586,14 +3381,26 @@
         <target xml:lang="de" state="translated">URL</target>
       </trans-unit>
       <trans-unit id="User already exist!">
-        <source>User already exist!</source>
+        <source>Username already taken</source>
         <note>error when user already exist</note>
         <target xml:lang="de" state="translated">Benutzer existiert bereits!</target>
       </trans-unit>
       <trans-unit id="User is available!">
-        <source>User is available!</source>
-        <note>No comment provided by engineer.</note>
+        <source>Username is available</source>
+        <note/>
         <target xml:lang="de" state="translated">Nutzer ist verfügbar!</target>
+      </trans-unit>
+      <trans-unit id="User name exist">
+        <source>Username exist</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="de" state="translated">Benutzername vergeben</target>
+      </trans-unit>
+      <trans-unit id="User name invalid">
+        <source>Invalid username</source>
+        <note>
+ &amp; alert title</note>
+        <target xml:lang="de" state="translated">Ungültiger Benutzername</target>
       </trans-unit>
       <trans-unit id="Username">
         <source>Username</source>
@@ -2620,6 +3427,26 @@
         <note>error details</note>
         <target xml:lang="de" state="translated">Prüfung der Signatur fehlgeschlagen</target>
       </trans-unit>
+      <trans-unit id="Version %@ %@">
+        <source>Version %@ %@</source>
+        <note/>
+        <target xml:lang="de" state="translated">Version %@ %@</target>
+      </trans-unit>
+      <trans-unit id="View Headers">
+        <source>View Headers</source>
+        <note>message details-&gt; more action-&gt; view headers</note>
+        <target xml:lang="de" state="translated">Kopfzeilen anzeigen</target>
+      </trans-unit>
+      <trans-unit id="View Plans">
+        <source>View Plans</source>
+        <note>Action</note>
+        <target xml:lang="de" state="translated">Abonnements anzeigen</target>
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning</source>
+        <note>Title</note>
+        <target xml:lang="de" state="translated">Warnhinweis</target>
+      </trans-unit>
       <trans-unit id="Warning: Before you pass the human check you can't sent email!!!">
         <source>Warning: Before you pass the human check you can't sent email!!!</source>
         <note>human check warning description</note>
@@ -2629,6 +3456,16 @@
         <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Warnung: Sie haben keine Wiederherstellungs-E-Mail-Adresse eingerichtet, sodass eine Wiederherstellung des Kontos unmöglich ist, falls Sie Ihr Passwort vergessen. Ohne Wiederherstellungs-E-Mail-Adresse fortfahren?</target>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan.">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Wir haben Ihr Abonnement erfolgreich aktiviert. Bitte starten Sie die App neu, um Ihren neuen Serviceplan nutzen zu können.</target>
+      </trans-unit>
+      <trans-unit id="We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you.">
+        <source>We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Wir konnten das von Ihnen gekaufte AppStore-Produkt nicht mit Produkten auf unserem Server abgleichen. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.</target>
       </trans-unit>
       <trans-unit id="We will send a verification code to the cell phone above.">
         <source>We will send a verification code to the cell phone above.</source>
@@ -2646,12 +3483,12 @@
         <target xml:lang="de" state="translated">Wir würden gerne wissen, was wir besser machen können.</target>
       </trans-unit>
       <trans-unit id="Welcome to ProtonMail!">
-        <source>Welcome to ProtonMail!</source>
+        <source>Welcome to ProtonMail</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Willkommen bei ProtonMail!</target>
       </trans-unit>
-      <trans-unit id="What people see in the \&quot;From\&quot; field.">
-        <source>What people see in the \"From\" field.</source>
+      <trans-unit id="What people see in the &quot;From&quot; field.">
+        <source>What people see in the "From" field.</source>
         <note>Description</note>
         <target xml:lang="de" state="translated">Was anderen im Feld „Von” angezeigt wird.</target>
       </trans-unit>
@@ -2664,6 +3501,22 @@
         <source>Work</source>
         <note>default vcard types</note>
         <target xml:lang="de" state="translated">Arbeit</target>
+      </trans-unit>
+      <trans-unit id="Wrong verification code">
+        <source>Wrong verification code</source>
+        <note>
+ &amp; title</note>
+        <target xml:lang="de" state="translated">Ungültiger Bestätigungsschlüssel</target>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for ">
+        <source>Yes, activate it for </source>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+        <target xml:lang="de" state="translated">Ja, aktivieren für </target>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment">
+        <source>Yes, attach details of payment</source>
+        <note>Error message</note>
+        <target xml:lang="de" state="translated">Ja, Zahlungsdaten anhängen</target>
       </trans-unit>
       <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings.">
         <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
@@ -2730,10 +3583,22 @@
         <note>Description</note>
         <target xml:lang="de" state="translated">Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.</target>
       </trans-unit>
-      <trans-unit id="Your new secure email\r\n account is ready.">
-        <source>Your new secure email\r\n account is ready.</source>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready.">
+        <source>Your new secure email&#13;
+ account is ready.</source>
         <note>view top title</note>
-        <target xml:lang="de" state="translated">Ihr neues sicherer E-Mail-\r\nKonto ist einsatzbereit.</target>
+        <target xml:lang="de" state="translated">Ihr neues sicheres E-Mail-&amp;#13;
+Konto ist eingerichtet.</target>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until">
+        <source>Your plan is currently active until</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="de" state="translated">Ihr Abo ist derzeit aktiv bis</target>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on">
+        <source>Your plan will automatically renew on</source>
+        <note>Service plan description footer</note>
+        <target xml:lang="de" state="translated">Ihr Abo wird automatisch verlängert am</target>
       </trans-unit>
       <trans-unit id="Your signature has been updated.">
         <source>Your signature has been updated.</source>
@@ -2776,14 +3641,24 @@
         <target xml:lang="de" state="translated">Einführung schließen</target>
       </trans-unit>
       <trans-unit id="days">
-        <source>days</source>
+        <source>Days</source>
         <note>Title</note>
         <target xml:lang="de" state="translated">Tage</target>
+      </trans-unit>
+      <trans-unit id="for one year">
+        <source>for one year</source>
+        <note>Buy button second line</note>
+        <target xml:lang="de" state="translated">für ein Jahr</target>
       </trans-unit>
       <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!">
         <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
         <note>contacts api error when fetch</note>
         <target xml:lang="de" state="needs-translation">get contacts() failed, peopleOrderedByUsersPreference return null!!</target>
+      </trans-unit>
+      <trans-unit id="hours">
+        <source>Hours</source>
+        <note/>
+        <target xml:lang="de" state="translated">Stunden</target>
       </trans-unit>
       <trans-unit id="inline attachments">
         <source>inline attachments</source>
@@ -2817,52 +3692,35 @@
       </trans-unit>
     </body>
   </file>
-  <file original="ProtonMail/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="de">
     <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
-    </header>
-    <body>
-      <trans-unit id="CFBundleDisplayName">
-        <source>ProtonMail</source>
-        <note>Bundle display name</note>
-        <target xml:lang="de" state="translated">ProtonMail</target>
-      </trans-unit>
-      <trans-unit id="CFBundleName">
-        <source>$(PRODUCT_NAME)</source>
-        <note>Bundle name</note>
-        <target xml:lang="de" state="translated">$(PRODUCT_NAME)</target>
-      </trans-unit>
-    </body>
-  </file>
-  <file original="ProtonMail/en.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="de">
-    <header>
-      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="9.4.1" build-num="9F2000"/>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
     </header>
     <body>
       <trans-unit id="App Extension API is not available in this version of iOS">
         <source>App Extension API is not available in this version of iOS</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="de" state="translated">Die API-Erweiterung ist in dieser Version von iOS leider nicht verfügbar</target>
+        <target xml:lang="de" state="translated">App-Erweiterungs-API ist in dieser Version von iOS nicht verfügbar</target>
       </trans-unit>
       <trans-unit id="Failed to contact the Password Extension">
         <source>Failed to contact the Password Extension</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="de" state="translated">Die Passworterweiterung konnte nicht kontaktiert werden.</target>
+        <target xml:lang="de" state="translated">Die Passworterweiterung konnte nicht aufgerufen werden</target>
       </trans-unit>
       <trans-unit id="Failed to execute script that collects web page information">
         <source>Failed to execute script that collects web page information</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="de" state="translated">Fehler beim Ausführen eines Skriptes, das Informationen über die Webseite sammelt</target>
+        <target xml:lang="de" state="translated">Skript zum Sammeln von Webseiteninformationen konnte nicht ausgeführt werden</target>
       </trans-unit>
       <trans-unit id="Failed to fill web page because script could not be evaluated">
         <source>Failed to fill web page because script could not be evaluated</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="de" state="translated">Fehler beim Laden der Seite, weil das Skript nicht ausgeführt werden konnte</target>
+        <target xml:lang="de" state="translated">Fehler beim Laden der Seite, da das Skript nicht ausgeführt werden konnte</target>
       </trans-unit>
       <trans-unit id="Failed to fill web page because script is missing">
         <source>Failed to fill web page because script is missing</source>
         <note>Password Extension Error Message</note>
-        <target xml:lang="de" state="translated">Fehler beim Laden der Seite aufgrund eines fehlenden Skripts</target>
+        <target xml:lang="de" state="translated">Fehler beim Laden der Seite, da das Skript fehlt</target>
       </trans-unit>
       <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension">
         <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
@@ -2878,6 +3736,23 @@
         <source>Password Extension was cancelled by the user</source>
         <note>Password Extension Error Message</note>
         <target xml:lang="de" state="translated">Passwort-Erweiterung wurde durch den Benutzer abgebrochen</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="de">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>Siri</source>
+        <note>Bundle display name</note>
+        <target xml:lang="de" state="translated">Siri</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target xml:lang="de" state="translated">$(PRODUCT_NAME)</target>
       </trans-unit>
     </body>
   </file>
