@@ -373,14 +373,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 }
             case .replyAll:
                 if origFromSent {
-                    let toContacts = self.toContacts(msg.toList)
-                    for cont in toContacts {
-                        self.toSelectedContacts.append(cont)
-                    }
-                    let senderContacts = self.toContacts(msg.ccList)
-                    for cont in senderContacts {
-                        self.ccSelectedContacts.append(cont)
-                    }
+                    self.toContacts(msg.toList).forEach { self.toSelectedContacts.append($0) }
+                    self.toContacts(msg.ccList).forEach { self.ccSelectedContacts.append($0) }
+                    self.toContacts(msg.bccList).forEach { self.bccSelectedContacts.append($0) }
                 } else {
                     let userAddress = sharedUserDataService.userAddresses
                     var senders = [ContactPickerModelProtocol]()
@@ -412,13 +407,13 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     if self.toSelectedContacts.count <= 0 {
                         self.toSelectedContacts.append(contentsOf: senders)
                     }
-                    let senderContacts = self.toContacts(msg.ccList)
-                    for cont in senderContacts {
-                        if let cont = cont as? ContactVO,
-                            !cont.isDuplicated(userAddress) && !cont.isDuplicatedWithContacts(self.toSelectedContacts) {
-                            self.ccSelectedContacts.append(cont)
-                        }
-                    }
+                    
+                    self.toContacts(msg.ccList).compactMap { $0 as? ContactVO }
+                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
+                        .forEach { self.ccSelectedContacts.append($0) }
+                    self.toContacts(msg.bccList).compactMap { $0 as? ContactVO }
+                        .filter { !$0.isDuplicated(userAddress) && !$0.isDuplicatedWithContacts(self.toSelectedContacts) }
+                        .forEach { self.bccSelectedContacts.append($0) }
                 }
             }
         }
