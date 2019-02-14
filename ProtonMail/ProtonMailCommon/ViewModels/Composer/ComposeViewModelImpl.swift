@@ -607,7 +607,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             }
 
             body = body.escaped
-            var sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
+            let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             return .init(body: "\(head)\(htmlString)\(sp)\(body)\(foot)", remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
@@ -623,16 +623,15 @@ final class ComposeViewModelImpl : ComposeViewModel {
             return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
-                var newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
-                newhtmlString = newhtmlString.escaped
+                let newhtmlString = """
+                \(head) \(self.body!.ln2br()) \(htmlString) \(foot)
+                """.escaped
                 
-            return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
-            } else {
-                if htmlString.trim().isEmpty {
-                    //add some space
-                    let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
-            return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
-                }
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+            } else if htmlString.trim().isEmpty {
+                //add some space
+                let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
+                return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
             }
             return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
         }
