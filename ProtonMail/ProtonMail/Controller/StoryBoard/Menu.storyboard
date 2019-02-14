@@ -2970,7 +2970,7 @@
                                         <rect key="frame" x="215" y="0.0" width="120" height="44"/>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="120" id="22r-xu-Gso"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="120" id="22r-xu-Gso"/>
                                             <constraint firstAttribute="height" constant="44" id="ho9-so-e99"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -3617,13 +3617,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="dh2-Js-yHz"/>
+        <segue reference="QMs-AM-7qw"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="w5b-0j-26v"/>
-        <segue reference="GgS-nT-ctf"/>
+        <segue reference="xUw-S1-zl5"/>
         <segue reference="LdN-DE-nXL"/>
     </inferredMetricsTieBreakers>
 </document>
