@@ -450,7 +450,7 @@ class WindowOverlay: UIWindow {
     weak var delegate: WindowOverlayDelegate?
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if !self.isHidden, !self.bounds.contains(point) {
+        if !self.isHidden, point.y < self.frame.origin.y { // area above window
             let _ = self.delegate?.resignFirstResponder()
             self.delegate?.hideSearchTableView()
         }
