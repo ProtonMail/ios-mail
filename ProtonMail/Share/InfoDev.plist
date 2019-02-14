@@ -21,7 +21,7 @@
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
-	<true/>
+	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
@@ -80,6 +80,6 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
 	<key>UISupportsDocumentBrowser</key>
-	<true/>
+	<false/>
 </dict>
 </plist>
