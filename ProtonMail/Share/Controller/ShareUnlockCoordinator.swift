@@ -101,7 +101,7 @@ class ShareUnlockCoordinator : PushCoordinator {
 
 extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
     func cancel() {
-        self.viewController?.pinUnlock.isEnabled = true
+        self.viewController?.loginCheck()
     }
     
     func next() {

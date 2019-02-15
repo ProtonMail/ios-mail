@@ -155,7 +155,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         }
     }
     
-    private func loginCheck() {
+    internal func loginCheck() {
         switch getViewFlow() {
         case .requirePin:
             pinUnlock.alpha = 1.0
@@ -195,7 +195,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
     
     func signInIfRememberedCredentials() {
-        guard sharedUserDataService.isUserCredentialStored else {
+        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
             self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
             return
         }

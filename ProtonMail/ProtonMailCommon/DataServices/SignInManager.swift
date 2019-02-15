@@ -39,6 +39,11 @@ class SignInManager: NSObject {
         sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
+    internal func isSignedIn() -> Bool {
+        return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
+    }
+    
+#if !APP_EXTENSION
     internal func signIn(username: String,
                          password: String,
                          cachedTwoCode: String?,
@@ -60,10 +65,6 @@ class SignInManager: NSObject {
         }
         
         sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode, ask2fa: ask2fa, onError: onError, onSuccess: success)
-    }
-    
-    internal func isSignedIn() -> Bool {
-        return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
     }
     
     internal func mailboxPassword(from cleartextPassword: String) -> String {
@@ -116,4 +117,5 @@ class SignInManager: NSObject {
             self.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
+#endif
 }
