@@ -68,6 +68,8 @@
 			    ).@count &gt; 0
 			).@count &gt; 0</string>
 		</dict>
+		<key>NSExtensionOverridesHostUIAppearance</key>
+		<true/>
 		<key>NSExtensionPointIdentifier</key>
 		<string>com.apple.share-services</string>
 		<key>NSExtensionPrincipalClass</key>
