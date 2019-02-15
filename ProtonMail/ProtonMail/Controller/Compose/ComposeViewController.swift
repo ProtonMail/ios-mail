@@ -436,6 +436,10 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                                       preferredStyle: .alert)
         self.present(alert, animated: true, completion: nil)
         
+        [self.headerView.toContactPicker,
+         self.headerView.ccContactPicker,
+         self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
+        
         self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
             if sharedMessageQueue.queue.isEmpty {
                 let animationBlock: ()->Void = {

@@ -135,6 +135,12 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // this can not be done in deinit cuz Share Extension freaks out when subwindow is deinitialized after host window
+    func prepareForDesctruction() {
+        self.searchWindow?.removeFromSuperview()
+        self.searchWindow = nil
+    }
+    
     private func setup() {
         self._prompt = ContactPickerDefined.kPrompt
         self._showPrompt = true
