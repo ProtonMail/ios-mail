@@ -33,7 +33,7 @@ import AFNetworkActivityLogger
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
-protocol APIServiceDelegate {
+protocol APIServiceDelegate: class {
     func onError(error: NSError)
     func isReachable() -> Bool
 }
@@ -54,7 +54,7 @@ class APIService {
         return sessionManager;
     }
     
-    var delegate : APIServiceDelegate?
+    weak var delegate : APIServiceDelegate?
     
     // MARK: - Internal methods
     
