@@ -280,6 +280,13 @@ extension EmailVerifyViewController: UITextFieldDelegate {
     }
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == self.verifyCodeTextField,
+            string.hasPrefix("protonmail://signup?verifyCode=")
+        {
+            let onlyCode = string.replacingOccurrences(of: "protonmail://signup?verifyCode=", with: "")
+            textField.text = onlyCode
+            return false
+        }
         return true
     }
     
