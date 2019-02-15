@@ -954,18 +954,6 @@ class LocalizedString {
 
     /// "User is available!"
     lazy var _user_is_available = NSLocalizedString("User is available!", comment: "")
-
-    /// "Invalid characters"
-    lazy var _invalid_characters = NSLocalizedString("Invalid characters", comment: "status of username availability check")
-    
-    /// "Can not start with special character"
-    lazy var _start_with_special_character = NSLocalizedString("Can not start with special character", comment: "status of username availability check")
-    
-    /// "Can not end with special character"
-    lazy var _end_with_special_character = NSLocalizedString("Can not end with special character", comment: "status of username availability check")
-    
-    /// "Too long"
-    lazy var _too_long_username = NSLocalizedString("Too long", comment: "status of username availability check")
     
     /// "User already exist!"
     lazy var _user_already_exist = NSLocalizedString("User already exist!", comment: "error when user already exist")

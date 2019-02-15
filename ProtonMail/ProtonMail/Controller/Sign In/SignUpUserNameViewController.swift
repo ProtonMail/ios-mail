@@ -421,11 +421,12 @@ extension CheckUserExistResponse.AvailabilityStatus: CustomStringConvertible {
     var description: String {
         switch self {
         case .available: return LocalString._user_is_available
-        case .invalidCharacters: return LocalString._invalid_characters
-        case .startWithSpecialCharacterForbidden: return LocalString._start_with_special_character
-        case .endWithSpecialCharacterForbidden: return LocalString._end_with_special_character
-        case .tooLong: return LocalString._too_long_username
-        case .unavailable: return LocalString._user_already_exist
+        case .invalidCharacters(let reason): return reason
+        case .startWithSpecialCharacterForbidden(let reason): return reason
+        case .endWithSpecialCharacterForbidden(let reason): return reason
+        case .tooLong(let reason): return reason
+        case .unavailable(let reason, _): return reason
+        case .other(let reason): return reason
         }
     }
 }

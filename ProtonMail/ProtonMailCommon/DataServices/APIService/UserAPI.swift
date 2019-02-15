@@ -221,20 +221,21 @@ class CheckUserExist : ApiRequest<CheckUserExistResponse> {
 class CheckUserExistResponse : ApiResponse {
     enum AvailabilityStatus {
         case available
-        case invalidCharacters
-        case startWithSpecialCharacterForbidden
-        case endWithSpecialCharacterForbidden
-        case tooLong
-        case unavailable(suggestions: [String])
+        case invalidCharacters(reason: String)
+        case startWithSpecialCharacterForbidden(reason: String)
+        case endWithSpecialCharacterForbidden(reason: String)
+        case tooLong(reason: String)
+        case unavailable(reason: String, suggestions: [String])
+        case other(reason: String)
         
-        init?(code: Int, suggestions: [String]) {
+        init?(code: Int, reason: String, suggestions: [String]?) {
             switch code {
-            case 12102: self = .invalidCharacters
-            case 12103: self = .startWithSpecialCharacterForbidden
-            case 12104: self = .endWithSpecialCharacterForbidden
-            case 12105: self = .tooLong
-            case 12106: self = .unavailable(suggestions: suggestions)
-            default: return nil
+            case 12102: self = .invalidCharacters(reason: reason)
+            case 12103: self = .startWithSpecialCharacterForbidden(reason: reason)
+            case 12104: self = .endWithSpecialCharacterForbidden(reason: reason)
+            case 12105: self = .tooLong(reason: reason)
+            case 12106 where suggestions != nil: self = .unavailable(reason: reason, suggestions: suggestions!)
+            default: self = .other(reason: reason)
             }
         }
     }
@@ -248,10 +249,13 @@ class CheckUserExistResponse : ApiResponse {
         guard let statusRaw = response["Code"] as? Int else {
             return
         }
+        let errorMessage = response["Error"] as? String
         let details = response["Details"] as? [String: Any]
         let suggestions = details?["Suggestions"] as? [String]
         
-        self.availabilityStatus = AvailabilityStatus(code: statusRaw, suggestions: suggestions ?? [])
+        self.availabilityStatus = AvailabilityStatus(code: statusRaw,
+                                                     reason: errorMessage ?? LocalString._error_invalid_username,
+                                                     suggestions: suggestions)
     }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
