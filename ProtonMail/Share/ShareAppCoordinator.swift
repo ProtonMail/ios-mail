@@ -35,14 +35,10 @@ class ShareAppCoordinator: CoordinatorNew {
     internal weak var navigationController: UINavigationController?
     private var nextCoordinator: CoordinatorNew?
     
-    ///TODO::fixme move the inital to factory
     let serviceHolder: ServiceFactory = {
         let helper = ServiceFactory()
-        let addrService = AddressBookService()
-        helper.add(AddressBookService.self, for: addrService)
-        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-        helper.add(MessageDataService.self, for: MessageDataService())
-        //helper.add(UserDataService.self, for: UserDataService())
+        // when singletons will be refactored, create these here:
+        // AddressBookService, ContactDataService, MessageDataService, UserDataService
         return helper
     }()
     
