@@ -45,4 +45,8 @@ extension WebContentsSecureLoader {
         }
         """.replacingOccurrences(of: "\n", with: "")
     }
+    
+    func eject(from config: WKWebViewConfiguration) {
+        config.userContentController.removeScriptMessageHandler(forName: "loaded")
+    }
 }
