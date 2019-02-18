@@ -64,9 +64,9 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         var dirty = document.documentElement.innerHTML.toString();
         var clean0 = DOMPurify.sanitize(dirty);
         var clean1 = DOMPurify.sanitize(clean0, \(HTMLStringSecureLoader.domPurifyConfiguration));
-        var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: true});
-        document.documentElement.replaceWith(clean2);
-        
+        var clean2 = DOMPurify.sanitize(clean1, { WHOLE_DOCUMENT: true, RETURN_DOM: false});
+        document.documentElement.innerHTML = clean2;
+
         var metaCSP = document.createElement('meta');
         metaCSP.httpEquiv = "Content-Security-Policy";
         metaCSP.content = "\(contents.contentSecurityPolicy)";
@@ -111,7 +111,6 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        PMLog.D(any: message.body)
         guard let dict = message.body as? Dictionary<String, String>,
             let sanitized = dict["clearBody"] else
         {
