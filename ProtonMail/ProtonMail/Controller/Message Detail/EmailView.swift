@@ -162,6 +162,11 @@ class EmailView: UIView, UIScrollViewDelegate{
         self.setup()
     }
     
+    deinit {
+        self.contentWebView.scrollView.delegate = nil
+        self.loader.eject(from: self.contentWebView.configuration)
+    }
+    
     private func setup() {
         self.backgroundColor = UIColor.white
         
