@@ -450,7 +450,8 @@ class WindowOverlay: UIWindow {
     weak var delegate: WindowOverlayDelegate?
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        if !self.isHidden, point.y < self.frame.origin.y { // area above window
+        // point is given in window's coordinates, we're closing it if tapped in area above window (because below window is a keyboard and ios 11 freaks out)
+        if !self.isHidden, point.y < 0 {
             let _ = self.delegate?.resignFirstResponder()
             self.delegate?.hideSearchTableView()
         }
