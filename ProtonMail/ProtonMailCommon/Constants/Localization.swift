@@ -954,7 +954,7 @@ class LocalizedString {
 
     /// "User is available!"
     lazy var _user_is_available = NSLocalizedString("User is available!", comment: "")
-
+    
     /// "User already exist!"
     lazy var _user_already_exist = NSLocalizedString("User already exist!", comment: "error when user already exist")
 
