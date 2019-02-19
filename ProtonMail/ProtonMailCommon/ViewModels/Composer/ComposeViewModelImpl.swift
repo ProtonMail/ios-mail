@@ -725,25 +725,22 @@ extension ComposeViewModelImpl {
         if let recipients : [[String : Any]] = json.parseJson() {
             // parse the contacts, and prepare the data for contact groups
             for dict in recipients {
-                if let group = dict["Group"] as? String {
-                    let name = dict["Name"] as? String ?? ""
-                    let address = dict["Address"] as? String ?? ""
-                    
-                    if group.isEmpty {
-                        // contact
-                        out.append(ContactVO(id: "", name: name, email: address))
-                    } else {
-                        // contact group
-                        let toInsert = DraftEmailData.init(name: name, email: address)
-                        if var data = groups[group] {
-                            data.append(toInsert)
-                            groups.updateValue(data, forKey: group)
-                        } else {
-                            groups.updateValue([toInsert], forKey: group)
-                        }
-                    }
+                let group = dict["Group"] as? String ?? ""
+                let name = dict["Name"] as? String ?? ""
+                let address = dict["Address"] as? String ?? ""
+                
+                if group.isEmpty {
+                    // contact
+                    out.append(ContactVO(id: "", name: name, email: address))
                 } else {
-                    PMLog.D("Decoding error")
+                    // contact group
+                    let toInsert = DraftEmailData.init(name: name, email: address)
+                    if var data = groups[group] {
+                        data.append(toInsert)
+                        groups.updateValue(data, forKey: group)
+                    } else {
+                        groups.updateValue([toInsert], forKey: group)
+                    }
                 }
             }
             
