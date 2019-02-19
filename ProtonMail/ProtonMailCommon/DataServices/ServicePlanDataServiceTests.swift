@@ -33,14 +33,14 @@ class ServicePlanDataServiceTests: XCTestCase {
     typealias Subscription = ServicePlanSubscription
     struct MockDataStorage: ServicePlanDataStorage {
         var servicePlansDetails: [ServicePlanDetails]?
-        var isIAPAvailable: Bool
+        var isIAPAvailableOnBE: Bool
         var defaultPlanDetails: ServicePlanDetails?
         var currentSubscription: Subscription?
     }
     
     func testDetailsOfServicePlan() {
         let dataStorage = MockDataStorage(servicePlansDetails: [visPlanDetails, proPlanDetails, nonamePlanDetails],
-                                          isIAPAvailable: true,
+                                          isIAPAvailableOnBE: true,
                                           defaultPlanDetails: freePlanDetails,
                                           currentSubscription: nil)
         let service = ServicePlanDataService(localStorage: dataStorage)

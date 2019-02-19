@@ -79,7 +79,7 @@ final class UserCachedStatus : SharedCacheBase {
         static let servicePlans = "servicePlans"
         static let currentSubscription = "currentSubscription"
         static let defaultPlanDetails = "defaultPlanDetails"
-        static let isIAPAvailable = "isIAPAvailable"
+        static let isIAPAvailableOnBE = "isIAPAvailable"
     }
 
     var isForcedLogout : Bool = false
@@ -217,7 +217,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.servicePlans)
         getShared().removeObject(forKey: Key.currentSubscription)
         getShared().removeObject(forKey: Key.defaultPlanDetails)
-        getShared().removeObject(forKey: Key.isIAPAvailable)
+        getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
                         
         getShared().synchronize()
     }
@@ -324,12 +324,12 @@ extension UserCachedStatus: ServicePlanDataStorage {
         }
     }
     
-    var isIAPAvailable: Bool {
+    var isIAPAvailableOnBE: Bool {
         get {
-            return self.getShared().bool(forKey: Key.isIAPAvailable)
+            return self.getShared().bool(forKey: Key.isIAPAvailableOnBE)
         }
         set {
-            self.setValue(newValue, forKey: Key.isIAPAvailable)
+            self.setValue(newValue, forKey: Key.isIAPAvailableOnBE)
         }
     }
 }

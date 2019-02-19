@@ -49,7 +49,7 @@ class MenuViewModelImpl : MenuViewModel {
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
-        if !ServicePlanDataService.shared.isIAPAvailable || Bundle.main.bundleIdentifier != "ch.protonmail.protonmail" {
+        if !ServicePlanDataService.shared.isIAPAvailable {
             otherItems = otherItems.filter { $0 != .servicePlan }
         }
     }
