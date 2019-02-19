@@ -31,7 +31,7 @@ import AwaitKit
 
 protocol ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
-    var isIAPAvailable: Bool { get set }
+    var isIAPAvailableOnBE: Bool { get set }
     var defaultPlanDetails: ServicePlanDetails? { get set }
     var currentSubscription: ServicePlanSubscription? { get set }
 }
@@ -43,7 +43,7 @@ class ServicePlanDataService: NSObject, Service {
     internal init(localStorage: ServicePlanDataStorage) {
         self.localStorage = localStorage
         self.allPlanDetails = localStorage.servicePlansDetails ?? []
-        self.isIAPAvailable = localStorage.isIAPAvailable
+        self.isIAPAvailableOnBE = localStorage.isIAPAvailableOnBE
         self.defaultPlanDetails = localStorage.defaultPlanDetails
         self.currentSubscription = localStorage.currentSubscription
         super.init()
@@ -56,8 +56,18 @@ class ServicePlanDataService: NSObject, Service {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
     
-    var isIAPAvailable: Bool {
-        willSet { userCachedStatus.isIAPAvailable = newValue }
+    internal var isIAPAvailable: Bool {
+        guard #available(iOS 10.0, *),
+            self.isIAPAvailableOnBE,
+            Bundle.main.bundleIdentifier == "ch.protonmail.protonmail" else
+        {
+            return false
+        }
+        return true
+    }
+    
+    private var isIAPAvailableOnBE: Bool {
+        willSet { userCachedStatus.isIAPAvailableOnBE = newValue }
     }
     
     var defaultPlanDetails: ServicePlanDetails? {
@@ -83,7 +93,7 @@ extension ServicePlanDataService {
         async {
             let statusApi = GetIAPStatusRequest()
             let statusRes = try await(statusApi.run())
-            self.isIAPAvailable = statusRes.isAvailable ?? false
+            self.isIAPAvailableOnBE = statusRes.isAvailable ?? false
             
             let servicePlanApi = GetServicePlansRequest()
             let servicePlanRes = try await(servicePlanApi.run())
