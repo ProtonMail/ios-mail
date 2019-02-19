@@ -62,4 +62,13 @@ class ContactSearchTableViewController: UITableViewController {
     override var canBecomeFirstResponder: Bool {
         return false
     }
+    
+    override var prefersStatusBarHidden: Bool {
+        return UIDevice.current.orientation == .landscapeLeft ||
+                UIDevice.current.orientation == .landscapeRight
+    }
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
 }

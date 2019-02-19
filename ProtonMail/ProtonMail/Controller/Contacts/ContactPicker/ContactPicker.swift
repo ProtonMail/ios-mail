@@ -331,10 +331,16 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         self.searchWindow?.isHidden = false
         self.searchWindow?.windowLevel = UIWindow.Level.normal
         self.searchWindow?.delegate = self
+
+        if #available(iOS 10.0, *) { // iOS 10-12, extension
         #if APP_EXTENSION
-         // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to  it's hierarchy explicitly
-        self.window?.addSubview(searchWindow!)
+            // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to it's hierarchy explicitly
+            self.window?.addSubview(searchWindow!)
+            self.searchWindow?.frame = self.frameForContactSearch
         #endif
+        } else { // iOS 9, app and extension
+            self.window?.addSubview(searchWindow!)
+        }
         
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
@@ -344,10 +350,18 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         self.searchTableViewController = nil
         self.searchWindow?.rootViewController = nil
         self.searchWindow?.isHidden = true
-        #if !APP_EXTENSION
-        // in app extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
-        self.searchWindow = nil
+        
+        if #available(iOS 10.0, *) { // iOS 10-12, app
+        #if APP_EXTENSION
+            // in extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
+        #else
+            // in the app we can re-create new windows many times
+            self.searchWindow = nil
         #endif
+        } else { // iOS 9, app and extension
+            self.searchWindow = nil
+        }
+        
         self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
