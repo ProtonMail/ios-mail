@@ -74,6 +74,11 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         return false
     }
     
+    deinit {
+        // without this line iOS 9 crashes trying to retain HtmlEditor too many times
+        self.webView.scrollView.delegate = nil
+    }
+    
     // MARK: Initialization
     override init(frame: CGRect) {
         let webConfiguration = WKWebViewConfiguration()
