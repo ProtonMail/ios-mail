@@ -35,6 +35,7 @@ enum MessageAction: String {
     
     // Attachment
     case uploadAtt = "uploadAtt"
+    case uploadPubkey = "uploadPubkey"
     case deleteAtt = "deleteAtt"
     
     // Read/unread

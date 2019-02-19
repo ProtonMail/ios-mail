@@ -117,7 +117,8 @@ extension APIService {
                             }
                         }
                         api.call(completionWrapper)
-                    } catch {
+                    } catch let err as NSError {
+                        err.upload(toAnalytics: "tryAuth()")
                         return completion(task, nil, .resCheck, NSError.authUnableToParseAuthInfo())
                     }
                 }

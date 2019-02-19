@@ -147,6 +147,12 @@ final class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
     }
     
+    override func uploadPubkey(_ att: Attachment!) {
+        self.updateDraft()
+        sharedMessageDataService.upload(pubKey: att)
+        self.updateDraft()
+    }
+    
     override func deleteAtt(_ att: Attachment!) {
         sharedMessageDataService.delete(att: att)
         self.updateDraft()
@@ -419,7 +425,40 @@ final class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func sendMessage() {
+    override func sendMessage(hasExtenal: Bool) {
+        //check if has extenral emails and if need attach key
+        if hasExtenal == true,
+            let userinfo = sharedUserDataService.userInfo,
+            userinfo.attachPublicKey == 1,
+            let msg = message,
+            let addr = msg.defaultAddress,
+            let key = addr.keys.first,
+            let data = key.publicKey.data(using: String.Encoding.utf8) {
+            
+            let filename = "publicKey - " + addr.email + " - " + key.fingerprint + ".asc"
+            var attached: Bool = false
+            // check if key already attahced
+            if let atts = self.getAttachments() {
+                for att in atts {
+                    if att.fileName == filename {
+                        attached = true
+                        break
+                    }
+                }
+            }
+            
+            // attach key
+            if attached == false, let context = msg.managedObjectContext {
+                let attachment = data.toAttachment(msg, fileName: filename, type: "text/plain")
+                var error: NSError? = nil
+                error = context.saveUpstreamIfNeeded()
+                if error != nil {
+                    PMLog.D("toAttachment () with error: \(String(describing: error))")
+                }
+                self.uploadPubkey(attachment)
+            }
+        }
+        
         self.updateDraft()
         sharedMessageDataService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }

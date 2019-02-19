@@ -30,10 +30,12 @@ import Foundation
 import Crypto
 
 func SrpAuth(_ hashVersion: Int, _ userName: String, _ password: String,
-              _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
+             _ salt: String, _ signedModulus: String, _ serverEphemeral: String) throws -> SrpAuth? {
     var error : NSError?
     let outAuth = SrpNewAuth(hashVersion, userName, password, salt, signedModulus, serverEphemeral, &error)
+    
     if let err = error {
+        PMLog.D(api: err)
         throw err
     }
     return outAuth

@@ -443,6 +443,19 @@ class MessageDataService : Service {
         }
     }
     
+    /// upload attachment to server
+    ///
+    /// - Parameter att: Attachment
+    func upload( pubKey : Attachment) {
+        let context = sharedCoreDataService.mainManagedObjectContext
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D("error: \(error)")
+            self.dequeueIfNeeded()
+        } else {
+            self.queue(pubKey, action: .uploadPubkey)
+        }
+    }
+    
     /// delete attachment from server
     ///
     /// - Parameter att: Attachment
@@ -1111,6 +1124,57 @@ class MessageDataService : Service {
     }
     
     
+    private func uploadPubKey(_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+        let context = sharedCoreDataService.mainManagedObjectContext
+        guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
+            let managedObject = try? context.existingObject(with: objectID),
+            let attachment = managedObject as? Attachment else
+        {
+            // nothing to send, dequeue request
+            let _ = sharedMessageQueue.remove(writeQueueUUID)
+            self.dequeueIfNeeded()
+            
+            completion?(nil, nil, NSError.badParameter(managedObjectID))
+            return
+        }
+        
+        var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
+        let emails = attachment.message.allEmails
+        for email in emails {
+            requests.append(UserEmailPubKeys(email: email, authCredential: attachment.message.cachedAuthCredential))
+        }
+        
+        firstly { () -> Guarantee<[Result<KeysResponse>]> in
+            when(resolved: requests.promises)
+        }.then { results -> Promise<Bool> in
+            for (_, result) in results.enumerated() {
+                switch result {
+                case .fulfilled(let value):
+                    if value.recipientType == 2 {
+                        return .value(true)
+                    }
+                default:
+                    break
+                }
+            }
+           
+            return .value(false)
+        }.done { attach in
+            if attach {
+                self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
+            } else {
+                context.performAndWait {
+                    context.delete( managedObject)
+                    let _ = context.saveUpstreamIfNeeded()
+                }
+                completion?(nil, nil, nil)
+            }
+        }.catch { (error) in
+            completion?(nil, nil, error as NSError)
+        }
+        return
+    }
+    
     private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let context = sharedCoreDataService.mainManagedObjectContext
         guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
@@ -1725,30 +1789,33 @@ class MessageDataService : Service {
             PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
                 sharedMessageQueue.isInProgress = true
+                let completeHandler = writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString)
                 switch action {
                 case .saveDraft:
-                    self.draft(save: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.draft(save: messageID, writeQueueUUID: uuid, completion: completeHandler)
                 case .uploadAtt:
-                    self.uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: completeHandler)
+                case .uploadPubkey:
+                    self.uploadPubKey(messageID, writeQueueUUID: uuid, completion: completeHandler)
                 case .deleteAtt:
-                    self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: completeHandler)
                 case .send:
-                    self.send(byID: messageID, writeQueueUUID: uuid, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.send(byID: messageID, writeQueueUUID: uuid, completion: completeHandler)
                 case .emptyTrash:
-                    self.empty(at: .trash, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.empty(at: .trash, completion: completeHandler)
                 case .emptySpam:
-                    self.empty(at: .spam, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.empty(at: .spam, completion: completeHandler)
                 case .read, .unread:
-                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
                 case .delete:
-                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
                 case .label:
-                    self.labelMessage(data1, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.labelMessage(data1, messageID: messageID, completion: completeHandler)
                 case .unlabel:
-                    self.unLabelMessage(data1, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.unLabelMessage(data1, messageID: messageID, completion: completeHandler)
                 case .folder:
                     //later use data 1 to handle the failure
-                    self.labelMessage(data2, messageID: messageID, completion: writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString))
+                    self.labelMessage(data2, messageID: messageID, completion: completeHandler)
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")

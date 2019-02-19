@@ -164,7 +164,7 @@ class ComposeViewModel {
     }
     
     ///
-    func sendMessage() {
+    func sendMessage(hasExtenal: Bool) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
@@ -177,6 +177,10 @@ class ComposeViewModel {
     }
     
     func uploadAtt(_ att : Attachment!) {
+        NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+    }
+    
+    func uploadPubkey(_ att: Attachment!) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
