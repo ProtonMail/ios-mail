@@ -70,7 +70,9 @@ class ActionLabel: UILabel {
         becomeFirstResponder()
         let menu = UIMenuController.shared
         if !menu.isMenuVisible {
-            menu.setTargetRect(bounds, in: self)
+            let textRect = self.textRect(forBounds: self.bounds, limitedToNumberOfLines: self.numberOfLines)
+            menu.arrowDirection = .up
+            menu.setTargetRect(textRect, in: self)
             menu.setMenuVisible(true, animated: true)
         }
     }
