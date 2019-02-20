@@ -78,6 +78,10 @@ final class UserInfo : NSObject {
     var swipeLeft : Int = 3
     var swipeRight : Int = 0
     
+    
+    var attachPublicKey : Int = 0
+    var sign : Int = 0
+    
     var swipeLeftAction: MessageSwipeAction! {
         return MessageSwipeAction(rawValue: self.swipeLeft)
     }
@@ -101,7 +105,9 @@ final class UserInfo : NSObject {
         role:Int?,
         delinquent : Int?,
         keys : [Key]?,
-        userId: String?)
+        userId: String?,
+        sign: Int?,
+        attachPublicKey: Int?)
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
@@ -123,6 +129,9 @@ final class UserInfo : NSObject {
         self.showImages = ShowImages(rawValue: showImage ?? 0)
         self.swipeLeft = swipeL ?? 3
         self.swipeRight = swipeR ?? 0
+        
+        self.sign = sign ?? 0
+        self.attachPublicKey = attachPublicKey ?? 0
         
         // addresses
         self.userAddresses = userAddresses ?? [Address]()
@@ -183,6 +192,9 @@ final class UserInfo : NSObject {
             self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
+            
+            self.attachPublicKey = settings["AttachPublicKey"] as? Int ?? 0
+            self.sign = settings["Sign"] as? Int ?? 0
         }
     }
     
@@ -250,6 +262,9 @@ extension UserInfo: NSCoding {
         
         static let userKeys = "userKeys"
         static let userId = "userId"
+        
+        static let attachPublicKey = "attachPublicKey"
+        static let sign = "sign"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -275,7 +290,9 @@ extension UserInfo: NSCoding {
             delinquent : aDecoder.decodeInteger(forKey: CoderKey.delinquent),
             
             keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key],
-            userId: aDecoder.decodeStringForKey(CoderKey.userId)
+            userId: aDecoder.decodeStringForKey(CoderKey.userId),
+            sign: aDecoder.decodeInteger(forKey: CoderKey.sign),
+            attachPublicKey: aDecoder.decodeInteger(forKey: CoderKey.attachPublicKey)
         )
     }
     
@@ -301,6 +318,10 @@ extension UserInfo: NSCoding {
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
         aCoder.encode(userId, forKey: CoderKey.userId)
+        
+        
+        aCoder.encode(sign, forKey: CoderKey.sign)
+        aCoder.encode(attachPublicKey, forKey: CoderKey.attachPublicKey)
     }
 }
 

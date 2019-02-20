@@ -410,7 +410,7 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         
         stopAutoSave()
         self.collectDraftData().done {
-            self.viewModel.sendMessage()
+            self.viewModel.sendMessage(hasExtenal: self.headerView.hasNonePMEmails)
             
             #if APP_EXTENSION
             self.isSending = true
