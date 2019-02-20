@@ -45,6 +45,8 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     
     func useCustomFilter() -> Bool
     func customFilterPredicate(searchString: String) -> NSPredicate
+    
+    func finishLockCheck()
 }
 
 class ContactPicker: UIView, WindowOverlayDelegate {
@@ -389,7 +391,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
             self.contactCollectionView.performBatchUpdates({
                 self.layoutIfNeeded()
             }) { (finished) in
-                
+                self.delegate.finishLockCheck()
             }
         }        
     }
