@@ -28,6 +28,7 @@
 
 import Foundation
 import PromiseKit
+import AwaitKit
 import Crypto
 
 
@@ -449,14 +450,20 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func getDetails(loading: () -> Void) -> Promise<Contact> {
+        loading()
         if contact.isDownloaded && contact.needsRebuild == false {
-            return firstly {
-                self.setupEmails()
-            }.then {
-                return Promise.value(self.contact)
+            return Promise { seal in
+                async {
+                    firstly {
+                        self.setupEmails()
+                    }.done {
+                        seal.fulfill(self.contact)
+                    }.catch { (error) in
+                        seal.reject(error)
+                    }
+                }
             }
         }
-        loading()
         return Promise { seal in
             sharedContactDataService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
