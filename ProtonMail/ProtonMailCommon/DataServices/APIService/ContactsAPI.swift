@@ -188,7 +188,7 @@ class ContactDetailResponse : ApiResponse {
     var contact : [String : Any]?
     override func ParseResponse (_ response: [String : Any]!) -> Bool {
 //      PMLog.D("[Contact] Get contact detail response \(response)")
-        PMLog.D(response.json(prettyPrinted: true))
+//        PMLog.D(response.json(prettyPrinted: true))
         contact = response["Contact"] as? [String : Any]
         return true
     }

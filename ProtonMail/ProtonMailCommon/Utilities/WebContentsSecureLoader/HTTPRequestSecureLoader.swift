@@ -140,7 +140,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        PMLog.D(any: message.body)
+        //PMLog.D(any: message.body)
         if let dict = message.body as? Dictionary<String, String>,
             let sanitized = dict["clearBody"]
         {

@@ -450,20 +450,14 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func getDetails(loading: () -> Void) -> Promise<Contact> {
-        loading()
         if contact.isDownloaded && contact.needsRebuild == false {
-            return Promise { seal in
-                async {
-                    firstly {
-                        self.setupEmails()
-                    }.done {
-                        seal.fulfill(self.contact)
-                    }.catch { (error) in
-                        seal.reject(error)
-                    }
-                }
+            return firstly {
+                self.setupEmails()
+            }.then {
+                return Promise.value(self.contact)
             }
         }
+        loading()
         return Promise { seal in
             sharedContactDataService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
