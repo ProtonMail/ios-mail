@@ -113,7 +113,7 @@ class ContactCollectionViewContactCell: UICollectionViewCell {
                 
                 {
                     self.checkLock(caller: self.model)
-                    } ~> .main
+                } ~> .main
             } else if let _ = self._model as? ContactGroupVO {
                 prepareTitleForContactGroup()
             }

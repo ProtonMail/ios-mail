@@ -687,6 +687,10 @@ extension ComposeView: ContactPickerDataSource {
 
 // MARK: - ContactPickerDelegate
 extension ComposeView: ContactPickerDelegate {
+    func finishLockCheck() {
+        self.notifyViewSize(false)
+    }
+    
     func contactPicker(contactPicker: ContactPicker, didUpdateContentHeightTo newHeight: CGFloat) {
         self.updateContactPickerHeight(contactPicker, newHeight: newHeight)
     }
