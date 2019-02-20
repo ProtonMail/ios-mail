@@ -1147,7 +1147,7 @@ class MessageDataService : Service {
         firstly { () -> Guarantee<[Result<KeysResponse>]> in
             when(resolved: requests.promises)
         }.then { results -> Promise<Bool> in
-            for (_, result) in results.enumerated() {
+            for result in results {
                 switch result {
                 case .fulfilled(let value):
                     if value.recipientType == 2 {
