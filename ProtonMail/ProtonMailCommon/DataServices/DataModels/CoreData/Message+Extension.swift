@@ -430,7 +430,7 @@ extension Message {
                     if let mimeMsg = MIMEMessage(string: body) {
                         if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
                             body = html
-                        } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.plainString {
+                        } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.bodyString {
                             body = text.encodeHtml()
                             body = "<html><body>\(body.ln2br())</body></html>"
                         }
@@ -473,7 +473,7 @@ extension Message {
                         if let mimeMsg = MIMEMessage(string: body) {
                             if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
                                 body = html
-                            } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.plainString {
+                            } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.bodyString {
                                 body = text.encodeHtml()
                                 body = "<html><body>\(body.ln2br())</body></html>"
                             }

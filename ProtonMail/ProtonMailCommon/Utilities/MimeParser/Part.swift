@@ -13,7 +13,7 @@ public struct Part: CustomStringConvertible {
     
     public let headers: [Header]
     public let body: Data
-    public let string : String
+//    public let string : String
     let subParts: [Part]
     
     public subscript(_ header: Header.Kind) -> String? {
@@ -33,9 +33,9 @@ public struct Part: CustomStringConvertible {
         return String(data: body, encoding: .utf8) ?? String(malformedUTF8: body)
     }
     
-    public var plainString : String {
-        return self.string
-    }
+//    public var plainString : String {
+//        return self.string
+//    }
     
     public func findAtts() -> [Part] {
         var ret = [Part]()
@@ -121,7 +121,7 @@ public struct Part: CustomStringConvertible {
             
             self.headers = components.all.map { Header($0) }
             self.body = data[contentStart...].convertFromMangledUTF8()
-            self.string = String(data: data[contentStart...], encoding: .utf8) ?? String(malformedUTF8: data[contentStart...])
+            //self.string = String(data: data[contentStart...], encoding: .utf8) ?? String(malformedUTF8: data[contentStart...])
             var parts: [Part] = []
             if let boundary = self.headers[.contentType]?.boundaryValue {
                 let groups = data.separated(by: "--" + boundary)
@@ -137,7 +137,7 @@ public struct Part: CustomStringConvertible {
             self.headers = []
             self.subParts = []
             self.body = data
-            self.string = ""
+            //self.string = ""
         }
     }
     
