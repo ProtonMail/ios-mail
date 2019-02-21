@@ -192,9 +192,7 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     func updateContent () {
-        
         self.updateEmailBody ()
-        
     }
     
     override func loadView() {
@@ -600,31 +598,34 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     fileprivate func updateEmailBody (force forceReload : Bool = false) {
         let atts = self.message.attachments.allObjects as? [Attachment]
         self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
-        
         self.updateHeader()
         self.emailView?.emailHeader.updateAttConstraints(true)
         
-        if (!self.bodyLoaded || forceReload) && self.emailView != nil {
-            if self.message.isDetailDownloaded {  //&& forceReload == false
-                self.bodyLoaded = true
-                
-                if self.htmlBody == nil {
-                    self.htmlBody = self.prepareHTMLBody(self.message)
-                    
-                    if self.autoLoadImageMode == .disallowed && !self.showedShowImageView{
-                        if self.htmlBody?.hasImage() == true {
-                            self.needShowShowImageView = true
+        async { () -> Void in
+            firstly { () -> Guarantee<Void> in
+                if (!self.bodyLoaded || forceReload) && self.emailView != nil {
+                    if self.message.isDetailDownloaded {
+                        self.bodyLoaded = true
+                        
+                        if self.htmlBody == nil {
+                            firstly { () -> Guarantee<Void> in
+                                self.htmlBody = self.prepareHTMLBody(self.message)
+                                return .value(())
+                            }.done {
+                                let atts = self.message.attachments.allObjects as? [Attachment]
+                                self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
+                                self.showEmbedImage()
+                                self.emailView?.emailHeader.updateAttConstraints(true)
+                            }
                         }
                     }
-                    let atts = self.message.attachments.allObjects as? [Attachment]
-                    self.emailView?.updateEmail(attachments: atts, inline: self.message.tempAtts)
-                    self.showEmbedImage()
-                    self.emailView?.emailHeader.updateAttConstraints(true)
+                }
+                return .value(())
+            }.done {
+                if self.htmlBody != nil {
+                    self.loadEmailBody(self.htmlBody ?? "")
                 }
             }
-        }
-        if self.htmlBody != nil {
-            self.loadEmailBody(self.htmlBody ?? "")
         }
     }
     
