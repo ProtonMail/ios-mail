@@ -34,22 +34,17 @@ public protocol SettingsProvider {
 
 public class Autolocker {
     // there is no need to persist this value anywhere except memory since we can not unlock the app automatically after relaunch (except NoneProtection case)
-    private var timer: Timer!
     private var autolockCountdownStart: SystemTime?
-    
     private var userSettingsProvider: SettingsProvider
     
     public init(lockTimeProvider: SettingsProvider) {
         self.userSettingsProvider = lockTimeProvider
         
-        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateSystemTimeCanary), userInfo: nil, repeats: true)
-    
         NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: NSNotification.Name.NSSystemClockDidChange, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: UIApplication.significantTimeChangeNotification, object: nil)
     }
     
     deinit {
-        self.timer.invalidate()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -57,12 +52,8 @@ public class Autolocker {
         guard let _ = self.autolockCountdownStart else {
             return // no countdown running
         }
-        self.autolockCountdownStart = SystemTime.distantPast()
-    }
-    
-    @objc private func updateSystemTimeCanary() {
-        // SystemTime do not participate in objc runtime, so we're running timer via Autolocker
         SystemTime.updateTimeCanary()
+        self.autolockCountdownStart = SystemTime.distantPast()
     }
     
     internal func updateAutolockCountdownStart() {

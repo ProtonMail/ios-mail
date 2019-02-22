@@ -28,11 +28,34 @@
 
 import Foundation
 
+
+@available(iOS, introduced: 9, deprecated: 10) class TimerWrapper: NSObject {
+    @objc fileprivate func updateGlobalTimeCanary() {
+        SystemTime.updateTimeCanary()
+    }
+}
+
 struct SystemTime {
     enum Errors: Error {
         case systemTimeCompromised
     }
-    private static var lastCheckedSystemTime: SystemTime = SystemTime.distantPast()
+    private static var timer: Timer!
+    private static var timerBox = TimerWrapper()
+    private static var lastCheckedSystemTime: SystemTime = {
+        let initial = SystemTime.distantPast()
+
+        if #available(iOS 10.0, *) {
+            SystemTime.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+                SystemTime.updateTimeCanary()
+            }
+        } else {
+            let wrapper = SystemTime.timerBox
+            SystemTime.timer = Timer.scheduledTimer(timeInterval: 1, target: wrapper, selector: #selector(TimerWrapper.updateGlobalTimeCanary), userInfo: nil, repeats: true)
+        }
+        
+        return initial
+    }()
+    
     let clock: Date
     let uptime: TimeInterval
     
