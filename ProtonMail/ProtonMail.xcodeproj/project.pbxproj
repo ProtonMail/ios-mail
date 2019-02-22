@@ -170,6 +170,7 @@
 		1A1C51D868EC3D1420F45CBA454204C0 /* ContactSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 030C21C9C16C7CA8E12A9016B7208942 /* ContactSearchTableViewController.swift */; };
 		1A1E8730714E6FE90CB635B4F0EE0565 /* Snapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ED74BB5412B24D36973513E2112C7A4 /* Snapshot.swift */; };
 		1A23FEF39C822E826B9161B3839EE30F /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64B6ABEC2E603996347C40E51E0189F /* Data+Mime.swift */; };
+		1A95CDEC93C93559493DDBC88007A3A6 /* SystemTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9C15E947825267DFF4128053690E3 /* SystemTime.swift */; };
 		1AB0B00BAE5A42C1027FB39614004229 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */; };
 		1ADEC986B96A130518595FF2E0C359B4 /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */; };
 		1AE2DD552837DD749DE3DB6AA12BF072 /* Message+SpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35751CF9CE35E80B816BBFBB22B39E3 /* Message+SpamScore.swift */; };
@@ -2025,6 +2026,7 @@
 		2AE6D8F3AAEA3F00B15BDC137F506D95 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		2B1EEA115E42E413F8FDB45264AED3AB /* EncryptionSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionSetupViewController.swift; sourceTree = "<group>"; };
 		2BBD078CF4FC6B15B66C943976C152A7 /* SiriDev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SiriDev.entitlements; sourceTree = "<group>"; };
+		2BC9C15E947825267DFF4128053690E3 /* SystemTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemTime.swift; sourceTree = "<group>"; };
 		2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		2CFB8736687A7913C94C156D188BF283 /* ContactsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModelImpl.swift; sourceTree = "<group>"; };
 		2D92DEE740435769B951F10DDEACF596 /* Email.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Email.swift; sourceTree = "<group>"; };
@@ -3838,6 +3840,7 @@
 			children = (
 				E768DEAD34185A825D764EC6D3ACA116 /* AutolockTimeout.swift */,
 				BBFE8928286EFBB4B76D3749D211BC90 /* Autolocker.swift */,
+				2BC9C15E947825267DFF4128053690E3 /* SystemTime.swift */,
 			);
 			path = Autolock;
 			sourceTree = "<group>";
@@ -6036,6 +6039,7 @@
 				793564A009AD368AD157AE73A329DBEE /* NoneProtection.swift in Sources */,
 				E15B6D1F2656AF445A6FA81F85A99F8F /* PinProtection.swift in Sources */,
 				D74DACAD510DA151F9214932CF43FD9C /* ProtectionStrategy.swift in Sources */,
+				1A95CDEC93C93559493DDBC88007A3A6 /* SystemTime.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
