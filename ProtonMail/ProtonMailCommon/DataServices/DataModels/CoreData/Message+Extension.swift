@@ -49,10 +49,6 @@ extension Message {
         static let unRead = "unRead"
     }
     
-    struct Constants {
-        static let starredTag = "starred"
-    }
-    
     // MARK: - variables
     var allEmailAddresses: String {
         let lists: [String] = self.allEmails
@@ -102,18 +98,18 @@ extension Message {
         var outLabel: String?
         //1, 2, labels can't be in inbox,
         var addLabelID = labelID
-        if labelID == Location.inbox.rawValue && (self.contains(label: "1") || self.contains(label: "8")) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.draft.rawValue) || self.contains(label: Location.draft.rawValue)) {
             // move message to 1 / 8
-            addLabelID = "8"
+            addLabelID = Location.draft.rawValue //"8"
         }
         
-        if labelID == Location.inbox.rawValue && (self.contains(label: "2") || self.contains(label: "7")) {
+        if labelID == Location.inbox.rawValue && (self.contains(label: HidenLocation.sent.rawValue) || self.contains(label: Location.sent.rawValue)) {
             // move message to 2 / 7
-            addLabelID = sentSelf ? Location.inbox.rawValue : "7"
+            addLabelID = sentSelf ? Location.inbox.rawValue : Location.sent.rawValue //"7"
         }
         
         if let context = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: "labels")
+            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLableID(addLabelID, inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
@@ -129,7 +125,7 @@ extension Message {
                     labelObjs.add(toLabel)
                 }
             }
-            self.setValue(labelObjs, forKey: "labels")
+            self.setValue(labelObjs, forKey: Attributes.labels)
             
         }
         return outLabel;
@@ -138,7 +134,7 @@ extension Message {
     /// in rush , clean up later
     func setAsDraft() {
         if let context = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: "labels")
+            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
             if let toLabel = Label.labelForLableID(Location.draft.rawValue, inManagedObjectContext: context) {
                 var exsited = false
                 for l in labelObjs {
@@ -199,7 +195,7 @@ extension Message {
         }
         var outLabel: String?
         if let _ = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: "labels")
+            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
             for l in labelObjs {
                 if let label = l as? Label {
                     // can't remove label 1, 2, 5
@@ -229,7 +225,7 @@ extension Message {
     
     func selfSent(labelID: String) -> String? {
         if let _ = self.managedObjectContext {
-            let labelObjs = self.mutableSetValue(forKey: "labels")
+            let labelObjs = self.mutableSetValue(forKey: Attributes.labels)
             for l in labelObjs {
                 if let label = l as? Label {
                     if labelID == Location.inbox.rawValue {
@@ -343,9 +339,9 @@ extension Message {
         let context = sharedCoreDataService.mainManagedObjectContext
         context.performAndWait {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                let labelObjs = message.mutableSetValue(forKey: "labels")
+                let labelObjs = message.mutableSetValue(forKey: Attributes.labels)
                 labelObjs.removeAllObjects()
-                message.setValue(labelObjs, forKey: "labels")
+                message.setValue(labelObjs, forKey: Attributes.labels)
                 context.delete(message)
             }
             if let error = context.saveUpstreamIfNeeded() {
@@ -405,7 +401,7 @@ extension Message {
     }
     
     func bodyToHtml() -> String {
-        if lockType == .plainTextLock {
+        if isPlainText {
             return "<div>" + body.ln2br() + "</div>"
         } else {
             let body_without_ln = body.rmln()
@@ -415,22 +411,56 @@ extension Message {
     
     func decryptBodyIfNeeded() throws -> String? {
         PMLog.D("Flags: \(self.flag.description)")
-        
-        let flag = self.flag
-        if !checkIsEncrypted() {
-            if isPlainText() {
-                return body.ln2br() 
-            }
-            return body
-        } else {
-            if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
-                var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: passphrase) {
-                //PMLog.D(body)
-                if isEncrypted == 8 || isEncrypted == 9 {
+        if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
+            var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: passphrase) {
+            if isPgpMime || isSignedMime {
+                if let mimeMsg = MIMEMessage(string: body) {
+                    if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
+                        body = html
+                    } else if let text = mimeMsg.mainPart.part(ofType: MimeType.plainText)?.bodyString {
+                        body = text.encodeHtml()
+                        body = "<html><body>\(body.ln2br())</body></html>"
+                    }
+                    
+                    if let cidPart = mimeMsg.mainPart.partCID(),
+                        var cid = cidPart.cid,
+                        let rawBody = cidPart.rawBodyString {
+                        cid = cid.preg_replace("<", replaceto: "")
+                        cid = cid.preg_replace(">", replaceto: "")
+                        let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                        let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                        body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                    }
+                    /// cache the decrypted inline attachments
+                    let atts = mimeMsg.mainPart.findAtts()
+                    var inlineAtts = [AttachmentInline]()
+                    for att in atts {
+                        if let filename = att.getFilename()?.clear {
+                            let data = att.data
+                            let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
+                            do {
+                                try data.write(to: path, options: [.atomic])
+                            } catch {
+                                continue
+                            }
+                            inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
+                        }
+                    }
+                    self.tempAtts = inlineAtts
+                } else { //backup plan
+                    body = body.multipartGetHtmlContent ()
+                }
+            } else if isPgpInline {
+                if isPlainText {
+                    body = body.encodeHtml()
+                    body = body.ln2br()
+                    return body
+                } else if isMultipartMixed {
+                    ///TODO:: clean up later
                     if let mimeMsg = MIMEMessage(string: body) {
-                        if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
+                        if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
                             body = html
-                        } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.bodyString {
+                        } else if let text = mimeMsg.mainPart.part(ofType: MimeType.plainText)?.bodyString {
                             body = text.encodeHtml()
                             body = "<html><body>\(body.ln2br())</body></html>"
                         }
@@ -463,62 +493,17 @@ extension Message {
                     } else { //backup plan
                         body = body.multipartGetHtmlContent ()
                     }
-                } else if isEncrypted == 7 {
-                    if isPlainText() {
-                        body = body.encodeHtml()
-                        body = body.ln2br()
-                        return body
-                    } else if isMultipartMixed() {
-                        ///TODO:: clean up later
-                        if let mimeMsg = MIMEMessage(string: body) {
-                            if let html = mimeMsg.mainPart.part(ofType: "text/html")?.bodyString {
-                                body = html
-                            } else if let text = mimeMsg.mainPart.part(ofType: "text/plain")?.bodyString {
-                                body = text.encodeHtml()
-                                body = "<html><body>\(body.ln2br())</body></html>"
-                            }
-                            
-                            if let cidPart = mimeMsg.mainPart.partCID(),
-                                var cid = cidPart.cid,
-                                let rawBody = cidPart.rawBodyString {
-                                cid = cid.preg_replace("<", replaceto: "")
-                                cid = cid.preg_replace(">", replaceto: "")
-                                let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                                let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                                body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
-                            }
-                            /// cache the decrypted inline attachments
-                            let atts = mimeMsg.mainPart.findAtts()
-                            var inlineAtts = [AttachmentInline]()
-                            for att in atts {
-                                if let filename = att.getFilename()?.clear {
-                                    let data = att.data
-                                    let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                                    do {
-                                        try data.write(to: path, options: [.atomic])
-                                    } catch {
-                                        continue
-                                    }
-                                    inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
-                                }
-                            }
-                            self.tempAtts = inlineAtts
-                        } else { //backup plan
-                            body = body.multipartGetHtmlContent ()
-                        }
-                    }
-                    else {
-                        return body
-                    }
+                } else {
+                    return body
                 }
-                if isPlainText() {
-                    body = body.encodeHtml()
-                    return body.ln2br() 
-                }
-                return body
             }
-            return nil
+            if isPlainText {
+                body = body.encodeHtml()
+                return body.ln2br()
+            }
+            return body
         }
+        return body
     }
     
     func encryptBody(_ body: String, mailbox_pwd: String, error: NSErrorPointer?) {
@@ -537,39 +522,26 @@ extension Message {
         
     }
     
-    func checkIsEncrypted() -> Bool! {
-        PMLog.D(any: isEncrypted.intValue)
-        let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
-        let checkIsEncrypted:Bool = enc_type.isEncrypted
-        return checkIsEncrypted
-    }
-    
-    func isPlainText() -> Bool {
-        PMLog.D(mimeType ?? "")
-        if let type = mimeType, type.lowercased() == "text/plain" {
-            return true
+    var isPlainText : Bool {
+        get {
+            if let type = mimeType, type.lowercased() == MimeType.plainText {
+                return true
+            }
+            return false
         }
-        return false
-    }
-    
-    func isMultipartMixed() -> Bool {
-        if let type = mimeType, type.lowercased() == "multipart/mixed" {
-            return true
-        }
-        return false
         
     }
     
-    var encryptType : EncryptTypes! {
-        let enc_type = EncryptTypes(rawValue: isEncrypted.intValue) ?? EncryptTypes.inner
-        return enc_type
+    var isMultipartMixed : Bool {
+        get {
+            if let type = mimeType, type.lowercased() == MimeType.mutipartMixed {
+                return true
+            }
+            return false
+        }
     }
     
-    var lockType : LockTypes! {
-        return self.encryptType.lockType
-    }
-    
-    //this function need to factor
+    /// this function need to factor
     var getAddressID: String {
         get {
             if let addr = defaultAddress {
@@ -579,7 +551,7 @@ extension Message {
         }
     }
     
-    //this function need to factor
+    /// this function need to factor
     var defaultAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {
@@ -599,7 +571,7 @@ extension Message {
         }
     }
     
-    //this function need to factor
+    /// this function need to factor
     var fromAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {
@@ -634,7 +606,7 @@ extension Message {
         newMessage.time = Date()
         newMessage.body = message.body
         
-        newMessage.isEncrypted = message.isEncrypted
+        //newMessage.flag = message.flag
         newMessage.sender = message.sender
         newMessage.replyTos = message.replyTos
         

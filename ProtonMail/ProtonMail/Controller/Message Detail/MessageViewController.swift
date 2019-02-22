@@ -209,7 +209,6 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                                              bcc: self.message.bccList.toContacts(),
                                              isStarred: self.message.starred,
                                              time: self.message.time,
-                                             encType: self.message.encryptType,
                                              labels : self.message.labels.allObjects as? [Label],
                                              showShowImages: self.needShowShowImageView,
                                              expiration: self.message.expirationTime,

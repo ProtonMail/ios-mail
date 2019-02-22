@@ -488,6 +488,7 @@ class LocalizedString {
     /// "OpenDraft"
     lazy var _general_opendraft_action = NSLocalizedString("OpenDraft", comment: "Action")
     /// "Plain text"
+    @available(* , deprecated)
     lazy var _general_enc_type_plain_text = NSLocalizedString("Plain text", comment: "Title")
     /// "ProtonMail encrypted emails"
     lazy var _general_enc_pm_emails = NSLocalizedString("ProtonMail encrypted emails", comment: "Title")

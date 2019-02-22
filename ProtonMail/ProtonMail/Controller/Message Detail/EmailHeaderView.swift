@@ -352,7 +352,7 @@ class EmailHeaderView: UIView {
     // MARK : Private functions
     func updateHeaderData (_ title : String,
                            sender : ContactVO, to : [ContactVO]?, cc : [ContactVO]?, bcc : [ContactVO]?,
-                           isStarred : Bool, time : Date?, encType : EncryptTypes, labels : [Label]?,
+                           isStarred : Bool, time : Date?, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
                            score: Message.SpamScore, isSent: Bool) {
         self.isSentFolder = isSent

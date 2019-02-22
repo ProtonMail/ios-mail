@@ -1550,15 +1550,15 @@ class MessageDataService : Service {
                     if message.contains(label: .draft) {
                         if isEO {
                             if sendBuilder.outSideUser {
-                                message.isEncrypted =  NSNumber(value: EncryptTypes.outEnc.rawValue)
+                                message.isEncrypted =  NSNumber(value: Message.EncryptType.outEnc.rawValue)
                             } else {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
+                                message.isEncrypted = NSNumber(value: Message.EncryptType.inner.rawValue)
                             }
                         } else {
                             if sendBuilder.outSideUser {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.outPlain.rawValue)
+                                message.isEncrypted = NSNumber(value: Message.EncryptType.outPlain.rawValue)
                             } else {
-                                message.isEncrypted = NSNumber(value: EncryptTypes.inner.rawValue)
+                                message.isEncrypted = NSNumber(value: Message.EncryptType.inner.rawValue)
                             }
                         }
                         if attachments.count > 0 {
