@@ -220,8 +220,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         let selectedItem: IndexPath? = self.tableView.indexPathForSelectedRow as IndexPath?
         if let selectedItem = selectedItem {
-            self.tableView.reloadRows(at: [selectedItem], with: UITableView.RowAnimation.fade)
-            self.tableView.deselectRow(at: selectedItem, animated: true)
+            if self.viewModel.isDrafts() {
+                // updated draft should either be deleted or moved to top, so all the rows in between should be moved 1 position down
+                let rowsToMove = (0...selectedItem.row).map{ IndexPath(row: $0, section: 0) }
+                self.tableView.reloadRows(at: rowsToMove, with: .top)
+            } else {
+                self.tableView.reloadRows(at: [selectedItem], with: .fade)
+                self.tableView.deselectRow(at: selectedItem, animated: true)
+            }
         }
         self.startAutoFetch()
         
