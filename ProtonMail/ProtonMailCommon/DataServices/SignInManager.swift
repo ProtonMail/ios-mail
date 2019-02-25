@@ -55,10 +55,10 @@ class SignInManager: NSObject {
         self.clean()
         
         let success: (String?)->Void = { mailboxpwd in
-            afterSignIn()
             guard let mailboxPassword = mailboxpwd else {
                 UserTempCachedStatus.restore()
                 UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
+                afterSignIn()
                 return
             }
             self.proceedWithMailboxPassword(mailboxPassword, onError: onError)
