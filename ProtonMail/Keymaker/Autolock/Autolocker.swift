@@ -34,16 +34,30 @@ public protocol SettingsProvider {
 
 public class Autolocker {
     // there is no need to persist this value anywhere except memory since we can not unlock the app automatically after relaunch (except NoneProtection case)
-    // by the same reason we can benefit from system uptime value instead of current Date which can be played with in Settings.app
-    private var autolockCountdownStart: TimeInterval?
+    private var autolockCountdownStart: SystemTime?
     private var userSettingsProvider: SettingsProvider
     
     public init(lockTimeProvider: SettingsProvider) {
         self.userSettingsProvider = lockTimeProvider
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: NSNotification.Name.NSSystemClockDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(systemClockCompromised), name: UIApplication.significantTimeChangeNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc private func systemClockCompromised() {
+        guard let _ = self.autolockCountdownStart else {
+            return // no countdown running
+        }
+        SystemTime.updateTimeCanary()
+        self.autolockCountdownStart = SystemTime.distantPast()
     }
     
     internal func updateAutolockCountdownStart() {
-        self.autolockCountdownStart = ProcessInfo().systemUptime
+        self.autolockCountdownStart = SystemTime.pureCurrent()
     }
     
     internal func releaseCountdown() {
@@ -60,7 +74,12 @@ public class Autolocker {
         case .always: return true
         case .never: return false
         case .minutes(let numberOfMinutes):
-            return TimeInterval(numberOfMinutes * 60) < ProcessInfo().systemUptime - lastBackgroundedAt
+            do {
+                let current = try SystemTime.validCurrent()
+                return TimeInterval(numberOfMinutes * 60) < current.timeIntervalSince(lastBackgroundedAt)
+            } catch _ {
+                return true
+            }
         }
     }
 }
