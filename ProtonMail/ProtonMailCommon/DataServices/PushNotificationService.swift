@@ -233,7 +233,6 @@ public class PushNotificationService: Service {
         if let options = self.launchOptions {
             self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
             })
-            self.launchOptions = nil;
         }
     }
     
@@ -257,6 +256,7 @@ public class PushNotificationService: Service {
             return
         }
         
+        self.launchOptions = nil
         messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler(.failed)
