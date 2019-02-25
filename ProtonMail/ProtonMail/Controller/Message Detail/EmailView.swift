@@ -114,13 +114,13 @@ class EmailView: UIView, UIScrollViewDelegate{
     // MARK : config values 
     func updateHeaderData (_ title : String,
                            sender : ContactVO, to:[ContactVO]?, cc : [ContactVO]?, bcc: [ContactVO]?,
-                           isStarred:Bool, time : Date?, encType: EncryptTypes, labels : [Label]?,
+                           isStarred:Bool, time : Date?, labels : [Label]?,
                            showShowImages: Bool, expiration : Date?,
                            score: Message.SpamScore, isSent: Bool) {
         
         self.emailHeader.updateHeaderData(title, sender:sender,
                                           to: to, cc: cc, bcc: bcc,
-                                          isStarred: isStarred, time: time, encType: encType,
+                                          isStarred: isStarred, time: time,
                                           labels : labels, showShowImages: showShowImages, expiration : expiration,
                                           score: score, isSent: isSent)
         self.emailHeader.updateHeaderLayout()
