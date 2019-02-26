@@ -258,7 +258,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             case .zero_access_store:
                 return LocalString._stored_with_zero_access_encryption
             case .sent_sender_server:
-                return LocalString._sent_by_protonMail_with_end_to_end_encryption
+                return LocalString._sent_by_protonMail_with_zero_access_encryption
             case .pgp_signed_verified:
                 return LocalString._pgp_signed_message_from_verified_address
             }
@@ -294,7 +294,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
             case .zero_access_store:
                 return LocalString._stored_with_zero_access_encryption
             case .sent_sender_server:
-                return LocalString._sent_by_protonMail_with_end_to_end_encryption
+                return LocalString._sent_by_protonMail_with_zero_access_encryption
             case .pgp_signed_verified:
                 return LocalString._pgp_signed_message_from_verified_address
             }

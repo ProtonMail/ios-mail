@@ -1507,8 +1507,8 @@ class LocalizedString {
     lazy var _stored_with_zero_access_encryption = NSLocalizedString("Stored with zero access encryption", comment: "encryption lock description")
     /// "Sent by you with end-to-end encryption"
     lazy var _sent_by_you_with_end_to_end_encryption = NSLocalizedString("Sent by you with end-to-end encryption", comment: "encryption lock description")
-    /// "Sent by ProtonMail with end-to-end encryption"
-    lazy var _sent_by_protonMail_with_end_to_end_encryption  = NSLocalizedString("Sent by ProtonMail with end-to-end encryption", comment: "encryption lock description")
+    /// "Sent by ProtonMail with zero access encryption"
+    lazy var _sent_by_protonMail_with_zero_access_encryption  = NSLocalizedString("Sent by ProtonMail with zero access encryption", comment: "encryption lock description for auto reply")
     /// "PGP-encrypted message"
     lazy var _pgp_encrypted_message = NSLocalizedString("PGP-encrypted message", comment: "encryption lock description")
     /// "PGP-encrypted message from verified address"
