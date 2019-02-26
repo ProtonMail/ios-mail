@@ -83,8 +83,8 @@ PODS:
   - PromiseKit/UIKit (6.8.3):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
-  - SDWebImage/Core (4.4.5)
-  - SDWebImage/GIF (4.4.5):
+  - SDWebImage/Core (4.4.6)
+  - SDWebImage/GIF (4.4.6):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - Sentry (4.1.0):
@@ -184,12 +184,12 @@ SPEC CHECKSUMS:
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
-  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
+  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 974d06cd4ce3db20cc9e308950f1d63bbd8e824c
+PODFILE CHECKSUM: f0b289cde6779ed01f375a2c6d773c802b54b786
 
 COCOAPODS: 1.5.3
