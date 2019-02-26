@@ -37,11 +37,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._message_sent_ok_desc
+        hud.detailsLabel.text = LocalString._message_sent_ok_desc
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 1)
     }
     
     
@@ -51,11 +51,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"
+        hud.detailsLabel.text = "\(LocalString._message_sent_failed_desc): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 3)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     
@@ -65,11 +65,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._message_draft_cache_is_broken
+        hud.detailsLabel.text = LocalString._message_draft_cache_is_broken
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 2)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 2)
     }
     
     
@@ -79,10 +79,10 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = LocalString._general_invalid_access_token
+        hud.label.text = LocalString._general_alert_title
+        hud.detailsLabel.text = LocalString._general_invalid_access_token
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     
@@ -93,9 +93,9 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = LocalString._general_force_upgrade_desc
+        hud.label.text = LocalString._general_alert_title
+        hud.detailsLabel.text = LocalString._general_force_upgrade_desc
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hide(animated: true, afterDelay: 3)
     }
 }

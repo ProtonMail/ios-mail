@@ -77,10 +77,10 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = NSLocalizedString(localizedDescription, comment: "Title");
-        hud.detailsLabelText = description
+        hud.label.text = NSLocalizedString(localizedDescription, comment: "Title");
+        hud.detailsLabel.text = description
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     
@@ -90,11 +90,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
+        hud.detailsLabel.text = "\(LocalString._error_human_check_failed): \(self.localizedDescription)"
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 3)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     public class func alertMessageSendingToast() ->Void {
@@ -103,11 +103,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._messages_sending_message
+        hud.detailsLabel.text = LocalString._messages_sending_message
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 1)
     }
     
     public class func sendingToast(at view: UIView) ->Void {
@@ -116,11 +116,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._messages_sending_message
+        hud.detailsLabel.text = LocalString._messages_sending_message
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 1)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 1)
     }
     
     public class func alertMessageSentErrorToast() ->Void {
@@ -129,11 +129,11 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._messages_sending_failed_try_again
+        hud.detailsLabel.text = LocalString._messages_sending_failed_try_again
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 2)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 2)
     }
     
     public class func alertMessageSentError(details : String) -> Void {
@@ -142,10 +142,10 @@ extension NSError {
         }
         let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.detailsLabelText = LocalString._messages_sending_failed_try_again + " " + details
+        hud.detailsLabel.text = LocalString._messages_sending_failed_try_again + " " + details
         hud.removeFromSuperViewOnHide = true
         hud.margin = 10
-        hud.yOffset = 250.0
-        hud.hide(true, afterDelay: 2)
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 2)
     }
 }

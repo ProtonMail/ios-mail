@@ -37,18 +37,18 @@ extension MBProgressHUD
         }
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = errorString
+        hud.label.text = LocalString._general_alert_title
+        hud.detailsLabel.text = errorString
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hide(animated: true, afterDelay: 3)
     }
     
     class func alert(at view: UIView, errorString: String) ->Void {
         let hud: MBProgressHUD = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = MBProgressHUDMode.text
-        hud.labelText = LocalString._general_alert_title
-        hud.detailsLabelText = errorString
+        hud.label.text = LocalString._general_alert_title
+        hud.detailsLabel.text = errorString
         hud.removeFromSuperViewOnHide = true
-        hud.hide(true, afterDelay: 3)
+        hud.hide(animated: true, afterDelay: 3)
     }
 }

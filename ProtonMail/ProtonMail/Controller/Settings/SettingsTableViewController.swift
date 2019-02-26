@@ -491,12 +491,12 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                             cleaning = true
                             let nview = self.navigationController?.view ?? UIView()
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
-                            hud.labelText = LocalString._settings_resetting_cache
+                            hud.label.text = LocalString._settings_resetting_cache
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.text
-                                hud.labelText = LocalString._general_done_button
-                                hud.hide(true, afterDelay: 1)
+                                hud.label.text = LocalString._general_done_button
+                                hud.hide(animated: true, afterDelay: 1)
                                 self.cleaning = false
                             }
                         }
