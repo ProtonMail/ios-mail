@@ -54,7 +54,7 @@ PODS:
     - Groot/Swift (= 3.0.1)
   - Groot/Swift (3.0.1)
   - Masonry (1.1.0)
-  - MBProgressHUD (0.9.2)
+  - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
   - "NSDate+Helper (1.0.4)"
   - OHHTTPStubs/Core (6.1.0)
@@ -73,18 +73,18 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
-  - PromiseKit (6.7.0):
-    - PromiseKit/CorePromise (= 6.7.0)
-    - PromiseKit/Foundation (= 6.7.0)
-    - PromiseKit/UIKit (= 6.7.0)
-  - PromiseKit/CorePromise (6.7.0)
-  - PromiseKit/Foundation (6.7.0):
+  - PromiseKit (6.8.3):
+    - PromiseKit/CorePromise (= 6.8.3)
+    - PromiseKit/Foundation (= 6.8.3)
+    - PromiseKit/UIKit (= 6.8.3)
+  - PromiseKit/CorePromise (6.8.3)
+  - PromiseKit/Foundation (6.8.3):
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.7.0):
+  - PromiseKit/UIKit (6.8.3):
     - PromiseKit/CorePromise
   - RHAddressBook (1.1.1)
-  - SDWebImage/Core (4.4.3)
-  - SDWebImage/GIF (4.4.3):
+  - SDWebImage/Core (4.4.5)
+  - SDWebImage/GIF (4.4.5):
     - FLAnimatedImage (~> 1.0)
     - SDWebImage/Core
   - Sentry (4.1.0):
@@ -108,7 +108,7 @@ DEPENDENCIES:
   - Fabric
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
-  - MBProgressHUD (= 0.9.2)
+  - MBProgressHUD (= 1.1.0)
   - MCSwipeTableViewCell (~> 2.1.4)
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift
@@ -176,20 +176,20 @@ SPEC CHECKSUMS:
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
-  MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
   OpenPGP: 0563b77b6f4e95c5fc913bf7a216c6f3735b0e28
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PromiseKit: 453ddcc947fe7b302f3ef41882b81d31c554df7f
+  PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
-  SDWebImage: c5594f1a19c48d526d321e548902b56b479cd508
+  SDWebImage: ecc03494e973b93b80213649d32175f8d2d17d4d
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: e6d1eb9195b2dbc8aebbb9de29f4d47bb0ef61cd
+PODFILE CHECKSUM: 974d06cd4ce3db20cc9e308950f1d63bbd8e824c
 
 COCOAPODS: 1.5.3

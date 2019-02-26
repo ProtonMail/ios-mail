@@ -489,7 +489,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
-                            let nview = self.navigationController?.view
+                            let nview = self.navigationController?.view ?? UIView()
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
                             hud.labelText = LocalString._settings_resetting_cache
                             hud.removeFromSuperViewOnHide = true

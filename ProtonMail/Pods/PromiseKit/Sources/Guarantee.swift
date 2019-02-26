@@ -6,7 +6,7 @@ import Dispatch
  - See: `Thenable`
 */
 public final class Guarantee<T>: Thenable {
-    let box: Box<T>
+    let box: PromiseKit.Box<T>
 
     fileprivate init(box: SealedBox<T>) {
         self.box = box
@@ -19,7 +19,7 @@ public final class Guarantee<T>: Thenable {
 
     /// Returns a pending `Guarantee` that can be resolved with the provided closure’s parameter.
     public init(resolver body: (@escaping(T) -> Void) -> Void) {
-        box = EmptyBox()
+        box = Box()
         body(box.seal)
     }
 
@@ -54,8 +54,19 @@ public final class Guarantee<T>: Thenable {
         }
     }
 
+    final private class Box<T>: EmptyBox<T> {
+        deinit {
+            switch inspect() {
+            case .pending:
+                PromiseKit.conf.logHandler(.pendingGuaranteeDeallocated)
+            case .resolved:
+                break
+            }
+        }
+    }
+
     init(_: PMKUnambiguousInitializer) {
-        box = EmptyBox()
+        box = Box()
     }
 
     /// Returns a tuple of a pending `Guarantee` and a function that resolves it.
@@ -105,7 +116,7 @@ public extension Guarantee {
         return rg
     }
 
-    public func asVoid() -> Guarantee<Void> {
+    func asVoid() -> Guarantee<Void> {
         return map(on: nil) { _ in }
     }
     
@@ -113,7 +124,7 @@ public extension Guarantee {
      Blocks this thread, so you know, don’t call this on a serial thread that
      any part of your chain may use. Like the main thread for example.
      */
-    public func wait() -> T {
+    func wait() -> T {
 
         if Thread.isMainThread {
             conf.logHandler(.waitOnMainThread)
