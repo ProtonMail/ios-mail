@@ -609,6 +609,13 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
                         if self.htmlBody == nil {
                             firstly { () -> Guarantee<Void> in
                                 self.htmlBody = self.prepareHTMLBody(self.message)
+                                
+                                if self.autoLoadImageMode == .disallowed && !self.showedShowImageView{
+                                    if self.htmlBody?.hasImage() == true {
+                                        self.needShowShowImageView = true
+                                    }
+                                }
+                                
                                 return .value(())
                             }.done {
                                 let atts = self.message.attachments.allObjects as? [Attachment]
