@@ -48,14 +48,14 @@ public struct Part: CustomStringConvertible {
         if let cd = self.contentDisposition {
             let kv = cd.keyValues
             if let name = kv["filename"] {
-                return name
+                return name.decodedFromUTF8Wrapping
             }
         }
         
         if let cd = self.headers[.contentType] {
             let kv = cd.keyValues
             if let name = kv["name"] {
-                return name
+                return name.decodedFromUTF8Wrapping
             }
         }
         

@@ -589,7 +589,6 @@ extension ContactDetailViewController: UITableViewDelegate {
                     application.openURL(phoneCallURL)
                 }
             }
-            break
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
@@ -599,6 +598,17 @@ extension ContactDetailViewController: UITableViewDelegate {
                 if let strUrl = fullUrl.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                     let url = URL(string: strUrl) {
                     UIApplication.shared.openURL(url)
+                }
+            }
+        case .url:
+            let urls = viewModel.getUrls()
+            let url = urls[row]
+            if let urlURL = URL(string: url.origUrl) {
+                let application:UIApplication = UIApplication.shared
+                if (application.canOpenURL(urlURL)) {
+                    application.openURL(urlURL)
+                } else {
+                    LocalString._invalid_url.alertToastBottom()
                 }
             }
         case .share:

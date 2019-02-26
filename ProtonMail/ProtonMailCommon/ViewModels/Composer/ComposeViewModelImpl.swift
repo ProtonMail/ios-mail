@@ -553,21 +553,20 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getHtmlBody() -> WebContents {
         let globalRemoteContentMode: WebContents.RemoteContentPolicy = sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
-        //sharedUserDataService.signature
+        
         var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
-        // sometimes user will input 's in signature. we have to escape it first. need to make sure not to escape twice
-        signature = signature.escaped
+        signature = signature.ln2br()
+        
         var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
-        mobileSignature = mobileSignature.escaped
+        mobileSignature = mobileSignature.ln2br()
         
         let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
-        let htmlString = "\(defaultSignature) \(mobileSignature)"
+        let signatureHtml = "\(defaultSignature) \(mobileSignature)"
         
-        switch messageAction
-        {
+        switch messageAction {
         case .openDraft:
             var body = ""
             do {
@@ -576,10 +575,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            
-            body = body.escaped
-            return .init(body: body, remoteContentMode: globalRemoteContentMode)
-            
+            return .init(body: body.escaped, remoteContentMode: globalRemoteContentMode)
         case .reply, .replyAll:
             
             var body = ""
@@ -589,7 +585,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            body = body.escaped
             
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
@@ -605,8 +600,9 @@ final class ComposeViewModelImpl : ComposeViewModel {
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
-            let result = " \(head) \(htmlString) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
-            return .init(body: result, remoteContentMode: globalRemoteContentMode)
+            let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
+            /// escaped should call only once, also we could consider put escaped call in WebContents init
+            return .init(body: result.escaped, remoteContentMode: globalRemoteContentMode)
         case .forward:
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
@@ -630,7 +626,6 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 forwardHeader += "\(c) \(message!.ccList.formatJsonContact(true))<br>"
             }
             forwardHeader += ""
-            forwardHeader = forwardHeader.escaped
             var body = ""
             
             do {
@@ -639,35 +634,34 @@ final class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-
-            body = body.escaped
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
-            return .init(body: "\(head)\(htmlString)\(sp)\(body)\(foot)", remoteContentMode: globalRemoteContentMode)
+            let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
+            return .init(body: result.escaped, remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
-                let newhtmlString = "\(head) \(self.body!) \(htmlString) \(foot)"
+                let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString.escaped, remoteContentMode: globalRemoteContentMode)
             } else {
-                if htmlString.trim().isEmpty {
+                if signatureHtml.trim().isEmpty {
                     let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
                     return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
                 }
             }
-            return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml.escaped, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
-                \(head) \(self.body!.ln2br()) \(htmlString) \(foot)
-                """.escaped
+                \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
+                """
                 
-                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
-            } else if htmlString.trim().isEmpty {
+                return .init(body: newhtmlString.escaped, remoteContentMode: globalRemoteContentMode)
+            } else if signatureHtml.trim().isEmpty {
                 //add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
                 return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
             }
-            return .init(body: htmlString, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml.escaped, remoteContentMode: globalRemoteContentMode)
         }
         
     }
