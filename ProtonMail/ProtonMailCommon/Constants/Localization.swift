@@ -1765,4 +1765,9 @@ class LocalizedString {
                                                      comment: "Internal type casting error")
     lazy var _internal_error = NSLocalizedString("Internal Error",
                                                  comment: "The preconditions are not met")
+    
+    
+    /// Invalid URL
+    lazy var _invalid_url = NSLocalizedString("Invalid URL",
+                                              comment: "Invalid URL error when click a url in contact")
 }
