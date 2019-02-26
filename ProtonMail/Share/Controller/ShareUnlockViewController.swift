@@ -27,6 +27,7 @@
 
 
 import UIKit
+import MBProgressHUD
 
 var sharedUserDataService : UserDataService!
 
@@ -89,7 +90,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        ActivityIndicatorHelper.showActivityIndicator(at: view)
+        MBProgressHUD.showAdded(to: view, animated: true)
         guard let inputitems = self.extensionContext?.inputItems as? [NSExtensionItem] else {
             self.showErrorAndQuit(errorMsg: LocalString._cant_load_share_content)
             return
@@ -99,7 +100,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         self.parse(items: inputitems, group: group)
         group.notify(queue: DispatchQueue.global(qos: .userInteractive)) { [unowned self] in
             DispatchQueue.main.async { [unowned self] in
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                MBProgressHUD.hide(for: self.view, animated: true)
                 //go to composer
                 guard self.localized_errors.isEmpty else {
                     self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)

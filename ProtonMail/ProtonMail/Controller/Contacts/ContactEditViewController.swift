@@ -28,6 +28,7 @@
 
 import Foundation
 import Photos
+import MBProgressHUD
 
 protocol ContactEditViewControllerDelegate {
     func deleted()
@@ -263,10 +264,10 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
         //        }
         
         let v : UIView = self.navigationController?.view ?? self.view
-        ActivityIndicatorHelper.showActivityIndicator(at: v)
+        MBProgressHUD.showAdded(to: v, animated: true)
         
         viewModel.done { (error : NSError?) in
-            ActivityIndicatorHelper.hideActivityIndicator(at: v)
+            MBProgressHUD.hide(for: v, animated: true)
             if error == nil {
                 self.delegate?.updated()
                 self.dismiss(animated: true, completion: nil)
@@ -923,9 +924,9 @@ extension ContactEditViewController: UITableViewDelegate {
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
                 let v : UIView = self.navigationController?.view ?? self.view
-                ActivityIndicatorHelper.showActivityIndicator(at: v)
+                MBProgressHUD.showAdded(to: v, animated: true)
                 self.viewModel.delete(complete: { (error) in
-                    ActivityIndicatorHelper.hideActivityIndicator(at: v)
+                    MBProgressHUD.hide(for: v, animated: true)
                     if let err = error {
                         err.alertToast()
                     } else {

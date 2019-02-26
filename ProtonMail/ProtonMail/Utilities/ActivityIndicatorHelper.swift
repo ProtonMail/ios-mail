@@ -27,32 +27,4 @@
 
 import MBProgressHUD
 
-@available(*, deprecated, message: "It used to be a standalone object, now use MBProgressHUD please")
-class ActivityIndicatorHelper {
-    
-    fileprivate class func showActivityIndicator(at view: UIView, style: UIActivityIndicatorView.Style) {
-        MBProgressHUD.showAdded(to: view, animated: true)
-    }
-    
-    class func show(at view: UIView?) {
-        guard let v = view else {
-            return
-        }
-        showActivityIndicator(at: v, style: UIActivityIndicatorView.Style.whiteLarge)
-    }
-    
-    class func showActivityIndicator(at view: UIView) {
-        showActivityIndicator(at: view, style: UIActivityIndicatorView.Style.whiteLarge)
-    }
-    
-    class func hide(at view: UIView?) {
-        guard let v = view else {
-            return
-        }
-        hideActivityIndicator(at: v)
-    }
-    
-    class func hideActivityIndicator(at view: UIView) {
-        MBProgressHUD.hide(for: view, animated: true)
-    }
-}
+

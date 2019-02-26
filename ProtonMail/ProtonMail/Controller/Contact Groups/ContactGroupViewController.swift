@@ -29,6 +29,7 @@
 import UIKit
 import CoreData
 import PromiseKit
+import MBProgressHUD
 
 /**
  When the core data that provides data to this controller has data changes,
@@ -294,12 +295,12 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             firstly {
                 () -> Promise<Void> in
                 // attempt to delete selected groups
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                MBProgressHUD.showAdded(to: self.view, animated: true)
                 return self.viewModel.deleteGroups()
                 }.done {
                     self.resetStateFromMultiSelect()
                 }.ensure {
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    MBProgressHUD.hide(for: self.view, animated: true)
                 }.catch {
                     error in
                     error.alert(at: self.view)
@@ -549,14 +550,14 @@ extension ContactGroupsViewController: UITableViewDelegate
                 firstly {
                     () -> Promise<Void> in
                     // attempt to delete selected groups
-                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    MBProgressHUD.showAdded(to: self.view, animated: true)
                     if let cell = self.tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
                         self.viewModel.addSelectedGroup(ID: cell.getLabelID(),
                                                         indexPath: indexPath)
                     }
                     return self.viewModel.deleteGroups()
                     }.ensure {
-                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                     }.catch {
                         error in
                         error.alert(at: self.view)

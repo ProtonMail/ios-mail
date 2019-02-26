@@ -27,6 +27,7 @@
 
 
 import Foundation
+import MBProgressHUD
 
 class LableEditViewController : UIViewController {
     
@@ -82,10 +83,10 @@ class LableEditViewController : UIViewController {
     
     @IBAction func applyAction(_ sender: AnyObject) {
         //show loading
-        ActivityIndicatorHelper.showActivityIndicator(at: view)
+        MBProgressHUD.showAdded(to: view, animated: true)
         let color = viewModel.color(at: selected?.row ?? 0)
         viewModel.apply(withName: newLabelInput.text!, color: color, error: { (code, errorMessage) -> Void in
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            MBProgressHUD.hide(for: self.view, animated: true)
             let alert = errorMessage.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)

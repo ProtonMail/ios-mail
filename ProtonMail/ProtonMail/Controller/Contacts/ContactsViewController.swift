@@ -29,6 +29,7 @@
 import UIKit
 import Contacts
 import CoreData
+import MBProgressHUD
 
 class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     typealias viewModelType = ContactsViewModel
@@ -286,9 +287,9 @@ extension ContactsViewController: UITableViewDelegate {
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alertController.addAction(UIAlertAction(title: LocalString._delete_contact,
                                                         style: .destructive, handler: { (action) -> Void in
-                                                            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                                                            MBProgressHUD.showAdded(to: self.view, animated: true)
                                                             self.viewModel.delete(contactID: contact.contactID, complete: { (error) in
-                                                                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                                                                MBProgressHUD.hide(for: self.view, animated: true)
                                                                 if let err = error {
                                                                     err.alert(at : self.view)
                                                                 }

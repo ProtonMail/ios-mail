@@ -33,6 +33,7 @@ import CoreData
 import PassKit
 import AwaitKit
 import PromiseKit
+import MBProgressHUD
 
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
@@ -326,10 +327,10 @@ class MessageViewController: ProtonMailViewController, ViewModelProtocol {
 
             }))
             alert.addAction(UIAlertAction(title: LocalString._general_confirm_action, style: .default, handler: { (action) in
-                ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                MBProgressHUD.showAdded(to: self.view, animated: true)
                 if let _ = self.message.managedObjectContext {
                     BugDataService().reportPhishing(messageID: self.message.messageID, messageBody: self.htmlBody ?? "") { error in
-                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                        MBProgressHUD.showAdded(to: self.view, animated: true)
                         if let error = error {
                             let alert = error.alertController()
                             alert.addOKAction()

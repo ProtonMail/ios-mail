@@ -31,7 +31,7 @@ import WebKit
 import JavaScriptCore
 import PromiseKit
 import AwaitKit
-
+import MBProgressHUD
 
 class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = ComposeViewModel
@@ -648,7 +648,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.htmlEditor.update(signature: signature)
                         }
-                        ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                        MBProgressHUD.showAdded(to: self.view, animated: true)
                         self.viewModel.updateAddressID(addr.address_id).done { _ in
                             self.headerView.updateFromValue(addr.email, pickerEnabled: true)
                             }.catch { (error ) in
@@ -656,7 +656,7 @@ extension ComposeViewController : ComposeViewDelegate {
                                 alertController.addOKAction()
                                 self.present(alertController, animated: true, completion: nil)
                             }.finally {
-                                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                                MBProgressHUD.hide(for: self.view, animated: true)
                         }
                     }
                 }))

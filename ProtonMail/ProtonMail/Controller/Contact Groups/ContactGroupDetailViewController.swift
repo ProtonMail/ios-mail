@@ -28,6 +28,7 @@
 
 import UIKit
 import PromiseKit
+import MBProgressHUD
 
 class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactGroupDetailViewModel
@@ -79,10 +80,10 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         super.viewWillAppear(animated)
         
         firstly { () -> Promise<Bool> in
-            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
             return self.viewModel.reload()
         }.ensure {
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }.done { (isDeleted) in
             
             if isDeleted {
