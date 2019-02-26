@@ -140,7 +140,8 @@ extension Data {
             if i < self.count, self[i - 1] != 10, self[i] == 10 { i += 1}
         }
         
-        if ranges.count < 2 { return nil }
+        if ranges.count < 1 { return nil }
+        
         return Components(data: self, ranges: ranges)
     }
     
@@ -219,6 +220,8 @@ extension Data {
             let cr = UInt8(firstCharacterOf: "\r")
             let space = UInt8(firstCharacterOf: " ")
             let tab = UInt8(firstCharacterOf: "\t")
+            //for apple mail
+            let seperator = UInt8(firstCharacterOf: ";")
             
             while i < length {
                 var isNewline = false
@@ -237,8 +240,12 @@ extension Data {
                 if isNewline, ptr[i] == space || ptr[i] == tab {
                     count -=  1
                     i += 1
+                    
+                    //fix apple mail mime issue
+                    if count > 1, output[count-2] == seperator {
+                        count -=  1
+                    }
                 }
-                
             }
             return Data(bytes: output, count: count)
         }
