@@ -80,7 +80,6 @@
 		0A0CC6D3D0AA947BC5E7E8392498B0CB /* ServiceLevel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */; };
 		0A6EDCAEDFC43FBE42BF2B875959C43A /* UIColor+ProtonMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA73A35D604465146787543338B179D1 /* UIColor+ProtonMail.swift */; };
 		0A813271987E6633E1E981DBD3536C8C /* PushDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68BDAFD9795EAA46242A94EAD3D3453 /* PushDataTests.swift */; };
-		0A9EDBEA5F48200CE9A25C645EDCC6F9 /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */; };
 		0AA9AD1D45388FF31E7E07B6B6B6D84C /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
 		0AAEC3DAE649DD22D2A8368A570CAFA5 /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		0AB3E119781E0FE840370738688AAF12 /* NSError+Alert+Extenion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504A32ED034AFC87C9FF45FDA9B0D481 /* NSError+Alert+Extenion.swift */; };
@@ -1124,7 +1123,6 @@
 		A854F51236CA4E2FFC20FED5DB51193E /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96771EE097013634A6B94838C8CB395 /* Themes.swift */; };
 		A87D01BD6E56BE610D487C5835CA7D18 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		A89BDFE1911CBA8684ECCDAEEDC02315 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
-		A8A6921550423D6B42CA3CF00226F48B /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
 		A8E4A5E6164FF8693A21733E2CA6D961 /* ContactGroupsViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEDDA628A0CBF1A40EB99BA815D85481 /* ContactGroupsViewCell.swift */; };
 		A8FD5855F466E99B1056E9FC7E3A0B87 /* ContactTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A3198023DBD0405C3E352E8B749E33 /* ContactTabBarViewController.swift */; };
 		A902FA681F6E1741802D042BF58BBEC7 /* ContactGroupSelectColorViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9567663E4789DC9C691D57DA60A5ED80 /* ContactGroupSelectColorViewModelImpl.swift */; };
@@ -1319,7 +1317,6 @@
 		C351B993D74CC790DEE52942054CF50E /* PasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5DCE1A915445A08E86CB35521431F753 /* PasswordExtension.strings */; };
 		C36C0D3FCBEBF5F06CD4830515C567FB /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366440FD86C2A31F36A17127B4F2D8B4 /* FileManager+Extension.swift */; };
 		C3760E39AED88C1BA3038C6C563F11B1 /* NSFetchedResultsController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */; };
-		C382896EFCD962D2D4C6D87B57753C4F /* ToastMessageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */; };
 		C38CCA400FBBB72DC7D0A889A8C644D3 /* RecaptchaViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3257AE4FCDEE33D1DFC2202B2856779D /* RecaptchaViewController.swift */; };
 		C3D0F75EF0E316DBD18EAA98EA5DBE27 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		C419004F4F7E4D18B149C8517D337260 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA071210F74AE37131F94504B5A0384 /* SignUpPasswordViewController.swift */; };
@@ -1554,7 +1551,6 @@
 		E284B4562F53B10809F4378ADBF701CC /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		E28CAEF80C9EB5192FBE45F271AA4BC8 /* OrganizationsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8C88CF997A748C2D11C0419571595A /* OrganizationsAPI.swift */; };
 		E2963D3C56022BB4C2C78202E5E07682 /* Storefront.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E431F81A077FD137760B6D07EB572 /* Storefront.swift */; };
-		E2C8463A2A406D26055B712D83EF8600 /* ToastMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */; };
 		E3035D57F1B18C1E189B87B10A8702A3 /* ExpirationWarningHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */; };
 		E34631FF21576D511FFE514D5F0C969A /* DocumentAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */; };
 		E36A729F1C1343F935D9F805B68367AB /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
@@ -2292,7 +2288,6 @@
 		868B9DB322FDF331F2E057421684798D /* ContactGroupSelectEmailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectEmailViewModel.swift; sourceTree = "<group>"; };
 		86CC1C68F121EC52427410D7D6FA0753 /* MenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		872DE11A0429812CCE064954F853C7D5 /* DurationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPickerViewController.swift; sourceTree = "<group>"; };
-		87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToastMessageView.swift; sourceTree = "<group>"; };
 		8782C5BEEDAF151E47F8104AC2BDCF82 /* ContactGroupSelectColorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSelectColorViewController.swift; sourceTree = "<group>"; };
 		87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "APIService+AttachmentExtension.swift"; sourceTree = "<group>"; };
 		87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
@@ -2429,7 +2424,6 @@
 		B29DF1214047A26946ED6A9F0DC9D6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B353F65994664847D220F289184C2A5B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		B35751CF9CE35E80B816BBFBB22B39E3 /* Message+SpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+SpamScore.swift"; sourceTree = "<group>"; };
-		B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToastMessageView.xib; sourceTree = "<group>"; };
 		B46F72AFDE901F2582A2569BFBC7E6EC /* MailboxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MailboxViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		B56D7B237413C9BDC548261C22C8EDEF /* Keymaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keymaker.swift; sourceTree = "<group>"; };
 		B5DEECD545CB13CB019BB43ED956B9CC /* EmailAttachmentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailAttachmentView.swift; sourceTree = "<group>"; };
@@ -3085,8 +3079,6 @@
 				D5ECE5CE544C98F7C824484FF62D8DD9 /* PinCodeView.swift */,
 				2E1DF4B9083F68972C3AD18616B2856E /* PinCodeView.xib */,
 				0BE94FE1BA9AF24B47D7D08A72823DA5 /* PinCodeViewController.swift */,
-				87530495407CE3203D251F1AAF3A3DAD /* ToastMessageView.swift */,
-				B449CD17806160C3549FDDFA2969C661 /* ToastMessageView.xib */,
 				9DCE0553D5A18BDA3E36F78AA7AA77AC /* TopMessageView.swift */,
 				78C03AAA6B5E320F15B5598375F80987 /* TopMessageView.xib */,
 				AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */,
@@ -4852,7 +4844,6 @@
 				178B242941604A0DE39D2D0AE7590EDB /* SpamScoreWarningView.xib in Resources */,
 				62956BA6A4F7BAAACF00D87CB206C352 /* SwitchTableViewCell.xib in Resources */,
 				1D5C3D806B156861755D0FC71D26AACC /* TimePickerViewController.xib in Resources */,
-				C382896EFCD962D2D4C6D87B57753C4F /* ToastMessageView.xib in Resources */,
 				C1B2EF7E7EEACE5F8C08C320DE4480B9 /* TopMessageView.xib in Resources */,
 				9FB2B7F49425717BB9D6166C5CCA7EDA /* TwoFACodeView.xib in Resources */,
 				AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */,
@@ -4922,7 +4913,6 @@
 				207FAD842E9CA47AB7A4978F449F9694 /* SpamScoreWarningView.xib in Resources */,
 				CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */,
 				7FB275FD11B3B51AD8ED3725509FFFB7 /* TimePickerViewController.xib in Resources */,
-				0A9EDBEA5F48200CE9A25C645EDCC6F9 /* ToastMessageView.xib in Resources */,
 				501952FFCD86B2E8D9B140946BA3FDD9 /* TopMessageView.xib in Resources */,
 				6F1E3C588B0AD6D7319DF83EF8237C4C /* TwoFACodeView.xib in Resources */,
 				BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */,
@@ -5973,7 +5963,6 @@
 				F83121E28738AA2D99ABFD04336A1736 /* Threading.swift in Sources */,
 				36E35A37054A6EF2FBAD7128B8C30129 /* TimeInterval+Extension.swift in Sources */,
 				507D815E93D7203E26DD69BBCE948D8D /* TimePickerViewController.swift in Sources */,
-				A8A6921550423D6B42CA3CF00226F48B /* ToastMessageView.swift in Sources */,
 				887DE22CCE1F0CAEE9651543EC0D22C0 /* TopMessageView.swift in Sources */,
 				737373550739D495B9B4DAEE9D45FA79 /* TouchID+Helper.swift in Sources */,
 				2A2694C1FF72FCD2E97F186917FAD911 /* TwoFACodeView.swift in Sources */,
@@ -6475,7 +6464,6 @@
 				058FF386E01C1E062856F0A1B3F3BD42 /* Threading.swift in Sources */,
 				647DBC8CA02C88C60B4D571EE52DC940 /* TimeInterval+Extension.swift in Sources */,
 				FD9C2DA7E003B841BDF17328F7FEB8EA /* TimePickerViewController.swift in Sources */,
-				E2C8463A2A406D26055B712D83EF8600 /* ToastMessageView.swift in Sources */,
 				612E6E9DC86361B03A4425C35E33AFE0 /* TopMessageView.swift in Sources */,
 				906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */,
 				6F8CD847738C7080FA6492559908750D /* TwoFACodeView.swift in Sources */,

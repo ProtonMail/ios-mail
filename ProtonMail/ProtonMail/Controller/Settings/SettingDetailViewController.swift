@@ -27,6 +27,7 @@
 
 
 import UIKit
+import MBProgressHUD
 
 class SettingDetailViewController: UIViewController {
 
@@ -228,21 +229,21 @@ class SettingDetailViewController: UIViewController {
         if viewModel.needAsk2FA() && cached2faCode == nil {
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
-            ActivityIndicatorHelper.showActivityIndicator(at: view)
+            MBProgressHUD.showAdded(to: view, animated: true)
             self.viewModel.updateValue(self.getTextValue(),
                                        password: self.getPasswordValue(),
                                        tfaCode: self.cached2faCode,
                                        complete: { value, error in
                 self.cached2faCode = nil
                 if let error = error {
-                    ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                    MBProgressHUD.hide(for: self.view, animated: true)
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
                 } else {
                     self.viewModel.updateNotification(self.switcher.isOn, complete: { (value, error) -> Void in
                         if let error = error {
-                            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                            MBProgressHUD.hide(for: self.view, animated: true)
                             let alertController = error.alertController()
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)

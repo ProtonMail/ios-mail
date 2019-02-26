@@ -227,10 +227,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         if let userInfo = userInfo {
                             cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
                                 if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
-                                    let view = UIApplication.shared.keyWindow
-                                    ActivityIndicatorHelper.show(at: view)
+                                    let view = UIApplication.shared.keyWindow ?? UIView()
+                                    MBProgressHUD.showAdded(to: view, animated: true)
                                     sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
-                                        ActivityIndicatorHelper.hide(at: view)
+                                        MBProgressHUD.hide(for: view, animated: true)
                                         if let error = error {
                                             feedback(false)
                                             let alertController = error.alertController()
@@ -489,14 +489,14 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     case .cleanCache:
                         if !cleaning {
                             cleaning = true
-                            let nview = self.navigationController?.view
+                            let nview = self.navigationController?.view ?? UIView()
                             let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
-                            hud.labelText = LocalString._settings_resetting_cache
+                            hud.label.text = LocalString._settings_resetting_cache
                             hud.removeFromSuperViewOnHide = true
                             sharedMessageDataService.cleanLocalMessageCache() { task, res, error in
                                 hud.mode = MBProgressHUDMode.text
-                                hud.labelText = LocalString._general_done_button
-                                hud.hide(true, afterDelay: 1)
+                                hud.label.text = LocalString._general_done_button
+                                hud.hide(animated: true, afterDelay: 1)
                                 self.cleaning = false
                             }
                         }
@@ -596,10 +596,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                 order += 1
                                             }
                                         }
-                                        let view = UIApplication.shared.keyWindow
-                                        ActivityIndicatorHelper.show(at: view)
+                                        let view = UIApplication.shared.keyWindow ?? UIView()
+                                        MBProgressHUD.showAdded(to: view, animated: true)
                                         sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
-                                            ActivityIndicatorHelper.hide(at: view)
+                                            MBProgressHUD.hide(for: view, animated: true)
                                             if error == nil {
                                                 self.multi_domains = newAddrs
                                             }
@@ -637,10 +637,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         if swipeAction != currentAction {
                             alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
                                 let _ = self.navigationController?.popViewController(animated: true)
-                                let view = UIApplication.shared.keyWindow
-                                ActivityIndicatorHelper.show(at: view)
+                                let view = UIApplication.shared.keyWindow ?? UIView()
+                                MBProgressHUD.showAdded(to: view, animated: true)
                                 sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
-                                    ActivityIndicatorHelper.hide(at: view)
+                                    MBProgressHUD.hide(for: view, animated: true)
                                     self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
                                 })
                             }))

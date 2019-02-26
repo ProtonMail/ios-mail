@@ -28,6 +28,7 @@
 import UIKit
 import PromiseKit
 import AwaitKit
+import MBProgressHUD
 
 class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = ContactDetailsViewModel
@@ -87,7 +88,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
         
         viewModel.getDetails {
             self.configHeaderDefault()
-            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
         }.done { (contact) in
             self.configHeader()
             self.tableView.reloadData()
@@ -97,7 +98,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             PMLog.D(error.localizedDescription)
             error.alert(at: self.view)
         }.finally {
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
 
         let nib = UINib(nibName: kContactDetailsHeaderView, bundle: nil)

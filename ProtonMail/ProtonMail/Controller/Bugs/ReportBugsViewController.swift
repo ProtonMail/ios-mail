@@ -27,6 +27,7 @@
 
 
 import Foundation
+import MBProgressHUD
 
 class ReportBugsViewController: ProtonMailViewController {
     
@@ -105,10 +106,10 @@ class ReportBugsViewController: ProtonMailViewController {
     }
     
     private func send(_ text: String) {
-        ActivityIndicatorHelper.showActivityIndicator(at: view)
+        MBProgressHUD.showAdded(to: view, animated: true)
         sendButton.isEnabled = false
         BugDataService().reportBug(text, completion: { error in
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            MBProgressHUD.hide(for: self.view, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
                 let alert = error.alertController()

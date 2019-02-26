@@ -28,6 +28,7 @@
 
 import UIKit
 import PromiseKit
+import MBProgressHUD
 
 /**
  The design for now is no auto-saving
@@ -157,14 +158,14 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
     
     private func save() {
         firstly { () -> Promise<Void> in
-            ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+            MBProgressHUD.showAdded(to: self.view, animated: true)
             UIApplication.shared.isNetworkActivityIndicatorVisible = true
             return viewModel.saveDetail()
         }.done {
             self.dismiss()
         }.ensure {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+            MBProgressHUD.hide(for: self.view, animated: true)
         }.catch {
             error in
             error.alert(at: self.view)
@@ -274,14 +275,14 @@ extension ContactGroupEditViewController: UITableViewDelegate
                 
                 firstly {
                     () -> Promise<Void> in
-                    ActivityIndicatorHelper.showActivityIndicator(at: self.view)
+                    MBProgressHUD.showAdded(to: self.view, animated: true)
                     UIApplication.shared.isNetworkActivityIndicatorVisible = true
                     return self.viewModel.deleteContactGroup()
                     }.done {
                         self.dismiss()
                     }.ensure {
                         UIApplication.shared.isNetworkActivityIndicatorVisible = false
-                        ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                     }.catch {
                         (error) in
                         error.alert(at: self.view)

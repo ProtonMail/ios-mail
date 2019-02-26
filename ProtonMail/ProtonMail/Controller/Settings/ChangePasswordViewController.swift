@@ -27,6 +27,7 @@
 
 
 import UIKit
+import MBProgressHUD
 
 class ChangePasswordViewController: UIViewController {
     
@@ -174,10 +175,10 @@ class ChangePasswordViewController: UIViewController {
             NotificationCenter.default.removeKeyboardObserver(self)
             self.performSegue(withIdentifier: self.kAsk2FASegue, sender: self)
         } else {
-            ActivityIndicatorHelper.showActivityIndicator(at: view)
+            MBProgressHUD.showAdded(to: view, animated: true)
             viewModel.setNewPassword(currentPwdEditor.text!, new_pwd: newPwdEditor.text!, confirm_new_pwd: confirmPwdEditor.text!, tfaCode: self.cached2faCode, complete: { value, error in
                 self.cached2faCode = nil
-                ActivityIndicatorHelper.hideActivityIndicator(at: self.view)
+                MBProgressHUD.hide(for: self.view, animated: true)
                 if let error = error {
                     if error.code == APIErrorCode.UserErrorCode.currentWrong {
                         self.currentPwdEditor.becomeFirstResponder()
