@@ -929,25 +929,25 @@
                                                     <rect key="frame" x="74.5" y="0.0" width="245.5" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="address-line1"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="address-line1"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Street" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="VPS-nJ-szb">
                                                     <rect key="frame" x="74.5" y="36" width="245.5" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="address-line2"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="address-line2"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="City" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hkL-sf-2Wz">
                                                     <rect key="frame" x="74.5" y="72" width="245.5" height="35.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="address-level2"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="address-level2"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="State" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="hLG-E3-2q0">
                                                     <rect key="frame" x="74.5" y="107.5" width="119" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="address-level1"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="address-level1"/>
                                                 </textField>
                                                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="ZIP" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="xeK-xP-8RH">
                                                     <rect key="frame" x="201.5" y="107.5" width="118.5" height="36"/>
@@ -959,7 +959,7 @@
                                                     <rect key="frame" x="74.5" y="143.5" width="245.5" height="36"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" textContentType="country-name"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words" textContentType="country-name"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XRh-8U-og7" userLabel="hidden line">
                                                     <rect key="frame" x="158" y="0.0" width="4" height="179.5"/>
@@ -1163,7 +1163,7 @@
                                                     <rect key="frame" x="74.5" y="0.0" width="237.5" height="43.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="21G-8W-6xS">
                                                     <rect key="frame" x="158" y="0.0" width="4" height="43.5"/>
@@ -1237,7 +1237,7 @@
                                                     <rect key="frame" x="74.5" y="0.0" width="237.5" height="43.5"/>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
                                                 </textField>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xed-gQ-7En">
                                                     <rect key="frame" x="158" y="0.0" width="4" height="43.5"/>
@@ -1482,7 +1482,7 @@
                                         <rect key="frame" x="0.0" y="861" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="I69-c4-NG7" id="bUD-xx-OlS">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="294" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Instructions" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="FrN-tO-378">
