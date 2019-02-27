@@ -28,16 +28,16 @@
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="mail_lock-pgpmime" translatesAutoresizingMaskIntoConstraints="NO" id="y7u-Sb-7HT">
                             <rect key="frame" x="335" y="25.5" width="14" height="14"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="14" id="5Ey-ZU-2ys"/>
-                                <constraint firstAttribute="width" constant="14" id="tUk-ug-6d5"/>
+                                <constraint firstAttribute="height" priority="900" constant="14" id="5Ey-ZU-2ys"/>
+                                <constraint firstAttribute="width" priority="900" constant="14" id="tUk-ug-6d5"/>
                             </constraints>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="uor-VI-44p" secondAttribute="bottom" id="4Ms-Zl-cCm"/>
-                        <constraint firstItem="uor-VI-44p" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" constant="16" id="9hq-Tq-bCR"/>
-                        <constraint firstAttribute="trailing" secondItem="y7u-Sb-7HT" secondAttribute="trailing" constant="16" id="DHa-EO-qaX"/>
+                        <constraint firstItem="uor-VI-44p" firstAttribute="leading" secondItem="yaY-1h-iLG" secondAttribute="leading" priority="900" constant="16" id="9hq-Tq-bCR"/>
+                        <constraint firstAttribute="trailing" secondItem="y7u-Sb-7HT" secondAttribute="trailing" priority="900" constant="16" id="DHa-EO-qaX"/>
                         <constraint firstAttribute="trailing" secondItem="uor-VI-44p" secondAttribute="trailing" id="TQg-2N-T1Y"/>
                         <constraint firstItem="uor-VI-44p" firstAttribute="top" secondItem="yaY-1h-iLG" secondAttribute="top" id="cON-F5-BZx"/>
                         <constraint firstItem="y7u-Sb-7HT" firstAttribute="centerY" secondItem="yaY-1h-iLG" secondAttribute="centerY" id="vuO-lm-zau"/>
