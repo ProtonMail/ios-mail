@@ -724,12 +724,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     vcard3.clearUrls()
                 }
                 
-                if notes.newNote != "" {
-                    let n = PMNINote.createInstance("", note: notes.newNote)!
-                    vcard3.setNote(n)
-                    isCard3Set = true
-                }
-                
+                let n = PMNINote.createInstance("", note: notes.newNote)!
+                vcard3.setNote(n)
+                isCard3Set = true
                 
                 for field in fields{
                     let f = PMNIPMCustom.createInstance(field.newType.vcardType, value: field.newField)
