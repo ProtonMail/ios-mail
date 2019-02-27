@@ -187,7 +187,10 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                     //self.focus()
                 }
                 self.headerView.notifyViewSize(true)
-                break
+            case .forward:
+                if !self.isShowingConfirm {
+                    let _ = self.headerView.toContactPicker.becomeFirstResponder()
+                }
             default:
                 if !self.isShowingConfirm {
                     //TODO:: remove the focus for now revert later
