@@ -84,4 +84,8 @@ class MessageQueue: PersistentQueue {
         }
         return Array(Set(ids))
     }
+    
+    func removeDoubleSent(messageID : String, actions: [String]) {
+        self.removeDuplicated(messageID, key: Key.id, actionKey: Key.action, actions: actions)
+    }
 }

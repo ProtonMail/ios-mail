@@ -243,26 +243,6 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
     @IBAction func doneAction(_ sender: UIBarButtonItem) {
         dismissKeyboard()
         
-        // check if we have empty contact group
-        // It's confusing for the user, removing this feature for now
-        //        let hasEmptyGroupResult = viewModel.hasEmptyGroups()
-        //        if let emptiness = hasEmptyGroupResult {
-        //            var groupString = ""
-        //            for group in emptiness {
-        //                groupString += groupString.count > 0 ? ", " : ""
-        //                groupString += group
-        //            }
-        //
-        //            let alert = UIAlertController.init(title: "Empty group error",
-        //                                               message: "There must be at least one group member in contact groups \(groupString)",
-        //                preferredStyle: .alert)
-        //
-        //            alert.addOKAction()
-        //
-        //            self.present(alert, animated: true)
-        //            return
-        //        }
-        
         let v : UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         
@@ -722,6 +702,10 @@ extension ContactEditViewController: UITableViewDataSource {
                 present(alertController, animated: true, completion: nil)
             case .custom_field:
                 let _ = self.viewModel.newField()
+                self.newIndexPath = indexPath
+                self.tableView.insertRows(at: [indexPath], with: .automatic)
+            case .url:
+                let _ = viewModel.newUrl()
                 self.newIndexPath = indexPath
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             default:

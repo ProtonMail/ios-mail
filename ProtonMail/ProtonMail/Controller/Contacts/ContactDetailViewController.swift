@@ -604,14 +604,22 @@ extension ContactDetailViewController: UITableViewDelegate {
         case .url:
             let urls = viewModel.getUrls()
             let url = urls[row]
-            if let urlURL = URL(string: url.origUrl) {
-                let application:UIApplication = UIApplication.shared
-                if (application.canOpenURL(urlURL)) {
-                    application.openURL(urlURL)
-                } else {
-                    LocalString._invalid_url.alertToastBottom()
+            if let urlURL = URL(string: url.origUrl),
+                var comps = URLComponents(url: urlURL, resolvingAgainstBaseURL: false){
+               
+                if comps.scheme == nil {
+                    comps.scheme = "http"
+                }
+                if let validUrl = comps.url {
+                    let application:UIApplication = UIApplication.shared
+                    if (application.canOpenURL(validUrl)) {
+                        application.openURL(validUrl)
+                        break
+                    }
                 }
             }
+            LocalString._invalid_url.alertToastBottom()
+           
         case .share:
             shareVcard()
         default:

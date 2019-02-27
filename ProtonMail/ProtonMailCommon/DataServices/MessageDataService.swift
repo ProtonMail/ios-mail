@@ -1693,6 +1693,11 @@ class MessageDataService : Service {
                     if action == MessageAction.delete {
                         Message.deleteMessage(messageID)
                     }
+                    
+                    if action == .send {
+                        //after sent, clean the other actions with same messageID from write queue (save and send)
+                        sharedMessageQueue.removeDoubleSent(messageID: messageID, actions: [MessageAction.saveDraft.rawValue, MessageAction.send.rawValue])
+                    }
                 }
                 let _ = sharedMessageQueue.remove(elementID)
                 self.dequeueIfNeeded()
