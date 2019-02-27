@@ -117,4 +117,21 @@ import Foundation
         }
         return false
     }
+    
+    
+    func removeDuplicated(_ messageID: String, key: String, actionKey: String, actions : [String]) {
+        self.queue.removeAll { (element) -> Bool in
+            if let elementDict = element as? [String : Any],
+                let object = elementDict[Key.object] as? [String : Any],
+                let msgID = object[key] as? String,
+                let action = object[actionKey] as? String,
+                messageID == msgID,
+                actions.contains(action) {
+                return true
+            }
+            return false
+        }
+    }
+    
+
 }
