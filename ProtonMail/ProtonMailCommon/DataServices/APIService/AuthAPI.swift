@@ -258,11 +258,17 @@ final class AuthResponse : ApiResponse {
     var serverProof : String?
     var resetToken : String?
     var tokenType : String?
-    var privateKey : String?
     var passwordMode : Int = 0
-    var keySalt : String?
     
     var userStatus : Int = 0
+    
+    /// The private key and salt will remove from auth response. need two sperate call to get them
+    var privateKey : String?
+    var keySalt : String?
+    
+    var isEncryptedToken : Bool {
+        return accessToken?.armored ?? false
+    }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         self.userID = response["UID"] as? String
@@ -274,10 +280,10 @@ final class AuthResponse : ApiResponse {
         self.serverProof = response["ServerProof"] as? String
         self.resetToken = response["ResetToken"] as? String
         self.tokenType = response["TokenType"] as? String
-        self.privateKey = response["PrivateKey"] as? String
         self.passwordMode = response["PasswordMode"] as? Int ?? 0
         self.userStatus = response["UserStatus"] as? Int ?? 0
         
+        self.privateKey = response["PrivateKey"] as? String
         self.keySalt = response["KeySalt"] as? String
         self.refreshToken = response["RefreshToken"] as? String
         return true

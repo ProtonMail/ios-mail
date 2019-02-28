@@ -462,7 +462,10 @@ class UserDataService : Service {
     }
     
     
-    func signIn(_ username: String, password: String, twoFACode: String?, ask2fa: @escaping LoginAsk2FABlock, onError:@escaping LoginErrorBlock, onSuccess: @escaping LoginSuccessBlock) {
+    func signIn(_ username: String, password: String, twoFACode: String?,
+                ask2fa: @escaping LoginAsk2FABlock,
+                onError:@escaping LoginErrorBlock,
+                onSuccess: @escaping LoginSuccessBlock) {
         // will use standard authCredential
         sharedAPIService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil) { task, mpwd, status, error in
             if status == .ask2FA {
