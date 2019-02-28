@@ -77,6 +77,8 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     
+    
+    var attachments : [Attachment] = []
     /// inital composer viewmodel
     ///
     /// - Parameters:
@@ -108,7 +110,17 @@ final class ComposeViewModelImpl : ComposeViewModel {
                             self.message?.title = "\(fwd) \(title)"
                         }
                     }
+                    
+                    /// add mime attachments if forward
+                    if let mimeAtts = msg?.tempAtts {
+                        for mimeAtt in mimeAtts {
+                            if let att = mimeAtt.toAttachment(message: self.message) {
+                                attachments.append(att)
+                            }
+                        }
+                    }
                 } else {
+                    
                 }
             }
         }
@@ -119,6 +131,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
         // get orignal message if from sent
         let fromSent: Bool = msg?.sentHardCheck ??  false
         self.updateContacts(fromSent)
+
     }
     
     deinit {
@@ -160,6 +173,16 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getAttachments() -> [Attachment]? {
         return self.message?.attachments.allObjects as? [Attachment]
+    }
+    
+    override func uploadMimeAttachments() {
+        if self.messageAction == .forward, attachments.count > 0 {
+            self.updateDraft()
+            for att in attachments {
+                sharedMessageDataService.upload(att: att)
+            }
+            self.updateDraft()
+        }
     }
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
