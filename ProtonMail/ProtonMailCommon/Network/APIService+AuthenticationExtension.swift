@@ -27,6 +27,7 @@
 
 
 import Foundation
+import PromiseKit
 
 /// Auth extension
 extension APIService {
@@ -93,22 +94,68 @@ extension APIService {
                                     return completion(task, nil, .resCheck, NSError.authInvalidGrant())
                                 }
                             } else if res?.code == 1000 {
-                                guard let serverProof : Data = res?.serverProof?.decodeBase64() else {
+                                guard let res = res else {
+                                    return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                }
+                                
+                                guard let serverProof : Data = res.serverProof?.decodeBase64() else {
                                     return completion(task, nil, .resCheck, NSError.authServerSRPInValid())
                                 }
                                 
                                 if api.serverProof == serverProof {
                                     let credential = AuthCredential(res: res)
                                     credential.storeInKeychain()
-                                    if res?.passwordMode == 1 {
-                                        guard let keysalt : Data = res?.keySalt?.decodeBase64() else {
-                                            return completion(task, nil, .resCheck, NSError.authInValidKeySalt())
+                                    let passwordMode = res.passwordMode
+                                    var keySalt: String?
+                                    var privateKey: String?
+                                    
+                                    func done() {
+                                        credential.update(salt: keySalt, privateKey: privateKey)
+                                        credential.storeInKeychain()
+                                        if passwordMode == 1 {
+                                            guard let keysalt : Data = keySalt?.decodeBase64() else {
+                                                return completion(task, nil, .resCheck, NSError.authInValidKeySalt())
+                                            }
+                                            let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
+                                            return completion(task, mpwd, .resCheck, nil)
+                                        } else {
+                                            return completion(task, nil, .resCheck, nil)
                                         }
-                                        let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
-                                        return completion(task, mpwd, .resCheck, nil)
-                                    } else {
-                                        return completion(task, nil, .resCheck, nil)
                                     }
+                                    
+                                    if !res.isEncryptedToken {
+                                        credential.trySetToken()
+                                        let saltapi = GetKeysSalts()
+                                        saltapi.authCredential = credential
+                                        let userApi = GetUserInfoRequest()
+                                        userApi.authCredential = credential
+                                        
+                                        firstly {
+                                            when(fulfilled: saltapi.run(), userApi.run())
+                                        }.done { (saltRes, userRes)  in
+                                            
+                                           guard  let salt = saltRes.keySalt,
+                                            let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
+                                                return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                            }
+
+                                            keySalt = salt
+                                            privateKey = privatekey
+                                            done()
+                                        }.catch { err in
+                                            let error = err as NSError
+                                            if error.isInternetError() {
+                                                return completion(task, nil, .resCheck, NSError.internetError())
+                                            } else {
+                                                return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                            }
+                                        }
+                                    } else {
+                                        keySalt = res.keySalt
+                                        privateKey = res.privateKey
+                                        done()
+                                    }
+                                    
                                 } else {
                                     return completion(task, nil, .resCheck, NSError.authServerSRPInValid())
                                 }
@@ -121,8 +168,7 @@ extension APIService {
                         err.upload(toAnalytics: "tryAuth()")
                         return completion(task, nil, .resCheck, NSError.authUnableToParseAuthInfo())
                     }
-                }
-                else {
+                } else {
                     return completion(task, nil, .resCheck, NSError.authUnableToParseToken())
                 }
             }

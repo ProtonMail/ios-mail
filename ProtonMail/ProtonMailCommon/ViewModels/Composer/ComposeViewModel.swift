@@ -163,6 +163,10 @@ class ComposeViewModel {
         return messageAction
     }
     
+    func uploadMimeAttachments() {
+        
+    }
+    
     ///
     func sendMessage(hasExtenal: Bool) {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()

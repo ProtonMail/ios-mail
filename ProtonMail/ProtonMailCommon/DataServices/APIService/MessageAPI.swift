@@ -247,7 +247,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             out["AttachmentKeyPackets"] = atts
         }
         
-        PMLog.D( out.json(prettyPrinted: true) )
+        //PMLog.D( out.json(prettyPrinted: true) )
         return out
     }
     

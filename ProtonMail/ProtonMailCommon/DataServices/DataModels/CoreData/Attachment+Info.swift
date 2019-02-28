@@ -63,6 +63,15 @@ class AttachmentInline : AttachmentInfo {
         self.mimeType = mime
         self.localUrl = path
     }
+    
+    func toAttachment(message: Message?) -> Attachment? {
+        if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
+            let ext = url.mimeType()
+            let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
+            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext)
+        }
+        return nil
+    }
 }
 
 

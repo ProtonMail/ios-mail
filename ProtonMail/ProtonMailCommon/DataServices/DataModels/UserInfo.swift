@@ -204,6 +204,17 @@ final class UserInfo : NSObject {
         }
         return nil
     }
+    
+    func getPrivateKey(by keyID: String?) -> String? {
+        if let keyID = keyID {
+            for userkey in self.userKeys {
+                if userkey.key_id == keyID {
+                    return userkey.private_key
+                }
+            }
+        }
+        return firstUserKey()?.private_key
+    }
 }
 
 extension UserInfo {

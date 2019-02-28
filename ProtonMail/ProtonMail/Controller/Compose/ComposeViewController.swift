@@ -269,6 +269,8 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                 pwd:self.encryptionPassword,
                 pwdHit:self.encryptionPasswordHint
             )
+            
+            self.viewModel.uploadMimeAttachments()
         }
 
         guard let addr = self.viewModel.getDefaultSendAddress() else {

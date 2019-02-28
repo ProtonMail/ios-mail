@@ -51,9 +51,11 @@ final class AuthCredential: NSObject, NSCoding {
     private var encryptToken: String!
     var refreshToken: String!
     private var expiration: Date!
-    private var privateKey : String?
     private var plainToken : String?
     var password : String?
+    
+    
+    private var privateKey : String?
     private var passwordKeySalt : String?
     
     override var description: String {
@@ -73,6 +75,11 @@ final class AuthCredential: NSObject, NSCoding {
         try self.fetchFromKeychain()?.setupToken(password)
     }
     
+    func update(salt: String?, privateKey: String?) {
+        self.privateKey = privateKey
+        self.passwordKeySalt = salt
+    }
+    
     func setupToken (_ password:String) throws {
         if encryptToken.armored, let key = self.privateKey  {
             self.plainToken = try sharedOpenPGP.decryptMessage(encryptToken,
@@ -82,8 +89,15 @@ final class AuthCredential: NSObject, NSCoding {
             self.plainToken = encryptToken
         }
         
-        
         self.password = password;
+        self.storeInKeychain()
+    }
+    
+    func trySetToken() {
+        guard !encryptToken.armored else {
+            return
+        }
+        self.plainToken = encryptToken
         self.storeInKeychain()
     }
     
@@ -98,8 +112,10 @@ final class AuthCredential: NSObject, NSCoding {
         }
         self.userID = res.userID
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
+        
+        ///TODO:: rmeove this later , when server switch off them
         self.privateKey = res.privateKey
-        self.passwordKeySalt = res.keySalt // FIXME: don't we need to store AuthCredential in keychain now?
+        self.passwordKeySalt = res.keySalt
     }
     
     required init(res : AuthResponse!) {
@@ -108,6 +124,8 @@ final class AuthCredential: NSObject, NSCoding {
         self.refreshToken = res.refreshToken
         self.userID = res.userID
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
+        
+        ///TODO:: rmeove this later , when server switch off them
         self.privateKey = res.privateKey
         self.passwordKeySalt = res.keySalt
     }
@@ -118,9 +136,9 @@ final class AuthCredential: NSObject, NSCoding {
         self.refreshToken = refreshToken
         self.userID = userID
         self.expiration = expiration
-        self.privateKey = key
         self.plainToken = plain
         self.password = pwd
+        self.privateKey = key
         self.passwordKeySalt = salt
     }
     

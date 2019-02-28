@@ -145,8 +145,7 @@ final class KeysResponse : ApiResponse {
     }
 }
 
-@available(*, deprecated)
-final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
+final class GetKeysSalts : ApiRequestNew<KeySaltResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .get
@@ -162,9 +161,13 @@ final class GetKeysSalts<T : ApiResponse> : ApiRequest<T> {
 }
 
 final class KeySaltResponse : ApiResponse {
-    var keySalts : [[String : Any]]?
+    var keySalt : String?
+    var keyID : String?
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.keySalts = response["KeySalts"] as? [[String : Any]]
+        if let keySalts = response["KeySalts"] as? [[String : Any]], let firstKeySalt = keySalts.first {
+            self.keySalt = firstKeySalt["KeySalt"] as? String
+            self.keyID = firstKeySalt["ID"] as? String
+        }
         return true
     }
 }

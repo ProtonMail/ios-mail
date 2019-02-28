@@ -315,9 +315,10 @@ class SendBuilder {
                         case .fulfilled(let value):
                             let att = self.preAttachments[index].att
                             signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-                            signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(att.fileName)\"" + "\r\n")
+                            let attName = QuotedPrintable.encode(string: att.fileName)
+                            signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
                             signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-                            signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(att.fileName)\"" + "\r\n")
+                            signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
                             signbody.append(contentsOf: "\r\n")
                             signbody.append(contentsOf: value + "\r\n")
                         case .rejected(let error):
