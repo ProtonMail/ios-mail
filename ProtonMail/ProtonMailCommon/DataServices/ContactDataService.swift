@@ -610,6 +610,8 @@ class ContactDataService: Service  {
                                     context.processPendingChanges()
                                     seal.fulfill(contact)
                                 }
+                            } else {
+                                seal.reject(NSError.unableToParseResponse(response))
                             }
                         } catch let ex as NSError {
                             seal.reject(ex)
