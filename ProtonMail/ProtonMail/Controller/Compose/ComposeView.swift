@@ -340,6 +340,7 @@ class ComposeView: UIViewController {
     
     @IBAction func didTapExpirationDismissButton(_ sender: UIButton) {
         self.hideExpirationPicker()
+        self.updateExpirationIcons()
     }
     
     @IBAction func didTapEncryptedDismissButton(_ sender: UIButton) {
@@ -549,19 +550,25 @@ class ComposeView: UIViewController {
             
         } else {
             if (!hasExpirationSchedule) {
-                self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControl.State())
                 self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControl.State())
             } else {
                 self.expirationDateTextField.text = ""
                 self.expirationTimeInterval  = 0;
-                self.expirationButton.setImage(UIImage(named: "compose_expiration"), for: UIControl.State())
                 self.confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
                 self.delegate?.composeViewCancelExpirationData(self)
-                
             }
+            self.updateExpirationIcons()
             hasExpirationSchedule = !hasExpirationSchedule
             self.hideExpirationPicker()
             return true
+        }
+    }
+    
+    fileprivate func updateExpirationIcons() {
+        if (self.expirationTimeInterval > 0) {
+            self.expirationButton.setImage(UIImage(named: "compose_expiration-active"), for: UIControl.State())
+        } else {
+            self.expirationButton.setImage(UIImage(named: "compose_expiration"), for: UIControl.State())
         }
     }
     
