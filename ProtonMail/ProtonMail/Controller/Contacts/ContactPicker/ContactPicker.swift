@@ -89,7 +89,7 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         }
     }
     
-    internal weak var delegate : (ContactPickerDelegate&UIViewController)!
+    internal weak var delegate : (ContactPickerDelegate&UIViewController)?
     internal weak var datasource : ContactPickerDataSource?
     
     private var _showPrompt : Bool = true
@@ -391,7 +391,7 @@ extension ContactPicker : ContactCollectionViewDelegate {
             self.contactCollectionView.performBatchUpdates({
                 self.layoutIfNeeded()
             }) { (finished) in
-                self.delegate.finishLockCheck()
+                self.delegate?.finishLockCheck()
             }
         }        
     }
