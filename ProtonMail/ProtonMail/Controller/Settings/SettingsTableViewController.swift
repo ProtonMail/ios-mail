@@ -80,7 +80,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     var multi_domains: [Address]!
     var userInfo: UserInfo? = sharedUserDataService.userInfo {
         didSet {
-            self.tableView.reloadData()
+            if oldValue != userInfo {
+                self.tableView.reloadData()
+            }
         }
     }
     
