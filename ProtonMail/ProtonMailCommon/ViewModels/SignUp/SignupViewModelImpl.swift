@@ -202,7 +202,7 @@ final class SignupViewModelImpl : SignupViewModel {
                             
                             //login first
                             sharedUserDataService.signIn(self.userName, password: self.plaintext_password,
-                                                         twoFACode: nil, ignoreSaltCheck: true,
+                                                         twoFACode: nil, checkSalt: true,
                                 ask2fa: {
                                     //2fa will show error
                                     complete(false, true, LocalString._signup_2fa_auth_failed, nil)
