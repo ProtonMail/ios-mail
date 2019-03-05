@@ -72,7 +72,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     @IBOutlet weak var noResultLabel: UILabel!
     
     // MARK: TopMessage
-    private weak var topMessageView: TopMessageView?
+    private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
     private var messageID: String? // this is for when user click the notification email
@@ -203,6 +203,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
         self.stopAutoFetch()
     }
@@ -1030,47 +1031,67 @@ extension MailboxViewController : MailboxCaptchaVCDelegate {
     }
 }
 
-extension MailboxViewController : TopMessageViewDelegate {
+extension MailboxViewController {
     
     private func showBanner(_ message: String,
-                            appearance: TopMessageView.Appearance,
-                            buttons: Set<TopMessageView.Buttons> = [])
+                            appearance: BannerView.Appearance,
+                            buttons: BannerView.ButtonConfiguration? = nil,
+                            from: BannerView.Base)
     {
-        if let oldMessageView = self.topMessageView {
-            oldMessageView.remove(animated: true)
-        }
-        
-        let newMessageView = TopMessageView(appearance: appearance,
+        let offset: CGFloat = (from == .top) ? (self.navigationController!.navigationBar.frame.size.height + self.navigationController!.navigationBar.frame.origin.y) : 8.0
+
+        let newMessageView = BannerView(appearance: appearance,
                                             message: message,
                                             buttons: buttons,
-                                            lowerPoint: self.navigationController!.navigationBar.frame.size.height + self.self.navigationController!.navigationBar.frame.origin.y + 8.0)
-        newMessageView.delegate = self
+                                            offset: offset + 8.0)
         if let superview = self.navigationController?.view {
-            self.topMessageView = newMessageView
+            switch from {
+            case .top:
+                self.topMessageView?.remove(animated: true)
+                self.topMessageView = newMessageView
+            case .bottom:
+                // TODO: old style views from storyboard are shown for this case, but can be easily refactored to TopMessageViews
+                break
+            }
+            
             superview.insertSubview(newMessageView, belowSubview: self.navigationController!.navigationBar)
-            newMessageView.showAnimation(withSuperView: superview)
+            newMessageView.drop(on: superview, from: from)
         }
     }
     
     internal func showErrorMessage(_ error: NSError?) {
         guard let error = error else { return }
-        showBanner(error.localizedDescription, appearance: .red)
+        showBanner(error.localizedDescription,
+                   appearance: .red,
+                   from: .top)
     }
     
     internal func showTimeOutErrorMessage() {
-        showBanner(LocalString._general_request_timed_out, appearance: .red, buttons: [.close])
+        showBanner(LocalString._general_request_timed_out,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
     }
     
     internal func showNoInternetErrorMessage() {
-        showBanner(LocalString._general_no_connectivity_detected, appearance: .red, buttons: [.close])
+        showBanner(LocalString._general_no_connectivity_detected,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
     }
     
     internal func showOfflineErrorMessage(_ error : NSError?) {
-        showBanner(error?.localizedDescription ?? LocalString._general_pm_offline, appearance: .red, buttons: [.close])
+        showBanner(error?.localizedDescription ?? LocalString._general_pm_offline,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
     }
     
     internal func show503ErrorMessage(_ error : NSError?) {
-        showBanner(LocalString._general_api_server_not_reachable, appearance: .red, buttons: [.close])
+        showBanner(LocalString._general_api_server_not_reachable,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
     }
     
     
