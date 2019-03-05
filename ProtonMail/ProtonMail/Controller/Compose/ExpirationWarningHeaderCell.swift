@@ -28,12 +28,12 @@
 
 import UIKit
 
-protocol ExpirationWarningHeaderCellDelegate {
+protocol ExpirationWarningHeaderCellDelegate: class {
     func clicked(at section : Int, expend: Bool)
 }
 
 class ExpirationWarningHeaderCell: UITableViewHeaderFooterView {
-    var delegate : ExpirationWarningHeaderCellDelegate?
+    weak var delegate : ExpirationWarningHeaderCellDelegate?
     @IBOutlet weak var headerLabel: UILabel!
     var section : Int = 0
     var expend : Bool = false
