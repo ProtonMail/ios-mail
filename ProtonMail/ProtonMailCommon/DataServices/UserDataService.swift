@@ -462,7 +462,7 @@ class UserDataService : Service {
     }
     
     
-    func signIn(_ username: String, password: String, twoFACode: String?, checkSalt: Bool = false,
+    func signIn(_ username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
                 ask2fa: @escaping LoginAsk2FABlock,
                 onError:@escaping LoginErrorBlock,
                 onSuccess: @escaping LoginSuccessBlock) {
