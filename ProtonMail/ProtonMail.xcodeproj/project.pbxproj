@@ -736,6 +736,7 @@
 		6E2D5E9D1B9240E70153E9CE44E381F7 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A790589C2185C0BBD7B5BDC105E151 /* NotificationName.swift */; };
 		6E6084A47AE00E45DE695555A7BA24B7 /* NotificationsSnoozer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA342CDCFB846522B898855EB1340306 /* NotificationsSnoozer.swift */; };
 		6E63E21F4BAADA7130AA69AB34AD3613 /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD71845357210A9E9B06A14940100F /* APIService+SettingsExtension.swift */; };
+		6E737EA2462CA3E1919E81330F405A86 /* Message.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */; };
 		6E8064B073D96A0A2069E5F0D2D9549B /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC12E6A05F63928C9357ACB88E7D63 /* APIService+ResponseTransformer.swift */; };
 		6E86DCFDB68700018C27F02F04F02E4B /* Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96771EE097013634A6B94838C8CB395 /* Themes.swift */; };
 		6E929532277E155CC58605671FA31C9E /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9AF0A74A77653AD47949D28EACEC7 /* Int+Extension.swift */; };
@@ -1078,6 +1079,7 @@
 		A1AAF98BCD90B7BE9D59D8DD897D76D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */; };
 		A1BD0EF7030903A95EFCFC606731B1C0 /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
 		A1D9BDBED5208B754E4AC0F01554F8D8 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
+		A21125188FF098B1B6BC1E97A8183CBF /* Message.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */; };
 		A21E61662D737BCA3A7B70318DA884C6 /* MessageViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B5510312FDA10387130A66280981BB6 /* MessageViewModelImpl.swift */; };
 		A220B4FDC0CAC7B9AB2E626850E7E2DC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6070AD30387D7CA0B61DDC4BD7CF501D /* SettingsViewModel.swift */; };
 		A277A9A2DB0F2B4A521FB1927FF4CECB /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA29C04562C536E6841584F83A8AB0CD /* MenuViewModel.swift */; };
@@ -2208,6 +2210,7 @@
 		6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecipientCell.xib; sourceTree = "<group>"; };
 		69A3F237F354027F5849B79009233900 /* AttachmentAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentAPI.swift; sourceTree = "<group>"; };
 		6A0594CB571476DF5FA5FEBB1868666B /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Message.storyboard; sourceTree = "<group>"; };
 		6A9E73EDBDAD67A3D064D904162F3AEE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModel.swift; sourceTree = "<group>"; };
 		6B5510312FDA10387130A66280981BB6 /* MessageViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3299,6 +3302,7 @@
 				F998300BF1488833A537930F5E9187A4 /* Contact.storyboard */,
 				235775AD83A1552B74E4185C2702107F /* LaunchScreen.xib */,
 				262F367D949D94238B158C679184B520 /* Menu.storyboard */,
+				6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */,
 				437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */,
 				715458403C778DA3437ED30E431AA4CD /* SettingsNotificationsSnooze.storyboard */,
 				7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */,
@@ -4826,6 +4830,7 @@
 				776E1C7D7959691E00FD565A91DC72E9 /* MailboxMessageCell.xib in Resources */,
 				01D251FA524D6C9913EF31A24A18669A /* MailboxRateReviewCell.xib in Resources */,
 				7A7CFA2309F2FB3FA6E32F2872A93FEF /* Menu.storyboard in Resources */,
+				A21125188FF098B1B6BC1E97A8183CBF /* Message.storyboard in Resources */,
 				3714498223DA0260BDDF9080AF3A7435 /* MessageDetailBottomView.xib in Resources */,
 				21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */,
 				25C3CB595E9A8922D8367F2A2D0B5550 /* OnboardingView.xib in Resources */,
@@ -4894,6 +4899,7 @@
 				F8B65B6A8E98D1EE682CA7DEAEEFFB2C /* MailboxMessageCell.xib in Resources */,
 				6D192C34CE567CD32E420760A2591D9E /* MailboxRateReviewCell.xib in Resources */,
 				1B48289179EA1CF65F86620F7CFCD40D /* Menu.storyboard in Resources */,
+				6E737EA2462CA3E1919E81330F405A86 /* Message.storyboard in Resources */,
 				8757389140B103FF47BF8448446DCBC1 /* MessageDetailBottomView.xib in Resources */,
 				D06C8E40AB7932124738AA83520E1614 /* MultiLabelDisplayView.xib in Resources */,
 				4C3ABA1F0CCF58F505BC1A338E7A5ED0 /* OnboardingView.xib in Resources */,

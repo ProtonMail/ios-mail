@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Message View Controller-->
+        <scene sceneID="4sC-bb-5Z4">
+            <objects>
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="9Yk-oc-NjC" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pZQ-HC-zlp"/>
+                        <viewControllerLayoutGuide type="bottom" id="BWg-RH-dVg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hbd-54-YH7">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LZJ-sS-lVZ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="LZJ-sS-lVZ" firstAttribute="leading" secondItem="hbd-54-YH7" secondAttribute="leading" id="8Om-LB-nXf"/>
+                            <constraint firstAttribute="trailing" secondItem="LZJ-sS-lVZ" secondAttribute="trailing" id="HRD-Z4-dw1"/>
+                            <constraint firstItem="LZJ-sS-lVZ" firstAttribute="top" secondItem="pZQ-HC-zlp" secondAttribute="bottom" id="NVi-So-Oia"/>
+                            <constraint firstAttribute="bottom" secondItem="LZJ-sS-lVZ" secondAttribute="bottom" id="Ogg-mx-d3U"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Ari-xs-2wH"/>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <navigationItem key="navigationItem" id="OTx-fy-bRC">
+                        <barButtonItem key="backBarButtonItem" title=" " id="1cF-Ja-kab"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="backButton" destination="arx-Gv-Wg6" id="Hvn-1D-th3"/>
+                        <segue destination="W5K-yA-by7" kind="show" identifier="toComposeTest" id="TSH-Ac-bSE"/>
+                        <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="65G-HP-Tpi"/>
+                        <segue destination="Uat-2a-auI" kind="show" identifier="toAddContact" id="yQH-mO-Mew"/>
+                        <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toApplyLabelsSegue" id="bQe-It-tkY"/>
+                        <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toMoveToFolderSegue" id="bvG-si-qmN"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ODs-mr-x9h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Test asklfjal" id="arx-Gv-Wg6" userLabel="back_button"/>
+            </objects>
+            <point key="canvasLocation" x="4290" y="2690"/>
+        </scene>
+        <!--ref_labels_view_controller-->
+        <scene sceneID="w1a-ik-9gd">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Menu" referencedIdentifier="ref_labels_view_controller" id="ZN8-hR-meZ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pY6-6y-A1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5298" y="2494"/>
+        </scene>
+        <!--ref_composer_nav_controller-->
+        <scene sceneID="GFB-x8-t7D">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="W5K-yA-by7" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5id-sx-xk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3734" y="3183"/>
+        </scene>
+        <!--UINavigationController-d3P-H0-xNt-->
+        <scene sceneID="1lu-mM-Eu8">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UINavigationController-d3P-H0-xNt" id="Uat-2a-auI" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Xfj-N4-wwY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5126" y="3154"/>
+        </scene>
+    </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="65G-HP-Tpi"/>
+        <segue reference="bvG-si-qmN"/>
+    </inferredMetricsTieBreakers>
+</document>

@@ -578,7 +578,7 @@
         <!--Lables View Controller-->
         <scene sceneID="HFR-bb-BfJ">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" id="C6e-Un-S8J" customClass="LablesViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ref_labels_view_controller" modalTransitionStyle="crossDissolve" id="C6e-Un-S8J" customClass="LablesViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kZ6-JY-rgk"/>
                         <viewControllerLayoutGuide type="bottom" id="9Rd-Ua-EDv"/>
@@ -1194,45 +1194,8 @@
         <!--Message View Controller-->
         <scene sceneID="ysU-co-vh9">
             <objects>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="kWS-aU-yuK" customClass="MessageViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Dhe-kT-scI"/>
-                        <viewControllerLayoutGuide type="bottom" id="3gu-uZ-r12"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="iHo-JM-gJu">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gvk-Br-Xxh">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
-                                <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
-                        </subviews>
-                        <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="leading" secondItem="iHo-JM-gJu" secondAttribute="leading" id="P7M-IQ-FKc"/>
-                            <constraint firstItem="gvk-Br-Xxh" firstAttribute="top" secondItem="Dhe-kT-scI" secondAttribute="bottom" id="WIO-0o-Mdu"/>
-                            <constraint firstAttribute="bottom" secondItem="gvk-Br-Xxh" secondAttribute="bottom" id="aei-WT-t4Y"/>
-                            <constraint firstAttribute="trailing" secondItem="gvk-Br-Xxh" secondAttribute="trailing" id="urH-B2-pGq"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" id="juN-ES-tqQ">
-                        <barButtonItem key="backBarButtonItem" title=" " id="TBv-QD-aV4"/>
-                    </navigationItem>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                    <connections>
-                        <outlet property="backButton" destination="IrE-60-aCv" id="eWw-9W-awV"/>
-                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toApplyLabelsSegue" modalPresentationStyle="overCurrentContext" id="xUw-S1-zl5"/>
-                        <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" modalPresentationStyle="overCurrentContext" id="CfN-TC-C8a"/>
-                        <segue destination="6Wk-yf-evB" kind="show" identifier="toAddContact" id="gfN-F5-Ywe"/>
-                        <segue destination="Pr4-fX-gNy" kind="show" identifier="toComposeTest" id="Vk8-EF-JzJ"/>
-                        <segue destination="Pr4-fX-gNy" kind="show" identifier="toCompose" id="QMs-AM-7qw"/>
-                    </connections>
-                </viewController>
+                <viewControllerPlaceholder storyboardName="Message" id="kWS-aU-yuK" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X4f-eM-03N" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem title="Test asklfjal" id="IrE-60-aCv" userLabel="back_button"/>
             </objects>
             <point key="canvasLocation" x="4290" y="2690"/>
         </scene>
@@ -3379,14 +3342,6 @@
             </objects>
             <point key="canvasLocation" x="1162" y="3604"/>
         </scene>
-        <!--UINavigationController-d3P-H0-xNt-->
-        <scene sceneID="Q0N-Kt-DcE">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UINavigationController-d3P-H0-xNt" id="6Wk-yf-evB" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ETS-LH-5Th" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="5126" y="3154"/>
-        </scene>
         <!--ref_composer_nav_controller-->
         <scene sceneID="b9I-Wi-Bnh">
             <objects>
@@ -3617,13 +3572,13 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="QMs-AM-7qw"/>
+        <segue reference="A0a-yx-qTn"/>
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="V9t-nA-fhw"/>
         <segue reference="3FM-PP-oeV"/>
         <segue reference="w5b-0j-26v"/>
-        <segue reference="xUw-S1-zl5"/>
+        <segue reference="zIE-XJ-wkG"/>
         <segue reference="LdN-DE-nXL"/>
     </inferredMetricsTieBreakers>
 </document>
