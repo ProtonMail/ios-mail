@@ -177,6 +177,7 @@
 		1AEBBCD584C000FD35A6D8196CA95A5A /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E5E13AFADBB0364C9E03E546AD572 /* PersistentQueue.swift */; };
 		1B48289179EA1CF65F86620F7CFCD40D /* Menu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 262F367D949D94238B158C679184B520 /* Menu.storyboard */; };
 		1B60FB04CD700B45C05FA3DECFF1385A /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */; };
+		1B96B3F1791CBA0FC46137136C2BFB32 /* ModernMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F4913E7F6D0795B9FE97ECAEB7C3DD /* ModernMessageViewController.swift */; };
 		1B98DFBB616F9839B860DDBAF3E5C1AD /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
 		1BA9FE9D0FC3374AD7933D7D8516F5CA /* Intents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */; };
 		1BAD9E97CF4D39CF9DE00102B3B96671 /* ContactGroupEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7266396D1BA7B60590CB76B8AF09831 /* ContactGroupEditViewModel.swift */; };
@@ -820,7 +821,6 @@
 		78F555E5782DFD3E2007362A8B762A23 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		793564A009AD368AD157AE73A329DBEE /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A43CE3B4499275CE7A53C4DAA523D9 /* NoneProtection.swift */; };
 		79467A4316EB790565DFDE8907164B69 /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
-		794D72FE8AE8A24B9AF6C5AB9B984D67 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88818E0E2A90416423F9AE89ED3B0E5F /* MessageViewController.swift */; };
 		79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		79A8AD48860F7F790C22A8CD98D5FDEC /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C325968088FD68E27D9274AE99D4BB /* SwipeAction.swift */; };
 		79F8C671E737174FD00BFC55BDDDC156 /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3E9A265BC9A4B517966D356B1B3711 /* LabelViewModel.swift */; };
@@ -944,7 +944,6 @@
 		8C6D429B0F2BF92F5C082627D93E9878 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D60B6D85977FFFD73600A15D7884B641 /* libc++.tbd */; };
 		8C8A1EB2FD909D63A3A3D06C06CD14C7 /* ContactDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93883D12D7CAC56167961DFB8D30257A /* ContactDetailViewController.swift */; };
 		8C9D38F7ABCDA3254D21A2D759884909 /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */; };
-		8D4666966B96E6D0392428D4E06BE9B6 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88818E0E2A90416423F9AE89ED3B0E5F /* MessageViewController.swift */; };
 		8D69E305D576E1A527FF2F0CE1895111 /* ContactTypeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC27E325DA65B3E21AC66F81C8E1BCF8 /* ContactTypeViewModel.swift */; };
 		8D7185CAA9DB1E42B6B9812ED237C96C /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
 		8D7FC0EBD7BA692C9AA38060945F915B /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */; };
@@ -1027,6 +1026,7 @@
 		9ABA1BF65A572DAF6EE412C83C1B5431 /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B369C13968C162D731DEB212C31537 /* MailboxPasswordViewController.swift */; };
 		9AE49EBCE707E9338E0257BD6EF1800C /* HtmlEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFB9E3A7321E2BFD3B7FCC5AD0C60AE /* HtmlEditor.swift */; };
 		9B043EE61A1436EEDF46BA213CF1B327 /* ContactCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DE7A25E600A79A1B5AF9F044609BC4B /* ContactCollectionView.swift */; };
+		9B24BD38EDE2AF3EFAB0243C6FA76BA9 /* ModernMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0F4913E7F6D0795B9FE97ECAEB7C3DD /* ModernMessageViewController.swift */; };
 		9B2D7D723D0C772C4F0DE13511EE6C68 /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		9B34E04299C693889D43A0863B540F40 /* PhoneVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE604357CBFE4E6691B34F11450F9DB /* PhoneVerifyViewController.swift */; };
 		9B532AC034E7617B641195B6E8B4285B /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
@@ -2296,7 +2296,6 @@
 		87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitManager.swift; sourceTree = "<group>"; };
 		8815DFC41477DB4D20C79538B64D0893 /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 		88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UInt8+Mime.swift"; sourceTree = "<group>"; };
-		88818E0E2A90416423F9AE89ED3B0E5F /* MessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		8890BAAE97DF1812ED9DF0F38543A60C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		897D0BE51EA2CC2FCE34C2A2AD6F9CEC /* ComposeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImpl.swift; sourceTree = "<group>"; };
@@ -2505,6 +2504,7 @@
 		D2C8506C5AB6E854E72FEDCB1E37893E /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingSinglelineCell.swift; sourceTree = "<group>"; };
 		D38CE7A7F7FA2232E80B2E163E45D7BE /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
+		D3CF5C7C637BE9E706A20D676FE39A1B /* OldMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldMessageViewController.swift; sourceTree = "<group>"; };
 		D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keymaker+SharedKeychain.swift"; sourceTree = "<group>"; };
 		D49BCB4318BCFFCE099F79DE542209BE /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		D533254DE35A3B8DF75F0B5919C1EEB8 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
@@ -2550,6 +2550,7 @@
 		DE677B6AB0CC74F46204BFAA6D60C178 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModelImpl.swift; sourceTree = "<group>"; };
 		DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataService.swift; sourceTree = "<group>"; };
+		E0F4913E7F6D0795B9FE97ECAEB7C3DD /* ModernMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModernMessageViewController.swift; sourceTree = "<group>"; };
 		E10F0CE0F7B6837D9EE20FBD2E3E83C7 /* SRPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRPClient.swift; sourceTree = "<group>"; };
 		E128E6B209F18F6AD6E52E140D8684F7 /* AttachmentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCollectionViewCell.swift; sourceTree = "<group>"; };
 		E13E3D765166B667E1D94C71F3646178 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -4007,7 +4008,8 @@
 				6886224A11D93BE6583A5EA1A3D2185A /* LabelsCollectionView.xib */,
 				9DFE6E6DFA3A62BB937E31929EDC1EAE /* MessageDetailBottomView.swift */,
 				C8467A3031510A103A6E92A47B946526 /* MessageDetailBottomView.xib */,
-				88818E0E2A90416423F9AE89ED3B0E5F /* MessageViewController.swift */,
+				E0F4913E7F6D0795B9FE97ECAEB7C3DD /* ModernMessageViewController.swift */,
+				D3CF5C7C637BE9E706A20D676FE39A1B /* OldMessageViewController.swift */,
 				5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */,
 				0BDD87CFD77E615C0DA70A39CBBD09F6 /* RecipientCell.swift */,
 				6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */,
@@ -5831,11 +5833,11 @@
 				9B570984A6796E747D7709ED0B9C4026 /* MessageDataService.swift in Sources */,
 				0118B607CD0C667E180D144315F337D6 /* MessageDetailBottomView.swift in Sources */,
 				5456D28DAA72FA380E90D950AC8DA532 /* MessageQueue.swift in Sources */,
-				794D72FE8AE8A24B9AF6C5AB9B984D67 /* MessageViewController.swift in Sources */,
 				627A83CBDB9D079BF42E46025A1D0C2A /* MessageViewModel.swift in Sources */,
 				A21E61662D737BCA3A7B70318DA884C6 /* MessageViewModelImpl.swift in Sources */,
 				EAFCD103D4EE4E4076C7C1A1DF292E81 /* Migrate.swift in Sources */,
 				CD07E383A2BDFF942800966A006F8BFB /* MimeTypes.swift in Sources */,
+				1B96B3F1791CBA0FC46137136C2BFB32 /* ModernMessageViewController.swift in Sources */,
 				99A4ABB9ED3A00900121AD192A000717 /* MonitorSavesDataService+Extension.swift in Sources */,
 				513E0EAA2D2B0A9AD58188ABD1BACE75 /* MonitorSavesDataService.swift in Sources */,
 				3D3D324A5CCF99885BB0CF20A8316767 /* MultiLabelDisplayView.swift in Sources */,
@@ -6333,11 +6335,11 @@
 				75F656EC41ACEDA0CA1B09C8C96D3FC8 /* MessageDataService.swift in Sources */,
 				5183808D993741212925BB019BFFB586 /* MessageDetailBottomView.swift in Sources */,
 				83EBC3DC6638F49E0EC2354B009D984B /* MessageQueue.swift in Sources */,
-				8D4666966B96E6D0392428D4E06BE9B6 /* MessageViewController.swift in Sources */,
 				651FE062223F123342EDBD958C97B72B /* MessageViewModel.swift in Sources */,
 				738D96C92C24E47565D6E8936572B395 /* MessageViewModelImpl.swift in Sources */,
 				741A15D28D9D078AC7A80A656C16A808 /* Migrate.swift in Sources */,
 				CDD1059413217A7AE3A6975A5873E7FF /* MimeTypes.swift in Sources */,
+				9B24BD38EDE2AF3EFAB0243C6FA76BA9 /* ModernMessageViewController.swift in Sources */,
 				F4EF8D76F44033244254F81380805D58 /* MonitorSavesDataService+Extension.swift in Sources */,
 				750A31A0E6FD65B566C44AC57286CC5E /* MonitorSavesDataService.swift in Sources */,
 				2941F7672C8E4E80396A992847BFEA2B /* MultiLabelDisplayView.swift in Sources */,
