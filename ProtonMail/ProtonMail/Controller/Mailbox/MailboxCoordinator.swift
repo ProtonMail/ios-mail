@@ -94,12 +94,10 @@ class MailboxCoordinator : DefaultCoordinator {
             vmService.messageDetails(fromList: next)
             guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
                 let message = self.viewModel.item(index: indexPathForSelectedRow) else {
-                    //let alert = LocalString._messages_cant_find_message.alertController()
-                    //alert.addOKAction()
-                    //present(alert, animated: true, completion: nil)
                     return false
             }
-            next.message = message
+            next.set(viewModel: .init(message: message))
+            next.set(coordinator: .init(controller: next))
         case .detailsFromNotify:
             guard let next = destination as? MessageViewController else {
                 return false
@@ -109,7 +107,8 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let message = self.viewModel.notificationMessage else {
                 return false
             }
-            next.message = message
+            next.set(viewModel: .init(message: message))
+            next.set(coordinator: .init(controller: next))
             self.viewModel.resetNotificationMessage()
             
         case .composer:
