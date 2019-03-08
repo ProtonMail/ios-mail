@@ -47,7 +47,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     
     fileprivate var viewModel: MessageViewModel!
     private var coordinator: MessageViewCoordinator!
-    private var observation: NSKeyValueObservation!
+    private var observations: [NSKeyValueObservation] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,22 +60,20 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let html = self.viewModel.htmlBody()
-        let contents = WebContents(body: html, remoteContentMode: .lockdown)
-        let childViewModel = MessageBodyViewModel(contents: contents)
-        self.coordinator.updateBody(viewModel: childViewModel)
+        let headerViewModel = MessageHeaderViewModel(headerData: self.viewModel.headerData())
+        self.coordinator.updateHeader(viewModel: headerViewModel)
+        self.viewModel.subscribe(toUpdatesOf: headerViewModel)
         
-        self.viewModel.subscribe(toUpdatesOf: childViewModel)
-    }
-    
-    func bodyChanged() {
-        self.tableView.reloadSections(IndexSet(integer: 0), with: .fade)
+        let contents = WebContents(body: self.viewModel.htmlBody(), remoteContentMode: .lockdown)
+        let bodyViewModel = MessageBodyViewModel(contents: contents)
+        self.coordinator.updateBody(viewModel: bodyViewModel)
+        self.viewModel.subscribe(toUpdatesOf: bodyViewModel)
     }
 }
 
 extension MessageViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -84,21 +82,39 @@ extension MessageViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        self.coordinator.presentBody(onto: cell.contentView)
+        
+        switch indexPath.section {
+        case 0: self.coordinator.presentHeader(onto: cell.contentView)
+        case 1: self.coordinator.presentBody(onto: cell.contentView)
+        default: cell.backgroundColor = .yellow
+        }
+        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.viewModel.heightOfBody
+        switch indexPath.section {
+        case 0: return self.viewModel.heightOfHeader
+        case 1: return self.viewModel.heightOfBody
+        default: break
+        }
+        
+        return UITableView.automaticDimension
     }
 }
 
 extension MessageViewController {
     func set(viewModel: MessageViewModel) {
         self.viewModel = viewModel
-        self.observation = self.viewModel.observe(\.heightOfBody) { [weak self] viewModel, change in
-            self?.tableView.reloadData()
-        }
+        
+        self.observations = [
+            self.viewModel.observe(\.heightOfHeader, changeHandler: { [weak self] viewModel, change in
+                self?.tableView.reloadSections(IndexSet(integer: 0), with: .none)
+            }),
+            self.viewModel.observe(\.heightOfBody, changeHandler: { [weak self] viewModel, change in
+                self?.tableView.reloadSections(IndexSet(integer: 1), with: .fade)
+            })
+        ]
     }
 }
 

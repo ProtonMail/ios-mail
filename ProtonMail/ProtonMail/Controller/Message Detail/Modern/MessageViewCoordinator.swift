@@ -35,33 +35,49 @@ class MessageViewCoordinator: CoordinatorNew {
         self.controller = controller
     }
     
+    private lazy var headerController: MessageHeaderViewController = {
+        let childController = self.controller.storyboard?.make(MessageHeaderViewController.self)
+        childController?.set(viewModel: MessageHeaderViewModel())
+        return childController!
+    }()
+    
     private lazy var bodyController: MessageBodyViewController = {
-        let newBodyController =  self.controller?.storyboard?.make(MessageBodyViewController.self)
-        
+        let childController =  self.controller.storyboard?.make(MessageBodyViewController.self)
         let childViewModel = MessageBodyViewModel(contents: WebContents(body: "Loading...", remoteContentMode: .lockdown))
-        newBodyController?.set(viewModel: childViewModel)
-        newBodyController?.set(coordinator: .init())
+        childController?.set(viewModel: childViewModel)
+        childController?.set(coordinator: .init())
         
-        return newBodyController!
+        return childController!
     }()
     
     func start() {
         // ?
     }
     
-    func updateBody(viewModel: MessageBodyViewModel) {
+    internal func updateBody(viewModel: MessageBodyViewModel) {
         self.bodyController.set(viewModel: viewModel)
     }
-    
-    func presentBody(onto view: UIView) {
-        view.addSubview(self.bodyController.view)
-        view.topAnchor.constraint(equalTo: self.bodyController.view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: self.bodyController.view.bottomAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: self.bodyController.view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: self.bodyController.view.trailingAnchor).isActive = true
+    internal func updateHeader(viewModel: MessageHeaderViewModel) {
+        self.headerController.set(viewModel: viewModel)
     }
     
-    func addChildren(of parent: UIViewController) {
-        parent.addChild(self.bodyController)
+    internal func presentBody(onto view: UIView) {
+        self.present(self.bodyController, onto: view)
+    }
+    internal func presentHeader(onto view: UIView) {
+        self.present(self.headerController, onto: view)
+    }
+    
+    private func present(_ controller: UIViewController, onto view: UIView) {
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
+        view.topAnchor.constraint(equalTo: controller.view.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: controller.view.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: controller.view.trailingAnchor).isActive = true
+    }
+    
+    internal func addChildren(of parent: UIViewController) {
+        [self.headerController, self.bodyController].forEach(parent.addChild)
     }
 }

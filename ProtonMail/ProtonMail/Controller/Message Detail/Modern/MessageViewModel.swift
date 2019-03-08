@@ -30,12 +30,18 @@ import Foundation
 
 class MessageViewModel: NSObject {
     private var message: Message
-    private var observation: NSKeyValueObservation!
+    private var observationHeader: NSKeyValueObservation!
+    private var observationBody: NSKeyValueObservation!
 
+    @objc internal dynamic var heightOfHeader: CGFloat = 0.0
     @objc internal dynamic var heightOfBody: CGFloat = 0.0
     
     init(message: Message) {
         self.message = message
+    }
+    
+    internal func headerData() -> HeaderData {
+        return HeaderData(message: self.message, showShowImages: true) // FIXME
     }
     
     internal func htmlBody() -> String {
@@ -48,8 +54,14 @@ class MessageViewModel: NSObject {
         }
     }
     
+    internal func subscribe(toUpdatesOf childViewModel: MessageHeaderViewModel) {
+        self.observationHeader = childViewModel.observe(\.contentsHeight) { [weak self] viewModel, change in
+            self?.heightOfHeader = viewModel.contentsHeight
+        }
+    }
+    
     internal func subscribe(toUpdatesOf childViewModel: MessageBodyViewModel) {
-        self.observation = childViewModel.observe(\MessageBodyViewModel.contentsHeight) { [weak self] viewModel, change in
+        self.observationBody = childViewModel.observe(\MessageBodyViewModel.contentsHeight) { [weak self] viewModel, change in
             self?.heightOfBody = viewModel.contentsHeight
         }
     }
