@@ -61,8 +61,8 @@ class MessageViewModel: NSObject {
     }
     
     internal func subscribe(toUpdatesOf childViewModel: MessageBodyViewModel) {
-        self.observationBody = childViewModel.observe(\MessageBodyViewModel.contentsHeight) { [weak self] viewModel, change in
-            self?.heightOfBody = viewModel.contentsHeight
+        self.observationBody = childViewModel.observe(\.contentSize) { [weak self] viewModel, change in
+            self?.heightOfBody = viewModel.contentSize.height
         }
     }
 }

@@ -55,6 +55,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
 
         self.coordinator.addChildren(of: self)
         self.tableView.rowHeight = UITableView.automaticDimension
+        self.tableView.estimatedRowHeight = 85
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -84,22 +85,12 @@ extension MessageViewController {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
         
         switch indexPath.section {
-        case 0: self.coordinator.presentHeader(onto: cell.contentView)
-        case 1: self.coordinator.presentBody(onto: cell.contentView)
+        case 0: self.coordinator.embedHeader(onto: cell.contentView)
+        case 1: self.coordinator.embedBody(onto: cell.contentView)
         default: cell.backgroundColor = .yellow
         }
         
         return cell
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.section {
-        case 0: return self.viewModel.heightOfHeader
-        case 1: return self.viewModel.heightOfBody
-        default: break
-        }
-        
-        return UITableView.automaticDimension
     }
 }
 
@@ -109,10 +100,12 @@ extension MessageViewController {
         
         self.observations = [
             self.viewModel.observe(\.heightOfHeader, changeHandler: { [weak self] viewModel, change in
-                self?.tableView.reloadSections(IndexSet(integer: 0), with: .none)
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
             }),
             self.viewModel.observe(\.heightOfBody, changeHandler: { [weak self] viewModel, change in
-                self?.tableView.reloadSections(IndexSet(integer: 1), with: .fade)
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
             })
         ]
     }

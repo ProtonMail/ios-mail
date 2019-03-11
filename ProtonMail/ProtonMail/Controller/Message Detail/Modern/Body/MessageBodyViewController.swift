@@ -32,17 +32,21 @@ class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
     private var viewModel: MessageBodyViewModel!
+    private var height: NSLayoutConstraint!
+    private var lastZoom: CGAffineTransform!
     
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
-            return HTTPRequestSecureLoader()
+            return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
         } else {
             return HTMLStringSecureLoader()
         }
     }()
     
     deinit {
-        self.loader.eject(from: self.webView.configuration)
+        if let webView = self.webView {
+            self.loader.eject(from: webView.configuration)
+        }
     }
     
     override func viewDidLoad() {
@@ -56,36 +60,65 @@ class MessageBodyViewController: UIViewController {
         self.loader.inject(into: config)
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
-            config.ignoresViewportScaleLimits = true
         }
         
         // oh, WKWebView is available in IB since iOS 11 only
         self.webView = WKWebView(frame: .zero, configuration: config)
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
+        self.webView.scrollView.delegate = self
+        self.webView.scrollView.isScrollEnabled = false
+        self.webView.scrollView.bounces = false
         
         self.view.addSubview(self.webView)
-        self.view.translatesAutoresizingMaskIntoConstraints = false
         
         self.webView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
         self.webView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
         self.webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 111.0)
+        self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
+        self.height.isActive = true
+        //
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.loader.load(contents: self.viewModel.contents, in: webView)
     }
+    
+    private func updateHeight(to newHeight: CGFloat) {
+        self.height.constant = newHeight
+        self.viewModel.contentSize = self.webView.scrollView.contentSize
+    }
 }
 
 extension MessageBodyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.viewModel.contentsHeight = self.webView?.scrollView.contentSize.height ?? 0
+        self.updateHeight(to: webView.scrollView.contentSize.height)
     }
     
     func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
         // nothing
+    }
+}
+
+extension MessageBodyViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        self.lastZoom = view?.transform
+    }
+    
+    func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        var newSize = scrollView.contentSize
+        if let previousZoom = self.lastZoom {
+            newSize = newSize.applying(previousZoom.inverted())
+        }
+        self.updateHeight(to: newSize.height)
+    }
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollView.contentOffset = .zero
     }
 }
 

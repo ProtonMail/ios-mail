@@ -31,7 +31,7 @@ import UIKit
 class MessageHeaderViewController: UIViewController {
     private var viewModel: MessageHeaderViewModel!
     @IBOutlet weak var emailHeaderView: EmailHeaderView!
-    
+    private var height: NSLayoutConstraint!
     private var observation: NSKeyValueObservation!
     
     override func viewDidLoad() {
@@ -40,7 +40,15 @@ class MessageHeaderViewController: UIViewController {
         self.emailHeaderView.backgroundColor = .white
         self.emailHeaderView.viewDelegate = self
         
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 112.0)
+        self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
+        self.height.isActive = true
+        
         self.observation = self.emailHeaderView.observe(\.frame) { [weak self] headerView, change in
+            guard self?.viewModel.contentsHeight != headerView.frame.size.height else {
+                return
+            }
+            self?.height.constant = headerView.frame.size.height
             self?.viewModel.contentsHeight = headerView.frame.size.height
         }
     }

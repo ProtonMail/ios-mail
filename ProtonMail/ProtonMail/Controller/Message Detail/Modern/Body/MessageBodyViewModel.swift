@@ -30,7 +30,7 @@ import Foundation
 
 class MessageBodyViewModel: NSObject {
     internal var contents: WebContents
-    @objc internal dynamic var contentsHeight: CGFloat = 0.0
+    @objc internal dynamic var contentSize: CGSize = .zero
     
     init(contents: WebContents) {
         self.contents = contents

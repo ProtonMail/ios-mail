@@ -61,23 +61,39 @@ class MessageViewCoordinator: CoordinatorNew {
         self.headerController.set(viewModel: viewModel)
     }
     
-    internal func presentBody(onto view: UIView) {
-        self.present(self.bodyController, onto: view)
+    internal func embedBody(onto view: UIView) {
+        self.embed(self.bodyController, onto: view)
     }
-    internal func presentHeader(onto view: UIView) {
-        self.present(self.headerController, onto: view)
+    internal func embedHeader(onto view: UIView) {
+        self.embed(self.headerController, onto: view)
     }
     
-    private func present(_ controller: UIViewController, onto view: UIView) {
-        controller.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(controller.view)
-        view.topAnchor.constraint(equalTo: controller.view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: controller.view.bottomAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: controller.view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: controller.view.trailingAnchor).isActive = true
+    private func embed(_ child: UIViewController, onto view: UIView) {
+        assert(self.controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
+        
+        // remove child from old parent
+        if let _ = child.parent {
+            child.willMove(toParent: nil)
+            if child.isViewLoaded {
+                child.view.removeFromSuperview()
+            }
+            child.removeFromParent()
+        }
+        
+        // add child to new parent
+        self.controller.addChild(child)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(child.view) 
+        child.didMove(toParent: self.controller)
+        
+        // autolayout
+        view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
     }
     
     internal func addChildren(of parent: UIViewController) {
-        [self.headerController, self.bodyController].forEach(parent.addChild)
+
     }
 }
