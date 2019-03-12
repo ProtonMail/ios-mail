@@ -29,7 +29,7 @@
 import UIKit
 
 protocol MessageBodyScrollingDelegate: class {
-    func propodate(scrolling: CGPoint)
+    func propogate(panGesture: UIPanGestureRecognizer)
 }
 
 class MessageBodyViewController: UIViewController {
@@ -38,8 +38,8 @@ class MessageBodyViewController: UIViewController {
     private var viewModel: MessageBodyViewModel!
     private var height: NSLayoutConstraint!
     private var lastZoom: CGAffineTransform!
-
-    internal weak var enclosingScroller: MessageBodyScrollingDelegate!
+    private var verticalRecognizer: UIPanGestureRecognizer!
+    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
     
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
@@ -73,11 +73,10 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = true // for correct scroll propogation to container, invisible for user
-        self.webView.scrollView.isDirectionalLockEnabled = false
+        self.webView.scrollView.bounces = true
+        self.webView.scrollView.isDirectionalLockEnabled = true
         self.webView.scrollView.showsVerticalScrollIndicator = false
-        self.webView.scrollView.showsHorizontalScrollIndicator = false
-        
+        self.webView.scrollView.showsHorizontalScrollIndicator = true
         self.view.addSubview(self.webView)
         
         self.webView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
@@ -89,6 +88,15 @@ class MessageBodyViewController: UIViewController {
         self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
         self.height.isActive = true
         //
+        
+        self.verticalRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        self.verticalRecognizer.delegate = self
+        self.verticalRecognizer.maximumNumberOfTouches = 1
+        self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
+    }
+    
+    @objc func pan(sender: UIPanGestureRecognizer) {
+        self.enclosingScroller?.propogate(panGesture: sender)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -99,6 +107,13 @@ class MessageBodyViewController: UIViewController {
     private func updateHeight(to newHeight: CGFloat) {
         self.height.constant = newHeight
         self.viewModel.contentSize = self.webView.scrollView.contentSize
+    }
+}
+
+extension MessageBodyViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // this will prevent our gesture recognizer from blocking webView's built-in gesture resognizers
+        return self.webView.scrollView.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
     }
 }
 
@@ -124,10 +139,13 @@ extension MessageBodyViewController: UIScrollViewDelegate {
         }
         self.updateHeight(to: newSize.height)
     }
-
+    
+    func scrollViewDidZoom(_ scrollView: UIScrollView) {
+        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.enclosingScroller.propodate(scrolling: scrollView.contentOffset)
-        scrollView.setContentOffset(.init(x: scrollView.contentOffset.x, y: 0), animated: false)
+        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
     }
 }
 

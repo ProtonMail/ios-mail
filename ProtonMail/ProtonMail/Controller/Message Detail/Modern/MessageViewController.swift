@@ -48,6 +48,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     fileprivate var viewModel: MessageViewModel!
     private var coordinator: MessageViewCoordinator!
     private var observations: [NSKeyValueObservation] = []
+    private var gestureInitialOffset: CGPoint = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,15 +97,29 @@ extension MessageViewController {
 }
 
 extension MessageViewController: MessageBodyScrollingDelegate {
-    func propodate(scrolling offset: CGPoint) {
-         let yOffset = self.tableView.contentOffset.y + offset.y
+    func propogate(panGesture gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            self.gestureInitialOffset = .zero
+            
+        default:
+            let translation = gesture.translation(in: self.tableView)
+            self.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y))
+            self.gestureInitialOffset = translation
+        }
+    }
+    
+    private func propogate(scrolling delta: CGPoint) {
+         let yOffset = self.tableView.contentOffset.y + delta.y
          
-         if yOffset < 0 {
-             self.tableView.setContentOffset(self.tableView.contentOffset, animated: false)
-         } else if self.tableView.contentSize.height < yOffset + self.tableView.frame.size.height {
-             self.tableView.setContentOffset(self.tableView.contentOffset, animated: false)
+         if yOffset < 0 { // not too high
+             self.tableView.setContentOffset(.zero, animated: false)
+         } else if case let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height,
+            yOffset > maxOffset  // not too low
+         {
+            self.tableView.setContentOffset(.init(x: 0, y: maxOffset), animated: false)
          } else {
-             self.tableView.setContentOffset(.init(x: 0, y: yOffset), animated: false)
+             self.tableView.contentOffset = .init(x: 0, y: yOffset)
          }
     }
 }
