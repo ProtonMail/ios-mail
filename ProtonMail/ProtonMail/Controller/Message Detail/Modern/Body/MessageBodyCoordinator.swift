@@ -29,6 +29,12 @@
 import Foundation
 
 class MessageBodyCoordinator: CoordinatorNew {
+    init(controller: MessageBodyViewController,
+         enclosingScroller: MessageBodyScrollingDelegate)
+    {
+        controller.enclosingScroller = enclosingScroller
+    }
+    
     func start() {
         // ?
     }

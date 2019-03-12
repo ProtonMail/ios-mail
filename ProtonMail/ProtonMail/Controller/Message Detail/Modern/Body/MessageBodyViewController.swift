@@ -28,12 +28,18 @@
 
 import UIKit
 
+protocol MessageBodyScrollingDelegate: class {
+    func propodate(scrolling: CGPoint)
+}
+
 class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
     private var viewModel: MessageBodyViewModel!
     private var height: NSLayoutConstraint!
     private var lastZoom: CGAffineTransform!
+
+    internal weak var enclosingScroller: MessageBodyScrollingDelegate!
     
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
@@ -67,8 +73,10 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.isScrollEnabled = false
-        self.webView.scrollView.bounces = false
+        self.webView.scrollView.bounces = true // for correct scroll propogation to container, invisible for user
+        self.webView.scrollView.isDirectionalLockEnabled = false
+        self.webView.scrollView.showsVerticalScrollIndicator = false
+        self.webView.scrollView.showsHorizontalScrollIndicator = false
         
         self.view.addSubview(self.webView)
         
@@ -116,9 +124,10 @@ extension MessageBodyViewController: UIScrollViewDelegate {
         }
         self.updateHeight(to: newSize.height)
     }
-    
-    func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .zero
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.enclosingScroller.propodate(scrolling: scrollView.contentOffset)
+        scrollView.setContentOffset(.init(x: scrollView.contentOffset.x, y: 0), animated: false)
     }
 }
 

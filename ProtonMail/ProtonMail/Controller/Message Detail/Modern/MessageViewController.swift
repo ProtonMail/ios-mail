@@ -56,6 +56,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         self.coordinator.addChildren(of: self)
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 85
+        self.tableView.bounces = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -91,6 +92,20 @@ extension MessageViewController {
         }
         
         return cell
+    }
+}
+
+extension MessageViewController: MessageBodyScrollingDelegate {
+    func propodate(scrolling offset: CGPoint) {
+         let yOffset = self.tableView.contentOffset.y + offset.y
+         
+         if yOffset < 0 {
+             self.tableView.setContentOffset(self.tableView.contentOffset, animated: false)
+         } else if self.tableView.contentSize.height < yOffset + self.tableView.frame.size.height {
+             self.tableView.setContentOffset(self.tableView.contentOffset, animated: false)
+         } else {
+             self.tableView.setContentOffset(.init(x: 0, y: yOffset), animated: false)
+         }
     }
 }
 

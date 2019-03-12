@@ -36,18 +36,21 @@ class MessageViewCoordinator: CoordinatorNew {
     }
     
     private lazy var headerController: MessageHeaderViewController = {
-        let childController = self.controller.storyboard?.make(MessageHeaderViewController.self)
-        childController?.set(viewModel: MessageHeaderViewModel())
-        return childController!
+        guard let childController = self.controller.storyboard?.make(MessageHeaderViewController.self) else {
+            fatalError("No storyboard for creating MessageBodyViewController")
+        }
+        childController.set(viewModel: MessageHeaderViewModel())
+        return childController
     }()
     
     private lazy var bodyController: MessageBodyViewController = {
-        let childController =  self.controller.storyboard?.make(MessageBodyViewController.self)
+        guard let childController =  self.controller.storyboard?.make(MessageBodyViewController.self) else {
+            fatalError("No storyboard for creating MessageBodyViewController")
+        }
         let childViewModel = MessageBodyViewModel(contents: WebContents(body: "Loading...", remoteContentMode: .lockdown))
-        childController?.set(viewModel: childViewModel)
-        childController?.set(coordinator: .init())
-        
-        return childController!
+        childController.set(viewModel: childViewModel)
+        childController.set(coordinator: .init(controller: childController, enclosingScroller: self.controller) )
+        return childController
     }()
     
     func start() {
