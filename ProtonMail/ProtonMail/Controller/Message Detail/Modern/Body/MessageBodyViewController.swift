@@ -29,17 +29,26 @@
 import UIKit
 
 protocol MessageBodyScrollingDelegate: class {
-    func propogate(panGesture: UIPanGestureRecognizer)
+    func propogate(scrolling: CGPoint)
 }
 
 class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
     private var viewModel: MessageBodyViewModel!
+    
     private var height: NSLayoutConstraint!
-    private var lastZoom: CGAffineTransform!
-    private var verticalRecognizer: UIPanGestureRecognizer!
+    private var lastZoom: CGAffineTransform = .identity
+    
     internal weak var enclosingScroller: MessageBodyScrollingDelegate?
+    private var verticalRecognizer: UIPanGestureRecognizer!
+    private var gestureInitialOffset: CGPoint = .zero
+    
+    private lazy var animator = UIDynamicAnimator(referenceView: self.webView.scrollView)
+    private var pushBehavior: UIPushBehavior!
+    private var frictionBehaviour: UIDynamicItemBehavior!
+    private var scrollDecelerationOverlay: UIView!
+    private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
     
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
@@ -74,7 +83,7 @@ class MessageBodyViewController: UIViewController {
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
         self.webView.scrollView.bounces = true
-        self.webView.scrollView.isDirectionalLockEnabled = true
+        self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
         self.webView.scrollView.showsHorizontalScrollIndicator = true
         self.view.addSubview(self.webView)
@@ -95,8 +104,40 @@ class MessageBodyViewController: UIViewController {
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
     }
     
-    @objc func pan(sender: UIPanGestureRecognizer) {
-        self.enclosingScroller?.propogate(panGesture: sender)
+    @objc func pan(sender gesture: UIPanGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            self.animator.removeAllBehaviors()
+            self.gestureInitialOffset = .zero
+            self.scrollDecelerationOverlayObservation = nil
+            self.scrollDecelerationOverlay?.removeFromSuperview()
+            
+        case .ended:
+            let magic: CGFloat = 100 // this constant makes inertia feel right, something about the mass of UIKit objects
+            self.scrollDecelerationOverlay = ViewBlowingAfterTouch(frame: .init(origin: .zero, size: self.webView.scrollView.contentSize))
+            self.webView.scrollView.addSubview(self.scrollDecelerationOverlay)
+
+            self.pushBehavior = UIPushBehavior(items: [self.scrollDecelerationOverlay], mode: .instantaneous)
+            self.pushBehavior.pushDirection = CGVector(dx: 0, dy: -1)
+            self.pushBehavior.magnitude = gesture.velocity(in: self.webView).y / magic
+            self.animator.addBehavior(self.pushBehavior)
+            
+            self.frictionBehaviour = UIDynamicItemBehavior(items: [self.scrollDecelerationOverlay])
+            self.frictionBehaviour.resistance = self.webView.scrollView.decelerationRate.rawValue
+            self.frictionBehaviour.density = (magic * magic) / (self.scrollDecelerationOverlay.frame.size.height * self.scrollDecelerationOverlay.frame.size.width)
+            self.animator.addBehavior(self.frictionBehaviour)
+            
+            self.scrollDecelerationOverlayObservation = self.scrollDecelerationOverlay.observe(\UIView.center, options: [.old, .new]) { [weak self] pixel, change in
+                guard let _ = pixel.superview else { return }
+                guard let new = change.newValue, let old = change.oldValue else { return }
+                self?.enclosingScroller?.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y))
+            }
+            
+        default:
+            let translation = gesture.translation(in: self.webView)
+            self.enclosingScroller?.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y))
+            self.gestureInitialOffset = translation
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -129,14 +170,12 @@ extension MessageBodyViewController: WKNavigationDelegate {
 
 extension MessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
-        self.lastZoom = view?.transform
+        self.lastZoom = view?.transform ?? .identity
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         var newSize = scrollView.contentSize
-        if let previousZoom = self.lastZoom {
-            newSize = newSize.applying(previousZoom.inverted())
-        }
+        newSize = newSize.applying(self.lastZoom.inverted())
         self.updateHeight(to: newSize.height)
     }
     
@@ -162,5 +201,16 @@ extension MessageBodyViewController: CoordinatedNew {
     
     func getCoordinator() -> CoordinatorNew? {
         return self.coordinator
+    }
+}
+
+/// This UIView removes itself from superview after first touch
+fileprivate class ViewBlowingAfterTouch: UIView {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let target = super.hitTest(point, with: event)
+        if target == self {
+            self.removeFromSuperview()
+        }
+        return target
     }
 }

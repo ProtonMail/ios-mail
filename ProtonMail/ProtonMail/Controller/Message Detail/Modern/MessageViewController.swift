@@ -48,7 +48,6 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     fileprivate var viewModel: MessageViewModel!
     private var coordinator: MessageViewCoordinator!
     private var observations: [NSKeyValueObservation] = []
-    private var gestureInitialOffset: CGPoint = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -97,19 +96,7 @@ extension MessageViewController {
 }
 
 extension MessageViewController: MessageBodyScrollingDelegate {
-    func propogate(panGesture gesture: UIPanGestureRecognizer) {
-        switch gesture.state {
-        case .began:
-            self.gestureInitialOffset = .zero
-            
-        default:
-            let translation = gesture.translation(in: self.tableView)
-            self.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y))
-            self.gestureInitialOffset = translation
-        }
-    }
-    
-    private func propogate(scrolling delta: CGPoint) {
+    func propogate(scrolling delta: CGPoint) {
          let yOffset = self.tableView.contentOffset.y + delta.y
          
          if yOffset < 0 { // not too high
