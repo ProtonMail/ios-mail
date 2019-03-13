@@ -235,25 +235,15 @@ class UserDataService : Service {
         return nil
     }
     
-    
-    var firstUserPrivateKey: String? {
-        if let keys = userInfo?.userKeys, keys.count > 0 {
-            for k in keys {
-                return k.private_key
-            }
-        }
-        return nil
-    }
-    
     func getAddressPrivKey(address_id : String) -> String {
-        let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
+        let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
         return addr?.keys.first?.private_key ?? ""
     }
     
-    var addressPrivKeys : Data {
+    var addressPrivateKeys : Data {
         var out = Data()
         var error : NSError?
-        for addr in userAddresses {
+        for addr in addresses {
             for key in addr.keys {
                 if let privK = ArmorUnarmor(key.private_key, &error) {
                     out.append(privK)
@@ -263,11 +253,11 @@ class UserDataService : Service {
         return out
     }
     
-    var userPrivKeys : Data {
+    var userPrivateKeys : Data {
         var out = Data()
         var error : NSError?
-        for addr in userAddresses {
-            for key in addr.keys {
+        if let keys = userInfo?.userKeys {
+            for key in keys {
                 if let privK = ArmorUnarmor(key.private_key, &error) {
                     out.append(privK)
                 }
@@ -279,14 +269,14 @@ class UserDataService : Service {
     // MARK: - Public variables
     
     var defaultEmail : String {
-        if let addr = userAddresses.defaultAddress() {
+        if let addr = addresses.defaultAddress() {
             return addr.email
         }
         return ""
     }
     
     var defaultDisplayName : String {
-        if let addr = userAddresses.defaultAddress() {
+        if let addr = addresses.defaultAddress() {
             return addr.display_name
         }
         return displayName
@@ -300,10 +290,10 @@ class UserDataService : Service {
         return userInfo?.swipeRightAction ?? .trash
     }
     
-    var userAddresses: [Address] { //never be null
+    var addresses: [Address] { //never be null
         return userInfo?.userAddresses ?? [Address]()
     }
-    
+
     var displayName: String {
         return (userInfo?.displayName ?? "").decodeHtml()
     }

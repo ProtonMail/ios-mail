@@ -540,7 +540,7 @@ class MessageDataService : Service {
         // they are transient and will not be persisted in the db, only in managed object context
         message.cachedPassphrase = sharedUserDataService.mailboxPassword
         message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
-        message.cachedPrivateKeys = sharedUserDataService.addressPrivKeys
+        message.cachedPrivateKeys = sharedUserDataService.addressPrivateKeys
         message.cachedAddress = message.defaultAddress // computed property depending on current user settings
     }
     
@@ -1381,7 +1381,7 @@ class MessageDataService : Service {
             //start track status here :
             var status = SendStatus.justStart
             
-            let privKeys = message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys
+            let privKeys = message.cachedPrivateKeys ?? sharedUserDataService.addressPrivateKeys
             guard let authCredential = message.cachedAuthCredential ?? AuthCredential.fetchFromKeychain(),
                 let passphrase = message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
                 let addr = (message.cachedAddress ?? message.defaultAddress)?.keys.first else

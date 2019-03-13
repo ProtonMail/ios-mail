@@ -329,7 +329,7 @@ final class SignupViewModelImpl : SignupViewModel {
         self.displayName = displayName
         
         if !self.displayName.isEmpty {
-            if let addr = sharedUserDataService.userAddresses.defaultAddress() {
+            if let addr = sharedUserDataService.addresses.defaultAddress() {
                 sharedUserDataService.updateAddress(addr.address_id, displayName: displayName, signature: addr.signature, completion: { (_, _, error) in
                     
                 })

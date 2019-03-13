@@ -870,7 +870,9 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         
         do {
             tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys),
+            guard let decryptData = try data.decryptAttachment(keyPackage,
+                                                               passphrase: sharedUserDataService.mailboxPassword!,
+                                                               privKeys: sharedUserDataService.addressPrivateKeys),
                 let _ = try? decryptData.write(to: tempFileUri!, options: [.atomic]) else
             {
                 throw NSError()

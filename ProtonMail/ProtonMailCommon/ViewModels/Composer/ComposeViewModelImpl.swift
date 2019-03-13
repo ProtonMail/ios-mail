@@ -196,7 +196,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys) else {
+                        guard let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivateKeys) else {
                             continue
                         }
                         guard let newKeyPack = try sessionPack.session().getKeyPackage(strKey: key.publicKey, algo: sessionPack.algo())?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
@@ -227,7 +227,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getAddresses() -> [Address] {
-        return sharedUserDataService.userAddresses
+        return sharedUserDataService.addresses
     }
     
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
@@ -287,7 +287,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     
     override func getDefaultSendAddress() -> Address? {
         if self.message == nil {
-            if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {
+            if let addr = sharedUserDataService.addresses.defaultSendAddress() {
                 return addr
             }
         }
@@ -299,7 +299,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-        if let addr = sharedUserDataService.userAddresses.indexOfAddress(addr_id) {
+        if let addr = sharedUserDataService.addresses.indexOfAddress(addr_id) {
             return addr.signature
         }
         return nil
@@ -406,7 +406,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     self.toContacts(msg.ccList).forEach { self.ccSelectedContacts.append($0) }
                     self.toContacts(msg.bccList).forEach { self.bccSelectedContacts.append($0) }
                 } else {
-                    let userAddress = sharedUserDataService.userAddresses
+                    let userAddress = sharedUserDataService.addresses
                     var senders = [ContactPickerModelProtocol]()
                     let replytos = self.toContacts(msg.replyTos ?? "")
                     if replytos.count > 0 {

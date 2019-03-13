@@ -114,8 +114,6 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .EncryptedOnly: break
                 case .SignedOnly:
-                    
-                    PMLog.D(c.data)
                     origvCard2 = PMNIEzvcard.parseFirst(c.data)
                     if let vcard = origvCard2 {
                         let emails = vcard.getEmails()
@@ -153,8 +151,10 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 case .SignAndEncrypt:
                     var pt_contact : String?
                     do {
-                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivKeys, passphrase: sharedUserDataService.mailboxPassword!)
+                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,
+                                                               passphrase: sharedUserDataService.mailboxPassword!)
                     } catch {
+                        //TODO::show error
                     }
                     
                     guard let pt_contact_vcard = pt_contact else {
