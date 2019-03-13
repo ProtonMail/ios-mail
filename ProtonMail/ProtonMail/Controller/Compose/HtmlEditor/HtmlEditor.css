@@ -134,6 +134,16 @@ pre {
     word-wrap: break-word;
 }
 
+* {
+    caret-color: auto !important;
+    
+    /* debug only */
+/*    margin: 0 !important;*/
+/*    position: static !important;*/
+/*    float: none !important;*/
+    /* end debug */
+}
+
 q {
     quotes: none;
 }
