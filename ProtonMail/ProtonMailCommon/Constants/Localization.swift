@@ -1407,8 +1407,8 @@ class LocalizedString {
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
 
-    // "Sending Message"
-    lazy var _closing_draft = NSLocalizedString("Closing", comment: "Alert title")
+    // "Closing"
+    lazy var _closing_draft = NSLocalizedString("Closing", comment: "the message will show when closing a draft from the share extension")
 
     // "This can take a while, please do not dismiss the app"
     lazy var _please_wait_in_foreground = NSLocalizedString("This can take a while. Please do not dismiss the app.", comment: "Alert message")
@@ -1627,9 +1627,9 @@ class LocalizedString {
 
     lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
     
-    lazy var _migrate_beginning = NSLocalizedString("It is not possible to switch to ", comment: "")
+    lazy var _migrate_beginning = NSLocalizedString("It is not possible to switch to ", comment: "It is not possible to switch to `plan` within our iOS application. first part")
 
-    lazy var _migrate_end = NSLocalizedString(" within our iOS application.", comment: "")
+    lazy var _migrate_end = NSLocalizedString(" within our iOS application.", comment: "It is not possible to switch to `plan` within our iOS application. second part")
 
     lazy var _upgrade_to_paid = NSLocalizedString("Upgrade to a paid plan to benefit from more features", comment: "Service plan description footer")
 

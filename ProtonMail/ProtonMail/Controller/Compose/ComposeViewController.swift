@@ -954,6 +954,7 @@ extension ComposeViewController: UIPickerViewDelegate {
 extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.htmlEditor.update(footer: 0.0)
+        self.htmlEditor.update(kbHeight: 0.0)
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -962,5 +963,7 @@ extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
         if !self.htmlEditor.responderCheck() && !showed {
             self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
         }
+        
+        self.htmlEditor.update(kbHeight: keyboardInfo.beginFrame.height)
     }
 }

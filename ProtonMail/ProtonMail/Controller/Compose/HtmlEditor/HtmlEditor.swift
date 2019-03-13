@@ -99,12 +99,16 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         super.init(coder: aDecoder)!
         self.setup()
     }
-    
     func update(footer offset : CGFloat) {
         self.bottomOffsetConstraint?.constant = -offset
         UIView.animate(withDuration: 0.25, animations: { () -> Void in
             self.layoutIfNeeded()
         })
+    }
+    
+    var keyboardHeight : CGFloat = 0.0
+    func update(kbHeight height: CGFloat) {
+        self.keyboardHeight = height
     }
     
     private func setup() {
@@ -432,13 +436,20 @@ extension HtmlEditor: WKNavigationDelegate {
     /// Called when actions are received from JavaScript
     /// - parameter method: String with the name of the method and optional parameters that were passed in
     private func performCommand(_ method: String) {
-        
         if method.hasPrefix("ready") {
             // If loading for the first time, we have to set the content HTML to be displayed
             if !isEditorLoaded {
                 isEditorLoaded = true
             }
+        } else if method.hasPrefix("cursor/") {
+            let value = method.preg_replace_none_regex("cursor/", replaceto: "")
+            if let coursorPosition : CGFloat =  NumberFormatter().number(from: value) as? CGFloat {
+                self.scrollCaretToVisible(cursorY: coursorPosition)
+            }
         }
+        
+        
+        
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -448,15 +459,34 @@ extension HtmlEditor: WKNavigationDelegate {
         }
     }
     
-    
-    
     func webView(_ webView: WKWebView,
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         
         if let url = navigationAction.request.url {
-            PMLog.D(url.absoluteString)
+            let scheme = "delegate"
+            if url.scheme == scheme {
+                PMLog.D(url.absoluteString)
+                let command = url.absoluteString.preg_replace_none_regex(scheme + "://", replaceto: "")
+                self.performCommand(command)
+            }
         }
         decisionHandler(.allow)
+    }
+    
+    func scrollCaretToVisible(cursorY: CGFloat) {
+        /// keyboard size
+        let kbHeight = self.keyboardHeight
+        /// current offset
+        let offset = webView.scrollView.contentOffset
+        let contentSize = webView.frame.size
+        let currentCheck = contentSize.height - (kbHeight + 42) + offset.y
+        if currentCheck < cursorY {
+            let moveOffset = cursorY - currentCheck
+            let newOffset = moveOffset + offset.y + 10
+            if newOffset > offset.y {
+                webView.scrollView.setContentOffset(CGPoint(x: offset.x, y: newOffset ), animated: true)
+            }
+        }
     }
 }

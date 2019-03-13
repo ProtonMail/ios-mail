@@ -240,3 +240,10 @@ legend {
 .pm_font_larger {
     font-size: 1.8em;
 }
+
+/*div.editor {*/
+/*    width: 200px;*/
+/*    height: 100px;*/
+/*    -webkit-overflow-scrolling: touch;*/
+/*    overflow:auto;*/
+/*}*/
