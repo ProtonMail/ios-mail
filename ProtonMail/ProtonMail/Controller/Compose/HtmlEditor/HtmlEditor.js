@@ -56,10 +56,45 @@ html_editor.setPlaceholderText = function(text) {
 };
 
 ///
-//html_editor.editor.addEventListener("input", function() {
-//  html_editor.delegate("input");
-//});
+html_editor.editor.addEventListener("input", function() {
+    html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+});
 
+html_editor.getCaretYPosition = function() {
+    var sel = window.getSelection();
+    // Next line is comented to prevent deselecting selection. It looks like work but if there are any issues will appear then uconmment it as well as code above.
+    //sel.collapseToStart();
+    var range = sel.getRangeAt(0);
+    var span = document.createElement('span');// something happening here preventing selection of elements
+    range.collapse(false);
+    range.insertNode(span);
+    var topPosition = span.offsetTop;
+    span.parentNode.removeChild(span);
+    return topPosition;
+}
+
+//html_editor.getCaretYPosition = function() {
+//    var y = 0;
+//    var sel = window.getSelection();
+//    if (sel.rangeCount) {
+//        var range = sel.getRangeAt(0);
+//        var needsWorkAround = (range.startOffset == 0)
+//        /* Removing fixes bug when node name other than 'div' */
+//        // && range.startContainer.nodeName.toLowerCase() == 'div');
+//        if (needsWorkAround) {
+//            y = range.startContainer.offsetTop - window.pageYOffset;
+//        } else {
+//            if (range.getClientRects) {
+//                var rects=range.getClientRects();
+//                if (rects.length > 0) {
+//                    y = rects[0].top;
+//                }
+//            }
+//        }
+//    }
+//
+//    return y;
+//};
 
 //html_editor.editor.addEventListener("focus", function() {
 //  html_editor.delegate("focus")

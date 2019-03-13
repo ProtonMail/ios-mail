@@ -885,7 +885,12 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
     }
 
     func attachments(_ attViewController: AttachmentsTableViewController, didPickedAttachment attachment: Attachment) {
-        self.collectDraftData().done {
+        
+        if #available(iOS 11.0, *) {
+            self.collectDraftData().done { // this will trigger WebCore to use more memrory iphone 5 devices could case a crashing
+                self.viewModel.uploadAtt(attachment)
+            }
+        } else {
             self.viewModel.uploadAtt(attachment)
         }
     }
@@ -949,6 +954,7 @@ extension ComposeViewController: UIPickerViewDelegate {
 extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         self.htmlEditor.update(footer: 0.0)
+        self.htmlEditor.update(kbHeight: 0.0)
     }
     
     func keyboardWillShowNotification(_ notification: Notification) {
@@ -957,5 +963,7 @@ extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
         if !self.htmlEditor.responderCheck() && !showed {
             self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
         }
+        
+        self.htmlEditor.update(kbHeight: keyboardInfo.beginFrame.height)
     }
 }

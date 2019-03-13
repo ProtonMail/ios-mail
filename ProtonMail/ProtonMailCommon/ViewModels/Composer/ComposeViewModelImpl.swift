@@ -580,10 +580,10 @@ final class ComposeViewModelImpl : ComposeViewModel {
         var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
         signature = signature.ln2br()
         
-        var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\">\(sharedUserDataService.mobileSignature)</div>" : ""
+        var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(sharedUserDataService.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\">\(signature)</div>" : ""
+        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
