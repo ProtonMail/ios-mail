@@ -959,11 +959,17 @@ extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
+ 
         let showed = abs(keyboardInfo.beginFrame.origin.y - keyboardInfo.endFrame.origin.y) < 50
         if !self.htmlEditor.responderCheck() && !showed {
             self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
         }
-        
         self.htmlEditor.update(kbHeight: keyboardInfo.beginFrame.height)
+        
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.htmlEditor.update(kbHeight: keyboardHeight)
+        }
     }
 }
