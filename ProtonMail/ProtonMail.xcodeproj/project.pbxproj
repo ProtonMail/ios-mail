@@ -507,6 +507,7 @@
 		4CC3A16EB76337CD07DCA10369A2C22F /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1683E88F2B7F1FCE35BA6AD99BCA5B9 /* SettingsCell.swift */; };
 		4D290AF9F37B6A66F21F729008E04AC9 /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D92DEE740435769B951F10DDEACF596 /* Email.swift */; };
 		4D52393BF773190CA0DA74283E3AB0DD /* ContactEditInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB5EE475A5F2B95E51D3A3B59EA40B50 /* ContactEditInformationCell.swift */; };
+		4D650420945496DEAEE84494D362AA98 /* ProtonMailUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6C56E73FA141EDFC9E0FDA3D5361ADC /* ProtonMailUITests.swift */; };
 		4D79CF0BE231295089BE727CA0384008 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */; };
 		4D973CD5E70D3EE7EC387F5B4E0BA09A /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304EB5D67CD0DF808BAD447D812C0CCF /* ShowImageView.xib */; };
 		4DBFFF58172DE9015F7AF24CE60E1B6D /* ContactFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */; };
@@ -1770,6 +1771,13 @@
 			remoteGlobalIDString = E58F8EBDBFE12A31920BD0A7F6639E46;
 			remoteInfo = Keymaker;
 		};
+		01F17B5C230F4AA95173E78FCD56391A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
+			remoteInfo = ProtonMail;
+		};
 		2997F84FD021251F483D45DDA67A148E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -2385,6 +2393,7 @@
 		A5E67E8A757B249CB534BA1EA1581461 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/PasswordExtension.strings"; sourceTree = "<group>"; };
 		A68BDAFD9795EAA46242A94EAD3D3453 /* PushDataTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushDataTests.swift; sourceTree = "<group>"; };
 		A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = HtmlEditor.js; sourceTree = "<group>"; };
+		A6C56E73FA141EDFC9E0FDA3D5361ADC /* ProtonMailUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtonMailUITests.swift; sourceTree = "<group>"; };
 		A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiLabelDisplayView.xib; sourceTree = "<group>"; };
 		A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PushService.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
@@ -2517,6 +2526,7 @@
 		D6EFC10F4C4155F6A047011CE0654648 /* ExternalURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalURL.swift; sourceTree = "<group>"; };
 		D70AACBA47699589938F99674AD992CA /* Blocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Blocks.swift; sourceTree = "<group>"; };
 		D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_country_code.geojson; sourceTree = "<group>"; };
+		D786690A2F8C5FDB6CE85ED1253D4DF5 /* ProtonMailUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7E2026FD8272DE625504A4CB2374E85 /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 		D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
 		D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
@@ -2547,6 +2557,7 @@
 		DE677B6AB0CC74F46204BFAA6D60C178 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailsViewModelImpl.swift; sourceTree = "<group>"; };
 		DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDataService.swift; sourceTree = "<group>"; };
+		DFCC5CF86AF472BE72A09BF44887F52C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E10F0CE0F7B6837D9EE20FBD2E3E83C7 /* SRPClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SRPClient.swift; sourceTree = "<group>"; };
 		E128E6B209F18F6AD6E52E140D8684F7 /* AttachmentCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttachmentCollectionViewCell.swift; sourceTree = "<group>"; };
 		E13E3D765166B667E1D94C71F3646178 /* LoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoadingView.xib; sourceTree = "<group>"; };
@@ -2658,6 +2669,13 @@
 				5F1E7B8CA83F9786B328F35A27487117 /* Crypto.framework in Frameworks */,
 				68CEFFF725D0A08E967CAABA00785BE5 /* Pods_Keymaker.framework in Frameworks */,
 				ADB51366D32EC621F4D6E0C6691A961F /* libc++.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2B857D75F91317177E8959F47BA20486 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2983,6 +3001,15 @@
 				AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */,
 			);
 			path = Mailbox;
+			sourceTree = "<group>";
+		};
+		19521F1E88DCDC5718867D466A5DDC02 /* ProtonMailUITests */ = {
+			isa = PBXGroup;
+			children = (
+				DFCC5CF86AF472BE72A09BF44887F52C /* Info.plist */,
+				A6C56E73FA141EDFC9E0FDA3D5361ADC /* ProtonMailUITests.swift */,
+			);
+			path = ProtonMailUITests;
 			sourceTree = "<group>";
 		};
 		25549FE2ECEA18AC99EEF32E23FBFF4A /* Localization */ = {
@@ -3435,6 +3462,7 @@
 				C96DD90004990C263CBC58A7E2C53D05 /* KeymakerTests.xctest */,
 				593578D1051BC6994CE080902FA1F268 /* ProtonMail.app */,
 				07A8B3BD82B99F6C02CFD8325039C53D /* ProtonMailTests.xctest */,
+				D786690A2F8C5FDB6CE85ED1253D4DF5 /* ProtonMailUITests.xctest */,
 				4F9E450A8F3FF5C55FA9B56A8040222F /* Push.appex */,
 				99498D0AAFDBA306C8569EAC3640B7A8 /* PushDev.appex */,
 				00918B56B68A9926D7490AA22F6B62B4 /* PushService.appex */,
@@ -3816,6 +3844,7 @@
 				CBF727CD9428096A4499916FC3C843DE /* ProtonMail */,
 				440851B2CA86F7B9878E9510D3C33933 /* ProtonMailCommon */,
 				EF2811F183DBF5359A54D63483C8C456 /* ProtonMailTests */,
+				19521F1E88DCDC5718867D466A5DDC02 /* ProtonMailUITests */,
 				BB82EEE28824EF5BD7903942CD1D81AB /* Push */,
 				395DB8FC12730E6D4CE4A2F11AEF5DC0 /* PushService */,
 				8AAC3F978D5BBEB889BA0E63A8159C5F /* Share */,
@@ -4270,6 +4299,24 @@
 			productReference = 1B61D2D5C0B4BD97409E6104098DB003 /* Siri.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		6C2152B9B3009541EC36C038232F5EE3 /* ProtonMailUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5AFC7C742BF32600543F8D07CC1D272B /* Build configuration list for PBXNativeTarget "ProtonMailUITests" */;
+			buildPhases = (
+				FC0C0B7EA8A8FBB727A5ADE1E1495779 /* Sources */,
+				2B857D75F91317177E8959F47BA20486 /* Frameworks */,
+				62D3021FF0F850AB3DDA2E25EAFA4C1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6AEB9D69CB35998B425D0499F46CDAB2 /* PBXTargetDependency */,
+			);
+			name = ProtonMailUITests;
+			productName = ProtonMailUITests;
+			productReference = D786690A2F8C5FDB6CE85ED1253D4DF5 /* ProtonMailUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		3DD8FCED3FB5276FDB35E89899093113 /* PushServiceDev */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B85F53D2383B81C0673FCA36AD601CEB /* Build configuration list for PBXNativeTarget "PushServiceDev" */;
@@ -4517,7 +4564,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftMigration = 0720;
-				LastSwiftUpdateCheck = 1000;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = ProtonMail;
 				TargetAttributes = {
@@ -4530,6 +4577,11 @@
 								enabled = 1;
 							};
 						};
+					};
+					6C2152B9B3009541EC36C038232F5EE3 = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
 					3DD8FCED3FB5276FDB35E89899093113 = {
 						CreatedOnToolsVersion = 9.1;
@@ -4719,6 +4771,7 @@
 				5CED50B34D85160179AD11B4A9AC3ADF /* SiriDev */,
 				E58F8EBDBFE12A31920BD0A7F6639E46 /* Keymaker */,
 				4C4094ADA302FE10FF33218039B6C756 /* KeymakerTests */,
+				6C2152B9B3009541EC36C038232F5EE3 /* ProtonMailUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -4730,6 +4783,13 @@
 			files = (
 				0EF91AB028CCDAB64505615526B819F3 /* InfoPlist.strings in Resources */,
 				D8D8C5DD6C6B2D48CEBA1784A45E6094 /* Localizable.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		62D3021FF0F850AB3DDA2E25EAFA4C1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5457,6 +5517,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		FC0C0B7EA8A8FBB727A5ADE1E1495779 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4D650420945496DEAEE84494D362AA98 /* ProtonMailUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2C71A20025CEF4807E08BB087211776D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -7073,6 +7141,11 @@
 			target = 3DD8FCED3FB5276FDB35E89899093113 /* PushServiceDev */;
 			targetProxy = 2997F84FD021251F483D45DDA67A148E /* PBXContainerItemProxy */;
 		};
+		6AEB9D69CB35998B425D0499F46CDAB2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */;
+			targetProxy = 01F17B5C230F4AA95173E78FCD56391A /* PBXContainerItemProxy */;
+		};
 		23C1013E8425827D4DDDCDBAEFC3546C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 528CABDE5FC7422D1D0E7976ADAA8CAD /* ShareDev */;
@@ -7377,6 +7450,85 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
+		};
+		9D533661B9BC39AFB82F46EF68462831 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ProtonMailUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ProtonMail;
+			};
+			name = Debug;
+		};
+		04ED9644BEC459CC0E3557366CD0B30B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ProtonMailUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ProtonMail;
+			};
+			name = Release;
+		};
+		E1F1680CBBF6EAAA12FE7D815ECC9BEE /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				INFOPLIST_FILE = ProtonMailUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = pm.ProtonMailUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = ProtonMail;
+			};
+			name = Distribution;
 		};
 		226C8AB49C1CD4C0996959B0155D5468 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -8754,6 +8906,16 @@
 				E3247BD72A7BC86B53B5735317E49728 /* Debug */,
 				4015D2DABA385AFB578C0C56A5181B94 /* Release */,
 				B758691E308D6B8D68103BD0D97FCA18 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		5AFC7C742BF32600543F8D07CC1D272B /* Build configuration list for PBXNativeTarget "ProtonMailUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9D533661B9BC39AFB82F46EF68462831 /* Debug */,
+				04ED9644BEC459CC0E3557366CD0B30B /* Release */,
+				E1F1680CBBF6EAAA12FE7D815ECC9BEE /* Distribution */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
