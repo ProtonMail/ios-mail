@@ -330,7 +330,7 @@ open class DKImageAssetExporter: DKImageBaseManager {
             return nil
         }
     }
-
+    
     private func generateAuxiliaryPath(with url: URL) -> (auxiliaryDirectory: URL, auxiliaryFilePath: URL) {
         let parentDirectory = url.deletingLastPathComponent()
         let auxiliaryDirectory = parentDirectory.appendingPathComponent(".tmp")

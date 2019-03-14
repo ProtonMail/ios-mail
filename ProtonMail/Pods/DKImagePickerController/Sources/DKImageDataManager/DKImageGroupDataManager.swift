@@ -118,12 +118,12 @@ open class DKImageGroupDataManager: DKImageBaseManager, PHPhotoLibraryChangeObse
         }
     }
 	
-	open func fetchGroupWithGroupId(_ groupId: String) -> DKAssetGroup {
+	open func fetchGroup(with groupId: String) -> DKAssetGroup {
 		return self.groups![groupId]!
 	}
 	
-	open func fetchGroupThumbnailForGroup(_ groupId: String, size: CGSize, options: PHImageRequestOptions, completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
-		let group = self.fetchGroupWithGroupId(groupId)
+	open func fetchGroupThumbnail(with groupId: String, size: CGSize, options: PHImageRequestOptions, completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
+        let group = self.fetchGroup(with: groupId)
 		if group.totalCount == 0 {
 			completeBlock(nil, nil)
 			return
@@ -158,13 +158,13 @@ open class DKImageGroupDataManager: DKImageBaseManager, PHPhotoLibraryChangeObse
         return assetGroup
     }
     
-    open func collectionTypeForSubtype(_ subtype: PHAssetCollectionSubtype) -> PHAssetCollectionType {
+    open func collectionType(for subtype: PHAssetCollectionSubtype) -> PHAssetCollectionType {
         return subtype.rawValue < PHAssetCollectionSubtype.smartAlbumGeneric.rawValue ? .album : .smartAlbum
     }
     
     open func fetchGroups(assetGroupTypes: [PHAssetCollectionSubtype], block: @escaping (PHAssetCollection) -> Void) {
         for (_, groupType) in assetGroupTypes.enumerated() {
-            let fetchResult = PHAssetCollection.fetchAssetCollections(with: self.collectionTypeForSubtype(groupType),
+            let fetchResult = PHAssetCollection.fetchAssetCollections(with: self.collectionType(for: groupType),
                                                                       subtype: groupType,
                                                                       options: nil)
             fetchResult.enumerateObjects({ (collection, index, stop) in

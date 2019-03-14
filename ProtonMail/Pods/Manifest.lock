@@ -21,31 +21,31 @@ PODS:
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - CryptoSwift (0.12.0)
-  - DKImagePickerController/Core (4.0.0-beta2):
+  - DKImagePickerController/Core (4.0.4):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.0.0-beta2)
-  - DKImagePickerController/PhotoGallery (4.0.0-beta2):
+  - DKImagePickerController/ImageDataManager (4.0.4)
+  - DKImagePickerController/PhotoGallery (4.0.4):
     - DKImagePickerController/Core
     - DKPhotoGallery
-  - DKImagePickerController/Resource (4.0.0-beta2)
-  - DKPhotoGallery (0.0.11):
-    - DKPhotoGallery/Core (= 0.0.11)
-    - DKPhotoGallery/Model (= 0.0.11)
-    - DKPhotoGallery/Preview (= 0.0.11)
-    - DKPhotoGallery/Resource (= 0.0.11)
+  - DKImagePickerController/Resource (4.0.4)
+  - DKPhotoGallery (0.0.12):
+    - DKPhotoGallery/Core (= 0.0.12)
+    - DKPhotoGallery/Model (= 0.0.12)
+    - DKPhotoGallery/Preview (= 0.0.12)
+    - DKPhotoGallery/Resource (= 0.0.12)
     - SDWebImage/GIF
-  - DKPhotoGallery/Core (0.0.11):
+  - DKPhotoGallery/Core (0.0.12):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
     - SDWebImage/GIF
-  - DKPhotoGallery/Model (0.0.11):
+  - DKPhotoGallery/Model (0.0.12):
     - SDWebImage/GIF
-  - DKPhotoGallery/Preview (0.0.11):
+  - DKPhotoGallery/Preview (0.0.12):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
     - SDWebImage/GIF
-  - DKPhotoGallery/Resource (0.0.11):
+  - DKPhotoGallery/Resource (0.0.12):
     - SDWebImage/GIF
   - EllipticCurveKeyPair (1.0.2)
   - Fabric (1.9.0)
@@ -57,18 +57,18 @@ PODS:
   - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
   - "NSDate+Helper (1.0.4)"
-  - OHHTTPStubs/Core (6.1.0)
-  - OHHTTPStubs/Default (6.1.0):
+  - OHHTTPStubs/Core (7.0.0)
+  - OHHTTPStubs/Default (7.0.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (6.1.0):
+  - OHHTTPStubs/JSON (7.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (6.1.0):
+  - OHHTTPStubs/NSURLSession (7.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (6.1.0)
-  - OHHTTPStubs/Swift (6.1.0):
+  - OHHTTPStubs/OHPathHelpers (7.0.0)
+  - OHHTTPStubs/Swift (7.0.0):
     - OHHTTPStubs/Default
   - OpenPGP (1.0.5):
     - OpenSSL
@@ -103,7 +103,7 @@ DEPENDENCIES:
   - AwaitKit (~> 5.0.0)
   - Crashlytics
   - CryptoSwift (= 0.12.0)
-  - DKImagePickerController/PhotoGallery (= 4.0.0-beta2)
+  - DKImagePickerController/PhotoGallery (~> 4.0.0)
   - EllipticCurveKeyPair (= 1.0.2)
   - Fabric
   - Groot (= 3.0.1)
@@ -169,8 +169,8 @@ SPEC CHECKSUMS:
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
-  DKImagePickerController: 43789fb00974b13f26263cc1ee0de5c2e6c6390d
-  DKPhotoGallery: e5fc53899345c26af4374503dd249caabac7d26a
+  DKImagePickerController: debcc4eaa09b82c06fc237f1bebd6a9fd4be9fa3
+  DKPhotoGallery: 1b4d65d9a485dfdd2002f22daa5b955eafb350ea
   EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -179,7 +179,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
-  OHHTTPStubs: 1e21c7d2c084b8153fc53d48400d8919d2d432d0
+  OHHTTPStubs: ef33a2c353110d306bb98f695435ec56ff5a26c3
   OpenPGP: 0563b77b6f4e95c5fc913bf7a216c6f3735b0e28
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
@@ -190,6 +190,6 @@ SPEC CHECKSUMS:
   UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: f0b289cde6779ed01f375a2c6d773c802b54b786
+PODFILE CHECKSUM: c565eee4c6f3072c06ca31003f659e8c4275dbff
 
 COCOAPODS: 1.5.3

@@ -49,13 +49,21 @@ class ProtonMailUITests: XCTestCase {
     func testExample() {
         
         let app = XCUIApplication()
-        let elementsQuery = app.scrollViews.otherElements
-        let txtusernameTextField = elementsQuery/*@START_MENU_TOKEN@*/.textFields["txtUsername"]/*[[".textFields[\"Username\"]",".textFields[\"txtUsername\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        txtusernameTextField.tap()
         
-        let txtpasswordSecureTextField = elementsQuery/*@START_MENU_TOKEN@*/.secureTextFields["txtPassword"]/*[[".secureTextFields[\"Password\"]",".secureTextFields[\"txtPassword\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
-        txtpasswordSecureTextField.tap()
-        elementsQuery/*@START_MENU_TOKEN@*/.buttons["login_button"]/*[[".buttons[\"Login\"]",".buttons[\"login_button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        ///Logout first
+        let txtusernameTextField = app.textFields["txtUsername"]
+        txtusernameTextField.tap()
+        txtusernameTextField.typeText("\"this is a text\"")
+        
+//        let elementsQuery = app.scrollViews.otherElements
+//        let txtusernameTextField = elementsQuery.textFields["login_user_name"]
+//        txtusernameTextField.tap()
+//
+//        txtusernameTextField.typeText("\"this is a text\"")
+        
+//        let txtpasswordSecureTextField = elementsQuery/*@START_MENU_TOKEN@*/.secureTextFields["txtPassword"]/*[[".secureTextFields[\"Password\"]",".secureTextFields[\"txtPassword\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/
+//        txtpasswordSecureTextField.tap()
+//        elementsQuery/*@START_MENU_TOKEN@*/.buttons["login_button"]/*[[".buttons[\"Login\"]",".buttons[\"login_button\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
         
         //XCTAssertEqual(app.tables/*@START_MENU_TOKEN@*/.staticTexts["Bitwarden"]/*[[".cells[\"Welcome,\\nBitwarden,\\n Monday,\\n\"].staticTexts[\"Bitwarden\"]",".staticTexts[\"Bitwarden\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/, "Bitwarden")
         // app.tables.staticTexts["Bitwarden"].tap()

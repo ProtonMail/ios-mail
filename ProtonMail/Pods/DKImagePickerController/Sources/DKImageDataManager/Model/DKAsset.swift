@@ -39,6 +39,8 @@ open class DKAsset: NSObject {
 	
 	@objc public private(set) var type: DKAssetType = .photo
 	
+    @objc public var localIdentifier: String
+    
     /// Returns location, if its contained in original asser
     @objc public private(set) var location: CLLocation?
     
@@ -50,8 +52,6 @@ open class DKAsset: NSObject {
     
     /// The height, in pixels, of the asset’s image or video data.
     @objc public private(set) var pixelHeight: Int
-    
-    @objc public private(set) var localIdentifier: String
     
     @objc public private(set) var originalAsset: PHAsset?
         		

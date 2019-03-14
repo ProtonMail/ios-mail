@@ -46,7 +46,7 @@ def pm_pods
     common_pods
     
     pod 'SWRevealViewController', '2.3.0'
-    pod 'DKImagePickerController/PhotoGallery', '4.0.0-beta2'
+    pod 'DKImagePickerController/PhotoGallery', '~> 4.0.0'
 end
 
 # for extensions Share
@@ -85,6 +85,14 @@ target 'ProtonMailTests' do
     pod 'AFNetworking', '3.2.1'
     pod 'OHHTTPStubs/Swift'
     pod 'Groot', '3.0.1'
+end
+
+target 'ProtonMailUITests' do
+    inherit! :search_paths
+#    pod 'OpenPGP', :path => '../OpenPGP'
+#    pod 'AFNetworking', '3.2.1'
+#    pod 'OHHTTPStubs/Swift'
+#    pod 'Groot', '3.0.1'
 end
 
 target 'Share' do
