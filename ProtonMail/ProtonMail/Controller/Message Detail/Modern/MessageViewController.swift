@@ -47,13 +47,13 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     
     fileprivate var viewModel: MessageViewModel!
     private var coordinator: MessageViewCoordinator!
-    private var observations: [NSKeyValueObservation] = []
+    private var threadObservation: NSKeyValueObservation!
+    private var standalonesObservation: [NSKeyValueObservation] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
 
-        self.coordinator.addChildren(of: self)
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 85
         self.tableView.bounces = false
@@ -62,32 +62,30 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let headerViewModel = MessageHeaderViewModel(headerData: self.viewModel.headerData())
-        self.coordinator.updateHeader(viewModel: headerViewModel)
-        self.viewModel.subscribe(toUpdatesOf: headerViewModel)
-        
-        let contents = WebContents(body: self.viewModel.htmlBody(), remoteContentMode: .lockdown)
-        let bodyViewModel = MessageBodyViewModel(contents: contents)
-        self.coordinator.updateBody(viewModel: bodyViewModel)
-        self.viewModel.subscribe(toUpdatesOf: bodyViewModel)
+        let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
+            return (MessageHeaderViewModel(headerData: standalone.header),
+                    MessageBodyViewModel(contents: WebContents(body: standalone.body, remoteContentMode: .lockdown))) // FIXME: lockdown
+        }
+        self.viewModel.subscribe(toUpdatesOf: childViewModels)
+        self.coordinator.createChildControllers(with: childViewModels)
     }
 }
 
 extension MessageViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return self.viewModel.thread.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return self.viewModel.thread[section].divisionsCount
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        
-        switch indexPath.section {
-        case 0: self.coordinator.embedHeader(onto: cell.contentView)
-        case 1: self.coordinator.embedBody(onto: cell.contentView)
+
+        switch indexPath.row {
+        case 0: self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
+        case 1: self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
         default: cell.backgroundColor = .yellow
         }
         
@@ -115,16 +113,29 @@ extension MessageViewController {
     func set(viewModel: MessageViewModel) {
         self.viewModel = viewModel
         
-        self.observations = [
-            self.viewModel.observe(\.heightOfHeader, changeHandler: { [weak self] viewModel, change in
-                self?.tableView.beginUpdates()
-                self?.tableView.endUpdates()
-            }),
-            self.viewModel.observe(\.heightOfBody, changeHandler: { [weak self] viewModel, change in
-                self?.tableView.beginUpdates()
-                self?.tableView.endUpdates()
-            })
-        ]
+        viewModel.thread.forEach(self.subscribeToStandalone)
+        self.subscribeToThread()
+    }
+    
+    private func subscribeToThread() {
+        self.threadObservation = self.viewModel.observe(\.thread) { [weak self] viewModel, change in
+            guard let self = self else { return }
+            self.standalonesObservation = []
+            viewModel.thread.forEach(self.subscribeToStandalone)
+        }
+    }
+    
+    private func subscribeToStandalone(_ standalone: Standalone) {
+        let head = standalone.observe(\.heightOfHeader) { [weak self] _, _ in
+            self?.tableView.beginUpdates()
+            self?.tableView.endUpdates()
+        }
+        self.standalonesObservation.append(head)
+        let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
+            self?.tableView.beginUpdates()
+            self?.tableView.endUpdates()
+        }
+        self.standalonesObservation.append(body)
     }
 }
 

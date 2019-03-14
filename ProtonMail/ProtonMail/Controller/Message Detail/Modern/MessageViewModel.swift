@@ -28,41 +28,43 @@
 
 import Foundation
 
-class MessageViewModel: NSObject {
-    private var message: Message
-    private var observationHeader: NSKeyValueObservation!
-    private var observationBody: NSKeyValueObservation!
 
-    @objc internal dynamic var heightOfHeader: CGFloat = 0.0
-    @objc internal dynamic var heightOfBody: CGFloat = 0.0
+/// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
+class MessageViewModel: NSObject {
+    private var messages: [Message]
+    private var observationsHeader: [NSKeyValueObservation] = []
+    private var observationsBody: [NSKeyValueObservation] = []
+
+    // model - viewModel connections
+    @objc private(set) dynamic var thread: [Standalone]
+    private func message(for standalone: Standalone) -> Message? {
+        return self.messages.first(where: { $0.messageID == standalone.messageID })
+    }
+    
+    init(conversation messages: [Message]) {
+        self.messages = messages
+        self.thread = messages.map(Standalone.init)
+    }
     
     init(message: Message) {
-        self.message = message
+        self.messages = [message]
+        self.thread = [Standalone(message: message)]
     }
     
-    internal func headerData() -> HeaderData {
-        return HeaderData(message: self.message, showShowImages: true) // FIXME
-    }
-    
-    internal func htmlBody() -> String {
-        do {
-            let bodyText = try self.message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
-            return bodyText
-        } catch let ex as NSError {
-            PMLog.D("purifyEmailBody error : \(ex)")
-            return self.message.bodyToHtml()
-        }
-    }
-    
-    internal func subscribe(toUpdatesOf childViewModel: MessageHeaderViewModel) {
-        self.observationHeader = childViewModel.observe(\.contentsHeight) { [weak self] viewModel, change in
-            self?.heightOfHeader = viewModel.contentsHeight
-        }
-    }
-    
-    internal func subscribe(toUpdatesOf childViewModel: MessageBodyViewModel) {
-        self.observationBody = childViewModel.observe(\.contentSize) { [weak self] viewModel, change in
-            self?.heightOfBody = viewModel.contentSize.height
+    internal func subscribe(toUpdatesOf children: [MessageViewCoordinator.ChildViewModelPack]) {
+        self.observationsHeader = []
+        self.observationsBody = []
+        
+        children.enumerated().forEach { index, child in
+            let headObservation = child.head.observe(\.contentsHeight) { [weak self] head, _ in
+                self?.thread[index].heightOfHeader = head.contentsHeight
+            }
+            self.observationsHeader.append(headObservation)
+            
+            let bodyObservation = child.body.observe(\.contentSize) { [weak self] body, _ in
+                self?.thread[index].heightOfBody = body.contentSize.height
+            }
+            self.observationsHeader.append(bodyObservation)
         }
     }
 }

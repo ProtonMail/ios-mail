@@ -28,54 +28,61 @@
 
 import Foundation
 
-class MessageViewCoordinator: CoordinatorNew {
+class MessageViewCoordinator {
     private weak var controller: MessageViewController!
     
     init(controller: MessageViewController) {
         self.controller = controller
     }
     
-    private lazy var headerController: MessageHeaderViewController = {
+    
+    // Create controllers
+    
+    private var headerControllers: [MessageHeaderViewController] = []
+    private var bodyControllers: [MessageBodyViewController] = []
+
+    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel)
+    internal func createChildControllers(with children: [ChildViewModelPack]) {
+        self.bodyControllers = []
+        self.headerControllers = []
+        
+        children.forEach { head, body in
+            self.headerControllers.append(self.createHeaderController(head))
+            self.bodyControllers.append(self.createBodyController(body))
+        }
+    }
+    
+    private func createHeaderController(_ childViewModel: MessageHeaderViewModel) -> MessageHeaderViewController {
         guard let childController = self.controller.storyboard?.make(MessageHeaderViewController.self) else {
             fatalError("No storyboard for creating MessageBodyViewController")
         }
-        childController.set(viewModel: MessageHeaderViewModel())
+        childController.set(viewModel: childViewModel)
         return childController
-    }()
+    }
     
-    private lazy var bodyController: MessageBodyViewController = {
+    private func createBodyController(_ childViewModel: MessageBodyViewModel) -> MessageBodyViewController {
         guard let childController =  self.controller.storyboard?.make(MessageBodyViewController.self) else {
             fatalError("No storyboard for creating MessageBodyViewController")
         }
-        let childViewModel = MessageBodyViewModel(contents: WebContents(body: "Loading...", remoteContentMode: .lockdown))
         childController.set(viewModel: childViewModel)
         childController.set(coordinator: .init(controller: childController, enclosingScroller: self.controller) )
         return childController
-    }()
+    }
+
+    // Embed subviews
     
-    func start() {
-        // ?
+    internal func embedBody(index: Int, onto view: UIView) {
+        self.embed(self.bodyControllers[index], onto: view)
     }
-    
-    internal func updateBody(viewModel: MessageBodyViewModel) {
-        self.bodyController.set(viewModel: viewModel)
-    }
-    internal func updateHeader(viewModel: MessageHeaderViewModel) {
-        self.headerController.set(viewModel: viewModel)
-    }
-    
-    internal func embedBody(onto view: UIView) {
-        self.embed(self.bodyController, onto: view)
-    }
-    internal func embedHeader(onto view: UIView) {
-        self.embed(self.headerController, onto: view)
+    internal func embedHeader(index: Int, onto view: UIView) {
+        self.embed(self.headerControllers[index], onto: view)
     }
     
     private func embed(_ child: UIViewController, onto view: UIView) {
         assert(self.controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
         
         // remove child from old parent
-        if let _ = child.parent {
+        if let parent = child.parent, parent != self.controller {
             child.willMove(toParent: nil)
             if child.isViewLoaded {
                 child.view.removeFromSuperview()
@@ -95,8 +102,11 @@ class MessageViewCoordinator: CoordinatorNew {
         view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
     }
-    
-    internal func addChildren(of parent: UIViewController) {
+}
 
+
+extension MessageViewCoordinator: CoordinatorNew {
+    func start() {
+        // ?
     }
 }
