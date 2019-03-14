@@ -164,8 +164,24 @@ extension MessageBodyViewController: WKNavigationDelegate {
         self.updateHeight(to: webView.scrollView.contentSize.height)
     }
     
-    func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
-        // nothing
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        switch navigationAction.navigationType {
+        case .linkActivated where navigationAction.request.url?.scheme == "mailto":
+            self.coordinator?.mail(to: navigationAction.request.url!)
+            decisionHandler(.cancel)
+            
+        case .linkActivated where navigationAction.request.url != nil:
+            self.coordinator?.open(url: navigationAction.request.url!)
+            decisionHandler(.cancel)
+            
+        default:
+            decisionHandler(.allow)
+        }
+    }
+    
+    @available(iOS 10.0, *)
+    func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
+        return false // by some reason PM do not want 3d touch here yet
     }
 }
 

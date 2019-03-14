@@ -53,6 +53,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     override func viewDidLoad() {
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
 
         // table view
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -84,6 +85,10 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     @objc func mock() {
         fatalError("Implement me!")
     }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 }
 
 extension MessageViewController {
@@ -109,6 +114,11 @@ extension MessageViewController {
 }
 
 extension MessageViewController: MessageBodyScrollingDelegate {
+    @objc func scrollToTop() {
+        guard self.presentedViewController == nil, self.navigationController?.topViewController == self else { return }
+        self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
+    }
+    
     func propogate(scrolling delta: CGPoint) {
          let yOffset = self.tableView.contentOffset.y + delta.y
          

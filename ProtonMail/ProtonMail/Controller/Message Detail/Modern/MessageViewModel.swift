@@ -57,8 +57,39 @@ class MessageViewModel: NSObject {
         standalone.reload(from: message)
     }
     
+    internal func reload(message: Message, with bodyPlaceholder: String) {
+        let standalone = self.thread.first { $0.messageID == message.messageID }!
+        standalone.body = bodyPlaceholder
+    }
+    
     internal func errorWhileReloading(message: Message, error: NSError) {
-        
+        switch error.code {
+        case NSURLErrorTimedOut:
+            self.showErrorBanner(LocalString._general_request_timed_out)
+            self.reload(message: message, with: LocalString._general_request_timed_out)
+
+        case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
+            self.showErrorBanner(LocalString._general_no_connectivity_detected)
+            self.reload(message: message, with: LocalString._general_no_connectivity_detected)
+
+        case APIErrorCode.API_offline:
+            self.showErrorBanner(error.localizedDescription)
+            self.reload(message: message, with: error.localizedDescription)
+
+        case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
+            self.showErrorBanner(LocalString._general_api_server_not_reachable)
+            self.reload(message: message, with: LocalString._general_api_server_not_reachable)
+
+        case ..<0:
+            self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
+            self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
+
+        default:
+            self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
+            self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
+
+        }
+        PMLog.D("error: \(error)")
     }
     
     internal func subscribe(toUpdatesOf children: [MessageViewCoordinator.ChildViewModelPack]) {
@@ -76,5 +107,11 @@ class MessageViewModel: NSObject {
             }
             self.observationsHeader.append(bodyObservation)
         }
+    }
+}
+
+extension MessageViewModel {
+    private func showErrorBanner(_ title: String) {
+        // TODO: use Responder chain to let nearest viewController know we need a banner
     }
 }

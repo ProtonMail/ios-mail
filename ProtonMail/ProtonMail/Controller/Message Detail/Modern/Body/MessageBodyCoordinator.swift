@@ -28,13 +28,23 @@
 
 import Foundation
 
-class MessageBodyCoordinator: CoordinatorNew {
+class MessageBodyCoordinator {
     init(controller: MessageBodyViewController,
          enclosingScroller: MessageBodyScrollingDelegate)
     {
         controller.enclosingScroller = enclosingScroller
     }
     
+    internal func open(url: URL) {
+        fatalError("Implement me")
+    }
+    
+    internal func mail(to: URL) {
+        fatalError("Implement me")
+    }
+}
+
+extension MessageBodyCoordinator: CoordinatorNew {
     func start() {
         // ?
     }
