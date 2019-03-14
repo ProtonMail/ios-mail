@@ -32,7 +32,7 @@ class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData!
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
     
-    init(headerData: HeaderData? = nil) {
-        self.headerData = headerData
+    init(parentViewModel: Standalone) {
+        self.headerData = parentViewModel.header
     }
 }

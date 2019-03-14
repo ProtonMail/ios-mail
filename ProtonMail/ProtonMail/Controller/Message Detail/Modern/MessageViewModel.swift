@@ -31,14 +31,15 @@ import Foundation
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageViewModel: NSObject {
-    private var messages: [Message]
+    private(set) var remoteContentMode: WebContents.RemoteContentPolicy = .lockdown
+    private(set) var messages: [Message]
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
 
     // model - viewModel connections
     @objc private(set) dynamic var thread: [Standalone]
     private func message(for standalone: Standalone) -> Message? {
-        return self.messages.first(where: { $0.messageID == standalone.messageID })
+        return self.messages.first { $0.messageID == standalone.messageID }
     }
     
     init(conversation messages: [Message]) {
@@ -49,6 +50,15 @@ class MessageViewModel: NSObject {
     init(message: Message) {
         self.messages = [message]
         self.thread = [Standalone(message: message)]
+    }
+    
+    internal func reload(message: Message) {
+        let standalone = self.thread.first { $0.messageID == message.messageID }!
+        standalone.reload(from: message)
+    }
+    
+    internal func errorWhileReloading(message: Message, error: NSError) {
+        
     }
     
     internal func subscribe(toUpdatesOf children: [MessageViewCoordinator.ChildViewModelPack]) {

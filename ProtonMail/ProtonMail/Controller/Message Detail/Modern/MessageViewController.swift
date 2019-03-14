@@ -54,20 +54,35 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
 
+        // table view
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 85
         self.tableView.bounces = false
+        
+        // navigation bar buttons
+        var rightButtons: [UIBarButtonItem] = []
+        rightButtons.append(.init(image: UIImage(named: "top_more"), style: .plain, target: self, action: #selector(mock)))
+        rightButtons.append(.init(image: UIImage(named: "top_trash"), style: .plain, target: self, action: #selector(mock)))
+        rightButtons.append(.init(image: UIImage(named: "top_folder"), style: .plain, target: self, action: #selector(mock)))
+        rightButtons.append(.init(image: UIImage(named: "top_label"), style: .plain, target: self, action: #selector(mock)))
+        rightButtons.append(.init(image: UIImage(named: "top_unread"), style: .plain, target: self, action: #selector(mock)))
+        self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
-            return (MessageHeaderViewModel(headerData: standalone.header),
-                    MessageBodyViewModel(contents: WebContents(body: standalone.body, remoteContentMode: .lockdown))) // FIXME: lockdown
+            let head = MessageHeaderViewModel(parentViewModel: standalone)
+            let body = MessageBodyViewModel(parentViewModel: standalone, remoteContentMode: self.viewModel.remoteContentMode)
+            return (head, body)
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
         self.coordinator.createChildControllers(with: childViewModels)
+    }
+    
+    @objc func mock() {
+        fatalError("Implement me!")
     }
 }
 
@@ -115,6 +130,16 @@ extension MessageViewController {
         
         viewModel.thread.forEach(self.subscribeToStandalone)
         self.subscribeToThread()
+        
+        viewModel.messages.forEach { message in
+            message.fetchDetailIfNeeded() { _, _, _, error in
+                guard error == nil else {
+                    viewModel.errorWhileReloading(message: message, error: error!)
+                    return
+                }
+                viewModel.reload(message: message)
+            }
+        }
     }
     
     private func subscribeToThread() {

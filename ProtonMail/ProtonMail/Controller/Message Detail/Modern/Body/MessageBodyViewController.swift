@@ -36,6 +36,7 @@ class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
     private var viewModel: MessageBodyViewModel!
+    private var observation: NSKeyValueObservation!
     
     private var height: NSLayoutConstraint!
     private var lastZoom: CGAffineTransform = .identity
@@ -191,6 +192,9 @@ extension MessageBodyViewController: UIScrollViewDelegate {
 extension MessageBodyViewController: ViewModelProtocol {
     func set(viewModel: MessageBodyViewModel) {
         self.viewModel = viewModel
+        self.observation = self.viewModel.observe(\.contents) { viewModel, _ in
+            self.loader.load(contents: viewModel.contents, in: self.webView)
+        }
     }
 }
 

@@ -29,7 +29,7 @@
 import Foundation
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
-class WebContents {
+class WebContents: NSObject {
     internal let body: String
     internal let remoteContentMode: RemoteContentPolicy
     

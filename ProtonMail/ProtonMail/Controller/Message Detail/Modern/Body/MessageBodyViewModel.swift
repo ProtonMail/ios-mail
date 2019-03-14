@@ -29,10 +29,20 @@
 import Foundation
 
 class MessageBodyViewModel: NSObject {
-    internal var contents: WebContents
+    @objc internal dynamic var contents: WebContents
+    internal var remoteContentMode: WebContents.RemoteContentPolicy = .lockdown
+    private var observation: NSKeyValueObservation!
     @objc internal dynamic var contentSize: CGSize = .zero
     
-    init(contents: WebContents) {
-        self.contents = contents
+    init(parentViewModel: Standalone, remoteContentMode: WebContents.RemoteContentPolicy) {
+        self.remoteContentMode = remoteContentMode
+        self.contents = WebContents(body: parentViewModel.body, remoteContentMode: remoteContentMode)
+        
+        super.init()
+        
+        self.observation = parentViewModel.observe(\.body) { [weak self] standalone, _ in
+            guard let self = self else { return }
+            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: self.remoteContentMode)
+        }
     }
 }

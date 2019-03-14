@@ -34,8 +34,8 @@ class Standalone: NSObject {
     @objc internal dynamic var heightOfBody: CGFloat = 0.0
     
     internal let messageID: String
-    internal var body: String
-    internal var header: HeaderData
+    @objc internal dynamic var body: String
+    @objc internal dynamic var header: HeaderData
     internal var divisionsCount: Int // each division is perpresented by a single row in tableView
     
     init(message: Message) {
@@ -53,5 +53,13 @@ class Standalone: NSObject {
         // 3. others
         self.messageID = message.messageID
         self.divisionsCount = 2 // FIXME: these are only header+body
+    }
+    
+    internal func reload(from message: Message) {
+        let temp = Standalone(message: message)
+        
+        self.header = temp.header
+        self.body = temp.body
+        self.divisionsCount = temp.divisionsCount
     }
 }
