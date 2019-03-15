@@ -44,7 +44,6 @@ enum SignInPage: String {
             return XCUIApplication().staticTexts["signInTitle"]
         case .loginButton:
             return XCUIApplication().buttons["loginButton"]
-        //default: break
         }
     }
 }
@@ -52,13 +51,18 @@ enum SignInPage: String {
 class ProtonMailUITests: XCTestCase {
 
     override func setUp() {
+        
         continueAfterFailure = false
         //app.launchArguments.append("isUITestingLogin")
         XCUIApplication().launch()
+        
     }
 
     override func tearDown() {
+        
+        Springboard.deleteMyApp() // temp. solution until Main.storyboard can be edited to have accessibility identifiers
         super.tearDown()
+        
  }
 
     func testSignInSinglePassword() {
@@ -88,4 +92,30 @@ class ProtonMailUITests: XCTestCase {
         SignInPage.loginButton.element.tap()
     }
 
+}
+
+class Springboard {
+    
+    static let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+    
+    /**
+     Terminate and delete the app via springboard
+     */
+    class func deleteMyApp() {
+        XCUIApplication().terminate()
+        
+        // Force delete the app from the springboard
+        let icon = springboard.icons["ProtonMail"]
+        if icon.exists {
+            let iconFrame = icon.frame
+            let springboardFrame = springboard.frame
+            icon.press(forDuration: 1.3)
+            
+            springboard.coordinate(withNormalizedOffset: CGVector(dx: (iconFrame.minX + 3) / springboardFrame.maxX, dy: (iconFrame.minY + 3) / springboardFrame.maxY)).tap()
+            
+            Thread.sleep(forTimeInterval: 2)
+            
+            springboard.alerts.buttons["Delete"].tap()
+        }
+    }
 }
