@@ -50,6 +50,10 @@ extension EmailHeaderView {
         self.emailCcTable.delegate = recepientDelegate
         self.emailBccTable.delegate = recepientDelegate
     }
+    
+    override func prepareForInterfaceBuilder() {
+        self.backgroundColor = .orange
+    }
 }
 
 class EmailHeaderView: UIView {

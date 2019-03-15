@@ -74,11 +74,12 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         super.viewWillAppear(animated)
         
         let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
-            let head = MessageHeaderViewModel(parentViewModel: standalone,
-                                              message: self.viewModel.message(for: standalone)!)
+            let message = self.viewModel.message(for: standalone)!
+            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
+            let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
             let body = MessageBodyViewModel(parentViewModel: standalone,
                                             remoteContentMode: self.viewModel.remoteContentMode)
-            return (head, body)
+            return (head, body, attachments)
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
         self.coordinator.createChildControllers(with: childViewModels)
@@ -105,9 +106,10 @@ extension MessageViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
 
-        switch indexPath.row {
-        case 0: self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
-        case 1: self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
+        switch Standalone.Divisions(rawValue: indexPath.row) {
+        case .some(.header): self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
+        case .some(.attachments): self.coordinator.embedAttachments(index: indexPath.section, onto: cell.contentView)
+        case .some(.body): self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
         default: cell.backgroundColor = .yellow
         }
         
@@ -168,6 +170,12 @@ extension MessageViewController {
             self?.tableView.endUpdates()
         }
         self.standalonesObservation.append(head)
+        let attachments = standalone.observe(\.heightOfAttachments) { [weak self] standalone, _ in
+            guard let section = self?.viewModel.thread.firstIndex(of: standalone) else { return}
+            let indexPath = IndexPath(row: Standalone.Divisions.attachments.rawValue, section: section)
+            self?.tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+        self.standalonesObservation.append(attachments)
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()

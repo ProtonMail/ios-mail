@@ -94,7 +94,7 @@ class MessageBodyViewController: UIViewController {
         self.webView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 111.0)
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
         self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
         self.height.isActive = true
         //
@@ -220,8 +220,9 @@ extension MessageBodyViewController: UIScrollViewDelegate {
 extension MessageBodyViewController: ViewModelProtocol {
     func set(viewModel: MessageBodyViewModel) {
         self.viewModel = viewModel
-        self.observation = self.viewModel.observe(\.contents) { viewModel, _ in
-            self.loader.load(contents: viewModel.contents, in: self.webView)
+        self.observation = self.viewModel.observe(\.contents) { [weak self] viewModel, _ in
+            guard let webView = self?.webView else { return }
+            self?.loader.load(contents: viewModel.contents, in: webView)
         }
     }
 }

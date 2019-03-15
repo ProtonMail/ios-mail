@@ -40,15 +40,20 @@ class MessageViewCoordinator {
     
     private var headerControllers: [MessageHeaderViewController] = []
     private var bodyControllers: [MessageBodyViewController] = []
+    private var attachmentsControllers: [MessageAttachmentsViewController] = []
 
-    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel)
+    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)
+    
     internal func createChildControllers(with children: [ChildViewModelPack]) {
+        // TODO: good place for generics
         self.bodyControllers = []
         self.headerControllers = []
+        self.attachmentsControllers = []
         
-        children.forEach { head, body in
+        children.forEach { head, body, attachments in
             self.headerControllers.append(self.createHeaderController(head))
             self.bodyControllers.append(self.createBodyController(body))
+            self.attachmentsControllers.append(self.createAttachmentsController(attachments))
         }
     }
     
@@ -69,6 +74,14 @@ class MessageViewCoordinator {
         childController.set(coordinator: .init(controller: childController, enclosingScroller: self.controller) )
         return childController
     }
+    
+    private func createAttachmentsController(_ childViewModel: MessageAttachmentsViewModel) -> MessageAttachmentsViewController {
+        guard let childController =  self.controller.storyboard?.make(MessageAttachmentsViewController.self) else {
+            fatalError("No storyboard for creating MessageAttachmentsViewController")
+        }
+        childController.set(viewModel: childViewModel)
+        return childController
+    }
 
     // Embed subviews
     
@@ -77,6 +90,9 @@ class MessageViewCoordinator {
     }
     internal func embedHeader(index: Int, onto view: UIView) {
         self.embed(self.headerControllers[index], onto: view)
+    }
+    internal func embedAttachments(index: Int, onto view: UIView) {
+        self.embed(self.attachmentsControllers[index], onto: view)
     }
     
     private func embed(_ child: UIViewController, onto view: UIView) {

@@ -89,6 +89,50 @@
             </objects>
             <point key="canvasLocation" x="4754" y="2020"/>
         </scene>
+        <!--Message Attachments View Controller-->
+        <scene sceneID="7k5-Vb-eP0">
+            <objects>
+                <viewController storyboardIdentifier="MessageAttachmentsViewController" id="XcO-kS-TZi" customClass="MessageAttachmentsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jv9-9o-5zQ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iEg-CX-DLB">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AttachmentTableViewCell" id="p2M-44-qoC" customClass="AttachmentTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="p2M-44-qoC" id="vPE-8m-L4T">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="XcO-kS-TZi" id="yl5-AK-Kxa"/>
+                                    <outlet property="delegate" destination="XcO-kS-TZi" id="Rer-4r-Lgj"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="iEg-CX-DLB" firstAttribute="top" secondItem="Wf5-eJ-eFE" secondAttribute="top" id="HpQ-Fu-XBl"/>
+                            <constraint firstItem="iEg-CX-DLB" firstAttribute="leading" secondItem="Wf5-eJ-eFE" secondAttribute="leading" id="I6Y-gu-OHc"/>
+                            <constraint firstItem="Wf5-eJ-eFE" firstAttribute="bottom" secondItem="iEg-CX-DLB" secondAttribute="bottom" id="Zeg-gE-Veg"/>
+                            <constraint firstItem="Wf5-eJ-eFE" firstAttribute="trailing" secondItem="iEg-CX-DLB" secondAttribute="trailing" id="xga-RN-roQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Wf5-eJ-eFE"/>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="iEg-CX-DLB" id="UOT-mM-s7d"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q5F-GM-nNB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5449" y="2020"/>
+        </scene>
         <!--ref_labels_view_controller-->
         <scene sceneID="w1a-ik-9gd">
             <objects>

@@ -35,7 +35,8 @@ class MessageViewModel: NSObject {
     private(set) var messages: [Message]
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
-
+    private var attachmentsObservation: [NSKeyValueObservation] = []
+    
     // model - viewModel connections
     @objc private(set) dynamic var thread: [Standalone]
     internal func message(for standalone: Standalone) -> Message? {
@@ -101,6 +102,11 @@ class MessageViewModel: NSObject {
                 self?.thread[index].heightOfHeader = head.contentsHeight
             }
             self.observationsHeader.append(headObservation)
+            
+            let attachmentsObservation = child.attachments.observe(\.contentsHeight) { [weak self] attachments, _ in
+                self?.thread[index].heightOfAttachments = attachments.contentsHeight
+            }
+            self.observationsHeader.append(attachmentsObservation)
             
             let bodyObservation = child.body.observe(\.contentSize) { [weak self] body, _ in
                 self?.thread[index].heightOfBody = body.contentSize.height

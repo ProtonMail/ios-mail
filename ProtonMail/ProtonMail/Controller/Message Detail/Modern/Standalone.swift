@@ -30,13 +30,20 @@ import Foundation
 
 /// ViewModel object representing one Message in a thread
 class Standalone: NSObject {
+    internal enum Divisions: Int {  // each division is perpresented by a single row in tableView
+        case header = 0, attachments, body
+        static let totalNumber = 3 // TODO: update when new Swift will be available
+    }
+    
     @objc internal dynamic var heightOfHeader: CGFloat = 0.0
     @objc internal dynamic var heightOfBody: CGFloat = 0.0
+    @objc internal dynamic var heightOfAttachments: CGFloat = 0.0
     
+    internal let divisionsCount: Int = Divisions.totalNumber
     internal let messageID: String
     @objc internal dynamic var body: String
     @objc internal dynamic var header: HeaderData
-    internal var divisionsCount: Int // each division is perpresented by a single row in tableView
+    @objc internal dynamic var attachments: [AttachmentInfo]
     
     init(message: Message) {
         // 1. header
@@ -50,9 +57,13 @@ class Standalone: NSObject {
             self.body = message.bodyToHtml()
         }
         
-        // 3. others
+        // 3. attachments
+        var atts: [AttachmentInfo] = (message.attachments.allObjects as? [Attachment])?.map(AttachmentNormal.init) ?? [] // normal
+        atts.append(contentsOf: message.tempAtts ?? []) // inline
+        self.attachments = atts
+        
+        // others
         self.messageID = message.messageID
-        self.divisionsCount = 2 // FIXME: these are only header+body
     }
     
     internal func reload(from message: Message) {
@@ -60,6 +71,6 @@ class Standalone: NSObject {
         
         self.header = temp.header
         self.body = temp.body
-        self.divisionsCount = temp.divisionsCount
+        self.attachments = temp.attachments
     }
 }

@@ -43,7 +43,7 @@ class MessageHeaderViewController: UIViewController {
         self.emailHeaderView.viewDelegate = self
         self.emailHeaderView.inject(recepientDelegate: self)
         
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 112.0)
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
         self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
         self.height.isActive = true
         
