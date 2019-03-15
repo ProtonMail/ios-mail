@@ -134,6 +134,16 @@ pre {
     word-wrap: break-word;
 }
 
+* {
+    caret-color: auto !important;
+    
+    /* debug only */
+/*    margin: 0 !important;*/
+/*    position: static !important;*/
+/*    float: none !important;*/
+    /* end debug */
+}
+
 q {
     quotes: none;
 }
@@ -240,3 +250,10 @@ legend {
 .pm_font_larger {
     font-size: 1.8em;
 }
+
+/*div.editor {*/
+/*    width: 200px;*/
+/*    height: 100px;*/
+/*    -webkit-overflow-scrolling: touch;*/
+/*    overflow:auto;*/
+/*}*/

@@ -201,7 +201,8 @@ final class SignupViewModelImpl : SignupViewModel {
                             sharedMessageDataService.launchCleanUpIfNeeded()
                             
                             //login first
-                            sharedUserDataService.signIn(self.userName, password: self.plaintext_password, twoFACode: nil,
+                            sharedUserDataService.signIn(self.userName, password: self.plaintext_password,
+                                                         twoFACode: nil, checkSalt: false,
                                 ask2fa: {
                                     //2fa will show error
                                     complete(false, true, LocalString._signup_2fa_auth_failed, nil)

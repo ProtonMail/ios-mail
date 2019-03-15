@@ -32,7 +32,8 @@ import PromiseKit
 /// Auth extension
 extension APIService {
 
-    func auth(_ username: String, password: String, twoFACode: String?, authCredential: AuthCredential?, completion: AuthCompleteBlock!) {
+    func auth(_ username: String, password: String,
+              twoFACode: String?, authCredential: AuthCredential?, checkSalt: Bool = true, completion: AuthCompleteBlock!) {
         
         var forceRetry = false
         var forceRetryVersion = 2
@@ -126,30 +127,33 @@ extension APIService {
                                     if !res.isEncryptedToken {
                                         credential.trySetToken()
                                         let saltapi = GetKeysSalts()
-                                        saltapi.authCredential = credential
-                                        let userApi = GetUserInfoRequest()
-                                        userApi.authCredential = credential
-                                        
-                                        firstly {
-                                            when(fulfilled: saltapi.run(), userApi.run())
-                                        }.done { (saltRes, userRes)  in
-                                            
-                                           guard  let salt = saltRes.keySalt,
-                                            let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
-                                                return completion(task, nil, .resCheck, NSError.authInvalidGrant())
-                                            }
-
-                                            keySalt = salt
-                                            privateKey = privatekey
+                                        ///
+                                        if !checkSalt {
                                             done()
-                                        }.catch { err in
-                                            let error = err as NSError
-                                            if error.isInternetError() {
-                                                return completion(task, nil, .resCheck, NSError.internetError())
-                                            } else {
-                                                return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                        } else {
+                                            saltapi.authCredential = credential
+                                            let userApi = GetUserInfoRequest()
+                                            userApi.authCredential = credential
+                                            firstly {
+                                                when(fulfilled: saltapi.run(), userApi.run())
+                                            }.done { (saltRes, userRes)  in
+                                                guard  let salt = saltRes.keySalt,
+                                                    let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
+                                                        return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                                }
+                                                keySalt = salt
+                                                privateKey = privatekey
+                                                done()
+                                            }.catch { err in
+                                                let error = err as NSError
+                                                if error.isInternetError() {
+                                                    return completion(task, nil, .resCheck, NSError.internetError())
+                                                } else {
+                                                    return completion(task, nil, .resCheck, NSError.authInvalidGrant())
+                                                }
                                             }
                                         }
+                                        ///
                                     } else {
                                         keySalt = res.keySalt
                                         privateKey = res.privateKey
