@@ -57,6 +57,7 @@ class MessageViewCoordinator {
             fatalError("No storyboard for creating MessageBodyViewController")
         }
         childController.set(viewModel: childViewModel)
+        childController.set(coordinator: .init(controller: childController))
         return childController
     }
     

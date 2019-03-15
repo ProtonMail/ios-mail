@@ -74,8 +74,10 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         super.viewWillAppear(animated)
         
         let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
-            let head = MessageHeaderViewModel(parentViewModel: standalone)
-            let body = MessageBodyViewModel(parentViewModel: standalone, remoteContentMode: self.viewModel.remoteContentMode)
+            let head = MessageHeaderViewModel(parentViewModel: standalone,
+                                              message: self.viewModel.message(for: standalone)!)
+            let body = MessageBodyViewModel(parentViewModel: standalone,
+                                            remoteContentMode: self.viewModel.remoteContentMode)
             return (head, body)
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)

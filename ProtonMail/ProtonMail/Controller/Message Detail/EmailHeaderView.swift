@@ -42,6 +42,16 @@ protocol EmailHeaderActionsProtocol: RecipientViewDelegate, ShowImageViewDelegat
     func downloadFailed(error: NSError)
 }
 
+// for new MessageHeaderViewController
+extension EmailHeaderView {
+    func inject(recepientDelegate: RecipientViewDelegate) {
+        self.emailFromTable.delegate = recepientDelegate
+        self.emailToTable.delegate = recepientDelegate
+        self.emailCcTable.delegate = recepientDelegate
+        self.emailBccTable.delegate = recepientDelegate
+    }
+}
+
 class EmailHeaderView: UIView {
     
     weak var viewDelegate: EmailHeaderViewProtocol?

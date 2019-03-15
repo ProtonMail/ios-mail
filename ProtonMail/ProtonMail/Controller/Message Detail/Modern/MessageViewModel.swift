@@ -38,7 +38,7 @@ class MessageViewModel: NSObject {
 
     // model - viewModel connections
     @objc private(set) dynamic var thread: [Standalone]
-    private func message(for standalone: Standalone) -> Message? {
+    internal func message(for standalone: Standalone) -> Message? {
         return self.messages.first { $0.messageID == standalone.messageID }
     }
     
