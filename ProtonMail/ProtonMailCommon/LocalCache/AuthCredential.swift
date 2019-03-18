@@ -105,12 +105,15 @@ final class AuthCredential: NSObject, NSCoding {
         return self.plainToken
     }
     
-    func update(_ res : AuthResponse!) {
+    func update(_ res : AuthResponse!, updateUID: Bool) {
         self.encryptToken = res.accessToken
         if res.refreshToken != nil {
             self.refreshToken = res.refreshToken
         }
-        self.userID = res.userID
+        
+        if updateUID {
+            self.userID = res.userID
+        }
         self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
         
         ///TODO:: rmeove this later , when server switch off them

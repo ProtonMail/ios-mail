@@ -179,7 +179,7 @@ final class AuthRequest : ApiRequest<AuthResponse> {
 
 
 // MARK : refresh token
-final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
+final class AuthRefreshRequest : ApiRequest<AuthResponse> {
     
     var resfreshToken : String!
     var Uid : String!
@@ -196,7 +196,7 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
             "GrantType": "refresh_token",
             "RedirectURI" : "http://www.protonmail.ch",
             AuthKey.state : "\(UUID().uuidString)",
-            "Uid" : self.Uid
+            "UID" : self.Uid
         ]
         return out
     }

@@ -182,7 +182,8 @@ extension APIService {
     
     func authRefresh(_ password:String, completion: AuthRefreshComplete?) {
         if let authCredential = AuthCredential.fetchFromKeychain() {
-            AuthRefreshRequest<AuthResponse>(resfresh: authCredential.refreshToken, uid: authCredential.userID).call() { task, res , hasError in
+            AuthRefreshRequest(resfresh: authCredential.refreshToken,
+                               uid: authCredential.userID).call() { task, res , hasError in
                 if hasError {
                     var needsRetry : Bool = false
                     if let err = res?.error {
@@ -207,7 +208,7 @@ extension APIService {
                 }
                 else if res?.code == 1000 {
                     do {
-                        authCredential.update(res)
+                        authCredential.update(res, updateUID: false)
                         try authCredential.setupToken(password)
                         authCredential.storeInKeychain()
                         
