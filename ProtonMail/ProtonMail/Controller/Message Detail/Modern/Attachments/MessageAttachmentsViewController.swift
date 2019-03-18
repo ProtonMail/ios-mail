@@ -118,8 +118,12 @@ extension MessageAttachmentsViewController: UITableViewDelegate, UITableViewData
                 }
             }
         }
-        
-        self.viewModel.openOrDownload(attachment, pregressUpdate)
+        let fail: (NSError)->Void = { _ in
+            // TODO: error happened during download
+        }
+        self.viewModel.open(attachment, pregressUpdate, fail) { preview in
+            self.present(preview, animated: true, completion: nil)
+        }
     }
 }
 
