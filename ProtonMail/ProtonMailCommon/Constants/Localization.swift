@@ -59,19 +59,19 @@ class LocalizedString {
     /// "**********"
     lazy var _settings_secret_x_string   = NSLocalizedString("**********", comment: "secret")
     /// "DisplayName"
-    lazy var _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title")
+    lazy var _settings_displayname_title = NSLocalizedString("DisplayName", comment: "Title in display name settings")
     /// "DISPLAY NAME"
-    lazy var _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title")
+    lazy var _settings_display_name_title = NSLocalizedString("Display Name", comment: "Title in settings")
     /// "Input Display Name ..."
     lazy var _settings_input_display_name_placeholder = NSLocalizedString("Input Display Name ...", comment: "place holder")
     /// "Signature"
-    lazy var _settings_signature_title = NSLocalizedString("Signature", comment: "Title")
+    lazy var _settings_signature_title = NSLocalizedString("Signature", comment: "Title in signature settings")
     /// "Email default signature"
     lazy var _settings_email_default_signature = NSLocalizedString("Email default signature", comment: "place holder")
     /// "Enable Default Signature"
     lazy var _settings_enable_default_signature_title = NSLocalizedString("Enable Default Signature", comment: "Title")
     /// "Mobile Signature"
-    lazy var _settings_mobile_signature_title = NSLocalizedString("Mobile Signature", comment: "Title")
+    lazy var _settings_mobile_signature_title = NSLocalizedString("Mobile Signature", comment: "Mobile Signature title in settings")
     /// "Only a paid user can modify default mobile signature or turn it off!"
     lazy var _settings_only_paid_to_modify_mobile_signature = NSLocalizedString("Only a paid user can modify default mobile signature or turn it off!", comment: "Description")
     /// "Enable Mobile Signature"
@@ -201,7 +201,7 @@ class LocalizedString {
     // Mark Messages
 
     /// "Message sent"
-    lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description")
+    lazy var _message_sent_ok_desc          = NSLocalizedString("Message sent", comment: "Description after message have been sent")
     /// "Sent Failed"
     lazy var _message_sent_failed_desc      = NSLocalizedString("Sent Failed", comment: "Description")
     /// "The draft cache is broken please try again"
@@ -485,8 +485,6 @@ class LocalizedString {
     lazy var _general_confirmation_title = NSLocalizedString("Confirmation", comment: "Title")
     /// "Draft"
     lazy var _general_draft_action = NSLocalizedString("Draft", comment: "Action")
-    /// "OpenDraft"
-    lazy var _general_opendraft_action = NSLocalizedString("OpenDraft", comment: "Action")
     /// "Plain text"
     @available(* , deprecated)
     lazy var _general_enc_type_plain_text = NSLocalizedString("Plain text", comment: "Title")
