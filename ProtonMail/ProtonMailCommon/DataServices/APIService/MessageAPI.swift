@@ -395,7 +395,7 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [String : Any]()
-        out["ExpirationTime"] = self.expirationTime
+        out["ExpiresIn"] = self.expirationTime
         //optional this will override app setting
         //out["AutoSaveContacts"] = "\(0 / 1)"
         
