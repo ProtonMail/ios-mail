@@ -362,10 +362,9 @@ class APIService {
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
                             let errorMessage = responseDict["Error"] as? String ?? ""
-                            let errorDetails = responseDict["ErrorDescription"] as? String ?? ""
                             let displayError : NSError = NSError.protonMailError(responseCode,
                                                                    localizedDescription: errorMessage,
-                                                                   localizedFailureReason: errorDetails,
+                                                                   localizedFailureReason: errorMessage,
                                                                    localizedRecoverySuggestion: nil)
                             if responseCode.forceUpgrade {
                                 // old check responseCode == 5001 || responseCode == 5002 || responseCode == 5003 || responseCode == 5004
@@ -388,10 +387,9 @@ class APIService {
                             var error : NSError?
                             if responseCode != 1000 && responseCode != 1001 {
                                 let errorMessage = responseDictionary["Error"] as? String
-                                let errorDetails = responseDictionary["ErrorDescription"] as? String
                                 error = NSError.protonMailError(responseCode,
                                                                 localizedDescription: errorMessage ?? "",
-                                                                localizedFailureReason: errorDetails,
+                                                                localizedFailureReason: errorMessage,
                                                                 localizedRecoverySuggestion: nil)
                             }
                             

@@ -56,9 +56,8 @@ extension APIService {
     }
     
     struct GeneralResponse {
-        static let errorCode                    = "Code"
-        static let errorMsg                     = "Error"
-        static let errorDesc                    = "ErrorDescription"
+        static let errorCode = "Code"
+        static let errorMsg  = "Error"
     }
     
     internal typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ error: NSError?) -> Void
