@@ -267,7 +267,7 @@ final class AuthResponse : ApiResponse {
     }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.userID = response["UID"] as? String
+        self.userID = response["UID"] as? String //session id
         self.accessToken = response["AccessToken"] as? String
         self.expiresIn = response["ExpiresIn"] as? TimeInterval
         self.scope = response["Scope"] as? String
