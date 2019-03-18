@@ -30,7 +30,6 @@ import Foundation
 
 //TODO:: need refacotr the api request structures
 struct AuthKey {
-    static let clientID = "ClientID"
     static let clientSecret = "ClientSecret"
     static let responseType = "ResponseType"
     static let userName = "Username"
@@ -66,7 +65,6 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username
         ]
         return out
@@ -148,7 +146,6 @@ final class AuthRequest : ApiRequest<AuthResponse> {
     
     override func toDictionary() -> [String : Any]? {
         var out : [String : Any] = [
-            AuthKey.clientID : Constants.App.clientID,
             AuthKey.userName : username,
             
             AuthKey.ephemeral : clientEphemeral,
@@ -194,7 +191,6 @@ final class AuthRefreshRequest<T : ApiResponse> : ApiRequest<T> {
     
     override func toDictionary() -> [String : Any]? {
         let out : [String : Any] = [
-            "ClientID": Constants.App.clientID,
             "ResponseType": "token",
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",

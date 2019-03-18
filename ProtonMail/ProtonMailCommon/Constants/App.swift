@@ -56,7 +56,6 @@ struct Constants {
         
         
         ///
-        static let clientID = "iOS"
         static let rediectURL = "https://protonmail.ch"
         
         //blue test
