@@ -27,13 +27,10 @@
     
 
 import Foundation
-import QuickLook
-import PassKit
 
 class MessageAttachmentsViewModel: NSObject {
     @objc internal dynamic var attachments: [AttachmentInfo] = []
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
-    private var tempClearFileURL: URL?
     private var observation: NSKeyValueObservation!
     
     init(parentViewModel: Standalone) {
@@ -48,51 +45,55 @@ class MessageAttachmentsViewModel: NSObject {
 }
 
 extension MessageAttachmentsViewModel {
+    private enum Errors: Error {
+        case _cant_find_this_attachment
+        case _cant_decrypt_this_attachment
+        
+        var localizedDescription: String {
+            switch self {
+            case ._cant_find_this_attachment: return LocalString._cant_find_this_attachment
+            case ._cant_decrypt_this_attachment: return LocalString._cant_decrypt_this_attachment
+            }
+        }
+    }
+    
     internal func open(_ attachmentInfo: AttachmentInfo,
-                                 _ pregressUpdate: @escaping (Float) -> Void,
-                                 _ fail: @escaping (NSError)->Void,
-                                 _ success: @escaping (UIViewController)->Void)
+                       _ pregressUpdate: @escaping (Float) -> Void,
+                       _ fail: @escaping (NSError)->Void,
+                       _ opener: @escaping (URL)->Void)
     {
+        guard let attachment = attachmentInfo.att else {
+            assert(false, "can this happen at all?")
+            return
+        }
+
+        let decryptor: (Attachment, URL)->Void = {
+            try! self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
+        }
+        
         guard attachmentInfo.isDownloaded, let localURL = attachmentInfo.localUrl else {
-            self.downloadAttachment(attachmentInfo.att!,
-                                    progressUpdate: pregressUpdate,
-                                    success: { self.openEncrypted($0, localURL: $1, presenter: success) },
-                                    fail: fail)
+            self.downloadAttachment(attachmentInfo.att!, progressUpdate: pregressUpdate, success: decryptor, fail: fail)
             return
         }
         
         guard FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) else {
-            if let attachment = attachmentInfo.att {
-                attachment.localURL = nil
-                if let context = attachment.managedObjectContext,
-                    let error = context.saveUpstreamIfNeeded()
-                {
-                    PMLog.D(" error: \(String(describing: error))")
-                }
-                
-                self.downloadAttachment(attachment,
-                                        progressUpdate: pregressUpdate,
-                                        success: { self.openEncrypted($0, localURL: $1, presenter: success) },
-                                        fail: fail)
-            } else {
-                assert(false, "can this happen at all?")
+            attachment.localURL = nil
+            if let context = attachment.managedObjectContext,
+                let error = context.saveUpstreamIfNeeded()
+            {
+                PMLog.D(" error: \(String(describing: error))")
             }
+            
+            self.downloadAttachment(attachment, progressUpdate: pregressUpdate, success: decryptor, fail: fail)
             return
         }
         
-        // Should this work for inline attachments maybe?
-        guard let att = attachmentInfo.att else {
-            self.quickLook(clearfileURL: localURL, fileName: attachmentInfo.fileName.clear, type: attachmentInfo.mimeType, presenter: success)
-            assert(false, "can this happen at all?")
-            return
-        }
-        
-        self.openEncrypted(att, localURL: localURL, presenter: success)
+        decryptor(attachment, localURL)
     }
     
     private func downloadAttachment(_ attachment: Attachment,
                                     progressUpdate setProgress: @escaping (Float)->Void,
-                                    success: @escaping (Attachment, URL)->Void,
+                                    success: @escaping ((Attachment, URL) ->Void ),
                                     fail: @escaping (NSError)->Void)
     {
         let totalValue = attachment.fileSize.floatValue
@@ -101,109 +102,41 @@ extension MessageAttachmentsViewModel {
             sharedAPIService.getSession().setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
                 guard taskOne == taskTwo else { return }
                 var progress = Float(totalBytesWritten) / totalValue
-                if progress >= 1.0 {
-                    progress = 1.0
-                }
                 setProgress(progress)
             }
-        }, completion: { _, url, error in
+        }, completion: { _, url, networkingError in
             setProgress(1.0)
-            guard error == nil, let url = url else {
-                fail(error!)
+            guard networkingError == nil, let url = url else {
+                fail(networkingError!)
                 return
             }
             success(attachment, url)
         })
     }
     
-    private func openEncrypted(_ attachment: Attachment,
-                               localURL: URL,
-                               presenter: (UIViewController)->Void)
+    private func decrypt(_ attachment: Attachment,
+                         encryptedFileURL: URL,
+                         clearfile: (URL)->Void) throws
     {
         guard let key_packet = attachment.keyPacket,
-            let data: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) else
+            let keyPackage: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) else
         {
             assert(false, "what can cause this?")
             return
         }
-        self.quickLook(encryptedFileURL: localURL, keyPackage: data, fileName: attachment.fileName.clear, type: attachment.mimeType, presenter: presenter)
-    }
-}
-
-// Quick look - should this be done by coordinator?
-extension MessageAttachmentsViewModel: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
-    private func quickLook(encryptedFileURL: URL,
-                           keyPackage: Data,
-                           fileName: String,
-                           type: String,
-                           presenter: (UIViewController)->Void)
-    {
+        
         guard let data: Data = try? Data(contentsOf: encryptedFileURL) else {
-            let alert = LocalString._cant_find_this_attachment.alertController()
-            alert.addOKAction()
-            presenter(alert)
-            return
+            throw Errors._cant_find_this_attachment
         }
-        
-        do {
-            self.tempClearFileURL = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys) else
-            {
-                throw NSError()
-            }
-            try decryptData.write(to: self.tempClearFileURL!, options: [.atomic])
-            self.quickLook(clearfileURL: self.tempClearFileURL!, fileName: fileName, type: type, presenter: presenter)
-        } catch _ {
-            let alert = LocalString._cant_decrypt_this_attachment.alertController();
-            alert.addOKAction()
-            presenter(alert)
-        }
-    }
-    
-    private func quickLook(clearfileURL: URL,
-                           fileName:String,
-                           type: String,
-                           presenter: (UIViewController)->Void)
-    {
-        self.tempClearFileURL = clearfileURL // will use it in DataSource
-        
-        // FIXME: use UTI here
-        guard (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-            let pkfile = try? Data(contentsOf: clearfileURL) else
-        {
-            let previewQL = QuickViewViewController()
-            previewQL.dataSource = self
-            presenter(previewQL)
-            return
-        }
-        
-        guard let pass = try? PKPass(data: pkfile),
-            let vc = PKAddPassesViewController(pass: pass),
-            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
-            (vc as UIViewController?) != nil else
-        {
-            let previewQL = QuickViewViewController()
-            previewQL.dataSource = self
-            presenter(previewQL)
-            return
-        }
-        
-        presenter(vc)
-    }
-    
-    // delegate, datasource
 
-    internal func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
-    }
-    
-    internal func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return self.tempClearFileURL! as QLPreviewItem
-    }
-    
-    func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        /* Should we remove the clearfile here? */
-//        try? FileManager.default.removeItem(at: self.tempClearFileURL!)
-//        self.tempClearFileURL = nil
+        // FIXME: no way we should store this file cleartext any longer than absolutely needed
+        let tempClearFileURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.fileName.clear)
+        guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys),
+            let _ = try? decryptData.write(to: tempClearFileURL, options: [.atomic]) else
+        {
+            throw Errors._cant_decrypt_this_attachment
+        }
+        
+        clearfile(tempClearFileURL)
     }
 }

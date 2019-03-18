@@ -29,6 +29,7 @@
 import Foundation
 
 class MessageAttachmentsViewController: UIViewController {
+    private var coordinator: MessageAttachmentsCoordinator!
     private var viewModel: MessageAttachmentsViewModel!
     private var height: NSLayoutConstraint! // do we need this shit?
     private var headerViewFrameObservation: NSKeyValueObservation!
@@ -104,7 +105,7 @@ extension MessageAttachmentsViewController: UITableViewDelegate, UITableViewData
         tableView.deselectRow(at: indexPath, animated: true)
         let cell = tableView.cellForRow(at: indexPath) as? AttachmentTableViewCell
         
-        // TODO: this should also happen if tableView will be reloaded while downoading
+        // TODO: this will break if tableView will be reloaded while downoading
         let attachment = self.viewModel.attachments[indexPath.row]
         let pregressUpdate: (Float)->Void = { [weak cell, weak attachment] progress in
             DispatchQueue.main.async {
@@ -118,11 +119,11 @@ extension MessageAttachmentsViewController: UITableViewDelegate, UITableViewData
                 }
             }
         }
-        let fail: (NSError)->Void = { _ in
-            // TODO: error happened during download
-        }
-        self.viewModel.open(attachment, pregressUpdate, fail) { preview in
-            self.present(preview, animated: true, completion: nil)
+
+        self.viewModel.open(attachment, pregressUpdate, self.coordinator.error) { cleartextURL in
+            self.coordinator.quickLook(clearfileURL: cleartextURL,
+                                       fileName: attachment.fileName.clear,
+                                       type: attachment.mimeType)
         }
     }
 }
@@ -146,3 +147,12 @@ extension MessageAttachmentsViewController: ViewModelProtocol {
     }
 }
 
+extension MessageAttachmentsViewController: CoordinatedNew {
+    func set(coordinator: MessageAttachmentsCoordinator) {
+        self.coordinator = coordinator
+    }
+    
+    func getCoordinator() -> CoordinatorNew? {
+        return self.coordinator
+    }
+}

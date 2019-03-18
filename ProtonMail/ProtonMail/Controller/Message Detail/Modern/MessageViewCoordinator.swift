@@ -80,6 +80,7 @@ class MessageViewCoordinator {
             fatalError("No storyboard for creating MessageAttachmentsViewController")
         }
         childController.set(viewModel: childViewModel)
+        childController.set(coordinator: .init(controller: childController))
         return childController
     }
 
