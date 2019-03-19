@@ -101,7 +101,15 @@ public struct Part: CustomStringConvertible {
     var data: Data {
         if self.contentEncoding == .base64,
             let string = String(data: self.body, encoding: .ascii) {
-            let trimmed = string.preg_replace_none_regex("\r\n", replaceto: "")
+            var trimmed = string.preg_replace_none_regex("\r\n", replaceto: "")
+            
+            let count = trimmed.count
+            let remainder = count % 4
+            if remainder > 0 { //workaround fix the padding there. somehow the parser breaks the padding. hard to debug now. 
+                trimmed = trimmed.padding(toLength: count + 4 - remainder,
+                                              withPad: "=",
+                                              startingAt: 0)
+            }
             if let decoded = Data(base64Encoded: trimmed) {
                 return decoded
             }

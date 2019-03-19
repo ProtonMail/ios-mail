@@ -711,7 +711,7 @@ class MessageDataService : Service {
                         if response != nil {
 //                            PMLog.D(response?.json(prettyPrinted: true) ?? "")
                             //TODO need check the respons code
-                            PMLog.D("\(String(describing: response))")
+                            //PMLog.D("\(String(describing: response))")
                             if var msg: [String : Any] = response?["Message"] as? [String : Any] {
                                 msg.removeValue(forKey: "Location")
                                 msg.removeValue(forKey: "Starred")

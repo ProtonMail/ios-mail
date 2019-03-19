@@ -413,6 +413,7 @@ extension Message {
         PMLog.D("Flags: \(self.flag.description)")
         if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
             var body = try decryptBody(keys: sharedUserDataService.addressPrivateKeys, passphrase: passphrase) {
+            //PMLog.D(body)
             if isPgpMime || isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
                     if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
