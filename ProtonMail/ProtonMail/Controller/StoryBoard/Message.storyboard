@@ -28,6 +28,32 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShowImageCell" id="yLx-ge-LPc" customClass="ShowImageCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="yLx-ge-LPc" id="2VJ-gd-eSn">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1gK-K4-ZDj" customClass="ShowImageView" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="zv1-Pm-mbK"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="1gK-K4-ZDj" secondAttribute="trailing" id="LOz-hZ-sxZ"/>
+                                        <constraint firstItem="1gK-K4-ZDj" firstAttribute="top" secondItem="2VJ-gd-eSn" secondAttribute="top" id="MRj-Xw-pjp"/>
+                                        <constraint firstAttribute="bottom" secondItem="1gK-K4-ZDj" secondAttribute="bottom" id="auA-Jl-uhz"/>
+                                        <constraint firstItem="1gK-K4-ZDj" firstAttribute="leading" secondItem="2VJ-gd-eSn" secondAttribute="leading" id="ifB-J0-2qU"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="showImageView" destination="1gK-K4-ZDj" id="nkh-Ni-754"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                     </tableView>
                     <connections>

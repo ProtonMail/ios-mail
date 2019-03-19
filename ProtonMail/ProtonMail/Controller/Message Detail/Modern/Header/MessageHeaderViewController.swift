@@ -68,6 +68,7 @@ class MessageHeaderViewController: UIViewController {
     func updateHeaderData(_ headerData: HeaderData) {
         self.emailHeaderView.updateHeaderData(headerData)
         self.emailHeaderView.updateHeaderLayout()
+        self.emailHeaderView.updateShowImageConstraints()
     }
 }
 

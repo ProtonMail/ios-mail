@@ -36,10 +36,11 @@ class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
     private var viewModel: MessageBodyViewModel!
-    private var observation: NSKeyValueObservation!
+    private var contentsObservation: NSKeyValueObservation!
     
     private var height: NSLayoutConstraint!
     private var lastZoom: CGAffineTransform = .identity
+    private var contentSizeObservation: NSKeyValueObservation! // used to update content size after loading images
     
     internal weak var enclosingScroller: MessageBodyScrollingDelegate?
     private var verticalRecognizer: UIPanGestureRecognizer!
@@ -174,6 +175,11 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
 extension MessageBodyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.updateHeight(to: webView.scrollView.contentSize.height)
+        self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.old, .new]) { [weak self] scrollView, change in
+            guard let old = change.oldValue, let new = change.newValue,
+                old.height != new.height else { return }
+            self?.updateHeight(to: new.height)
+        }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -188,6 +194,7 @@ extension MessageBodyViewController: WKNavigationDelegate {
             
         default:
             decisionHandler(.allow)
+            self.contentSizeObservation = nil
         }
     }
     
@@ -199,6 +206,7 @@ extension MessageBodyViewController: WKNavigationDelegate {
 
 extension MessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
+        self.contentSizeObservation = nil
         self.lastZoom = view?.transform ?? .identity
     }
     
@@ -220,7 +228,7 @@ extension MessageBodyViewController: UIScrollViewDelegate {
 extension MessageBodyViewController: ViewModelProtocol {
     func set(viewModel: MessageBodyViewModel) {
         self.viewModel = viewModel
-        self.observation = self.viewModel.observe(\.contents) { [weak self] viewModel, _ in
+        self.contentsObservation = self.viewModel.observe(\.contents) { [weak self] viewModel, _ in
             guard let webView = self?.webView else { return }
             self?.loader.load(contents: viewModel.contents, in: webView)
         }

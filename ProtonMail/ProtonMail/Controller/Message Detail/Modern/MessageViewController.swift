@@ -77,8 +77,7 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
             let message = self.viewModel.message(for: standalone)!
             let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
             let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
-            let body = MessageBodyViewModel(parentViewModel: standalone,
-                                            remoteContentMode: self.viewModel.remoteContentMode)
+            let body = MessageBodyViewModel(parentViewModel: standalone)
             return (head, body, attachments)
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
@@ -106,14 +105,27 @@ extension MessageViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
 
-        switch Standalone.Divisions(rawValue: indexPath.row) {
-        case .some(.header): self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
-        case .some(.attachments): self.coordinator.embedAttachments(index: indexPath.section, onto: cell.contentView)
-        case .some(.body): self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
-        default: cell.backgroundColor = .yellow
+        switch self.viewModel.thread[indexPath.section].divisions[indexPath.row] {
+        case .header: self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
+        case .attachments: self.coordinator.embedAttachments(index: indexPath.section, onto: cell.contentView)
+        case .body: self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
+        case .remoteContent:
+            guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: "ShowImageCell", for: indexPath) as? ShowImageCell else {
+                assert(false, "Failed to dequeue ShowImageCell")
+                cell.backgroundColor = .magenta
+                return cell
+            }
+            newCell.showImageView.delegate = self
+            return newCell
         }
         
         return cell
+    }
+}
+
+extension MessageViewController: ShowImageViewDelegate {
+    func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
+        self.viewModel.thread.forEach { $0.remoteContentMode = .allowed }
     }
 }
 
@@ -170,17 +182,27 @@ extension MessageViewController {
             self?.tableView.endUpdates()
         }
         self.standalonesObservation.append(head)
+        
         let attachments = standalone.observe(\.heightOfAttachments) { [weak self] standalone, _ in
             guard let section = self?.viewModel.thread.firstIndex(of: standalone) else { return}
             let indexPath = IndexPath(row: Standalone.Divisions.attachments.rawValue, section: section)
             self?.tableView.reloadRows(at: [indexPath], with: .fade)
         }
         self.standalonesObservation.append(attachments)
+        
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
         }
         self.standalonesObservation.append(body)
+        
+        let divisions = standalone.observe(\.divisionsCount, options: [.new, .old]) { [weak self] standalone, change in
+            guard let old = change.oldValue, let new = change.newValue, old != new else { return }
+            if let index = self?.viewModel.thread.firstIndex(of: standalone) {
+                self?.tableView.reloadSections(IndexSet(integer: index), with: .fade)
+            }
+        }
+        self.standalonesObservation.append(divisions)
     }
 }
 

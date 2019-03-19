@@ -101,7 +101,7 @@ extension MessageAttachmentsViewModel {
             setProgress(0.0)
             sharedAPIService.getSession().setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
                 guard taskOne == taskTwo else { return }
-                var progress = Float(totalBytesWritten) / totalValue
+                let progress = Float(totalBytesWritten) / totalValue
                 setProgress(progress)
             }
         }, completion: { _, url, networkingError in

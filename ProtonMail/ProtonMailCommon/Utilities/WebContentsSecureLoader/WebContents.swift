@@ -42,8 +42,8 @@ class WebContents: NSObject {
         return self.remoteContentMode.cspRaw
     }
     
-    enum RemoteContentPolicy {
-        case allowed, disallowed, lockdown
+    enum RemoteContentPolicy: Int {
+        case allowed=0, disallowed, lockdown
         
         var cspRaw: String {
             switch self {

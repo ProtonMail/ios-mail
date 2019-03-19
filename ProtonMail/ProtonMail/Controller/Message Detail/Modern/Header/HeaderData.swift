@@ -38,12 +38,11 @@ class HeaderData: NSObject {
     let isStarred: Bool
     let time: Date?
     let labels: [Label]?
-    let showShowImages: Bool
     let expiration: Date?
     let score: Message.SpamScore
     let isSent: Bool
     
-    init(message: Message, showShowImages: Bool) {
+    init(message: Message) {
         self.title = message.subject
         self.sender = message.senderContactVO
         self.to = message.toList.toContacts()
@@ -55,9 +54,6 @@ class HeaderData: NSObject {
         self.expiration = message.expirationTime
         self.score = message.getScore()
         self.isSent = message.contains(label: .sent)
-        
-        // FIXME: should not be part of header
-        self.showShowImages = showShowImages
     }
 }
 
@@ -71,7 +67,7 @@ extension EmailHeaderView {
                               isStarred: headerData.isStarred,
                               time: headerData.time,
                               labels: headerData.labels,
-                              showShowImages: headerData.showShowImages,
+                              showShowImages: false,
                               expiration: headerData.expiration,
                               score: headerData.score,
                               isSent: headerData.isSent)

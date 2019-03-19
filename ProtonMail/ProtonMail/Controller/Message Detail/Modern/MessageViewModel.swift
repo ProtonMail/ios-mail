@@ -31,7 +31,6 @@ import Foundation
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageViewModel: NSObject {
-    private(set) var remoteContentMode: WebContents.RemoteContentPolicy = .lockdown
     private(set) var messages: [Message]
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
