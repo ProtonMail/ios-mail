@@ -904,6 +904,8 @@ extension ContactEditViewController: UITableViewDelegate {
                 self.tableView.insertRows(at: [indexPath], with: .automatic)
             }
         case .delete:
+            
+            let sender = tableView.cellForRow(at: indexPath)
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
             alertController.addAction(UIAlertAction(title: LocalString._delete_contact, style: .destructive, handler: { (action) -> Void in
@@ -921,8 +923,8 @@ extension ContactEditViewController: UITableViewDelegate {
                 })
             }))
             
-            alertController.popoverPresentationController?.sourceView = self.view
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            alertController.popoverPresentationController?.sourceView = tableView
+            alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
             present(alertController, animated: true, completion: nil)
         case .upgrade, .share:
             break

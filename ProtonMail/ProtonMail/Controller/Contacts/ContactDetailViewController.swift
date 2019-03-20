@@ -238,7 +238,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     @IBAction func didTapShareContact(_ sender: UIButton) {
-        shareVcard()
+        shareVcard(sender)
     }
     
     
@@ -621,13 +621,14 @@ extension ContactDetailViewController: UITableViewDelegate {
             LocalString._invalid_url.alertToastBottom()
            
         case .share:
-            shareVcard()
+            let cell = tableView.cellForRow(at: indexPath)
+            shareVcard(cell)
         default:
             break
         }
     }
     
-    private func shareVcard() {
+    private func shareVcard(_ sender : UIView?) {
         let exported = viewModel.export()
         if !exported.isEmpty {
             let filename = viewModel.exportName()
@@ -638,8 +639,8 @@ extension ContactDetailViewController: UITableViewDelegate {
             // set up activity view controller
             let urlToShare = [ tempFileUri ]
             let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-            
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            activityViewController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
             // exclude some activity types from the list (optional)
             activityViewController.excludedActivityTypes = [ .postToFacebook,
                                                              .postToTwitter,
@@ -660,3 +661,18 @@ extension ContactDetailViewController: UITableViewDelegate {
     }
 }
 
+//
+//func handleSignOut(_ sender : UIView?) {
+//    let alertController = UIAlertController(title: LocalString._general_confirm_action, message: nil, preferredStyle: .actionSheet)
+//    alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
+//        self.signingOut = true
+//        UserTempCachedStatus.backup()
+//        sharedUserDataService.signOut(true)
+//        userCachedStatus.signOut()
+//    }))
+//    alertController.popoverPresentationController?.sourceView = sender ?? self.view
+//    alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
+//    alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+//    self.sectionClicked = false
+//    self.present(alertController, animated: true, completion: nil)
+//}
