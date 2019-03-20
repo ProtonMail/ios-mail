@@ -38,7 +38,6 @@ class HeaderData: NSObject {
     let isStarred: Bool
     let time: Date?
     let labels: [Label]?
-    let expiration: Date?
     let score: Message.SpamScore
     let isSent: Bool
     
@@ -51,7 +50,6 @@ class HeaderData: NSObject {
         self.isStarred = message.starred
         self.time = message.time
         self.labels = message.labels.allObjects as? [Label]
-        self.expiration = message.expirationTime
         self.score = message.getScore()
         self.isSent = message.contains(label: .sent)
     }
@@ -68,7 +66,7 @@ extension EmailHeaderView {
                               time: headerData.time,
                               labels: headerData.labels,
                               showShowImages: false,
-                              expiration: headerData.expiration,
+                              expiration: nil,
                               score: headerData.score,
                               isSent: headerData.isSent)
     }

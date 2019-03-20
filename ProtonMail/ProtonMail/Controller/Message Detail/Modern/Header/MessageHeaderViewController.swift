@@ -51,8 +51,8 @@ class MessageHeaderViewController: UIViewController {
             guard self?.viewModel.contentsHeight != headerView.frame.size.height else {
                 return
             }
-            self?.height.constant = headerView.frame.size.height
-            self?.viewModel.contentsHeight = headerView.frame.size.height
+            self?.height.constant = headerView.frame.size.height - 8
+            self?.viewModel.contentsHeight = headerView.frame.size.height - 8
         }
         
         self.viewModelObservation = self.viewModel.observe(\.headerData) { [weak self] viewModel, _ in

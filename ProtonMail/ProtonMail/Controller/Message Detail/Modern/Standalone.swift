@@ -33,14 +33,14 @@ class Standalone: NSObject {
     
     internal enum Divisions: Int { // TODO: refactor with OptionSet
         // each division is perpresented by a single row in tableView
-        case header = 0, attachments, remoteContent, body
-        static let totalNumber = 4 // TODO: update when new Swift will be available
+        case header = 0, attachments, remoteContent, body, expiration
     }
     
     internal let messageID: String
     @objc internal dynamic var body: String
     @objc internal dynamic var header: HeaderData
     @objc internal dynamic var attachments: [AttachmentInfo]
+    internal let expiration: Date?
     
     @objc internal dynamic var heightOfHeader: CGFloat = 0.0
     @objc internal dynamic var heightOfBody: CGFloat = 0.0
@@ -63,6 +63,10 @@ class Standalone: NSObject {
     }
     
     init(message: Message) {
+        // 0. expiration
+        self.expiration = message.expirationTime
+        let expired = (self.expiration ?? .distantFuture).compare(Date()) == .orderedAscending
+        
         // 1. header
         self.header = HeaderData(message: message)
         
@@ -73,6 +77,9 @@ class Standalone: NSObject {
         } catch let ex as NSError {
             PMLog.D("purifyEmailBody error : \(ex)")
             body = message.bodyToHtml()
+        }
+        if expired {
+            body = LocalString._message_expired
         }
         self.body = body
         
@@ -87,14 +94,16 @@ class Standalone: NSObject {
                                     ? WebContents.RemoteContentPolicy.allowed.rawValue
                                     : WebContents.RemoteContentPolicy.disallowed.rawValue
         
-        
         // 5. divisions
         self.divisions = []
         self.divisions.append(.header)
-        if !self.attachments.isEmpty {
+        if self.expiration != nil {
+            self.divisions.append(.expiration)
+        }
+        if !self.attachments.isEmpty, !expired  {
             self.divisions.append(.attachments)
         }
-        if self.remoteContentModeObservable != WebContents.RemoteContentPolicy.allowed.rawValue {
+        if self.remoteContentModeObservable != WebContents.RemoteContentPolicy.allowed.rawValue, !expired {
             self.divisions.append(.remoteContent)
         }
         self.divisions.append(.body)
@@ -106,6 +115,12 @@ class Standalone: NSObject {
         super.init()
         
         self.showEmbedImage(message, body: self.body)
+        
+        if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
+                self?.reload(from: message)
+            }
+        }
     }
     
     internal func reload(from message: Message) {

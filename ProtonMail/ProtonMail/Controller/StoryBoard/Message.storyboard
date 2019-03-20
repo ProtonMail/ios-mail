@@ -20,7 +20,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UITableViewCell" id="Ffz-Ji-z3Z">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmbedCell" id="Ffz-Ji-z3Z">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ffz-Ji-z3Z" id="csC-xa-zcC">
@@ -52,6 +52,32 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="showImageView" destination="1gK-K4-ZDj" id="nkh-Ni-754"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ExpirationCell" id="uky-Yt-pgZ" customClass="ExpirationCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="116" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uky-Yt-pgZ" id="2r0-cd-IZp">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MSw-Bb-mOA" customClass="ExpirationView" customModule="ProtonMail" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="36" id="8vP-kR-rcn"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="MSw-Bb-mOA" firstAttribute="leading" secondItem="2r0-cd-IZp" secondAttribute="leading" id="C43-ju-gKE"/>
+                                        <constraint firstAttribute="bottom" secondItem="MSw-Bb-mOA" secondAttribute="bottom" id="IbR-Zb-Dhg"/>
+                                        <constraint firstAttribute="trailing" secondItem="MSw-Bb-mOA" secondAttribute="trailing" id="tzu-M1-KYR"/>
+                                        <constraint firstItem="MSw-Bb-mOA" firstAttribute="top" secondItem="2r0-cd-IZp" secondAttribute="top" id="w6X-fs-ffq"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="expirationView" destination="MSw-Bb-mOA" id="6Q0-8l-aO9"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

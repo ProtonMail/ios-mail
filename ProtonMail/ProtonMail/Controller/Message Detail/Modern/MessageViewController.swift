@@ -103,22 +103,34 @@ extension MessageViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-
-        switch self.viewModel.thread[indexPath.section].divisions[indexPath.row] {
+        let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmbedCell", for: indexPath)
+        let standalone = self.viewModel.thread[indexPath.section]
+        
+        switch standalone.divisions[indexPath.row] {
         case .header: self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
         case .attachments: self.coordinator.embedAttachments(index: indexPath.section, onto: cell.contentView)
         case .body: self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
         case .remoteContent:
-            guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: "ShowImageCell", for: indexPath) as? ShowImageCell else {
+            guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ShowImageCell.self), for: indexPath) as? ShowImageCell else
+            {
                 assert(false, "Failed to dequeue ShowImageCell")
                 cell.backgroundColor = .magenta
                 return cell
             }
             newCell.showImageView.delegate = self
             return newCell
+            
+        case .expiration:
+            guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationCell.self), for: indexPath) as? ExpirationCell,
+                let expiration = standalone.expiration else
+            {
+                assert(false, "Failed to dequeue ExpirationCell")
+                cell.backgroundColor = .yellow
+                return cell
+            }
+            newCell.set(expiration: expiration)
+            return newCell
         }
-        
         return cell
     }
 }
