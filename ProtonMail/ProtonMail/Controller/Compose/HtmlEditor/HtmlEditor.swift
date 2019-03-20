@@ -332,21 +332,30 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         }
     }
     
-    /// update signature
+    /// update signature, impl will handle the character escape
     ///
-    /// - Parameter html: the html signatue, don't need to escape
+    /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
         self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTMLStringSecureLoader.domPurifyConfiguration));").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
     
+    /// Update embed image. designed only support images with based64 encoded
+    ///
+    /// - Parameters:
+    ///   - cid: embed image content id
+    ///   - blob: based64 encoded. don't need run escape
     func update(embedImage cid : String, encoded blob : String) {
-        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(blob.escaped)\");").catch { (error) in
+        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(blob)\");").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
     
+    
+    /// remove exsiting embed by cid
+    ///
+    /// - Parameter cid: the embed image content id
     func remove(embedImage cid : String) {
         self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
