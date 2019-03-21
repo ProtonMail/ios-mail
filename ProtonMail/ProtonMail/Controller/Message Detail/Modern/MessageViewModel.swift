@@ -95,8 +95,33 @@ class MessageViewModel: NSObject {
         }
     }
     
-    internal func print(_ webView: UIView) -> URL { // TODO: this one will not work for threads
-        fatalError()
+    internal func print(_ parts: [UIPrintPageRenderer]) -> URL { // TODO: this one will not work for threads
+        guard let message = self.messages.first else {
+            assert(false, "No messages in thread")
+            return URL(fileURLWithPath: "")
+        }
+        
+        var filename = message.subject
+        filename = filename.preg_replace("[^a-zA-Z0-9_]+", replaceto: "-")
+        let documentsPath = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("\(filename).pdf")
+        PMLog.D(documentsPath.absoluteString)
+        
+        let pdfData = NSMutableData()
+        UIGraphicsBeginPDFContextToData(pdfData, CGRect.zero, nil)
+        
+        let bounds = UIGraphicsGetPDFContextBounds()
+        let numberOfPages = parts.reduce(0, { maximum, renderer -> Int in
+            return max(maximum, renderer.numberOfPages)
+        })
+        for i in 0..<numberOfPages {
+            UIGraphicsBeginPDFPage();
+            PMLog.D("\(bounds)")
+            parts.forEach { $0.drawPage(at: i, in: bounds) }
+        }
+        UIGraphicsEndPDFContext()
+
+        try? pdfData.write(to: documentsPath, options: [.atomic])
+        return documentsPath
     }
     
     internal func headersTemporaryUrl() -> URL { // TODO: this one will not work for threads

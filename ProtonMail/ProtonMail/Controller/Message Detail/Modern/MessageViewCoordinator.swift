@@ -29,6 +29,10 @@
 import Foundation
 import QuickLook
 
+protocol PdfPagePrintable {
+    func printPageRenderer() -> UIPrintPageRenderer
+}
+
 class MessageViewCoordinator: NSObject {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
@@ -93,6 +97,13 @@ class MessageViewCoordinator: NSObject {
         return childController
     }
 
+    internal func printableChildren() -> [PdfPagePrintable] {
+        var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
+        children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
+        children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
+        return children
+    }
+    
     // Embed subviews
     
     internal func embedBody(index: Int, onto view: UIView) {

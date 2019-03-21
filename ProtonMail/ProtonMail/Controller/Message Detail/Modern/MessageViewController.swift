@@ -90,41 +90,20 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         
         self.viewModel.locationsForMoreButton().map { location -> UIAlertAction in
-            .init(title: location.actionTitle,
-                                 style: .default) { [weak self] _ in
+            .init(title: location.actionTitle, style: .default) { [weak self] _ in
                 self?.viewModel.moveThread(to: location)
                 self?.coordinator.dismiss()
             }
         }.forEach(alertController.addAction)
         
-        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { _ in
-            let url = self.viewModel.print(self.tableView)
-            self.coordinator.previewQuickLook(for: url)
-        }))
-        
-        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
-            let url = self.viewModel.headersTemporaryUrl()
-            self.coordinator.previewQuickLook(for: url)
-        }))
-        
+        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: self.printButtonTapped))
+        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: self.viewHeadersButtonTapped))
         alertController.addAction(.init(title: LocalString._report_phishing, style: .destructive, handler: { _ in
             let alert = UIAlertController(title: LocalString._confirm_phishing_report,
                                           message: LocalString._reporting_a_message_as_a_phishing_,
                                           preferredStyle: .alert)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in }))
-            alert.addAction(.init(title: LocalString._general_confirm_action, style: .default, handler: { _ in
-                MBProgressHUD.showAdded(to: self.view, animated: true)
-                self.viewModel.reportPhishing() { error in
-                    guard error == nil else {
-                        let alert = error!.alertController()
-                        alert.addOKAction()
-                        self.present(alert, animated: true, completion: nil)
-                        return
-                    }
-                    self.viewModel.moveThread(to: .spam)
-                    self.coordinator.dismiss()
-                }
-            }))
+            alert.addAction(.init(title: LocalString._general_confirm_action, style: .default, handler: self.reportPhishingButtonTapped))
             self.present(alert, animated: true, completion: nil)
         }))
         
@@ -132,6 +111,31 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc func reportPhishingButtonTapped(_ sender: Any) {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        self.viewModel.reportPhishing() { error in
+            guard error == nil else {
+                let alert = error!.alertController()
+                alert.addOKAction()
+                self.present(alert, animated: true, completion: nil)
+                return
+            }
+            self.viewModel.moveThread(to: .spam)
+            self.coordinator.dismiss()
+        }
+    }
+    @objc func printButtonTapped(_ sender: Any) {
+        let children = self.coordinator.printableChildren()
+        // here we can add printable cells data if needed
+        let childrenData = children.map { $0.printPageRenderer() }
+        let url = self.viewModel.print(childrenData)
+        self.coordinator.previewQuickLook(for: url)
+    }
+    @objc func viewHeadersButtonTapped(_ sender: Any) {
+        let url = self.viewModel.headersTemporaryUrl()
+        self.coordinator.previewQuickLook(for: url)
     }
     @objc func topTrashButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.removeThread()
