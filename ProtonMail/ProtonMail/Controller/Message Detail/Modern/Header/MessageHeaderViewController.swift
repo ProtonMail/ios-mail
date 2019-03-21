@@ -42,6 +42,7 @@ class MessageHeaderViewController: UIViewController {
         self.emailHeaderView.backgroundColor = .white
         self.emailHeaderView.viewDelegate = self
         self.emailHeaderView.inject(recepientDelegate: self)
+        self.emailHeaderView.inject(delegate: self)
         
         self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
         self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
@@ -69,6 +70,10 @@ class MessageHeaderViewController: UIViewController {
         self.emailHeaderView.updateHeaderData(headerData)
         self.emailHeaderView.updateHeaderLayout()
         self.emailHeaderView.updateShowImageConstraints()
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.coordinator.prepare(for: segue, sender: sender)
     }
 }
 
@@ -106,5 +111,27 @@ extension MessageHeaderViewController: RecipientViewDelegate {
     
     func recipientView(lockCheck model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.recipientView(lockCheck: model, progress: progress, complete: complete)
+    }
+}
+
+extension MessageHeaderViewController: EmailHeaderActionsProtocol {
+    func quickLook(attachment tempfile: URL, keyPackage: Data, fileName: String, type: String) {
+        fatalError("Stub until emailHeaderView rewrite")
+    }
+    
+    func quickLook(file: URL, fileName: String, type: String) {
+        fatalError("Stub until emailHeaderView rewrite")
+    }
+    
+    func star(changed isStarred: Bool) {
+        self.viewModel.star(isStarred)
+    }
+    
+    func downloadFailed(error: NSError) {
+        fatalError("Stub until emailHeaderView rewrite")
+    }
+    
+    func showImage() {
+        fatalError("Stub until emailHeaderView rewrite")
     }
 }

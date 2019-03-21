@@ -48,6 +48,10 @@ class MessageHeaderViewModel: NSObject {
 }
 
 extension MessageHeaderViewModel {
+    internal func star(_ isStarred: Bool) {
+        sharedMessageDataService.label(message: self.message, label: Message.Location.starred.rawValue, apply: isStarred)
+    }
+    
     internal func notes(for model: ContactPickerModelProtocol) -> String {
         return model.notes(type: self.message.contains(label: .sent) ? 2 : 1)
     }

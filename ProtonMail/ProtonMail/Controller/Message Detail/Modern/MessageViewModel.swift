@@ -52,6 +52,22 @@ class MessageViewModel: NSObject {
         self.thread = [Standalone(message: message)]
     }
     
+    internal func locationsForMoreButton() -> [Message.Location] {
+        let locations: Array<Message.Location> = [.inbox, .spam, .archive]
+        let message = self.messages.first!
+        let suitableLocations = locations.filter {
+            !message.contains(label: $0) && !(message.contains(label: .sent) && $0 == .inbox)
+        }
+        return suitableLocations
+    }
+    
+    internal func moveThread(to location: Message.Location) {
+        messages.forEach { message in
+            guard let label = message.firstValidFolder() else { return }
+            sharedMessageDataService.move(message: message, from: label, to: location.rawValue)
+        }
+    }
+    
     internal func reload(message: Message) {
         let standalone = self.thread.first { $0.messageID == message.messageID }!
         standalone.reload(from: message)
@@ -60,6 +76,56 @@ class MessageViewModel: NSObject {
     internal func reload(message: Message, with bodyPlaceholder: String) {
         let standalone = self.thread.first { $0.messageID == message.messageID }!
         standalone.body = bodyPlaceholder
+    }
+    
+    internal func markThread(read: Bool) {
+        self.messages.forEach {
+            sharedMessageDataService.mark(message: $0, unRead: !read)
+        }
+    }
+    internal func removeThread() {
+        self.messages.forEach { message in
+            if message.contains(label: .trash) || message.contains(label: .spam) {
+                sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
+            } else {
+                if let label = message.firstValidFolder() {
+                    sharedMessageDataService.move(message: message, from: label, to: Message.Location.trash.rawValue)
+                }
+            }
+        }
+    }
+    
+    internal func print(_ webView: UIView) -> URL { // TODO: this one will not work for threads
+        fatalError()
+    }
+    
+    internal func headersTemporaryUrl() -> URL { // TODO: this one will not work for threads
+        guard let message = self.messages.first else {
+            assert(false, "No messages in thread")
+            return URL(fileURLWithPath: "")
+        }
+        let headers = message.header
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let filename = formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+        let tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
+        try? FileManager.default.removeItem(at: tempFileUri)
+        try? headers?.write(to: tempFileUri, atomically: true, encoding: .utf8)
+        return tempFileUri
+    }
+    
+    internal func reportPhishing(completion: @escaping (NSError?)->Void) { // TODO: this one will not work for threads
+        guard let standalone = self.thread.first else {
+            completion(NSError())
+            assert(false, "No standalones in thread")
+            return
+        }
+
+        BugDataService().reportPhishing(messageID: standalone.messageID, messageBody: standalone.body) { error in
+            completion(error)
+        }
     }
     
     internal func errorWhileReloading(message: Message, error: NSError) {

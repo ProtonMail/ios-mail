@@ -163,6 +163,10 @@ class MessageBodyViewController: UIViewController {
         super.viewWillTransition(to: size, with: coordinator)
         self.reload()
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.coordinator.prepare(for: segue, sender: sender)
+    }
 }
 
 extension MessageBodyViewController: UIGestureRecognizerDelegate {

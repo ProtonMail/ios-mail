@@ -51,6 +51,10 @@ extension EmailHeaderView {
         self.emailBccTable.delegate = recepientDelegate
     }
     
+    func inject(delegate: EmailHeaderActionsProtocol) {
+        self._delegate = delegate
+    }
+    
     override func prepareForInterfaceBuilder() {
         self.backgroundColor = .orange
     }

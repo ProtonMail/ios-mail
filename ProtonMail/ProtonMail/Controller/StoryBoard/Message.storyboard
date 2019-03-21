@@ -84,9 +84,7 @@
                     </tableView>
                     <connections>
                         <outlet property="backButton" destination="arx-Gv-Wg6" id="Hvn-1D-th3"/>
-                        <segue destination="W5K-yA-by7" kind="show" identifier="toComposeTest" id="TSH-Ac-bSE"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="65G-HP-Tpi"/>
-                        <segue destination="Uat-2a-auI" kind="show" identifier="toAddContact" id="yQH-mO-Mew"/>
                         <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toApplyLabelsSegue" id="bQe-It-tkY"/>
                         <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toMoveToFolderSegue" id="bvG-si-qmN"/>
                     </connections>
@@ -94,7 +92,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qpt-VD-rqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem title="Test asklfjal" id="arx-Gv-Wg6" userLabel="back_button"/>
             </objects>
-            <point key="canvasLocation" x="4290" y="2690"/>
+            <point key="canvasLocation" x="4238" y="2494"/>
         </scene>
         <!--Message Header View Controller-->
         <scene sceneID="ENd-qS-BJ0">
@@ -120,11 +118,13 @@
                     </view>
                     <connections>
                         <outlet property="emailHeaderView" destination="L62-ce-pTq" id="HOy-a7-EmD"/>
+                        <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="P28-ul-dIc"/>
+                        <segue destination="Uat-2a-auI" kind="show" identifier="toAddContact" id="ct4-9j-xhR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZjP-8h-OPl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3978" y="2012"/>
+            <point key="canvasLocation" x="4238" y="3209"/>
         </scene>
         <!--Message Body View Controller-->
         <scene sceneID="8oQ-Jh-7y5">
@@ -136,10 +136,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="519-MJ-E4m"/>
                     </view>
+                    <connections>
+                        <segue destination="W5K-yA-by7" kind="show" identifier="toCompose" id="iUb-3s-iQk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="abS-z4-N4h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4754" y="2020"/>
+            <point key="canvasLocation" x="4238" y="3903"/>
         </scene>
         <!--Message Attachments View Controller-->
         <scene sceneID="7k5-Vb-eP0">
@@ -183,7 +186,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Q5F-GM-nNB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5449" y="2020"/>
+            <point key="canvasLocation" x="5249" y="3903"/>
         </scene>
         <!--ref_labels_view_controller-->
         <scene sceneID="w1a-ik-9gd">
@@ -199,7 +202,7 @@
                 <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="W5K-yA-by7" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5id-sx-xk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3734" y="3183"/>
+            <point key="canvasLocation" x="5298" y="2614"/>
         </scene>
         <!--UINavigationController-d3P-H0-xNt-->
         <scene sceneID="1lu-mM-Eu8">
@@ -207,11 +210,11 @@
                 <viewControllerPlaceholder storyboardName="Contact" referencedIdentifier="UINavigationController-d3P-H0-xNt" id="Uat-2a-auI" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Xfj-N4-wwY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5126" y="3154"/>
+            <point key="canvasLocation" x="5349" y="2716"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="65G-HP-Tpi"/>
+        <segue reference="iUb-3s-iQk"/>
         <segue reference="bvG-si-qmN"/>
     </inferredMetricsTieBreakers>
 </document>

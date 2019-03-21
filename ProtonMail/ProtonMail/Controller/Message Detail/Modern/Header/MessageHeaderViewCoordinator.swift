@@ -30,8 +30,6 @@ import Foundation
 
 class MessageHeaderViewCoordinator {
     private let kToComposerSegue : String    = "toCompose"
-    private let kSegueMoveToFolders : String = "toMoveToFolderSegue"
-    private let kSegueToApplyLabels : String = "toApplyLabelsSegue"
     private let kToAddContactSegue : String  = "toAddContact"
     
     private weak var controller: MessageHeaderViewController!
@@ -72,6 +70,24 @@ class MessageHeaderViewCoordinator {
     
     func recipientView(at cell: RecipientCell, lockClicked lock: UIButton, model: ContactPickerModelProtocol) {
         self.controller.viewModel.notes(for: model).alertToastBottom()
+    }
+    
+    internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
+                let composeViewController = segue.destination.children[0] as! ComposeViewController
+                sharedVMService.newDraft(vmp: composeViewController)
+                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+                viewModel.addToContacts(contact)
+                let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                     vm: viewModel, services: ServiceFactory.default) //set view model
+                coordinator.start()
+            
+        } else if segue.identifier == kToAddContactSegue {
+            if let contact = sender as? ContactVO {
+                let addContactViewController = segue.destination.children[0] as! ContactEditViewController
+                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+            }
+        }
     }
 }
 

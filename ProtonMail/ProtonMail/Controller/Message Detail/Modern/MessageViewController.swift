@@ -27,6 +27,7 @@
 
 
 import UIKit
+import MBProgressHUD
 
 class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMailViewControllerProtocol {
     
@@ -53,7 +54,6 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     override func viewDidLoad() {
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
 
         // table view
         self.tableView.rowHeight = UITableView.automaticDimension
@@ -62,16 +62,17 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         
         // navigation bar buttons
         var rightButtons: [UIBarButtonItem] = []
-        rightButtons.append(.init(image: UIImage(named: "top_more"), style: .plain, target: self, action: #selector(mock)))
-        rightButtons.append(.init(image: UIImage(named: "top_trash"), style: .plain, target: self, action: #selector(mock)))
-        rightButtons.append(.init(image: UIImage(named: "top_folder"), style: .plain, target: self, action: #selector(mock)))
-        rightButtons.append(.init(image: UIImage(named: "top_label"), style: .plain, target: self, action: #selector(mock)))
-        rightButtons.append(.init(image: UIImage(named: "top_unread"), style: .plain, target: self, action: #selector(mock)))
+        rightButtons.append(.init(image: UIImage(named: "top_more"), style: .plain, target: self, action: #selector(topMoreButtonTapped)))
+        rightButtons.append(.init(image: UIImage(named: "top_trash"), style: .plain, target: self, action: #selector(topTrashButtonTapped)))
+        rightButtons.append(.init(image: UIImage(named: "top_folder"), style: .plain, target: self, action: #selector(topFolderButtonTapped)))
+        rightButtons.append(.init(image: UIImage(named: "top_label"), style: .plain, target: self, action: #selector(topLabelButtonTapped)))
+        rightButtons.append(.init(image: UIImage(named: "top_unread"), style: .plain, target: self, action: #selector(topUnreadButtonTapped)))
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
         
         let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
             let message = self.viewModel.message(for: standalone)!
@@ -84,12 +85,76 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         self.coordinator.createChildControllers(with: childViewModels)
     }
     
-    @objc func mock() {
-        fatalError("Implement me!")
+    @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
+        let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        
+        self.viewModel.locationsForMoreButton().map { location -> UIAlertAction in
+            .init(title: location.actionTitle,
+                                 style: .default) { [weak self] _ in
+                self?.viewModel.moveThread(to: location)
+                self?.coordinator.dismiss()
+            }
+        }.forEach(alertController.addAction)
+        
+        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: { _ in
+            let url = self.viewModel.print(self.tableView)
+            self.coordinator.previewQuickLook(for: url)
+        }))
+        
+        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: { _ in
+            let url = self.viewModel.headersTemporaryUrl()
+            self.coordinator.previewQuickLook(for: url)
+        }))
+        
+        alertController.addAction(.init(title: LocalString._report_phishing, style: .destructive, handler: { _ in
+            let alert = UIAlertController(title: LocalString._confirm_phishing_report,
+                                          message: LocalString._reporting_a_message_as_a_phishing_,
+                                          preferredStyle: .alert)
+            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in }))
+            alert.addAction(.init(title: LocalString._general_confirm_action, style: .default, handler: { _ in
+                MBProgressHUD.showAdded(to: self.view, animated: true)
+                self.viewModel.reportPhishing() { error in
+                    guard error == nil else {
+                        let alert = error!.alertController()
+                        alert.addOKAction()
+                        self.present(alert, animated: true, completion: nil)
+                        return
+                    }
+                    self.viewModel.moveThread(to: .spam)
+                    self.coordinator.dismiss()
+                }
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }))
+        
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        
+        self.present(alertController, animated: true, completion: nil)
+    }
+    @objc func topTrashButtonTapped(_ sender: UIBarButtonItem) {
+        self.viewModel.removeThread()
+        self.coordinator.dismiss()
+    }
+    @objc func topFolderButtonTapped(_ sender: UIBarButtonItem) {
+        self.coordinator.go(to: .folders)
+    }
+    @objc func topLabelButtonTapped() {
+        self.coordinator.go(to: .labels)
+    }
+    @objc func topUnreadButtonTapped(_ sender: UIBarButtonItem) {
+        self.viewModel.markThread(read: false)
+        self.coordinator.dismiss()
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // FIXME: this is good only for labels and folders
+        self.coordinator.prepare(for: segue, sender: self.viewModel.messages)
     }
 }
 

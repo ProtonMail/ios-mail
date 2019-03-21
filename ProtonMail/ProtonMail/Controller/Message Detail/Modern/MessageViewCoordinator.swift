@@ -27,14 +27,23 @@
     
 
 import Foundation
+import QuickLook
 
-class MessageViewCoordinator {
+class MessageViewCoordinator: NSObject {
+    internal enum Destinations: String {
+        case folders = "toMoveToFolderSegue"
+        case labels = "toApplyLabelsSegue"
+    }
     private weak var controller: MessageViewController!
+    private var tempClearFileURL: URL?
     
     init(controller: MessageViewController) {
         self.controller = controller
     }
     
+    internal func go(to destination: Destinations) {
+        self.controller.performSegue(withIdentifier: destination.rawValue, sender: nil)
+    }
     
     // Create controllers
     
@@ -120,8 +129,65 @@ class MessageViewCoordinator {
         view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
         view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
     }
+    
+    internal func dismiss() {
+        self.controller.navigationController?.popViewController(animated: true)
+    }
+    
+    internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch Destinations(rawValue: segue.identifier!) {
+        case .some(.labels):
+            guard let messages = sender as? [Message] else { return }
+            let popup = segue.destination as! LablesViewController
+            popup.viewModel = LabelApplyViewModelImpl(msg: messages)
+            popup.delegate = self
+            self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
+            
+        case .some(.folders):
+            guard let messages = sender as? [Message] else { return }
+            let popup = segue.destination as! LablesViewController
+            popup.delegate = self
+            popup.viewModel = FolderApplyViewModelImpl(msg: messages)
+            self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
+            
+        default: break
+        }
+    }
+    
+    internal func previewQuickLook(for url: URL) {
+        self.tempClearFileURL = url
+        let previewQL = QuickViewViewController()
+        previewQL.dataSource = self
+        self.controller.present(previewQL, animated: true, completion: nil)
+    }
 }
 
+extension MessageViewCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+    internal func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+        return 1
+    }
+    
+    internal func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
+        return self.tempClearFileURL! as QLPreviewItem
+    }
+    
+    func previewControllerDidDismiss(_ controller: QLPreviewController) {
+        try? FileManager.default.removeItem(at: self.tempClearFileURL!)
+        self.tempClearFileURL = nil
+    }
+}
+
+extension MessageViewCoordinator: LablesViewControllerDelegate {
+    func dismissed() {
+        // FIXME: update header
+    }
+    
+    func apply(type: LabelFetchType) {
+        if type == .folder {
+            self.dismiss()
+        }
+    }
+}
 
 extension MessageViewCoordinator: CoordinatorNew {
     func start() {
