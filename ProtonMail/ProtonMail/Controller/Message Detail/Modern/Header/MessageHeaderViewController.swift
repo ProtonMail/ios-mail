@@ -59,10 +59,6 @@ class MessageHeaderViewController: UIViewController {
         self.viewModelObservation = self.viewModel.observe(\.headerData) { [weak self] viewModel, _ in
             self?.updateHeaderData(viewModel.headerData)
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         self.updateHeaderData(viewModel.headerData)
     }
     

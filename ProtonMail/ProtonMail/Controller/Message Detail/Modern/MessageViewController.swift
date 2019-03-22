@@ -29,7 +29,9 @@
 import UIKit
 import MBProgressHUD
 
-class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMailViewControllerProtocol {
+class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailViewControllerProtocol {
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
     
     // base protocols
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -68,6 +70,9 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
         rightButtons.append(.init(image: UIImage(named: "top_label"), style: .plain, target: self, action: #selector(topLabelButtonTapped)))
         rightButtons.append(.init(image: UIImage(named: "top_unread"), style: .plain, target: self, action: #selector(topUnreadButtonTapped)))
         self.navigationItem.setRightBarButtonItems(rightButtons, animated: true)
+        
+        // others
+        self.bottomView.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -162,16 +167,16 @@ class MessageViewController: UITableViewController, ViewModelProtocol, ProtonMai
     }
 }
 
-extension MessageViewController {
-    override func numberOfSections(in tableView: UITableView) -> Int {
+extension MessageViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.thread.count
     }
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.viewModel.thread[section].divisionsCount
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmbedCell", for: indexPath)
         let standalone = self.viewModel.thread[indexPath.section]
         
@@ -207,6 +212,18 @@ extension MessageViewController {
 extension MessageViewController: ShowImageViewDelegate {
     func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
         self.viewModel.thread.forEach { $0.remoteContentMode = .allowed }
+    }
+}
+
+extension MessageViewController: MessageDetailBottomViewDelegate {
+    func replyAction() {
+        self.coordinator.go(to: .composerReply)
+    }
+    func replyAllAction() {
+        self.coordinator.go(to: .composerReplyAll)
+    }
+    func forwardAction() {
+        self.coordinator.go(to: .composerForward)
     }
 }
 

@@ -37,6 +37,9 @@ class MessageViewCoordinator: NSObject {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
         case labels = "toApplyLabelsSegue"
+        case composerReply = "toComposeReply"
+        case composerReplyAll = "toComposeReplyAll"
+        case composerForward = "toComposeForward"
     }
     private weak var controller: MessageViewController!
     private var tempClearFileURL: URL?
@@ -100,7 +103,7 @@ class MessageViewCoordinator: NSObject {
     internal func printableChildren() -> [PdfPagePrintable] {
         var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
         children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
-        children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
+        children.append(contentsOf: self.bodyControllers.compactMap { $0 as PdfPagePrintable })
         return children
     }
     
@@ -146,16 +149,26 @@ class MessageViewCoordinator: NSObject {
     }
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let messages = sender as? [Message] else { return }
         switch Destinations(rawValue: segue.identifier!) {
+        case .some(let destination) where destination == .composerReply ||
+                                            destination == .composerReplyAll ||
+                                            destination == .composerForward:
+            guard let tapped = ComposeMessageAction(destination) else { return }
+            let composeViewController = segue.destination.children[0] as! ComposeViewController
+            sharedVMService.newDraft(vmp: composeViewController)
+            let viewModel = ComposeViewModelImpl(msg: messages.first!, action: tapped)
+            let coordinator = ComposeCoordinator(vc: composeViewController,
+                                                 vm: viewModel, services: ServiceFactory.default) //set view model
+            coordinator.start()
+            
         case .some(.labels):
-            guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.viewModel = LabelApplyViewModelImpl(msg: messages)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
         case .some(.folders):
-            guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: messages)
@@ -203,5 +216,16 @@ extension MessageViewCoordinator: LablesViewControllerDelegate {
 extension MessageViewCoordinator: CoordinatorNew {
     func start() {
         // ?
+    }
+}
+
+extension ComposeMessageAction {
+    init?(_ destination: MessageViewCoordinator.Destinations) {
+        switch destination {
+        case .composerReply: self = ComposeMessageAction.reply
+        case .composerReplyAll: self = ComposeMessageAction.replyAll
+        case .composerForward: self = ComposeMessageAction.forward
+        default: return nil
+        }
     }
 }
