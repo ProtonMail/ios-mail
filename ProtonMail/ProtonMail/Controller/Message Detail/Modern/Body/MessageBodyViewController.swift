@@ -106,6 +106,8 @@ class MessageBodyViewController: UIViewController {
         self.verticalRecognizer.delegate = self
         self.verticalRecognizer.maximumNumberOfTouches = 1
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
+        
+        self.loader.load(contents: self.viewModel.contents, in: self.webView)
     }
     
     @objc func pan(sender gesture: UIPanGestureRecognizer) {
@@ -146,11 +148,6 @@ class MessageBodyViewController: UIViewController {
                                               boundsTouchedHandler: { /* nothing */ })
             self.gestureInitialOffset = translation
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.loader.load(contents: self.viewModel.contents, in: webView)
     }
     
     private func updateHeight(to newHeight: CGFloat) {

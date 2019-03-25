@@ -73,12 +73,9 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         
         // others
         self.bottomView.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
         
+        
+        // child view controllers
         let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
             let message = self.viewModel.message(for: standalone)!
             let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
@@ -88,6 +85,11 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
         self.coordinator.createChildControllers(with: childViewModels)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
