@@ -29,7 +29,8 @@
 import UIKit
 
 protocol MessageBodyScrollingDelegate: class {
-    func propogate(scrolling: CGPoint)
+    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
+    var scroller: UIScrollView { get }
 }
 
 class MessageBodyViewController: UIViewController {
@@ -47,7 +48,7 @@ class MessageBodyViewController: UIViewController {
     private var verticalRecognizer: UIPanGestureRecognizer!
     private var gestureInitialOffset: CGPoint = .zero
     
-    private lazy var animator = UIDynamicAnimator(referenceView: self.webView.scrollView)
+    private lazy var animator = UIDynamicAnimator(referenceView: self.enclosingScroller!.scroller)
     private var pushBehavior: UIPushBehavior!
     private var frictionBehaviour: UIDynamicItemBehavior!
     private var scrollDecelerationOverlay: UIView!
@@ -117,8 +118,9 @@ class MessageBodyViewController: UIViewController {
             
         case .ended:
             let magic: CGFloat = 100 // this constant makes inertia feel right, something about the mass of UIKit objects
-            self.scrollDecelerationOverlay = ViewBlowingAfterTouch(frame: .init(origin: .zero, size: self.webView.scrollView.contentSize))
-            self.webView.scrollView.addSubview(self.scrollDecelerationOverlay)
+            guard let parent = self.enclosingScroller?.scroller else { return }
+            self.scrollDecelerationOverlay = ViewBlowingAfterTouch(frame: .init(origin: .zero, size: parent.contentSize))
+            parent.addSubview(self.scrollDecelerationOverlay)
 
             self.pushBehavior = UIPushBehavior(items: [self.scrollDecelerationOverlay], mode: .instantaneous)
             self.pushBehavior.pushDirection = CGVector(dx: 0, dy: -1)
@@ -127,18 +129,21 @@ class MessageBodyViewController: UIViewController {
             
             self.frictionBehaviour = UIDynamicItemBehavior(items: [self.scrollDecelerationOverlay])
             self.frictionBehaviour.resistance = self.webView.scrollView.decelerationRate.rawValue
+            self.frictionBehaviour.friction = 1.0
             self.frictionBehaviour.density = (magic * magic) / (self.scrollDecelerationOverlay.frame.size.height * self.scrollDecelerationOverlay.frame.size.width)
             self.animator.addBehavior(self.frictionBehaviour)
             
             self.scrollDecelerationOverlayObservation = self.scrollDecelerationOverlay.observe(\UIView.center, options: [.old, .new]) { [weak self] pixel, change in
                 guard let _ = pixel.superview else { return }
                 guard let new = change.newValue, let old = change.oldValue else { return }
-                self?.enclosingScroller?.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y))
+                self?.enclosingScroller?.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
+                                                   boundsTouchedHandler: pixel.removeFromSuperview)
             }
             
         default:
             let translation = gesture.translation(in: self.webView)
-            self.enclosingScroller?.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y))
+            self.enclosingScroller?.propogate(scrolling: CGPoint(x: 0, y: self.gestureInitialOffset.y - translation.y),
+                                              boundsTouchedHandler: { /* nothing */ })
             self.gestureInitialOffset = translation
         }
     }

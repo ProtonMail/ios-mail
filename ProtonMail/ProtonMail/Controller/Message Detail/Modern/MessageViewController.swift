@@ -233,7 +233,7 @@ extension MessageViewController: MessageBodyScrollingDelegate {
         self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
     }
     
-    func propogate(scrolling delta: CGPoint) {
+    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
         let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height
         guard maxOffset > 0 else { return }
         
@@ -241,11 +241,17 @@ extension MessageViewController: MessageBodyScrollingDelegate {
          
          if yOffset < 0 { // not too high
              self.tableView.setContentOffset(.zero, animated: false)
+            boundsTouchedHandler()
          } else if yOffset > maxOffset { // not too low
             self.tableView.setContentOffset(.init(x: 0, y: maxOffset), animated: false)
+            boundsTouchedHandler()
          } else {
              self.tableView.contentOffset = .init(x: 0, y: yOffset)
          }
+    }
+    
+    var scroller: UIScrollView {
+        return self.tableView
     }
 }
 
