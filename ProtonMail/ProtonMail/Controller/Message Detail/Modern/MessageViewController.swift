@@ -234,13 +234,14 @@ extension MessageViewController: MessageBodyScrollingDelegate {
     }
     
     func propogate(scrolling delta: CGPoint) {
+        let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height
+        guard maxOffset > 0 else { return }
+        
          let yOffset = self.tableView.contentOffset.y + delta.y
          
          if yOffset < 0 { // not too high
              self.tableView.setContentOffset(.zero, animated: false)
-         } else if case let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height,
-            yOffset > maxOffset  // not too low
-         {
+         } else if yOffset > maxOffset { // not too low
             self.tableView.setContentOffset(.init(x: 0, y: maxOffset), animated: false)
          } else {
              self.tableView.contentOffset = .init(x: 0, y: yOffset)
