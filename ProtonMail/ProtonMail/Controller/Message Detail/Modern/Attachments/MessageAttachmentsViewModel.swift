@@ -131,7 +131,9 @@ extension MessageAttachmentsViewModel {
 
         // FIXME: no way we should store this file cleartext any longer than absolutely needed
         let tempClearFileURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.fileName.clear)
-        guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys),
+        guard let decryptData = try data.decryptAttachment(keyPackage,
+                                                           passphrase: sharedUserDataService.mailboxPassword!,
+                                                           privKeys: sharedUserDataService.addressPrivateKeys),
             let _ = try? decryptData.write(to: tempClearFileURL, options: [.atomic]) else
         {
             throw Errors._cant_decrypt_this_attachment

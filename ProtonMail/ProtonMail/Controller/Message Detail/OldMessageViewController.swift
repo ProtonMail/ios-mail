@@ -35,6 +35,7 @@ import AwaitKit
 import PromiseKit
 import MBProgressHUD
 
+@available(*, deprecated, message:  "remove and all related UIs after new message view is tested")
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
     func set(viewModel: MessageViewModel) {
