@@ -258,15 +258,18 @@ open class DKPhotoGalleryContentVC: UIViewController, UIScrollViewDelegate {
             self.showViewIfNeeded(at: index)
         } else {
             var visibleItems = [DKPhotoGalleryItem : Int]()
-            for index in max(index - 1, 0) ... min(index + 1, self.dataSource.numberOfItems() - 1) {
-                let item = self.dataSource.item(for: index)
-                visibleItems[item] = index
+            for visibleIndex in max(index - 1, 0) ... min(index + 1, self.dataSource.numberOfItems() - 1) {
+                let item = self.dataSource.item(for: visibleIndex)
+                visibleItems[item] = visibleIndex
             }
-
+            
+            let currentItem = self.dataSource.item(for: index)
             for (visibleItem, visibleVC) in self.visibleVCs {
                 if visibleItems[visibleItem] == nil {
                     visibleVC.photoPreviewWillDisappear()
                     self.addToReuseQueueFromVisibleQueueIfNeeded(item: visibleItem)
+                } else if (visibleItem != currentItem) {
+                    visibleVC.photoPreviewWillDisappear()
                 }
             }
 

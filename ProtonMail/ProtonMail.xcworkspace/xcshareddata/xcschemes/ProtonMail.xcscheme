@@ -84,6 +84,16 @@
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6C2152B9B3009541EC36C038232F5EE3"
+               BuildableName = "ProtonMailUITests.xctest"
+               BlueprintName = "ProtonMailUITests"
+               ReferencedContainer = "container:ProtonMail.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

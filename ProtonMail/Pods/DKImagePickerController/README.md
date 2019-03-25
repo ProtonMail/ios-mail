@@ -24,13 +24,14 @@ DKImagePickerController
 ## Requirements
 * iOS 8.0+
 * ARC
-* Swift 3.2 & 4
+* Swift 3.2 & 4.2
 
 ## Installation
+### CocoaPods
 #### iOS 8 and newer
 DKImagePickerController is available on CocoaPods. Simply add the following line to your podfile:
 
-```ruby
+```
 # For latest release in cocoapods
 pod 'DKImagePickerController'
 ```
@@ -56,6 +57,14 @@ pod 'DKImagePickerController', :subspecs => ['PhotoGallery', 'Camera', 'InlineCa
 ```
 
 More information, see [Extensions](#extensions).
+
+### Carthage
+
+```
+github "zhangao0086/DKImagePickerController"
+```
+
+If you use Carthage to build your dependencies, make sure you have added `CropViewController.framework`, `DKCamera.framework`, `DKImagePickerController.framework`, `DKPhotoGallery.framework` and `SDWebImage.framework` to the _"Linked Frameworks and Libraries"_ section of your target, and have included them in your Carthage framework copying build phase.
 
 ## Getting Started
 #### Initialization and presentation

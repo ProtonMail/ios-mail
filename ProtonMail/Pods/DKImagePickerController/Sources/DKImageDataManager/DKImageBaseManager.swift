@@ -26,11 +26,11 @@ open class DKImageBaseManager: NSObject, DKImageBaseManagerObserver {
     
     private let observers = NSHashTable<AnyObject>.weakObjects()
     
-    open func add(observer object: AnyObject) {
+    @objc open func add(observer object: AnyObject) {
         self.observers.add(object)
     }
     
-    open func remove(observer object: AnyObject) {
+    @objc open func remove(observer object: AnyObject) {
         self.observers.remove(object)
     }
     

@@ -163,6 +163,7 @@
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bb6-Ns-GPi">
                                                 <rect key="frame" x="138.5" y="45" width="98" height="16"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="pmLogo"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="16" id="bqh-qr-JXv"/>
                                                     <constraint firstAttribute="width" constant="98" id="ijE-zS-azU"/>
@@ -170,6 +171,7 @@
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="USER LOGIN" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Os0-Xv-V8f">
                                                 <rect key="frame" x="109" y="85" width="157.5" height="36"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="signInTitle"/>
                                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="30"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
@@ -187,6 +189,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="tfu-UO-Zjf" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="319" height="40"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtUsername"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
@@ -211,6 +214,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="right" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2kl-R3-2ji" userLabel="Show PWD">
                                                         <rect key="frame" x="259" y="0.0" width="60" height="40"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="resetLoginPassword"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="f0G-FH-gQv"/>
                                                         </constraints>
@@ -233,6 +237,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="BL2-co-jyw" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="259" height="40"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtPassword"/>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
@@ -258,6 +263,7 @@
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MgP-0E-i6P">
                                                 <rect key="frame" x="87.5" y="354" width="200" height="42"/>
                                                 <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="loginButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="200" id="34x-ap-wAQ"/>
                                                     <constraint firstAttribute="height" constant="42" id="gLb-Jh-YuB"/>
@@ -277,6 +283,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlP-nl-XPC">
                                                 <rect key="frame" x="47.5" y="520" width="280" height="20"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="Jw1-ag-Xg1"/>
                                                     <constraint firstAttribute="width" constant="280" id="OGu-48-uZc"/>
@@ -307,6 +314,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qu-T6-Tyc">
                                                 <rect key="frame" x="47.5" y="482" width="280" height="20"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="signUpButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="8hr-sB-xmf"/>
                                                     <constraint firstAttribute="height" constant="20" id="Kqb-pK-Yce"/>
@@ -323,6 +331,7 @@
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="liV-Dc-2Hc">
                                                 <rect key="frame" x="162.5" y="414" width="50" height="50"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="touchIDButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="2q1-wW-BJT"/>
                                                     <constraint firstAttribute="width" constant="50" id="rvB-9i-2Rk"/>
@@ -338,6 +347,7 @@
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
                                                         <rect key="frame" x="0.0" y="0.0" width="29.5" height="27"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="versionLabel"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                         <nil key="highlightedColor"/>
@@ -350,6 +360,7 @@
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luG-we-EEM">
                                                         <rect key="frame" x="37.5" y="0.0" width="37.5" height="27"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="languageButton"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <state key="normal">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1694,6 +1705,11 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="MAILBOX PASSWORD" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="8W9-bi-DrJ" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="256" height="42"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration">
+                                                            <string key="identifier" base64-UTF8="YES">
+CQ
+</string>
+                                                        </accessibility>
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" name="Helvetica" family="Helvetica" pointSize="12"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
@@ -1703,6 +1719,7 @@
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dak-er-dwn" userLabel="Show PWD">
                                                         <rect key="frame" x="256" y="0.0" width="63" height="42"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="showPasswordButton"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" secondItem="Dak-er-dwn" secondAttribute="height" multiplier="1.5:1" id="jEH-KJ-xzx"/>
                                                         </constraints>
@@ -1742,6 +1759,7 @@
                                             <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SVX-4t-hlE">
                                                 <rect key="frame" x="87.5" y="311" width="200" height="42"/>
                                                 <color key="backgroundColor" red="0.56862745098039214" green="0.59999999999999998" blue="0.79607843137254897" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="decryptButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="200" id="aKz-yc-4OX"/>
                                                     <constraint firstAttribute="height" constant="42" id="biP-nR-dk2"/>
@@ -1761,6 +1779,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DOp-gd-g09">
                                                 <rect key="frame" x="47.5" y="377" width="280" height="20"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="resetMailboxPassword"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="1tO-uh-UUL"/>
                                                     <constraint firstAttribute="width" constant="280" id="XGa-6K-kGN"/>

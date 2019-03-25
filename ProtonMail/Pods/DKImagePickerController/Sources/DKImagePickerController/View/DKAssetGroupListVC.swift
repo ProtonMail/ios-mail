@@ -200,7 +200,7 @@ class DKAssetGroupListVC: UITableViewController, DKImageGroupDataManagerObserver
         
         if let defaultAssetGroup = self.defaultAssetGroup {
             for groupId in groups {
-                let group = self.groupDataManager.fetchGroupWithGroupId(groupId)
+                let group = self.groupDataManager.fetchGroup(with: groupId)
                 if defaultAssetGroup == group.originalCollection.assetCollectionSubtype {
                     return groupId
                 }
@@ -214,7 +214,7 @@ class DKAssetGroupListVC: UITableViewController, DKImageGroupDataManagerObserver
         if !self.showsEmptyAlbums {
             if let groups = self.groups {
                 for groupId in groups {
-                    if self.groupDataManager.fetchGroupWithGroupId(groupId).totalCount > 0 {
+                    if self.groupDataManager.fetchGroup(with: groupId).totalCount > 0 {
                         displayGroups.append(groupId)
                     }
                 }
@@ -237,7 +237,7 @@ class DKAssetGroupListVC: UITableViewController, DKImageGroupDataManagerObserver
                 return UITableViewCell()
         }
 
-        let assetGroup = self.groupDataManager.fetchGroupWithGroupId(groups[indexPath.row])
+        let assetGroup = self.groupDataManager.fetchGroup(with: groups[indexPath.row])
         cell.groupNameLabel.text = assetGroup.groupName
 
         let tag = indexPath.row + 1
@@ -246,8 +246,8 @@ class DKAssetGroupListVC: UITableViewController, DKImageGroupDataManagerObserver
         if assetGroup.totalCount == 0 {
             cell.thumbnailImageView.image = DKImagePickerControllerResource.emptyAlbumIcon()
         } else {
-            self.groupDataManager.fetchGroupThumbnailForGroup(
-                assetGroup.groupId,
+            self.groupDataManager.fetchGroupThumbnail(
+                with: assetGroup.groupId,
                 size: CGSize(width: tableView.rowHeight, height: tableView.rowHeight).toPixel(),
                 options: self.groupThumbnailRequestOptions) { image, info in
                     if cell.tag == tag {
