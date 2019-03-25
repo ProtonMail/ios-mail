@@ -1,6 +1,6 @@
 //
-//  ShowImageView.swift
-//  ProtonMail - Created on 3/22/16.
+//  File.swift
+//  ProtonMail - Created on 07/03/2019.
 //
 //
 //  The MIT License
@@ -24,35 +24,28 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-protocol ShowImageViewDelegate : AnyObject {
-    func showImage()
-}
-
-class ShowImageView: PMView {
+class MessageBodyViewModel: NSObject {
+    @objc internal dynamic var contents: WebContents
+    private var bodyObservation: NSKeyValueObservation!
+    private var remoteContentModeObservation: NSKeyValueObservation!
+    @objc internal dynamic var contentSize: CGSize = .zero
     
-    @IBOutlet weak var showImageButton: UIButton!
-    weak var delegate : ShowImageViewDelegate?
-    
-    override func getNibName() -> String {
-        return "ShowImageView"
+    init(parentViewModel: Standalone) {
+        self.contents = WebContents(body: parentViewModel.body, remoteContentMode: parentViewModel.remoteContentMode)
+        
+        super.init()
+        
+        self.bodyObservation = parentViewModel.observe(\.body) { [weak self] standalone, _ in
+            guard let self = self else { return }
+            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+        }
+        self.remoteContentModeObservation = parentViewModel.observe(\.remoteContentModeObservable) { [weak self] standalone, _ in
+            guard let self = self else { return }
+            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+        }
     }
-    
-    @IBAction func clickAction(_ sender: AnyObject) {
-        self.delegate?.showImage()
-    }
-    
-    override func setup() {
-        showImageButton.layer.borderColor = UIColor.ProtonMail.Gray_C9CED4.cgColor
-        showImageButton.layer.borderWidth = 1.0
-        showImageButton.layer.cornerRadius = 2.0
-        showImageButton.setTitle(LocalString._load_remote_content, for: .normal)
-    }
-}
-
-class ShowImageCell: UITableViewCell {
-    @IBOutlet weak var showImageView: ShowImageView!
 }

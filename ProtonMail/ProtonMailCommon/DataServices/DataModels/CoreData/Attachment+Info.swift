@@ -28,7 +28,7 @@
 
 import Foundation
 
-protocol AttachmentInfo : AnyObject {
+@objc protocol AttachmentInfo : AnyObject {
     var fileName: String { get }
     var size : Int { get }
     var mimeType: String { get }

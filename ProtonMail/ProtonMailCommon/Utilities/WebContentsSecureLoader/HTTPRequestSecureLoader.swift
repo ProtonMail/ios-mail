@@ -50,6 +50,13 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     private static var loopbackScheme: String = "pm-incoming-mail"
     private var loopbacks: Dictionary<URL, Data> = [:]
     
+    private var addSpacerIfNeeded: Bool
+    
+    init(addSpacerIfNeeded: Bool = true) {
+        self.addSpacerIfNeeded = addSpacerIfNeeded
+        super.init()
+    }
+    
     func load(contents: WebContents, in webView: WKWebView) {
         self.webView = webView
         
@@ -116,7 +123,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let spacer: String = { () -> String in
             if #available(iOS 12.0, *) {
                 return ""
-            } else {
+            } else if self.addSpacerIfNeeded {
                 return """
                 var div = document.createElement('p');
                 div.style.width = '100%';
@@ -124,6 +131,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
                 div.style.display = 'block';
                 document.body.appendChild(div);
                 """
+            } else {
+                return ""
             }
         }()
         

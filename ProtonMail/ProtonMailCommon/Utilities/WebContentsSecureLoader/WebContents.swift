@@ -29,7 +29,7 @@
 import Foundation
 
 /// Contains HTML to be loaded into WebView and appropriate CSP
-class WebContents {
+class WebContents: NSObject {
     internal let body: String
     internal let remoteContentMode: RemoteContentPolicy
     
@@ -42,8 +42,8 @@ class WebContents {
         return self.remoteContentMode.cspRaw
     }
     
-    enum RemoteContentPolicy {
-        case allowed, disallowed, lockdown
+    enum RemoteContentPolicy: Int {
+        case allowed=0, disallowed, lockdown
         
         var cspRaw: String {
             switch self {
