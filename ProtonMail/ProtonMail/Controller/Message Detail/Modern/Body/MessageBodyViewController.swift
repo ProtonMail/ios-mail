@@ -40,6 +40,7 @@ class MessageBodyViewController: UIViewController {
     
     private var height: NSLayoutConstraint!
     private var lastZoom: CGAffineTransform = .identity
+    private var initialZoom: CGAffineTransform = .identity
     private var contentSizeObservation: NSKeyValueObservation! // used to update content size after loading images
     
     internal weak var enclosingScroller: MessageBodyScrollingDelegate?
@@ -84,7 +85,7 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = true
+        self.webView.scrollView.bounces = false
         self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
         self.webView.scrollView.showsHorizontalScrollIndicator = true
@@ -148,7 +149,8 @@ class MessageBodyViewController: UIViewController {
     }
     
     private func updateHeight(to newHeight: CGFloat) {
-        self.height.constant = newHeight
+        self.contentSizeObservation = nil
+        self.height.constant = min(newHeight, self.webView.scrollView.contentSize.height)
         self.viewModel.contentSize = self.webView.scrollView.contentSize
     }
     
@@ -179,6 +181,7 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
 extension MessageBodyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.updateHeight(to: webView.scrollView.contentSize.height)
+        self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
         self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.old, .new]) { [weak self] scrollView, change in
             guard let old = change.oldValue, let new = change.newValue,
                 old.height != new.height else { return }
@@ -216,7 +219,7 @@ extension MessageBodyViewController: UIScrollViewDelegate {
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         var newSize = scrollView.contentSize
-        newSize = newSize.applying(self.lastZoom.inverted())
+        newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
         self.updateHeight(to: newSize.height)
     }
     
