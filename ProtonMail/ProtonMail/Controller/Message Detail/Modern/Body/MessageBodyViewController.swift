@@ -172,7 +172,7 @@ class MessageBodyViewController: UIViewController {
 extension MessageBodyViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // this will prevent our gesture recognizer from blocking webView's built-in gesture resognizers
-        return self.webView.scrollView.gestureRecognizers?.contains(otherGestureRecognizer) ?? false
+        return self.webView.scrollView.gestureRecognizers?.filter{ !($0 is UITapGestureRecognizer) }.contains(otherGestureRecognizer) ?? false
     }
 }
 
