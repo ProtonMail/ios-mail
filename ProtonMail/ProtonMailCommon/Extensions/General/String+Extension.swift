@@ -75,7 +75,7 @@ extension String {
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
-        return check.contains(re)
+        return check.range(of: re, options: [.caseInsensitive, .anchored]) != nil
     }
     
     func hasFwd () -> Bool {
@@ -86,7 +86,7 @@ extension String {
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
-        return check.contains(fwd)
+        return check.range(of: fwd, options: [.caseInsensitive, .anchored]) != nil
     }
     
     /**
