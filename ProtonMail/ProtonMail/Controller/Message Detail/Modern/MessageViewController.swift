@@ -263,16 +263,7 @@ extension MessageViewController {
         
         viewModel.thread.forEach(self.subscribeToStandalone)
         self.subscribeToThread()
-        
-        viewModel.messages.forEach { message in
-            message.fetchDetailIfNeeded() { _, _, _, error in
-                guard error == nil else {
-                    viewModel.errorWhileReloading(message: message, error: error!)
-                    return
-                }
-                viewModel.reload(message: message)
-            }
-        }
+        self.viewModel.downloadThreadDetails()
     }
     
     private func subscribeToThread() {
@@ -322,5 +313,19 @@ extension MessageViewController: CoordinatedNew {
     
     func set(coordinator: MessageViewController.coordinatorType) {
         self.coordinator = coordinator
+    }
+}
+
+extension MessageViewController: BannerPresenting {
+    @objc func presentBanner(_ sender: BannerRequester) {
+        guard let banner = sender.errorBannerToPresent() else {
+            return
+        }
+        self.view.addSubview(banner)
+        banner.drop(on: self.view, from: .top)
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
     }
 }
