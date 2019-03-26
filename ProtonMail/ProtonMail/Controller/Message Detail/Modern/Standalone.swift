@@ -81,6 +81,9 @@ class Standalone: NSObject {
         if expired {
             body = LocalString._message_expired
         }
+        if !message.isDetailDownloaded {
+            body = LocalString._loading_
+        }
         self.body = body
         
         // 3. attachments
@@ -114,7 +117,9 @@ class Standalone: NSObject {
         
         super.init()
         
-        self.showEmbedImage(message, body: self.body)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.showEmbedImage(message, body: self.body)
+        }
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
@@ -131,7 +136,9 @@ class Standalone: NSObject {
         self.remoteContentMode = temp.remoteContentMode
         self.divisions = temp.divisions
         
-        self.showEmbedImage(message, body: temp.body)
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.showEmbedImage(message, body: temp.body)
+        }
     }
 
     // TODO: taken from old MessageViewController

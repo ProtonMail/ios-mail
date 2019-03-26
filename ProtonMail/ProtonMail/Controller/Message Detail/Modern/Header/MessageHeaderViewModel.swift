@@ -33,7 +33,8 @@ class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
     private var message: Message
-    private var observation: NSKeyValueObservation!
+    private var parentObservation: NSKeyValueObservation!
+    private var messageObservation: NSKeyValueObservation!
     
     init(parentViewModel: Standalone, message: Message) {
         self.message = message
@@ -41,8 +42,12 @@ class MessageHeaderViewModel: NSObject {
         
         super.init()
         
-        self.observation = parentViewModel.observe(\.header) { [weak self] parentViewModel, _ in
+        self.parentObservation = parentViewModel.observe(\.header) { [weak self] parentViewModel, _ in
             self?.headerData = parentViewModel.header
+        }
+        self.messageObservation = message.observe(\.labels, options: [.old, .new]) { [weak self] message, change in
+            guard change.newValue != change.oldValue else { return }
+            self?.headerData = HeaderData(message: message)
         }
     }
 }

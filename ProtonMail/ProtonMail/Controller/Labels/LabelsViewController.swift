@@ -218,7 +218,8 @@ extension LablesViewController: UITableViewDataSource {
             labelCell.ConfigCell(model: lm,
                                  showIcon: viewModel.getFetchType() == .all,
                                  showEdit: showEdit,
-                                 editAction: { (sender) in
+                                 editAction: { [weak self, weak labelCell] (sender) in
+                guard let self = self else { return }
                 if labelCell == sender, let editlabel = self.fetchedLabels?.object(at: indexPath) as? Label {
                     if editlabel.exclusive {
                         self.performSegue(withIdentifier: self.kToEditingFolder, sender: editlabel)

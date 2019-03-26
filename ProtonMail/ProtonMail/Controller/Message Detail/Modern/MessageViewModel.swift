@@ -32,6 +32,7 @@ import Foundation
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageViewModel: NSObject {
     private(set) var messages: [Message]
+    private var latestErrorBanner: BannerView?
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
     private var attachmentsObservation: [NSKeyValueObservation] = []
@@ -45,11 +46,28 @@ class MessageViewModel: NSObject {
     init(conversation messages: [Message]) {
         self.messages = messages
         self.thread = messages.map(Standalone.init)
+        
+        super.init()
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.reachabilityChanged, object: nil, queue: nil) { [weak self] notification in
+            guard let manager = notification.object as? Reachability,
+                manager.currentReachabilityStatus() != .NotReachable else
+            {
+                return
+            }
+            
+            if let _ = self?.messages.first(where: { !$0.isDetailDownloaded }) {
+                self?.downloadThreadDetails()
+            }
+        }
     }
     
-    init(message: Message) {
-        self.messages = [message]
-        self.thread = [Standalone(message: message)]
+    convenience init(message: Message) {
+        self.init(conversation: [message])
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     internal func locationsForMoreButton() -> [Message.Location] {
@@ -153,7 +171,7 @@ class MessageViewModel: NSObject {
         }
     }
     
-    internal func errorWhileReloading(message: Message, error: NSError) {
+    private func errorWhileReloading(message: Message, error: NSError) {
         switch error.code {
         case NSURLErrorTimedOut:
             self.showErrorBanner(LocalString._general_request_timed_out)
@@ -171,14 +189,9 @@ class MessageViewModel: NSObject {
             self.showErrorBanner(LocalString._general_api_server_not_reachable)
             self.reload(message: message, with: LocalString._general_api_server_not_reachable)
 
-        case ..<0:
-            self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
-            self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
-
         default:
             self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
             self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
-
         }
         PMLog.D("error: \(error)")
     }
@@ -204,10 +217,35 @@ class MessageViewModel: NSObject {
             self.observationsHeader.append(bodyObservation)
         }
     }
+    
+    internal func downloadThreadDetails() {
+        self.messages.forEach { [weak self] message in
+            message.fetchDetailIfNeeded() { _, _, _, error in
+                guard error == nil else {
+                    self?.errorWhileReloading(message: message, error: error!)
+                    return
+                }
+                self?.reload(message: message)
+            }
+        }
+    }
 }
 
-extension MessageViewModel {
-    private func showErrorBanner(_ title: String) {
-        // TODO: use Responder chain to let nearest viewController know we need a banner
+extension MessageViewModel: BannerRequester {
+    internal func errorBannerToPresent() -> BannerView? {
+        return self.latestErrorBanner
     }
+    
+    private func showErrorBanner(_ title: String) {
+        let config = BannerView.ButtonConfiguration(title: LocalString._retry, action: self.downloadThreadDetails)
+        self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, offset: 8.0)
+        UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
+    }
+}
+
+@objc protocol BannerPresenting {
+    @objc func presentBanner(_ sender: BannerRequester)
+}
+@objc protocol BannerRequester {
+    @objc func errorBannerToPresent() -> BannerView?
 }

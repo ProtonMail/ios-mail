@@ -130,6 +130,9 @@ extension MessageAttachmentsViewController: UITableViewDelegate, UITableViewData
 
 extension MessageAttachmentsViewController: ExpirationWarningHeaderCellDelegate {
     func clicked(at section: Int, expend: Bool) {
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        }
         self.isExpanded = expend
         self.tableView.reloadSections(IndexSet(integer: section), with: .automatic)
     }

@@ -120,6 +120,9 @@ extension MessageHeaderViewController: EmailHeaderActionsProtocol {
     }
     
     func star(changed isStarred: Bool) {
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        }
         self.viewModel.star(isStarred)
     }
     
