@@ -35,6 +35,7 @@ import AwaitKit
 import PromiseKit
 import MBProgressHUD
 
+@available(*, deprecated, message:  "remove and all related UIs after new message view is tested")
 class MessageViewController: ProtonMailViewController, ViewModelProtocol {
     typealias viewModelType = MessageViewModel
     func set(viewModel: MessageViewModel) {
@@ -870,7 +871,9 @@ extension MessageViewController : EmailHeaderActionsProtocol, UIDocumentInteract
         
         do {
             tempFileUri = FileManager.default.attachmentDirectory.appendingPathComponent(fileName)
-            guard let decryptData = try data.decryptAttachment(keyPackage, passphrase: sharedUserDataService.mailboxPassword!, privKeys: sharedUserDataService.addressPrivKeys),
+            guard let decryptData = try data.decryptAttachment(keyPackage,
+                                                               passphrase: sharedUserDataService.mailboxPassword!,
+                                                               privKeys: sharedUserDataService.addressPrivateKeys),
                 let _ = try? decryptData.write(to: tempFileUri!, options: [.atomic]) else
             {
                 throw NSError()

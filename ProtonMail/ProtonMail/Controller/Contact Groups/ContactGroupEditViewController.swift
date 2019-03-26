@@ -296,9 +296,10 @@ extension ContactGroupEditViewController: UITableViewDelegate
             alertController.addAction(UIAlertAction(title: LocalString._contact_groups_delete,
                                                     style: .destructive,
                                                     handler: deleteActionHandler))
-            
-            alertController.popoverPresentationController?.sourceView = self.view
-            alertController.popoverPresentationController?.sourceRect = self.view.frame
+            let sender = tableView.cellForRow(at: indexPath)
+            alertController.popoverPresentationController?.sourceView = self.tableView
+            alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
+
             self.present(alertController, animated: true, completion: nil)
         case .error:
             PMLog.D("FatalError: This is a bug")

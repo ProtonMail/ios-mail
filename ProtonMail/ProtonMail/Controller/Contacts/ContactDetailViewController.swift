@@ -238,7 +238,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     @IBAction func didTapShareContact(_ sender: UIButton) {
-        shareVcard()
+        shareVcard(sender)
     }
     
     
@@ -621,13 +621,14 @@ extension ContactDetailViewController: UITableViewDelegate {
             LocalString._invalid_url.alertToastBottom()
            
         case .share:
-            shareVcard()
+            let cell = tableView.cellForRow(at: indexPath)
+            shareVcard(cell)
         default:
             break
         }
     }
     
-    private func shareVcard() {
+    private func shareVcard(_ sender : UIView?) {
         let exported = viewModel.export()
         if !exported.isEmpty {
             let filename = viewModel.exportName()
@@ -638,8 +639,8 @@ extension ContactDetailViewController: UITableViewDelegate {
             // set up activity view controller
             let urlToShare = [ tempFileUri ]
             let activityViewController = UIActivityViewController(activityItems: urlToShare, applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.view // so that iPads won't crash
-            
+            activityViewController.popoverPresentationController?.sourceView = self.view
+            activityViewController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.frame)
             // exclude some activity types from the list (optional)
             activityViewController.excludedActivityTypes = [ .postToFacebook,
                                                              .postToTwitter,
@@ -659,4 +660,3 @@ extension ContactDetailViewController: UITableViewDelegate {
         }
     }
 }
-

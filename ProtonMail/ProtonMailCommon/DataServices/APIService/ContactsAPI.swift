@@ -325,7 +325,7 @@ final class ContactAddResponse : ApiResponse {
                 if let response = res["Response"] as? [String : Any] {
                     let code = response["Code"] as? Int
                     let errorMessage = response["Error"] as? String
-                    let errorDetails = response["ErrorDescription"] as? String
+                    let errorDetails = errorMessage
                     
                     if code != 1000 && code != 1001 {
                         results.append(NSError.protonMailError(code ?? 1000, localizedDescription: errorMessage ?? "", localizedFailureReason: errorDetails, localizedRecoverySuggestion: nil))

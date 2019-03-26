@@ -58,7 +58,7 @@ enum ComposeMessageAction: Int, CustomStringConvertible {
             case .newDraft, .newDraftFromShare:
                 return LocalString._general_draft_action
             case .openDraft:
-                return LocalString._general_opendraft_action
+                return ""
             }
         }
     }

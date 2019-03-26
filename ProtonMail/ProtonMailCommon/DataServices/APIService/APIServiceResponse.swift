@@ -34,7 +34,6 @@ public class ApiResponse {
     
     var code : Int! = 1000
     var errorMessage : String?
-    var errorDetails : String?
     var internetCode : Int? //only use when error happend.
     
     var error : NSError?
@@ -50,7 +49,6 @@ public class ApiResponse {
     func ParseResponseError (_ response: [String : Any]) -> Bool {
         code = response["Code"] as? Int
         errorMessage = response["Error"] as? String
-        errorDetails = response["ErrorDescription"] as? String
         
         if code == nil {
             return false
@@ -59,7 +57,7 @@ public class ApiResponse {
         if code != 1000 && code != 1001 {
             self.error = NSError.protonMailError(code ?? 1000,
                                                  localizedDescription: errorMessage ?? "",
-                                                 localizedFailureReason: errorDetails,
+                                                 localizedFailureReason: nil,
                                                  localizedRecoverySuggestion: nil)
         }
         return code != 1000 && code != 1001
@@ -75,7 +73,6 @@ public class ApiResponse {
             self.code = internetCode
         }
         self.errorMessage = error.localizedDescription
-        self.errorDetails = error.debugDescription
         self.error = error
     }
     

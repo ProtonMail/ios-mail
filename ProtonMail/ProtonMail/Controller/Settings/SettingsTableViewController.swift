@@ -131,7 +131,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             setting_general_items.append(.notificationsSnooze)
         }
    
-        multi_domains = sharedUserDataService.userAddresses
+        multi_domains = sharedUserDataService.addresses
         self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
         navigationController?.setNavigationBarHidden(false, animated: true)
     }

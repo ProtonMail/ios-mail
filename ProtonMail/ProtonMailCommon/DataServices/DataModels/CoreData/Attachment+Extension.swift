@@ -183,7 +183,7 @@ extension Attachment {
     
     func base64DecryptAttachment() -> String {
         guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
-            case let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivKeys else
+            case let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivateKeys else
         {
             return ""
         }

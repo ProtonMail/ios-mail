@@ -376,7 +376,7 @@ extension Message {
     //  )
     func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
         guard let passphrase = sharedUserDataService.mailboxPassword,
-            case let keys = sharedUserDataService.addressPrivKeys else
+            case let keys = sharedUserDataService.addressPrivateKeys else
         {
                 return .failed
         }
@@ -412,7 +412,8 @@ extension Message {
     func decryptBodyIfNeeded() throws -> String? {
         PMLog.D("Flags: \(self.flag.description)")
         if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
-            var body = try decryptBody(keys: sharedUserDataService.addressPrivKeys, passphrase: passphrase) {
+            var body = try decryptBody(keys: sharedUserDataService.addressPrivateKeys, passphrase: passphrase) {
+            //PMLog.D(body)
             if isPgpMime || isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
                     if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
@@ -555,15 +556,15 @@ extension Message {
     var defaultAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {
-                if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID), add.send == 1 {
+                if let add = sharedUserDataService.addresses.indexOfAddress(addressID), add.send == 1 {
                     return add;
                 } else {
-                    if let add = sharedUserDataService.userAddresses.defaultSendAddress() {
+                    if let add = sharedUserDataService.addresses.defaultSendAddress() {
                         return add;
                     }
                 }
             } else {
-                if let addr = sharedUserDataService.userAddresses.defaultSendAddress() {
+                if let addr = sharedUserDataService.addresses.defaultSendAddress() {
                     return addr
                 }
             }
@@ -575,7 +576,7 @@ extension Message {
     var fromAddress : Address? {
         get {
             if let addressID = addressID, !addressID.isEmpty {
-                if let add = sharedUserDataService.userAddresses.indexOfAddress(addressID) {
+                if let add = sharedUserDataService.addresses.indexOfAddress(addressID) {
                     return add;
                 }
             }
@@ -666,7 +667,7 @@ extension Message {
                     attachment.isTemp = true
                     do {
                         if let k = key,
-                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivKeys),
+                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivateKeys),
                             let session = sessionPack.session(),
                             let algo = sessionPack.algo(),
                             let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {
