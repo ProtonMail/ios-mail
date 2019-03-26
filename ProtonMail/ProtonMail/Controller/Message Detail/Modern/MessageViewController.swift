@@ -213,6 +213,9 @@ extension MessageViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension MessageViewController: ShowImageViewDelegate {
     func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        }
         self.viewModel.thread.forEach { $0.remoteContentMode = .allowed }
     }
 }
