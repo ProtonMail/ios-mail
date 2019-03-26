@@ -81,6 +81,9 @@ class Standalone: NSObject {
         if expired {
             body = LocalString._message_expired
         }
+        if !message.isDetailDownloaded {
+            body = LocalString._loading_
+        }
         self.body = body
         
         // 3. attachments
