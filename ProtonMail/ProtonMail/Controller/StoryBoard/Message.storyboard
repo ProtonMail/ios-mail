@@ -97,18 +97,16 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MGP-Ug-3HL" customClass="MessageDetailBottomView" customModule="ProtonMail" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="599" width="375" height="68"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="68" id="DH3-ae-p5b"/>
-                                </constraints>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="y1J-7c-viZ" firstAttribute="leading" secondItem="e2l-Wy-KkI" secondAttribute="leading" id="1cd-qD-K8Q"/>
-                            <constraint firstItem="e2l-Wy-KkI" firstAttribute="bottom" secondItem="MGP-Ug-3HL" secondAttribute="bottom" id="9YM-0C-Jyy"/>
+                            <constraint firstAttribute="bottom" secondItem="MGP-Ug-3HL" secondAttribute="bottom" id="9YM-0C-Jyy"/>
                             <constraint firstItem="e2l-Wy-KkI" firstAttribute="trailing" secondItem="y1J-7c-viZ" secondAttribute="trailing" id="Hpv-nA-z2q"/>
                             <constraint firstItem="MGP-Ug-3HL" firstAttribute="top" secondItem="y1J-7c-viZ" secondAttribute="bottom" id="IJw-9H-S2v"/>
                             <constraint firstItem="y1J-7c-viZ" firstAttribute="top" secondItem="e2l-Wy-KkI" secondAttribute="top" id="Kf5-3W-Cwj"/>
+                            <constraint firstItem="e2l-Wy-KkI" firstAttribute="bottom" secondItem="MGP-Ug-3HL" secondAttribute="top" constant="68" id="QvB-4L-GYI"/>
                             <constraint firstItem="MGP-Ug-3HL" firstAttribute="leading" secondItem="e2l-Wy-KkI" secondAttribute="leading" id="gJM-P4-IYD"/>
                             <constraint firstItem="e2l-Wy-KkI" firstAttribute="trailing" secondItem="MGP-Ug-3HL" secondAttribute="trailing" id="rAT-ZO-LF0"/>
                         </constraints>
@@ -250,7 +248,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="P28-ul-dIc"/>
+        <segue reference="lQf-C0-JMc"/>
         <segue reference="bvG-si-qmN"/>
     </inferredMetricsTieBreakers>
 </document>
