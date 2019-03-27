@@ -239,6 +239,9 @@ extension MessageViewController: MessageBodyScrollingDelegate {
     }
     
     func propogate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
+        UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
+            self.tableView.flashScrollIndicators()
+        }
         let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height
         guard maxOffset > 0 else { return }
         

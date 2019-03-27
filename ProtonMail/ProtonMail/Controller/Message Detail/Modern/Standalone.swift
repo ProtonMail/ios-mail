@@ -117,9 +117,7 @@ class Standalone: NSObject {
         
         super.init()
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.showEmbedImage(message, body: self.body)
-        }
+        self.showEmbedImage(message, body: self.body)
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
@@ -136,9 +134,7 @@ class Standalone: NSObject {
         self.remoteContentMode = temp.remoteContentMode
         self.divisions = temp.divisions
         
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.showEmbedImage(message, body: temp.body)
-        }
+        self.showEmbedImage(message, body: temp.body)
     }
 
     // TODO: taken from old MessageViewController
@@ -146,31 +142,35 @@ class Standalone: NSObject {
     private func showEmbedImage(_ message: Message, body: String) {
         var updatedBody = body
         
-        guard let atts = message.attachments.allObjects as? [Attachment], !atts.isEmpty else {
+        guard let allAttachments = message.attachments.allObjects as? [Attachment],
+            case let atts = allAttachments.filter({ $0.inline() }), !atts.isEmpty else
+        {
             self.body = updatedBody
             return
         }
         
         var checkCount = atts.count
-        for att in atts {
-            if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                att.base64AttachmentData({ (based64String) in
-                    if !based64String.isEmpty {
-                        objc_sync_enter(self.purifiedBodyLock)
-                        updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
-                        objc_sync_exit(self.purifiedBodyLock)
-                        checkCount = checkCount - 1
-                        
-                        if checkCount == 0 {
-                            self.body = updatedBody
-                        }
+        DispatchQueue.global(qos: .userInitiated).async {
+            for att in atts {
+                if let content_id = att.contentID(), !content_id.isEmpty {
+                    att.base64AttachmentData({ (based64String) in
+                        if !based64String.isEmpty {
+                            objc_sync_enter(self.purifiedBodyLock)
+                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            objc_sync_exit(self.purifiedBodyLock)
+                            checkCount = checkCount - 1
+                            
+                            if checkCount == 0 {
+                                self.body = updatedBody
+                            }
 
-                    } else {
-                        checkCount = checkCount - 1
-                    }
-                })
-            } else {
-                checkCount = checkCount - 1
+                        } else {
+                            checkCount = checkCount - 1
+                        }
+                    })
+                } else {
+                    checkCount = checkCount - 1
+                }
             }
         }
     }
