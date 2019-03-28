@@ -89,6 +89,17 @@ extension String {
         return check.range(of: fwd, options: [.caseInsensitive, .anchored]) != nil
     }
     
+    func hasFw () -> Bool {
+        let fw = LocalString._composer_short_forward_shorter
+        let checkCount = fw.count
+        if self.count < checkCount {
+            return false;
+        }
+        let index = self.index(self.startIndex, offsetBy: checkCount)
+        let check = String(self[..<index])
+        return check.range(of: fw, options: [.caseInsensitive, .anchored]) != nil
+    }
+    
     /**
      String extension check is email valid use the basic regex
      

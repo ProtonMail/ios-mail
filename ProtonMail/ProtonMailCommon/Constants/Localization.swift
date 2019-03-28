@@ -234,9 +234,11 @@ class LocalizedString {
     // Mark Composer
 
     /// "Re:"
-    lazy var _composer_short_reply   = NSLocalizedString("Re:", comment: "abbreviation of reply:")
+    lazy var _composer_short_reply           = NSLocalizedString("Re:", comment: "abbreviation of reply:")
     /// "Fwd:"
-    lazy var _composer_short_forward = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
+    lazy var _composer_short_forward         = NSLocalizedString("Fwd:", comment: "abbreviation of forward:")
+    /// "FW:"
+    lazy var _composer_short_forward_shorter = NSLocalizedString("FW:", comment: "abbreviation of forward:")
     /// "On"
     lazy var _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
