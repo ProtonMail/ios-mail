@@ -37,7 +37,7 @@ class Standalone: NSObject {
     }
     
     internal let messageID: String
-    @objc internal dynamic var body: String
+    @objc internal dynamic var body: String?
     @objc internal dynamic var header: HeaderData
     @objc internal dynamic var attachments: [AttachmentInfo]
     internal let expiration: Date?
@@ -75,7 +75,7 @@ class Standalone: NSObject {
         self.header = HeaderData(message: message)
         
         // 2. body
-        var body = ""
+        var body: String? = nil
         do {
             body = try message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
         } catch let ex as NSError {
@@ -86,7 +86,7 @@ class Standalone: NSObject {
             body = LocalString._message_expired
         }
         if !message.isDetailDownloaded {
-            body = LocalString._loading_
+            body = nil
         }
         self.body = body
         
@@ -97,7 +97,7 @@ class Standalone: NSObject {
         
         // 4. remote content policy
         // should not show Allow button if there is no remote content, even when global settings require
-        self.remoteContentModeObservable = (sharedUserDataService.autoLoadRemoteImages || !body.hasImage())
+        self.remoteContentModeObservable = (sharedUserDataService.autoLoadRemoteImages || !(body ?? "").hasImage())
                                     ? WebContents.RemoteContentPolicy.allowed.rawValue
                                     : WebContents.RemoteContentPolicy.disallowed.rawValue
         
@@ -121,8 +121,8 @@ class Standalone: NSObject {
         
         super.init()
         
-        if embeddingImages {
-            self.showEmbedImage(message, body: self.body)
+        if embeddingImages, let body = body {
+            self.showEmbedImage(message, body: body)
         }
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
@@ -141,7 +141,9 @@ class Standalone: NSObject {
         self.body = temp.body
         self.divisions = temp.divisions
         
-        self.showEmbedImage(message, body: temp.body)
+        if let body = temp.body {
+            self.showEmbedImage(message, body: body)
+        }
     }
 
     private func showEmbedImage(_ message: Message, body: String) {

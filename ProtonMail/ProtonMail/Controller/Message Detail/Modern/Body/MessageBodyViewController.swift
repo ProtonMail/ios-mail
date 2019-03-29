@@ -107,7 +107,11 @@ class MessageBodyViewController: UIViewController {
         self.verticalRecognizer.maximumNumberOfTouches = 1
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
         
-        self.loader.load(contents: self.viewModel.contents, in: self.webView)
+        if let contents = self.viewModel.contents {
+            self.loader.load(contents: contents, in: self.webView)
+        } else {
+            self.webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
+        }
     }
     
     @objc func pan(sender gesture: UIPanGestureRecognizer) {
@@ -256,8 +260,8 @@ extension MessageBodyViewController: ViewModelProtocol {
     func set(viewModel: MessageBodyViewModel) {
         self.viewModel = viewModel
         self.contentsObservation = self.viewModel.observe(\.contents) { [weak self] viewModel, _ in
-            guard let webView = self?.webView else { return }
-            self?.loader.load(contents: viewModel.contents, in: webView)
+            guard let webView = self?.webView, let contents = viewModel.contents else { return }
+            self?.loader.load(contents: contents, in: webView)
         }
     }
 }

@@ -166,7 +166,7 @@ class MessageViewModel: NSObject {
             return
         }
 
-        BugDataService().reportPhishing(messageID: standalone.messageID, messageBody: standalone.body) { error in
+        BugDataService().reportPhishing(messageID: standalone.messageID, messageBody: standalone.body ?? LocalString._error_no_object) { error in
             completion(error)
         }
     }
