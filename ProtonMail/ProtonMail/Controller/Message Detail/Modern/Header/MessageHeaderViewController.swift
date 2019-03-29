@@ -66,6 +66,7 @@ class MessageHeaderViewController: UIViewController {
         self.emailHeaderView.updateHeaderData(headerData)
         self.emailHeaderView.updateHeaderLayout()
         self.emailHeaderView.updateShowImageConstraints()
+        self.emailHeaderView.updateSpamScoreConstraints()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

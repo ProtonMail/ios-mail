@@ -29,23 +29,32 @@
 import Foundation
 
 class MessageBodyViewModel: NSObject {
-    @objc internal dynamic var contents: WebContents
+    @objc internal dynamic var contents: WebContents?
     private var bodyObservation: NSKeyValueObservation!
     private var remoteContentModeObservation: NSKeyValueObservation!
     @objc internal dynamic var contentSize: CGSize = .zero
+    internal lazy var placeholderContent: String = {
+        let meta = "<meta name=\"viewport\" content=\"width=device-width\">"
+        let htmlString = "<html><head>\(meta)<style type='text/css'>\(WebContents.css)</style></head><body>\(LocalString._loading_)</body></html>"
+        return htmlString
+    }()
     
     init(parentViewModel: Standalone) {
-        self.contents = WebContents(body: parentViewModel.body, remoteContentMode: parentViewModel.remoteContentMode)
+        if let body = parentViewModel.body {
+            self.contents = WebContents(body: body, remoteContentMode: parentViewModel.remoteContentMode)
+        }
         
         super.init()
         
-        self.bodyObservation = parentViewModel.observe(\.body) { [weak self] standalone, _ in
+        self.bodyObservation = parentViewModel.observe(\.body, options: [.new, .old]) { [weak self] standalone, change in
             guard let self = self else { return }
-            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+            guard change.newValue != change.oldValue, let body = standalone.body else { return }
+            self.contents = WebContents(body: body, remoteContentMode: standalone.remoteContentMode)
         }
-        self.remoteContentModeObservation = parentViewModel.observe(\.remoteContentModeObservable) { [weak self] standalone, _ in
+        self.remoteContentModeObservation = parentViewModel.observe(\.remoteContentModeObservable, options: [.new, .old]) { [weak self] standalone, change in
             guard let self = self else { return }
-            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+            guard change.newValue != change.oldValue, let body = standalone.body else { return }
+            self.contents = WebContents(body: body, remoteContentMode: standalone.remoteContentMode)
         }
     }
 }
