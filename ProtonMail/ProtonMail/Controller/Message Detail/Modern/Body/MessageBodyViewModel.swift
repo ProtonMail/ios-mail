@@ -39,13 +39,15 @@ class MessageBodyViewModel: NSObject {
         
         super.init()
         
-        self.bodyObservation = parentViewModel.observe(\.body) { [weak self] standalone, _ in
+        self.bodyObservation = parentViewModel.observe(\.body, options: [.new, .old]) { [weak self] standalone, change in
             guard let self = self else { return }
-            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+            guard change.newValue != change.oldValue else { return }
+            self.contents = WebContents(body: standalone.body, remoteContentMode: standalone.remoteContentMode)
         }
-        self.remoteContentModeObservation = parentViewModel.observe(\.remoteContentModeObservable) { [weak self] standalone, _ in
+        self.remoteContentModeObservation = parentViewModel.observe(\.remoteContentModeObservable, options: [.new, .old]) { [weak self] standalone, change in
             guard let self = self else { return }
-            self.contents = WebContents(body: parentViewModel.body, remoteContentMode: standalone.remoteContentMode)
+            guard change.newValue != change.oldValue else { return }
+            self.contents = WebContents(body: standalone.body, remoteContentMode: standalone.remoteContentMode)
         }
     }
 }

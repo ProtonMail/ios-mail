@@ -58,7 +58,7 @@ class MessageBodyViewController: UIViewController {
         if #available(iOS 11.0, *) {
             return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
         } else {
-            return HTMLStringSecureLoader()
+            return HTMLStringSecureLoader(addSpacerIfNeeded: false)
         }
     }()
     

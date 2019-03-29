@@ -47,6 +47,13 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
     private weak var webView: WKWebView?
     private var contents: WebContents?
     
+    private var addSpacerIfNeeded: Bool
+    
+    init(addSpacerIfNeeded: Bool = true) {
+        self.addSpacerIfNeeded = addSpacerIfNeeded
+        super.init()
+    }
+    
     func load(contents: WebContents, in webView: WKWebView) {
         self.webView = webView
         self.prepareRendering(contents, into: webView.configuration)
@@ -89,7 +96,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         let spacer: String = { () -> String in
             if #available(iOS 12.0, *) {
                 return ""
-            } else {
+            } else if self.addSpacerIfNeeded {
                 return """
                 var div = document.createElement('p');
                 div.style.width = '100%';
@@ -97,6 +104,8 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
                 div.style.display = 'block';
                 document.body.appendChild(div);
                 """
+            } else {
+                return ""
             }
         }()
         

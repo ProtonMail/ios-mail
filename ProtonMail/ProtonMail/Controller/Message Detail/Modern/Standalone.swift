@@ -62,7 +62,11 @@ class Standalone: NSObject {
         }
     }
     
-    init(message: Message) {
+    convenience init(message: Message) {
+        self.init(message: message, embeddingImages: true)
+    }
+    
+    init(message: Message, embeddingImages: Bool) {
         // 0. expiration
         self.expiration = message.expirationTime
         let expired = (self.expiration ?? .distantFuture).compare(Date()) == .orderedAscending
@@ -117,7 +121,9 @@ class Standalone: NSObject {
         
         super.init()
         
-        self.showEmbedImage(message, body: self.body)
+        if embeddingImages {
+            self.showEmbedImage(message, body: self.body)
+        }
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
@@ -127,49 +133,44 @@ class Standalone: NSObject {
     }
     
     internal func reload(from message: Message) {
-        let temp = Standalone(message: message)
+        let temp = Standalone(message: message, embeddingImages: false)
 
         self.header = temp.header
         self.attachments = temp.attachments
         self.remoteContentMode = temp.remoteContentMode
+        self.body = temp.body
         self.divisions = temp.divisions
         
         self.showEmbedImage(message, body: temp.body)
     }
 
-    // TODO: taken from old MessageViewController
-    private var purifiedBodyLock: Int = 0
     private func showEmbedImage(_ message: Message, body: String) {
         var updatedBody = body
         
-        guard let allAttachments = message.attachments.allObjects as? [Attachment],
-            case let atts = allAttachments.filter({ $0.inline() }), !atts.isEmpty else
+        guard message.isDetailDownloaded,
+            let allAttachments = message.attachments.allObjects as? [Attachment],
+            case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }), !atts.isEmpty else
         {
-            self.body = updatedBody
             return
         }
         
         var checkCount = atts.count
+        let queue: DispatchQueue = .global(qos: .userInteractive)
+
         DispatchQueue.global(qos: .userInitiated).async {
             for att in atts {
-                if let content_id = att.contentID(), !content_id.isEmpty {
-                    att.base64AttachmentData({ (based64String) in
+                att.base64AttachmentData { [weak self] based64String in
+                    let work = DispatchWorkItem {
                         if !based64String.isEmpty {
-                            objc_sync_enter(self.purifiedBodyLock)
-                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(content_id)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
-                            objc_sync_exit(self.purifiedBodyLock)
-                            checkCount = checkCount - 1
-                            
-                            if checkCount == 0 {
-                                self.body = updatedBody
-                            }
-
-                        } else {
-                            checkCount = checkCount - 1
+                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(att.contentID()!)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
                         }
-                    })
-                } else {
-                    checkCount = checkCount - 1
+                        checkCount -= 1
+                        if checkCount == 0 {
+                            self?.body = updatedBody
+                        }
+                    }
+
+                    queue.async(execute: work)
                 }
             }
         }
