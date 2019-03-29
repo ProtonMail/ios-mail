@@ -75,7 +75,7 @@ extension String {
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
-        return check.contains(re)
+        return check.range(of: re, options: [.caseInsensitive, .anchored]) != nil
     }
     
     func hasFwd () -> Bool {
@@ -86,7 +86,18 @@ extension String {
         }
         let index = self.index(self.startIndex, offsetBy: checkCount)
         let check = String(self[..<index])
-        return check.contains(fwd)
+        return check.range(of: fwd, options: [.caseInsensitive, .anchored]) != nil
+    }
+    
+    func hasFw () -> Bool {
+        let fw = LocalString._composer_short_forward_shorter
+        let checkCount = fw.count
+        if self.count < checkCount {
+            return false;
+        }
+        let index = self.index(self.startIndex, offsetBy: checkCount)
+        let check = String(self[..<index])
+        return check.range(of: fw, options: [.caseInsensitive, .anchored]) != nil
     }
     
     /**

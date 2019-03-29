@@ -105,7 +105,7 @@ final class ComposeViewModelImpl : ComposeViewModel {
                     }
                 } else if action == ComposeMessageAction.forward {
                     if let title = self.message?.title {
-                        if !title.hasFwd() {
+                        if !( title.hasFwd() || title.hasFw() ) {
                             let fwd = LocalString._composer_short_forward
                             self.message?.title = "\(fwd) \(title)"
                         }
