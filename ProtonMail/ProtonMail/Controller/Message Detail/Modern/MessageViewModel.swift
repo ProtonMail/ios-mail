@@ -67,6 +67,9 @@ class MessageViewModel: NSObject {
     }
     
     deinit {
+        self.observationsHeader = []
+        self.observationsBody = []
+        self.attachmentsObservation = []
         NotificationCenter.default.removeObserver(self)
     }
     

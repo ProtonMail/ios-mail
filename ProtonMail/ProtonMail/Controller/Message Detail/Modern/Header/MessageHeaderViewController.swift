@@ -36,6 +36,11 @@ class MessageHeaderViewController: UIViewController {
     private var headerViewFrameObservation: NSKeyValueObservation!
     private var viewModelObservation: NSKeyValueObservation!
     
+    deinit {
+        self.headerViewFrameObservation = nil
+        self.viewModelObservation = nil
+    }
+    
     override func viewDidLoad() {
         self.emailHeaderView.makeConstraints()
         self.emailHeaderView.isShowingDetail = false

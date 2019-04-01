@@ -30,6 +30,7 @@ import Foundation
 
 class MessageBodyViewModel: NSObject {
     @objc internal dynamic var contents: WebContents?
+    private var parentViewModel: Standalone // to keep it alive while observation is valid (otherwise iOS 10 crashes)
     private var bodyObservation: NSKeyValueObservation!
     private var remoteContentModeObservation: NSKeyValueObservation!
     @objc internal dynamic var contentHeight: CGFloat = 0.0
@@ -41,6 +42,7 @@ class MessageBodyViewModel: NSObject {
     }()
     
     init(parentViewModel: Standalone) {
+        self.parentViewModel = parentViewModel
         if let body = parentViewModel.body {
             self.contents = WebContents(body: body, remoteContentMode: parentViewModel.remoteContentMode)
         }
@@ -57,5 +59,10 @@ class MessageBodyViewModel: NSObject {
             guard change.newValue != change.oldValue, let body = standalone.body else { return }
             self.contents = WebContents(body: body, remoteContentMode: standalone.remoteContentMode)
         }
+    }
+    
+    deinit {
+        self.bodyObservation = nil
+        self.remoteContentModeObservation = nil
     }
 }

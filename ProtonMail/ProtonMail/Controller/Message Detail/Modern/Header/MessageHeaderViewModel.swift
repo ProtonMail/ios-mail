@@ -33,12 +33,14 @@ class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
     private var message: Message
+    private var parentViewModel: Standalone // to keep it alive while observation is valid (otherwise iOS 10 crashes)
     private var parentObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
     
     init(parentViewModel: Standalone, message: Message) {
         self.message = message
         self.headerData = parentViewModel.header
+        self.parentViewModel = parentViewModel
         
         super.init()
         
@@ -49,6 +51,11 @@ class MessageHeaderViewModel: NSObject {
             guard change.newValue != change.oldValue else { return }
             self?.headerData = HeaderData(message: message)
         }
+    }
+    
+    deinit {
+        self.parentObservation = nil
+        self.messageObservation = nil
     }
 }
 

@@ -63,6 +63,10 @@ class MessageBodyViewController: UIViewController {
     }()
     
     deinit {
+        self.contentSizeObservation = nil
+        self.contentsObservation = nil
+        self.scrollDecelerationOverlayObservation = nil
+        
         if let webView = self.webView {
             self.loader.eject(from: webView.configuration)
         }
