@@ -160,6 +160,8 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
     }
     
     deinit {
+        self.standalonesObservation = []
+        self.threadObservation = nil
         NotificationCenter.default.removeObserver(self)
     }
     

@@ -29,7 +29,13 @@
 import Foundation
 import WebKit
 
+class RenderedContents: NSObject {
+    @objc internal dynamic var preheight: CGFloat = 0.0
+    @objc internal dynamic var height: CGFloat = 0.0
+}
+
 protocol WebContentsSecureLoader {
+    var renderedContents: RenderedContents { get }
     func load(contents: WebContents, in webView: WKWebView)
     func inject(into config: WKWebViewConfiguration)
 }

@@ -44,6 +44,7 @@ import WebKit
 ///
 @available(iOS, deprecated: 11.0)
 class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
+    internal lazy var renderedContents = RenderedContents()
     private weak var webView: WKWebView?
     private var contents: WebContents?
     
@@ -90,6 +91,8 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         var ratio = document.body.offsetWidth/document.body.scrollWidth;
         if (ratio < 1) {
         metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+        } else {
+        ratio = 1;
         };
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
@@ -110,7 +113,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         }()
         
         let message = """
-        window.webkit.messageHandlers.loaded.postMessage({'clearBody':document.documentElement.innerHTML});
+        window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight, 'clearBody':document.documentElement.innerHTML});
         """
         
         let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
@@ -120,13 +123,33 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        guard let dict = message.body as? Dictionary<String, String>,
-            let sanitized = dict["clearBody"] else
-        {
+        guard let dict = message.body as? Dictionary<String, Any> else {
+            assert(false, "Unexpected message sent from JS")
             return
         }
-        userContentController.removeAllUserScripts()
-        self.webView?.loadHTMLString(sanitized, baseURL: URL(string: "about:blank")!)
+        
+        if let sanitized = dict["clearBody"] as? String {
+            userContentController.removeAllUserScripts()
+            
+            let message = """
+            var ratio = document.body.offsetWidth/document.body.scrollWidth;
+            if (ratio > 1) {
+                ratio = 1;
+            };
+            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+            """
+            let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            userContentController.addUserScript(sanitize)
+            
+            self.webView?.loadHTMLString(sanitized, baseURL: URL(string: "about:blank")!)
+        }
+        
+        if let preheight = dict["preheight"] as? CGFloat {
+            self.renderedContents.preheight = preheight
+        }
+        if let height = dict["height"] as? CGFloat {
+            self.renderedContents.height = height
+        }
     }
     
     func inject(into config: WKWebViewConfiguration) {

@@ -37,6 +37,11 @@ class MessageAttachmentsViewController: UIViewController {
     private var isExpanded: Bool = false
 
     @IBOutlet weak var tableView: UITableView!
+
+    deinit {
+        self.headerViewFrameObservation = nil
+        self.attachmentsObservation = nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
