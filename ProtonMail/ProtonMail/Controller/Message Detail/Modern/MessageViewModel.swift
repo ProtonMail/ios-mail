@@ -211,8 +211,8 @@ class MessageViewModel: NSObject {
             }
             self.observationsHeader.append(attachmentsObservation)
             
-            let bodyObservation = child.body.observe(\.contentSize) { [weak self] body, _ in
-                self?.thread[index].heightOfBody = body.contentSize.height
+            let bodyObservation = child.body.observe(\.contentHeight) { [weak self] body, _ in
+                self?.thread[index].heightOfBody = body.contentHeight
             }
             self.observationsHeader.append(bodyObservation)
         }

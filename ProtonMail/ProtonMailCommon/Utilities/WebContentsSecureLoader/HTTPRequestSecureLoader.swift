@@ -43,6 +43,8 @@ import Foundation
 ///
 @available(iOS 11.0, *)
 class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessageHandler {
+    internal let renderedContents = RenderedContents()
+    
     private weak var webView: WKWebView?
     private var blockRules: WKContentRuleList?
     private var contents: WebContents?
@@ -117,6 +119,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         var ratio = document.body.offsetWidth/document.body.scrollWidth;
         if (ratio < 1) {
         metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+        } else {
+        ratio = 1;
         };
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
@@ -137,7 +141,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }()
         
         let message = """
-        window.webkit.messageHandlers.loaded.postMessage({'clearBody': document.documentElement.outerHTML.toString()});
+        window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * document.body.scrollHeight, 'clearBody': document.documentElement.outerHTML.toString()});
         """
         
         let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
@@ -149,12 +153,24 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
     
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        //PMLog.D(any: message.body)
-        if let dict = message.body as? Dictionary<String, String>,
-            let sanitized = dict["clearBody"]
-        {
+        guard let dict = message.body as? Dictionary<String, Any> else {
+            assert(false, "Unexpected message sent from JS")
+            return
+        }
+        
+        if let sanitized = dict["clearBody"] as? String {
             userContentController.removeAllContentRuleLists()
             userContentController.removeAllUserScripts()
+            
+            let message = """
+            var ratio = document.body.offsetWidth/document.body.scrollWidth;
+            if (ratio > 1) {
+                ratio = 1;
+            };
+            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+            """
+            let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+            userContentController.addUserScript(sanitize)
             
             let urlString = (UUID().uuidString + ".proton").lowercased()
             let url = URL(string: HTTPRequestSecureLoader.loopbackScheme + "://" + urlString)!
@@ -163,7 +179,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             self.loopbacks[url] = data
             
             self.webView?.load(request)
-            return
+        }
+        if let preheight = dict["preheight"] as? CGFloat {
+            self.renderedContents.preheight = preheight
+        }
+        if let height = dict["height"] as? CGFloat {
+            self.renderedContents.height = height
         }
     }
     
