@@ -90,19 +90,8 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         // events
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
         
-        // iPads think tableView is resized when app is backgrounded and reloads it's data
-        // so we perserve contentOffset before backgrounding and restore after 
         NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
-    }
-    
-    
-
-    @objc private func saveOffset() {
-        self.contentOffsetToPerserve = self.tableView.contentOffset
-    }
-    @objc private func restoreOffset() {
-        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
@@ -348,5 +337,31 @@ extension MessageViewController: BannerPresenting {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+}
+
+// iPads think tableView is resized when app is backgrounded and reloads it's data
+// by some mysterious reason if MessageBodyViewController cell occupies whole screen at that moment, tableView will scroll to bottom. So we perserve contentOffset with help of these methods
+extension MessageViewController {
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        self.saveOffset()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // scrolling happens after traits collection change, so we have to run restore async
+        DispatchQueue.main.async {
+            self.restoreOffset()
+        }
+    }
+    
+    @objc private func saveOffset() {
+        self.contentOffsetToPerserve = self.tableView.contentOffset
+    }
+    
+    @objc private func restoreOffset() {
+        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
 }
