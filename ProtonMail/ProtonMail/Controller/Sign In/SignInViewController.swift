@@ -117,7 +117,7 @@ class SignInViewController: ProtonMailViewController {
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
         let current_language = LanguageManager.currentLanguageEnum()
-        let title = LocalString._settings_current_language_is + current_language.description
+        let title = LocalString._settings_current_language_is + current_language.nativeDescription
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         for l in ELanguage.allItems() {
@@ -144,7 +144,7 @@ class SignInViewController: ProtonMailViewController {
     
     internal func setupVersionLabel () {
         let language: ELanguage =  LanguageManager.currentLanguageEnum()
-        languagesLabel.text = language.description
+        languagesLabel.text = language.nativeDescription
         if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
             if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
                 versionLabel.text = "v" + version + "(\(build))"

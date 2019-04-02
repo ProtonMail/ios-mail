@@ -413,7 +413,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             case .language:
                 let language: ELanguage =  LanguageManager.currentLanguageEnum()
                 let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath) as! GeneralSettingViewCell
-                cell.configCell(language.description, right: "")
+                cell.configCell(language.nativeDescription, right: "")
                 cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                 cellout = cell
                 
@@ -658,7 +658,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 self.coordinator?.go(to: .lableManager)
             case .language:
                 let current_language = LanguageManager.currentLanguageEnum()
-                let title = LocalString._settings_current_language_is + current_language.description
+                let title = LocalString._settings_current_language_is + current_language.nativeDescription
                 let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
                 alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 for l in setting_languages {

@@ -587,7 +587,12 @@ class MessageDataService : Service {
                             }
                         }
                     } else {
-                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages", completion: nil)
+                        
+                        var details = ""
+                        if let err = error {
+                            details = err.description
+                        }
+                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages -- " + details, completion: nil)
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
