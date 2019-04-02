@@ -360,7 +360,8 @@ extension Message {
     
     override public func awakeFromInsert() {
         super.awakeFromInsert()
-        replaceNilStringAttributesWithEmptyString()
+        
+        replaceNilAttributesWithEmptyString(option: [.string, .transformable])
     }
     
     // MARK: methods

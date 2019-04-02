@@ -2027,9 +2027,7 @@ class MessageDataService : Service {
                     error?.upload(toAnalytics: "GRTJSONSerialization Save")
                     PMLog.D(" error: \(String(describing: error))")
                 }
-                
                 self.fetchMetadata(with: messagesNoCache)
-                
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
                     return
