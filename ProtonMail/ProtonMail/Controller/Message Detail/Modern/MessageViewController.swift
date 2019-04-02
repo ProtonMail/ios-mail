@@ -52,6 +52,7 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
     private var coordinator: MessageViewCoordinator!
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
+    private var contentOffsetToPerserve: CGPoint = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,11 +86,23 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
         self.coordinator.createChildControllers(with: childViewModels)
+        
+        // events
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
+        
+        // iPads think tableView is resized when app is backgrounded and reloads it's data
+        // so we perserve contentOffset before backgrounding and restore after 
+        NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
+    
+
+    @objc private func saveOffset() {
+        self.contentOffsetToPerserve = self.tableView.contentOffset
+    }
+    @objc private func restoreOffset() {
+        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 

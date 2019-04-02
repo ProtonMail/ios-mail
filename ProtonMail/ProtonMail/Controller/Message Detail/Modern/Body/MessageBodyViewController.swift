@@ -162,19 +162,7 @@ class MessageBodyViewController: UIViewController {
         self.height.constant = newHeight
         self.viewModel.contentHeight = newHeight
     }
-    
-    private func reload() {
-        // not the most efficient way, but if we do not want to run JS in these webviews - we have to shrink the cell to it's minimum, let webView define it's contents size and then resize cell up to the correct height
-        // otherwise webView will try to match it's current height and will add bottom spacer to the contents, which will screw up contentSize and it will grow with every transition bigger and bigger
-        self.height.constant = 111.0
-        self.webView.reload()
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        self.reload()
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.coordinator.prepare(for: segue, sender: sender)
     }
