@@ -311,7 +311,7 @@ extension AppDelegate: UIApplicationDelegate {
     
     // MARK: Notification methods
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        Analytics.shared.logCustomEvent(withName: "NotificationError", customAttributes:["error" : "\(error)"])
+        Analytics.shared.logCustomEvent(customAttributes:[ "LogTitle": "NotificationError", "error" : "\(error)"])
     }
     
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

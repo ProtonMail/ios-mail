@@ -575,14 +575,14 @@ class MessageDataService : Service {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
-                                        error.upload(toAnalytics: self.reportTitle)
+                                        error.upload(toAnalytics: self.reportTitle + "-Save")
                                     }
                                 } else {
                                     BugDataService.debugReport(self.reportTitle, "insert empty", completion: nil)
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
                             } catch let err as NSError {
-                                err.upload(toAnalytics: self.reportTitle)
+                                err.upload(toAnalytics: self.reportTitle + "-TryCatch")
                                 PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }

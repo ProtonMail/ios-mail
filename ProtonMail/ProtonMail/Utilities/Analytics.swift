@@ -50,7 +50,7 @@ class Analytics {
         }
     }
     
-    func logCustomEvent(withName: String, customAttributes: Dictionary<String, Any>) {
+    func logCustomEvent(customAttributes: Dictionary<String, Any>) {
         Client.shared?.snapshotStacktrace {
             let event = Event(level: .debug)
             event.message = customAttributes.json()
