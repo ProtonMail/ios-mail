@@ -31,6 +31,9 @@ import UIKit
 protocol MessageBodyScrollingDelegate: class {
     func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
+    
+    func saveOffset()
+    func restoreOffset()
 }
 
 class MessageBodyViewController: UIViewController {
@@ -40,6 +43,7 @@ class MessageBodyViewController: UIViewController {
     private var contentsObservation: NSKeyValueObservation!
     
     private var height: NSLayoutConstraint!
+    private var lastContentOffset: CGPoint = .zero
     private var lastZoom: CGAffineTransform = .identity
     private var initialZoom: CGAffineTransform = .identity
     private var contentSizeObservation: NSKeyValueObservation! // used to update content size after loading images
@@ -90,7 +94,8 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = false
+        self.webView.scrollView.bounces = true
+        self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
         self.webView.scrollView.showsHorizontalScrollIndicator = true
@@ -216,20 +221,32 @@ extension MessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         self.contentSizeObservation = nil
         self.lastZoom = view?.transform ?? .identity
+        self.lastContentOffset = .zero
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         var newSize = scrollView.contentSize
         newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
+        
+        let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.enclosingScroller!.scroller.contentOffset.y)
+        self.enclosingScroller?.propogate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
+            // sometimes offset after zoom can exceed tableView's heigth (usually when pinch center is close to the bottom of the cell and cell after zoom should be much bigger than before)
+            // here we're saying the tableView which contentOffset we'd like to have after it will increase cell and animate changes. That will cause a little glitch tho :(
+            self.enclosingScroller?.scroller.contentOffset = united
+            self.enclosingScroller?.saveOffset()
+        })
+
         self.updateHeight(to: newSize.height)
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        self.lastContentOffset = scrollView.contentOffset
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        if !scrollView.isZooming {
+            scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        }
     }
 }
 

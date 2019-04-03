@@ -301,6 +301,7 @@ extension MessageViewController {
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
+            self?.restoreOffset()
         }
         self.standalonesObservation.append(body)
         
@@ -357,11 +358,11 @@ extension MessageViewController {
         }
     }
     
-    @objc private func saveOffset() {
+    @objc internal func saveOffset() {
         self.contentOffsetToPerserve = self.tableView.contentOffset
     }
     
-    @objc private func restoreOffset() {
+    @objc internal func restoreOffset() {
         self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
 }
