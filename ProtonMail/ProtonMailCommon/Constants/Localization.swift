@@ -244,7 +244,10 @@ class LocalizedString {
     /// "wrote:"
     lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
     /// "On EE, MMM d, yyyy at %@"
-    lazy var _composer_forward_reply_header = NSLocalizedString("On EE, MMM d, yyyy at %@", comment: "reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
+    lazy var _composer_forward_header = NSLocalizedString("On EE, MMM d, yyyy at %@", comment: "forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
+    /// "On EE, MMM d, yyyy at %@, %@, wrote:"
+    lazy var _composer_reply_header = NSLocalizedString("On EE, MMM d, yyyy at %@, %@, wrote:", comment: "reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. ")
+    
     /// "Date:"
     lazy var _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
     /// "Subject:"
