@@ -31,6 +31,9 @@ import UIKit
 protocol MessageBodyScrollingDelegate: class {
     func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
+    
+    func saveOffset()
+    func restoreOffset()
 }
 
 class MessageBodyViewController: UIViewController {
@@ -40,9 +43,12 @@ class MessageBodyViewController: UIViewController {
     private var contentsObservation: NSKeyValueObservation!
     
     private var height: NSLayoutConstraint!
+    private var lastContentOffset: CGPoint = .zero
     private var lastZoom: CGAffineTransform = .identity
     private var initialZoom: CGAffineTransform = .identity
     private var contentSizeObservation: NSKeyValueObservation! // used to update content size after loading images
+    private var renderObservation: NSKeyValueObservation!
+    private var loadingObservation: NSKeyValueObservation!
     
     internal weak var enclosingScroller: MessageBodyScrollingDelegate?
     private var verticalRecognizer: UIPanGestureRecognizer!
@@ -90,7 +96,8 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = false
+        self.webView.scrollView.bounces = true
+        self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
         self.webView.scrollView.showsHorizontalScrollIndicator = true
@@ -162,19 +169,7 @@ class MessageBodyViewController: UIViewController {
         self.height.constant = newHeight
         self.viewModel.contentHeight = newHeight
     }
-    
-    private func reload() {
-        // not the most efficient way, but if we do not want to run JS in these webviews - we have to shrink the cell to it's minimum, let webView define it's contents size and then resize cell up to the correct height
-        // otherwise webView will try to match it's current height and will add bottom spacer to the contents, which will screw up contentSize and it will grow with every transition bigger and bigger
-        self.height.constant = 111.0
-        self.webView.reload()
-    }
-    
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        self.reload()
-    }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.coordinator.prepare(for: segue, sender: sender)
     }
@@ -190,12 +185,6 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
 extension MessageBodyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
-        
-        // webView continues layout of it's inner views long after this method is called, and updates scrollView contentSize property only after all the images are downloaded. This hunk of code is ugly, but allows us to update height and present contents faster
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [weak self] in
-            guard let webView = self?.webView else { return }
-            self?.updateHeight(to: webView.scrollView.contentSize.height)
-        }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -209,11 +198,17 @@ extension MessageBodyViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             
         default:
-            self.contentSizeObservation = self.loader.renderedContents.observe(\.height) { [weak self] renderedContents, _ in
-                self?.updateHeight(to: self?.viewModel.contents?.remoteContentMode == .allowed
-                                        ? renderedContents.height
-                                        : renderedContents.preheight)
+            self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
+                guard change.newValue?.height != change.oldValue?.height else { return }
+                self?.updateHeight(to: scrollView.contentSize.height)
             }
+            self.renderObservation = self.loader.renderedContents.observe(\.height, options: .initial) { [weak self] renderedContents, _ in
+                let isRemoteContentAllowed = self?.viewModel.contents?.remoteContentMode == .allowed
+                self?.updateHeight(to: isRemoteContentAllowed ? renderedContents.height : renderedContents.preheight)
+            }
+            self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress, options: .initial, changeHandler: { [weak self] webView, _ in
+                self?.updateHeight(to: webView.scrollView.contentSize.height)
+            })
             decisionHandler(.allow)
         }
     }
@@ -227,21 +222,35 @@ extension MessageBodyViewController: WKNavigationDelegate {
 extension MessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         self.contentSizeObservation = nil
+        self.renderObservation = nil
+        self.loadingObservation = nil
         self.lastZoom = view?.transform ?? .identity
+        self.lastContentOffset = .zero
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
         var newSize = scrollView.contentSize
         newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
+        
+        let united = CGPoint(x: 0, y: self.lastContentOffset.y + self.enclosingScroller!.scroller.contentOffset.y)
+        self.enclosingScroller?.propogate(scrolling: self.lastContentOffset, boundsTouchedHandler: {
+            // sometimes offset after zoom can exceed tableView's heigth (usually when pinch center is close to the bottom of the cell and cell after zoom should be much bigger than before)
+            // here we're saying the tableView which contentOffset we'd like to have after it will increase cell and animate changes. That will cause a little glitch tho :(
+            self.enclosingScroller?.scroller.contentOffset = united
+            self.enclosingScroller?.saveOffset()
+        })
+
         self.updateHeight(to: newSize.height)
     }
     
     func scrollViewDidZoom(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        self.lastContentOffset = scrollView.contentOffset
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        if !scrollView.isZooming {
+            scrollView.contentOffset = .init(x: scrollView.contentOffset.x, y: 0)
+        }
     }
 }
 

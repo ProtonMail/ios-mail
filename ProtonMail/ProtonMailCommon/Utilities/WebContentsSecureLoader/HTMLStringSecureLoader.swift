@@ -113,7 +113,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         }()
         
         let message = """
-        window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight, 'clearBody':document.documentElement.innerHTML});
+        window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * document.body.scrollHeight, 'clearBody':document.documentElement.innerHTML});
         """
         
         let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: false)

@@ -52,6 +52,7 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
     private var coordinator: MessageViewCoordinator!
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
+    private var contentOffsetToPerserve: CGPoint = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,11 +86,12 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         }
         self.viewModel.subscribe(toUpdatesOf: childViewModels)
         self.coordinator.createChildControllers(with: childViewModels)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        
+        // events
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
@@ -297,8 +299,10 @@ extension MessageViewController {
         self.standalonesObservation.append(attachments)
         
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
+            self?.saveOffset()
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
+            self?.restoreOffset()
         }
         self.standalonesObservation.append(body)
         
@@ -335,5 +339,31 @@ extension MessageViewController: BannerPresenting {
     
     override var canBecomeFirstResponder: Bool {
         return true
+    }
+}
+
+// iPads think tableView is resized when app is backgrounded and reloads it's data
+// by some mysterious reason if MessageBodyViewController cell occupies whole screen at that moment, tableView will scroll to bottom. So we perserve contentOffset with help of these methods
+extension MessageViewController {
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransition(to: newCollection, with: coordinator)
+        self.saveOffset()
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        // scrolling happens after traits collection change, so we have to run restore async
+        DispatchQueue.main.async {
+            self.restoreOffset()
+        }
+    }
+    
+    @objc internal func saveOffset() {
+        self.contentOffsetToPerserve = self.tableView.contentOffset
+    }
+    
+    @objc internal func restoreOffset() {
+        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
 }
