@@ -243,6 +243,8 @@ class LocalizedString {
     lazy var _composer_on            = NSLocalizedString("On", comment: "Title")
     /// "wrote:"
     lazy var _composer_wrote         = NSLocalizedString("wrote:", comment: "Title")
+    /// "On EE, MMM d, yyyy at %@"
+    lazy var _composer_forward_reply_header = NSLocalizedString("On EE, MMM d, yyyy at %@", comment: "reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.")
     /// "Date:"
     lazy var _composer_date_field    = NSLocalizedString("Date:", comment: "message Date: text")
     /// "Subject:"
@@ -937,6 +939,9 @@ class LocalizedString {
 
     /// "Note: The Username is also your ProtonMail address."
     lazy var _notes_the_username_is_also_your_protonmail_address = NSLocalizedString("Note: The Username is also your ProtonMail address.", comment: "Signup user name notes")
+    
+    /// "By using ProtonMail, you agree to our (terms and conditions) and (privacy policy)."  -- for later
+    lazy var _by_using_protonmail_you_agree_terms_ = NSLocalizedString("By using protonmail, you agree to our %@ and %@.", comment: "")
 
     /// "By using ProtonMail, you agree to our"
     lazy var _notes_by_using_protonmail_you_agree_to_our = NSLocalizedString("By using protonmail, you agree to our", comment: "agree check box first part words")
@@ -1621,9 +1626,8 @@ class LocalizedString {
 
     lazy var _vpn_included = NSLocalizedString("ProtonVPN included", comment: "Service plan capability")
     
-    lazy var _migrate_beginning = NSLocalizedString("It is not possible to switch to ", comment: "It is not possible to switch to `plan` within our iOS app. first part")
-
-    lazy var _migrate_end = NSLocalizedString(" within our iOS app.", comment: "It is not possible to switch to `plan` within our iOS app. second part")
+    /// "It is not possible to switch to %@ within our iOS app."
+    lazy var _migrate_plan = NSLocalizedString("It is not possible to switch to %@ within our iOS app.", comment: "It is not possible to switch to `plan` within our iOS app.")
 
     lazy var _upgrade_to_paid = NSLocalizedString("Upgrade to a paid plan to benefit from more features", comment: "Service plan description footer")
 

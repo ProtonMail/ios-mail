@@ -209,15 +209,17 @@ extension StorefrontViewModel {
             regularAttributes[.font] = UIFont.preferredFont(forTextStyle: .body)
             var coloredAttributes = regularAttributes
             coloredAttributes[.foregroundColor] = plan.subheader.1
-            
-            let title1 = NSMutableAttributedString(string: LocalString._migrate_beginning, attributes: regularAttributes)
-            let title2 = NSMutableAttributedString(string: plan.subheader.0, attributes: coloredAttributes)
-            let title3 = NSMutableAttributedString(string: LocalString._migrate_end, attributes: regularAttributes)
-            
-            title1.append(title2)
-            title1.append(title3)
-            return title1
+            let planName = plan.subheader.0
+            let fullstr = String(format: LocalString._migrate_plan, planName)
+            let title = NSMutableAttributedString(string: fullstr, attributes: regularAttributes)
+            // if can't find the range just to use plain style
+            if let range = fullstr.range(of: planName) {
+                let nsRange = NSRange(range, in: fullstr)
+                title.setAttributes(coloredAttributes, range: nsRange)
+            }
+            return title
         }
+        
         func makeCurrentPlanText(subscription: ServicePlanSubscription) -> NSAttributedString {
             var message: NSAttributedString!
             var regularAttributes = [NSAttributedString.Key: Any]()
