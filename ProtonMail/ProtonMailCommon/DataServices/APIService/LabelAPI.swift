@@ -82,7 +82,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         ]
         
         if type == 1 {
-            out["Exclusive"] = self.exclusive
+            out["Exclusive"] = self.exclusive ? 1 : 0
         }
 
         return out
