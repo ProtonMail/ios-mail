@@ -32,14 +32,39 @@ import CoreData
 
 extension NSManagedObject {
     
+    struct AttributeType : OptionSet {
+        let rawValue: Int
+
+        /// string type
+        static let string = AttributeType(rawValue: 1 << 0 )
+        /// transformable type
+        static let transformable = AttributeType(rawValue: 1 << 1 )
+    }
+    
     /// Set nil string attributes to ""
     internal func replaceNilStringAttributesWithEmptyString() {
+        replaceNilAttributesWithEmptyString(option: [.string])
+    }
+    
+    
+    /// Set nil string attributes to ""
+    internal func replaceNilAttributesWithEmptyString(option : AttributeType) {
+        let checkString = option.contains(.string)
+        let checkTrans = option.contains(.transformable)
         for (_, attribute) in entity.attributesByName {
-            if attribute.attributeType == .stringAttributeType {
+            
+            if checkString && attribute.attributeType == .stringAttributeType {
                 if value(forKey: attribute.name) == nil {
                     setValue("", forKey: attribute.name)
                 }
             }
+            
+            if checkTrans && attribute.attributeType == .transformableAttributeType {
+                if value(forKey: attribute.name) == nil {
+                    setValue("", forKey: attribute.name)
+                }
+            }
+            
         }
     }
 }

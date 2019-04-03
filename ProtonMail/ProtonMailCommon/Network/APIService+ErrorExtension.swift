@@ -43,8 +43,8 @@ extension NSError {
             ver = version
         }
         
-        Analytics.shared.logCustomEvent(withName: title,
-                                       customAttributes: [
+        Analytics.shared.logCustomEvent(customAttributes: [
+                                        "CustomEventTitle" : title,
                                         "DeviceModel" : UIDevice.current.model,
                                         "DeviceVersion" : UIDevice.current.systemVersion,
                                         "AppVersion" : "iOS_\(ver)",
@@ -53,8 +53,4 @@ extension NSError {
                                         "error_full": localizedDescription,
                                         "error_reason" : "\(String(describing: localizedFailureReason))"])
     }
-
-
-    
-    
 }

@@ -63,62 +63,15 @@ extension ELanguage {
             case .catalan:
                 return "Català"
             case .danish:
-                return "dansk"
+                return "Dansk"
             case  .czech:
                 return "Čeština"
             case .portuguese:
-                return "português"
+                return "Português"
             case .romanian:
-                return "românesc"
+                return "Română"
             case .croatian:
                 return "Hrvatski"
-            case .count:
-                return ""
-            }
-        }
-    }
-    
-    public var description : String {
-        get {
-            switch(self) {
-            case .english:
-                return LocalString._english
-            case .german:
-                return LocalString._german
-            case .french:
-                return LocalString._french
-            case .russian:
-                return LocalString._russian
-            case .spanish:
-                return LocalString._spanish
-            case .turkish:
-                return LocalString._turkish
-            case .polish:
-                return LocalString._polish
-            case .ukrainian:
-                return LocalString._ukrainian
-            case .dutch:
-                return LocalString._dutch
-            case .italian:
-                return LocalString._italian
-            case .portugueseBrazil:
-                return LocalString._portuguese_brazil
-            case .chineseSimplified:
-                return LocalString._chinese_simplified
-            case .chineseTraditional:
-                return LocalString._chinese_traditional
-            case .catalan:
-                return LocalString._catalan
-            case .danish:
-                return LocalString._danish
-            case .czech:
-                return LocalString._czech
-            case .portuguese:
-                return LocalString._portuguese
-            case .romanian:
-                return LocalString._romanian
-            case .croatian:
-                return LocalString._croatian
             case .count:
                 return ""
             }

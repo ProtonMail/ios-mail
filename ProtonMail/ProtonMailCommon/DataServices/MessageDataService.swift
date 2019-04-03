@@ -575,19 +575,24 @@ class MessageDataService : Service {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
-                                        error.upload(toAnalytics: self.reportTitle)
+                                        error.upload(toAnalytics: self.reportTitle + "-Save")
                                     }
                                 } else {
                                     BugDataService.debugReport(self.reportTitle, "insert empty", completion: nil)
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
                             } catch let err as NSError {
-                                err.upload(toAnalytics: self.reportTitle)
+                                err.upload(toAnalytics: self.reportTitle + "-TryCatch")
                                 PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }
                     } else {
-                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages", completion: nil)
+                        
+                        var details = ""
+                        if let err = error {
+                            details = err.description
+                        }
+                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages -- " + details, completion: nil)
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
@@ -2027,9 +2032,7 @@ class MessageDataService : Service {
                     error?.upload(toAnalytics: "GRTJSONSerialization Save")
                     PMLog.D(" error: \(String(describing: error))")
                 }
-                
                 self.fetchMetadata(with: messagesNoCache)
-                
                 DispatchQueue.main.async {
                     completion?(task, nil, error)
                     return
