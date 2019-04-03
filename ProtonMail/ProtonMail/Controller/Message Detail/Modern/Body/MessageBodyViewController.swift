@@ -47,6 +47,8 @@ class MessageBodyViewController: UIViewController {
     private var lastZoom: CGAffineTransform = .identity
     private var initialZoom: CGAffineTransform = .identity
     private var contentSizeObservation: NSKeyValueObservation! // used to update content size after loading images
+    private var renderObservation: NSKeyValueObservation!
+    private var loadingObservation: NSKeyValueObservation!
     
     internal weak var enclosingScroller: MessageBodyScrollingDelegate?
     private var verticalRecognizer: UIPanGestureRecognizer!
@@ -183,12 +185,6 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
 extension MessageBodyViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
-        
-        // webView continues layout of it's inner views long after this method is called, and updates scrollView contentSize property only after all the images are downloaded. This hunk of code is ugly, but allows us to update height and present contents faster
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100)) { [weak self] in
-            guard let webView = self?.webView else { return }
-            self?.updateHeight(to: webView.scrollView.contentSize.height)
-        }
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -202,11 +198,17 @@ extension MessageBodyViewController: WKNavigationDelegate {
             decisionHandler(.cancel)
             
         default:
-            self.contentSizeObservation = self.loader.renderedContents.observe(\.height) { [weak self] renderedContents, _ in
-                self?.updateHeight(to: self?.viewModel.contents?.remoteContentMode == .allowed
-                                        ? renderedContents.height
-                                        : renderedContents.preheight)
+            self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
+                guard change.newValue?.height != change.oldValue?.height else { return }
+                self?.updateHeight(to: scrollView.contentSize.height)
             }
+            self.renderObservation = self.loader.renderedContents.observe(\.height, options: .initial) { [weak self] renderedContents, _ in
+                let isRemoteContentAllowed = self?.viewModel.contents?.remoteContentMode == .allowed
+                self?.updateHeight(to: isRemoteContentAllowed ? renderedContents.height : renderedContents.preheight)
+            }
+            self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress, options: .initial, changeHandler: { [weak self] webView, _ in
+                self?.updateHeight(to: webView.scrollView.contentSize.height)
+            })
             decisionHandler(.allow)
         }
     }
@@ -220,6 +222,8 @@ extension MessageBodyViewController: WKNavigationDelegate {
 extension MessageBodyViewController: UIScrollViewDelegate {
     func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {
         self.contentSizeObservation = nil
+        self.renderObservation = nil
+        self.loadingObservation = nil
         self.lastZoom = view?.transform ?? .identity
         self.lastContentOffset = .zero
     }
