@@ -299,6 +299,7 @@ extension MessageViewController {
         self.standalonesObservation.append(attachments)
         
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
+            self?.saveOffset()
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
             self?.restoreOffset()
