@@ -200,15 +200,17 @@ extension MessageBodyViewController: WKNavigationDelegate {
         default:
             self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
                 guard change.newValue?.height != change.oldValue?.height else { return }
+                guard self?.loader.renderedContents.isValid == true else { return }
                 self?.updateHeight(to: scrollView.contentSize.height)
             }
-            self.renderObservation = self.loader.renderedContents.observe(\.height, options: .initial) { [weak self] renderedContents, _ in
-                let isRemoteContentAllowed = self?.viewModel.contents?.remoteContentMode == .allowed
-                self?.updateHeight(to: isRemoteContentAllowed ? renderedContents.height : renderedContents.preheight)
+            self.renderObservation = self.loader.renderedContents.observe(\.height) { [weak self] renderedContents, _ in
+                guard let remoteContentMode = self?.viewModel.contents?.remoteContentMode else { return }
+                self?.updateHeight(to: remoteContentMode == .allowed ? renderedContents.height : renderedContents.preheight)
             }
-            self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress, options: .initial, changeHandler: { [weak self] webView, _ in
+            self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress) { [weak self] webView, _ in
+                guard self?.loader.renderedContents.isValid == true else { return }
                 self?.updateHeight(to: webView.scrollView.contentSize.height)
-            })
+            }
             decisionHandler(.allow)
         }
     }

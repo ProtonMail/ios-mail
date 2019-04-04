@@ -68,6 +68,8 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let data = contents.body.data(using: .unicode)
         self.loopbacks[url] = data
         
+        self.renderedContents.invalidate()
+        
         let blockRules = """
         [{
             "trigger": {
