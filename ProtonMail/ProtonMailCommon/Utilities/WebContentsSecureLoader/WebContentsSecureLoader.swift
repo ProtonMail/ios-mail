@@ -32,6 +32,15 @@ import WebKit
 class RenderedContents: NSObject {
     @objc internal dynamic var preheight: CGFloat = 0.0
     @objc internal dynamic var height: CGFloat = 0.0
+    
+    internal func invalidate() {
+        self.preheight = 0.0
+        self.height = 0.0
+    }
+    
+    internal var isValid: Bool {
+        return self.height != 0.0
+    }
 }
 
 protocol WebContentsSecureLoader {
