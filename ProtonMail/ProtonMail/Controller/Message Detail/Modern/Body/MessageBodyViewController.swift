@@ -70,6 +70,8 @@ class MessageBodyViewController: UIViewController {
     
     deinit {
         self.contentSizeObservation = nil
+        self.renderObservation = nil
+        self.loadingObservation = nil
         self.contentsObservation = nil
         self.scrollDecelerationOverlayObservation = nil
         
