@@ -98,7 +98,7 @@ class MessageBodyViewController: UIViewController {
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = true
+        self.webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
