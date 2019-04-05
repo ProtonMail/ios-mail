@@ -143,6 +143,12 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         }()
         
         let message = """
+        var items = document.body.getElementsByTagName('*');
+        for (var i = items.length; i--;) {
+            if (items[i].style.getPropertyValue("height") == "100%") {
+                items[i].style.height = "auto";
+            };
+        };
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * document.body.scrollHeight, 'clearBody': document.documentElement.outerHTML.toString()});
         """
         
