@@ -97,8 +97,9 @@ class MessageBodyViewController: UIViewController {
         self.webView = WKWebView(frame: .zero, configuration: config)
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
+        self.webView.uiDelegate = self
         self.webView.scrollView.delegate = self
-        self.webView.scrollView.bounces = true
+        self.webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         self.webView.scrollView.bouncesZoom = false
         self.webView.scrollView.isDirectionalLockEnabled = false
         self.webView.scrollView.showsVerticalScrollIndicator = false
@@ -184,7 +185,7 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension MessageBodyViewController: WKNavigationDelegate {
+extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
     }
@@ -301,7 +302,9 @@ fileprivate class ViewBlowingAfterTouch: UIView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let target = super.hitTest(point, with: event)
         if target == self {
-            self.removeFromSuperview()
+            DispatchQueue.main.async {
+                self.removeFromSuperview()
+            }
         }
         return target
     }
