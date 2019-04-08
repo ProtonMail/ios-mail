@@ -97,6 +97,7 @@ class MessageBodyViewController: UIViewController {
         self.webView = WKWebView(frame: .zero, configuration: config)
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
+        self.webView.uiDelegate = self
         self.webView.scrollView.delegate = self
         self.webView.scrollView.bounces = false // otherwise 1px margin will make contents horizontally scrollable
         self.webView.scrollView.bouncesZoom = false
@@ -184,7 +185,7 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension MessageBodyViewController: WKNavigationDelegate {
+extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
     }
