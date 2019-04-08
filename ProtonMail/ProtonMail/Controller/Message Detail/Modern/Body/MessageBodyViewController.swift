@@ -302,7 +302,9 @@ fileprivate class ViewBlowingAfterTouch: UIView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let target = super.hitTest(point, with: event)
         if target == self {
-            self.removeFromSuperview()
+            DispatchQueue.main.async {
+                self.removeFromSuperview()
+            }
         }
         return target
     }
