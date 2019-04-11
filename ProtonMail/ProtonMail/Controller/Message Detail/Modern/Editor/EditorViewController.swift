@@ -28,18 +28,25 @@
 
 import UIKit
 
-class EditorViewController: UIViewController {
-    @IBOutlet weak var editor: HtmlEditor!
+class EditorViewController: ComposeViewController {
+    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
+    private var heightObservation: NSKeyValueObservation!
+    private var height: NSLayoutConstraint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
+        self.height.isActive = true
         
-        self.editor.delegate = self
+        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { htmlEditor, change in
+            guard change.oldValue != change.newValue else { return }
+            let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
+            self.height.constant = totalHeight
+            (self.viewModel as? EditorViewModel)?.contentHeight = totalHeight
+        }
     }
 }
 
-extension EditorViewController: HtmlEditorDelegate {
-    func ContentLoaded() {
-        <#code#>
-    }
+class EditorViewModel: ComposeViewModelImpl {
+    @objc internal dynamic var contentHeight: CGFloat = 0.0
 }

@@ -54,9 +54,9 @@ class MessageViewCoordinator: NSObject {
     
     // Create controllers
     
-    private var headerControllers: [MessageHeaderViewController] = []
-    private var bodyControllers: [MessageBodyViewController] = []
-    private var attachmentsControllers: [MessageAttachmentsViewController] = []
+    private var headerControllers: [UIViewController] = []
+    private var bodyControllers: [UIViewController] = []
+    private var attachmentsControllers: [UIViewController] = []
 
     typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)
     
@@ -103,7 +103,7 @@ class MessageViewCoordinator: NSObject {
     internal func printableChildren() -> [PdfPagePrintable] {
         var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
         children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
-        children.append(contentsOf: self.bodyControllers.compactMap { $0 as PdfPagePrintable })
+        children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
         return children
     }
     
@@ -228,4 +228,31 @@ extension ComposeMessageAction {
         default: return nil
         }
     }
+}
+
+
+
+// composer stuff
+extension MessageViewCoordinator {
+    typealias ChildViewModelPack2 = (head: MessageHeaderViewModel, body: EditorViewModel, attachments: MessageAttachmentsViewModel)
+    
+    private func createEditorController(_ childViewModel: EditorViewModel) -> EditorViewController {
+        guard let nav = UIStoryboard.init(name: "Composer", bundle: nil).instantiateInitialViewController() as? UINavigationController,
+            let prenext = nav.firstViewController() as? ComposeViewController else
+        {
+            fatalError()
+        }
+        
+        object_setClass(prenext, EditorViewController.self)
+        guard let next = prenext as? EditorViewController else {
+            fatalError()
+        }
+        next.enclosingScroller = self.controller
+        let vmService = sharedServices.get() as ViewModelService
+        vmService.newDraft(vmp: next)
+        let coordinator = ComposeCoordinator(vc: next, vm: childViewModel, services: sharedServices)
+        coordinator.start()
+        return next
+    }
+    
 }

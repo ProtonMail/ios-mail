@@ -50,7 +50,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     //
     private var isEditorLoaded: Bool = false
     private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown)
-    private var contentHeight : CGFloat = 0
+    @objc private(set) dynamic var contentHeight : CGFloat = 0
     
     //
     private var webView: WKWebView
@@ -303,7 +303,10 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
             } else {
                 return Promise.value(())
             }
-        }.done {_ in
+        }.then { _ -> Promise<CGFloat> in
+            self.run(with: "document.body.scrollHeight")
+        }.done { (height) in
+            self.contentHeight = height
             self.delegate?.ContentLoaded()
         }.catch { (error) in
             PMLog.D("\(error)")

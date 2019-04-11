@@ -101,6 +101,7 @@
 		0DBA13DD923FA0CCD8A735EA11FE99BB /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD71845357210A9E9B06A14940100F /* APIService+SettingsExtension.swift */; };
 		0DD4B730D8978097A7204438D68E1877 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
 		0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
+		0E554E82F6BC304C721692D7BCB1D91F /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B82EB8063668C8AAA6DDF9851434E2B /* EditorViewController.swift */; };
 		0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A2F260039163C3214BBFA3487444F0 /* Social.framework */; };
 		0EA3768EF0793B36C302199B260FE521 /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		0EB9E2B8B9C3009FA7FBABFE623E3735 /* ServicePlanDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E27BF80474BDA474725D747C488AC95 /* ServicePlanDataService.swift */; };
@@ -221,6 +222,7 @@
 		21A22D014CF6CB1EB6C5D86F919A7795 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		21C61585CCE300557EEB115B8866C89E /* MultiLabelDisplayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = A6E60FC91F733F0C899B8269CF3D0E7D /* MultiLabelDisplayView.xib */; };
 		220085D197AF2A60E944FFFA28A9B949 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC6FB7A9464582BFE7709A9BFE7B9EF1 /* SettingsTableViewController.swift */; };
+		22E93EF2922AA4D49FC1B654E6E4745E /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B82EB8063668C8AAA6DDF9851434E2B /* EditorViewController.swift */; };
 		22F7B548ECEBA99930B8787CB9DEF545 /* LabelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8F91DDC0A969EA9035A26B837BFF4 /* LabelsView.swift */; };
 		230E590C47402B8EF7B58F7691BAB41A /* ContactDetailsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEF763E07270F62BEC7CF8DE84EB86D8 /* ContactDetailsViewModelImpl.swift */; };
 		2366E20D29480AC1CBDC5A05C6D460F5 /* SharePinUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */; };
@@ -1492,10 +1494,6 @@
 		D840DE2CD3FED303202931337E6171BA /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		D8458FB4AFBB6A7999DE5BD8A793E054 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		D84B6EA197AE141BBC1E222ABB833417 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
-		D854DD56224906E200B3F6E0 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D854DD55224906E200B3F6E0 /* EditorViewController.swift */; };
-		D854DD57224906E200B3F6E0 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D854DD55224906E200B3F6E0 /* EditorViewController.swift */; };
-		D854DD58224906E200B3F6E0 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D854DD55224906E200B3F6E0 /* EditorViewController.swift */; };
-		D854DD59224906E200B3F6E0 /* EditorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D854DD55224906E200B3F6E0 /* EditorViewController.swift */; };
 		D87C92E0CB6E35473A5AD88F74101589 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
 		D880FD208C3FBBB24228D285F3F883B2 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		D898A24A4520D16660C12BB55538FA7E /* ContactCollectionViewPromptCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCDC9E5C0ABB64938146DA5CA9CE02C /* ContactCollectionViewPromptCell.swift */; };
@@ -2160,6 +2158,7 @@
 		4AC8B46F567BE34418EFC96C5472E216 /* ProtonMail.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ProtonMail.xcdatamodel; sourceTree = "<group>"; };
 		4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactGroupEditViewCell.xib; sourceTree = "<group>"; };
+		4B82EB8063668C8AAA6DDF9851434E2B /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		4BBAB84228923785043E0A71A3520CB0 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		4BF7C2537D8C49E40CBBE2E368651A31 /* EventAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAPI.swift; sourceTree = "<group>"; };
 		4D3719085F278C51B2B1D58303FCF558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2574,7 +2573,6 @@
 		D786690A2F8C5FDB6CE85ED1253D4DF5 /* ProtonMailUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtonMailUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D7E2026FD8272DE625504A4CB2374E85 /* Pods-Share.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.distribution.xcconfig"; sourceTree = "<group>"; };
 		D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BannerView.swift; sourceTree = "<group>"; };
-		D854DD55224906E200B3F6E0 /* EditorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorViewController.swift; sourceTree = "<group>"; };
 		D8A51ECEB173169390A074BC71D38A1C /* ContactAddViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactAddViewModelImpl.swift; sourceTree = "<group>"; };
 		D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+ExtensionTests.swift"; sourceTree = "<group>"; };
 		D8C674BC00A2F8ED261865474FC3C1E4 /* ContactEditAddCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditAddCell.swift; sourceTree = "<group>"; };
@@ -3815,9 +3813,9 @@
 			children = (
 				CA3E5F82034096C9713CB2857D382F02 /* Attachments */,
 				4A1EF47DD9C1EFE8C727AA0A554969DA /* Body */,
+				CC75B8B953E4F6F13D882A964263F35E /* Editor */,
 				91DCE8FA07873AC794834B55F5E74997 /* Header */,
 				288D42DCDC17C73B0718015FA45AE979 /* MessageViewController.swift */,
-				D854DD54224906BF00B3F6E0 /* Editor */,
 				1072295C12EF984A1E4E35DD9B596A66 /* MessageViewCoordinator.swift */,
 				7BF8EB10116489150B352CA2348A2154 /* MessageViewModel.swift */,
 				D3F00240A54257098EAF2093EFBDD844 /* Standalone.swift */,
@@ -4090,10 +4088,10 @@
 			path = OnePassword;
 			sourceTree = "<group>";
 		};
-		D854DD54224906BF00B3F6E0 /* Editor */ = {
+		CC75B8B953E4F6F13D882A964263F35E /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				D854DD55224906E200B3F6E0 /* EditorViewController.swift */,
+				4B82EB8063668C8AAA6DDF9851434E2B /* EditorViewController.swift */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -5781,7 +5779,6 @@
 				2E8A6D86BB25BCAAADFA5C7DF612335C /* BugReportCache.swift in Sources */,
 				68C25E1C898A4451569D245FFE658FD5 /* Bundle+Extension.swift in Sources */,
 				9CEE379D2972180C86BA507E0CF028C9 /* CalendarIntervalRule.swift in Sources */,
-				D854DD56224906E200B3F6E0 /* EditorViewController.swift in Sources */,
 				BDCAB0B8CABB9115219A25034E98A605 /* CameraAttachmentProvider.swift in Sources */,
 				C266AE1096AE160282E12CECB2C8D030 /* CaptchaViewModelImpl.swift in Sources */,
 				55D3D7CBB24618558793C9A5A2B45430 /* ChangePasswordViewController.swift in Sources */,
@@ -5905,6 +5902,7 @@
 				CDE8629B5A1B6D6308C3DF69B322D793 /* DomainAPI.swift in Sources */,
 				09774923BE6C942B4403375CED80EA9C /* DomainsTableViewCell.swift in Sources */,
 				54D74C2891D2A676F8CB823B7F60248B /* DurationPickerViewController.swift in Sources */,
+				22E93EF2922AA4D49FC1B654E6E4745E /* EditorViewController.swift in Sources */,
 				DF73879C57D519795E6AAB562D2649F9 /* Email+Extension.swift in Sources */,
 				57685B51B021ACAED8F73B1AA683864A /* Email.swift in Sources */,
 				DDAF977C701787637111DE70FFF6382F /* EmailAttachmentView.swift in Sources */,
@@ -6380,7 +6378,6 @@
 				A8FD5855F466E99B1056E9FC7E3A0B87 /* ContactTabBarViewController.swift in Sources */,
 				77D70776DA12C02B714154E55DCDF625 /* ContactTypeAddCustomCell.swift in Sources */,
 				71EFC09B9B2CCE09DFC707507A698CCD /* ContactTypeViewController.swift in Sources */,
-				D854DD58224906E200B3F6E0 /* EditorViewController.swift in Sources */,
 				00B3D598F50FCBC9A676DCCC47C870F8 /* ContactTypeViewModel.swift in Sources */,
 				77E772C942F911D73376408B0656851D /* ContactTypeViewModelImpl.swift in Sources */,
 				B2FC14632CE10220D59C22E10A137B6A /* ContactUpgradeCellDelegate.swift in Sources */,
@@ -6419,6 +6416,7 @@
 				6AAE2C6D91DAE0C565346D4817CE5301 /* DomainAPI.swift in Sources */,
 				F077223EBB22CFEB1C960EC7D4988237 /* DomainsTableViewCell.swift in Sources */,
 				360B27BC83513E81A1AC550FD478F18B /* DurationPickerViewController.swift in Sources */,
+				0E554E82F6BC304C721692D7BCB1D91F /* EditorViewController.swift in Sources */,
 				729F1AD782F9C15816A26AF1E613183F /* Email+Extension.swift in Sources */,
 				F6A46ECC1300659045215E896AB18BD8 /* Email.swift in Sources */,
 				87F13D8A8311798BCB374E4424B559D5 /* EmailAttachmentView.swift in Sources */,
@@ -7012,7 +7010,6 @@
 				F78CA68DD1989B3F0DD6294E24B23D10 /* WebContentsSecureLoader.swift in Sources */,
 				BFF897D55D8E47D04FF9F6C28537D631 /* WebViewController.swift in Sources */,
 				4F6D0AE51755D2062999910127767F99 /* WebViewModel.swift in Sources */,
-				D854DD57224906E200B3F6E0 /* EditorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7267,7 +7264,6 @@
 				F292801D946FAD4757D61FFB17C64904 /* WebContentsSecureLoader.swift in Sources */,
 				5042F3D3D3E45FF72E0406D630951BA3 /* WebViewController.swift in Sources */,
 				F53FC0B0FDD74245E5D948E63268C229 /* WebViewModel.swift in Sources */,
-				D854DD59224906E200B3F6E0 /* EditorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

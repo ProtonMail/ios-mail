@@ -129,10 +129,6 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         self.automaticallyAdjustsScrollViewInsets = false
         self.extendedLayoutIncludesOpaqueBars = true
         
-        ///
-        self.headerView.delegate = self
-        self.headerView.datasource = self
-        
         //  update header view data
         self.updateMessageView()
         

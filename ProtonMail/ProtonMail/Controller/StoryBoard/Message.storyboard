@@ -185,24 +185,9 @@
                     <view key="view" contentMode="scaleToFill" id="Kl4-j4-hhS">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxF-ci-gCD" customClass="HtmlEditor" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="fxF-ci-gCD" firstAttribute="leading" secondItem="xJv-q5-cs1" secondAttribute="leading" id="63A-FG-gZo"/>
-                            <constraint firstItem="xJv-q5-cs1" firstAttribute="bottom" secondItem="fxF-ci-gCD" secondAttribute="bottom" id="d78-rt-3ox"/>
-                            <constraint firstItem="xJv-q5-cs1" firstAttribute="trailing" secondItem="fxF-ci-gCD" secondAttribute="trailing" id="fBf-xC-aJS"/>
-                            <constraint firstItem="fxF-ci-gCD" firstAttribute="top" secondItem="xJv-q5-cs1" secondAttribute="top" id="jss-6q-1Jy"/>
-                        </constraints>
                         <viewLayoutGuide key="safeArea" id="xJv-q5-cs1"/>
                     </view>
-                    <connections>
-                        <outlet property="editor" destination="fxF-ci-gCD" id="C5V-xF-ynn"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dqH-ZI-i03" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
