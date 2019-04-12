@@ -30,9 +30,8 @@ import Foundation
 
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
-class MessageViewModel: NSObject {
+class MessageViewModel: EmbeddingViewModel {
     private(set) var messages: [Message]
-    private var latestErrorBanner: BannerView?
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
     private var attachmentsObservation: [NSKeyValueObservation] = []
@@ -41,6 +40,14 @@ class MessageViewModel: NSObject {
     @objc private(set) dynamic var thread: [Standalone]
     internal func message(for standalone: Standalone) -> Message? {
         return self.messages.first { $0.messageID == standalone.messageID }
+    }
+    
+    var numberOfSections: Int {
+        return self.thread.count
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
+        return self.thread[section].divisionsCount
     }
     
     init(conversation messages: [Message]) {
@@ -174,6 +181,10 @@ class MessageViewModel: NSObject {
         }
     }
     
+    private func showErrorBanner(_ title: String) {
+        self.showErrorBanner(title, action: self.downloadThreadDetails)
+    }
+    
     private func errorWhileReloading(message: Message, error: NSError) {
         switch error.code {
         case NSURLErrorTimedOut:
@@ -199,7 +210,20 @@ class MessageViewModel: NSObject {
         PMLog.D("error: \(error)")
     }
     
-    internal func subscribe(toUpdatesOf children: [MessageViewCoordinator.ChildViewModelPack]) {
+    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)
+    internal func children() -> [ChildViewModelPack] {
+        let children = self.thread.compactMap { standalone -> ChildViewModelPack? in
+            guard let message = self.message(for: standalone) else { return nil }
+            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
+            let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
+            let body = MessageBodyViewModel(parentViewModel: standalone)
+            return (head, body, attachments)
+        }
+        self.subscribe(toUpdatesOf: children)
+        return children
+    }
+    
+    private func subscribe(toUpdatesOf children: [ChildViewModelPack]) {
         self.observationsHeader = []
         self.observationsBody = []
         
@@ -232,23 +256,4 @@ class MessageViewModel: NSObject {
             }
         }
     }
-}
-
-extension MessageViewModel: BannerRequester {
-    internal func errorBannerToPresent() -> BannerView? {
-        return self.latestErrorBanner
-    }
-    
-    private func showErrorBanner(_ title: String) {
-        let config = BannerView.ButtonConfiguration(title: LocalString._retry, action: self.downloadThreadDetails)
-        self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, offset: 8.0)
-        UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
-    }
-}
-
-@objc protocol BannerPresenting {
-    @objc func presentBanner(_ sender: BannerRequester)
-}
-@objc protocol BannerRequester {
-    @objc func errorBannerToPresent() -> BannerView?
 }

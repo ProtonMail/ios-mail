@@ -327,7 +327,7 @@ class SearchViewController: ProtonMailViewController {
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row]))
-                messageDetailViewController.set(coordinator: .init(controller: messageDetailViewController))
+                messageDetailViewController.set(coordinator: MessageViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")
             }

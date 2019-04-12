@@ -29,39 +29,16 @@
 import UIKit
 import MBProgressHUD
 
-class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailViewControllerProtocol {
-    @IBOutlet weak var tableView: UITableView!
+class MessageViewController: EmbeddingViewController<MessageViewModel, MessageViewCoordinator> {
     @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
-    
-    // base protocols
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    @IBOutlet weak var menuButton: UIBarButtonItem!
-    func configureNavigationBar() {
-        ProtonMailViewController.configureNavigationBar(self)
-    }
-    
-    // legacy
-    
-    @IBOutlet var backButton: UIBarButtonItem!
-    
-    // new code
-    
-    fileprivate var viewModel: MessageViewModel!
-    private var coordinator: MessageViewCoordinator!
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
-    private var contentOffsetToPerserve: CGPoint = .zero
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
-
-        // table view
-        self.tableView.rowHeight = UITableView.automaticDimension
-        self.tableView.estimatedRowHeight = 85
-        self.tableView.bounces = false
+        
+        // child view controllers
+        self.coordinator.createChildControllers(with: self.viewModel)
         
         // navigation bar buttons
         var rightButtons: [UIBarButtonItem] = []
@@ -74,24 +51,6 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
         
         // others
         self.bottomView.delegate = self
-        
-        
-        // child view controllers
-        let childViewModels = self.viewModel.thread.map { standalone -> MessageViewCoordinator.ChildViewModelPack in
-            let message = self.viewModel.message(for: standalone)!
-            let head = MessageHeaderViewModel(parentViewModel: standalone, message: message)
-            let attachments = MessageAttachmentsViewModel(parentViewModel: standalone)
-            let body = MessageBodyViewModel(parentViewModel: standalone)
-            return (head, body, attachments)
-        }
-        self.viewModel.subscribe(toUpdatesOf: childViewModels)
-        self.coordinator.createChildControllers(with: childViewModels)
-        
-        // events
-        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(saveOffset), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
@@ -164,38 +123,22 @@ class MessageViewController: UIViewController, ViewModelProtocol, ProtonMailView
     deinit {
         self.standalonesObservation = []
         self.threadObservation = nil
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // FIXME: this is good only for labels and folders
         self.coordinator.prepare(for: segue, sender: self.viewModel.messages)
     }
-}
 
-extension MessageViewController: UITableViewDelegate, UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.thread.count
-    }
+    // --
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.thread[section].divisionsCount
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = self.tableView.dequeueReusableCell(withIdentifier: "EmbedCell", for: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let standalone = self.viewModel.thread[indexPath.section]
-        
         switch standalone.divisions[indexPath.row] {
-        case .header: self.coordinator.embedHeader(index: indexPath.section, onto: cell.contentView)
-        case .attachments: self.coordinator.embedAttachments(index: indexPath.section, onto: cell.contentView)
-        case .body: self.coordinator.embedBody(index: indexPath.section, onto: cell.contentView)
         case .remoteContent:
             guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ShowImageCell.self), for: indexPath) as? ShowImageCell else
             {
-                assert(false, "Failed to dequeue ShowImageCell")
-                cell.backgroundColor = .magenta
-                return cell
+                fatalError("Failed to dequeue ShowImageCell")
             }
             newCell.showImageView.delegate = self
             return newCell
@@ -204,77 +147,17 @@ extension MessageViewController: UITableViewDelegate, UITableViewDataSource {
             guard let newCell = self.tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationCell.self), for: indexPath) as? ExpirationCell,
                 let expiration = standalone.expiration else
             {
-                assert(false, "Failed to dequeue ExpirationCell")
-                cell.backgroundColor = .yellow
-                return cell
+                fatalError("Failed to dequeue ExpirationCell")
             }
             newCell.set(expiration: expiration)
             return newCell
+            
+        default:
+            return super.tableView(tableView, cellForRowAt: indexPath)
         }
-        return cell
     }
-}
 
-extension MessageViewController: ShowImageViewDelegate {
-    func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
-        if #available(iOS 10.0, *) {
-            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-        }
-        self.viewModel.thread.forEach { $0.remoteContentMode = .allowed }
-    }
-}
-
-extension MessageViewController: MessageDetailBottomViewDelegate {
-    func replyAction() {
-        self.coordinator.go(to: .composerReply)
-    }
-    func replyAllAction() {
-        self.coordinator.go(to: .composerReplyAll)
-    }
-    func forwardAction() {
-        self.coordinator.go(to: .composerForward)
-    }
-}
-
-extension MessageViewController: MessageBodyScrollingDelegate {
-    @objc func scrollToTop() {
-        guard self.presentedViewController == nil, self.navigationController?.topViewController == self else { return }
-        self.tableView.scrollToRow(at: .init(row: 0, section: 0), at: .top, animated: true)
-    }
-    
-    func propogate(scrolling delta: CGPoint, boundsTouchedHandler: ()->Void) {
-        UIView.animate(withDuration: 0.001) { // hackish way to show scrolling indicators on tableView
-            self.tableView.flashScrollIndicators()
-        }
-        let maxOffset = self.tableView.contentSize.height - self.tableView.frame.size.height
-        guard maxOffset > 0 else { return }
-        
-         let yOffset = self.tableView.contentOffset.y + delta.y
-         
-         if yOffset < 0 { // not too high
-             self.tableView.setContentOffset(.zero, animated: false)
-            boundsTouchedHandler()
-         } else if yOffset > maxOffset { // not too low
-            self.tableView.setContentOffset(.init(x: 0, y: maxOffset), animated: false)
-            boundsTouchedHandler()
-         } else {
-             self.tableView.contentOffset = .init(x: 0, y: yOffset)
-         }
-    }
-    
-    var scroller: UIScrollView {
-        return self.tableView
-    }
-}
-
-extension MessageViewController {
-    func set(viewModel: MessageViewModel) {
-        self.viewModel = viewModel
-        
-        viewModel.thread.forEach(self.subscribeToStandalone)
-        self.subscribeToThread()
-        self.viewModel.downloadThreadDetails()
-    }
+    // --
     
     private func subscribeToThread() {
         self.threadObservation = self.viewModel.observe(\.thread) { [weak self] viewModel, change in
@@ -317,56 +200,33 @@ extension MessageViewController {
         }
         self.standalonesObservation.append(divisions)
     }
-}
-
-extension MessageViewController: CoordinatedNew {
-    typealias coordinatorType = MessageViewCoordinator
     
-    func getCoordinator() -> CoordinatorNew? {
-        return self.coordinator
-    }
-    
-    func set(coordinator: MessageViewController.coordinatorType) {
-        self.coordinator = coordinator
-    }
-}
-
-extension MessageViewController: BannerPresenting {
-    @objc func presentBanner(_ sender: BannerRequester) {
-        guard let banner = sender.errorBannerToPresent() else {
-            return
-        }
-        self.view.addSubview(banner)
-        banner.drop(on: self.view, from: .top)
-    }
-    
-    override var canBecomeFirstResponder: Bool {
-        return true
-    }
-}
-
-// iPads think tableView is resized when app is backgrounded and reloads it's data
-// by some mysterious reason if MessageBodyViewController cell occupies whole screen at that moment, tableView will scroll to bottom. So we perserve contentOffset with help of these methods
-extension MessageViewController {
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.willTransition(to: newCollection, with: coordinator)
-        self.saveOffset()
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
+    override func set(viewModel: MessageViewModel) {
+        super.set(viewModel: viewModel)
         
-        // scrolling happens after traits collection change, so we have to run restore async
-        DispatchQueue.main.async {
-            self.restoreOffset()
+        viewModel.thread.forEach(self.subscribeToStandalone)
+        self.subscribeToThread()
+        self.viewModel.downloadThreadDetails()
+    }
+}
+
+extension MessageViewController: ShowImageViewDelegate {
+    func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
+        if #available(iOS 10.0, *) {
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
         }
+        self.viewModel.thread.forEach { $0.remoteContentMode = .allowed }
     }
-    
-    @objc internal func saveOffset() {
-        self.contentOffsetToPerserve = self.tableView.contentOffset
+}
+
+extension MessageViewController: MessageDetailBottomViewDelegate {
+    func replyAction() {
+        self.coordinator.go(to: .composerReply)
     }
-    
-    @objc internal func restoreOffset() {
-        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
+    func replyAllAction() {
+        self.coordinator.go(to: .composerReplyAll)
+    }
+    func forwardAction() {
+        self.coordinator.go(to: .composerForward)
     }
 }

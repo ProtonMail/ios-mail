@@ -33,7 +33,7 @@ protocol PdfPagePrintable {
     func printPageRenderer() -> UIPrintPageRenderer
 }
 
-class MessageViewCoordinator: NSObject {
+class MessageViewCoordinator: EmbeddingViewCoordinator {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
         case labels = "toApplyLabelsSegue"
@@ -41,12 +41,14 @@ class MessageViewCoordinator: NSObject {
         case composerReplyAll = "toComposeReplyAll"
         case composerForward = "toComposeForward"
     }
-    private weak var controller: MessageViewController!
-    private var tempClearFileURL: URL?
+    
+    internal weak var controller: MessageViewController!
     
     init(controller: MessageViewController) {
         self.controller = controller
     }
+    
+    private var tempClearFileURL: URL?
     
     internal func go(to destination: Destinations) {
         self.controller.performSegue(withIdentifier: destination.rawValue, sender: nil)
@@ -58,9 +60,9 @@ class MessageViewCoordinator: NSObject {
     private var bodyControllers: [UIViewController] = []
     private var attachmentsControllers: [UIViewController] = []
 
-    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)
-    
-    internal func createChildControllers(with children: [ChildViewModelPack]) {
+    internal func createChildControllers(with viewModel: MessageViewModel) {
+        let children = viewModel.children()
+        
         // TODO: good place for generics
         self.bodyControllers = []
         self.headerControllers = []
@@ -108,14 +110,25 @@ class MessageViewCoordinator: NSObject {
     }
     
     // Embed subviews
+    override internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
+        let standalone = self.controller.viewModel.thread[indexPath.section]
+        switch standalone.divisions[indexPath.row] {
+        case .header: self.embedHeader(index: indexPath.section, onto: cell.contentView)
+        case .attachments: self.embedAttachments(index: indexPath.section, onto: cell.contentView)
+        case .body: self.embedBody(index: indexPath.section, onto: cell.contentView)
+        default:
+            assert(false, "Child not embedded")
+            break
+        }
+    }
     
-    internal func embedBody(index: Int, onto view: UIView) {
+    private func embedBody(index: Int, onto view: UIView) {
         self.embed(self.bodyControllers[index], onto: view)
     }
-    internal func embedHeader(index: Int, onto view: UIView) {
+    private func embedHeader(index: Int, onto view: UIView) {
         self.embed(self.headerControllers[index], onto: view)
     }
-    internal func embedAttachments(index: Int, onto view: UIView) {
+    private func embedAttachments(index: Int, onto view: UIView) {
         self.embed(self.attachmentsControllers[index], onto: view)
     }
     
@@ -213,7 +226,7 @@ extension MessageViewCoordinator: LablesViewControllerDelegate {
     }
 }
 
-extension MessageViewCoordinator: CoordinatorNew {
+extension EmbeddingViewCoordinator: CoordinatorNew {
     func start() {
         // ?
     }
