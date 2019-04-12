@@ -30,6 +30,14 @@ import Foundation
 
 class EmbeddingViewModel: NSObject {
     private var latestErrorBanner: BannerView?
+    
+    var numberOfSections: Int {
+        fatalError()
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
+        fatalError()
+    }
 }
 
 extension EmbeddingViewModel: BannerRequester {

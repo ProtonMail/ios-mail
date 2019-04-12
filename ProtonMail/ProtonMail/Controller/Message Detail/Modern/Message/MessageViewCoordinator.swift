@@ -123,38 +123,13 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
     }
     
     private func embedBody(index: Int, onto view: UIView) {
-        self.embed(self.bodyControllers[index], onto: view)
+        self.embed(self.bodyControllers[index], onto: view, ownedBy: self.controller)
     }
     private func embedHeader(index: Int, onto view: UIView) {
-        self.embed(self.headerControllers[index], onto: view)
+        self.embed(self.headerControllers[index], onto: view, ownedBy: self.controller)
     }
     private func embedAttachments(index: Int, onto view: UIView) {
-        self.embed(self.attachmentsControllers[index], onto: view)
-    }
-    
-    private func embed(_ child: UIViewController, onto view: UIView) {
-        assert(self.controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
-        
-        // remove child from old parent
-        if let parent = child.parent, parent != self.controller {
-            child.willMove(toParent: nil)
-            if child.isViewLoaded {
-                child.view.removeFromSuperview()
-            }
-            child.removeFromParent()
-        }
-        
-        // add child to new parent
-        self.controller.addChild(child)
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(child.view) 
-        child.didMove(toParent: self.controller)
-        
-        // autolayout
-        view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        self.embed(self.attachmentsControllers[index], onto: view, ownedBy: self.controller)
     }
     
     internal func dismiss() {
@@ -167,13 +142,19 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||
                                             destination == .composerForward:
-            guard let tapped = ComposeMessageAction(destination) else { return }
-            let composeViewController = segue.destination.children[0] as! ComposeViewController
-            sharedVMService.newDraft(vmp: composeViewController)
-            let viewModel = ComposeViewModelImpl(msg: messages.first!, action: tapped)
-            let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                 vm: viewModel, services: ServiceFactory.default) //set view model
-            coordinator.start()
+//            guard let tapped = ComposeMessageAction(destination) else { return }
+//            let composeViewController = segue.destination.children[0] as! ComposeViewController
+//            sharedVMService.newDraft(vmp: composeViewController)
+//            let viewModel = ComposeViewModelImpl(msg: messages.first!, action: tapped)
+//            let coordinator = ComposeCoordinator(vc: composeViewController,
+//                                                 vm: viewModel, services: ServiceFactory.default) //set view model
+//            coordinator.start()
+            
+            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposingViewController.self)
+            next.set(viewModel: ComposingViewModel(message: messages.first!))
+            next.set(coordinator: ComposingViewCoordinator(controller: next))
+            let navigator = UINavigationController.init(rootViewController: next)
+            self.controller.present(navigator, animated: true, completion: nil)
             
         case .some(.labels):
             let popup = segue.destination as! LablesViewController
@@ -241,31 +222,4 @@ extension ComposeMessageAction {
         default: return nil
         }
     }
-}
-
-
-
-// composer stuff
-extension MessageViewCoordinator {
-    typealias ChildViewModelPack2 = (head: MessageHeaderViewModel, body: EditorViewModel, attachments: MessageAttachmentsViewModel)
-    
-    private func createEditorController(_ childViewModel: EditorViewModel) -> EditorViewController {
-        guard let nav = UIStoryboard.init(name: "Composer", bundle: nil).instantiateInitialViewController() as? UINavigationController,
-            let prenext = nav.firstViewController() as? ComposeViewController else
-        {
-            fatalError()
-        }
-        
-        object_setClass(prenext, EditorViewController.self)
-        guard let next = prenext as? EditorViewController else {
-            fatalError()
-        }
-        next.enclosingScroller = self.controller
-        let vmService = sharedServices.get() as ViewModelService
-        vmService.newDraft(vmp: next)
-        let coordinator = ComposeCoordinator(vc: next, vm: childViewModel, services: sharedServices)
-        coordinator.start()
-        return next
-    }
-    
 }

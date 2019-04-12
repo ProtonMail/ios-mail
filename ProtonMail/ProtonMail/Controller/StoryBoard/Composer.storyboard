@@ -9,6 +9,52 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Composing View Controller-->
+        <scene sceneID="Amn-w9-Un0">
+            <objects>
+                <viewController storyboardIdentifier="ComposingViewController" id="MYS-qk-SMJ" customClass="ComposingViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AdR-nB-BQy"/>
+                        <viewControllerLayoutGuide type="bottom" id="Gop-XX-JaS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wvh-H5-vnK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="kII-As-Kc3">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="MYS-qk-SMJ" id="mLt-qW-kXv"/>
+                                    <outlet property="delegate" destination="MYS-qk-SMJ" id="QdM-J1-dCf"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="kII-As-Kc3" secondAttribute="trailing" id="BdW-gr-P5M"/>
+                            <constraint firstItem="kII-As-Kc3" firstAttribute="leading" secondItem="Wvh-H5-vnK" secondAttribute="leading" id="WSW-0W-YJy"/>
+                            <constraint firstItem="kII-As-Kc3" firstAttribute="top" secondItem="AdR-nB-BQy" secondAttribute="bottom" id="hyD-eO-AiV"/>
+                            <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="kII-As-Kc3" secondAttribute="bottom" id="u5a-gy-lr1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="J9F-Xh-oG8">
+                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="iiy-bz-03S">
+                            <connections>
+                                <action selector="sendAction:" destination="WHe-68-Fm2" id="QCK-Xs-OVN"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backButton" destination="8NV-DO-oBM" id="JC9-RG-1I5"/>
+                        <outlet property="tableView" destination="kII-As-Kc3" id="nXg-o5-ymb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mn9-1U-yfM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Item" id="8NV-DO-oBM"/>
+            </objects>
+            <point key="canvasLocation" x="9543" y="1546"/>
+        </scene>
         <!--Compose View Controller-->
         <scene sceneID="sfl-7G-h3U">
             <objects>

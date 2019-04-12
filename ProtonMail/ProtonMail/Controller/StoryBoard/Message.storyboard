@@ -170,21 +170,6 @@
             </objects>
             <point key="canvasLocation" x="3796" y="3495"/>
         </scene>
-        <!--Editor View Controller-->
-        <scene sceneID="YOy-2l-sfn">
-            <objects>
-                <viewController id="aEj-XL-FA6" customClass="EditorViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Kl4-j4-hhS">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="xJv-q5-cs1"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dqH-ZI-i03" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2119" y="3500"/>
-        </scene>
         <!--Message Attachments View Controller-->
         <scene sceneID="7k5-Vb-eP0">
             <objects>

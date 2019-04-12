@@ -42,11 +42,11 @@ class MessageViewModel: EmbeddingViewModel {
         return self.messages.first { $0.messageID == standalone.messageID }
     }
     
-    var numberOfSections: Int {
+    override var numberOfSections: Int {
         return self.thread.count
     }
     
-    func numberOfRows(in section: Int) -> Int {
+    override func numberOfRows(in section: Int) -> Int {
         return self.thread[section].divisionsCount
     }
     

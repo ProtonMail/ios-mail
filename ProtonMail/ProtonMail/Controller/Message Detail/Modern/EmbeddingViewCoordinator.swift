@@ -32,4 +32,29 @@ class EmbeddingViewCoordinator: NSObject {
     internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         fatalError()
     }
+    
+    internal func embed(_ child: UIViewController, onto view: UIView, ownedBy controller: UIViewController) {
+        assert(controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
+        
+        // remove child from old parent
+        if let parent = child.parent, parent != controller {
+            child.willMove(toParent: nil)
+            if child.isViewLoaded {
+                child.view.removeFromSuperview()
+            }
+            child.removeFromParent()
+        }
+        
+        // add child to new parent
+        controller.addChild(child)
+        child.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(child.view)
+        child.didMove(toParent: controller)
+        
+        // autolayout
+        view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+        view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+        view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+    }
 }

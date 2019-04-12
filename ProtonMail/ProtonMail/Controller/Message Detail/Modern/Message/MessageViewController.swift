@@ -29,6 +29,7 @@
 import UIKit
 import MBProgressHUD
 
+
 class MessageViewController: EmbeddingViewController<MessageViewModel, MessageViewCoordinator> {
     @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
     private var threadObservation: NSKeyValueObservation!

@@ -30,6 +30,7 @@ import UIKit
 
 class EmbeddingViewController<ViewModel: EmbeddingViewModel, Coordinator: EmbeddingViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, MessageBodyScrollingDelegate, CoordinatedNew, ViewModelProtocol, BannerPresenting
 {
+
     @IBOutlet weak var tableView: UITableView!
     
     // base protocols
@@ -43,11 +44,12 @@ class EmbeddingViewController<ViewModel: EmbeddingViewModel, Coordinator: Embedd
     
     // legacy
     
-    @IBOutlet var backButton: UIBarButtonItem!
+    @IBOutlet weak var backButton: UIBarButtonItem!
+    
     
     // new code
     
-    private(set) var viewModel: MessageViewModel!
+    private(set) var viewModel: ViewModel!
     private(set) var coordinator: Coordinator!
     private var contentOffsetToPerserve: CGPoint = .zero
     
@@ -121,9 +123,9 @@ class EmbeddingViewController<ViewModel: EmbeddingViewModel, Coordinator: Embedd
     // --
     
     typealias coordinatorType = Coordinator
-    typealias viewModelType = MessageViewModel
+    typealias viewModelType = ViewModel
     
-    @objc func set(viewModel: MessageViewModel) {
+    func set(viewModel: ViewModel) {
         self.viewModel = viewModel
     }
     
