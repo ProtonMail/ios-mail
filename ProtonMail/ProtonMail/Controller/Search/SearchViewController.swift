@@ -323,11 +323,11 @@ class SearchViewController: ProtonMailViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == kSegueToMessageDetailController) {
-            let messageDetailViewController = segue.destination as! MessageViewController
+            let messageDetailViewController = segue.destination as! MessageContainerViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row]))
-                messageDetailViewController.set(coordinator: MessageViewCoordinator(controller: messageDetailViewController))
+                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")
             }

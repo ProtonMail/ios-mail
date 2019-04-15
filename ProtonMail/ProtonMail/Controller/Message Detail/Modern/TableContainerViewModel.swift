@@ -28,7 +28,7 @@
 
 import Foundation
 
-class EmbeddingViewModel: NSObject {
+class TableContainerViewModel: NSObject {
     private var latestErrorBanner: BannerView?
     
     var numberOfSections: Int {
@@ -40,7 +40,7 @@ class EmbeddingViewModel: NSObject {
     }
 }
 
-extension EmbeddingViewModel: BannerRequester {
+extension TableContainerViewModel: BannerRequester {
     internal func errorBannerToPresent() -> BannerView? {
         return self.latestErrorBanner
     }

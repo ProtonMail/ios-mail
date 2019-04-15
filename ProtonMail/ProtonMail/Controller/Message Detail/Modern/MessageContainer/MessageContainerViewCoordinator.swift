@@ -33,7 +33,7 @@ protocol PdfPagePrintable {
     func printPageRenderer() -> UIPrintPageRenderer
 }
 
-class MessageViewCoordinator: EmbeddingViewCoordinator {
+class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
         case labels = "toApplyLabelsSegue"
@@ -42,9 +42,9 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
         case composerForward = "toComposeForward"
     }
     
-    internal weak var controller: MessageViewController!
+    internal weak var controller: MessageContainerViewController!
     
-    init(controller: MessageViewController) {
+    init(controller: MessageContainerViewController) {
         self.controller = controller
     }
     
@@ -60,7 +60,7 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
     private var bodyControllers: [UIViewController] = []
     private var attachmentsControllers: [UIViewController] = []
 
-    internal func createChildControllers(with viewModel: MessageViewModel) {
+    internal func createChildControllers(with viewModel: MessageContainerViewModel) {
         let children = viewModel.children()
         
         // TODO: good place for generics
@@ -150,9 +150,9 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
 //                                                 vm: viewModel, services: ServiceFactory.default) //set view model
 //            coordinator.start()
             
-            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposingViewController.self)
-            next.set(viewModel: ComposingViewModel(message: messages.first!))
-            next.set(coordinator: ComposingViewCoordinator(controller: next))
+            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            next.set(viewModel: ComposeContainerViewModel(message: messages.first!))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             let navigator = UINavigationController.init(rootViewController: next)
             self.controller.present(navigator, animated: true, completion: nil)
             
@@ -180,7 +180,7 @@ class MessageViewCoordinator: EmbeddingViewCoordinator {
     }
 }
 
-extension MessageViewCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+extension MessageContainerViewCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     internal func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
@@ -195,7 +195,7 @@ extension MessageViewCoordinator: QLPreviewControllerDataSource, QLPreviewContro
     }
 }
 
-extension MessageViewCoordinator: LablesViewControllerDelegate {
+extension MessageContainerViewCoordinator: LablesViewControllerDelegate {
     func dismissed() {
         // FIXME: update header
     }
@@ -207,14 +207,14 @@ extension MessageViewCoordinator: LablesViewControllerDelegate {
     }
 }
 
-extension EmbeddingViewCoordinator: CoordinatorNew {
+extension TableContainerViewCoordinator: CoordinatorNew {
     func start() {
         // ?
     }
 }
 
 extension ComposeMessageAction {
-    init?(_ destination: MessageViewCoordinator.Destinations) {
+    init?(_ destination: MessageContainerViewCoordinator.Destinations) {
         switch destination {
         case .composerReply: self = ComposeMessageAction.reply
         case .composerReplyAll: self = ComposeMessageAction.replyAll

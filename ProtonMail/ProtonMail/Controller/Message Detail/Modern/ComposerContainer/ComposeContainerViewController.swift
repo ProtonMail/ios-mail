@@ -28,11 +28,11 @@
 
 import UIKit
 
-class ComposingViewCoordinator: EmbeddingViewCoordinator {
-    private weak var controller: ComposingViewController!
+class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
+    private weak var controller: ComposeContainerViewController!
     private var editor: EditorViewController!
     
-    init(controller: ComposingViewController) {
+    init(controller: ComposeContainerViewController) {
         self.controller = controller
         super.init()
     }
@@ -58,7 +58,7 @@ class ComposingViewCoordinator: EmbeddingViewCoordinator {
     }
 }
 
-class ComposingViewModel: EmbeddingViewModel {
+class ComposeContainerViewModel: TableContainerViewModel {
     private let message: Message
     
     init(message: Message) {
@@ -78,7 +78,7 @@ class ComposingViewModel: EmbeddingViewModel {
     }
 }
 
-class ComposingViewController: EmbeddingViewController<ComposingViewModel, ComposingViewCoordinator> {
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
     override func viewDidLoad() {
         super.viewDidLoad()
         

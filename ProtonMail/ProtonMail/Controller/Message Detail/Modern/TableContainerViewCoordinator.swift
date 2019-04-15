@@ -28,7 +28,7 @@
 
 import Foundation
 
-class EmbeddingViewCoordinator: NSObject {
+class TableContainerViewCoordinator: NSObject {
     internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         fatalError()
     }

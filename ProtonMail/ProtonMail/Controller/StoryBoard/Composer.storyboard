@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Composing View Controller-->
+        <!--Compose Container View Controller-->
         <scene sceneID="Amn-w9-Un0">
             <objects>
-                <viewController storyboardIdentifier="ComposingViewController" id="MYS-qk-SMJ" customClass="ComposingViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComposeContainerViewController" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AdR-nB-BQy"/>
                         <viewControllerLayoutGuide type="bottom" id="Gop-XX-JaS"/>

@@ -29,7 +29,7 @@
 import Foundation
 
 /// ViewModel object representing one Message in a thread
-class Standalone: NSObject {
+class MessageViewModel: NSObject {
     
     internal enum Divisions: Int { // TODO: refactor with OptionSet
         // each division is perpresented by a single row in tableView
@@ -133,7 +133,7 @@ class Standalone: NSObject {
     }
     
     internal func reload(from message: Message) {
-        let temp = Standalone(message: message, embeddingImages: false)
+        let temp = MessageViewModel(message: message, embeddingImages: false)
 
         self.header = temp.header
         self.attachments = temp.attachments

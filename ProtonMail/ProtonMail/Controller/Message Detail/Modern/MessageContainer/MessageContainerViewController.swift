@@ -30,7 +30,7 @@ import UIKit
 import MBProgressHUD
 
 
-class MessageViewController: EmbeddingViewController<MessageViewModel, MessageViewCoordinator> {
+class MessageContainerViewController: TableContainerViewController<MessageContainerViewModel, MessageContainerViewCoordinator> {
     @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
@@ -168,7 +168,7 @@ class MessageViewController: EmbeddingViewController<MessageViewModel, MessageVi
         }
     }
     
-    private func subscribeToStandalone(_ standalone: Standalone) {
+    private func subscribeToStandalone(_ standalone: MessageViewModel) {
         let head = standalone.observe(\.heightOfHeader) { [weak self] _, _ in
             self?.tableView.beginUpdates()
             self?.tableView.endUpdates()
@@ -177,7 +177,7 @@ class MessageViewController: EmbeddingViewController<MessageViewModel, MessageVi
         
         let attachments = standalone.observe(\.heightOfAttachments) { [weak self] standalone, _ in
             guard let section = self?.viewModel.thread.firstIndex(of: standalone) else { return}
-            let indexPath = IndexPath(row: Standalone.Divisions.attachments.rawValue, section: section)
+            let indexPath = IndexPath(row: MessageViewModel.Divisions.attachments.rawValue, section: section)
             self?.tableView.reloadRows(at: [indexPath], with: .fade)
         }
         self.standalonesObservation.append(attachments)
@@ -202,7 +202,7 @@ class MessageViewController: EmbeddingViewController<MessageViewModel, MessageVi
         self.standalonesObservation.append(divisions)
     }
     
-    override func set(viewModel: MessageViewModel) {
+    override func set(viewModel: MessageContainerViewModel) {
         super.set(viewModel: viewModel)
         
         viewModel.thread.forEach(self.subscribeToStandalone)
@@ -211,7 +211,7 @@ class MessageViewController: EmbeddingViewController<MessageViewModel, MessageVi
     }
 }
 
-extension MessageViewController: ShowImageViewDelegate {
+extension MessageContainerViewController: ShowImageViewDelegate {
     func showImage() { // TODO: this should tell us which cell was tapped to let per-message switch in conversation mode
         if #available(iOS 10.0, *) {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
@@ -220,7 +220,7 @@ extension MessageViewController: ShowImageViewDelegate {
     }
 }
 
-extension MessageViewController: MessageDetailBottomViewDelegate {
+extension MessageContainerViewController: MessageDetailBottomViewDelegate {
     func replyAction() {
         self.coordinator.go(to: .composerReply)
     }

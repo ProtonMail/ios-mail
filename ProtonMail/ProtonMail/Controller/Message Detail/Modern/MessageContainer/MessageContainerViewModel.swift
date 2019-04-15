@@ -30,15 +30,15 @@ import Foundation
 
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
-class MessageViewModel: EmbeddingViewModel {
+class MessageContainerViewModel: TableContainerViewModel {
     private(set) var messages: [Message]
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
     private var attachmentsObservation: [NSKeyValueObservation] = []
     
     // model - viewModel connections
-    @objc private(set) dynamic var thread: [Standalone]
-    internal func message(for standalone: Standalone) -> Message? {
+    @objc private(set) dynamic var thread: [MessageViewModel]
+    internal func message(for standalone: MessageViewModel) -> Message? {
         return self.messages.first { $0.messageID == standalone.messageID }
     }
     
@@ -52,7 +52,7 @@ class MessageViewModel: EmbeddingViewModel {
     
     init(conversation messages: [Message]) {
         self.messages = messages
-        self.thread = messages.map(Standalone.init)
+        self.thread = messages.map(MessageViewModel.init)
         
         super.init()
         

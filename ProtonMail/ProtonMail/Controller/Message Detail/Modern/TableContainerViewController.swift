@@ -28,7 +28,7 @@
 
 import UIKit
 
-class EmbeddingViewController<ViewModel: EmbeddingViewModel, Coordinator: EmbeddingViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, MessageBodyScrollingDelegate, CoordinatedNew, ViewModelProtocol, BannerPresenting
+class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, MessageBodyScrollingDelegate, CoordinatedNew, ViewModelProtocol, BannerPresenting
 {
 
     @IBOutlet weak var tableView: UITableView!

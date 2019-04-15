@@ -87,7 +87,7 @@ class MailboxCoordinator : DefaultCoordinator {
         switch dest {
         case .details:
             self.viewController?.cancelButtonTapped()
-            guard let next = destination as? MessageViewController else {
+            guard let next = destination as? MessageContainerViewController else {
                 return false
             }
             let vmService = services.get() as ViewModelService
@@ -99,7 +99,7 @@ class MailboxCoordinator : DefaultCoordinator {
             next.set(viewModel: .init(message: message))
             next.set(coordinator: .init(controller: next))
         case .detailsFromNotify:
-            guard let next = destination as? MessageViewController else {
+            guard let next = destination as? MessageContainerViewController else {
                 return false
             }
             let vmService = services.get() as ViewModelService
