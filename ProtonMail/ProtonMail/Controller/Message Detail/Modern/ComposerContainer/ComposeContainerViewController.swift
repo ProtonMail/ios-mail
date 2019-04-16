@@ -28,61 +28,57 @@
 
 import UIKit
 
-class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
-    private weak var controller: ComposeContainerViewController!
-    private var editor: EditorViewController!
-    
-    init(controller: ComposeContainerViewController) {
-        self.controller = controller
-        super.init()
-    }
-    
-    internal func createEditor(_ childViewModel: EditorViewModel) {
-        let prechild = UIStoryboard(name: "Composer", bundle: nil).make(ComposeViewController.self)
-        object_setClass(prechild, EditorViewController.self)
-        guard let child = prechild as? EditorViewController else {
-            fatalError()
-        }
-
-        child.enclosingScroller = self.controller
-        
-        let vmService = sharedServices.get() as ViewModelService
-        vmService.newDraft(vmp: child)
-        let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: sharedServices)
-        coordinator.start()
-        self.editor = child
-    }
-    
-    override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
-        self.embed(self.editor, onto: cell.contentView, ownedBy: self.controller)
-    }
-}
-
-class ComposeContainerViewModel: TableContainerViewModel {
-    private let message: Message
-    
-    init(message: Message) {
-        self.message = message
-        super.init()
-    }
-    
-    internal var childViewModel: EditorViewModel {
-        return EditorViewModel(msg: self.message, action: .openDraft)
-    }
-    
-    override var numberOfSections: Int {
-        return 1
-    }
-    override func numberOfRows(in section: Int) -> Int {
-        return 1
-    }
-}
-
 class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
+    private var childrenHeightObservations: [NSKeyValueObservation]!
+    private var cancelButton: UIBarButtonItem! //cancel button.
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
+        self.navigationItem.leftBarButtonItem = cancelButton
+        self.configureNavigationBar()
+        
         let childViewModel = self.viewModel.childViewModel
+        let header = self.coordinator.createHeader()
         self.coordinator.createEditor(childViewModel)
+        
+        self.childrenHeightObservations = [
+            childViewModel.observe(\.contentHeight) { [weak self] _, _ in
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            },
+            header.observe(\.size) { [weak self] _, _ in
+                self?.tableView.beginUpdates()
+                self?.tableView.endUpdates()
+            }
+        ]
     }
+    
+    @objc func cancelAction(_ sender: UIBarButtonItem) {
+        fatalError()
+    }
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func configureNavigationBar() {
+        super.configureNavigationBar()
+        
+        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
+        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        
+        let navigationBarTitleFont = Fonts.h2.light
+        self.navigationController?.navigationBar.titleTextAttributes = [
+            NSAttributedString.Key.foregroundColor: UIColor.white,
+            NSAttributedString.Key.font: navigationBarTitleFont
+        ]
+        
+        self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
+        cancelButton.title = LocalString._general_cancel_button
+    }
+    
 }

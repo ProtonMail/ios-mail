@@ -56,17 +56,10 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     private var webView: WKWebView
     
     //
-    private weak var headerView: UIView?
-    private var bottomOffsetConstraint: NSLayoutConstraint?
-    
-    //
     weak var delegate : HtmlEditorDelegate?
     //
     func responderCheck() -> Bool {
         for v in self.webView.scrollView.subviews {
-            if v == self.headerView {
-                continue
-            }
             if v.isFirstResponder {
                 return true
             }
@@ -99,16 +92,16 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         super.init(coder: aDecoder)!
         self.setup()
     }
+    
     func update(footer offset : CGFloat) {
-        self.bottomOffsetConstraint?.constant = -offset
-        UIView.animate(withDuration: 0.25, animations: { () -> Void in
-            self.layoutIfNeeded()
-        })
+        // FIXME
+        print("update footer offset: \(offset)")
     }
     
     var keyboardHeight : CGFloat = 0.0
     func update(kbHeight height: CGFloat) {
-        self.keyboardHeight = height
+        // FIXME: don't need it any more
+        self.keyboardHeight = 0.0
     }
     
     private func setup() {
@@ -117,12 +110,12 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         self.webView.backgroundColor = .white
         self.webView.uiDelegate = self
         self.webView.navigationDelegate = self
-        self.webView.frame = self.frame
         self.webView.scrollView.delegate = self
         self.webView.scrollView.keyboardDismissMode = .interactive
         self.webView.scrollView.layer.masksToBounds = false
+        self.webView.scrollView.bounces = false
+        self.webView.scrollView.isScrollEnabled = false
     
-        self.webView.clipsToBounds = false
         self.webView.autoresizesSubviews = true
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.allowsBackForwardNavigationGestures = false   // Disable swiping to navigate
@@ -132,16 +125,12 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
         
-        
         //add constraint
-        let bottomConstraint = NSLayoutConstraint(item: self.webView, attribute: .bottom, relatedBy: .equal,
-                                                  toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0)
-        self.bottomOffsetConstraint = bottomConstraint
-        //I didnt use leadingAnchor becuase we don't want the mergins and I can't remove it.
         self.addConstraints([
             NSLayoutConstraint(item: self.webView, attribute: .top, relatedBy: .equal,
-                               toItem: self, attribute: .top, multiplier: 1.0, constant: 0),
-            bottomConstraint,
+                               toItem: self, attribute: .top, multiplier: 1.0, constant: 8.0),
+            NSLayoutConstraint(item: self.webView, attribute: .bottom, relatedBy: .equal,
+                               toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: self.webView, attribute: .left, relatedBy: .equal,
                                toItem: self, attribute: .left, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: self.webView, attribute: .right, relatedBy: .equal,
@@ -272,16 +261,6 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         return run(with: "html_editor.getHtml();")
     }
     
-    var isScrollEnabled : Bool {
-        get {
-            return self.webView.scrollView.isScrollEnabled
-        }
-        set {
-            self.webView.scrollView.isScrollEnabled = newValue
-        }
-    }
-
-    
     func setHtml(body: WebContents) {
         contentHTML = body
         if isEditorLoaded {
@@ -290,7 +269,6 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     }
     
     private func loadContent() {
-        self.updateHeaderHeight()
         firstly { () -> Promise<Void> in
             self.run(with: "html_editor.setCSP(\"\(self.contentHTML.remoteContentMode.cspRaw)\");")
         }.then { () -> Promise<Void> in
@@ -310,28 +288,6 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
             self.delegate?.ContentLoaded()
         }.catch { (error) in
             PMLog.D("\(error)")
-        }
-    }
-    
-    //
-    func set(header view: UIView) {
-        self.webView.scrollView.addSubview(view)
-        self.webView.scrollView.bringSubviewToFront(view)
-        self.headerView = view
-        self.updateHeaderHeight()
-    }
-    
-    func updateHeaderHeight() {
-        guard let header = self.headerView else {
-            return
-        }
-        let height = header.frame.height
-        
-        if self.isEditorLoaded {
-            self.run(with: "html_editor.updateHeaderHeight('\(height)');").done {
-            }.catch { (error) in
-                PMLog.D("\(error)")
-            }
         }
     }
     
@@ -376,60 +332,16 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
 }
 
 extension HtmlEditor: UIScrollViewDelegate {
-    
-    
-    private func adjustOffset(_ scrollView: UIScrollView) {
-        
-        guard let header = headerView else {
-            return
-        }
-        
-        let offset = scrollView.contentOffset
-        var offsetX = offset.x
-        var width = scrollView.frame.width
-        if #available(iOS 11.0, *) {
-            let inset = self.webView.safeAreaInsets
-            let offsetW = inset.left + inset.right
-            width = self.bounds.width - offsetW
-            offsetX = offsetX + inset.left
-        }
-        var f = header.frame
-        f.origin.x = offsetX
-        f.size.width = width
-        header.frame = f
 
-        let height : CGFloat = header.frame.height
-        if offset.y < -height {
-            if !scrollView.isDragging && !scrollView.isDecelerating {
-                scrollView.setContentOffset(CGPoint(x: offset.x, y:-height), animated: false)
-            }
-        }
-    }
-    
-    //keep the offset in the same position
-    private func keepLocation(_ scrollView: UIScrollView) {
-        guard let header = headerView else {
-            return
-        }
-        // current offset
-        let offset = scrollView.contentOffset
-        // current header height
-        let height = header.frame.height
-        
-        if offset.y < 0 && offset.y != -height {
-            scrollView.setContentOffset(CGPoint(x: offset.x, y:-height), animated: false)
-        }
-    }
-    
-    
     /// when content inset changed
     func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        self.adjustOffset(scrollView)
+        // FIXME
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.adjustOffset(scrollView)
+        // FIXME
+        scrollView.contentOffset = .zero
     }
-    
+
     func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
         
     }
@@ -497,7 +409,8 @@ extension HtmlEditor: WKNavigationDelegate {
             let moveOffset = cursorY - currentCheck
             let newOffset = moveOffset + offset.y + 10
             if newOffset > offset.y {
-                webView.scrollView.setContentOffset(CGPoint(x: offset.x, y: newOffset ), animated: true)
+                // FIXME
+//                webView.scrollView.setContentOffset(CGPoint(x: offset.x, y: newOffset ), animated: true)
             }
         }
     }

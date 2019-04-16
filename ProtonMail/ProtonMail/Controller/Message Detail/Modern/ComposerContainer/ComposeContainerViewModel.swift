@@ -1,6 +1,6 @@
 //
-//  EditorViewController.swift
-//  ProtonMail - Created on 25/03/2019.
+//  ComposeContainerViewModel.swift
+//  ProtonMail - Created on 15/04/2019.
 //
 //
 //  The MIT License
@@ -26,27 +26,24 @@
 //  THE SOFTWARE.
     
 
-import UIKit
+import Foundation
 
-class EditorViewController: ComposeViewController {
-    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
-    private var heightObservation: NSKeyValueObservation!
-    private var height: NSLayoutConstraint!
+class ComposeContainerViewModel: TableContainerViewModel {
+    private let message: Message
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
-        self.height.isActive = true
-        
-        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { htmlEditor, change in
-            guard change.oldValue != change.newValue else { return }
-            let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
-            self.height.constant = totalHeight
-            (self.viewModel as! EditorViewModel).contentHeight = totalHeight
-        }
+    init(message: Message) {
+        self.message = message
+        super.init()
     }
-}
-
-class EditorViewModel: ComposeViewModelImpl {
-    @objc internal dynamic var contentHeight: CGFloat = 0.0
+    
+    internal var childViewModel: EditorViewModel {
+        return EditorViewModel(msg: self.message, action: .openDraft)
+    }
+    
+    override var numberOfSections: Int {
+        return 1
+    }
+    override func numberOfRows(in section: Int) -> Int {
+        return 2
+    }
 }

@@ -4,11 +4,12 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeView">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ComposeHeaderViewController">
             <connections>
                 <outlet property="attachmentButton" destination="dbl-67-gDP" id="XCz-Hd-FJa"/>
                 <outlet property="buttonView" destination="PQh-ZL-ZOh" id="aRB-m7-7iP"/>
@@ -277,7 +278,7 @@
                     <exclude reference="VLg-3e-bpA"/>
                 </mask>
             </variation>
-            <point key="canvasLocation" x="-305" y="287"/>
+            <point key="canvasLocation" x="241" y="367"/>
         </view>
     </objects>
     <resources>
