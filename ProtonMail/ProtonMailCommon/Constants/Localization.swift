@@ -492,9 +492,7 @@ class LocalizedString {
     lazy var _general_confirmation_title = NSLocalizedString("Confirmation", comment: "Title")
     /// "Draft"
     lazy var _general_draft_action = NSLocalizedString("Draft", comment: "Action")
-    /// "Plain text"
-    @available(* , deprecated)
-    lazy var _general_enc_type_plain_text = NSLocalizedString("Plain text", comment: "Title")
+    
     /// "ProtonMail encrypted emails"
     lazy var _general_enc_pm_emails = NSLocalizedString("ProtonMail encrypted emails", comment: "Title")
     /// "Encrypted from outside"
@@ -985,46 +983,6 @@ class LocalizedString {
     /// "Add new url"
     lazy var _add_new_url = NSLocalizedString("Add new url", comment: "action")
 
-//    /// "English"
-//    lazy var _english = NSLocalizedString("English", comment: "Action")
-//    /// "German"
-//    lazy var _german = NSLocalizedString("German", comment: "Action")
-//    /// "French"
-//    lazy var _french = NSLocalizedString("French", comment: "Action")
-//    /// "Russian"
-//    lazy var _russian = NSLocalizedString("Russian", comment: "Action")
-//    /// "Spanish"
-//    lazy var _spanish = NSLocalizedString("Spanish", comment: "Action")
-//    /// "Turkish"
-//    lazy var _turkish = NSLocalizedString("Turkish", comment: "Action")
-//    /// "Polish"
-//    lazy var _polish = NSLocalizedString("Polish", comment: "Action")
-//    /// "Ukrainian"
-//    lazy var _ukrainian = NSLocalizedString("Ukrainian", comment: "Action")
-//    /// "Dutch"
-//    lazy var _dutch = NSLocalizedString("Dutch", comment: "Action")
-//    /// "Italian"
-//    lazy var _italian = NSLocalizedString("Italian", comment: "Action")
-//    /// "Portuguese Brazil"
-//    lazy var _portuguese_brazil = NSLocalizedString("Portuguese Brazil", comment: "Action")
-//    /// "Chinese Simplified"
-//    lazy var _chinese_simplified = NSLocalizedString("Chinese Simplified", comment: "Action")
-//    /// "Chinese Traditional"
-//    lazy var _chinese_traditional = NSLocalizedString("Chinese Traditional", comment: "Action")
-//    /// "Catalan"
-//    lazy var _catalan = NSLocalizedString("Catalan", comment: "Action")
-//    /// "Danish"
-//    lazy var _danish = NSLocalizedString("Danish", comment: "Action")
-//    /// "Czech"
-//    lazy var _czech = NSLocalizedString("Czech", comment: "Action")
-//    /// "Portuguese"
-//    lazy var _portuguese = NSLocalizedString("Portuguese", comment: "Action")
-//    /// "Romanian"
-//    lazy var _romanian = NSLocalizedString("Romanian", comment: "Action")
-//    /// "Croatian"
-//    lazy var _croatian = NSLocalizedString("Croatian", comment: "Action")
-
-
     /// "Message Queue"
     lazy var _message_queue = NSLocalizedString("Message Queue", comment: "settings debug section title")
     /// "Error Logs"
@@ -1349,10 +1307,6 @@ class LocalizedString {
     /// "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email."
     lazy var _protonmail_plus_enables_you_to_add_and_edit_contact_details_beyond_ = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.", comment: "Upgrade warning message")
 
-    /// "Upgrading is not possible in the app."
-    @available(*, deprecated)
-    lazy var _upgrading_is_not_possible_in_the_app = NSLocalizedString("Upgrading is not possible in the app.", comment: "Upgrade warning message")
-
     /// "The verification failed!"
     lazy var _the_verification_failed = NSLocalizedString("The verification failed!", comment: "Error")
 
@@ -1438,10 +1392,6 @@ class LocalizedString {
     lazy var _mark_as_unread = NSLocalizedString("Mark as unread", comment: "Action")
     lazy var _mark_as_unread_short = NSLocalizedString("Unread", comment: "The verb for describing the unread action")
 
-    /// "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!"
-    @available(*, deprecated )
-    lazy var _all_of_your_existing_encrypted_emails_will_be_lost_forever_but_you_will_still_be_able_to_view_your_unencrypted_emails_ = NSLocalizedString("All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!", comment: "Description")
-
     /// "Display Name Updated"
     lazy var _display_name_updated = NSLocalizedString("Display Name Updated", comment: "Title")
 
@@ -1519,9 +1469,6 @@ class LocalizedString {
     lazy var _pgp_signed_message_from_verified_address = NSLocalizedString("PGP-signed message from verified address", comment: "encryption lock description")
     /// "Sender Verification Failed"
     lazy var _sender_verification_failed = NSLocalizedString("Sender Verification Failed", comment: "encryption lock description")
-    /// "Encrypted outside"
-    @available(*, deprecated)
-    lazy var _encrypted_outside = NSLocalizedString("Encrypted outside", comment: "encryption lock description")
     /// "End-to-end encrypted message"
     lazy var _end_to_end_encrypted_message = NSLocalizedString("End-to-end encrypted message", comment: "encryption lock description")
     /// "End-to-end encrypted message from verified address"
@@ -1531,14 +1478,7 @@ class LocalizedString {
     lazy var _edit_mobile_signature = NSLocalizedString("Edit mobile signature", comment: "title")
     /// "Edit signature"
     lazy var _edit_signature = NSLocalizedString("Edit signature", comment: "title")
-
-    /// "Looking to edit or disable your mobile signature?"
-    @available(*, deprecated)
-    lazy var _looking_to_edit_or_disable_your_mobile_signature = NSLocalizedString("Looking to edit or disable your mobile signature?", comment: "alert description")
-    /// "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature."
-    @available(*, deprecated)
-    lazy var _plus_visionary_enables_you_to_customize_mobile_signature = NSLocalizedString("ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." , comment: "alert description")
-
+    
     // "A paid ProtonMail plan is required to use this feature"
     lazy var _a_paid_rotonMail_plan_is_required_to_use_this_feature = NSLocalizedString("A paid ProtonMail plan is required to use this feature", comment: "alert description")
     // "Upgrade to get all paid features."
