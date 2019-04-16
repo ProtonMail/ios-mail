@@ -45,6 +45,11 @@ class EditorViewController: ComposeViewController {
             (self.viewModel as! EditorViewModel).contentHeight = totalHeight
         }
     }
+    
+    override func caretMovedTo(_ offset: CGFloat) {
+        // TODO: improve
+        self.enclosingScroller?.scroller.contentOffset = CGPoint(x: 0, y: offset + 185)
+    }
 }
 
 class EditorViewModel: ComposeViewModelImpl {

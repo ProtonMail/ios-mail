@@ -299,24 +299,18 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
                                                object:nil)
-        NotificationCenter.default.addKeyboardObserver(self)
         setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.removeKeyboardObserver(self)
         stopAutoSave()
     }
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
@@ -563,8 +557,12 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     }
 }
 extension ComposeViewController : HtmlEditorDelegate {
-    func ContentLoaded() {
+    func htmlEditorDidFinishLoadingContent() {
         self.updateEmbedImages()
+    }
+    
+    @objc func caretMovedTo(_ offset: CGFloat) {
+        fatalError()
     }
 }
 
@@ -633,7 +631,6 @@ extension ComposeViewController : ComposeViewDelegate {
     func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
         // FIXME
     }
-    
     
     func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController) {
         switch(actualEncryptionStep) {
@@ -895,28 +892,4 @@ extension ComposeViewController: UIPickerViewDelegate {
         return super.canPerformAction(action, withSender: sender)
     }
 
-}
-
-
-extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(_ notification: Notification) {
-        self.htmlEditor.update(footer: 0.0)
-        self.htmlEditor.update(kbHeight: 0.0)
-    }
-    
-    func keyboardWillShowNotification(_ notification: Notification) {
-        let keyboardInfo = notification.keyboardInfo
- 
-        let showed = abs(keyboardInfo.beginFrame.origin.y - keyboardInfo.endFrame.origin.y) < 50
-        if !self.htmlEditor.responderCheck() && !showed {
-            self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
-        }
-        self.htmlEditor.update(kbHeight: keyboardInfo.beginFrame.height)
-        
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            self.htmlEditor.update(kbHeight: keyboardHeight)
-        }
-    }
 }

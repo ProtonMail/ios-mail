@@ -28,12 +28,24 @@
 
 import UIKit
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator> {
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol
+{
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
+    private var bottomPadding: NSLayoutConstraint!
+    
+    deinit {
+        NotificationCenter.default.removeKeyboardObserver(self)
+        NotificationCenter.default.removeObserver(self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        NotificationCenter.default.addKeyboardObserver(self)
+        
+        self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
+        self.bottomPadding.constant = 0.0
+        self.bottomPadding.isActive = true
         
         self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = cancelButton
@@ -56,7 +68,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
-        fatalError()
+        // FIXME: that logic should be in VM of EditorViewController
+        self.coordinator.cancelAction(sender)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -81,4 +94,17 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         cancelButton.title = LocalString._general_cancel_button
     }
     
+    // keyboard
+    
+    func keyboardWillHideNotification(_ notification: Notification) {
+        self.bottomPadding.constant = 0.0
+    }
+    
+    func keyboardWillShowNotification(_ notification: Notification) {
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardRectangle = keyboardFrame.cgRectValue
+            let keyboardHeight = keyboardRectangle.height
+            self.bottomPadding.constant = keyboardHeight
+        }
+    }
 }

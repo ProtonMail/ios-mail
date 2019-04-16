@@ -38,6 +38,11 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         super.init()
     }
     
+    internal func cancelAction(_ sender: UIBarButtonItem) {
+        // FIXME
+        self.editor.cancelAction(sender)
+    }
+    
     internal func createEditor(_ childViewModel: EditorViewModel) {
         let prechild = UIStoryboard(name: "Composer", bundle: nil).make(ComposeViewController.self)
         object_setClass(prechild, EditorViewController.self)

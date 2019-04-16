@@ -35,7 +35,8 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
 }
 
 protocol HtmlEditorDelegate : AnyObject {
-    func ContentLoaded()
+    func htmlEditorDidFinishLoadingContent()
+    func caretMovedTo(_ offset: CGFloat)
 }
 
 /// Html editor
@@ -77,6 +78,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         let webConfiguration = WKWebViewConfiguration()
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
+        preferences.javaScriptCanOpenWindowsAutomatically = false
         webConfiguration.preferences = preferences
         self.webView = WKWebView(frame: .zero, configuration: webConfiguration)
         super.init(frame: frame)
@@ -87,21 +89,11 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         let webConfiguration = WKWebViewConfiguration()
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = true
+        preferences.javaScriptCanOpenWindowsAutomatically = false
         webConfiguration.preferences = preferences
         self.webView = WKWebView(frame:  .zero, configuration: webConfiguration)
         super.init(coder: aDecoder)!
         self.setup()
-    }
-    
-    func update(footer offset : CGFloat) {
-        // FIXME
-        print("update footer offset: \(offset)")
-    }
-    
-    var keyboardHeight : CGFloat = 0.0
-    func update(kbHeight height: CGFloat) {
-        // FIXME: don't need it any more
-        self.keyboardHeight = 0.0
     }
     
     private func setup() {
@@ -282,10 +274,10 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
                 return Promise.value(())
             }
         }.then { _ -> Promise<CGFloat> in
-            self.run(with: "document.body.scrollHeight")
+            self.run(with: "document.body.offsetHeight")
         }.done { (height) in
             self.contentHeight = height
-            self.delegate?.ContentLoaded()
+            self.delegate?.htmlEditorDidFinishLoadingContent()
         }.catch { (error) in
             PMLog.D("\(error)")
         }
@@ -338,7 +330,6 @@ extension HtmlEditor: UIScrollViewDelegate {
         // FIXME
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        // FIXME
         scrollView.contentOffset = .zero
     }
 
@@ -368,12 +359,12 @@ extension HtmlEditor: WKNavigationDelegate {
         } else if method.hasPrefix("cursor/") {
             let value = method.preg_replace_none_regex("cursor/", replaceto: "")
             if let coursorPosition : CGFloat =  NumberFormatter().number(from: value) as? CGFloat {
+                let _ = self.run(with: "document.body.offsetHeight").done { (height) in
+                    self.contentHeight = height
+                }
                 self.scrollCaretToVisible(cursorY: coursorPosition)
             }
         }
-        
-        
-        
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -399,19 +390,7 @@ extension HtmlEditor: WKNavigationDelegate {
     }
     
     func scrollCaretToVisible(cursorY: CGFloat) {
-        /// keyboard size
-        let kbHeight = self.keyboardHeight
-        /// current offset
-        let offset = webView.scrollView.contentOffset
-        let contentSize = webView.frame.size
-        let currentCheck = contentSize.height - (kbHeight + 42) + offset.y
-        if currentCheck < cursorY {
-            let moveOffset = cursorY - currentCheck
-            let newOffset = moveOffset + offset.y + 10
-            if newOffset > offset.y {
-                // FIXME
-//                webView.scrollView.setContentOffset(CGPoint(x: offset.x, y: newOffset ), animated: true)
-            }
-        }
+        // propogate upwards
+        self.delegate?.caretMovedTo(cursorY)
     }
 }

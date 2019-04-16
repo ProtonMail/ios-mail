@@ -35,7 +35,7 @@
                             <constraint firstAttribute="trailing" secondItem="kII-As-Kc3" secondAttribute="trailing" id="BdW-gr-P5M"/>
                             <constraint firstItem="kII-As-Kc3" firstAttribute="leading" secondItem="Wvh-H5-vnK" secondAttribute="leading" id="WSW-0W-YJy"/>
                             <constraint firstItem="kII-As-Kc3" firstAttribute="top" secondItem="AdR-nB-BQy" secondAttribute="bottom" id="hyD-eO-AiV"/>
-                            <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="kII-As-Kc3" secondAttribute="bottom" id="u5a-gy-lr1"/>
+                            <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="kII-As-Kc3" secondAttribute="bottom" placeholder="YES" id="u5a-gy-lr1"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="J9F-Xh-oG8">
