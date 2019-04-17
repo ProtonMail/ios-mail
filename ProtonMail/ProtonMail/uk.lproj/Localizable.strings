@@ -119,9 +119,6 @@
 /* Title */
 "All contacts are imported" = "All contacts are imported";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Всі ваші наявні зашифровані листи будуть втрачені назавжди, але буде можна переглядати незашифровані листи. \n\nЦЮ ДІЮ СКАСУВАТИ НЕ МОЖНА!";
-
 /* Apply label then also archive */
 "Also Archive" = "Ще й в архів";
 
@@ -1519,7 +1516,9 @@
 "Unable to parse response" = "Не вдалося проаналізувати відповідь";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Не вдалося проаналізувати об'єкт відповіді: %@";
+"Unable to parse the response object:
+%@" = "Не вдалося проаналізувати об'єкт відповіді:
+%@";
 
 /* Error */
 "Unable to parse token" = "Не вдалося проаналізувати позначку";

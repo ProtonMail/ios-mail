@@ -1,0 +1,3940 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ja">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ja">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>ProtonMail</source>
+        <note>Bundle display name</note>
+        <target state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription">
+        <source>Required for attaching media to the email.</source>
+        <note>Privacy - Media Library Usage Description</note>
+        <target state="needs-translation">Required for attaching media to the email.</target>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Camera Usage Description</note>
+        <target state="needs-translation">Required for attaching photos to the email.</target>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription">
+        <source>Required for email autocomplete.</source>
+        <note>Privacy - Contacts Usage Description</note>
+        <target state="needs-translation">Required for email autocomplete.</target>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <note>Privacy - Face ID Usage Description</note>
+        <target state="needs-translation">Allows you quick and secure to unlock your application.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription">
+        <source>Required for saving image attachments to photo library.</source>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+        <target state="needs-translation">Required for saving image attachments to photo library.</target>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <note>Privacy - Photo Library Usage Description</note>
+        <target state="needs-translation">Required for attaching photos to the email.</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" datatype="plaintext" source-language="en" target-language="ja">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="%@ storage capacity">
+        <source>%@ storage capacity</source>
+        <note>Service plan capability</note>
+        <target state="needs-translation">%@ storage capacity</target>
+      </trans-unit>
+      <trans-unit id="%d Member">
+        <source>%d Member</source>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+        <target state="translated">%d メンバー</target>
+      </trans-unit>
+      <trans-unit id="%d Members">
+        <source>%d Members</source>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+        <target state="translated">%d メンバー</target>
+      </trans-unit>
+      <trans-unit id="%d Minute" approved="yes">
+        <source>%d minute</source>
+        <note>auto lock time format</note>
+        <target state="translated">%d 分</target>
+      </trans-unit>
+      <trans-unit id="%d Minutes" approved="yes">
+        <source>%d minutes</source>
+        <note>auto lock time format</note>
+        <target state="translated">%d 分</target>
+      </trans-unit>
+      <trans-unit id="%d Selected">
+        <source>%d Selected</source>
+        <note>The string that describes how many contact groups are currently selected</note>
+        <target state="translated">%d 件選択中</target>
+      </trans-unit>
+      <trans-unit id="%i email address">
+        <source>%i email address</source>
+        <note>Service plan capability; i = 1</note>
+        <target state="needs-translation">%i email address</target>
+      </trans-unit>
+      <trans-unit id="%i email addresses">
+        <source>%i email addresses</source>
+        <note>Service plan capability; i = 5 or 50</note>
+        <target state="needs-translation">%i email addresses</target>
+      </trans-unit>
+      <trans-unit id="(2048 bit)" approved="yes">
+        <source>(2048 bit)</source>
+        <note>Key size text when setup key</note>
+        <target state="translated">(2048 ビット)</target>
+      </trans-unit>
+      <trans-unit id="(4096 bit)" approved="yes">
+        <source>(4096 bit)</source>
+        <note>Key size text when setup key</note>
+        <target state="translated">(4096 ビット)</target>
+      </trans-unit>
+      <trans-unit id="(total)">
+        <source>(total)</source>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+        <target state="needs-translation">(total)</target>
+      </trans-unit>
+      <trans-unit id="**********" approved="yes">
+        <source>**********</source>
+        <note>secret</note>
+        <target state="translated">**********</target>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL" approved="yes">
+        <source>*OPTIONAL</source>
+        <note>optional text field</note>
+        <target state="translated">（任意）</target>
+        <alt-trans>
+          <target>*任意</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="/user">
+        <source>/user</source>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+        <target state="needs-translation">/user</target>
+      </trans-unit>
+      <trans-unit id="2FA failed. Please try to login again.">
+        <source>2FA failed. Please try to login again.</source>
+        <note>2fa verification failed</note>
+        <target state="translated">2要素認証に失敗しました。もう一度ログインをやりなおしてください。</target>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <note>default empty object</note>
+        <target state="needs-translation">&lt;no object&gt;</target>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels">
+        <source>A message cannot have more than 5 labels</source>
+        <note>*
+ *  LabelTableViewCell</note>
+        <target state="needs-translation">A message cannot have more than 5 labels</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <note>"Alert" = "Alert";</note>
+        <target state="translated">ProtonMailアプリの新バージョンが利用可能です。最新のバージョンに更新してください。</target>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to the latest version.">
+        <source>A new version of ProtonMail app is available. Please update to the latest version.</source>
+        <note>Description</note>
+        <target state="translated">ProtonMailアプリの新バージョンが利用可能です。最新のバージョンに更新してください。</target>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <note>alert description</note>
+        <target state="needs-translation">A paid ProtonMail plan is required to use this feature</target>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target state="translated">パスコードが設定されていません。システム設定で有効にしてください。</target>
+      </trans-unit>
+      <trans-unit id="API Server not reachable..." approved="yes">
+        <source>API Server not reachable...</source>
+        <note>when server not reachable</note>
+        <target state="translated">API サーバーに接続できません。</target>
+      </trans-unit>
+      <trans-unit id="ARCHIVE" approved="yes">
+        <source>Archive</source>
+        <note>mail location title</note>
+        <target state="translated">アーカイブ</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <note>error message</note>
+        <target state="translated">未払いのため、このアカウントへのアクセスはできません。 未払いの請求書をお支払いいただくには、protonmail.comからログインしてください。</target>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
+        <source>Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <note/>
+        <target state="needs-translation">Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</target>
+      </trans-unit>
+      <trans-unit id="Account password invalid">
+        <source>Invalid account password</source>
+        <note>
+ &amp; title</note>
+        <target state="needs-translation">Invalid account password</target>
+      </trans-unit>
+      <trans-unit id="Add">
+        <source>Add</source>
+        <note/>
+        <target state="translated">追加</target>
+      </trans-unit>
+      <trans-unit id="Add Anniversary" approved="yes">
+        <source>Add Anniversary</source>
+        <note>new contacts add Anniversary</note>
+        <target state="translated">記念日を追加</target>
+      </trans-unit>
+      <trans-unit id="Add Birthday" approved="yes">
+        <source>Add Birthday</source>
+        <note>new contacts add Birthday</note>
+        <target state="translated">誕生日を追加</target>
+      </trans-unit>
+      <trans-unit id="Add Contact" approved="yes">
+        <source>Add Contact</source>
+        <note>Contacts add new contact</note>
+        <target state="translated">連絡先の追加</target>
+      </trans-unit>
+      <trans-unit id="Add Custom Label" approved="yes">
+        <source>Add Custom Label</source>
+        <note>add custom label type action</note>
+        <target state="translated">カスタムラベルを追加</target>
+      </trans-unit>
+      <trans-unit id="Add Folder" approved="yes">
+        <source>Add Folder</source>
+        <note>Action</note>
+        <target state="translated">フォルダーを追加</target>
+      </trans-unit>
+      <trans-unit id="Add Gender" approved="yes">
+        <source>Add Gender</source>
+        <note>new contacts add Gender</note>
+        <target state="translated">性別を追加</target>
+      </trans-unit>
+      <trans-unit id="Add Group">
+        <source>Add Group</source>
+        <note>The title for the contact group creation view</note>
+        <target state="translated">グループの追加</target>
+      </trans-unit>
+      <trans-unit id="Add Label" approved="yes">
+        <source>Add Label</source>
+        <note>add label action</note>
+        <target state="translated">ラベルを追加</target>
+      </trans-unit>
+      <trans-unit id="Add New Folder" approved="yes">
+        <source>Add New Folder</source>
+        <note>add a new folder</note>
+        <target state="translated">新しいフォルダーの追加</target>
+        <alt-trans>
+          <target>新規フォルダーの追加</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add New Label" approved="yes">
+        <source>Add New Label</source>
+        <note>add a new folder</note>
+        <target state="translated">新しいラベルの追加</target>
+      </trans-unit>
+      <trans-unit id="Add Nickname" approved="yes">
+        <source>Add Nickname</source>
+        <note>new contacts add Nickname</note>
+        <target state="translated">ニックネームを追加</target>
+      </trans-unit>
+      <trans-unit id="Add Organization" approved="yes">
+        <source>Add Organization</source>
+        <note>new contacts add Organization</note>
+        <target state="translated">組織を追加</target>
+      </trans-unit>
+      <trans-unit id="Add Photo">
+        <source>Add Photo</source>
+        <note>The button text for add profile picture</note>
+        <target state="translated">写真を追加</target>
+      </trans-unit>
+      <trans-unit id="Add Star" approved="yes">
+        <source>Add Star</source>
+        <note>mark message star</note>
+        <target state="translated">星印を付ける</target>
+        <alt-trans>
+          <target>星印を追加</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add Title" approved="yes">
+        <source>Add Title</source>
+        <note>new contacts add Title</note>
+        <target state="translated">肩書きを追加</target>
+      </trans-unit>
+      <trans-unit id="Add new address" approved="yes">
+        <source>Add new address</source>
+        <note>add new address action</note>
+        <target state="translated">新しい住所を追加</target>
+      </trans-unit>
+      <trans-unit id="Add new custom field" approved="yes">
+        <source>Add new custom field</source>
+        <note>new custom field action</note>
+        <target state="translated">新しいカスタムフィールドを追加</target>
+      </trans-unit>
+      <trans-unit id="Add new email" approved="yes">
+        <source>Add new email</source>
+        <note>new email action</note>
+        <target state="translated">新しいメールアドレスを追加</target>
+      </trans-unit>
+      <trans-unit id="Add new field" approved="yes">
+        <source>Add new field</source>
+        <note>new field action</note>
+        <target state="translated">新しいフィールドを追加</target>
+      </trans-unit>
+      <trans-unit id="Add new phone number" approved="yes">
+        <source>Add new phone number</source>
+        <note>new phone action</note>
+        <target state="translated">新しい電話番号を追加</target>
+      </trans-unit>
+      <trans-unit id="Add new url" approved="yes">
+        <source>Add new url</source>
+        <note>action</note>
+        <target state="translated">新しいURLを追加</target>
+        <alt-trans>
+          <target>新しい url を追加</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add to contacts" approved="yes">
+        <source>Add to contacts</source>
+        <note>Title</note>
+        <target state="translated">連絡先に追加</target>
+      </trans-unit>
+      <trans-unit id="Address" approved="yes">
+        <source>Address</source>
+        <note>default vcard types</note>
+        <target state="translated">住所</target>
+      </trans-unit>
+      <trans-unit id="Alert" approved="yes">
+        <source>Alert</source>
+        <note>Title</note>
+        <target state="translated">警告</target>
+      </trans-unit>
+      <trans-unit id="All Mail" approved="yes">
+        <source>All Mail</source>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+        <target state="translated">全てのメール</target>
+      </trans-unit>
+      <trans-unit id="All contacts are imported" approved="yes">
+        <source>All contacts are imported</source>
+        <note>Title</note>
+        <target state="translated">全ての連絡先がインポートされました。</target>
+      </trans-unit>
+      <trans-unit id="All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.&#10;&#10;THIS ACTION CANNOT BE UNDONE!">
+        <source>All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</source>
+        <note>Description</note>
+        <target state="needs-translation">All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!</target>
+      </trans-unit>
+      <trans-unit id="Also Archive" approved="yes">
+        <source>Also Archive</source>
+        <note>archive when apply label</note>
+        <target state="translated">アーカイブも実施する</target>
+        <alt-trans>
+          <target>同時にアーカイブする</target>
+        </alt-trans>
+        <alt-trans>
+          <target>同様にアーカイブ</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password." approved="yes">
+        <source>Also used to reset a forgotten password.</source>
+        <note>Description</note>
+        <target state="translated">パスワードを忘れた場合のリセットにも使用されます。</target>
+      </trans-unit>
+      <trans-unit id="Anniversary" approved="yes">
+        <source>Anniversary</source>
+        <note>contacts talbe cell Anniversary title</note>
+        <target state="translated">記念日</target>
+      </trans-unit>
+      <trans-unit id="App is locked">
+        <source>App is locked</source>
+        <note>Error</note>
+        <target state="needs-translation">App is locked</target>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee">
+        <source>Apple in-app purchase fee</source>
+        <note>Price breakdown</note>
+        <target state="needs-translation">Apple in-app purchase fee</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase.">
+        <source>Apple informed us they could not process the purchase.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Apple informed us they could not process the purchase.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</target>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</target>
+      </trans-unit>
+      <trans-unit id="Apply" approved="yes">
+        <source>Apply</source>
+        <note>Apply action</note>
+        <target state="translated">適用</target>
+      </trans-unit>
+      <trans-unit id="Apply Labels" approved="yes">
+        <source>Apply Labels</source>
+        <note>Title</note>
+        <target state="translated">ラベルの適用</target>
+        <alt-trans>
+          <target>ラベルを適用</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Archive" approved="yes">
+        <source>Archive</source>
+        <note>mail location desc
+   menu title</note>
+        <target state="translated">アーカイブ</target>
+      </trans-unit>
+      <trans-unit id="Archived">
+        <source>Archived</source>
+        <note>Description</note>
+        <target state="translated">アーカイブ済</target>
+      </trans-unit>
+      <trans-unit id="Attachments">
+        <source>Attachments</source>
+        <note>VoiceOver: email has attachments</note>
+        <target state="translated">ファイルの添付</target>
+      </trans-unit>
+      <trans-unit id="Authentication" approved="yes">
+        <source>Authentication</source>
+        <note>Title</note>
+        <target state="translated">認証</target>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
+        <source>Authentication failed: wrong username or password.</source>
+        <note>Description</note>
+        <target state="translated">認証に失敗しました。ログイン名またはパスワードが間違っています。</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <note>Description</note>
+        <target state="translated">認証に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Authentication failed. Please try to login again.">
+        <source>Authentication failed. Please try to login again.</source>
+        <note>Error</note>
+        <target state="needs-translation">Authentication failed. Please try to login again.</target>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <note>Description</note>
+        <target state="needs-translation">Authentication token is not accessible because the app is locked</target>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <note>Description</note>
+        <target state="translated">認証は、システムによって取り消されました。</target>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto lock time</source>
+        <note>Title</note>
+        <target state="translated">自動ロックまでの時間</target>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto show images</source>
+        <note>settings general section title</note>
+        <target state="translated">画像の自動表示</target>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <note>top left back button</note>
+        <target state="translated">戻る</target>
+      </trans-unit>
+      <trans-unit id="Bad auth cache" approved="yes">
+        <source>Bad auth cache</source>
+        <note>Error</note>
+        <target state="translated">不正な認証キャッシュ</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <note>Error title</note>
+        <target state="translated">不正なパラメーター</target>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@" approved="yes">
+        <source>Bad parameter: %@</source>
+        <note>Error Description</note>
+        <target state="translated">不正なパラメーター: %@</target>
+      </trans-unit>
+      <trans-unit id="Bad path">
+        <source>Bad path</source>
+        <note>title</note>
+        <target state="needs-translation">Bad path</target>
+      </trans-unit>
+      <trans-unit id="Bad response" approved="yes">
+        <source>Bad response</source>
+        <note>Error Description</note>
+        <target state="translated">不正な応答</target>
+      </trans-unit>
+      <trans-unit id="Bcc" approved="yes">
+        <source>BCC</source>
+        <note>Title</note>
+        <target state="translated">Bcc</target>
+      </trans-unit>
+      <trans-unit id="Bcc:">
+        <source>Bcc:</source>
+        <note>message Bcc: feild</note>
+        <target state="translated">Bcc：</target>
+      </trans-unit>
+      <trans-unit id="Birthday" approved="yes">
+        <source>Birthday</source>
+        <note>contacts talbe cell Birthday title</note>
+        <target state="translated">誕生日</target>
+      </trans-unit>
+      <trans-unit id="Bug Description" approved="yes">
+        <source>Bug Description</source>
+        <note>Title</note>
+        <target state="translated">バグの説明</target>
+      </trans-unit>
+      <trans-unit id="Bug Report Received" approved="yes">
+        <source>Bug report received</source>
+        <note>Title</note>
+        <target state="translated">バグレポートを受信しました。</target>
+      </trans-unit>
+      <trans-unit id="Buy More Credits">
+        <source>Buy More Credits</source>
+        <note>Link to More Credits screen</note>
+        <target state="needs-translation">Buy More Credits</target>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our" approved="yes">
+        <source>By using protonmail, you agree to our</source>
+        <note>agree check box first part words</note>
+        <target state="translated">ProtonMailを利用することにより、以下に同意したものとみなされます。</target>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our %@ and %@.">
+        <source>By using protonmail, you agree to our %@ and %@.</source>
+        <note>No comment provided by engineer.</note>
+        <target state="translated">ProtonMailを利用することにより、%@および%@に同意したものとみなされます。</target>
+      </trans-unit>
+      <trans-unit id="CAPTCHA" approved="yes">
+        <source>CAPTCHA</source>
+        <note>human check option button</note>
+        <target state="translated">CAPTCHA</target>
+      </trans-unit>
+      <trans-unit id="Call Contact">
+        <source>Call Contact</source>
+        <note>Call the contact (button title text)</note>
+        <target state="needs-translation">Call Contact</target>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup." approved="yes">
+        <source>Can take several minutes to setup.</source>
+        <note>key size note part 2</note>
+        <target state="translated">準備に数分かかります。</target>
+      </trans-unit>
+      <trans-unit id="Can't copy the file" approved="yes">
+        <source>Can't copy the file</source>
+        <note>Error</note>
+        <target state="translated">ファイルをコピーできません。</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client" approved="yes">
+        <source>Can't create a SRP Client</source>
+        <note>update password error</note>
+        <target state="translated">SRP クライアントを作成できません。</target>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!" approved="yes">
+        <source>Can't create a SRP verifier!</source>
+        <note>update password error</note>
+        <target state="translated">SRP検証を作成できません。</target>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!" approved="yes">
+        <source>Can't decrypt this attachment!</source>
+        <note>When quick look attachment but can't decrypt it!</note>
+        <target state="translated">添付ファイルを復号できません。</target>
+        <alt-trans>
+          <target>この添付ファイルを復号できません。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group">
+        <source>Can't delete contact group</source>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+        <target state="needs-translation">Can't delete contact group</target>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API">
+        <source>Can't delete contact group through API</source>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+        <target state="needs-translation">Can't delete contact group through API</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again." approved="yes">
+        <source>Can't download message body, please try again.</source>
+        <note>*
+ *  MessageViewController</note>
+        <target state="translated">メッセージの本文をダウンロードできません。もう一度試してください。</target>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again.">
+        <source>Can't download message body. Please try again.</source>
+        <note>Error</note>
+        <target state="needs-translation">Can't download message body. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Can't fetch contact groups">
+        <source>Can't fetch contact groups</source>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+        <target state="needs-translation">Can't fetch contact groups</target>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!">
+        <source>Can't find the clicked message please try again!</source>
+        <note/>
+        <target state="translated">クリックされたメールが見当たりません。もう一度試してください。</target>
+      </trans-unit>
+      <trans-unit id="Can't find the selected message. Please try again.">
+        <source>Can't find the selected message. Please try again.</source>
+        <note>Description</note>
+        <target state="translated">選択されたメッセージが見当たりません。もう一度試してください。</target>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!" approved="yes">
+        <source>Can't find this attachment!</source>
+        <note>when quick look attachment but can't find the data</note>
+        <target state="translated">添付ファイルが見つかりません。</target>
+        <alt-trans>
+          <target>この添付ファイルが見つかりません。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!" approved="yes">
+        <source>Can't get a Modulus ID!</source>
+        <note>update password error = typo:Modulus</note>
+        <target state="translated">Modulus IDを取得できません</target>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!" approved="yes">
+        <source>Can't get a Moduls!</source>
+        <note>update password error = typo:Modulus</note>
+        <target state="translated">Modulusを取得できません</target>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info" approved="yes">
+        <source>Can't get user auth info</source>
+        <note>update password error</note>
+        <target state="translated">ユーザー認証情報を取得できません</target>
+      </trans-unit>
+      <trans-unit id="Can't load share content!">
+        <source>Can't load share content!</source>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+        <target state="translated">共有コンテンツをロードできません。</target>
+      </trans-unit>
+      <trans-unit id="Can't load the file">
+        <source>Can't load the file</source>
+        <note>Error</note>
+        <target state="translated">ファイルをロードできません。</target>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body">
+        <source>Can't not find the value from the response body</source>
+        <note>Description</note>
+        <target state="needs-translation">Can't not find the value from the response body</target>
+      </trans-unit>
+      <trans-unit id="Can't open the file" approved="yes">
+        <source>Can't open the file</source>
+        <note>Error</note>
+        <target state="translated">ファイルを開くことができません。</target>
+      </trans-unit>
+      <trans-unit id="Can't save contact group">
+        <source>Can't save contact group</source>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+        <target state="needs-translation">Can't save contact group</target>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through the API">
+        <source>Can't update contact group through the API</source>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+        <target state="translated">API による連絡先グループを更新できません。</target>
+      </trans-unit>
+      <trans-unit id="Cancel" approved="yes">
+        <source>Cancel</source>
+        <note>Cancel action</note>
+        <target state="translated">キャンセル</target>
+      </trans-unit>
+      <trans-unit id="Cancel Check">
+        <source>Cancel Check</source>
+        <note>Action</note>
+        <target state="translated">チェックをキャンセル</target>
+      </trans-unit>
+      <trans-unit id="Cancelling" approved="yes">
+        <source>Cancelling</source>
+        <note>Title</note>
+        <target state="translated">キャンセル中</target>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!">
+        <source>Unable to decrypt this attachment.</source>
+        <note/>
+        <target state="needs-translation">Unable to decrypt this attachment.</target>
+      </trans-unit>
+      <trans-unit id="Catalan">
+        <source>Catalan</source>
+        <note>Action</note>
+        <target state="needs-translation">Catalan</target>
+      </trans-unit>
+      <trans-unit id="Cc" approved="yes">
+        <source>CC</source>
+        <note>Title</note>
+        <target state="translated">Cc</target>
+      </trans-unit>
+      <trans-unit id="Cc:" approved="yes">
+        <source>Cc:</source>
+        <note>message Cc: feild</note>
+        <target state="translated">Cc:</target>
+      </trans-unit>
+      <trans-unit id="Cell phone number" approved="yes">
+        <source>Cell phone number</source>
+        <note>place holder</note>
+        <target state="translated">携帯電話番号</target>
+      </trans-unit>
+      <trans-unit id="Change Login Password" approved="yes">
+        <source>Change Login Password</source>
+        <note>change password input label</note>
+        <target state="translated">ログインパスワードの変更</target>
+        <alt-trans>
+          <target>ログインパスワードを変更</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password" approved="yes">
+        <source>Change Mailbox Password</source>
+        <note>Title</note>
+        <target state="translated">メールボックスパスワードの変更</target>
+        <alt-trans>
+          <target>メールボックスパスワードを変更</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Change Password" approved="yes">
+        <source>Change password</source>
+        <note>update password error title</note>
+        <target state="translated">パスワードの変更</target>
+      </trans-unit>
+      <trans-unit id="Change Pin" approved="yes">
+        <source>Change PIN</source>
+        <note>settings protection section title</note>
+        <target state="translated">PINの変更</target>
+      </trans-unit>
+      <trans-unit id="Change Single Password" approved="yes">
+        <source>Change Single Password</source>
+        <note>Title</note>
+        <target state="translated">シングルパスワードの変更</target>
+      </trans-unit>
+      <trans-unit id="Change default address to ..">
+        <source>Change default address to...</source>
+        <note>Title</note>
+        <target state="translated">既定のアドレスを変更</target>
+      </trans-unit>
+      <trans-unit id="Change left swipe action" approved="yes">
+        <source>Change left swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target state="translated">左スワイプ時の動作を変更</target>
+        <alt-trans>
+          <target>左スワイプアクションを変更</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Change right swipe action" approved="yes">
+        <source>Change right swipe action</source>
+        <note>settings swipe actions section action description</note>
+        <target state="translated">右スワイプ時の動作を変更</target>
+        <alt-trans>
+          <target>右スワイプアクションを変更</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Change sender address to ..">
+        <source>Change sender address to...</source>
+        <note>Title</note>
+        <target state="translated">送信アドレスを変更</target>
+      </trans-unit>
+      <trans-unit id="Check Again" approved="yes">
+        <source>Check Again</source>
+        <note>Action</note>
+        <target state="translated">もう一度確認</target>
+      </trans-unit>
+      <trans-unit id="Checking ...." approved="yes">
+        <source>Checking...</source>
+        <note>loading message</note>
+        <target state="translated">確認中…</target>
+      </trans-unit>
+      <trans-unit id="Chinese Simplified">
+        <source>Chinese Simplified</source>
+        <note>Action</note>
+        <target state="needs-translation">Chinese Simplified</target>
+      </trans-unit>
+      <trans-unit id="Chinese Traditional">
+        <source>Chinese Traditional</source>
+        <note>Action</note>
+        <target state="needs-translation">Chinese Traditional</target>
+      </trans-unit>
+      <trans-unit id="Choose a Password" approved="yes">
+        <source>Choose a Password</source>
+        <note>place holder</note>
+        <target state="translated">パスワードを入力してください</target>
+        <alt-trans>
+          <target>パスワードを選択</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="City" approved="yes">
+        <source>City</source>
+        <note>contact placeholder</note>
+        <target state="translated">市町村</target>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache" approved="yes">
+        <source>Clear local message cache</source>
+        <note>settings general section title</note>
+        <target state="translated">端末上のメールキャッシュを消去</target>
+      </trans-unit>
+      <trans-unit id="Close" approved="yes">
+        <source>Close</source>
+        <note>general close action</note>
+        <target state="translated">閉じる</target>
+      </trans-unit>
+      <trans-unit id="Closing">
+        <source>Closing</source>
+        <note>the message will show when closing a draft from the share extension</note>
+        <target state="needs-translation">Closing</target>
+      </trans-unit>
+      <trans-unit id="Compose" approved="yes">
+        <source>Compose</source>
+        <note>Action</note>
+        <target state="translated">新規作成</target>
+      </trans-unit>
+      <trans-unit id="Compose to" approved="yes">
+        <source>Compose to</source>
+        <note>Title</note>
+        <target state="translated">新規作成</target>
+      </trans-unit>
+      <trans-unit id="Confirm" approved="yes">
+        <source>Confirm</source>
+        <note>Action</note>
+        <target state="translated">確認</target>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password">
+        <source>Confirm login password</source>
+        <note>"Login Password"</note>
+        <target state="needs-translation">Confirm login password</target>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password">
+        <source>Confirm mailbox password</source>
+        <note>"Mailbox Password"</note>
+        <target state="needs-translation">Confirm mailbox password</target>
+      </trans-unit>
+      <trans-unit id="Confirm Password" approved="yes">
+        <source>Confirm password</source>
+        <note>Placeholder</note>
+        <target state="translated">確認用のパスワードを入力してください</target>
+        <alt-trans>
+          <target>パスワードの確認</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Confirm new login password" approved="yes">
+        <source>Confirm new login password</source>
+        <note>Title</note>
+        <target state="translated">新しいログインパスワードの確認</target>
+        <alt-trans>
+          <target>新しいログインパスワードを確認</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password" approved="yes">
+        <source>Confirm new mailbox password</source>
+        <note>Title</note>
+        <target state="translated">メールボックスの新しいパスワードの確認</target>
+        <alt-trans>
+          <target>メールボックスの新しいパスワードを確認</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Confirm new password" approved="yes">
+        <source>Confirm new password</source>
+        <note>Placeholder</note>
+        <target state="translated">新しいパスワードの確認</target>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report">
+        <source>Confirm phishing report</source>
+        <note>alert title</note>
+        <target state="needs-translation">Confirm phishing report</target>
+      </trans-unit>
+      <trans-unit id="Confirmation" approved="yes">
+        <source>Confirmation</source>
+        <note>Title</note>
+        <target state="translated">確認</target>
+      </trans-unit>
+      <trans-unit id="Congratulations!" approved="yes">
+        <source>Congratulations!</source>
+        <note>view top title</note>
+        <target state="translated">おめでとうございます！</target>
+      </trans-unit>
+      <trans-unit id="Contact Details" approved="yes">
+        <source>Contact Details</source>
+        <note>contact section title</note>
+        <target state="translated">連絡先の詳細</target>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team" approved="yes">
+        <source>Contact the ProtonMail team</source>
+        <note>Title</note>
+        <target state="translated">ProtonMailチームへの連絡</target>
+      </trans-unit>
+      <trans-unit id="Contacts" approved="yes">
+        <source>Contacts</source>
+        <note>Action and title
+   menu title</note>
+        <target state="translated">連絡先</target>
+      </trans-unit>
+      <trans-unit id="Continue" approved="yes">
+        <source>Continue</source>
+        <note>Action</note>
+        <target state="translated">続行</target>
+      </trans-unit>
+      <trans-unit id="Copy address" approved="yes">
+        <source>Copy address</source>
+        <note>Title</note>
+        <target state="translated">メールアドレスをコピー</target>
+      </trans-unit>
+      <trans-unit id="Copy name" approved="yes">
+        <source>Copy name</source>
+        <note>Title</note>
+        <target state="translated">名前をコピー</target>
+      </trans-unit>
+      <trans-unit id="Could not connect to Store. Please try again later.">
+        <source>Could not connect to Store. Please try again later.</source>
+        <note>Error message</note>
+        <target state="translated">ショップに繋がりませんでした。後ほどもう一度お試しください。</target>
+      </trans-unit>
+      <trans-unit id="Country" approved="yes">
+        <source>Country</source>
+        <note>contact placeholder</note>
+        <target state="translated">国名</target>
+      </trans-unit>
+      <trans-unit id="Create" approved="yes">
+        <source>Create</source>
+        <note>top right action text</note>
+        <target state="translated">作成</target>
+      </trans-unit>
+      <trans-unit id="Create Account" approved="yes">
+        <source>Create Account</source>
+        <note>Create account button</note>
+        <target state="translated">アカウントの作成</target>
+      </trans-unit>
+      <trans-unit id="Create User failed. Please try again.">
+        <source>Create User failed. Please try again.</source>
+        <note>Error</note>
+        <target state="needs-translation">Create User failed. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Create a new account" approved="yes">
+        <source>Create a new account</source>
+        <note>Signup top title</note>
+        <target state="translated">新しいアカウントの作成</target>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Long press on a message for all options.">
+        <source>Create and add Labels to organize your inbox. Long press on a message for all options.</source>
+        <note>Description</note>
+        <target state="translated">あなたの受信箱を整理するためにラベルを作成し追加します。全てのオプションに対してメッセージ上で長押ししてください。</target>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options.">
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <note/>
+        <target state="needs-translation">Create and add labels to organize your inbox. Press and hold down on a message for all options.</target>
+      </trans-unit>
+      <trans-unit id="Create user failed" approved="yes">
+        <source>Create user failed</source>
+        <note>error message title when create new user</note>
+        <target state="translated">ユーザーの作成に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Croatian">
+        <source>Croatian</source>
+        <note>Action</note>
+        <target state="translated">クロアチア語</target>
+      </trans-unit>
+      <trans-unit id="Current Language is: " approved="yes">
+        <source>Current Language is: </source>
+        <note>Change language title</note>
+        <target state="translated">現在の言語： </target>
+      </trans-unit>
+      <trans-unit id="Current login password" approved="yes">
+        <source>Current login password</source>
+        <note>Title</note>
+        <target state="translated">現在のログインパスワード</target>
+      </trans-unit>
+      <trans-unit id="Current password" approved="yes">
+        <source>Current password</source>
+        <note>Placeholder</note>
+        <target state="translated">現在のパスワード</target>
+      </trans-unit>
+      <trans-unit id="Custom" approved="yes">
+        <source>Custom</source>
+        <note>action sheet option
+   contacts default label type</note>
+        <target state="translated">カスタム</target>
+      </trans-unit>
+      <trans-unit id="Czech">
+        <source>Czech</source>
+        <note>Action</note>
+        <target state="needs-translation">Czech</target>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX">
+        <source>DECRYPT MAILBOX</source>
+        <note>Title</note>
+        <target state="translated">メールボックスの復号化</target>
+      </trans-unit>
+      <trans-unit id="DRAFTS" approved="yes">
+        <source>Drafts</source>
+        <note>mail location title</note>
+        <target state="translated">下書き</target>
+      </trans-unit>
+      <trans-unit id="Danish">
+        <source>Danish</source>
+        <note>Action</note>
+        <target state="needs-translation">Danish</target>
+      </trans-unit>
+      <trans-unit id="Date:" approved="yes">
+        <source>Date:</source>
+        <note>message Date: text</note>
+        <target state="translated">日付：</target>
+      </trans-unit>
+      <trans-unit id="Date: %@" approved="yes">
+        <source>Date: %@</source>
+        <note>like Date: 2017-10-10</note>
+        <target state="translated">日付：%@</target>
+      </trans-unit>
+      <trans-unit id="Debug" approved="yes">
+        <source>Debug</source>
+        <note>Title</note>
+        <target state="translated">デバッグ</target>
+      </trans-unit>
+      <trans-unit id="Decrypt" approved="yes">
+        <source>Decrypt</source>
+        <note>Action</note>
+        <target state="translated">復号</target>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed. Please try again.">
+        <source>Decrypt token failed. Please try again.</source>
+        <note>Description</note>
+        <target state="needs-translation">Decrypt token failed. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Decryption error" approved="yes">
+        <source>Decryption error</source>
+        <note>error title</note>
+        <target state="translated">復号エラー</target>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed" approved="yes">
+        <source>Decryption of this content failed</source>
+        <note>error details</note>
+        <target state="translated">コンテンツの復号に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Default" approved="yes">
+        <source>Default</source>
+        <note>Title</note>
+        <target state="translated">既定</target>
+      </trans-unit>
+      <trans-unit id="Default error. Please try again.">
+        <source>Default error. Please try again.</source>
+        <note>error message when create new user</note>
+        <target state="needs-translation">Default error. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date">
+        <source>Define Expiration Date</source>
+        <note>Placeholder</note>
+        <target state="translated">有効期限の設定</target>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)">
+        <source>Define hint (Optional)</source>
+        <note>Placeholder</note>
+        <target state="translated">パスワードのヒント（任意）</target>
+      </trans-unit>
+      <trans-unit id="Define Password">
+        <source>Define password</source>
+        <note>place holder</note>
+        <target state="translated">パスワードを設定</target>
+      </trans-unit>
+      <trans-unit id="Delete" approved="yes">
+        <source>Delete</source>
+        <note>general delete action</note>
+        <target state="translated">削除</target>
+      </trans-unit>
+      <trans-unit id="Delete Contact" approved="yes">
+        <source>Delete Contact</source>
+        <note>Title-Contacts</note>
+        <target state="translated">連絡先の削除</target>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group">
+        <source>Delete Contact Group</source>
+        <note>The description of the button for deleting the contact group</note>
+        <target state="needs-translation">Delete Contact Group</target>
+      </trans-unit>
+      <trans-unit id="Deleted" approved="yes">
+        <source>Deleted</source>
+        <note>mail location desc</note>
+        <target state="translated">削除済み</target>
+      </trans-unit>
+      <trans-unit id="Details" approved="yes">
+        <source>Details</source>
+        <note>Title</note>
+        <target state="translated">詳細</target>
+      </trans-unit>
+      <trans-unit id="Discard changes" approved="yes">
+        <source>Discard changes</source>
+        <note>Action</note>
+        <target state="translated">変更を破棄</target>
+      </trans-unit>
+      <trans-unit id="Discard draft" approved="yes">
+        <source>Discard draft</source>
+        <note>Action</note>
+        <target state="translated">下書きを破棄</target>
+      </trans-unit>
+      <trans-unit id="Display Name" approved="yes">
+        <source>Display name</source>
+        <note>Title in settings</note>
+        <target state="translated">表示名</target>
+      </trans-unit>
+      <trans-unit id="Display Name Updated" approved="yes">
+        <source>Display name updated</source>
+        <note>Title</note>
+        <target state="translated">表示名が更新されました。</target>
+      </trans-unit>
+      <trans-unit id="Display name">
+        <source>Display name</source>
+        <note/>
+        <target state="translated">表示名</target>
+      </trans-unit>
+      <trans-unit id="DisplayName">
+        <source>Display name</source>
+        <note>Title in display name settings</note>
+        <target state="translated">表示名</target>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for ">
+        <source>Do you want to activate the purchased service plan for </source>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+        <target state="needs-translation">Do you want to activate the purchased service plan for </target>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?" approved="yes">
+        <source>Do you want to cancel the process?</source>
+        <note>Description</note>
+        <target state="translated">手続きをキャンセルしますか？</target>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?" approved="yes">
+        <source>Do you want to save the unsaved changes?</source>
+        <note>Title</note>
+        <target state="translated">未保存の変更を保存しますか？</target>
+      </trans-unit>
+      <trans-unit id="Don't Show Again" approved="yes">
+        <source>Don't Show Again</source>
+        <note>Title</note>
+        <target state="translated">今後表示しない</target>
+      </trans-unit>
+      <trans-unit id="Don't remind me again" approved="yes">
+        <source>Don't remind me again</source>
+        <note>Action</note>
+        <target state="translated">今後このメッセージを表示しない</target>
+      </trans-unit>
+      <trans-unit id="Done" approved="yes">
+        <source>Done</source>
+        <note>Done action</note>
+        <target state="translated">完了</target>
+      </trans-unit>
+      <trans-unit id="Double tap to setup" approved="yes">
+        <source>Double tap to setup</source>
+        <note>VoiceOver action description</note>
+        <target state="translated">セットアップするには2回タップしてください</target>
+      </trans-unit>
+      <trans-unit id="Draft" approved="yes">
+        <source>Draft</source>
+        <note>Action
+   mail location desc</note>
+        <target state="translated">下書き</target>
+      </trans-unit>
+      <trans-unit id="Drafts" approved="yes">
+        <source>Drafts</source>
+        <note>menu title</note>
+        <target state="translated">下書き</target>
+      </trans-unit>
+      <trans-unit id="Dutch" approved="yes">
+        <source>Dutch</source>
+        <note>Action</note>
+        <target state="translated">オランダ語</target>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>Edit</source>
+        <note>Action</note>
+        <target state="translated">編集</target>
+      </trans-unit>
+      <trans-unit id="Edit Contact">
+        <source>Edit contact</source>
+        <note>*
+ *  Edit Contact view controller</note>
+        <target state="translated">連絡先の編集</target>
+      </trans-unit>
+      <trans-unit id="Edit Folder" approved="yes">
+        <source>Edit Folder</source>
+        <note>Title</note>
+        <target state="translated">フォルダーの編集</target>
+      </trans-unit>
+      <trans-unit id="Edit Group">
+        <source>Edit Group</source>
+        <note>The title for the contact group editing view</note>
+        <target state="translated">グループの編集</target>
+      </trans-unit>
+      <trans-unit id="Edit Label" approved="yes">
+        <source>Edit Label</source>
+        <note>Title</note>
+        <target state="translated">ラベルの編集</target>
+      </trans-unit>
+      <trans-unit id="Edit Photo">
+        <source>Edit Photo</source>
+        <note>The button text for edit profile picture</note>
+        <target state="translated">写真を編集</target>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature" approved="yes">
+        <source>Edit mobile signature</source>
+        <note>title</note>
+        <target state="translated">モバイル署名の編集</target>
+      </trans-unit>
+      <trans-unit id="Edit signature" approved="yes">
+        <source>Edit signature</source>
+        <note>title</note>
+        <target state="translated">署名の編集</target>
+      </trans-unit>
+      <trans-unit id="Email" approved="yes">
+        <source>Email</source>
+        <note>default vcard types</note>
+        <target state="translated">メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Email Addresses">
+        <source>Email Addresses</source>
+        <note>contact detail view, email addresses section title</note>
+        <target state="translated">メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Email Contact">
+        <source>Email Contact</source>
+        <note>Send an email to the current contact (button title text)</note>
+        <target state="needs-translation">Email Contact</target>
+      </trans-unit>
+      <trans-unit id="Email Verification" approved="yes">
+        <source>Email Verification</source>
+        <note>human check option button</note>
+        <target state="translated">メールによる検証</target>
+      </trans-unit>
+      <trans-unit id="Email address" approved="yes">
+        <source>Email address</source>
+        <note>contact placeholder</note>
+        <target state="translated">メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Email address invalid" approved="yes">
+        <source>Email address invalid</source>
+        <note>Title</note>
+        <target state="translated">メールアドレスが不正です。</target>
+      </trans-unit>
+      <trans-unit id="Email default signature" approved="yes">
+        <source>Email default signature</source>
+        <note>place holder</note>
+        <target state="translated">メールの既定の署名</target>
+      </trans-unit>
+      <trans-unit id="Email domain invalid">
+        <source>Invalid email domain</source>
+        <note>
+ &amp; title</note>
+        <target state="needs-translation">Invalid email domain</target>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty folder</source>
+        <note>empty folder, for spam and trash</note>
+        <target state="translated">フォルダーを空にする</target>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature" approved="yes">
+        <source>Enable Default Signature</source>
+        <note>Title</note>
+        <target state="translated">既定の署名を有効にする</target>
+      </trans-unit>
+      <trans-unit id="Enable FaceID" approved="yes">
+        <source>Enable FaceID</source>
+        <note>settings protection section title</note>
+        <target state="translated">FaceIDを有効にする</target>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature" approved="yes">
+        <source>Enable Mobile Signature</source>
+        <note>Title</note>
+        <target state="translated">モバイル署名を有効にする</target>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email">
+        <source>Enable Notification Email</source>
+        <note>Title</note>
+        <target state="translated">通知を有効にする</target>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection" approved="yes">
+        <source>Enable PIN protection</source>
+        <note>settings protection section title</note>
+        <target state="translated">PIN保護を有効にする</target>
+      </trans-unit>
+      <trans-unit id="Enable TouchID" approved="yes">
+        <source>Enable TouchID</source>
+        <note>settings protection section title</note>
+        <target state="translated">TouchIDを有効にする</target>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details" approved="yes">
+        <source>Encrypted Contact Details</source>
+        <note>contact section title</note>
+        <target state="translated">暗号化された連絡先の詳細</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside" approved="yes">
+        <source>Encrypted for outside</source>
+        <note>Title</note>
+        <target state="translated">暗号化された外部宛の送信</target>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply" approved="yes">
+        <source>Encrypted for outside reply</source>
+        <note>Title</note>
+        <target state="translated">暗号化された外部宛の返信</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside" approved="yes">
+        <source>Encrypted from outside</source>
+        <note>Title</note>
+        <target state="translated">暗号化された外部からの受信</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/inline">
+        <source>Encrypted from outside PGP/inline</source>
+        <note>Title</note>
+        <target state="needs-translation">Encrypted from outside PGP/inline</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/MIME">
+        <source>Encrypted from outside PGP/MIME</source>
+        <note>Title</note>
+        <target state="translated">PGP/MIMEで暗号化された外部からのメッセージ</target>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed PGP/MIME">
+        <source>Encrypted from outside signed PGP/MIME</source>
+        <note>Title</note>
+        <target state="translated">PGP/MIMEで署名された外部からのメッセージ</target>
+      </trans-unit>
+      <trans-unit id="Encrypted outside" approved="yes">
+        <source>Encrypted outside</source>
+        <note>encryption lock description</note>
+        <target state="translated">外部向けに暗号化済み</target>
+        <alt-trans>
+          <target>外部向けに暗号化されました。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encryption Setup" approved="yes">
+        <source>Encryption Setup</source>
+        <note>key setup top title</note>
+        <target state="translated">暗号化の設定</target>
+      </trans-unit>
+      <trans-unit id="End Time" approved="yes">
+        <source>End Time</source>
+        <note>settings option (End Time: 8am)</note>
+        <target state="translated">終了時刻</target>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption" approved="yes">
+        <source>End-to-end encryption</source>
+        <note>Title</note>
+        <target state="translated">端末相互間の暗号化</target>
+        <alt-trans>
+          <target>エンドツーエンド暗号化</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted" approved="yes">
+        <source>End-to-end encrypted</source>
+        <note>encryption lock description</note>
+        <target state="translated">端末相互間の暗号化済み</target>
+        <alt-trans>
+          <target>エンドツーエンド暗号化済み</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message" approved="yes">
+        <source>End-to-end encrypted message</source>
+        <note>encryption lock description</note>
+        <target state="translated">端末相互間で暗号化されたメッセージ</target>
+        <alt-trans>
+          <target>エンドツーエンド暗号化されたメッセージ</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address" approved="yes">
+        <source>End-to-end encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target state="translated">検証済みアドレスからの端末相互間の暗号化によるメッセージ</target>
+        <alt-trans>
+          <target>検証済みアドレスからのエンドツーエンド暗号化によるメッセージ</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address" approved="yes">
+        <source>End-to-end encrypted to verified address</source>
+        <note>encryption lock description</note>
+        <target state="translated">検証済みアドレスへの端末相互間の暗号化による送信</target>
+        <alt-trans>
+          <target>検証済みアドレスへのエンドツーエンド暗号化による送信</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="English" approved="yes">
+        <source>English</source>
+        <note>Action</note>
+        <target state="translated">英語</target>
+      </trans-unit>
+      <trans-unit id="Enter" approved="yes">
+        <source>Enter</source>
+        <note>Action in 2fa popup view</note>
+        <target state="translated">入力</target>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code">
+        <source>Enter verification code</source>
+        <note>Title</note>
+        <target state="translated">検証コードを入力</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN" approved="yes">
+        <source>Enter your PIN</source>
+        <note>set pin title</note>
+        <target state="translated">PINコードを入力してください</target>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox." approved="yes">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <note>Title</note>
+        <target state="translated">受信箱のロックを解除するPINコードを入力してください。</target>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number" approved="yes">
+        <source>Enter your cell phone number</source>
+        <note>human verification top title</note>
+        <target state="translated">電話番号を入力してください</target>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address." approved="yes">
+        <source>Enter your existing email address.</source>
+        <note>top title</note>
+        <target state="translated">あなたのメールアドレスを入力してください。</target>
+        <alt-trans>
+          <target>既存のメールアドレスを入力</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Error Logs" approved="yes">
+        <source>Error logs</source>
+        <note>settings debug section title</note>
+        <target state="translated">エラーログ</target>
+      </trans-unit>
+      <trans-unit id="Error occured">
+        <source>Error occured</source>
+        <note>Error alert title</note>
+        <target state="needs-translation">Error occured</target>
+      </trans-unit>
+      <trans-unit id="Every time enter app" approved="yes">
+        <source>Every time enter app</source>
+        <note>lock app option</note>
+        <target state="translated">アプリ起動時に毎回入力</target>
+      </trans-unit>
+      <trans-unit id="Expires" approved="yes">
+        <source>Expires</source>
+        <note>VoiceOver: email can expire</note>
+        <target state="translated">有効期限</target>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds" approved="yes">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <note>expiration time count down</note>
+        <target state="translated">%d 日 %d 時間 %d 分 %d 秒で期限切れ</target>
+      </trans-unit>
+      <trans-unit id="Expiring Messages" approved="yes">
+        <source>Expiring messages</source>
+        <note>Title</note>
+        <target state="translated">有効期限付きメッセージ</target>
+      </trans-unit>
+      <trans-unit id="Extreme Security" approved="yes">
+        <source>Extreme Security</source>
+        <note>Key size checkbox</note>
+        <target state="translated">最高レベルのセキュリティ(高負荷)</target>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?" approved="yes">
+        <source>Forgot password?</source>
+        <note>login page forgot pwd</note>
+        <target state="translated">パスワードをお忘れですか？</target>
+      </trans-unit>
+      <trans-unit id="FW:">
+        <source>FW:</source>
+        <note>abbreviation of forward:</note>
+        <target state="translated">FW:</target>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file">
+        <source>Failed to determine type of file</source>
+        <note>Error message</note>
+        <target state="needs-translation">Failed to determine type of file</target>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore.">
+        <source>Failed to get list of available products from AppStore.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Failed to get list of available products from AppStore.</target>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the app's saved data">
+        <source>Failed to initialize the app's saved data</source>
+        <note>Description</note>
+        <target state="translated">アプリケーションの保存データの初期化に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data" approved="yes">
+        <source>Failed to initialize the application's saved data</source>
+        <note>*
+ *  Core Data Service &amp; local error</note>
+        <target state="translated">アプリケーションの保存データの初期化に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Fax" approved="yes">
+        <source>Fax</source>
+        <note>default vcard types</note>
+        <target state="translated">Fax</target>
+      </trans-unit>
+      <trans-unit id="Feedback" approved="yes">
+        <source>Feedback</source>
+        <note>menu title</note>
+        <target state="translated">ご意見</target>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed" approved="yes">
+        <source>Fetch user info failed</source>
+        <note>Error</note>
+        <target state="translated">ユーザー情報の読み出しに失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Folder" approved="yes">
+        <source>Folder</source>
+        <note>VoiceOver: email belongs to folder</note>
+        <target state="translated">フォルダー</target>
+      </trans-unit>
+      <trans-unit id="Folder Name" approved="yes">
+        <source>Folder Name</source>
+        <note>place holder</note>
+        <target state="translated">フォルダー名</target>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <note>Service Plan description</note>
+        <target state="needs-translation">For individuals looking to benefit from secure communication at no cost</target>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <note>Service Plan description</note>
+        <target state="needs-translation">For individuals that need more capacity, customization and advanced features</target>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <note>Service Plan description</note>
+        <target state="needs-translation">For organizations that need multi-user support and additional productivity features</target>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <note>Service Plan description</note>
+        <target state="needs-translation">For power users and groups of people that value full anonymity and privacy</target>
+      </trans-unit>
+      <trans-unit id="Forward" approved="yes">
+        <source>Forward</source>
+        <note>forward action</note>
+        <target state="translated">転送</target>
+      </trans-unit>
+      <trans-unit id="Forwarded message" approved="yes">
+        <source>Forwarded message</source>
+        <note>forwarded message title</note>
+        <target state="translated">転送されたメッセージ</target>
+      </trans-unit>
+      <trans-unit id="French" approved="yes">
+        <source>French</source>
+        <note>Action</note>
+        <target state="translated">フランス語</target>
+      </trans-unit>
+      <trans-unit id="From" approved="yes">
+        <source>From</source>
+        <note>Title</note>
+        <target state="translated">差出人</target>
+      </trans-unit>
+      <trans-unit id="From:" approved="yes">
+        <source>From:</source>
+        <note>message From: field text</note>
+        <target state="translated">差出人：</target>
+      </trans-unit>
+      <trans-unit id="Fwd:" approved="yes">
+        <source>Fwd:</source>
+        <note>abbreviation of forward:</note>
+        <target state="translated">Fwd:</target>
+      </trans-unit>
+      <trans-unit id="Gender" approved="yes">
+        <source>Gender</source>
+        <note>contacts talbe cell gender title</note>
+        <target state="translated">性別</target>
+      </trans-unit>
+      <trans-unit id="General Settings" approved="yes">
+        <source>General settings</source>
+        <note>Title</note>
+        <target state="translated">一般設定</target>
+      </trans-unit>
+      <trans-unit id="German" approved="yes">
+        <source>German</source>
+        <note>Action</note>
+        <target state="translated">ドイツ語</target>
+      </trans-unit>
+      <trans-unit id="Get %@">
+        <source>Get %@</source>
+        <note>Screen header, like 'Get VISIONARY'</note>
+        <target state="needs-translation">Get %@</target>
+      </trans-unit>
+      <trans-unit id="Get more information" approved="yes">
+        <source>Get more information</source>
+        <note>Action</note>
+        <target state="translated">詳細情報を入手</target>
+      </trans-unit>
+      <trans-unit id="Go to inbox" approved="yes">
+        <source>Go to inbox</source>
+        <note>Action</note>
+        <target state="translated">受信箱を開く</target>
+      </trans-unit>
+      <trans-unit id="Group Details">
+        <source>Group Details</source>
+        <note>The title for the contact group detail view</note>
+        <target state="translated">グループの詳細</target>
+      </trans-unit>
+      <trans-unit id="Group Name">
+        <source>Group Name</source>
+        <note>The instruction label for the group name textfield</note>
+        <target state="translated">グループ名</target>
+      </trans-unit>
+      <trans-unit id="Groups">
+        <source>Groups</source>
+        <note>menu title (contact groups)</note>
+        <target state="translated">グループ</target>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support" approved="yes">
+        <source>Help &amp; Support</source>
+        <note>Title</note>
+        <target state="translated">手引きとサポート</target>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input." approved="yes">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <note>Title</note>
+        <target state="translated">ProtonMailの改善にご協力をお願いします。</target>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web." approved="yes">
+        <source>Help us to make privacy the default in the web.</source>
+        <note>Title</note>
+        <target state="translated">プライバシーをウェブの標準にするために協力してください。</target>
+      </trans-unit>
+      <trans-unit id="Hide" approved="yes">
+        <source>Hide</source>
+        <note>Action</note>
+        <target state="translated">隠す</target>
+      </trans-unit>
+      <trans-unit id="Hide Details" approved="yes">
+        <source>Hide details</source>
+        <note>Title</note>
+        <target state="translated">詳細を隠す</target>
+      </trans-unit>
+      <trans-unit id="High Security" approved="yes">
+        <source>High Security</source>
+        <note>Key size checkbox</note>
+        <target state="translated">高レベルのセキュリティ(推奨)</target>
+      </trans-unit>
+      <trans-unit id="Hours" approved="yes">
+        <source>Hours</source>
+        <note>Title</note>
+        <target state="translated">時間</target>
+      </trans-unit>
+      <trans-unit id="Human Check Failed" approved="yes">
+        <source>Human Check Failed</source>
+        <note>Description</note>
+        <target state="translated">人間による操作であることの確認に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Human Check Warning" approved="yes">
+        <source>Human Check Warning</source>
+        <note>human check warning title</note>
+        <target state="translated">人間による操作であることの確認</target>
+      </trans-unit>
+      <trans-unit id="Human Verification" approved="yes">
+        <source>Human Verification</source>
+        <note>top title</note>
+        <target state="translated">人間による操作であることの検証</target>
+      </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <note>Service plan capability</note>
+        <target state="needs-translation">IMAP/SMTP Support via ProtonMail Bridge</target>
+      </trans-unit>
+      <trans-unit id="INBOX" approved="yes">
+        <source>Inbox</source>
+        <note>mail location title</note>
+        <target state="translated">受信箱</target>
+      </trans-unit>
+      <trans-unit id="Import Error" approved="yes">
+        <source>Import Error</source>
+        <note>Action</note>
+        <target state="translated">インポート エラー</target>
+      </trans-unit>
+      <trans-unit id="Import File From..." approved="yes">
+        <source>Import file from...</source>
+        <note>Title</note>
+        <target state="translated">ファイルのインポート</target>
+        <alt-trans>
+          <target>...からファイルをインポート</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Importing Contacts" approved="yes">
+        <source>Importing Contacts</source>
+        <note>import contact title</note>
+        <target state="translated">連絡先をインポートしています。</target>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service." approved="yes">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <note>Error</note>
+        <target state="translated">サービスを利用するには、ProtonMailの利用規約に同意する必要があります。</target>
+      </trans-unit>
+      <trans-unit id="Inbox" approved="yes">
+        <source>Inbox</source>
+        <note>mail location desc
+   menu title</note>
+        <target state="translated">受信箱</target>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN," approved="yes">
+        <source>Incorrect PIN,</source>
+        <note>Error</note>
+        <target state="translated">正しくないPINコードです</target>
+      </trans-unit>
+      <trans-unit id="Incorrect password" approved="yes">
+        <source>Incorrect password</source>
+        <note>Title</note>
+        <target state="translated">間違ったパスワード</target>
+      </trans-unit>
+      <trans-unit id="Input Display Name ...">
+        <source>Input display name ...</source>
+        <note>place holder</note>
+        <target state="translated">表示名を入力 ...</target>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ...">
+        <source>Input Notification Email ...</source>
+        <note>place holder</note>
+        <target state="needs-translation">Input Notification Email ...</target>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <note>Error</note>
+        <target state="translated">ProtonMailアカウントのインスタント作成が一時的に無効になっています。 招待をリクエストするにはhttps://protonmail.com/inviteにアクセスしてください。</target>
+      </trans-unit>
+      <trans-unit id="Internal Error">
+        <source>Internal Error</source>
+        <note>The preconditions are not met</note>
+        <target state="needs-translation">Internal Error</target>
+      </trans-unit>
+      <trans-unit id="Internet" approved="yes">
+        <source>Internet</source>
+        <note>default vcard types</note>
+        <target state="translated">インターネット</target>
+      </trans-unit>
+      <trans-unit id="Invalid Password" approved="yes">
+        <source>Invalid Password</source>
+        <note>Error</note>
+        <target state="translated">無効なパスワードです。</target>
+        <alt-trans>
+          <target>無効なパスワード</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Invalid URL">
+        <source>Invalid URL</source>
+        <note>Invalid URL error when click a url in contact</note>
+        <target state="translated">URLが無効</target>
+      </trans-unit>
+      <trans-unit id="Invalid UserName">
+        <source>Invalid username</source>
+        <note>title</note>
+        <target state="needs-translation">Invalid username</target>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!">
+        <source>Invalid UserName!</source>
+        <note>Error message</note>
+        <target state="translated">ユーザー名が正しくありません</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin">
+        <source>Invalid access token please relogin</source>
+        <note/>
+        <target state="translated">無効なアクセストークンです。再ログインしてください。</target>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin.">
+        <source>Invalid access token. Please relogin.</source>
+        <note>Description</note>
+        <target state="needs-translation">Invalid access token. Please relogin.</target>
+      </trans-unit>
+      <trans-unit id="Invalid credential">
+        <source>Invalid credential</source>
+        <note>Error</note>
+        <target state="translated">無効な認証情報</target>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!" approved="yes">
+        <source>Invalid hashed password!</source>
+        <note>update password error</note>
+        <target state="translated">無効なハッシュ化されたパスワードです</target>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?">
+        <source>Is this bug report about an in-app purchase?</source>
+        <note>Error message</note>
+        <target state="needs-translation">Is this bug report about an in-app purchase?</target>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to %@ within our iOS app.">
+        <source>It is not possible to switch to %@ within our iOS app.</source>
+        <note>It is not possible to switch to `plan` within our iOS app.</note>
+        <target state="translated">私たちのiOSアプリ内の%@に切り替えることができません。</target>
+      </trans-unit>
+      <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.">
+        <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
+        <note>Error message</note>
+        <target state="translated">当社のサーバー上のなんらかの製品に対して、App Storeの商品をマッチさせることができませんでした。バグ報告に記入してください。当社の顧客サポートチームからご連絡いたします。</target>
+      </trans-unit>
+      <trans-unit id="Italian" approved="yes">
+        <source>Italian</source>
+        <note>Action</note>
+        <target state="translated">イタリア語</target>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features" approved="yes">
+        <source>Keep me updated about new features</source>
+        <note>Title</note>
+        <target state="translated">新機能に関する情報を受け取る</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed" approved="yes">
+        <source>Key generation failed</source>
+        <note>Error</note>
+        <target state="translated">鍵の作成に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Key generation failed. Please try again.">
+        <source>Key generation failed. Please try again.</source>
+        <note>Error</note>
+        <target state="needs-translation">Key generation failed. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Key invalid. Please go back and try again.">
+        <source>Key invalid. Please go back and try again.</source>
+        <note>Error</note>
+        <target state="needs-translation">Key invalid. Please go back and try again.</target>
+      </trans-unit>
+      <trans-unit id="LOGIN">
+        <source>Login</source>
+        <note/>
+        <target state="translated">ログイン</target>
+      </trans-unit>
+      <trans-unit id="Label Management" approved="yes">
+        <source>Label management</source>
+        <note>Title</note>
+        <target state="translated">ラベルの管理</target>
+      </trans-unit>
+      <trans-unit id="Label Name" approved="yes">
+        <source>Label Name</source>
+        <note>createing lable input place holder</note>
+        <target state="translated">ラベル名</target>
+      </trans-unit>
+      <trans-unit id="Label as...">
+        <source>Label as...</source>
+        <note>Title</note>
+        <target state="translated">…としてラベル付け</target>
+      </trans-unit>
+      <trans-unit id="Labels" approved="yes">
+        <source>Labels</source>
+        <note>VoiceOver: email has lables</note>
+        <target state="translated">ラベル</target>
+      </trans-unit>
+      <trans-unit id="Labels have been applied." approved="yes">
+        <source>Labels have been applied.</source>
+        <note>Title</note>
+        <target state="translated">ラベルが適用されました。</target>
+      </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <note>Service plan capability</note>
+        <target state="needs-translation">Labels, Folders, Filters &amp; More</target>
+      </trans-unit>
+      <trans-unit id="Labels/Folders" approved="yes">
+        <source>Labels/Folders</source>
+        <note>Title</note>
+        <target state="translated">ラベル/フォルダー</target>
+      </trans-unit>
+      <trans-unit id="Language" approved="yes">
+        <source>Language</source>
+        <note>Title</note>
+        <target state="translated">言語</target>
+      </trans-unit>
+      <trans-unit id="Learn More">
+        <source>Learn More</source>
+        <note>Action</note>
+        <target state="translated">より詳しく</target>
+      </trans-unit>
+      <trans-unit id="Learn more here" approved="yes">
+        <source>Learn more here</source>
+        <note>learn more button</note>
+        <target state="translated">詳細はこちら</target>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day">
+        <source>Limited to 150 messages sent/day</source>
+        <note>Service plan capability</note>
+        <target state="needs-translation">Limited to 150 messages sent/day</target>
+      </trans-unit>
+      <trans-unit id="Load remote content" approved="yes">
+        <source>Load remote content</source>
+        <note>Action</note>
+        <target state="translated">外部コンテンツを読み込む</target>
+      </trans-unit>
+      <trans-unit id="Loading..." approved="yes">
+        <source>Loading...</source>
+        <note/>
+        <target state="translated">読み込み中...</target>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password" approved="yes">
+        <source>Local cache can't find mailbox password</source>
+        <note>Description</note>
+        <target state="translated">ローカルキャッシュにメールボックスのパスワードが見つかりません。</target>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>Base</source>
+        <note>*
+ *  file string type</note>
+        <target state="needs-translation">Base</target>
+      </trans-unit>
+      <trans-unit id="Lock The App" approved="yes">
+        <source>Lock The App</source>
+        <note>menu title</note>
+        <target state="translated">アプリをロック</target>
+      </trans-unit>
+      <trans-unit id="Login" approved="yes">
+        <source>Login</source>
+        <note>Title</note>
+        <target state="translated">ログイン</target>
+      </trans-unit>
+      <trans-unit id="Login Password" approved="yes">
+        <source>Login password</source>
+        <note>settings general section title</note>
+        <target state="translated">ログインパスワード</target>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match" approved="yes">
+        <source>Login password doesn't match</source>
+        <note>Error</note>
+        <target state="translated">ログインパスワードが一致しません。</target>
+      </trans-unit>
+      <trans-unit id="Logout" approved="yes">
+        <source>Logout</source>
+        <note>menu title</note>
+        <target state="translated">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="Logs" approved="yes">
+        <source>Logs</source>
+        <note>error title</note>
+        <target state="translated">ログ</target>
+      </trans-unit>
+      <trans-unit id="Looking to edit or disable your mobile signature?">
+        <source>Looking to edit or disable your mobile signature?</source>
+        <note>alert description</note>
+        <target state="translated">モバイル署名を編集または無効にする方法をお探しですか？</target>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?" approved="yes">
+        <source>Looking to secure your contact's details?</source>
+        <note>Upgrade warning title</note>
+        <target state="translated">連絡先を保護する方法をお探しですか？</target>
+        <alt-trans>
+          <target>連絡先詳細を保護する方法をお探しですか？</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD">
+        <source>Mailbox password</source>
+        <note>*
+ *  MailboxPasswordViewController</note>
+        <target state="translated">メールボックスのパスワード</target>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <note>Default Prompt text shown in the prompt cell</note>
+        <target state="needs-translation">MBContactPickerPrompt</target>
+      </trans-unit>
+      <trans-unit id="Mailbox Password" approved="yes">
+        <source>Mailbox password</source>
+        <note>settings general section title</note>
+        <target state="translated">メールボックスのパスワード</target>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match">
+        <source>Mailbox password doesn't match</source>
+        <note/>
+        <target state="translated">メールボックスのパスワードが一致しません。</target>
+      </trans-unit>
+      <trans-unit id="Manage Addresses">
+        <source>Manage Addresses</source>
+        <note>The title for the view where user can manage emails in the contact group</note>
+        <target state="needs-translation">Manage Addresses</target>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders" approved="yes">
+        <source>Manage Labels/Folders</source>
+        <note>Title</note>
+        <target state="translated">ラベル/フォルダー管理</target>
+      </trans-unit>
+      <trans-unit id="Mark Read" approved="yes">
+        <source>Mark as read</source>
+        <note>mark message as read action</note>
+        <target state="translated">既読にする</target>
+      </trans-unit>
+      <trans-unit id="Mark as unread" approved="yes">
+        <source>Mark as unread</source>
+        <note>Action</note>
+        <target state="translated">未読に戻す</target>
+      </trans-unit>
+      <trans-unit id="Menu">
+        <source>Menu</source>
+        <note>menu title</note>
+        <target state="translated">メニュー</target>
+      </trans-unit>
+      <trans-unit id="Message %@">
+        <source>Message %@</source>
+        <note>Message with title</note>
+        <target state="translated">メッセージ%@</target>
+      </trans-unit>
+      <trans-unit id="Message Password" approved="yes">
+        <source>Message Password</source>
+        <note>Placeholder</note>
+        <target state="translated">メッセージのパスワード</target>
+      </trans-unit>
+      <trans-unit id="Message Queue" approved="yes">
+        <source>Message queue</source>
+        <note>settings debug section title</note>
+        <target state="translated">メッセージキュー</target>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions" approved="yes">
+        <source>Message Swipe Actions</source>
+        <note>Title</note>
+        <target state="translated">スワイプ時の動作</target>
+      </trans-unit>
+      <trans-unit id="Message expired">
+        <source>Message expired</source>
+        <note>*
+ *  Expiration View</note>
+        <target state="translated">期限切れのメッセージ</target>
+      </trans-unit>
+      <trans-unit id="Message has been deleted." approved="yes">
+        <source>Message has been deleted.</source>
+        <note>Title</note>
+        <target state="translated">メッセージが削除されました。</target>
+      </trans-unit>
+      <trans-unit id="Message has been moved." approved="yes">
+        <source>Message has been moved.</source>
+        <note>Title</note>
+        <target state="translated">メッセージが移動されました。</target>
+      </trans-unit>
+      <trans-unit id="Message password does not match." approved="yes">
+        <source>Message password does not match.</source>
+        <note>Description</note>
+        <target state="translated">メッセージパスワードが一致しません。</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again" approved="yes">
+        <source>Message sending failed please try again</source>
+        <note/>
+        <target state="translated">メッセージの送信に失敗しました。もう一度試してください。</target>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again.">
+        <source>Message sending failed. Please try again.</source>
+        <note>Description</note>
+        <target state="needs-translation">Message sending failed. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="Message sent" approved="yes">
+        <source>Message sent</source>
+        <note>Description after message have been sent</note>
+        <target state="translated">メッセージを送信しました。</target>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period." approved="yes">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <note>Description</note>
+        <target state="translated">一定期間後に自動的に削除されるように、送信メッセージに設定できます。</target>
+      </trans-unit>
+      <trans-unit id="Mobile" approved="yes">
+        <source>Mobile</source>
+        <note>default vcard types</note>
+        <target state="translated">携帯電話</target>
+      </trans-unit>
+      <trans-unit id="Mobile Signature" approved="yes">
+        <source>Mobile signature</source>
+        <note>Mobile Signature title in settings</note>
+        <target state="translated">モバイル署名</target>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <note>Description</note>
+        <target state="translated">モバイル機器からの新規登録は一時的に無効化されています。時間をおいて再度試すか、デスクトップまたはノート型機器からprotonmail.comを開いて登録してください。</target>
+      </trans-unit>
+      <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
+        <source>Modifying or turning off the default mobile signature is a paid feature.</source>
+        <note>Description</note>
+        <target state="translated">既定のモバイル署名を変更やオフにするのは、有料の機能です。</target>
+      </trans-unit>
+      <trans-unit id="More Credits">
+        <source>More Credits</source>
+        <note>Screen header</note>
+        <target state="needs-translation">More Credits</target>
+      </trans-unit>
+      <trans-unit id="Move to AllMail" approved="yes">
+        <source>Move to AllMail</source>
+        <note>move action</note>
+        <target state="translated">全てのメールに移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Archive" approved="yes">
+        <source>Move to Archive</source>
+        <note>move action</note>
+        <target state="translated">アーカイブに移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Draft" approved="yes">
+        <source>Move to Draft</source>
+        <note>move action</note>
+        <target state="translated">下書きへ移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Folder" approved="yes">
+        <source>Move to Folder</source>
+        <note>folder apply - title</note>
+        <target state="translated">フォルダーに移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Inbox" approved="yes">
+        <source>Move to Inbox</source>
+        <note>move action</note>
+        <target state="translated">受信箱に移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Outbox">
+        <source>Move to Outbox</source>
+        <note>move action</note>
+        <target state="translated">送信箱に移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Spam" approved="yes">
+        <source>Move to Spam</source>
+        <note>move action</note>
+        <target state="translated">迷惑メールに移動</target>
+      </trans-unit>
+      <trans-unit id="Move to Trash" approved="yes">
+        <source>Move to Trash</source>
+        <note>move action</note>
+        <target state="translated">ごみ箱に移動</target>
+      </trans-unit>
+      <trans-unit id="Move to...">
+        <source>Move to...</source>
+        <note>Title</note>
+        <target state="translated">...に移動</target>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses" approved="yes">
+        <source>Multiple addresses</source>
+        <note>Title</note>
+        <target state="translated">アドレスの管理</target>
+        <alt-trans>
+          <target>複数のアドレス</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP.">
+        <source>Sign up for free</source>
+        <note>Action</note>
+        <target state="translated">無料登録</target>
+      </trans-unit>
+      <trans-unit id="Name" approved="yes">
+        <source>Name</source>
+        <note>title</note>
+        <target state="translated">名前</target>
+      </trans-unit>
+      <trans-unit id="New login password" approved="yes">
+        <source>New login password</source>
+        <note>Title</note>
+        <target state="translated">新しいログインパスワード</target>
+      </trans-unit>
+      <trans-unit id="New mailbox password" approved="yes">
+        <source>New mailbox password</source>
+        <note>Title</note>
+        <target state="translated">メールボックスの新しいパスワード</target>
+        <alt-trans>
+          <target>新しいメールボックスパスワード</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="New password" approved="yes">
+        <source>New password</source>
+        <note>Placeholder</note>
+        <target state="translated">新しいパスワード</target>
+      </trans-unit>
+      <trans-unit id="Nickname" approved="yes">
+        <source>Nickname</source>
+        <note>contacts talbe cell Nickname title</note>
+        <target state="translated">ニックネーム</target>
+      </trans-unit>
+      <trans-unit id="No Messages" approved="yes">
+        <source>No Messages</source>
+        <note>message when mailbox doesnt have emailsß</note>
+        <target state="translated">メッセージはありません。</target>
+        <alt-trans>
+          <target>メッセージがありません。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="No connectivity detected..." approved="yes">
+        <source>No connectivity detected...</source>
+        <note>Title</note>
+        <target state="translated">接続が検出できません...</target>
+      </trans-unit>
+      <trans-unit id="No, for another ProtonMail account">
+        <source>No, for another ProtonMail account</source>
+        <note>Warning message option when user want to relogin to another account</note>
+        <target state="needs-translation">No, for another ProtonMail account</target>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase">
+        <source>No, not related to in-app purchase</source>
+        <note>Error message</note>
+        <target state="needs-translation">No, not related to in-app purchase</target>
+      </trans-unit>
+      <trans-unit id="None" approved="yes">
+        <source>None</source>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
+        <target state="translated">なし</target>
+      </trans-unit>
+      <trans-unit id="Not Now">
+        <source>Not Now</source>
+        <note>Action</note>
+        <target state="needs-translation">Not Now</target>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration">
+        <source>Not all recipients support message expiration</source>
+        <note>alert description</note>
+        <target state="translated">有効期限メッセージに対応していない宛先があります</target>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address.">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <note>Signup user name notes</note>
+        <target state="translated">注意：ユーザー名はあなたのProtonMailアドレスにも使用されます。</target>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." approved="yes">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <note>setup password notes</note>
+        <target state="translated">注意：このパスワードはメールの暗号化と復号に使われます。私たちにも復元できないため、決して紛失しないでください。</target>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account." approved="yes">
+        <source>Note: This is used to log you into your account.</source>
+        <note>setup password notes</note>
+        <target state="translated">注意：このパスワードはアカウントへのログインに使用されます。</target>
+      </trans-unit>
+      <trans-unit id="Notes" approved="yes">
+        <source>Notes</source>
+        <note>title</note>
+        <target state="translated">メモ</target>
+      </trans-unit>
+      <trans-unit id="Notice" approved="yes">
+        <source>Notice</source>
+        <note>Alert title</note>
+        <target state="translated">お知らせ</target>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email" approved="yes">
+        <source>Notification / Recovery Email</source>
+        <note>Title</note>
+        <target state="translated">通知/回復用メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Notification Email" approved="yes">
+        <source>Notification email</source>
+        <note>Title</note>
+        <target state="translated">通知先メールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Notification Snooze" approved="yes">
+        <source>Notification Snooze</source>
+        <note>title of action sheet</note>
+        <target state="translated">通知の休止</target>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed" approved="yes">
+        <source>Notifications Are Snoozed</source>
+        <note>VoiceOver description</note>
+        <target state="translated">通知は休止中です</target>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off" approved="yes">
+        <source>Notifications Snooze Off</source>
+        <note>VoiceOver description</note>
+        <target state="translated">通知の休止は無効です</target>
+      </trans-unit>
+      <trans-unit id="OK" approved="yes">
+        <source>OK</source>
+        <note>Action</note>
+        <target state="translated">OK</target>
+      </trans-unit>
+      <trans-unit id="OTHER PLANS">
+        <source>OTHER PLANS</source>
+        <note>Section header</note>
+        <target state="translated">その他のプラン</target>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <note>Title</note>
+        <target state="translated">オン</target>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@">
+        <source>On EE, MMM d, yyyy at %@</source>
+        <note>forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.</note>
+        <target state="translated">%@ のばあいにEE、MMM d, yyyy</target>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@, %@ wrote:">
+        <source>On EE, MMM d, yyyy at %1$@, %2$@ wrote:</source>
+        <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
+        <target state="needs-translation">On EE, MMM d, yyyy at %1$@, %2$@ wrote:</target>
+      </trans-unit>
+      <trans-unit id="OpenDraft">
+        <source>Open draft</source>
+        <note/>
+        <target state="translated">下書きを開く</target>
+      </trans-unit>
+      <trans-unit id="Organization" approved="yes">
+        <source>Organization</source>
+        <note>contacts talbe cell Organization title</note>
+        <target state="translated">組織</target>
+      </trans-unit>
+      <trans-unit id="Other" approved="yes">
+        <source>Other</source>
+        <note>default vcard types</note>
+        <target state="translated">その他</target>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <note>Error message</note>
+        <target state="translated">AppStoreが購買時にそのアプリに提供した技術データを添付することに同意する場合、当社の顧客サポート チームは、手動でサービスプランを有効にします。 このデータには、あなたの iTunesアカウント、Apple ID、クレジットカードへのリンクその他のユーザー情報の詳細は含まれません。 AppStore のサーバーとのやりとりが問題ないことを確認するのに役立つ技術データのみを確認します。</target>
+      </trans-unit>
+      <trans-unit id="Outbox">
+        <source>Outbox</source>
+        <note>mail location desc</note>
+        <target state="translated">送信箱</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted" approved="yes">
+        <source>PGP-encrypted</source>
+        <note>encryption lock description</note>
+        <target state="translated">PGP暗号化のみ（署名なし）</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message" approved="yes">
+        <source>PGP-encrypted message</source>
+        <note>encryption lock description</note>
+        <target state="translated">PGPで暗号化されたメッセージ</target>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address" approved="yes">
+        <source>PGP-encrypted message from verified address</source>
+        <note>encryption lock description</note>
+        <target state="translated">検証済みアドレスからのPGP暗号化メッセージ</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed" approved="yes">
+        <source>PGP-signed</source>
+        <note>encryption lock description</note>
+        <target state="translated">PGP署名のみ（暗号化なし）</target>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address" approved="yes">
+        <source>PGP-signed message from verified address</source>
+        <note>encryption lock description</note>
+        <target state="translated">検証済みアドレスからのPGP署名付きメッセージ</target>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE" approved="yes">
+        <source>PREMIUM FEATURE</source>
+        <note>Upgrade warning title</note>
+        <target state="translated">プレミアム機能</target>
+      </trans-unit>
+      <trans-unit id="Password" approved="yes">
+        <source>Password</source>
+        <note>title</note>
+        <target state="translated">パスワード</target>
+      </trans-unit>
+      <trans-unit id="Password Mismatch" approved="yes">
+        <source>Passwords do not match</source>
+        <note>Title</note>
+        <target state="translated">パスワードが一致しません。</target>
+      </trans-unit>
+      <trans-unit id="Password Updated" approved="yes">
+        <source>Password updated</source>
+        <note>Title</note>
+        <target state="translated">パスワードが更新されました。</target>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty." approved="yes">
+        <source>Password cannot be empty.</source>
+        <note>Description</note>
+        <target state="translated">パスワードは空白にできません。</target>
+      </trans-unit>
+      <trans-unit id="Password update failed" approved="yes">
+        <source>Password update failed</source>
+        <note>update password error</note>
+        <target state="translated">パスワードの更新に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Personal" approved="yes">
+        <source>Personal</source>
+        <note>default vcard types</note>
+        <target state="translated">個人</target>
+      </trans-unit>
+      <trans-unit id="Phone" approved="yes">
+        <source>Phone</source>
+        <note>default vcard types</note>
+        <target state="translated">電話番号</target>
+      </trans-unit>
+      <trans-unit id="Phone Verification" approved="yes">
+        <source>Phone Verification</source>
+        <note>human check option button</note>
+        <target state="translated">電話による検証</target>
+      </trans-unit>
+      <trans-unit id="Phone number" approved="yes">
+        <source>Phone number</source>
+        <note>contact placeholder</note>
+        <target state="translated">電話番号</target>
+      </trans-unit>
+      <trans-unit id="Phone number invalid" approved="yes">
+        <source>Phone number invalid</source>
+        <note>Title</note>
+        <target state="translated">電話番号が無効です</target>
+      </trans-unit>
+      <trans-unit id="Photo Library" approved="yes">
+        <source>Photo Library</source>
+        <note>Title</note>
+        <target state="translated">フォトライブラリー</target>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty." approved="yes">
+        <source>Pin code can't be empty.</source>
+        <note>Description</note>
+        <target state="translated">PINコードを空にすることはできません。</target>
+      </trans-unit>
+      <trans-unit id="Plain text" approved="yes">
+        <source>Plain text</source>
+        <note>Title</note>
+        <target state="translated">プレーンテキスト</target>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients.">
+        <source>Please add a password for the following recipients.</source>
+        <note>alert description</note>
+        <target state="needs-translation">Please add a password for the following recipients.</target>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code.">
+        <source>Please check your cell phone for the verification code.</source>
+        <note>Description</note>
+        <target state="translated">携帯電話で検証コードを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code.">
+        <source>Please check your email for the verification code.</source>
+        <note>error message</note>
+        <target state="translated">メールで検証コードを確認してください。</target>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses.">
+        <source>Please disable PGP Sending for following addresses.</source>
+        <note>alert description</note>
+        <target state="needs-translation">Please disable PGP Sending for following addresses.</target>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number." approved="yes">
+        <source>Please input a valid cell phone number.</source>
+        <note>Description</note>
+        <target state="translated">有効な携帯電話番号を入力してください。</target>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address." approved="yes">
+        <source>Please input a valid email address.</source>
+        <note>error message</note>
+        <target state="translated">有効なメールアドレスを入力してください。</target>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</target>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <note>Error message</note>
+        <target state="needs-translation">Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</target>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!">
+        <source>Please pick a username first!</source>
+        <note>Error</note>
+        <target state="translated">まずユーザー名を選んでください。</target>
+      </trans-unit>
+      <trans-unit id="Please provide a group name">
+        <source>Please provide a group name</source>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+        <target state="needs-translation">Please provide a group name</target>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!">
+        <source>Please remove all attachments before changing the sender</source>
+        <note>when switch sender but email has attachments</note>
+        <target state="needs-translation">Please remove all attachments before changing the sender</target>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group">
+        <source>Please select at least one email for the contact group</source>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+        <target state="needs-translation">Please select at least one email for the contact group</target>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:" approved="yes">
+        <source>Please select one of the following options:</source>
+        <note>human check select option title</note>
+        <target state="translated">以下の選択肢からお選びください。</target>
+      </trans-unit>
+      <trans-unit id="Please set a password." approved="yes">
+        <source>Please set a password.</source>
+        <note>Description</note>
+        <target state="translated">パスワードを設定してください。</target>
+      </trans-unit>
+      <trans-unit id="Please try a different domain.">
+        <source>Please try a different domain.</source>
+        <note/>
+        <target state="needs-translation">Please try a different domain.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different email address.">
+        <source>Please try a different email address.</source>
+        <note/>
+        <target state="needs-translation">Please try a different email address.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different password.">
+        <source>Please try a different password.</source>
+        <note/>
+        <target state="needs-translation">Please try a different password.</target>
+      </trans-unit>
+      <trans-unit id="Please try a different user name.">
+        <source>Please try a different username.</source>
+        <note/>
+        <target state="needs-translation">Please try a different username.</target>
+      </trans-unit>
+      <trans-unit id="Please try again.">
+        <source>Please try again</source>
+        <note>
+
+</note>
+        <target state="translated">もう一度試してください。</target>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <note>Error message</note>
+        <target state="needs-translation">Please unlock the app to proceed with your service plan activation</target>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first.">
+        <source>Please use ProtonMail App login first.</source>
+        <note>Description</note>
+        <target state="needs-translation">Please use ProtonMail App login first.</target>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password." approved="yes">
+        <source>Please use the web application to reset your password.</source>
+        <note>Alert</note>
+        <target state="translated">パスワードをリセットするにはWeb版のProtonMailを使用してください。</target>
+        <alt-trans>
+          <target>あなたのパスワードをリセットするのにウェブアプリケーションを使用してください。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <note/>
+        <target state="needs-translation">Please use the web version of ProtonMail to change your mailbox password!</target>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <note>Alert</note>
+        <target state="translated">パスワードを変更するにはWeb版のProtonMailを使用してください。</target>
+        <alt-trans>
+          <target>パスワードを変更するにはProtonMailのwebバージョンを使用してください。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in." approved="yes">
+        <source>Please use your new password when signing in.</source>
+        <note>Description</note>
+        <target state="translated">ログインするときは、新しいパスワードを使用してください。</target>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!">
+        <source>Please wait until the email downloaded!</source>
+        <note>The</note>
+        <target state="translated">メールがダウンロードされるまでお待ちください。</target>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone.">
+        <source>Please, manage it in your phone.</source>
+        <note>
+ &amp; alert title</note>
+        <target state="needs-translation">Please, manage it in your phone.</target>
+      </trans-unit>
+      <trans-unit id="Polish" approved="yes">
+        <source>Polish</source>
+        <note>Action</note>
+        <target state="translated">ポーランド語</target>
+      </trans-unit>
+      <trans-unit id="Portuguese">
+        <source>Portuguese</source>
+        <note>Action</note>
+        <target state="needs-translation">Portuguese</target>
+      </trans-unit>
+      <trans-unit id="Portuguese Brazil" approved="yes">
+        <source>Portuguese Brazil</source>
+        <note>Action</note>
+        <target state="translated">ブラジルのポルトガル語</target>
+      </trans-unit>
+      <trans-unit id="Print" approved="yes">
+        <source>Print</source>
+        <note>Action</note>
+        <target state="translated">印刷</target>
+      </trans-unit>
+      <trans-unit id="Protection" approved="yes">
+        <source>Protection</source>
+        <note>Title</note>
+        <target state="translated">保護</target>
+      </trans-unit>
+      <trans-unit id="Protection Entire App" approved="yes">
+        <source>Protection entire app</source>
+        <note>settings protection section title</note>
+        <target state="translated">アプリ全体の保護</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail" approved="yes">
+        <source>ProtonMail</source>
+        <note>Title</note>
+        <target state="translated">ProtonMail</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <note>Description</note>
+        <target state="translated">モバイル署名を編集するには、ProtonMail PLUSプラン以上のご契約が必要です。</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <note>Upgrade warning message</note>
+        <target state="translated">ProtonMail Plus/Professional/Visionary プランでは、名前とメールアドレス以外の情報も連絡先に追加や編集できるようになります。ProtonMailを使用することで、これらのデータは端末相互間で暗号化された電子メールと同等に安全になります。</target>
+        <alt-trans>
+          <target>ProtonMail Plus/Professional/Visionary プランでは、連絡先の名前とメール アドレス以外の連絡先詳細を編集することができます。ProtonMail を使用することで、このデータはエンドツーエンドで暗号化された電子メールと同じくらい安全になります。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature.">
+        <source>ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature.</source>
+        <note>alert description</note>
+        <target state="translated">ProtonMail Plus/Professional/Visionary プランでは、モバイル署名をカスタマイズすることができます。</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." approved="yes">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <note>Description</note>
+        <target state="translated">ProtonMailは広告の販売や個人情報の乱用を行いません。ProtonMailを維持するためには、あなたからのご支援が不可欠です。有料アカウントへのアップグレードや寄付によりProtonMailをご支援いただくことができます。</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails">
+        <source>ProtonMail encrypted emails</source>
+        <note>Title</note>
+        <target state="translated">ProtonMail暗号化メール</target>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <note>Description</note>
+        <target state="translated">ProtonMailは現在オフラインです。現在の状態については私たちのtwitterを参照してください: https://twitter.com/protonmail</target>
+      </trans-unit>
+      <trans-unit id="ProtonVPN included">
+        <source>ProtonVPN included</source>
+        <note>Service plan capability</note>
+        <target state="needs-translation">ProtonVPN included</target>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions">
+        <source>Quick Swipe actions</source>
+        <note>Title</note>
+        <target state="translated">クイックスワイプ操作</target>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD" approved="yes">
+        <source>RESET MAILBOX PASSWORD</source>
+        <note>Action</note>
+        <target state="translated">メールボックスのパスワードをリセット</target>
+        <alt-trans>
+          <target>メールボックスパスワードをリセット</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review" approved="yes">
+        <source>Rate &amp; Review</source>
+        <note>Title</note>
+        <target state="translated">評価 &amp; レビュー</target>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN" approved="yes">
+        <source>Re-Enter your PIN</source>
+        <note>set pin title</note>
+        <target state="translated">PINコードを再入力してください</target>
+      </trans-unit>
+      <trans-unit id="Re:" approved="yes">
+        <source>Re:</source>
+        <note>abbreviation of reply:</note>
+        <target state="translated">Re:</target>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data..." approved="yes">
+        <source>Reading device contacts data...</source>
+        <note>Title</note>
+        <target state="translated">デバイスの連絡先データを読み取りしています...</target>
+        <alt-trans>
+          <target>デバイスの連絡先データを読み取っています...</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Recovery Code" approved="yes">
+        <source>Recovery Code</source>
+        <note>Title</note>
+        <target state="translated">回復用コード</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email" approved="yes">
+        <source>Recovery Email</source>
+        <note>Title</note>
+        <target state="translated">回復用のメールアドレス</target>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning">
+        <source>Recovery Email Warning</source>
+        <note>Title</note>
+        <target state="translated">回復用メールアドレス警告</target>
+      </trans-unit>
+      <trans-unit id="Remind Me Later" approved="yes">
+        <source>Remind Me Later</source>
+        <note>Title</note>
+        <target state="translated">後で通知する</target>
+      </trans-unit>
+      <trans-unit id="Remove" approved="yes">
+        <source>Remove</source>
+        <note>remove action</note>
+        <target state="translated">削除</target>
+      </trans-unit>
+      <trans-unit id="Remove Star" approved="yes">
+        <source>Remove Star</source>
+        <note>un star message</note>
+        <target state="translated">星印をはずす</target>
+      </trans-unit>
+      <trans-unit id="Repeat" approved="yes">
+        <source>Repeat</source>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+        <target state="translated">繰り返す</target>
+      </trans-unit>
+      <trans-unit id="Reply" approved="yes">
+        <source>Reply</source>
+        <note>reply action</note>
+        <target state="translated">返信</target>
+      </trans-unit>
+      <trans-unit id="Reply All" approved="yes">
+        <source>Reply All</source>
+        <note>reply all action</note>
+        <target state="translated">全員に返信</target>
+      </trans-unit>
+      <trans-unit id="Reply message">
+        <source>Reply message</source>
+        <note>composer view model impl</note>
+        <target state="needs-translation">Reply message</target>
+      </trans-unit>
+      <trans-unit id="ReplyAll">
+        <source>Reply all</source>
+        <note/>
+        <target state="translated">全員に返信</target>
+      </trans-unit>
+      <trans-unit id="Report Bugs" approved="yes">
+        <source>Report Bugs</source>
+        <note>menu title</note>
+        <target state="translated">バグを報告</target>
+      </trans-unit>
+      <trans-unit id="Report Phishing">
+        <source>Report Phishing</source>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+        <target state="translated">フィッシングを報告</target>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <note>alert message</note>
+        <target state="needs-translation">Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</target>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ...">
+        <source>Resetting message cache ...</source>
+        <note>Title</note>
+        <target state="translated">メッセージキャッシュをリセットしています...</target>
+      </trans-unit>
+      <trans-unit id="Retry" approved="yes">
+        <source>Retry</source>
+        <note>Action</note>
+        <target state="translated">再試行</target>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds" approved="yes">
+        <source>Retry after %d seconds</source>
+        <note>email verify code resend count down</note>
+        <target state="translated">%d 秒後に再試行</target>
+      </trans-unit>
+      <trans-unit id="Romanian">
+        <source>Romanian</source>
+        <note>Action</note>
+        <target state="needs-translation">Romanian</target>
+      </trans-unit>
+      <trans-unit id="Russian" approved="yes">
+        <source>Russian</source>
+        <note>Action</note>
+        <target state="translated">ロシア語</target>
+      </trans-unit>
+      <trans-unit id="SENT" approved="yes">
+        <source>Sent</source>
+        <note>mail location title</note>
+        <target state="translated">送信済み</target>
+      </trans-unit>
+      <trans-unit id="SPAM" approved="yes">
+        <source>Spam</source>
+        <note>mail location title</note>
+        <target state="translated">迷惑メール</target>
+      </trans-unit>
+      <trans-unit id="SRP Client" approved="yes">
+        <source>SRP Client</source>
+        <note>Error</note>
+        <target state="translated">SRPクライアント</target>
+      </trans-unit>
+      <trans-unit id="SRP Server" approved="yes">
+        <source>SRP Server</source>
+        <note>Error</note>
+        <target state="translated">SRPサーバー</target>
+      </trans-unit>
+      <trans-unit id="STARRED" approved="yes">
+        <source>Starred</source>
+        <note>mail location title</note>
+        <target state="translated">星印付き</target>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <note>Title</note>
+        <target state="translated">保存</target>
+      </trans-unit>
+      <trans-unit id="Save Changes" approved="yes">
+        <source>Save Changes</source>
+        <note>title</note>
+        <target state="translated">変更を保存</target>
+      </trans-unit>
+      <trans-unit id="Save draft" approved="yes">
+        <source>Save draft</source>
+        <note>Action</note>
+        <target state="translated">下書きを保存</target>
+      </trans-unit>
+      <trans-unit id="Scheduled" approved="yes">
+        <source>Scheduled</source>
+        <note>action sheet option</note>
+        <target state="translated">計画休止の利用</target>
+      </trans-unit>
+      <trans-unit id="Search" approved="yes">
+        <source>Search</source>
+        <note>Title</note>
+        <target state="translated">検索</target>
+      </trans-unit>
+      <trans-unit id="Select An Option">
+        <source>Select An Option</source>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+        <target state="needs-translation">Select An Option</target>
+      </trans-unit>
+      <trans-unit id="Select Color">
+        <source>Select Color</source>
+        <note>The title for the view where user can select the color for the group</note>
+        <target state="needs-translation">Select Color</target>
+      </trans-unit>
+      <trans-unit id="Select your language">
+        <source>Select your language</source>
+        <note/>
+        <target state="needs-translation">Select your language</target>
+      </trans-unit>
+      <trans-unit id="Send" approved="yes">
+        <source>Send</source>
+        <note>Action</note>
+        <target state="translated">送信</target>
+      </trans-unit>
+      <trans-unit id="Send Verification Code" approved="yes">
+        <source>Send verification code</source>
+        <note>Title</note>
+        <target state="translated">検証コードを送信</target>
+      </trans-unit>
+      <trans-unit id="Send anyway" approved="yes">
+        <source>Send anyway</source>
+        <note>Action</note>
+        <target state="translated">このまま送信</target>
+      </trans-unit>
+      <trans-unit id="Send message without subject?" approved="yes">
+        <source>Send message without subject?</source>
+        <note>Description</note>
+        <target state="translated">件名なしでメッセージを送りますか？</target>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc" approved="yes">
+        <source>Send plain but stored enc</source>
+        <note>Title</note>
+        <target state="translated">暗号化されずに送信されます。</target>
+        <alt-trans>
+          <target>プレーンテキストで送信し、暗号化して保存する</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed" approved="yes">
+        <source>Sender Verification Failed</source>
+        <note>encryption lock description</note>
+        <target state="translated">送信者検証に失敗</target>
+      </trans-unit>
+      <trans-unit id="Sending Message" approved="yes">
+        <source>Sending message</source>
+        <note>Description</note>
+        <target state="translated">メッセージを送信しています</target>
+      </trans-unit>
+      <trans-unit id="Sending message">
+        <source>Sending message</source>
+        <note>Alert title</note>
+        <target state="needs-translation">Sending message</target>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target state="translated">%1$@アドレスからのメッセージ送信は有料の機能です。 あなたのメッセージは既定のアドレス%2$@から送信されます</target>
+      </trans-unit>
+      <trans-unit id="Sent" approved="yes">
+        <source>Sent</source>
+        <note>menu title</note>
+        <target state="translated">送信済み</target>
+      </trans-unit>
+      <trans-unit id="Sent Failed" approved="yes">
+        <source>Sent Failed</source>
+        <note>Description</note>
+        <target state="translated">送信に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Sent by ProtonMail with zero access encryption">
+        <source>Sent by ProtonMail with zero access encryption</source>
+        <note>encryption lock description for auto reply</note>
+        <target state="translated">ProtonMailによってゼロアクセス暗号化で送信済み</target>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
+        <source>Sent by you with end-to-end encryption</source>
+        <note>encryption lock description</note>
+        <target state="translated">端末相互間の暗号化による送信</target>
+        <alt-trans>
+          <target>エンドツーエンド暗号化による送信</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!" approved="yes">
+        <source>Server proofs not valid!</source>
+        <note>Description</note>
+        <target state="translated">サーバー証明が有効ではありません。</target>
+      </trans-unit>
+      <trans-unit id="Set Password" approved="yes">
+        <source>Set Password</source>
+        <note>Title</note>
+        <target state="translated">パスワードの設定</target>
+        <alt-trans>
+          <target>パスワードを設定</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users." approved="yes">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <note>Description</note>
+        <target state="translated">非ProtonMailのユーザー用に、メッセージの暗号化パスワードを設定してください。</target>
+      </trans-unit>
+      <trans-unit id="Set passwords" approved="yes">
+        <source>Set passwords</source>
+        <note>Signup passwords top title</note>
+        <target state="translated">パスワードの設定</target>
+      </trans-unit>
+      <trans-unit id="Settings" approved="yes">
+        <source>Settings</source>
+        <note>menu title</note>
+        <target state="translated">設定</target>
+      </trans-unit>
+      <trans-unit id="Share Alert">
+        <source>Share Alert</source>
+        <note>Title</note>
+        <target state="translated">共有アラート</target>
+      </trans-unit>
+      <trans-unit id="Share Contact" approved="yes">
+        <source>Share Contact</source>
+        <note>action</note>
+        <target state="translated">連絡先を共有</target>
+      </trans-unit>
+      <trans-unit id="Share it with your friends" approved="yes">
+        <source>Share it with your friends</source>
+        <note>Title</note>
+        <target state="translated">友人と共有</target>
+      </trans-unit>
+      <trans-unit id="Sign Out" approved="yes">
+        <source>Log out</source>
+        <note>Action</note>
+        <target state="translated">ログアウト</target>
+      </trans-unit>
+      <trans-unit id="Signature" approved="yes">
+        <source>Signature</source>
+        <note>Title in signature settings</note>
+        <target state="translated">署名</target>
+      </trans-unit>
+      <trans-unit id="Signature Updated" approved="yes">
+        <source>Signature Updated</source>
+        <note>Title</note>
+        <target state="translated">署名が更新されました。</target>
+      </trans-unit>
+      <trans-unit id="Single Password" approved="yes">
+        <source>Single Password</source>
+        <note>settings general section title</note>
+        <target state="translated">シングルパスワード</target>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications" approved="yes">
+        <source>Snooze Notifications</source>
+        <note>settings option</note>
+        <target state="translated">通知を休止</target>
+      </trans-unit>
+      <trans-unit id="Snoozed for" approved="yes">
+        <source>Snoozed for</source>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+        <target state="translated">次の時間休止：</target>
+      </trans-unit>
+      <trans-unit id="Snoozed till" approved="yes">
+        <source>Snoozed till</source>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+        <target state="translated">次の時刻まで休止：</target>
+      </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <note>Error message for beta users</note>
+        <target state="needs-translation">Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</target>
+      </trans-unit>
+      <trans-unit id="Space Warning" approved="yes">
+        <source>Space warning</source>
+        <note/>
+        <target state="translated">容量不足</target>
+      </trans-unit>
+      <trans-unit id="Spam" approved="yes">
+        <source>Spam</source>
+        <note>mail location desc
+   menu title</note>
+        <target state="translated">迷惑メール</target>
+      </trans-unit>
+      <trans-unit id="Spammed">
+        <source>Spammed</source>
+        <note>Description</note>
+        <target state="translated">迷惑メールに設定</target>
+      </trans-unit>
+      <trans-unit id="Spanish" approved="yes">
+        <source>Spanish</source>
+        <note>Action</note>
+        <target state="translated">スペイン語</target>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!">
+        <source>Srp single password keysalt invalid!</source>
+        <note>Description</note>
+        <target state="needs-translation">Srp single password keysalt invalid!</target>
+      </trans-unit>
+      <trans-unit id="Star" approved="yes">
+        <source>Star</source>
+        <note>Title</note>
+        <target state="translated">星印</target>
+      </trans-unit>
+      <trans-unit id="Starred" approved="yes">
+        <source>Starred</source>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+        <target state="translated">星印付き</target>
+      </trans-unit>
+      <trans-unit id="Start Time" approved="yes">
+        <source>Start Time</source>
+        <note>settings option (Start Time: 8am)</note>
+        <target state="translated">開始時刻</target>
+      </trans-unit>
+      <trans-unit id="State" approved="yes">
+        <source>State</source>
+        <note>contact placeholder</note>
+        <target state="translated">都道府県</target>
+      </trans-unit>
+      <trans-unit id="Storage" approved="yes">
+        <source>Storage</source>
+        <note>Title</note>
+        <target state="translated">ストレージ</target>
+      </trans-unit>
+      <trans-unit id="Storage Warning">
+        <source>Storage Warning</source>
+        <note>Title</note>
+        <target state="translated">容量についての警告</target>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption">
+        <source>Stored with zero access encryption</source>
+        <note>encryption lock description</note>
+        <target state="needs-translation">Stored with zero access encryption</target>
+      </trans-unit>
+      <trans-unit id="Street" approved="yes">
+        <source>Street</source>
+        <note>contact placeholder</note>
+        <target state="translated">番地</target>
+      </trans-unit>
+      <trans-unit id="Subject" approved="yes">
+        <source>Subject</source>
+        <note>Placeholder</note>
+        <target state="translated">件名</target>
+      </trans-unit>
+      <trans-unit id="Subject:" approved="yes">
+        <source>Subject:</source>
+        <note>subject: text when forward</note>
+        <target state="translated">件名：</target>
+      </trans-unit>
+      <trans-unit id="Subscription">
+        <source>Subscription</source>
+        <note>menu title</note>
+        <target state="translated">購読</target>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail" approved="yes">
+        <source>Support ProtonMail</source>
+        <note>Action</note>
+        <target state="translated">ProtonMailを支援する</target>
+      </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <note>Service plan capability; i = 2</note>
+        <target state="needs-translation">Support for %i custom domains (e.g. user@yourdomain.com)</target>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right" approved="yes">
+        <source>Swipe Left to Right</source>
+        <note>settings swipe actions section title</note>
+        <target state="translated">左から右へのスワイプ</target>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left" approved="yes">
+        <source>Swipe Right to Left</source>
+        <note>settings swipe actions section title</note>
+        <target state="translated">右から左へのスワイプ</target>
+      </trans-unit>
+      <trans-unit id="System can't copy the file" approved="yes">
+        <source>System can't copy the file</source>
+        <note>Error</note>
+        <target state="translated">システムはファイルをコピーできません。</target>
+      </trans-unit>
+      <trans-unit id="TRASH" approved="yes">
+        <source>Trash</source>
+        <note>mail location title</note>
+        <target state="translated">ごみ箱</target>
+      </trans-unit>
+      <trans-unit id="Take a Photo" approved="yes">
+        <source>Take photo</source>
+        <note>Title</note>
+        <target state="translated">写真を撮影</target>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients" approved="yes">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <note>alert description</note>
+        <target state="translated">これらの宛先に有効期限なしで送信するにはタップしてください。</target>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <note/>
+        <target state="translated">バグのご報告をありがとうございます。 バグ追跡システムにあなたのレポートを追加しました。</target>
+      </trans-unit>
+      <trans-unit id="The Password is wrong." approved="yes">
+        <source>The password is wrong.</source>
+        <note>update password error</note>
+        <target state="translated">パスワードが間違っています。</target>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline..." approved="yes">
+        <source>The ProtonMail current offline...</source>
+        <note>Title</note>
+        <target state="translated">ProtonMailは現在オフラインです...</target>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken.">
+        <source>The username have been taken.</source>
+        <note>
+</note>
+        <target state="needs-translation">The username have been taken.</target>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid." approved="yes">
+        <source>The authentication credentials are invalid.</source>
+        <note>Description</note>
+        <target state="translated">認証情報が無効です。</target>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired.">
+        <source>The authentication token has expired.</source>
+        <note>
+</note>
+        <target state="needs-translation">The authentication token has expired.</target>
+      </trans-unit>
+      <trans-unit id="The current standard" approved="yes">
+        <source>The current standard</source>
+        <note>key size notes</note>
+        <target state="translated">現在の標準</target>
+      </trans-unit>
+      <trans-unit id="The display name is now %@." approved="yes">
+        <source>The display name is now %@.</source>
+        <note>Description</note>
+        <target state="translated">表示名は現在 %@ です。</target>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken. Please try again.">
+        <source>The draft cache is broken. Please try again.</source>
+        <note>Description</note>
+        <target state="needs-translation">The draft cache is broken. Please try again.</target>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!">
+        <source>Sending failed. There was an error with the draft format.</source>
+        <note>error when sending the message</note>
+        <target state="translated">送信に失敗しました。下書きのフォーマットにエラーがありました。</target>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available." approved="yes">
+        <source>The highest level of encryption available.</source>
+        <note>key size note part 1</note>
+        <target state="translated">利用可能な暗号化の最高レベル</target>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate">
+        <source>The label name is duplicate</source>
+        <note/>
+        <target state="needs-translation">The label name is duplicate</target>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect." approved="yes">
+        <source>The mailbox password is incorrect.</source>
+        <note>Error</note>
+        <target state="translated">メールボックスパスワードが間違っています。</target>
+      </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d">
+        <source>The maximum number of distinct recipients is %d</source>
+        <note>Alert message</note>
+        <target state="needs-translation">The maximum number of distinct recipients is %d</target>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d.">
+        <source>The maximum number of labels is %d.</source>
+        <note>*
+ *  LabelsViewController</note>
+        <target state="needs-translation">The maximum number of labels is %d.</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty">
+        <source>The new password can't be empty</source>
+        <note/>
+        <target state="needs-translation">The new password can't be empty</target>
+      </trans-unit>
+      <trans-unit id="The new password can't empty." approved="yes">
+        <source>The new password can't empty.</source>
+        <note>update password error</note>
+        <target state="translated">新しいパスワードは空白にできません。</target>
+      </trans-unit>
+      <trans-unit id="The new password not match">
+        <source>Passwords do not match</source>
+        <note/>
+        <target state="needs-translation">Passwords do not match</target>
+      </trans-unit>
+      <trans-unit id="The new password not match." approved="yes">
+        <source>The new password not match.</source>
+        <note>update password error</note>
+        <target state="translated">新しいパスワードが一致しません。</target>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it." approved="yes">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <note>recovery email notes</note>
+        <target state="translated">ログインパスワードを紛失した場合でも、任意の回復用メールアドレスを設定しておけばパスワードをリセットできます。</target>
+        <alt-trans>
+          <target>ログインパスワードを紛失した場合でも、任意の回復用メールアドレスを設定しておけばパスワードを再設定できます。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password." approved="yes">
+        <source>The password you entered does not match the current password.</source>
+        <note>Description</note>
+        <target state="translated">入力されたパスワードが現在のパスワードと一致しません。</target>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match." approved="yes">
+        <source>The passwords you entered do not match.</source>
+        <note>Description</note>
+        <target state="translated">入力されたパスワードが一致しません。</target>
+        <alt-trans>
+          <target>あなたが入力したパスワードが一致しません。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="The private key update failed." approved="yes">
+        <source>The private key update failed.</source>
+        <note>update password error</note>
+        <target state="translated">秘密鍵の更新に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="The request timed out." approved="yes">
+        <source>The request timed out.</source>
+        <note>Title</note>
+        <target state="translated">要求がタイムアウトしました。</target>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB" approved="yes">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <note/>
+        <target state="translated">添付ファイルの合計サイズは25MB以内にしてください。</target>
+      </trans-unit>
+      <trans-unit id="The total attachment size cannot exceed 25MB">
+        <source>The total attachment size cannot exceed 25MB</source>
+        <note>Description</note>
+        <target state="translated">添付全体のサイズは25MBを越えることはできません。</target>
+      </trans-unit>
+      <trans-unit id="The verification email invalid">
+        <source>Invalid verification email</source>
+        <note>
+ &amp; title</note>
+        <target state="needs-translation">Invalid verification email</target>
+      </trans-unit>
+      <trans-unit id="The verification failed!" approved="yes">
+        <source>The verification failed!</source>
+        <note>Error</note>
+        <target state="translated">検証に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the app's saved data.">
+        <source>There was an error creating or loading the app's saved data.</source>
+        <note>Description</note>
+        <target state="translated">アプリケーションの保存データを作成または読み込む際にエラーが発生しました。</target>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data." approved="yes">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <note>
+ &amp; local error</note>
+        <target state="translated">データの作成または、読み込み時にエラーが発生しました。</target>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app.">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <note>Alert message</note>
+        <target state="needs-translation">This can take a while. Please do not dismiss the app.</target>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book.">
+        <source>This contact belongs to your address book.</source>
+        <note>alert desc</note>
+        <target state="needs-translation">This contact belongs to your address book.</target>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target state="translated">このメールはドメイン認証の要求に失敗しました。なりすましか不適切に転送された可能性があります。</target>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <note>spam score warning</note>
+        <target state="translated">このメールは、ProtonMail のアドレスからのように見えますが、認証要求に失敗しました。なりすましによるものか、または不適切に転送されたものである恐れがあります。</target>
+      </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <note>spam score warning</note>
+        <target state="needs-translation">This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</target>
+      </trans-unit>
+      <trans-unit id="Title" approved="yes">
+        <source>Title</source>
+        <note>contacts talbe cell Title title</note>
+        <target state="translated">肩書き</target>
+      </trans-unit>
+      <trans-unit id="To" approved="yes">
+        <source>To</source>
+        <note>Title</note>
+        <target state="translated">宛先　</target>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human.">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
+        <note>human verification notes</note>
+        <target state="needs-translation">To prevent abuse of ProtonMail,&amp;#13;
+ we need to verify that you are human.</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note/>
+        <target state="needs-translation">To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</target>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <note>Description</note>
+        <target state="translated">メールボックスのパスワードをリセットするには、protonmail.comからWeb版のProtonMailを使用してください。</target>
+        <alt-trans>
+          <target>メールボックスパスワードをリセットするには、protonmail.comでProtonMailのwebバージョンを使用してください。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="To:" approved="yes">
+        <source>To:</source>
+        <note>message To: feild</note>
+        <target state="translated">宛先：</target>
+      </trans-unit>
+      <trans-unit id="Token expired">
+        <source>Token expired</source>
+        <note>*
+ *  API Error &amp; alert title</note>
+        <target state="needs-translation">Token expired</target>
+      </trans-unit>
+      <trans-unit id="Too many recipients">
+        <source>Too many recipients</source>
+        <note>Alert title</note>
+        <target state="needs-translation">Too many recipients</target>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <note>settings touchid error</note>
+        <target state="translated">TouchIDが登録されていません。システム設定で有効にしてください。</target>
+      </trans-unit>
+      <trans-unit id="TouchID not available" approved="yes">
+        <source>TouchID not available</source>
+        <note>settings touchid/faceid error</note>
+        <target state="translated">TouchIDが利用できません。</target>
+      </trans-unit>
+      <trans-unit id="Trash" approved="yes">
+        <source>Trash</source>
+        <note>mail location desc
+   menu title
+   move action</note>
+        <target state="translated">ごみ箱</target>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide" approved="yes">
+        <source>Trouble shooting guide</source>
+        <note>Title</note>
+        <target state="translated">困ったときは</target>
+      </trans-unit>
+      <trans-unit id="Turkish" approved="yes">
+        <source>Turkish</source>
+        <note>Action</note>
+        <target state="translated">トルコ語</target>
+      </trans-unit>
+      <trans-unit id="Turn Off" approved="yes">
+        <source>Turn Off</source>
+        <note>action sheet option</note>
+        <target state="translated">オフにする</target>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail" approved="yes">
+        <source>Tweet about ProtonMail</source>
+        <note>Title</note>
+        <target state="translated">ProtonMailについてツイートする</target>
+      </trans-unit>
+      <trans-unit id="Two Factor Code" approved="yes">
+        <source>Two Factor Code</source>
+        <note>Placeholder</note>
+        <target state="translated">２要素認証コード</target>
+      </trans-unit>
+      <trans-unit id="Type casting error">
+        <source>Type casting error</source>
+        <note>Internal type casting error</note>
+        <target state="needs-translation">Type casting error</target>
+      </trans-unit>
+      <trans-unit id="URL" approved="yes">
+        <source>URL</source>
+        <note>default vcard types</note>
+        <target state="translated">URL</target>
+      </trans-unit>
+      <trans-unit id="USER LOGIN" approved="yes">
+        <source>User log in</source>
+        <note>Title</note>
+        <target state="translated">ユーザーログイン</target>
+      </trans-unit>
+      <trans-unit id="Ukrainian" approved="yes">
+        <source>Ukrainian</source>
+        <note>Action</note>
+        <target state="translated">ウクライナ語</target>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server" approved="yes">
+        <source>Unable to connect to the server</source>
+        <note>Description</note>
+        <target state="translated">サーバーに接続できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <note>
+</note>
+        <target state="needs-translation">Unable to construct a valid URL with the following path: %@</target>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!" approved="yes">
+        <source>Unable to create SRP Client!</source>
+        <note>Description</note>
+        <target state="translated">SRLクライアントを作成できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message." approved="yes">
+        <source>Unable to decrypt message.</source>
+        <note>Error</note>
+        <target state="translated">メッセージを復号できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline">
+        <source>Unable to edit this message offline</source>
+        <note>Description</note>
+        <target state="needs-translation">Unable to edit this message offline</target>
+      </trans-unit>
+      <trans-unit id="Unable to generate hashed password!">
+        <source>Unable to generate hashed password!</source>
+        <note>Description</note>
+        <target state="translated">ハッシュパスワードを作成できません</target>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts" approved="yes">
+        <source>Unable to get contacts</source>
+        <note>Error</note>
+        <target state="translated">連絡先を取得できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!" approved="yes">
+        <source>Unable to parse authentication info!</source>
+        <note>Description</note>
+        <target state="translated">認証情報を解析できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!" approved="yes">
+        <source>Unable to parse authentication token!</source>
+        <note>Description</note>
+        <target state="translated">認証トークンを解析できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse cached authentication token!">
+        <source>Unable to parse cached authentication token!</source>
+        <note>Description</note>
+        <target state="translated">認証トークンを解析できません</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse response" approved="yes">
+        <source>Unable to parse response</source>
+        <note>Description</note>
+        <target state="translated">応答を解析できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:&#10;%@">
+        <source>Unable to parse the response object:
+%@</source>
+        <note>Description</note>
+        <target state="needs-translation">Unable to parse the response object:
+%@</target>
+      </trans-unit>
+      <trans-unit id="Unable to parse token" approved="yes">
+        <source>Unable to parse token</source>
+        <note>Error</note>
+        <target state="translated">トークンを解析できません。</target>
+      </trans-unit>
+      <trans-unit id="Unable to send the email" approved="yes">
+        <source>Unable to send the email.</source>
+        <note>error when sending the message</note>
+        <target state="translated">メールを送信できません。</target>
+      </trans-unit>
+      <trans-unit id="Undo" approved="yes">
+        <source>Undo</source>
+        <note>Action</note>
+        <target state="translated">取り消し</target>
+      </trans-unit>
+      <trans-unit id="Unknow Error" approved="yes">
+        <source>Unknown error</source>
+        <note>Description</note>
+        <target state="translated">不明なエラー</target>
+      </trans-unit>
+      <trans-unit id="Unknow file">
+        <source>Unknown file</source>
+        <note/>
+        <target state="needs-translation">Unknown file</target>
+      </trans-unit>
+      <trans-unit id="Unknown" approved="yes">
+        <source>Unknown</source>
+        <note>title, default display name</note>
+        <target state="translated">不明</target>
+      </trans-unit>
+      <trans-unit id="Unknown Error" approved="yes">
+        <source>Unknown Error</source>
+        <note>Error</note>
+        <target state="translated">不明なエラー</target>
+      </trans-unit>
+      <trans-unit id="Unkonw Version">
+        <source>Unknown version</source>
+        <note/>
+        <target state="needs-translation">Unknown version</target>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day">
+        <source>Unlimited messages sent/day</source>
+        <note>Service plan capability;</note>
+        <target state="needs-translation">Unlimited messages sent/day</target>
+      </trans-unit>
+      <trans-unit id="Unread" approved="yes">
+        <source>Unread</source>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
+        <target state="translated">未読</target>
+      </trans-unit>
+      <trans-unit id="Unsupported file type">
+        <source>Unsupported file type</source>
+        <note>Error message</note>
+        <target state="needs-translation">Unsupported file type</target>
+      </trans-unit>
+      <trans-unit id="Up to %i users">
+        <source>Up to %i users</source>
+        <note>Service plan capability; i = 6</note>
+        <target state="needs-translation">Up to %i users</target>
+      </trans-unit>
+      <trans-unit id="Update" approved="yes">
+        <source>Update</source>
+        <note>like top right action text</note>
+        <target state="translated">更新</target>
+      </trans-unit>
+      <trans-unit id="Update Contact" approved="yes">
+        <source>Update Contact</source>
+        <note>Contacts Update contact</note>
+        <target state="translated">連絡先を更新</target>
+      </trans-unit>
+      <trans-unit id="Update Notification Email">
+        <source>Update Notification Email</source>
+        <note>update notification email error title</note>
+        <target state="translated">通知メールを更新</target>
+      </trans-unit>
+      <trans-unit id="Update Now">
+        <source>Update Now</source>
+        <note>title</note>
+        <target state="needs-translation">Update Now</target>
+      </trans-unit>
+      <trans-unit id="Update Required">
+        <source>Update Required</source>
+        <note>title</note>
+        <target state="needs-translation">Update Required</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <note>Service plan description footer</note>
+        <target state="needs-translation">Upgrade to a paid plan to benefit from more features</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <note>Error</note>
+        <target state="translated">%@アドレスから送信するには有料プランへのアップグレードが必要です。</target>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features.">
+        <source>Upgrade to get all paid features.</source>
+        <note>alert description</note>
+        <target state="needs-translation">Upgrade to get all paid features.</target>
+      </trans-unit>
+      <trans-unit id="Upgrading is not possible in the app." approved="yes">
+        <source>Upgrading is not possible in the app.</source>
+        <note>Upgrade warning message</note>
+        <target state="translated">アプリでアップグレードを行うことはできません。</target>
+      </trans-unit>
+      <trans-unit id="Upload Contacts" approved="yes">
+        <source>Upload Contacts</source>
+        <note>Action</note>
+        <target state="translated">連絡先をアップロード</target>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?" approved="yes">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <note>Description</note>
+        <target state="translated">ProtonMailにiOSの連絡先をアップロードしますか?</target>
+      </trans-unit>
+      <trans-unit id="Url" approved="yes">
+        <source>Url</source>
+        <note>default vcard types</note>
+        <target state="translated">Url</target>
+      </trans-unit>
+      <trans-unit id="User already exist!" approved="yes">
+        <source>Username already taken</source>
+        <note>error when user already exist</note>
+        <target state="translated">既に使用されているユーザー名です。</target>
+      </trans-unit>
+      <trans-unit id="User is available!">
+        <source>Username is available</source>
+        <note/>
+        <target state="translated">ユーザー名を使用可能です。</target>
+      </trans-unit>
+      <trans-unit id="User name exist">
+        <source>Username exist</source>
+        <note>
+ &amp; title</note>
+        <target state="needs-translation">Username exist</target>
+      </trans-unit>
+      <trans-unit id="User name invalid">
+        <source>Invalid username</source>
+        <note>
+ &amp; alert title</note>
+        <target state="needs-translation">Invalid username</target>
+      </trans-unit>
+      <trans-unit id="Username" approved="yes">
+        <source>Username</source>
+        <note>Title</note>
+        <target state="translated">ユーザー名</target>
+      </trans-unit>
+      <trans-unit id="Verification code request failed" approved="yes">
+        <source>Verification code request failed</source>
+        <note>Title</note>
+        <target state="translated">検証コードの要求に失敗しました。</target>
+      </trans-unit>
+      <trans-unit id="Verification code sent" approved="yes">
+        <source>Verification code sent</source>
+        <note>Title</note>
+        <target state="translated">検証コードを送信しました。</target>
+      </trans-unit>
+      <trans-unit id="Verification error" approved="yes">
+        <source>Verification error</source>
+        <note>error title</note>
+        <target state="translated">検証エラー</target>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed">
+        <source>Verification of this content’s signature failed</source>
+        <note>error details</note>
+        <target state="needs-translation">Verification of this content’s signature failed</target>
+      </trans-unit>
+      <trans-unit id="Version %@ %@">
+        <source>Version %@ %@</source>
+        <note/>
+        <target state="translated">バージョン %@ %@</target>
+      </trans-unit>
+      <trans-unit id="View Headers">
+        <source>View Headers</source>
+        <note>message details-&gt; more action-&gt; view headers</note>
+        <target state="needs-translation">View Headers</target>
+      </trans-unit>
+      <trans-unit id="View Plans">
+        <source>View Plans</source>
+        <note>Action</note>
+        <target state="needs-translation">View Plans</target>
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning</source>
+        <note>Title</note>
+        <target state="translated">警告</target>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <note>human check warning description</note>
+        <target state="translated">警告：人間による操作であることが確認できるまでメールの送信はできません！</target>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" approved="yes">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <note>Description</note>
+        <target state="translated">警告：回復用のメールアドレスを設定しないと、パスワードを忘れた場合のアカウントの復旧は不可能です。回復用のメールアドレスなしで続行しますか？</target>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan.">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <note>Error message</note>
+        <target state="needs-translation">We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above.">
+        <source>We will send a verification code to the cell phone above.</source>
+        <note>text field notes</note>
+        <target state="translated">上記の携帯電話に検証コードを送信します。</target>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above.">
+        <source>We will send a verification code to the email address above.</source>
+        <note>email field notes</note>
+        <target state="translated">上記のメールアドレスに検証コードを送ります。</target>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better.">
+        <source>We would like to know what we can do better.</source>
+        <note>Title</note>
+        <target state="translated">私たちが改善すべき点を教えてください。</target>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!" approved="yes">
+        <source>Welcome to ProtonMail</source>
+        <note>Title</note>
+        <target state="translated">ProtonMailへようこそ</target>
+      </trans-unit>
+      <trans-unit id="What people see in the &quot;From&quot; field.">
+        <source>What people see in the "From" field.</source>
+        <note>Description</note>
+        <target state="needs-translation">What people see in the "From" field.</target>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field.">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <note>display name notes</note>
+        <target state="needs-translation">When you send an email, this is the name that appears in the sender field.</target>
+      </trans-unit>
+      <trans-unit id="Work" approved="yes">
+        <source>Work</source>
+        <note>default vcard types</note>
+        <target state="translated">仕事</target>
+      </trans-unit>
+      <trans-unit id="Wrong verification code">
+        <source>Wrong verification code</source>
+        <note>
+ &amp; title</note>
+        <target state="needs-translation">Wrong verification code</target>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for ">
+        <source>Yes, activate it for </source>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+        <target state="needs-translation">Yes, activate it for </target>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment">
+        <source>Yes, attach details of payment</source>
+        <note>Error message</note>
+        <target state="needs-translation">Yes, attach details of payment</target>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <note>Description</note>
+        <target state="translated">ProtonMailアプリの設定から、スワイプ時の動作を変更できます。</target>
+        <alt-trans>
+          <target>ProtonMail Appの設定画面にてスワイプ時の操作を自由に選べます。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <note>Description</note>
+        <target state="translated">ご利用の手引きとサポートをprotonmail.com/supportにて提供しています。アプリ内から不具合の報告もできます。</target>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature.">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <note>pm.me upgrade warning in composer</note>
+        <target state="translated">%@ をデフォルトのアドレスに設定するには有料プランである必要があります。</target>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <note>description</note>
+        <target state="translated">メッセージの有効期限を有効にしましたが、すべての受信者がこれをサポートしません。すべての受信者に有効期限を使用するには、パスワードを追加するか、PGPを無効にしてください。</target>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!" approved="yes">
+        <source>You have %d new emails!</source>
+        <note>Message</note>
+        <target state="translated">%d件の新着メールがあります。</target>
+      </trans-unit>
+      <trans-unit id="You have a new email!" approved="yes">
+        <source>You have a new email!</source>
+        <note>Title</note>
+        <target state="translated">新着メールがあります。</target>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <note>Confirmation message</note>
+        <target state="translated">保存されていない変更があります。保存しますか？</target>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@).">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <note>Description</note>
+        <target state="translated">あなたのストレージ容量 (%@) の %d%% を使用しています。</target>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@).">
+        <source>You have used up all of your storage space (%@).</source>
+        <note>Description</note>
+        <target state="translated">全てのストレージ容量 (%@) が使用されています。</target>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send">
+        <source>You need at least one recipient to send</source>
+        <note>Description</note>
+        <target state="translated">送信するには少なくとも 1 人の受信者が必要です。</target>
+      </trans-unit>
+      <trans-unit id="Your Country Code" approved="yes">
+        <source>Your Country Code</source>
+        <note>view top title</note>
+        <target state="translated">国コード</target>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." approved="yes">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <note>Description</note>
+        <target state="translated">受信箱は端末相互間で暗号化され、保護されています。メールを自動的に保護するには、友人にもProtonMailをご利用していただく必要があります。ProtonMailをご利用していない相手でも手動で暗号化が可能です。</target>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages.">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <note>Description</note>
+        <target state="translated">暗号化された電子メールの新しいアカウントが設定され、暗号メッセージを送受信する準備ができました。</target>
+      </trans-unit>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready.">
+        <source>Your new secure email&#13;
+ account is ready.</source>
+        <note>view top title</note>
+        <target state="needs-translation">Your new secure email&amp;#13;
+ account is ready.</target>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until">
+        <source>Your plan is currently active until</source>
+        <note>Service plan description footer</note>
+        <target state="needs-translation">Your plan is currently active until</target>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on">
+        <source>Your plan will automatically renew on</source>
+        <note>Service plan description footer</note>
+        <target state="needs-translation">Your plan will automatically renew on</target>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated." approved="yes">
+        <source>Your signature has been updated.</source>
+        <note>Description</note>
+        <target state="translated">署名が更新されました。</target>
+      </trans-unit>
+      <trans-unit id="ZIP" approved="yes">
+        <source>ZIP</source>
+        <note>contact placeholder</note>
+        <target state="translated">郵便番号</target>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <note>agree check box middle word</note>
+        <target state="translated">かつ</target>
+      </trans-unit>
+      <trans-unit id="at" approved="yes">
+        <source>at</source>
+        <note>like at 10:00pm</note>
+        <target state="translated">at</target>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!" approved="yes">
+        <source>attempt remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target state="translated">セキュリティで保護されたデータを消去するまでの残りの試行回数</target>
+        <alt-trans>
+          <target>回失敗した場合、データが消去されます。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="attempts remaining" approved="yes">
+        <source>attempts remaining</source>
+        <note>Description</note>
+        <target state="translated">残りの試行回数</target>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!" approved="yes">
+        <source>attempts remaining until secure data wipe!</source>
+        <note>Error</note>
+        <target state="translated">セキュリティで保護されたデータを消去するまでの残りの試行回数</target>
+      </trans-unit>
+      <trans-unit id="close tour" approved="yes">
+        <source>close tour</source>
+        <note>Action</note>
+        <target state="translated">ツアーを閉じる</target>
+      </trans-unit>
+      <trans-unit id="days" approved="yes">
+        <source>Days</source>
+        <note>Title</note>
+        <target state="translated">日</target>
+      </trans-unit>
+      <trans-unit id="for one year">
+        <source>for one year</source>
+        <note>Buy button second line</note>
+        <target state="needs-translation">for one year</target>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <note>contacts api error when fetch</note>
+        <target state="needs-translation">get contacts() failed, peopleOrderedByUsersPreference return null!!</target>
+      </trans-unit>
+      <trans-unit id="hours">
+        <source>Hours</source>
+        <note/>
+        <target state="needs-translation">Hours</target>
+      </trans-unit>
+      <trans-unit id="inline attachments">
+        <source>inline attachments</source>
+        <note>Title</note>
+        <target state="translated">インラインの添付ファイル</target>
+      </trans-unit>
+      <trans-unit id="no object">
+        <source>no object</source>
+        <note>no object error, local only , this could be not translated!</note>
+        <target state="needs-translation">no object</target>
+      </trans-unit>
+      <trans-unit id="normal attachments" approved="yes">
+        <source>normal attachments</source>
+        <note>Title</note>
+        <target state="translated">通常の添付ファイル</target>
+      </trans-unit>
+      <trans-unit id="privacy policy." approved="yes">
+        <source>privacy policy.</source>
+        <note>agree check box privacy</note>
+        <target state="translated">プライバシーポリシー</target>
+      </trans-unit>
+      <trans-unit id="terms and conditions" approved="yes">
+        <source>terms and conditions</source>
+        <note>agree check box terms</note>
+        <target state="translated">利用規約</target>
+      </trans-unit>
+      <trans-unit id="wrote:">
+        <source>wrote:</source>
+        <note>Title</note>
+        <target state="translated">筆記者:</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" datatype="plaintext" source-language="en" target-language="ja">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS">
+        <source>App Extension API is not available in this version of iOS</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">App Extension API is not available in this version of iOS</target>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension">
+        <source>Failed to contact the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to contact the Password Extension</target>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information">
+        <source>Failed to execute script that collects web page information</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to execute script that collects web page information</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to fill web page because script could not be evaluated</target>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing">
+        <source>Failed to fill web page because script is missing</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to fill web page because script is missing</target>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</target>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension">
+        <source>Failed to parse information returned by Password Extension</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Failed to parse information returned by Password Extension</target>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user">
+        <source>Password Extension was cancelled by the user</source>
+        <note>Password Extension Error Message</note>
+        <target state="needs-translation">Password Extension was cancelled by the user</target>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" datatype="plaintext" source-language="en" target-language="ja">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.1" build-num="10B61"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>Siri</source>
+        <note>Bundle display name</note>
+        <target state="translated">Siri</target>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>$(PRODUCT_NAME)</source>
+        <note>Bundle name</note>
+        <target state="translated">$(PRODUCT_NAME)</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

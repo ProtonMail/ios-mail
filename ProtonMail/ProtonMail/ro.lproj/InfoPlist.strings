@@ -1,2 +1,21 @@
-/* (No Comment) */
+/* Bundle display name */
 "CFBundleDisplayName" = "ProtonMail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Obligatoriu pentru atașarea de media la e-mail.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Obligatoriu pentru atașarea imaginilor la e-mail.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Obligatoriu pentru autocompletarea adresei de e-mail.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Permite deblocarea rapidă și sigură a aplicației.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Obligatoriu pentru salvarea imaginilor atașate în galeria de imagini.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Obligatoriu pentru atașarea imaginilor la e-mail.";
+

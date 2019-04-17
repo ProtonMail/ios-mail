@@ -249,7 +249,6 @@
 /**
  *  SettingsViewController
  */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!";
 "Display Name Updated" = "Display name updated"; //alert title
 "The display name is now %@." = "The display name is now %@.";
 "Input Display Name ..." = "Input display name ...";
@@ -343,7 +342,9 @@
 "Can't not find the value from the response body" = "Can't not find the value from the response body";
 "<no object>" = "<no object>"; //default empty object
 "Unable to parse response" = "Unable to parse response";
-"Unable to parse the response object:\n%@" = "Unable to parse the response object:\n%@";
+"Unable to parse the response object:
+%@" = "Unable to parse the response object:
+%@";
 
 
 /**

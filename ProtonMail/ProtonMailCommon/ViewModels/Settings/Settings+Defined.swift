@@ -72,6 +72,14 @@ extension ELanguage {
                 return "Română"
             case .croatian:
                 return "Hrvatski"
+            case .hungarian:
+                return "Magyar"
+            case .icelandic:
+                return "íslenska"
+            case .kabyle:
+                return "Kabyle"
+            case .swedish:
+                return "Svenska"
             case .count:
                 return ""
             }
@@ -119,6 +127,14 @@ extension ELanguage {
                 return "ro_RO"
             case .croatian:
                 return "hr-HR"
+            case .hungarian:
+                return "hu_HU"
+            case .icelandic:
+                return "is-rIS"
+            case .kabyle:
+                return "kab-DZ"
+            case .swedish:
+                return "sv_SE"
             case .count:
                 return "en_US"
             }
@@ -167,6 +183,14 @@ extension ELanguage {
                 return "ro"
             case .croatian:
                 return "hr"
+            case .hungarian:
+                return "hu"
+            case .icelandic:
+                return "is"
+            case .kabyle:
+                return "kab"
+            case .swedish:
+                return "sv"
             case .count:
                 return "en"
             }
@@ -206,13 +230,17 @@ extension ELanguage {
             .english,
             .french,
             .german,
+            .hungarian,
+            .icelandic,
             .italian,
+            .kabyle,
             .polish,
             .portuguese,
             .portugueseBrazil,
             .romanian,
             .russian,
             .spanish,
+            .swedish,
             .turkish,
             .ukrainian,
         ]

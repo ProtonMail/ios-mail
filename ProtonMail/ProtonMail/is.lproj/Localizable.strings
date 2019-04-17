@@ -1,0 +1,2219 @@
+/* Service plan capability */
+"%@ storage capacity" = "%@ geymslurými";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d meðlimur";
+
+/* The string that describes whether there are 2 or more members in the contact group */
+"%d Members" = "%d meðlimir";
+
+/* auto lock time format */
+"%d Minute" = "%d mínúta";
+
+/* auto lock time format */
+"%d Minutes" = "%d mínútur";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d valið";
+
+/* Service plan capability; i = 1 */
+"%i email address" = "%i tölvupóstfang";
+
+/* Service plan capability; i = 5 or 50 */
+"%i email addresses" = "%i tölvupóstföng";
+
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bita)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bita)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(alls)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "*VALFRJÁLST";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/notanda";
+
+/* 2fa verification failed */
+"2FA failed. Please try to login again." = "2FA auðkenning mistókst. Reyndu aftur að skrá þig inn.";
+
+/* default empty object */
+"<no object>" = "<ekkert atriði>";
+
+/* *
+ *  LabelTableViewCell */
+"A message cannot have more than 5 labels" = "Skilaboð geta ekki verið með fleiri en 5 merki";
+
+/* "Alert" = "Alert"; */
+"A new version of ProtonMail app is available, please update to latest version." = "Ný útgáfa ProtonMail er tiltæk, endilega uppfærðu í nýjustu útgáfuna.";
+
+/* Description */
+"A new version of ProtonMail app is available. Please update to the latest version." = "Ný útgáfa ProtonMail er tiltæk. Endilega uppfærðu í nýjustu útgáfuna.";
+
+/* alert description */
+"A paid ProtonMail plan is required to use this feature" = "Greidd ProtonMail-áskrift er nauðsynleg til að geta notað þennan eiginleika";
+
+/* settings touchid error */
+"A passcode has not been set, enable it in the system Settings" = "Aðgangskóði hefur ekki verið settur, virkjaðu það í kerfisstillingunum";
+
+/* when server not reachable */
+"API Server not reachable..." = "API-þjónn finnst ekki...";
+
+/* mail location title */
+"ARCHIVE" = "Safn";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. Skráðu þig inn í protonmail.com til að greiða ófrágenginn reikning.";
+
+/* None */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Þessi notandaaðgangur er óvirkur vegna ógreidds reiknings. 
+
+Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">upplýsingasíðurnar okkar</a> til að sjá nánari upplýsingar.";
+
+/* 
+ & title */
+"Account password invalid" = "Ógilt aðgangslykilorð";
+
+/* None */
+"Add" = "Bæta við";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Bæta við afmælisdegi";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Bæta við fæðingardegi";
+
+/* Contacts add new contact */
+"Add Contact" = "Bæta við tengilið";
+
+/* add custom label type action */
+"Add Custom Label" = "Bæta við sérsniðnu merki";
+
+/* Action */
+"Add Folder" = "Bæta við möppu";
+
+/* new contacts add Gender */
+"Add Gender" = "Bæta við kyni";
+
+/* The title for the contact group creation view */
+"Add Group" = "Bæta við hópi";
+
+/* add label action */
+"Add Label" = "Bæta við merki";
+
+/* add a new folder */
+"Add New Folder" = "Bæta við nýrri möppu";
+
+/* add a new folder */
+"Add New Label" = "Bæta við nýju merki";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Bæta við gælunafni";
+
+/* new contacts add Organization */
+"Add Organization" = "Bæta við Fyrirtæki/Stofnun/Félagi:";
+
+/* The button text for add profile picture */
+"Add Photo" = "Bæta við mynd";
+
+/* mark message star */
+"Add Star" = "Bæta við stjörnu";
+
+/* new contacts add Title */
+"Add Title" = "Bæta við titli";
+
+/* add new address action */
+"Add new address" = "Bæta við nýju heimilisfangi";
+
+/* new custom field action */
+"Add new custom field" = "Bæta við nýjum sérsniðnum reit";
+
+/* new email action */
+"Add new email" = "Bæta við nýju tölvupóstfangi";
+
+/* new field action */
+"Add new field" = "Bæta við nýjum reit";
+
+/* new phone action */
+"Add new phone number" = "Bæta við nýju símanúmeri";
+
+/* action */
+"Add new url" = "Bæta við nýrri vefslóð";
+
+/* Title */
+"Add to contacts" = "Bæta í tengiliði";
+
+/* default vcard types */
+"Address" = "Heimilisfang";
+
+/* Title */
+"Alert" = "Aðvörun";
+
+/* mail location desc
+   mail location title
+   menu title */
+"All Mail" = "Allur póstur";
+
+/* Title */
+"All contacts are imported" = "Allir tengiliðir fluttir inn";
+
+/* archive when apply label */
+"Also Archive" = "Einnig safn";
+
+/* Description */
+"Also used to reset a forgotten password." = "Einnig notað til að endurstilla gleymt lykilorð.";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Afmæli";
+
+/* Error */
+"App is locked" = "Forritið er læst";
+
+/* Price breakdown */
+"Apple in-app purchase fee" = "Þóknun Apple fyrir kaup í forritinu";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Apple hefur tilkynnt okkur að þeir geti ekki meðhöndlað þessi kaup.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en tiltóku ekki hvaða notandaaðgang ProtonMail eigi að uppfæra, sértu með fleiri en einn notandaaðgang.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en einhvejar tæknilegar upplýsingar vantaði. Gefðu þær upp í villuskýrslunni og mun notendaaðstoðarteymið okkar síðan hafa samband við þig.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple hefur tilkynnt okkur að þú hafir uppfært þjónustuáskriftina, en við sjáum að þú hefur skráð þig út af notandaaðgangnum síðan þá.";
+
+/* Apply action */
+"Apply" = "Virkja";
+
+/* Title */
+"Apply Labels" = "Setja merkingar";
+
+/* mail location desc
+   menu title */
+"Archive" = "Safn";
+
+/* Description */
+"Archived" = "Geymt";
+
+/* VoiceOver: email has attachments */
+"Attachments" = "Viðhengi";
+
+/* Title */
+"Authentication" = "Auðkenning";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "Auðkenning mistókst: rangt notandanafn eða lykilorð";
+
+/* Description */
+"Authentication failed" = "Auðkenning mistókst";
+
+/* Error */
+"Authentication failed. Please try to login again." = "Auðkenning mistókst, reyndu aftur að skrá þig inn.";
+
+/* Description */
+"Authentication token is not accessible because the app is locked" = "Auðkennisteikn er ekki aðgengilegt þar sem forritið er læst";
+
+/* Description */
+"Authentication was cancelled by the system" = "Kerfið hætti við auðkenningu";
+
+/* Title */
+"Auto Lock Time" = "Sjálfvirkur læsingartími";
+
+/* settings general section title */
+"Auto Show Images" = "Birta myndir sjálfkrafa";
+
+/* top left back button */
+"Back" = "Til baka";
+
+/* Error */
+"Bad auth cache" = "Rangt skyndiminni auðkenningar";
+
+/* Error title */
+"Bad parameter" = "Röng færibreyta";
+
+/* Error Description */
+"Bad parameter: %@" = "Röng færibreyta: %@";
+
+/* title */
+"Bad path" = "Gölluð slóð";
+
+/* Error Description */
+"Bad response" = "Rangt svar";
+
+/* Title */
+"Bcc" = "Falið afrit";
+
+/* message Bcc: feild */
+"Bcc:" = "Bcc:";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Fæðingardagur";
+
+/* Title */
+"Bug Description" = "Lýsing á villu";
+
+/* Title */
+"Bug Report Received" = "Villuskýrsla móttekin";
+
+/* Link to More Credits screen */
+"Buy More Credits" = "Kaupa meiri inneign";
+
+/* agree check box first part words */
+"By using protonmail, you agree to our" = "Með því að nota ProtonMail, samþykkir þú";
+
+/* No comment provided by engineer. */
+"By using protonmail, you agree to our %@ and %@." = "Með því að nota ProtonMail, samþykkir þú %@ og %@.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA-mennskupróf";
+
+/* Call the contact (button title text) */
+"Call Contact" = "Hringja í tengilið";
+
+/* key size note part 2 */
+"Can take several minutes to setup." = "Getur tekið nokkrar mínútur í uppsetningu.";
+
+/* Error */
+"Can't copy the file" = "Mistókst að afrita skrána";
+
+/* update password error */
+"Can't create a SRP Client" = "Ekki hægt að útbúa SRP-biðlara";
+
+/* update password error */
+"Can't create a SRP verifier!" = "Get ekki búið til SRP-sannvottun!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "Get ekki afkóðað þetta viðhengi!";
+
+/* The error message title that will be shown when the deletion of the contact group failed */
+"Can't delete contact group" = "Get ekki eytt tengiliðahópi";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Get ekki eytt tengiliðahópi í gegnum API-forritsviðmót";
+
+/* *
+ *  MessageViewController */
+"Can't download message body, please try again." = "Gat ekki sótt meginmál skilaboða Reyndu aftur.";
+
+/* Error */
+"Can't download message body. Please try again." = "Gat ekki sótt meginmál skilaboða. Reyndu aftur.";
+
+/* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
+"Can't fetch contact groups" = "Gat ekki sótt hópa tengiliða";
+
+/* None */
+"Can't find the clicked message please try again!" = "Fann ekki skilaboðin sem smellt var á, reyndu aftur!";
+
+/* Description */
+"Can't find the selected message. Please try again." = "Fann ekki valin skilaboð. Reyndu aftur.";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "Gat ekki fundið þetta viðhengi!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Ekki hægt að fá Moduls-auðkenni!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Get ekki fengið Moduls!";
+
+/* update password error */
+"Can't get user auth info" = "Get ekki náð í auðkenningarupplýsingar notanda";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Can't load share content!" = "Ekki hægt að hlaða inn deildu efni!";
+
+/* Error */
+"Can't load the file" = "Get ekki hlaðið inn skránni";
+
+/* Description */
+"Can't not find the value from the response body" = "Ekki er hægt að finna gildið úr meginmáli svars";
+
+/* Error */
+"Can't open the file" = "Gat ekki opnað skrána";
+
+/* The error message title that will be shown when the contact group being created or edited can't be saved */
+"Can't save contact group" = "Get ekki vistað tengiliðahóp";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Get ekki uppfært tengiliðahóp í gegnum API-forritsviðmót";
+
+/* Cancel action */
+"Cancel" = "Hætta við";
+
+/* Action */
+"Cancel Check" = "Hætta við athugun";
+
+/* Title */
+"Cancelling" = "Hætti við";
+
+/* None */
+"Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
+
+/* Action */
+"Catalan" = "Katalónska";
+
+/* Title */
+"Cc" = "Afrit";
+
+/* message Cc: feild */
+"Cc:" = "Afrit:";
+
+/* place holder */
+"Cell phone number" = "Farsímanúmer";
+
+/* change password input label */
+"Change Login Password" = "Breyta lykilorði innskráningar";
+
+/* Title */
+"Change Mailbox Password" = "Breyta lykilorði á pósthólfi";
+
+/* update password error title */
+"Change Password" = "Breyta lykilorði";
+
+/* settings protection section title */
+"Change Pin" = "Breyta PIN-númeri";
+
+/* Title */
+"Change Single Password" = "Breyta einföldu lykilorði";
+
+/* Title */
+"Change default address to .." = "Breyta sjálfgefnu tölvupóstfangi í ..";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Breyta aðgerð þegar strokið er til vinstri";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Breyta aðgerð þegar strokið er til hægri";
+
+/* Title */
+"Change sender address to .." = "Breyta tölvupóstfangi sendanda í ...";
+
+/* Action */
+"Check Again" = "Athuga aftur";
+
+/* loading message */
+"Checking ...." = "Athuga ....";
+
+/* Action */
+"Chinese Simplified" = "Einfölduð kínverska";
+
+/* Action */
+"Chinese Traditional" = "Hefðbundin kínverska";
+
+/* place holder */
+"Choose a Password" = "Veldu lykilorð";
+
+/* contact placeholder */
+"City" = "Borg/Sveitarfélag";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Hreinsa skyndiminni skilaboða á tækinu";
+
+/* general close action */
+"Close" = "Loka";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Loka";
+
+/* Action */
+"Compose" = "Semja skilaboð";
+
+/* Title */
+"Compose to" = "Semja til";
+
+/* Action */
+"Confirm" = "Staðfesta";
+
+/* "Login Password" */
+"Confirm Login Password" = "Staðfestu innskráningarlykilorð";
+
+/* "Mailbox Password" */
+"Confirm Mailbox Password" = "Staðfestu lykilorð fyrir pósthólf";
+
+/* Placeholder */
+"Confirm Password" = "Staðfestu lykilorð";
+
+/* Title */
+"Confirm new login password" = "Staðfestu nýtt innskráningarlykilorð";
+
+/* Title */
+"Confirm new mailbox password" = "Staðfestu nýtt lykilorð á pósthólfi";
+
+/* Placeholder */
+"Confirm new password" = "Staðfestu nýtt lykilorð";
+
+/* alert title */
+"Confirm phishing report" = "Staðfestu skýrslu um veiðipóst";
+
+/* Title */
+"Confirmation" = "Staðfesting";
+
+/* view top title */
+"Congratulations!" = "Til hamingju!";
+
+/* contact section title */
+"Contact Details" = "Nánar um tengilið";
+
+/* Title */
+"Contact the ProtonMail team" = "Hafðu samband við ProtonMail-teymið";
+
+/* Action and title
+   menu title */
+"Contacts" = "Tengiliðir";
+
+/* Action */
+"Continue" = "Halda áfram";
+
+/* Title */
+"Copy address" = "Afrita póstfang";
+
+/* Title */
+"Copy name" = "Afrita nafn";
+
+/* Error message */
+"Could not connect to Store. Please try again later." = "Mistókst að tengjast forritaverslun. Reyndu aftur síðar.";
+
+/* contact placeholder */
+"Country" = "Land";
+
+/* top right action text */
+"Create" = "Búa til";
+
+/* Create account button */
+"Create Account" = "Búa til notandaaðgang";
+
+/* Error */
+"Create User failed. Please try again." = "Mistókst að búa til notanda. Reyndu aftur.";
+
+/* Signup top title */
+"Create a new account" = "Búa til nýjan notandaaðgang";
+
+/* Description */
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Búðu til og bættu við merkingum til að skipuleggja innhólfið þitt. Ýttu og haltu niðri á skilaboðum til að sjá alla mögulega valkosti.";
+
+/* None */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Búðu til og bættu við merkingum til að skipuleggja innhólfið þitt. Ýttu og haltu niðri á skilaboðum til að sjá alla mögulega valkosti.";
+
+/* error message title when create new user */
+"Create user failed" = "Mistókst að búa til notandaaðgang";
+
+/* Action */
+"Croatian" = "Króatíska";
+
+/* Change language title */
+"Current Language is: " = "Núverandi tungumál er: ";
+
+/* Title */
+"Current login password" = "Núverandi lykilorð innskráningar";
+
+/* Placeholder */
+"Current password" = "Núverandi lykilorð";
+
+/* action sheet option
+   contacts default label type */
+"Custom" = "Sérsniðið";
+
+/* Action */
+"Czech" = "Tékkneska";
+
+/* Title */
+"DECRYPT MAILBOX" = "AFKÓÐA PÓSTHÓLF";
+
+/* mail location title */
+"DRAFTS" = "Drög";
+
+/* Action */
+"Danish" = "Danska";
+
+/* message Date: text */
+"Date:" = "Dagsetning:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Dagsetning: %@";
+
+/* Title */
+"Debug" = "Villukemba";
+
+/* Action */
+"Decrypt" = "Afkóða";
+
+/* Description */
+"Decrypt token failed. Please try again." = "Afkóðun á teikni mistókst, reyndu aftur.";
+
+/* error title */
+"Decryption error" = "Afkóðunarvilla";
+
+/* error details */
+"Decryption of this content failed" = "Afkóðun þessa efnis mistókst";
+
+/* Title */
+"Default" = "Sjálfgefið";
+
+/* error message when create new user */
+"Default error. Please try again." = "Villa í sjálfgefnu. Reyndu aftur.";
+
+/* Placeholder */
+"Define Expiration Date" = "Skilgreindu gildistíma";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Skilgreina vísbendingu (valkvætt)";
+
+/* place holder */
+"Define Password" = "Skilgreindu lykilorð";
+
+/* general delete action */
+"Delete" = "Eyða";
+
+/* Title-Contacts */
+"Delete Contact" = "Eyða tengilið";
+
+/* The description of the button for deleting the contact group */
+"Delete Contact Group" = "Eyða tengiliðahópi";
+
+/* mail location desc */
+"Deleted" = "Eytt";
+
+/* Title */
+"Details" = "Nánar";
+
+/* Action */
+"Discard changes" = "Henda breytingum";
+
+/* Action */
+"Discard draft" = "Henda drögum";
+
+/* Title in settings */
+"Display Name" = "Birtingarnafn";
+
+/* Title */
+"Display Name Updated" = "Birtingarnafn uppfært";
+
+/* None */
+"Display name" = "Birtingarnafn";
+
+/* Title in display name settings */
+"DisplayName" = "Birtingarnafn";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchased service plan for " = "Viltu virkja greidda þjónustuáskrift fyrir ";
+
+/* Description */
+"Do you want to cancel the process?" = "Viltu hætta við ferlið?";
+
+/* Title */
+"Do you want to save the unsaved changes?" = "Viltu vista óvistuðu breytingarnar?";
+
+/* Title */
+"Don't Show Again" = "Ekki birta þetta aftur";
+
+/* Action */
+"Don't remind me again" = "Ekki minna mig á þetta aftur";
+
+/* Done action */
+"Done" = "Lokið";
+
+/* VoiceOver action description */
+"Double tap to setup" = "Tvíbankaðu til að setja upp";
+
+/* Action
+   mail location desc */
+"Draft" = "Drög";
+
+/* menu title */
+"Drafts" = "Drög";
+
+/* Action */
+"Dutch" = "Hollenska";
+
+/* Action */
+"Edit" = "Breyta";
+
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Breyta tengilið";
+
+/* Title */
+"Edit Folder" = "Breyta möppu";
+
+/* The title for the contact group editing view */
+"Edit Group" = "Breyta hópi";
+
+/* Title */
+"Edit Label" = "Breyta merki";
+
+/* The button text for edit profile picture */
+"Edit Photo" = "Breyta mynd";
+
+/* title */
+"Edit mobile signature" = "Breyta farsímaundirskrift";
+
+/* title */
+"Edit signature" = "Breyta undirskrift";
+
+/* default vcard types */
+"Email" = "Tölvupóstur";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "Tölvupóstföng";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "Senda tengilið tölvupóst";
+
+/* human check option button */
+"Email Verification" = "Sannvottun tölvupósts";
+
+/* contact placeholder */
+"Email address" = "Tölvupóstfang";
+
+/* Title */
+"Email address invalid" = "Tölvupóstfang er ógilt";
+
+/* place holder */
+"Email default signature" = "Sjálfgefin undirritun tölvupósts";
+
+/* 
+ & title */
+"Email domain invalid" = "Ógilt tölvupóstlén";
+
+/* empty folder, for spam and trash */
+"Empty Folder" = "Tóm mappa";
+
+/* Title */
+"Enable Default Signature" = "Virkja sjálfgefna undirskrift";
+
+/* settings protection section title */
+"Enable FaceID" = "Virkja FaceID";
+
+/* Title */
+"Enable Mobile Signature" = "Virkja farsímaundirskrift";
+
+/* Title */
+"Enable Notification Email" = "Virkja tilkynningapóst";
+
+/* settings protection section title */
+"Enable Pin Protection" = "Virkja varnir með PIN-númeri";
+
+/* settings protection section title */
+"Enable TouchID" = "Virkja TouchID";
+
+/* contact section title */
+"Encrypted Contact Details" = "Dulrita nánari upplýsingar um tengilið";
+
+/* Title */
+"Encrypted for outside" = "Dulritað fyrir útsent";
+
+/* Title */
+"Encrypted for outside reply" = "Dulritað fyrir útsend svör";
+
+/* Title */
+"Encrypted from outside" = "Dulritað fyrir utanaðkomandi";
+
+/* Title */
+"Encrypted from outside PGP/inline" = "Dulritað fyrir utanaðkomandi PGP/innfellt";
+
+/* Title */
+"Encrypted from outside PGP/MIME" = "Dulritað fyrir utanaðkomandi PGP-MIME";
+
+/* Title */
+"Encrypted from outside signed PGP/MIME" = "Dulritað fyrir utanaðkomandi PGP-MIME undirritað";
+
+/* encryption lock description */
+"Encrypted outside" = "Dulritað utanaðkomandi";
+
+/* key setup top title */
+"Encryption Setup" = "Uppsetning dulritunar";
+
+/* settings option (End Time: 8am) */
+"End Time" = "Lokatími";
+
+/* Title */
+"End-to-End Encryption" = "Enda-í-enda dulritun";
+
+/* encryption lock description */
+"End-to-end encrypted" = "Enda-í-enda dulritað";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Enda-í-enda dulrituð skilaboð";
+
+/* encryption lock description */
+"End-to-end encrypted message from verified address" = "Enda-í-enda dulrituð skilaboð frá sannvottuðu tölvupóstfangi";
+
+/* encryption lock description */
+"End-to-end encrypted to verified address" = "Enda-í-enda dulritað til sannvottaðs tölvupóstfangs";
+
+/* Action */
+"English" = "Enska";
+
+/* Action in 2fa popup view */
+"Enter" = "Setja inn";
+
+/* Title */
+"Enter Verification Code" = "Settu inn sannvottunarkóða";
+
+/* set pin title */
+"Enter your PIN" = "Settu inn PIN-kóðann þinn";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Settu inn PIN-kóðann þinn til að aflæsa innhólfinu.";
+
+/* human verification top title */
+"Enter your cell phone number" = "Settu inn farsímanúmerið þitt";
+
+/* top title */
+"Enter your existing email address." = "Settu inn núverandi tölvupóstfangið þitt.";
+
+/* settings debug section title */
+"Error Logs" = "Villuskráningar";
+
+/* Error alert title */
+"Error occured" = "Villa kom upp";
+
+/* lock app option */
+"Every time enter app" = "Í hvert sinn sem forritið ræsist";
+
+/* VoiceOver: email can expire */
+"Expires" = "Rennur út";
+
+/* expiration time count down */
+"Expires in %d days %d hours %d mins %d seconds" = "Rennur út eftir %1$d daga %2$d klst %3$d mín %4$d sek";
+
+/* Title */
+"Expiring Messages" = "Skilaboð sem renna út";
+
+/* Key size checkbox */
+"Extreme Security" = "Ofuröryggi";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Gleymt lykilorð?";
+
+/* abbreviation of forward: */
+"FW:" = "Áfram:";
+
+/* Error message */
+"Failed to determine type of file" = "Tókst ekki að ákvarða gerð skráar";
+
+/* Error message */
+"Failed to get list of available products from AppStore." = "Það tókst ekki að sækja lista yfir tiltækar vörur í AppStore.";
+
+/* Description */
+"Failed to initialize the app's saved data" = "Mistókst að frumstilla vistuð gögn forrits";
+
+/* *
+ *  Core Data Service & local error */
+"Failed to initialize the application's saved data" = "Mistókst að frumstilla vistuð gögn forrits";
+
+/* default vcard types */
+"Fax" = "Bréfsími";
+
+/* menu title */
+"Feedback" = "Umsagnir";
+
+/* Error */
+"Fetch user info failed" = "Mistókst að ná í upplýsingar um notanda";
+
+/* VoiceOver: email belongs to folder */
+"Folder" = "Mappa";
+
+/* place holder */
+"Folder Name" = "Heiti möppu";
+
+/* Service Plan description */
+"For individuals looking to benefit from secure communication at no cost" = "Fyrir einstaklinga sem vilja nýta sér örugg samskipti án mikils kostnaðar";
+
+/* Service Plan description */
+"For individuals that need more capacity, customization and advanced features" = "Fyrir einstaklinga sem þurfa meira gagnamagn, vilja geta sérsniðið eftir sínum þörfum og þá sem þurfa þróaða eiginleika";
+
+/* Service Plan description */
+"For organizations that need multi-user support and additional productivity features" = "Fyrir stofnanir og félög sem þurfa margnotendastuðning og viðbótareiginleika fyrir daglegan rekstur";
+
+/* Service Plan description */
+"For power users and groups of people that value full anonymity and privacy" = "Fyrir kraftnotendur og hópa fólks sem kunna að meta fullt nafnleysi og gagnaleynd";
+
+/* forward action */
+"Forward" = "Áframsenda";
+
+/* forwarded message title */
+"Forwarded message" = "Áframsend skilaboð";
+
+/* Action */
+"French" = "Franska";
+
+/* Title */
+"From" = "Frá";
+
+/* message From: field text */
+"From:" = "Frá:";
+
+/* abbreviation of forward: */
+"Fwd:" = "Áfram:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Kyn";
+
+/* Title */
+"General Settings" = "Almennar stillingar";
+
+/* Action */
+"German" = "Þýska";
+
+/* Screen header, like 'Get VISIONARY' */
+"Get %@" = "Náðu í %@";
+
+/* Action */
+"Get more information" = "Fá ítarlegri upplýsingar";
+
+/* Action */
+"Go to inbox" = "Fara í innhólf";
+
+/* The title for the contact group detail view */
+"Group Details" = "Nánar um hóp";
+
+/* The instruction label for the group name textfield */
+"Group Name" = "Nafn hóps";
+
+/* menu title (contact groups) */
+"Groups" = "Hópar";
+
+/* Title */
+"Help & Support" = "Hjálp og aðstoð";
+
+/* Title */
+"Help us to improve ProtonMail with your input." = "Hjálpaðu okkur að bæta ProtonMail með umsögn frá þér.";
+
+/* Title */
+"Help us to make privacy the default in the web." = "Hjálpaðu okkur að gera gagnaleynd sjálfgefna á vefnum.";
+
+/* Action */
+"Hide" = "Fela";
+
+/* Title */
+"Hide Details" = "Fela nánari upplýsingar";
+
+/* Key size checkbox */
+"High Security" = "Mikið öryggi";
+
+/* Title */
+"Hours" = "Klukkustundir";
+
+/* Description */
+"Human Check Failed" = "Mennskuprófun mistókst";
+
+/* human check warning title */
+"Human Check Warning" = "Aðvörun við mennskuprófun";
+
+/* top title */
+"Human Verification" = "Mennskupróf";
+
+/* Service plan capability */
+"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP stuðningur í gegnum ProtonMail-brú";
+
+/* mail location title */
+"INBOX" = "Innhólf";
+
+/* Action */
+"Import Error" = "Innflutningsvilla";
+
+/* Title */
+"Import File From..." = "Flytja inn skrá úr...";
+
+/* import contact title */
+"Importing Contacts" = "Flyt inn tengiliði";
+
+/* Error */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir ProtonMail.";
+
+/* mail location desc
+   menu title */
+"Inbox" = "Innhólf";
+
+/* Error */
+"Incorrect PIN," = "Rangt PIN-númer,";
+
+/* Title */
+"Incorrect password" = "Rangt lykilorð";
+
+/* place holder */
+"Input Display Name ..." = "Settu inn birtingarnafn ...";
+
+/* place holder */
+"Input Notification Email ..." = "Setja inn tilkynningapóst ...";
+
+/* Error */
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Gerð samstundis-aðganga að ProtonMail er óvirk í augnablikinu. Farðu á https://protonmail.com/invite til að biðja um boðsaðgang.";
+
+/* The preconditions are not met */
+"Internal Error" = "Innri villa";
+
+/* default vcard types */
+"Internet" = "Internet";
+
+/* Error */
+"Invalid Password" = "Ógilt lykilorð";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Ógild vefslóð";
+
+/* title */
+"Invalid UserName" = "Ógilt notandanafn";
+
+/* Error message */
+"Invalid UserName!" = "Ógilt notandanafn!";
+
+/* None */
+"Invalid access token please relogin" = "Ógilt auðkennisteikn, skráðu þig inn aftur";
+
+/* Description */
+"Invalid access token. Please relogin." = "Ógilt aðgangsteikn, skráðu inn aftur.";
+
+/* Error */
+"Invalid credential" = "Ógilt auðkenni";
+
+/* update password error */
+"Invalid hashed password!" = "Ógilt tætigildislykilorð!";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Er þessi villuskýrsla vegna kaupa í forritinu?";
+
+/* It is not possible to switch to `plan` within our iOS app. */
+"It is not possible to switch to %@ within our iOS app." = "Það er ekki hægt að skipta yfir í  %@ innan iOS-forritsins.";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Okkur tókst ekki að tengja vöruna sem þú keyptir í AppStore við neina vöru á þjónum okkar. Vinsamlega fylltu inn í villuskýrsluna og notendaaðstoðarteymið okkar mun hafa samband við þig eins fljótt og auðið er.";
+
+/* Action */
+"Italian" = "Ítalska";
+
+/* Title */
+"Keep me updated about new features" = "Halda mér upplýstum um nýja eiginleika";
+
+/* Error */
+"Key generation failed" = "Gerð dulritunarlykla tókst ekki";
+
+/* Error */
+"Key generation failed. Please try again." = "Gerð dulritunarlykla tókst ekki, reyndu aftur.";
+
+/* Error */
+"Key invalid. Please go back and try again." = "Ógildur lykill, farðu til baka og reyndu aftur.";
+
+/* None */
+"LOGIN" = "Innskráning";
+
+/* Title */
+"Label Management" = "Umsýsla merkinga";
+
+/* createing lable input place holder */
+"Label Name" = "Heiti merkis";
+
+/* Title */
+"Label as..." = "Merkja sem...";
+
+/* VoiceOver: email has lables */
+"Labels" = "Merkingar";
+
+/* Title */
+"Labels have been applied." = "Merkingum hefur verið beitt.";
+
+/* Service plan capability */
+"Labels, Folders, Filters & More" = "Merkingar, möppur, síur og fleira";
+
+/* Title */
+"Labels/Folders" = "Merkingar/Möppur";
+
+/* Title */
+"Language" = "Tungumál";
+
+/* Action */
+"Learn More" = "Kanna nánar";
+
+/* learn more button */
+"Learn more here" = "Fræðstu betur hérna";
+
+/* Service plan capability */
+"Limited to 150 messages sent/day" = "Takmarkað við 150 skilaboð send/dag";
+
+/* Action */
+"Load remote content" = "Hlaða inn fjartengdu efni";
+
+/* None */
+"Loading..." = "Hleð inn...";
+
+/* Description */
+"Local cache can't find mailbox password" = "Staðvært skyndiminni finnur ekki aðgangsorð pósthólfs";
+
+/* *
+ *  file string type */
+"Localizable.strings" = "Grunn";
+
+/* menu title */
+"Lock The App" = "Læsa forritinu";
+
+/* Title */
+"Login" = "Innskráning";
+
+/* settings general section title */
+"Login Password" = "Lykilorð Innskráningar";
+
+/* Error */
+"Login password doesn't match" = "Lykilorð innskráningar samsvarar ekki";
+
+/* menu title */
+"Logout" = "Útskráning";
+
+/* error title */
+"Logs" = "Aðgerðaskrár";
+
+/* alert description */
+"Looking to edit or disable your mobile signature?" = "Þarftu að breyta farsímaundirskriftinni þinni eða gera hana óvirka?";
+
+/* Upgrade warning title */
+"Looking to secure your contact's details?" = "Ertu að leita að tryggja öryggi upplýsinga um tengiliðinn þinn?";
+
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Lykilorð á pósthólfi";
+
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
+/* settings general section title */
+"Mailbox Password" = "Lykilorð á pósthólfi";
+
+/* None */
+"Mailbox password doesn't match" = "Lykilorð á pósthólfi samsvarar ekki";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage Addresses" = "Sýsla með vistföng";
+
+/* Title */
+"Manage Labels/Folders" = "Sýsla með merkingar/möppur";
+
+/* mark message as read action */
+"Mark Read" = "Merkja sem lesið";
+
+/* Action */
+"Mark as unread" = "Merkja sem ólesið";
+
+/* menu title */
+"Menu" = "Valmynd";
+
+/* Message with title */
+"Message %@" = "Skilaboð %@";
+
+/* Placeholder */
+"Message Password" = "Lykilorð skilaboða";
+
+/* settings debug section title */
+"Message Queue" = "Skilaboð í biðröð";
+
+/* Title */
+"Message Swipe Actions" = "Aðgerðir þegar strokið er á skilaboð";
+
+/* *
+ *  Expiration View */
+"Message expired" = "Skilaboð útrunnin";
+
+/* Title */
+"Message has been deleted." = "Skilaboðum hefur verið eytt.";
+
+/* Title */
+"Message has been moved." = "Skilaboð voru færð.";
+
+/* Description */
+"Message password does not match." = "Lykilorð skilaboða samsvarar ekki.";
+
+/* None */
+"Message sending failed please try again" = "Sending skilaboða mistókst, reyndu aftur";
+
+/* Description */
+"Message sending failed. Please try again." = "Sending skilaboða mistókst, reyndu aftur.";
+
+/* Description after message have been sent */
+"Message sent" = "Skilaboð send";
+
+/* Description */
+"Messages you send can be set to auto delete after a certain time period." = "Skilaboð sem þú sendir er hægt að stilla þannig að þau eyðist sjálfvirkt eftir ákveðinn tíma.";
+
+/* default vcard types */
+"Mobile" = "Farsími";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Farsímaundirskrift";
+
+/* Description */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Nýskráningar á snjalltækjum eru óvirkar í augnablikinu Prófaðu aftur síðar, eða reyndu að skrá þig á protonmail.com með hjálp borð- eða fartölvu.";
+
+/* Description */
+"Modifying or turning off the default mobile signature is a paid feature." = "Að breyta eða slökkva á sjálfgefnu farsímaundirskriftinni er eiginleiki í greiddum áskriftum.";
+
+/* Screen header */
+"More Credits" = "Meiri inneign";
+
+/* move action */
+"Move to AllMail" = "Flytja í Allur póstur";
+
+/* move action */
+"Move to Archive" = "Flytja í safn";
+
+/* move action */
+"Move to Draft" = "Flytja í drög";
+
+/* folder apply - title */
+"Move to Folder" = "Flytja í möppu";
+
+/* move action */
+"Move to Inbox" = "Flytja í innhólf";
+
+/* move action */
+"Move to Outbox" = "Flytja í úthólf";
+
+/* move action */
+"Move to Spam" = "Flytja í ruslpóst";
+
+/* move action */
+"Move to Trash" = "Flytja í ruslið";
+
+/* Title */
+"Move to..." = "Flytja í...";
+
+/* Title */
+"Multiple Addresses" = "Mörg póstföng";
+
+/* Action */
+"NEED AN ACCOUNT? SIGN UP." = "Skráðu þig án kvaða";
+
+/* title */
+"Name" = "Nafn";
+
+/* Title */
+"New login password" = "Nýtt lykilorð Innskráningar";
+
+/* Title */
+"New mailbox password" = "Nýtt lykilorð á pósthólfi";
+
+/* Placeholder */
+"New password" = "Nýtt lykilorð";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Gælunafn";
+
+/* message when mailbox doesnt have emailsß */
+"No Messages" = "Engin skilaboð";
+
+/* Title */
+"No connectivity detected..." = "Engin tenging fannst...";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Nei, fyrir annan ProtonMail-aðgang";
+
+/* Error message */
+"No, not related to in-app purchase" = "Nei, ekki tengt kaupum í forritinu";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Title */
+"None" = "Ekkert";
+
+/* Action */
+"Not Now" = "Ekki núna";
+
+/* alert description */
+"Not all recipients support message expiration" = "Ekki styðja allir viðtakendur að skilaboð renni út";
+
+/* Signup user name notes */
+"Note: The Username is also your ProtonMail address." = "Athugaðu: Notandanafnið er líka vistfang þitt hjá ProtonMail.";
+
+/* setup password notes */
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Athugaðu: Þetta er notað til að dulrita og afkóða skilaboðin þín. Ekki týna þessu lykilorði - við getum ekki endurheimt það.";
+
+/* setup password notes */
+"Note: This is used to log you into your account." = "Athugaðu: Þetta er notað til að skrá inn á aðganginn þinn.";
+
+/* title */
+"Notes" = "Minnispunktar";
+
+/* Alert title */
+"Notice" = "Tilkynning";
+
+/* Title */
+"Notification / Recovery Email" = "Tilkynninga / Endurheimtupóstur";
+
+/* Title */
+"Notification Email" = "Tilkynningapóstur";
+
+/* title of action sheet */
+"Notification Snooze" = "Frestun tilkynninga";
+
+/* VoiceOver description */
+"Notifications Are Snoozed" = "Tilkynningar eru í bið";
+
+/* VoiceOver description */
+"Notifications Snooze Off" = "Frestun tilkynninga óvirk";
+
+/* Action */
+"OK" = "Í lagi";
+
+/* Section header */
+"OTHER PLANS" = "AÐRAR ÁSKRIFTIR";
+
+/* Title */
+"On" = "Kveikt";
+
+/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On EE, MMM d, yyyy at %@" = "EE, d. MMM, yyyy klukkan %@";
+
+/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
+"On EE, MMM d, yyyy at %@, %@ wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
+
+/* None */
+"OpenDraft" = "Opna drög";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Fyrirtæki/Stofnun/Samtök/Félag";
+
+/* default vcard types */
+"Other" = "Annað";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Notendaaðstoðarteymið okkar mun reyna að virkja þjónustuáskriftina þína handvirkt ef þú fellst á að láta fylgja með þau tæknilegu gögn sem AppStore-verslunin gaf forritinu þegar viðskiptin fóru fram. Þessi gögn innihalda eingar viðkvæmar upplýsingar um about your iTunes aðganginn þinn, Apple ID auðkenni, tengd greiðslukort eða aðrar notandaupplýsingar. Tæknilegu upplýsingarnar hjálpa einungis til við að sannreyna að viðskiptin hafi átt sér stað á vefþjónum AppStore.";
+
+/* mail location desc */
+"Outbox" = "Úthólf";
+
+/* encryption lock description */
+"PGP-encrypted" = "PGP-dulritað";
+
+/* encryption lock description */
+"PGP-encrypted message" = "PGP-dulrituð skilaboð";
+
+/* encryption lock description */
+"PGP-encrypted message from verified address" = "PGP-dulrituð skilaboð frá sannvottuðu tölvupóstfangi";
+
+/* encryption lock description */
+"PGP-signed" = "PGP-undirritað";
+
+/* encryption lock description */
+"PGP-signed message from verified address" = "PGP-undirrituð skilaboð frá sannvottuðu tölvupóstfangi";
+
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PREMIUM EIGINLEIKI";
+
+/* title */
+"Password" = "Lykilorð";
+
+/* Title */
+"Password Mismatch" = "Lykilorð stemma ekki";
+
+/* Title */
+"Password Updated" = "Lykilorð uppfært";
+
+/* Description */
+"Password cannot be empty." = "Lykilorð getur ekki verið autt.";
+
+/* update password error */
+"Password update failed" = "Uppfærsla lykilorðs mistókst";
+
+/* default vcard types */
+"Personal" = "Einka";
+
+/* default vcard types */
+"Phone" = "Sími";
+
+/* human check option button */
+"Phone Verification" = "Sannprófun símanúmers";
+
+/* contact placeholder */
+"Phone number" = "Símanúmer";
+
+/* Title */
+"Phone number invalid" = "Símanúmer er ógilt";
+
+/* Title */
+"Photo Library" = "Myndasafn";
+
+/* Description */
+"Pin code can't be empty." = "PIN-númer má ekki vera autt.";
+
+/* Title */
+"Plain text" = "Hreinn texti";
+
+/* alert description */
+"Please add a password for the following recipients." = "Bættu inn lykilorði fyrir eftirfarandi viðtakendur.";
+
+/* Description */
+"Please check your cell phone for the verification code." = "Skoðaðu hvort sannvottunarkóðinn hafi borist í farsímann þinn.";
+
+/* error message */
+"Please check your email for the verification code." = "Skoðaðu hvort sannvottunarkóðinn hafi borist í tölvupóstinn þinn.";
+
+/* alert description */
+"Please disable PGP Sending for following addresses." = "Gerðu sendingu með PGP óvirka fyrir eftirfarandi tölvupóstföng.";
+
+/* Description */
+"Please input a valid cell phone number." = "Settu inn gilt farsímanúmer.";
+
+/* error message */
+"Please input a valid email address." = "Settu inn gilt tölvupóstfang.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Skráðu þig inn í ProtonMail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið viðskiptunum.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Skráðu þig inn í ProtonMail-aðganginn sem þú ætlar að uppfæra þjónustuáskriftina fyrir, svo að við getum lokið virkjun þjónustuáskriftarinnar.";
+
+/* Error */
+"Please pick a user name first!" = "Veldu fyrst notandanafn!";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Settu inn nafn á hópi";
+
+/* when switch sender but email has attachments */
+"Please remove all attachments before changing sender!" = "Fjarlægðu öll viðhengi til að geta breytt vistfangi sendanda";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Veldu a.m.k. eitt tölvupóstfang fyrir tengiliðahópinn";
+
+/* human check select option title */
+"Please select one of the following options:" = "Veldu einn af eftirfarandi möguleikum:";
+
+/* Description */
+"Please set a password." = "Stilltu lykilorð.";
+
+/* None */
+"Please try a different domain." = "Prófaðu eitthvað annað lén.";
+
+/* None */
+"Please try a different email address." = "Prófaðu eitthvað annað tölvupóstfang.";
+
+/* None */
+"Please try a different password." = "Prófaðu eitthvað annað lykilorð.";
+
+/* None */
+"Please try a different user name." = "Prófaðu eitthvað annað notandanafn.";
+
+/* 
+
+ */
+"Please try again." = "Endilega reyndu aftur";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Aflæstu forritinu til að halda áfram með virkjun þjónustuáskriftarinnar þinnar";
+
+/* Description */
+"Please use ProtonMail App login first." = "Notaðu fyrst ProtonMail-forritið til að skrá þig inn.";
+
+/* Alert */
+"Please use the web application to reset your password." = "Notaðu vefforritið til að endurstilla lykilorðið.";
+
+/* None */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorði pósthólfsins þíns!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords!" = "Notaðu vefútgáfu ProtonMail til að breyta lykilorðunum þínum!";
+
+/* Description */
+"Please use your new password when signing in." = "Settu inn nýja lykilorðið þitt við innskráningu.";
+
+/* The */
+"Please wait until the email downloaded!" = "Bíddu þar til búið er að ná í tölvupóstinn!";
+
+/* 
+ & alert title */
+"Please, manage it in your phone." = "Stjórnaðu því í símanum þínum.";
+
+/* Action */
+"Polish" = "Pólska";
+
+/* Action */
+"Portuguese" = "Portúgalska";
+
+/* Action */
+"Portuguese Brazil" = "Portúgalska (Brasilía)";
+
+/* Action */
+"Print" = "Prenta";
+
+/* Title */
+"Protection" = "Verndun";
+
+/* settings protection section title */
+"Protection Entire App" = "Vörn fyrir allt forritið";
+
+/* Title */
+"ProtonMail" = "ProtonMail";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "Til að sérsníða farsímaundirskrift er nauðsynlegt að vera með ProtonMail Plus";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary gera þér kleift að bæta við og breyta upplýsingum um tengiliði oðrum en bara nafni þeirra og tölvupóstfangi. Með því að nota ProtonMail eru þessar upplýsingar jafn öruggar og enda-í-enda dulritaðir tölvupóstar.";
+
+/* alert description */
+"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary gera þér kleift að sérsníða farsímaundirskriftina þína.";
+
+/* Description */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda ProtonMail gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja ProtonMail.";
+
+/* Title */
+"ProtonMail encrypted emails" = "ProtonMail dulritaðir tölvupóstar";
+
+/* Description */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail er í augnablikinu án nettengingar, skoðaðu síðustu stöðu mála á Twitter: https://twitter.com/protonmail";
+
+/* Service plan capability */
+"ProtonVPN included" = "ProtonVPN innifalið";
+
+/* Title */
+"Quick swipe actions" = "Flýtiaðgerðir við stroku";
+
+/* Action */
+"RESET MAILBOX PASSWORD" = "ENDURSTILLA LYKILORÐ Á PÓSTHÓLFI";
+
+/* Title */
+"Rate & Review" = "Yfirfara & senda umsögn";
+
+/* set pin title */
+"Re-Enter your PIN" = "Settu aftur inn PIN-kóðann þinn";
+
+/* abbreviation of reply: */
+"Re:" = "Svar:";
+
+/* Title */
+"Reading device contacts data..." = "Les gögn tengiliða á tækinu...";
+
+/* Title */
+"Recovery Code" = "Endurheimtukóði";
+
+/* Title */
+"Recovery Email" = "Endurheimtupóstur";
+
+/* Title */
+"Recovery Email Warning" = "Aðvörun fyrir endurheimtupóst";
+
+/* Title */
+"Remind Me Later" = "Áminna mig síðar";
+
+/* remove action */
+"Remove" = "Fjarlægja";
+
+/* un star message */
+"Remove Star" = "Fjarlægja stjörnu";
+
+/* settings option (Repeat: sun, mon, thu) */
+"Repeat" = "Endurtaka";
+
+/* reply action */
+"Reply" = "Svara";
+
+/* reply all action */
+"Reply All" = "Svara öllum";
+
+/* composer view model impl */
+"Reply message" = "Svara skilaboðum";
+
+/* None */
+"ReplyAll" = "Svara öllum";
+
+/* menu title */
+"Report Bugs" = "Tilkynna villur";
+
+/* message details-> more action-> report phishing */
+"Report Phishing" = "Tilkynna um veiðipóst (phishing)";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Ef skilaboð eru tilkynnt sem tilraun til gagnaveiði (phishing) verða þau send til okkar, svo við getum greint þau og endurbætt síurnar okkar. Það þýðir aftur á móti að við munum geta séð allt efni skilaboðana.";
+
+/* Title */
+"Resetting message cache ..." = "Endurstilli skyndiminni skilaboða ...";
+
+/* Action */
+"Retry" = "Reyna aftur";
+
+/* email verify code resend count down */
+"Retry after %d seconds" = "Reyna aftur eftir %d sekúndur";
+
+/* Action */
+"Romanian" = "Rúmenska";
+
+/* Action */
+"Russian" = "Rússneska";
+
+/* mail location title */
+"SENT" = "SENT";
+
+/* mail location title */
+"SPAM" = "Ruslpóstur";
+
+/* Error */
+"SRP Client" = "SRP-biðlari";
+
+/* Error */
+"SRP Server" = "SRP-þjónn";
+
+/* mail location title */
+"STARRED" = "Stjörnumerkt";
+
+/* Title */
+"Save" = "Vista";
+
+/* title */
+"Save Changes" = "Vista breytingar";
+
+/* Action */
+"Save draft" = "Vista drög";
+
+/* action sheet option */
+"Scheduled" = "Áætlað";
+
+/* Title */
+"Search" = "Leita";
+
+/* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
+"Select An Option" = "Veldu valkost";
+
+/* The title for the view where user can select the color for the group */
+"Select Color" = "Veldu lit";
+
+/* None */
+"Select your language" = "Veldu tungumálið þitt";
+
+/* Action */
+"Send" = "Senda";
+
+/* Title */
+"Send Verification Code" = "Senda sannvottunarkóða";
+
+/* Action */
+"Send anyway" = "Senda samt";
+
+/* Description */
+"Send message without subject?" = "Senda skilaboðin án efnislínu?";
+
+/* Title */
+"Send plain but stored enc" = "Senda sem hreinan texta en geyma dulritað";
+
+/* encryption lock description */
+"Sender Verification Failed" = "Sannvottun sendanda mistókst";
+
+/* Description */
+"Sending Message" = "Sendi skilaboð";
+
+/* Alert title */
+"Sending message" = "Sendi skilaboð";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Að senda skilaboð frá %1$@ póstföngum er eiginleiki sem greiða þarf fyrir. Skilaboðin þín verða send frá sjálfgefna tölvupóstfanginu %2$@";
+
+/* menu title */
+"Sent" = "Sent";
+
+/* Description */
+"Sent Failed" = "Sending mistókst";
+
+/* encryption lock description for auto reply */
+"Sent by ProtonMail with zero access encryption" = "Sent úr ProtonMail með órjúfanlegri dulritun";
+
+/* encryption lock description */
+"Sent by you with end-to-end encryption" = "Sent af þér með enda-í-enda dulritun";
+
+/* Description */
+"Server proofs not valid!" = "Sannvottunarauðkenni vefþjóns eru ekki gild!";
+
+/* Title */
+"Set Password" = "Setja lykilorð";
+
+/* Description */
+"Set a password to encrypt this message for non-ProtonMail users." = "Settu lykilorð til að dulrita þessi skilaboð fyrir notendur sem ekki nota ProtonMail.";
+
+/* Signup passwords top title */
+"Set passwords" = "Stilltu lykilorð";
+
+/* menu title */
+"Settings" = "Stillingar";
+
+/* Title */
+"Share Alert" = "Aðvörun vegna deilingar";
+
+/* action */
+"Share Contact" = "Deila tengilið";
+
+/* Title */
+"Share it with your friends" = "Deildu því með vinum þínum";
+
+/* Action */
+"Sign Out" = "Skrá út";
+
+/* Title in signature settings */
+"Signature" = "Undirskrift";
+
+/* Title */
+"Signature Updated" = "Undirskrift uppfærð";
+
+/* settings general section title */
+"Single Password" = "Einfalt lykilorð";
+
+/* settings option */
+"Snooze Notifications" = "Fresta tilkynningum";
+
+/* title of action sheet when quick snooze is active (Snoozed for 30min) */
+"Snoozed for" = "Frestað í";
+
+/* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
+"Snoozed till" = "Frestað til";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Því miður getum við ekki meðhöndlað viðskipti í beta-þróunarútgáfu iOS-forritsins. Við þökkum þér hinsvegar fyrir að taka þátt í þróunarvinnu opinberu beta-útgáfunnar.";
+
+/* None */
+"Space Warning" = "Aðvörun vegna lítils diskpláss";
+
+/* mail location desc
+   menu title */
+"Spam" = "Ruslpóstur";
+
+/* Description */
+"Spammed" = "Ruslpóstur";
+
+/* Action */
+"Spanish" = "Spænska";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+
+/* Title */
+"Star" = "Stjarna";
+
+/* mail location desc
+   menu title
+   VoiceOver: email is starred */
+"Starred" = "Stjörnumerkt";
+
+/* settings option (Start Time: 8am) */
+"Start Time" = "Upphafstími";
+
+/* contact placeholder */
+"State" = "Hérað/Fylki";
+
+/* Title */
+"Storage" = "Geymslurými";
+
+/* Title */
+"Storage Warning" = "Aðvörun vegna geymslupláss";
+
+/* encryption lock description */
+"Stored with zero access encryption" = "Geymt með órjúfanlegri dulritun";
+
+/* contact placeholder */
+"Street" = "Gata";
+
+/* Placeholder */
+"Subject" = "Viðfangsefni";
+
+/* subject: text when forward */
+"Subject:" = "Viðfangsefni:";
+
+/* menu title */
+"Subscription" = "Áskrift";
+
+/* Action */
+"Support ProtonMail" = "Styðja við ProtonMail";
+
+/* Service plan capability; i = 2 */
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Stuðningur við %i sérsniðin lén (t.d. notandi@lenidmitt.com)";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Strjúka frá vinstri til hægri";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Strjúka frá hægri til vinstri";
+
+/* Error */
+"System can't copy the file" = "Kerfinu mistókst að afrita skrána";
+
+/* mail location title */
+"TRASH" = "Rusl";
+
+/* Title */
+"Take a Photo" = "Taktu mynd";
+
+/* alert description */
+"Tap send anyway to send without expiration to these recipients" = "Ýttu samt á sendihnappinn til að senda án gildistíma til þessara viðtakenda";
+
+/* None */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Takk fyrir að senda inn villuskýrslu.  Við höfum bætt skýrslunni þinni í villuskráningarkerfið okkar.";
+
+/* update password error */
+"The Password is wrong." = "Lykilorðið er rangt.";
+
+/* Title */
+"The ProtonMail current offline..." = "Protonmail er ótengt í augnablikinu...";
+
+/* 
+ */
+"The UserName have been taken." = "Notandanafnið er þegar í notkun.";
+
+/* Description */
+"The authentication credentials are invalid." = "Auðkenni sannvottunar eru ógild.";
+
+/* 
+ */
+"The authentication token has expired." = "Auðkenningarteiknið er útrunnið.";
+
+/* key size notes */
+"The current standard" = "Núverandi staðall";
+
+/* Description */
+"The display name is now %@." = "Birtingarnafnið er núna %@.";
+
+/* Description */
+"The draft cache is broken. Please try again." = "Skyndiminnið fyrir skilaboðadrög er bilað, reyndu aftur.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "Snið draganna er ekki rétt, sending mistókst!";
+
+/* key size note part 1 */
+"The highest level of encryption available." = "Hæsta stig dulritunar í boði.";
+
+/* None */
+"The label name is duplicate" = "Heiti merkisins er tvítekið";
+
+/* Error */
+"The mailbox password is incorrect." = "Lykilorð á pósthólfi er rangt.";
+
+/* Alert message */
+"The maximum number of distinct recipients is %d" = "Hámarksfjöldi aðgreindra viðtakenda er %d";
+
+/* *
+ *  LabelsViewController */
+"The maximum number of labels is %d." = "Hámarksfjöldi merkinga er %d.";
+
+/* None */
+"The new password can't empty" = "Nýja lykilorðið getur ekki verið autt";
+
+/* update password error */
+"The new password can't empty." = "Nýja lykilorðið getur ekki verið autt.";
+
+/* None */
+"The new password not match" = "Lykilorðin stemma ekki";
+
+/* update password error */
+"The new password not match." = "Nýja lykilorðið samsvarar ekki.";
+
+/* recovery email notes */
+"The optional recovery email address allows you to reset your login password if you forget it." = "Valkvæða endurheimtupóstfangið gerir þér kleift að endurstilla innskráningarlykilorðið ef þú gleymir því.";
+
+/* Description */
+"The password you entered does not match the current password." = "Lykilorðið sem þú settir inn samsvarar ekki núgildandi lykilorði.";
+
+/* Description */
+"The passwords you entered do not match." = "Lykilorðin sem þú settir inn stemma ekki.";
+
+/* update password error */
+"The private key update failed." = "Uppfærsla einkalykilsins mistókst.";
+
+/* Title */
+"The request timed out." = "Beiðnin féll á tíma.";
+
+/* None */
+"The total attachment size can't be bigger than 25MB" = "Heildarstærð viðhengja má ekki vera meiri en 25MB";
+
+/* Description */
+"The total attachment size cannot exceed 25MB" = "Heildarstærð viðhengja má ekki vera meiri en MB";
+
+/* 
+ & title */
+"The verification email invalid" = "Ógildur sannvottunarpóstur";
+
+/* Error */
+"The verification failed!" = "Sannvottunin mistókst!";
+
+/* Description */
+"There was an error creating or loading the app's saved data." = "Villa kom upp þegar búa átti til eða hlaða inn vistuðum gögnum forritsins.";
+
+/* 
+ & local error */
+"There was an error creating or loading the application's saved data." = "Villa kom upp við að útbúa eða hlaða inn vistuðum gögnum forritsins.";
+
+/* Alert message */
+"This can take a while. Please do not dismiss the app." = "Þetta getur tekið dálítinn tíma. Ekki loka forritinu.";
+
+/* alert desc */
+"This contact belongs to your Address Book." = "Þessi tengiliður tilheyrir nafnaskránni þinni.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur féll á auðkenningarprófunum lénsins. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Þessi tölvupóstur lítur út eins og hann komi frá ProtonMail-vistfangi en kom í rauninni frá utan kerfisins og féll á auðkenningarprófunum okkar. Hann gæti verið áframsendur á rangan hátt eða falsaður!";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Þessi skilaboð gætu verið tilraun til að veiða upplýsingar (phishing). Skoðaðu vel sendandann og efni póstsins til að ákveða hvort um löglegan póst sé að ræða.";
+
+/* contacts talbe cell Title title */
+"Title" = "Titill";
+
+/* Title */
+"To" = "Til";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "Til að koma í veg fyrir misnotkun á ProtonMail,
+ þurfum við að ganga úr skugga um að þú sért mennskur.";
+
+/* None */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
+
+/* Description */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Til að endurstilla lykilorðið á pósthólfinu, notaðu þá vefútgáfu ProtonMail á protonmail.com";
+
+/* message To: feild */
+"To:" = "Til:";
+
+/* *
+ *  API Error & alert title */
+"Token expired" = "Auðkenningarteiknið er útrunnið";
+
+/* Alert title */
+"Too many recipients" = "Of margir viðtakendur";
+
+/* settings touchid error */
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID hefur ekki verið stillt, virkjaðu það í kerfisstillingunum";
+
+/* settings touchid/faceid error */
+"TouchID not available" = "TouchID ekki tiltækt";
+
+/* mail location desc
+   menu title
+   move action */
+"Trash" = "Rusl";
+
+/* Title */
+"Trouble shooting guide" = "Leiðarvísir fyrir vandamál";
+
+/* Action */
+"Turkish" = "Tyrkneska";
+
+/* action sheet option */
+"Turn Off" = "Slökkva á";
+
+/* Title */
+"Tweet about ProtonMail" = "Tístu um ProtonMail";
+
+/* Placeholder */
+"Two Factor Code" = "Tveggja-þátta lykilkóði";
+
+/* Internal type casting error */
+"Type casting error" = "Type casting error";
+
+/* default vcard types */
+"URL" = "Slóð (URL)";
+
+/* Title */
+"USER LOGIN" = "Innskráning notanda";
+
+/* Action */
+"Ukrainian" = "Úkraníska";
+
+/* Description */
+"Unable to connect to the server" = "Get ekki tengst við netþjón";
+
+/* 
+ */
+"Unable to construct a valid URL with the following path: %@" = "Tókst ekki að búa til gilda URL-vísun með eftirfarandi slóð: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "Ekki tókst að búa til SRP-biðlara!";
+
+/* Error */
+"Unable to decrypt message." = "Tókst ekki að afkóða skilaboð.";
+
+/* Description */
+"Unable to edit this message offline" = "Gat ekki breytt þessum skilaboðum án nettengingar";
+
+/* Description */
+"Unable to generate hashed password!" = "Ekki er hægt að búa til tætigildislykilorð!";
+
+/* Error */
+"Unable to get contacts" = "Ekki tókst að ná í tengiliði";
+
+/* Description */
+"Unable to parse authentication info!" = "Ekki er hægt að túlka auðkenningarupplýsingar!";
+
+/* Description */
+"Unable to parse authentication token!" = "Ekki er hægt að túlka auðkenningarteikn!";
+
+/* Description */
+"Unable to parse cached authentication token!" = "Tókst ekki að þátta/túlka auðkenningarteikn!";
+
+/* Description */
+"Unable to parse response" = "Ekki tókst að þátta svarið";
+
+/* Description */
+"Unable to parse the response object:
+%@" = "Tókst ekki að þátta svarhlutann:
+%@";
+
+/* Error */
+"Unable to parse token" = "Ekki tókst að þátta teiknið";
+
+/* error when sending the message */
+"Unable to send the email" = "Tókst ekki að senda tölvupóstinn";
+
+/* Action */
+"Undo" = "Afturkalla";
+
+/* Description */
+"Unknow Error" = "Óþekkt villa";
+
+/* None */
+"Unknow file" = "Óþekkt skrá";
+
+/* title, default display name */
+"Unknown" = "Óþekkt";
+
+/* Error */
+"Unknown Error" = "Óþekkt villa";
+
+/* None */
+"Unkonw Version" = "Óþekkt útgáfa";
+
+/* Service plan capability; */
+"Unlimited messages sent/day" = "Ótakmörkuð skilaboð send/dag";
+
+/* The verb for describing the unread action
+   VoiceOver: email is not read yet */
+"Unread" = "Ólesið";
+
+/* Error message */
+"Unsupported file type" = "Óstudd gerð skráar";
+
+/* Service plan capability; i = 6 */
+"Up to %i users" = "Allt að %i notendur";
+
+/* like top right action text */
+"Update" = "Uppfæra";
+
+/* Contacts Update contact */
+"Update Contact" = "Uppfæra tengilið";
+
+/* update notification email error title */
+"Update Notification Email" = "Uppfæra tilkynningapóst";
+
+/* title */
+"Update Now" = "Uppfæra núna";
+
+/* title */
+"Update Required" = "Uppfærsla nauðsynleg";
+
+/* Service plan description footer */
+"Upgrade to a paid plan to benefit from more features" = "Uppfærðu í greidda áskrift til að nýta þér fleiri eiginleika";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Uppfærðu í greidda áskrift til að senda úr %@ tölvupóstfanginu þínu";
+
+/* alert description */
+"Upgrade to get all paid features." = "Uppfærðu til að nýta þér eiginleika sem greiða þarf fyrir.";
+
+/* Upgrade warning message */
+"Upgrading is not possible in the app." = "Uppfærsla er ekki möguleg í forritinu.";
+
+/* Action */
+"Upload Contacts" = "Senda inn tengiliði";
+
+/* Description */
+"Upload iOS contacts to ProtonMail?" = "Senda iOS-tengiliði inn í ProtonMail?";
+
+/* default vcard types */
+"Url" = "Slóð";
+
+/* error when user already exist */
+"User already exist!" = "Notandanafnið er þegar til staðar!";
+
+/* None */
+"User is available!" = "Notandanafnið er tiltækt!";
+
+/* 
+ & title */
+"User name exist" = "Notandanafn er þegar til";
+
+/* 
+ & alert title */
+"User name invalid" = "Ógilt notandanafn";
+
+/* Title */
+"Username" = "Notandanafn";
+
+/* Title */
+"Verification code request failed" = "Beiðni um sannvottunarkóða mistókst";
+
+/* Title */
+"Verification code sent" = "Sannvottunarkóði sendur";
+
+/* error title */
+"Verification error" = "Villa í staðfestingu";
+
+/* error details */
+"Verification of this content’s signature failed" = "Sannvottun á undirritun þessa efnis brást";
+
+/* None */
+"Version %@ %@" = "Útgáfa %@ %@";
+
+/* message details-> more action-> view headers */
+"View Headers" = "Skoða hausa";
+
+/* Action */
+"View Plans" = "Skoða áskriftir";
+
+/* Title */
+"Warning" = "Aðvörun";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't sent email!!!" = "Aðvörun: þú getur ekki sent tölvupóst fyrr en þú hefur staðist athugun á hvort þú sért mannvera!!!";
+
+/* Description */
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Aðvörun: Þú stilltir ekki póstfang fyrir endurheimtupóst, þannig að ekki er mögulegt að endurheimta notandaaðganginn þinn ef þú gleymir lykilorðinu. Á að halda áfram án endurheimtupóstfangs?";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Okkur tókst að virkja áskriftina þína. Endurræstu forritið til að fara að nota nýju þjónustuáskriftina.";
+
+/* text field notes */
+"We will send a verification code to the cell phone above." = "Við munum senda sannvottunarkóða á símanúmerið hér fyrir ofan.";
+
+/* email field notes */
+"We will send a verification code to the email address above." = "Við munum senda sannvottunarkóða á tölvupóstfangið hér fyrir ofan.";
+
+/* Title */
+"We would like to know what we can do better." = "Við viljum vita hvað við getum gert betur.";
+
+/* Title */
+"Welcome to ProtonMail!" = "Velkomin í ProtonMail!";
+
+/* Description */
+"What people see in the \"From\" field." = "Það sem fólk sér í \"Frá\" reitnum.";
+
+/* display name notes */
+"When you send an email, this is the name that appears in the sender field." = "Þegar þú sendir tölvupóst, þá er þetta nafnið sem birtist í reitnum fyrir sendanda.";
+
+/* default vcard types */
+"Work" = "Vinna";
+
+/* 
+ & title */
+"Wrong verification code" = "Rangur sannvottunarkóði";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Já, virkja það fyrir ";
+
+/* Error message */
+"Yes, attach details of payment" = "Já, láta fylgja ítarupplýsingar varðandi greiðsluna";
+
+/* Description */
+"You can customize swipe gestures in the ProtonMail App Settings." = "Þú getur sérsniðið aðgerðir við strokur í stillingum ProtonMail-forritsins.";
+
+/* Description */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Þú getur fengið hjálp og ýmsa aðstoð á protonmail.com/support. Einnig er hægt að tilkynna um villur innan úr forritinu.";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "Þú getur ekki sett %@ póstfangið sem sjálfgefið því það er eiginleiki sem þarf að greiða fyrir.";
+
+/* description */
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Þú virkjaðir takmörkun á gildistíma skilaboða, en ekki styðja allir viðtakendur þennan eiginleika. Bættu við lykilorði og/eða gerðu sendingu með PGP óvirka til að nota takmörkun á gildistíma fyrir alla viðtakendur.";
+
+/* Message */
+"You have %d new emails!" = "Þú hefur fengið %d nýja tölvupósta!";
+
+/* Title */
+"You have a new email!" = "Þú hefur fengið nýjan tölvupóst!";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "Það eru óvistaðar breytingar. Viltu vista þær?";
+
+/* Description */
+"You have used %d%% of your storage space (%@)." = "Þú hefur notað %1$d% af geymslurýminu þínu (%2$@).";
+
+/* Description */
+"You have used up all of your storage space (%@)." = "Þú hefur notað allt geymslurýmið þitt (%@).";
+
+/* Description */
+"You need at least one recipient to send" = "Bættu við a.m.k. einum viðtakanda til að geta sent";
+
+/* view top title */
+"Your Country Code" = "Landsnúmer";
+
+/* Description */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Pósthólfið þitt er núna varið með enda-í-enda dulritun. Til að senda sjálfvirkt örugga tölvupósta á tengiliðina þína, skaltu bjóða þeim að nota ProtonMail!  Þú getur líka dulritað handvirkt skilaboð til þeirra, ef þeir eru ekki að nota ProtonMail.";
+
+/* Description */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Nýi dulritaði tölvupóstaðgangurinn þinn er uppsettur og tilbúinn til að senda og taka á móti dulrituðum skilaboðum.";
+
+/* view top title */
+"Your new secure email
+ account is ready." = "Nýi öruggi tölvupóstaðgangurinn
+ þinn er tilbúinn.";
+
+/* Service plan description footer */
+"Your plan is currently active until" = "Áskriftin þín er núna virk til";
+
+/* Service plan description footer */
+"Your plan will automatically renew on" = "Áskriftin þín mun endurnýjast sjálfkrafa þann";
+
+/* Description */
+"Your signature has been updated." = "Undirskriftin þín hefur verið uppfærð.";
+
+/* contact placeholder */
+"ZIP" = "Póstnúmer";
+
+/* agree check box middle word */
+"and" = "og";
+
+/* like at 10:00pm */
+"at" = "hjá";
+
+/* Error */
+"attempt remaining until secure data wipe!" = "tilraun eftir þar til tækið verður hreinsað í öryggisskyni!";
+
+/* Description */
+"attempts remaining" = "tilraunir eftir";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "tilraunir eftir þar til tækið verður hreinsað í öryggisskyni!";
+
+/* Action */
+"close tour" = "loka yfirferð";
+
+/* Title */
+"days" = "dagar";
+
+/* Buy button second line */
+"for one year" = "í eitt ár";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
+
+/* None */
+"hours" = "Klukkustundir";
+
+/* Title */
+"inline attachments" = "innfelld viðhengi";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "enginn hlutur";
+
+/* Title */
+"normal attachments" = "venjuleg viðhengi";
+
+/* agree check box privacy */
+"privacy policy." = "stefna vegna meðferðar persónuupplýsinga.";
+
+/* agree check box terms */
+"terms and conditions" = "skilmálar og kvaðir";
+
+/* Title */
+"wrote:" = "skrifaði:";
+

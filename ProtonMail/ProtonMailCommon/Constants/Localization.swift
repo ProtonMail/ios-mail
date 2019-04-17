@@ -548,10 +548,6 @@ class LocalizedString {
     lazy var _error_core_data_load_failed = NSLocalizedString("There was an error creating or loading the app's saved data.", comment: "Description")
 
 
-
-
-
-
     /// "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded."
     lazy var _messages_spam_100_warning = NSLocalizedString("This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!", comment: "spam score warning")
     /// "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!"

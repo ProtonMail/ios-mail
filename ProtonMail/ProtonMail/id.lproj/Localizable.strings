@@ -35,9 +35,6 @@
 "Alert" = "Waspada";
 
 /* (No Comment) */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Semua email terenkripsi yang ada akan hilang selamanya, namun Anda tetap dapat melihat email yang tidak dienkripsi. TINDAKAN INI TIDAK BISA DIBATALKAN!";
-
-/* (No Comment) */
 "Apply" = "Menerapkan";
 
 /* (No Comment) */
@@ -59,7 +56,7 @@
 "Bad parameter" = "Parameter buruk";
 
 /* (No Comment) */
-"Bad parameter: %@" = "Parameter buruk: % @";
+"Bad parameter: %@" = "Parameter buruk: %@";
 
 /* (No Comment) */
 "Bad path" = "Jalan buruk";
@@ -152,7 +149,7 @@
 "DRAFTS" = "Draft";
 
 /* (No Comment) */
-"Date: %@" = "Tanggal: % @";
+"Date: %@" = "Tanggal: %@";
 
 /* (No Comment) */
 "Debug" = "Debug";
@@ -572,7 +569,7 @@
 "The authentication token has expired." = "Token otentikasi telah kedaluwarsa.";
 
 /* (No Comment) */
-"The display name is now %@." = "Nama tampilan sekarang adalah % @.";
+"The display name is now %@." = "Nama tampilan sekarang adalah %@.";
 
 /* (No Comment) */
 "The draft format incorrectly sending failed!" = "Pengiriman gagal. Ada kesalahan dengan draf format.";
@@ -635,7 +632,7 @@
 "Unable to connect to the server" = "Tidak dapat terhubung ke server";
 
 /* (No Comment) */
-"Unable to construct a valid URL with the following path: %@" = "Tidak dapat membuat URL yang valid dengan jalur berikut: % @";
+"Unable to construct a valid URL with the following path: %@" = "Tidak dapat membuat URL yang valid dengan jalur berikut: %@";
 
 /* (No Comment) */
 "Unable to decrypt message." = "Tidak dapat mendekripsi pesan.";
@@ -647,7 +644,9 @@
 "Unable to parse response" = "Tidak dapat mengurai respons";
 
 /* (No Comment) */
-"Unable to parse the response object:\n%@" = "Tidak dapat mengurai objek tanggapan:\n % @";
+"Unable to parse the response object:
+%@" = "Tidak dapat mengurai objek tanggapan:
+%@";
 
 /* (No Comment) */
 "Unable to parse token" = "Tidak dapat mengurai token";
@@ -689,7 +688,7 @@
 "Verification code sent" = "Kode verifikasi dikirim";
 
 /* (No Comment) */
-"Version %@ %@" = "Versi % @ % @";
+"Version %@ %@" = "Versi %@ %@";
 
 /* (No Comment) */
 "Welcome to ProtonMail!" = "Selamat datang di ProtonMail";
@@ -704,10 +703,10 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Anda bisa mendapatkan bantuan dan dukungan di protonmail.com/support. Bug juga dapat dilaporkan dengan aplikasi.";
 
 /* (No Comment) */
-"You have used %d%% of your storage space (%@)." = "Anda telah menggunakan % d %% ruang penyimpanan Anda ( % @).";
+"You have used %d%% of your storage space (%@)." = "Anda telah menggunakan % d %% ruang penyimpanan Anda (%@).";
 
 /* (No Comment) */
-"You have used up all of your storage space (%@)." = "Anda telah menghabiskan semua ruang penyimpanan Anda ( % @).";
+"You have used up all of your storage space (%@)." = "Anda telah menghabiskan semua ruang penyimpanan Anda (%@).";
 
 /* (No Comment) */
 "You need at least one recipient to send" = "Anda memerlukan setidaknya satu penerima untuk mengirim";
