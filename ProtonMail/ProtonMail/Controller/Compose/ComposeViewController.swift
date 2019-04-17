@@ -562,7 +562,7 @@ extension ComposeViewController : HtmlEditorDelegate {
     }
     
     @objc func caretMovedTo(_ offset: CGFloat) {
-        fatalError()
+        fatalError("should be overridden")
     }
 }
 
@@ -760,7 +760,7 @@ extension ComposeViewController : ComposeViewDelegate {
                     if (contact.displayEmail == selectedContact.displayEmail) {
                         contactIndex = index
                     }
-                } else if let contactGroup = contact as? ContactGroupVO {
+                } else if let _ = contact as? ContactGroupVO {
                     if (contact.contactTitle == selectedContact.contactTitle) {
                         contactIndex = index
                     }

@@ -102,9 +102,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     func keyboardWillShowNotification(_ notification: Notification) {
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            self.bottomPadding.constant = keyboardHeight
+            self.bottomPadding.constant = keyboardFrame.cgRectValue.height
         }
     }
 }

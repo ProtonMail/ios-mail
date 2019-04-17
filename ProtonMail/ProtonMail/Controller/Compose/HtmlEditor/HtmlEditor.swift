@@ -104,7 +104,6 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         self.webView.navigationDelegate = self
         self.webView.scrollView.delegate = self
         self.webView.scrollView.keyboardDismissMode = .interactive
-        self.webView.scrollView.layer.masksToBounds = false
         self.webView.scrollView.bounces = false
         self.webView.scrollView.isScrollEnabled = false
     
@@ -120,7 +119,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         //add constraint
         self.addConstraints([
             NSLayoutConstraint(item: self.webView, attribute: .top, relatedBy: .equal,
-                               toItem: self, attribute: .top, multiplier: 1.0, constant: 8.0),
+                               toItem: self, attribute: .top, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: self.webView, attribute: .bottom, relatedBy: .equal,
                                toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0),
             NSLayoutConstraint(item: self.webView, attribute: .left, relatedBy: .equal,
@@ -327,20 +326,12 @@ extension HtmlEditor: UIScrollViewDelegate {
 
     /// when content inset changed
     func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        // FIXME
+        scrollView.contentOffset = .zero // is this right?
     }
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .zero
+        scrollView.contentOffset = .zero // is this right?
     }
 
-    func scrollViewDidScrollToTop(_ scrollView: UIScrollView) {
-        
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        
-    }
-    
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
         return true
     }
@@ -359,10 +350,14 @@ extension HtmlEditor: WKNavigationDelegate {
         } else if method.hasPrefix("cursor/") {
             let value = method.preg_replace_none_regex("cursor/", replaceto: "")
             if let coursorPosition : CGFloat =  NumberFormatter().number(from: value) as? CGFloat {
-                let _ = self.run(with: "document.body.offsetHeight").done { (height) in
+                firstly { () -> Promise<CGFloat> in
+                    self.run(with: "document.body.offsetHeight")
+                }.done { (height) in
                     self.contentHeight = height
+                    self.delegate?.caretMovedTo(coursorPosition)
+                }.catch { _ in
+                    self.delegate?.caretMovedTo(coursorPosition)
                 }
-                self.scrollCaretToVisible(cursorY: coursorPosition)
             }
         }
     }
@@ -387,10 +382,5 @@ extension HtmlEditor: WKNavigationDelegate {
             }
         }
         decisionHandler(.allow)
-    }
-    
-    func scrollCaretToVisible(cursorY: CGFloat) {
-        // propogate upwards
-        self.delegate?.caretMovedTo(cursorY)
     }
 }
