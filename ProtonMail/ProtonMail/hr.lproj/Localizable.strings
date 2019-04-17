@@ -1,6 +1,3 @@
-/* No comment provided by engineer. */
-" within our iOS application." = " unutar naše iOS aplikacije.";
-
 /* Service plan capability */
 "%@ storage capacity" = "%@ prostora za pohranu";
 
@@ -44,7 +41,7 @@
 "/user" = "/korisniku";
 
 /* 2fa verification failed */
-"2fa Authentication failed. Please try to login again." = "2FA provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.";
+"2FA failed. Please try to login again." = "Provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.";
 
 /* default empty object */
 "<no object>" = "<no object>";
@@ -57,7 +54,7 @@
 "A new version of ProtonMail app is available, please update to latest version." = "Dostupna je nova verzija ProtonMail aplikacije. Ažurirajte na najnoviju verziju.";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to latest version." = "Dostupna je nova verzija ProtonMail aplikacije. Molimo ažurirajte na najnoviju verziju.";
+"A new version of ProtonMail app is available. Please update to the latest version." = "Dostupna je nova verzija ProtonMail aplikacije. Molimo ažurirajte na najnoviju verziju.";
 
 /* alert description */
 "A paid ProtonMail plan is required to use this feature" = "Plaćeni ProtonMail plan je potreban za korištenje ove značajke";
@@ -75,7 +72,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.\n Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja. Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
 
 /* 
  & title */
@@ -163,9 +160,6 @@
 
 /* Title */
 "All contacts are imported" = "Svi kontakti su uvezeni";
-
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails. \n\n THIS ACTION CANNOT BE UNDONE!" = "Sve vaše postojeće šifrirane poruke e-pošte biti će zauvijek izgubljene, ali i dalje ćete moći vidjeti svoje nešifrirane poruke e-pošte. \n\n OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* archive when apply label */
 "Also Archive" = "Također i arhivu";
@@ -255,6 +249,9 @@
 /* Title */
 "Bcc" = "BCC";
 
+/* message Bcc: feild */
+"Bcc:" = "Bcc:";
+
 /* contacts talbe cell Birthday title */
 "Birthday" = "Rođendan";
 
@@ -269,6 +266,9 @@
 
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "Koristeći ProtonMail, slažete se s našim";
+
+/* No comment provided by engineer. */
+"By using protonmail, you agree to our %@ and %@." = "Koristeći ProtonMail, slažete se s našim %@ i %@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -311,7 +311,7 @@
 "Can't find the clicked message please try again!" = "Ne mogu pronaći pritisnutu poruku. Molimo pokušajte ponovno!";
 
 /* Description */
-"Can't find the clicked message. Please try again." = "Ne mogu pronaći pritisnutu poruku. Molimo pokušajte ponovno.";
+"Can't find the selected message. Please try again." = "Ne mogu pronaći odabranu poruku. Molimo pokušajte ponovno.";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Neuspješno pronalaženje ovog privitka!";
@@ -341,7 +341,7 @@
 "Can't save contact group" = "Neuspješno spremanje grupe kontakata";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through API" = "Nije moguće ažurirati grupu kontakata putem API-ja";
+"Can't update contact group through the API" = "Nije moguće ažurirati grupu kontakata putem API-ja";
 
 /* Cancel action */
 "Cancel" = "Poništi";
@@ -418,7 +418,7 @@
 /* general close action */
 "Close" = "Zatvori";
 
-/* Alert title */
+/* the message will show when closing a draft from the share extension */
 "Closing" = "Zatvaranje";
 
 /* Action */
@@ -477,7 +477,7 @@
 "Copy name" = "Kopiraj ime";
 
 /* Error message */
-"Could not connect to Store. Please, try later." = "Povezivanje s trgovinom nije uspjelo. Molimo pokušajte kasnije.";
+"Could not connect to Store. Please try again later." = "Povezivanje s trgovinom nije uspjelo. Molimo pokušajte kasnije.";
 
 /* contact placeholder */
 "Country" = "Država";
@@ -486,7 +486,7 @@
 "Create" = "Stvori";
 
 /* Create account button */
-"Create Account" = "Napravi račun";
+"Create Account" = "Stvori račun";
 
 /* Error */
 "Create User failed. Please try again." = "Izrada korisnka nije uspjela. Molimo Vas pokušajte ponovo.";
@@ -495,10 +495,16 @@
 "Create a new account" = "Stvori novi račun";
 
 /* Description */
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Dugo pritisnite i držite poruku za prikaz svih opcija.";
+
+/* None */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Pritisnite i držite poruku za sve opcije.";
 
 /* error message title when create new user */
 "Create user failed" = "Neuspješno stvaranje korisnika";
+
+/* Action */
+"Croatian" = "Hrvatski";
 
 /* Change language title */
 "Current Language is: " = "Trenutni jezik je: ";
@@ -582,13 +588,16 @@
 /* Action */
 "Discard draft" = "Odbaci skicu";
 
-/* Title */
+/* Title in settings */
 "Display Name" = "Zaslonsko ime";
 
 /* Title */
 "Display Name Updated" = "Zaslonsko ime je ažurirano";
 
-/* Title */
+/* None */
+"Display name" = "Zaslonsko ime";
+
+/* Title in display name settings */
 "DisplayName" = "Zaslonsko ime";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
@@ -706,13 +715,13 @@
 "Encrypted from outside" = "Šifrirano izvana";
 
 /* Title */
-"Encrypted from outside pgp inline" = "Šifrirano vanjskim PGP inline";
+"Encrypted from outside PGP/inline" = "Šifrirano vanjskim PGP/inline";
 
 /* Title */
-"Encrypted from outside pgp mime" = "Šifrirano vanjskim PGP mime";
+"Encrypted from outside PGP/MIME" = "Šifrirano vanjskim PGP/MIME";
 
 /* Title */
-"Encrypted from outside signed pgp mime" = "Šifrirano vanjskim, potpisanim PGP mime";
+"Encrypted from outside signed PGP/MIME" = "Šifrirano vanjskim potpisanim PGP/MIME";
 
 /* encryption lock description */
 "Encrypted outside" = "Šifrirano izvana";
@@ -783,6 +792,9 @@
 /* login page forgot pwd */
 "FORGOT PASSWORD?" = "Zaboravili ste lozinku?";
 
+/* abbreviation of forward: */
+"FW:" = "FW:";
+
 /* Error message */
 "Failed to determine type of file" = "Utvrđivanje vrste datoteke nije uspjelo";
 
@@ -790,6 +802,10 @@
 "Failed to get list of available products from AppStore." = "Nije moguće dohvatiti popis dostupnih proizvoda iz AppStorea.";
 
 /* Description */
+"Failed to initialize the app's saved data" = "Inicijalizacija spremljenih podataka aplikacije nije uspjela";
+
+/* *
+ *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Inicijalizacija spremljenih podataka aplikacije nije uspjela";
 
 /* default vcard types */
@@ -854,9 +870,6 @@
 
 /* Action */
 "Go to inbox" = "Idi u pristiglu poštu";
-
-/* Action */
-"Got it" = "Shvaćam";
 
 /* The title for the contact group detail view */
 "Group Details" = "Detalji o grupi";
@@ -943,6 +956,9 @@
 /* Error */
 "Invalid Password" = "Netočna lozinka";
 
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Neispravan URL";
+
 /* title */
 "Invalid UserName" = "Nevažeće korisničko ime";
 
@@ -964,8 +980,11 @@
 /* Error message */
 "Is this bug report about an in-app purchase?" = "Je li ovo izvješće o greški vezano za kupnju u aplikaciji?";
 
-/* No comment provided by engineer. */
-"It is not possible to switch to " = "Nije moguće prebaciti se na ";
+/* It is not possible to switch to `plan` within our iOS app. */
+"It is not possible to switch to %@ within our iOS app." = "Nije moguće prebaciti se na %@ unutar naše iOS aplikacije.";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nismo uspjeli pronaći AppStore proizvod koji ste kupili s proizvodima na našem poslužitelju. Ispunite izvještaj o pogreški i naš tim za korisničku podršku će vas kontaktirati.";
 
 /* Action */
 "Italian" = "Talijanski";
@@ -1114,7 +1133,7 @@
 /* Description */
 "Message sending failed. Please try again." = "Slanje poruke nije uspjelo. Molimo pokušajte ponovno.";
 
-/* Description */
+/* Description after message have been sent */
 "Message sent" = "Poruka poslana";
 
 /* Description */
@@ -1123,11 +1142,14 @@
 /* default vcard types */
 "Mobile" = "Mobitel";
 
-/* Title */
+/* Mobile Signature title in settings */
 "Mobile Signature" = "Potpis na mobilnim uređajima";
 
 /* Description */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Prijave za mobilne uređaje privremeno su onemogućene. Pokušajte ponovo kasnije ili se pokušajte prijaviti na protonmail.com pomoću računala ili prijenosnog računala.";
+
+/* Description */
+"Modifying or turning off the default mobile signature is a paid feature." = "Izmjena ili isključivanje zadanog mobilnog potpisa je plaćena značajka.";
 
 /* Screen header */
 "More Credits" = "Više kredita";
@@ -1163,7 +1185,7 @@
 "Multiple Addresses" = "Više adresa";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "Prijavite se za besplatno";
+"NEED AN ACCOUNT? SIGN UP." = "Prijavite se besplatno";
 
 /* title */
 "Name" = "Naziv";
@@ -1236,15 +1258,18 @@
 "OK" = "U redu";
 
 /* Section header */
-"OTHER SERVICE PLANS" = "OSTALI USLUŽNI PLANOVI";
+"OTHER PLANS" = "OSTALI PLANOVI";
 
 /* Title */
 "On" = "Dana";
 
-/* Description */
-"Only a paid user can modify default mobile signature or turn it off!" = "Samo korisnik koji plaća može izmijeniti zadani mobilni potpis ili ga isključiti!";
+/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On EE, MMM d, yyyy at %@" = "Dana EE, d. MMM, yyyy u %@";
 
-/* Action */
+/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
+"On EE, MMM d, yyyy at %@, %@ wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
+
+/* None */
 "OpenDraft" = "Otvori skicu";
 
 /* contacts talbe cell Organization title */
@@ -1254,7 +1279,7 @@
 "Other" = "Ostalo";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. It only helps us verify that the transaction was fulfilled on the AppStore's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.";
 
 /* mail location desc */
 "Outbox" = "Odlazni spremnik";
@@ -1431,7 +1456,7 @@
 "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary omogućuje vam prilagođavanje mobilnog potpisa.";
 
 /* Description */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMail-a. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
 
 /* Title */
 "ProtonMail encrypted emails" = "ProtonMail šifrirana e-pošta";
@@ -1589,17 +1614,14 @@
 /* Description */
 "Sent Failed" = "Poruka nije poslana";
 
-/* encryption lock description */
-"Sent by ProtonMail with end-to-end encryption" = "Poslano putem ProtonMaila s end-to-end šifriranjem";
+/* encryption lock description for auto reply */
+"Sent by ProtonMail with zero access encryption" = "Poslano putem ProtonMaila s šifriranjem nultog pristupa";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Poslano od strane Vas s end-to-end šifriranjem";
 
 /* Description */
 "Server proofs not valid!" = "Server proofs not valid!";
-
-/* menu title */
-"Service Plan" = "Plan usluga";
 
 /* Title */
 "Set Password" = "Postavite lozinku";
@@ -1625,7 +1647,7 @@
 /* Action */
 "Sign Out" = "Odjavite se";
 
-/* Title */
+/* Title in signature settings */
 "Signature" = "Potpis";
 
 /* Title */
@@ -1646,7 +1668,7 @@
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nažalost, ne možemo obrađivati kupnje u beta inačici aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj beta verziji!";
 
-/* Title */
+/* None */
 "Space Warning" = "Upozorenje o slobodnom prostoru";
 
 /* mail location desc
@@ -1679,6 +1701,9 @@
 /* Title */
 "Storage" = "Prostor za pohranu";
 
+/* Title */
+"Storage Warning" = "Upozorenje o slobodnom prostoru";
+
 /* encryption lock description */
 "Stored with zero access encryption" = "Spremljeno s šifriranjem nultog pristupa";
 
@@ -1690,6 +1715,9 @@
 
 /* subject: text when forward */
 "Subject:" = "Predmet:";
+
+/* menu title */
+"Subscription" = "Pretplata";
 
 /* Action */
 "Support ProtonMail" = "Podržite ProtonMail";
@@ -1790,8 +1818,11 @@
 /* Title */
 "The request timed out." = "Zahtjev je istekao.";
 
-/* Description */
+/* None */
 "The total attachment size can't be bigger than 25MB" = "Ukupna veličina privitka ne smije biti veća od 25MB";
+
+/* Description */
+"The total attachment size cannot exceed 25MB" = "Ukupna veličina privitka ne smije biti veća od 25MB";
 
 /* 
  & title */
@@ -1801,6 +1832,10 @@
 "The verification failed!" = "Provjera nije uspjela!";
 
 /* Description */
+"There was an error creating or loading the app's saved data." = "Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.";
+
+/* 
+ & local error */
 "There was an error creating or loading the application's saved data." = "Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.";
 
 /* Alert message */
@@ -1825,7 +1860,7 @@
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMail-a,\r\n morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,\r\n morate potvrditi da ste čovjek.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com";
@@ -1898,7 +1933,7 @@
 "Unable to edit this message offline" = "Nije moguće urediti ovu poruku izvan mreže";
 
 /* Description */
-"Unable to generate hash password!" = "Nije moguće generirati hash zaporke!";
+"Unable to generate hashed password!" = "Nije moguće generirati hashiranu lozinke!";
 
 /* Error */
 "Unable to get contacts" = "Nije moguće dohvatiti kontakte";
@@ -1910,13 +1945,15 @@
 "Unable to parse authentication token!" = "Nije moguće parsirati token za provjeru autentičnosti!";
 
 /* Description */
-"Unable to parse cased authentication token!" = "Nije moguće parsirati enkapsulirani token za provjeru autentičnosti!";
+"Unable to parse cached authentication token!" = "Nije moguće parsirati predmemorirani token za provjeru autentičnosti!";
 
 /* Description */
 "Unable to parse response" = "Nije moguće parsirati odgovor";
 
 /* Description */
-"Unable to parse the response object: \n%@" = "Nije moguće parsirati objekt odgovora:\n%@";
+"Unable to parse the response object:
+%@" = "Nije moguće parsirati objekt odgovora:
+%@";
 
 /* Error */
 "Unable to parse token" = "Nije moguće parsirati token";
@@ -2012,7 +2049,7 @@
 "Verification code request failed" = "Zahtjev za kodom za potvrdu nije uspjeo";
 
 /* Title */
-"Verification code sent" = "Kod za potvrdu je poslan";
+"Verification code sent" = "Kôd za potvrdu je poslan";
 
 /* error title */
 "Verification error" = "Pogreška pri provjeri valjanosti";
@@ -2036,13 +2073,10 @@
 "Warning: Before you pass the human check you can't sent email!!!" = "Upozorenje: Prije nego li prođete ljudsku provjeru, ne možete slati e-poštu!!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozorenje: Vi niste postavili adresu e-pošte za oporavak računa, stoga je oporavak računa nemoguć u slučaju da zaboravite zaporku. Želite nastaviti bez e-pošte za oporavak?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Upozorenje: Vi niste postavili adresu e-pošte za oporavak računa, stoga je oporavak računa nemoguć u slučaju da zaboravite lozinku. Želite nastaviti bez e-pošte za oporavak?";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.";
-
-/* Error message */
-"We were not able to match AppStore product you've bought to products on our server. Please fill in the bugreport and our customer support team will contact you." = "Nismo uspjeli uskladiti AppStore proizvod koji ste kupili s proizvodima na našem poslužitelju. Ispunite izvještaj o pogreški i naš tim za korisničku podršku će vas kontaktirati.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Poslati ćemo kôd za potvrdu na gore navedeni telefonski broj.";
@@ -2115,9 +2149,7 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Vaš novi, sigurni račun&#13;
- e-pošte je spreman.";
+"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun\r\n e-pošte je spreman.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Vaš plan je trenutno aktivan do";

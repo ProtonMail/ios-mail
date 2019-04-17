@@ -1,8 +1,26 @@
+/* Service plan capability */
+"%@ storage capacity" = "%@ depolama kapasitesi";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d Üye";
+
+/* The string that describes whether there are 2 or more members in the contact group */
+"%d Members" = "%d Üye";
+
 /* auto lock time format */
 "%d Minute" = "%d dakika";
 
 /* auto lock time format */
 "%d Minutes" = "%d dakika";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d seçildi";
+
+/* Service plan capability; i = 1 */
+"%i email address" = "%i e-posta adresi";
+
+/* Service plan capability; i = 5 or 50 */
+"%i email addresses" = "%i e-posta adresi";
 
 /* Key size text when setup key */
 "(2048 bit)" = "(2048 bit)";
@@ -10,17 +28,36 @@
 /* Key size text when setup key */
 "(4096 bit)" = "(4096 bit)";
 
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(toplam)";
+
 /* secret */
 "**********" = "**********";
 
 /* optional text field */
 "*OPTIONAL" = "*İSTEĞE BAĞLI";
 
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = "/kullanıcı";
+
 /* 2fa verification failed */
-"2fa Authentication failed please try to login again" = "2FA Doğrulama başarısız oldu, lütfen tekrar giriş yapmayı deneyin";
+"2FA failed. Please try to login again." = "İki adımlı doğrulama başarısız. Lütfen tekrar giriş yapmayı deneyin.";
+
+/* default empty object */
+"<no object>" = "<no object>";
+
+/* *
+ *  LabelTableViewCell */
+"A message cannot have more than 5 labels" = "Bir mesaj 5'ten fazla etiket içeremez";
+
+/* "Alert" = "Alert"; */
+"A new version of ProtonMail app is available, please update to latest version." = "ProtonMail uygulamasının yeni bir sürümü mevcuttur, lütfen son sürüme güncelleyin.";
 
 /* Description */
-"A new version of ProtonMail app is available, please update to latest version." = "ProtonMail uygulamasının yeni bir sürümü mevcuttur, lütfen son sürüme güncelleyin.";
+"A new version of ProtonMail app is available. Please update to the latest version." = "ProtonMail uygulamasının yeni bir sürümü mevcut. Lütfen son sürüme güncelleyin.";
+
+/* alert description */
+"A paid ProtonMail plan is required to use this feature" = "Bu özelliği kullanmak için ücretli bir ProtonMail planı gereklidir";
 
 /* settings touchid error */
 "A passcode has not been set, enable it in the system Settings" = "Şifre ayarlanmamış, şifrenizi sistem ayarlarından etkinleştirin";
@@ -33,6 +70,18 @@
 
 /* error message */
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.";
+
+/* None */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim engellendi.
+
+Daha fazla bilgi için lütfen <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi tabanımızı</a> ziyaret edin.";
+
+/* 
+ & title */
+"Account password invalid" = "Geçeriz hesap parolası";
+
+/* None */
+"Add" = "Ekle";
 
 /* new contacts add Anniversary */
 "Add Anniversary" = "Yıldönümü Ekle";
@@ -52,6 +101,9 @@
 /* new contacts add Gender */
 "Add Gender" = "Cinsiyet Ekle";
 
+/* The title for the contact group creation view */
+"Add Group" = "Grup Ekle";
+
 /* add label action */
 "Add Label" = "Etiket Ekle";
 
@@ -66,6 +118,9 @@
 
 /* new contacts add Organization */
 "Add Organization" = "Organizasyon ekle";
+
+/* The button text for add profile picture */
+"Add Photo" = "Fotoğraf Ekle";
 
 /* mark message star */
 "Add Star" = "Yıldız ekle";
@@ -108,9 +163,6 @@
 /* Title */
 "All contacts are imported" = "Tüm kişiler içe aktarıldı";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.\n\nTHIS ACTION CANNOT BE UNDONE!" = "Mevcut şifreli e-postalarınızın tamamı sonsuza dek kaybolacak ancak şifrelenmemiş e-postalarınızı yine de görebileceksiniz.\n\nBU EYLEM GERİ ALINAMAZ!";
-
 /* archive when apply label */
 "Also Archive" = "Sonra Arşivle";
 
@@ -119,6 +171,24 @@
 
 /* contacts talbe cell Anniversary title */
 "Anniversary" = "Yıldönümü";
+
+/* Error */
+"App is locked" = "Uygulama kilitli";
+
+/* Price breakdown */
+"Apple in-app purchase fee" = "Apple uygulama içi satın alma ücreti";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Apple, satın alma işlemlerini gerçekleştiremediklerini bildirdi.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple, hizmet planını yükselttiğiniz konusunda bize bilgi verdi. Ancak, birden fazla varsa, hangi ProtonMail hesaplarınızı yükselteceğinizi söylemedi.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple, hizmet planınızı yükselttiğinizi bildirdi. Ancak bazı teknik veriler eksikti. Lütfen hata raporunu doldurun. Müşteri destek ekibimiz sizinle iletişime geçecektir.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple, hizmet planını yükselttiğiniz konusunda bize bilgi verdi. Ancak o zamandan beri hesaptan çıkış yaptığınızı tespit ettik.";
 
 /* Apply action */
 "Apply" = "Uygula";
@@ -146,7 +216,10 @@
 "Authentication failed" = "Kimlik doğrulama başarısız";
 
 /* Error */
-"Authentication failed please try to login again" = "Kimlik doğrulama başarısız, lütfen tekrar giriş yapmayı deneyin";
+"Authentication failed. Please try to login again." = "Kimlik doğrulama başarısız. Lütfen tekrar giriş yapmayı deneyin.";
+
+/* Description */
+"Authentication token is not accessible because the app is locked" = "Uygulama kilitli olduğundan kimlik doğrulama belirtecine erişilemiyor";
 
 /* Description */
 "Authentication was cancelled by the system" = "Kimlik doğrulama sistem tarafından iptal edildi";
@@ -169,11 +242,17 @@
 /* Error Description */
 "Bad parameter: %@" = "Kötü parametre: %@";
 
+/* title */
+"Bad path" = "Hatalı yol";
+
 /* Error Description */
 "Bad response" = "Hatalı yanıt";
 
 /* Title */
 "Bcc" = "Gizli";
+
+/* message Bcc: feild */
+"Bcc:" = "Bcc:";
 
 /* contacts talbe cell Birthday title */
 "Birthday" = "Doğum günü";
@@ -184,11 +263,20 @@
 /* Title */
 "Bug Report Received" = "Hata raporu alındı";
 
+/* Link to More Credits screen */
+"Buy More Credits" = "Daha fazla kredi satın alın";
+
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "ProtonMail'i kullanarak, şunları kabul edersiniz";
 
+/* No comment provided by engineer. */
+"By using protonmail, you agree to our %@ and %@." = "ProtonMail'i kullanarak, %@ ve %@ kabul etmiş olursunuz.";
+
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
+
+/* Call the contact (button title text) */
+"Call Contact" = "Çağrı yap";
 
 /* key size note part 2 */
 "Can take several minutes to setup." = "Kurulum birkaç dakika sürebilir.";
@@ -205,11 +293,27 @@
 /* When quick look attachment but can't decrypt it! */
 "Can't decrypt this attachment!" = "Bu ekin şifresi çözülemiyor!";
 
-/* Error */
+/* The error message title that will be shown when the deletion of the contact group failed */
+"Can't delete contact group" = "Kişi grubu silinemiyor";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Kişi grubu API aracılığıyla silinemiyor";
+
+/* *
+ *  MessageViewController */
 "Can't download message body, please try again." = "İleti gövdesi indirilemiyor, lütfen tekrar deneyin.";
 
-/* Description */
+/* Error */
+"Can't download message body. Please try again." = "Mesaj gövdesi indirilemiyor. Lütfen tekrar deneyin.";
+
+/* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
+"Can't fetch contact groups" = "Kişi grupları alınamıyor";
+
+/* None */
 "Can't find the clicked message please try again!" = "Tıklanan mesaj bulunamıyor, lütfen tekrar deneyin!";
+
+/* Description */
+"Can't find the selected message. Please try again." = "Seçili ileti bulunamıyor. Lütfen tekrar deneyin.";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Bu ek bulunamıyor!";
@@ -235,6 +339,12 @@
 /* Error */
 "Can't open the file" = "Dosya açılamıyor";
 
+/* The error message title that will be shown when the contact group being created or edited can't be saved */
+"Can't save contact group" = "Kişi grubu kaydedilemiyor";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Kişi grubu API aracılığıyla güncelleştirilemiyor";
+
 /* Cancel action */
 "Cancel" = "İptal";
 
@@ -243,6 +353,12 @@
 
 /* Title */
 "Cancelling" = "İptal ediliyor";
+
+/* None */
+"Cant' decrypt this attachment!" = "Bu ek dosyanın şifresi çözülemiyor.";
+
+/* Action */
+"Catalan" = "Katalonca";
 
 /* Title */
 "Cc" = "Kopya";
@@ -286,6 +402,12 @@
 /* loading message */
 "Checking ...." = "Kontrol ediliyor ....";
 
+/* Action */
+"Chinese Simplified" = "Basitleştirilmiş Çince";
+
+/* Action */
+"Chinese Traditional" = "Geleneksel Çince";
+
 /* place holder */
 "Choose a Password" = "Bir Parola Seçin";
 
@@ -298,6 +420,9 @@
 /* general close action */
 "Close" = "Kapat";
 
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Kapatılıyor";
+
 /* Action */
 "Compose" = "Oluştur";
 
@@ -306,6 +431,12 @@
 
 /* Action */
 "Confirm" = "Onayla";
+
+/* "Login Password" */
+"Confirm Login Password" = "Giriş parolasını onayla";
+
+/* "Mailbox Password" */
+"Confirm Mailbox Password" = "Posta kutusu parolasını onayla";
 
 /* Placeholder */
 "Confirm Password" = "Parolayı Doğrula";
@@ -318,6 +449,9 @@
 
 /* Placeholder */
 "Confirm new password" = "Yeni parolayı onayla";
+
+/* alert title */
+"Confirm phishing report" = "Kimlik avı raporunu onayla";
 
 /* Title */
 "Confirmation" = "Onayla";
@@ -344,6 +478,9 @@
 /* Title */
 "Copy name" = "Adı kopyala";
 
+/* Error message */
+"Could not connect to Store. Please try again later." = "Mağazaya bağlanılamadı. Lütfen daha sonra tekrar deneyin.";
+
 /* contact placeholder */
 "Country" = "Ülke";
 
@@ -354,16 +491,22 @@
 "Create Account" = "Hesap Oluştur";
 
 /* Error */
-"Create User failed please try again" = "Kullanıcı oluşturma başarısız oldu, lütfen tekrar deneyin";
+"Create User failed. Please try again." = "Kullanıcı oluşturma başarısız oldu. Lütfen tekrar deneyin.";
 
 /* Signup top title */
 "Create a new account" = "Yeni bir hesap oluştur";
 
 /* Description */
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Gelen kutunuzu düzenlemek için etiketler oluşturun ve ekleyin. Tüm seçenekler için bir iletiye uzun basın.";
+
+/* None */
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Gelen kutunuzu organize etmek için etiketler oluşturun ve ekleyin. Tüm seçenekleri görüntülemek için bir mesajı basılı tutun.";
 
 /* error message title when create new user */
 "Create user failed" = "Kullanıcı oluşturma başarısız oldu";
+
+/* Action */
+"Croatian" = "Hırvatça";
 
 /* Change language title */
 "Current Language is: " = "Geçerli Dil: ";
@@ -378,11 +521,17 @@
    contacts default label type */
 "Custom" = "Özel";
 
+/* Action */
+"Czech" = "Çekce";
+
 /* Title */
 "DECRYPT MAILBOX" = "POSTA KUTUSU ŞİFRESİNİ ÇÖZ";
 
 /* mail location title */
 "DRAFTS" = "TASLAKLAR";
+
+/* Action */
+"Danish" = "Danca";
 
 /* message Date: text */
 "Date:" = "Tarih:";
@@ -397,7 +546,7 @@
 "Decrypt" = "Şifreyi çöz";
 
 /* Description */
-"Decrypt token failed please try again" = "Şifre çözme anahtarı başarısız oldu, lütfen tekrar deneyin";
+"Decrypt token failed. Please try again." = "Şifre çözme belirteci başarısız oldu. Lütfen tekrar deneyin.";
 
 /* error title */
 "Decryption error" = "Şifre çözme hatası";
@@ -409,7 +558,7 @@
 "Default" = "Varsayılan";
 
 /* error message when create new user */
-"Default error, please try again." = "Varsayılan hata, lütfen tekrar deneyin.";
+"Default error. Please try again." = "Varsayılan hata. Lütfen tekrar deneyin.";
 
 /* Placeholder */
 "Define Expiration Date" = "Sona Erme Tarihi Tanımlayın";
@@ -426,6 +575,9 @@
 /* Title-Contacts */
 "Delete Contact" = "Kişiyi sil";
 
+/* The description of the button for deleting the contact group */
+"Delete Contact Group" = "Kişi grubunu sil";
+
 /* mail location desc */
 "Deleted" = "Silindi";
 
@@ -438,14 +590,20 @@
 /* Action */
 "Discard draft" = "Taslağı iptal et";
 
-/* Title */
+/* Title in settings */
 "Display Name" = "Görünen ad";
 
 /* Title */
 "Display Name Updated" = "Görünen isim güncellendi";
 
-/* Title */
-"DisplayName" = "Görünen İsim";
+/* None */
+"Display name" = "Görünen isim";
+
+/* Title in display name settings */
+"DisplayName" = "Görünen isim";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchased service plan for " = "Bunun için satın alınan hizmet planını etkinleştirmek istiyor musunuz? ";
 
 /* Description */
 "Do you want to cancel the process?" = "İşlemi iptal etmek istiyor musunuz?";
@@ -478,11 +636,21 @@
 /* Action */
 "Edit" = "Düzenle";
 
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Kişiyi düzenle";
+
 /* Title */
 "Edit Folder" = "Klasörü Düzenle";
 
+/* The title for the contact group editing view */
+"Edit Group" = "Grubu düzenle";
+
 /* Title */
 "Edit Label" = "Etiketi Düzenle";
+
+/* The button text for edit profile picture */
+"Edit Photo" = "Fotoğrafı düzenle";
 
 /* title */
 "Edit mobile signature" = "Mobil imzayı düzenle";
@@ -492,6 +660,12 @@
 
 /* default vcard types */
 "Email" = "E-posta";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "E-posta adresleri";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "E-posta iletişimi";
 
 /* human check option button */
 "Email Verification" = "E-Posta Doğrulaması";
@@ -505,7 +679,11 @@
 /* place holder */
 "Email default signature" = "Varsayılan e-posta imzası";
 
-/* Action */
+/* 
+ & title */
+"Email domain invalid" = "Geçersiz e-posta alan adı";
+
+/* empty folder, for spam and trash */
 "Empty Folder" = "Klasörü Boşalt";
 
 /* Title */
@@ -533,19 +711,19 @@
 "Encrypted for outside" = "Dışarıya şifreli";
 
 /* Title */
-"Encrypted for outside reply" = "Dış cevap için şifreli";
+"Encrypted for outside reply" = "Dış yanıt için şifrelenmiş";
 
 /* Title */
 "Encrypted from outside" = "Dışarıdan şifreli";
 
 /* Title */
-"Encrypted from outside pgp inline" = "Dışarıdan pgp satır içi şifreli";
+"Encrypted from outside PGP/inline" = "Dışarıdan PGP/satır içinden şifrelenmiş";
 
 /* Title */
-"Encrypted from outside pgp mime" = "Dışarıdan pgp mime şifreli";
+"Encrypted from outside PGP/MIME" = "Dışarıdan PGP/MIME kodundan şifrelenmiş";
 
 /* Title */
-"Encrypted from outside signed pgp mime" = "Dışarıdan pgp mime şifreli";
+"Encrypted from outside signed PGP/MIME" = "Dışarıdan imzalanmış PGP/MIME kodundan şifrelenmiş";
 
 /* encryption lock description */
 "Encrypted outside" = "Dışarıya şifreli";
@@ -595,6 +773,9 @@
 /* settings debug section title */
 "Error Logs" = "Hata Günlükleri";
 
+/* Error alert title */
+"Error occured" = "Hata oluştu";
+
 /* lock app option */
 "Every time enter app" = "Her zaman uygulamaya girerken";
 
@@ -613,7 +794,20 @@
 /* login page forgot pwd */
 "FORGOT PASSWORD?" = "ŞİFRENİZİ Mİ UNUTTUNUZ?";
 
+/* abbreviation of forward: */
+"FW:" = "FW:";
+
+/* Error message */
+"Failed to determine type of file" = "Dosya türünü belirleyemedi";
+
+/* Error message */
+"Failed to get list of available products from AppStore." = "AppStore'dan kullanılabilir ürünlerin listesi alınamadı.";
+
 /* Description */
+"Failed to initialize the app's saved data" = "Uygulamanın kayıtlı verileri başlatılamadı";
+
+/* *
+ *  Core Data Service & local error */
 "Failed to initialize the application's saved data" = "Uygulamanın kayıtlı verileri başlatılamadı";
 
 /* default vcard types */
@@ -630,6 +824,18 @@
 
 /* place holder */
 "Folder Name" = "Klasör İsmi";
+
+/* Service Plan description */
+"For individuals looking to benefit from secure communication at no cost" = "Ücretsiz olarak güvenli iletişimden yararlanmak isteyen kişiler için";
+
+/* Service Plan description */
+"For individuals that need more capacity, customization and advanced features" = "Daha fazla kapasiteye, özelleştirmeye ve gelişmiş özelliklere ihtiyaç duyan bireyler için";
+
+/* Service Plan description */
+"For organizations that need multi-user support and additional productivity features" = "Çoklu kullanıcı desteğine ve ek verimlilik özelliklerine ihtiyaç duyan kuruluşlar için";
+
+/* Service Plan description */
+"For power users and groups of people that value full anonymity and privacy" = "Tam bir anonimlik ve mahremiyete değer veren uzman kullanıcılar ve insanlar için";
 
 /* forward action */
 "Forward" = "Yönlendir";
@@ -658,14 +864,23 @@
 /* Action */
 "German" = "Almanca";
 
+/* Screen header, like 'Get VISIONARY' */
+"Get %@" = "%@ al";
+
 /* Action */
 "Get more information" = "Daha fazla bilgi edinin";
 
 /* Action */
 "Go to inbox" = "Gelen kutusuna git";
 
-/* Action */
-"Got it" = "Anladım";
+/* The title for the contact group detail view */
+"Group Details" = "Grup ayrıntıları";
+
+/* The instruction label for the group name textfield */
+"Group Name" = "Grup adı";
+
+/* menu title (contact groups) */
+"Groups" = "Gruplar";
 
 /* Title */
 "Help & Support" = "Yardım & Destek";
@@ -697,6 +912,9 @@
 /* top title */
 "Human Verification" = "İnsan Doğrulaması";
 
+/* Service plan capability */
+"IMAP/SMTP Support via ProtonMail Bridge" = "ProtonMail Bridge üzerinden IMAP/SMTP desteği";
+
 /* mail location title */
 "INBOX" = "GELEN KUTUSU";
 
@@ -723,7 +941,7 @@
 "Incorrect password" = "Geçersiz parola";
 
 /* place holder */
-"Input Display Name ..." = "Görünen Adı Girin ...";
+"Input Display Name ..." = "Görünen adı girin ...";
 
 /* place holder */
 "Input Notification Email ..." = "Bildirim E-Postasını Girin ...";
@@ -731,23 +949,44 @@
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "Anlık ProtonMail hesabı oluşturma geçici olarak devre dışı bırakıldı. Davetiye talep etmek için lütfen https://protonmail.com/invite adresine gidin.";
 
+/* The preconditions are not met */
+"Internal Error" = "İç hata";
+
 /* default vcard types */
 "Internet" = "İnternet";
 
 /* Error */
 "Invalid Password" = "Geçersiz Parola";
 
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Geçersiz URL";
+
+/* title */
+"Invalid UserName" = "Geçersiz kullanıcı adı";
+
 /* Error message */
 "Invalid UserName!" = "Geçersiz Kullanıcı Adı!";
 
-/* Description */
+/* None */
 "Invalid access token please relogin" = "Geçersiz erişim belirteci, lütfen tekrar giriş yapın";
+
+/* Description */
+"Invalid access token. Please relogin." = "Geçersiz erişim belirteci. Lütfen tekrar giriş yapın.";
 
 /* Error */
 "Invalid credential" = "Geçersiz kimlik bilgileri";
 
 /* update password error */
 "Invalid hashed password!" = "Geçersiz şifre karması!";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Bu uygulama içi satın alma işlemiyle ilgili bir hata raporu mu?";
+
+/* It is not possible to switch to `plan` within our iOS app. */
+"It is not possible to switch to %@ within our iOS app." = "iOS uygulamamız içerisinde %@ planına geçmek mümkün değildir.";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Satın aldığınız App Store ürününü sunucumuzdaki hiçbir ürünle eşleştiremedik. Lütfen hata raporunu doldurun. Müşteri destek ekibimiz sizinle iletişime geçecektir.";
 
 /* Action */
 "Italian" = "İtalyanca";
@@ -759,10 +998,13 @@
 "Key generation failed" = "Anahtar oluşturma başarısız oldu";
 
 /* Error */
-"Key generation failed please try again" = "Anahtar oluşturma başarısız oldu, lütfen tekrar deneyin";
+"Key generation failed. Please try again." = "Anahtar üretimi başarısız oldu. Lütfen tekrar deneyin.";
 
 /* Error */
-"Key invalid please go back try again" = "Anahtar geçersiz, lütfen geri dönüp tekrar deneyin";
+"Key invalid. Please go back and try again." = "Anahtar geçersiz. Lütfen geri dönün ve tekrar deneyin.";
+
+/* None */
+"LOGIN" = "Oturum aç";
 
 /* Title */
 "Label Management" = "Etiket Yönetimi";
@@ -779,23 +1021,36 @@
 /* Title */
 "Labels have been applied." = "Etiketler uygulandı.";
 
+/* Service plan capability */
+"Labels, Folders, Filters & More" = "Etiketler, klasörler, filtreler ve daha fazlası";
+
 /* Title */
 "Labels/Folders" = "Etiketler/Klasörler";
 
 /* Title */
 "Language" = "Dil";
 
+/* Action */
+"Learn More" = "Daha fazla bilgi";
+
 /* learn more button */
 "Learn more here" = "Buradan daha fazla bilgi edinin";
+
+/* Service plan capability */
+"Limited to 150 messages sent/day" = "Gönderilen 150 mesajla sınırlı/gün";
 
 /* Action */
 "Load remote content" = "Uzak içeriği yükle";
 
-/* No comment provided by engineer. */
+/* None */
 "Loading..." = "Yükleniyor...";
 
 /* Description */
 "Local cache can't find mailbox password" = "Yerel önbellek posta kutusu şifresini bulamıyor";
+
+/* *
+ *  file string type */
+"Localizable.strings" = "Temel";
 
 /* menu title */
 "Lock The App" = "Uygulamayı Kilitle";
@@ -821,49 +1076,66 @@
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Kişi bilgilerinizin güvenliğini sağlamak mı istiyorsunuz?";
 
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "Posta kutusu parolası";
+
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
 
 /* settings general section title */
 "Mailbox Password" = "Posta Kutusu Şifresi";
 
+/* None */
+"Mailbox password doesn't match" = "Posta kutusu parolası uyuşmuyor";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage Addresses" = "Adresleri yönet";
+
 /* Title */
 "Manage Labels/Folders" = "Etiketleri/Klasörleri Yönet";
 
-/* Action */
+/* mark message as read action */
 "Mark Read" = "Okundu olarak işaretle";
 
 /* Action */
 "Mark as unread" = "Okunmadı olarak işaretle";
 
+/* menu title */
+"Menu" = "Menü";
+
 /* Message with title */
 "Message %@" = "Mesaj %@";
 
 /* Placeholder */
-"Message Password" = "Mesaj Şifresi";
+"Message Password" = "İleti Parolası";
 
 /* settings debug section title */
-"Message Queue" = "Mesaj Sırası";
+"Message Queue" = "İleti sırası";
 
 /* Title */
 "Message Swipe Actions" = "İleti Kaydırma Eylemleri";
 
-/* No comment provided by engineer. */
+/* *
+ *  Expiration View */
 "Message expired" = "İletinin süresi doldu";
 
 /* Title */
-"Message has been deleted." = "Mesaj silindi.";
+"Message has been deleted." = "İleti silindi.";
 
 /* Title */
-"Message has been moved." = "Mesaj taşındı.";
+"Message has been moved." = "İleti taşındı.";
 
 /* Description */
 "Message password does not match." = "İleti parolası eşleşmiyor.";
 
-/* Description */
+/* None */
 "Message sending failed please try again" = "İleti gönderilemedi lütfen tekrar deneyin";
 
 /* Description */
+"Message sending failed. Please try again." = "İleti gönderilemedi. Lütfen tekrar deneyin.";
+
+/* Description after message have been sent */
 "Message sent" = "Mesaj gönderildi";
 
 /* Description */
@@ -872,11 +1144,17 @@
 /* default vcard types */
 "Mobile" = "Mobil";
 
-/* Title */
+/* Mobile Signature title in settings */
 "Mobile Signature" = "Mobil İmza";
 
 /* Description */
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobil kayıtlar geçici olarak devre dışı bırakıldı. Lütfen daha sonra tekrar deneyin veya bir masaüstü veya dizüstü bilgisayar kullanarak protonmail.com üzerinden kaydolmayı deneyin.";
+
+/* Description */
+"Modifying or turning off the default mobile signature is a paid feature." = "Varsayılan mobil imzayı değiştirmek veya kapatmak ücretli bir özelliktir.";
+
+/* Screen header */
+"More Credits" = "Daha fazla kredi";
 
 /* move action */
 "Move to AllMail" = "Tüm Postalar'a taşı";
@@ -927,13 +1205,23 @@
 "Nickname" = "Takma ad";
 
 /* message when mailbox doesnt have emailsß */
-"No Messages" = "Mesaj yok";
+"No Messages" = "İleti yok";
 
 /* Title */
 "No connectivity detected..." = "Bağlantı bulunamadı...";
 
-/* Title */
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Hayır, başka bir ProtonMail hesabı için";
+
+/* Error message */
+"No, not related to in-app purchase" = "Hayır, uygulama içi satın alma işlemiyle ilgili değil";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Title */
 "None" = "Yok";
+
+/* Action */
+"Not Now" = "Şimdi değil";
 
 /* alert description */
 "Not all recipients support message expiration" = "Tüm alıcılar mesaj geçerliliğini desteklemez";
@@ -971,13 +1259,19 @@
 /* Action */
 "OK" = "Tamam";
 
+/* Section header */
+"OTHER PLANS" = "DİĞER PLANLAR";
+
 /* Title */
 "On" = "Açık";
 
-/* Description */
-"Only a paid user can modify default mobile signature or turn it off!" = "Yalnızca ücretli bir kullanıcı varsayılan mobil imza üzerinde değişiklik yapabilir veya kapatabilir!";
+/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On EE, MMM d, yyyy at %@" = "EE, d MMM yyy %@";
 
-/* Action */
+/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
+"On EE, MMM d, yyyy at %@, %@ wrote:" = "EE, d MMM yyyy %1$@, %2$@ yazdı:";
+
+/* None */
 "OpenDraft" = "Taslağı Aç";
 
 /* contacts talbe cell Organization title */
@@ -985,6 +1279,9 @@
 
 /* default vcard types */
 "Other" = "Diğer";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "AppStore'un satın alma sırasında uygulamaya sağladığı teknik verileri eklemeyi kabul ederseniz, Müşteri Destek ekibimiz servis planınızı manuel olarak etkinleştirmeye çalışacaktır. Bu veriler iTunes hesabınız, Apple kimliğiniz, bağlantılı kredi kartlarınız veya diğer kullanıcı bilgileriniz hakkında hiçbir ayrıntıyı içermez. Teknik veriler yalnızca AppStore sunucularında işlemin gerçekleştirildiğini kontrol etmemize ve doğrulamamıza yardımcı olur.";
 
 /* mail location desc */
 "Outbox" = "Giden Kutusu";
@@ -1047,7 +1344,7 @@
 "Plain text" = "Düz metin";
 
 /* alert description */
-"Please add a password for the following recipients" = "Lütfen aşağıdaki alıcılar için bir şifre ekleyin";
+"Please add a password for the following recipients." = "Lütfen aşağıdaki alıcılar için bir parola ekleyin.";
 
 /* Description */
 "Please check your cell phone for the verification code." = "Lütfen doğrulama kodu için cep telefonunuzu kontrol edin.";
@@ -1056,7 +1353,7 @@
 "Please check your email for the verification code." = "Lütfen doğrulama kodu için lütfen e-postanızı kontrol edin.";
 
 /* alert description */
-"Please disable PGP Sending for following addresses" = "Lütfen aşağıdaki adresler için PGP gönderimini devre dışı bırakın";
+"Please disable PGP Sending for following addresses." = "Lütfen aşağıdaki adresler için PGP gönderimini devre dışı bırakın.";
 
 /* Description */
 "Please input a valid cell phone number." = "Lütfen geçerli bir telefon numarası girin.";
@@ -1064,8 +1361,23 @@
 /* error message */
 "Please input a valid email address." = "Lütfen geçerli bir e-posta adresi girin.";
 
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Lütfen, satın alma işleminizi tamamlayabilmemiz için hizmet planınızı yükselttiğiniz ProtonMail hesabına giriş yapın.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Hizmet planı aktivasyonunu tamamlayabilmemiz için, lütfen hizmet planınızı yükseltmekte olduğunuz ProtonMail hesabına giriş yapın.";
+
 /* Error */
 "Please pick a user name first!" = "Lütfen önce bir kullanıcı adı seçin!";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Lütfen bişr grup adı sağlayın";
+
+/* when switch sender but email has attachments */
+"Please remove all attachments before changing sender!" = "Göndereni değiştirmeden önce lütfen tüm ekleri kaldırın";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Lütfen kişi grubu için en az bir e-posta adresi seçin";
 
 /* human check select option title */
 "Please select one of the following options:" = "Lütfen aşağıdaki seçeneklerden birini seçin:";
@@ -1073,11 +1385,34 @@
 /* Description */
 "Please set a password." = "Lütfen bir şifre ayarlayın.";
 
+/* None */
+"Please try a different domain." = "Lütfen başka bir etki alanı deneyin.";
+
+/* None */
+"Please try a different email address." = "Lütfen başka bir e-posta adresi deneyin.";
+
+/* None */
+"Please try a different password." = "Lütfen başka bir parola deneyin.";
+
+/* None */
+"Please try a different user name." = "Lütfen başka bir kullanıcı adı deneyin.";
+
+/* 
+
+ */
+"Please try again." = "Lütfen tekrar deneyin";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Hizmet planı aktivasyonunuza devam etmek için lütfen uygulamanın kilidini açın";
+
 /* Description */
-"Please use ProtonMail App login first" = "Lütfen önce ProtonMail uygulamasına giriş yapın";
+"Please use ProtonMail App login first." = "Lütfen önce ProtonMail uygulamasına giriş yapın.";
 
 /* Alert */
 "Please use the web application to reset your password." = "Şifrenizi sıfırlamak için lütfen web uygulamasını kullanın.";
+
+/* None */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Posta kutusu şifrenizi değiştirmek için lütfen ProtonMail web sürümünü kullanın!";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords!" = "Lütfen şifrelerinizi değiştirmek için ProtonMail web sürümünü kullanın!";
@@ -1088,8 +1423,15 @@
 /* The */
 "Please wait until the email downloaded!" = "Lütfen e-posta indirilene kadar bekleyin!";
 
+/* 
+ & alert title */
+"Please, manage it in your phone." = "Lütfen, telefonunuzda yönetin.";
+
 /* Action */
 "Polish" = "Lehçe";
+
+/* Action */
+"Portuguese" = "Portekizce";
 
 /* Action */
 "Portuguese Brazil" = "Portekizce Brezilya";
@@ -1124,6 +1466,9 @@
 /* Description */
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail şu anda çevrim dışı, şu anki durum için twitter'ımızı kontrol edin: https://twitter.com/protonmail";
 
+/* Service plan capability */
+"ProtonVPN included" = "ProtonVPN dahil";
+
 /* Title */
 "Quick swipe actions" = "Hızlı kaydırma eylemleri";
 
@@ -1157,7 +1502,7 @@
 /* remove action */
 "Remove" = "Sil";
 
-/* Action */
+/* un star message */
 "Remove Star" = "Yıldızı Kaldır";
 
 /* settings option (Repeat: sun, mon, thu) */
@@ -1169,8 +1514,20 @@
 /* reply all action */
 "Reply All" = "Tümünü Yanıtla";
 
+/* composer view model impl */
+"Reply message" = "İletiyi yanıtla";
+
+/* None */
+"ReplyAll" = "Tümünü yanıtla";
+
 /* menu title */
 "Report Bugs" = "Hataları Bildir";
+
+/* message details-> more action-> report phishing */
+"Report Phishing" = "Kimlik avını raporla";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Bir iletiyi kimlik avı girişimi olarak bildirmek iletiyi bize gönderir. Böylece onu analiz edebilir ve filtrelerimizi geliştirebiliriz. Bu, mesajın içeriğini tam olarak görebileceğimiz anlamına gelir.";
 
 /* Title */
 "Resetting message cache ..." = "Mesaj önbelleği temizleniyor...";
@@ -1180,6 +1537,9 @@
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "%d saniye sonra tekrar dene";
+
+/* Action */
+"Romanian" = "Romence";
 
 /* Action */
 "Russian" = "Rusça";
@@ -1214,6 +1574,15 @@
 /* Title */
 "Search" = "Arama";
 
+/* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
+"Select An Option" = "Bir seçenek seçin";
+
+/* The title for the view where user can select the color for the group */
+"Select Color" = "Renk seçin";
+
+/* None */
+"Select your language" = "Dilinizi seçin";
+
 /* Action */
 "Send" = "Gönder";
 
@@ -1233,7 +1602,10 @@
 "Sender Verification Failed" = "Gönderici doğrulaması başarısız";
 
 /* Description */
-"Sending Message" = "Mesaj gönderiliyor";
+"Sending Message" = "İleti gönderiliyor";
+
+/* Alert title */
+"Sending message" = "İleti gönderiliyor";
 
 /* pm.me upgrade warning in composer */
 "Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "%1$@ adresinden ileti göndermek ücretli bir özelliktir. İletiniz varsayılan %2$@ adresinizden gönderilecektir";
@@ -1244,8 +1616,11 @@
 /* Description */
 "Sent Failed" = "Gönderme Başarısız";
 
+/* encryption lock description for auto reply */
+"Sent by ProtonMail with zero access encryption" = "ProtonMail tarafından sıfır erişim şifrelemesi ile gönderildi";
+
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Uçtan uca şifreleme ile sizin tarafınızdan gönderildi";
+"Sent by you with end-to-end encryption" = "Sizin tarafınızdan uçtan uca şifreleme ile gönderildi";
 
 /* Description */
 "Server proofs not valid!" = "Sunucu denetimi geçerli değil!";
@@ -1274,7 +1649,7 @@
 /* Action */
 "Sign Out" = "Oturumu Kapat";
 
-/* Title */
+/* Title in signature settings */
 "Signature" = "İmza";
 
 /* Title */
@@ -1292,7 +1667,10 @@
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "kadar ertelendi";
 
-/* Title */
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Üzgünüz, iOS uygulamasının beta sürümündeki satın alımları işleme koyamıyoruz. Herkese açık beta programımıza katıldığınız için teşekkür ederiz!";
+
+/* None */
 "Space Warning" = "Boş alan uyarısı";
 
 /* mail location desc
@@ -1325,6 +1703,9 @@
 /* Title */
 "Storage" = "Depolama";
 
+/* Title */
+"Storage Warning" = "Depolama Uyarısı";
+
 /* encryption lock description */
 "Stored with zero access encryption" = "Sıfır erişim şifrelemesiyle depolandı";
 
@@ -1337,8 +1718,14 @@
 /* subject: text when forward */
 "Subject:" = "Konu:";
 
+/* menu title */
+"Subscription" = "Abonelik";
+
 /* Action */
 "Support ProtonMail" = "ProtonMail'i Destekle";
+
+/* Service plan capability; i = 2 */
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "%i özel alan adları için destek (ör. kullanici@alanadiniz.com)";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Soldan Sağa Kaydırın";
@@ -1358,7 +1745,7 @@
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "Bu alıcılara son kullanma tarihi göndermek için gönder'e hafifçe dokunun";
 
-/* No comment provided by engineer. */
+/* None */
 "Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Hata raporu gönderdiğiniz için teşekkür ederiz. Raporunuzu hata takip sistemimize ekledik.";
 
 /* update password error */
@@ -1367,8 +1754,16 @@
 /* Title */
 "The ProtonMail current offline..." = "ProtonMail şu anda çevirmdışı...";
 
+/* 
+ */
+"The UserName have been taken." = "Bu kullanıcı adı alındı.";
+
 /* Description */
 "The authentication credentials are invalid." = "Kimlik doğrulama bilgileri geçersiz.";
+
+/* 
+ */
+"The authentication token has expired." = "Kimlik doğrulama belirtecinin süresi doldu.";
 
 /* key size notes */
 "The current standard" = "Mevcut standart";
@@ -1377,7 +1772,7 @@
 "The display name is now %@." = "Görünen ad artık %@.";
 
 /* Description */
-"The draft cache is broken please try again" = "Taslak önbelleği bozuk lütfen tekrar deneyin";
+"The draft cache is broken. Please try again." = "Taslak önbelleği bozuk. Lütfen tekrar deneyin.";
 
 /* error when sending the message */
 "The draft format incorrectly sending failed!" = "Taslak biçimi hatalı, gönderme başarısız oldu!";
@@ -1385,11 +1780,27 @@
 /* key size note part 1 */
 "The highest level of encryption available." = "Mevcut olan en üst düzeyde şifreleme.";
 
+/* None */
+"The label name is duplicate" = "Yinelenen etiket adı";
+
 /* Error */
 "The mailbox password is incorrect." = "Posta kutusu parolası hatalı.";
 
+/* Alert message */
+"The maximum number of distinct recipients is %d" = "En fazla farklı alıcı sayısı %d";
+
+/* *
+ *  LabelsViewController */
+"The maximum number of labels is %d." = "En fazla etiket sayısı %d.";
+
+/* None */
+"The new password can't empty" = "Yeni parola boş olamaz";
+
 /* update password error */
 "The new password can't empty." = "Yeni parola boş olamaz.";
+
+/* None */
+"The new password not match" = "Parolalar eşleşmiyor";
 
 /* update password error */
 "The new password not match." = "Yeni parola uyuşmuyor.";
@@ -1409,20 +1820,40 @@
 /* Title */
 "The request timed out." = "İstek zaman aşımına uğradı.";
 
-/* Description */
+/* None */
 "The total attachment size can't be bigger than 25MB" = "Toplam ek dosya boyutu 25MB'den büyük olamaz";
+
+/* Description */
+"The total attachment size cannot exceed 25MB" = "Toplam ek boyutu 25 MB'ı aşamaz";
+
+/* 
+ & title */
+"The verification email invalid" = "Geçersiz doğrulama e-postası";
 
 /* Error */
 "The verification failed!" = "Doğrulama başarısız!";
 
 /* Description */
+"There was an error creating or loading the app's saved data." = "Uygulamanın kayıtlı verilerini oluştururken veya yüklerken bir hata oluştu.";
+
+/* 
+ & local error */
 "There was an error creating or loading the application's saved data." = "Uygulamanın kayıtlı verileri oluşturulurken veya yüklenirken bir hata oluştu.";
+
+/* Alert message */
+"This can take a while. Please do not dismiss the app." = "Bu biraz zaman alabilir. Lütfen uygulamadan çıkmayın.";
+
+/* alert desc */
+"This contact belongs to your Address Book." = "Bu kişi adres defterinize ait.";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta, alan adı kimlik doğrulama gereksinimlerinde başarısız oldu. Sahteciliğe yol açabilir veya yanlış yönlendirilebilir!";
 
 /* spam score warning */
 "This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Bu e-posta bir ProtonMail adresinden gelmiş gibi görünüyor, ancak sistemimizin dışından geldi ve kimlik doğrulama gereksinimlerimiz başarısız oldu. Sahteciliğe yol açabilir veya yanlış yönlendirilebilir!";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Bu ileti, bir kimlik avı girişimi olabilir. Lütfen yasal olduklarından emin olmak için göndereni ve içeriği kontrol edin.";
 
 /* contacts talbe cell Title title */
 "Title" = "Başlık";
@@ -1431,13 +1862,25 @@
 "To" = "Kime";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "ProtonMail'in istismar edilmesini önlemek için\r\ninsan olduğunuzu doğrulamanız gerekir.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "ProtonMail'in istismar edilmesini önlemek için,
+ insan olduğunuzu doğrulamamız gerekmektedir.";
+
+/* None */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu şifrenizi sıfırlamak için, lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Posta kutusu şifrenizi sıfırlamak için lütfen protonmail.com adresindeki ProtonMail web sürümünü kullanın";
 
 /* message To: feild */
 "To:" = "Kime:";
+
+/* *
+ *  API Error & alert title */
+"Token expired" = "Belirteç süresi doldu";
+
+/* Alert title */
+"Too many recipients" = "Çok fazla alıcı";
 
 /* settings touchid error */
 "TouchID is not enrolled, enable it in the system Settings" = "TouchID etkin değil, sistem ayarlarından etkinleştirin";
@@ -1465,6 +1908,9 @@
 /* Placeholder */
 "Two Factor Code" = "İki Adımlı Doğrulama Kodu";
 
+/* Internal type casting error */
+"Type casting error" = "Tür döküm hatası";
+
 /* default vcard types */
 "URL" = "URL";
 
@@ -1477,6 +1923,10 @@
 /* Description */
 "Unable to connect to the server" = "Sunucuya bağlanılamıyor";
 
+/* 
+ */
+"Unable to construct a valid URL with the following path: %@" = "Bu yol ile geçerli bir URL oluşturulamadı: %@";
+
 /* Description */
 "Unable to create SRP Client!" = "SRP İstemcisi oluşturulamıyor!";
 
@@ -1484,7 +1934,10 @@
 "Unable to decrypt message." = "Mesaj şifresi çözülemiyor.";
 
 /* Description */
-"Unable to generate hash password!" = "Hash parolası üretilemedi!";
+"Unable to edit this message offline" = "Bu ileti çevrimdışı düzenlenemiyor";
+
+/* Description */
+"Unable to generate hashed password!" = "Hash parolası üretilemedi!";
 
 /* Error */
 "Unable to get contacts" = "Kişiler getirilemiyor";
@@ -1496,13 +1949,14 @@
 "Unable to parse authentication token!" = "Kimlik doğrulama belirteci ayrıştırılamadı!";
 
 /* Description */
-"Unable to parse cased authentication token!" = "Kimlik doğrulama belirteci çözümlenemedi!";
+"Unable to parse cached authentication token!" = "Önbelleğe alınmış kimlik doğrulama belirteci ayrıştırılamıyor!";
 
 /* Description */
 "Unable to parse response" = "Yanıt ayrıştırılamadı";
 
 /* Description */
-"Unable to parse the response object:\n%@" = "Yanıt nesnesi ayrıştırılamadı:\n%@";
+"Unable to parse the response object:
+%@" = "Yanıt nesnesi ayrıştırılamadı: %@";
 
 /* Error */
 "Unable to parse token" = "Belirteç ayrıştırılamadı";
@@ -1516,14 +1970,30 @@
 /* Description */
 "Unknow Error" = "Bilinmeyen Hata";
 
+/* None */
+"Unknow file" = "Bilinmeyen dosya";
+
 /* title, default display name */
 "Unknown" = "Bilinmiyor";
 
 /* Error */
 "Unknown Error" = "Bilinmeyen Hata";
 
-/* VoiceOver: email is not read yet */
+/* None */
+"Unkonw Version" = "Bilinmeyen sürüm";
+
+/* Service plan capability; */
+"Unlimited messages sent/day" = "Sınırsız mesaj gönderimi/gün";
+
+/* The verb for describing the unread action
+   VoiceOver: email is not read yet */
 "Unread" = "Okunmamış";
+
+/* Error message */
+"Unsupported file type" = "Desteklenmeyen dosya biçimi";
+
+/* Service plan capability; i = 6 */
+"Up to %i users" = "En fazla %i kullanıcı";
 
 /* like top right action text */
 "Update" = "Güncelle";
@@ -1534,8 +2004,20 @@
 /* update notification email error title */
 "Update Notification Email" = "Bildirim E-Postasını Güncelle";
 
+/* title */
+"Update Now" = "Şimdi Güncelle";
+
+/* title */
+"Update Required" = "Güncelleme gerekli";
+
+/* Service plan description footer */
+"Upgrade to a paid plan to benefit from more features" = "Daha fazla özellikten yararlanmak için ücretli bir plana geçin";
+
 /* Error */
 "Upgrade to a paid plan to send from your %@ address" = "%@ adresinizden gönderilecek ücretli bir plana geçiniz";
+
+/* alert description */
+"Upgrade to get all paid features." = "Tüm ücretli özellikleri almak için yükseltin.";
 
 /* Upgrade warning message */
 "Upgrading is not possible in the app." = "Uygulamada yeni sürüme geçilmesi mümkün değil.";
@@ -1552,8 +2034,16 @@
 /* error when user already exist */
 "User already exist!" = "Kullanıcı zaten mevcut!";
 
-/* No comment provided by engineer. */
+/* None */
 "User is available!" = "Kullanıcı uygun!";
+
+/* 
+ & title */
+"User name exist" = "Kullanıcı adı mevcut";
+
+/* 
+ & alert title */
+"User name invalid" = "Geçersiz kullanıcı adı";
 
 /* Title */
 "Username" = "Kullanıcı Adı";
@@ -1570,11 +2060,26 @@
 /* error details */
 "Verification of this content’s signature failed" = "Bu içeriğin imzasının doğrulanması başarısız oldu";
 
+/* None */
+"Version %@ %@" = "Sürüm %@ %@";
+
+/* message details-> more action-> view headers */
+"View Headers" = "Başlıkları görüntüle";
+
+/* Action */
+"View Plans" = "Planları görüntüle";
+
+/* Title */
+"Warning" = "Uyarı";
+
 /* human check warning description */
 "Warning: Before you pass the human check you can't sent email!!!" = "Uyarı: İnsan kontrolünü tamamlamadan önce e-posta gönderemezsiniz!!!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Uyarı: Bir kurtarma e-postası ayarlamadınız için şifrenizi unuttuğunuzda hesabınızı kurtarmanız imkânsız olacak. Kurtarma e-postası olmadan devam edilsin mi?";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Aboneliğinizi başarıyla etkinleştirdik. Lütfen yeni hizmet planınızı kullanmaya başlamak için uygulamayı yeniden başlatın.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Yukarıdaki telefonun numarasına doğrulama kodu göndereceğiz.";
@@ -1596,6 +2101,16 @@
 
 /* default vcard types */
 "Work" = "İş";
+
+/* 
+ & title */
+"Wrong verification code" = "Yanlış doğrulama kodu";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Evet, bunun için etkinleştir ";
+
+/* Error message */
+"Yes, attach details of payment" = "Evet, ödeme ayrıntılarını ekleyin";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Kaydırma hareketlerini ProtonMail uygulama ayarlarından özelleştirebilirsiniz.";
@@ -1637,7 +2152,15 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifreli e-posta hesabınız kuruldu ve şifrelenmiş mesajlar göndermeye ve almaya hazır.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Yeni güvenli e-posta adresiniz\r\n\ hazır.";
+"Your new secure email
+ account is ready." = "Yeni güvenli e-posta
+ hesabınız hazır.";
+
+/* Service plan description footer */
+"Your plan is currently active until" = "Planınız şu anda tarihine kadar etkin";
+
+/* Service plan description footer */
+"Your plan will automatically renew on" = "Planınız şu tarihte otomatik olarak yenilenecek";
 
 /* Description */
 "Your signature has been updated." = "İmzanız güncellendi.";
@@ -1666,8 +2189,14 @@
 /* Title */
 "days" = "gün";
 
+/* Buy button second line */
+"for one year" = "bir yıl için";
+
 /* contacts api error when fetch */
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "contacts() getirilirken hata oluştu, peopleOrderedByUsersPreference boş sonuç döndürdü!!";
+
+/* None */
+"hours" = "Saat";
 
 /* Title */
 "inline attachments" = "satır içi ek dosya";

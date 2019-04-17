@@ -33,7 +33,7 @@ NS = {'x':'urn:oasis:names:tc:xliff:document:1.2'}
 FILES = [
     "ProtonMail/Localizable.strings",
     "ProtonMail/PasswordExtension.strings",
-    # "ProtonMail/InfoPlist.strings",
+    "ProtonMail/InfoPlist.strings",
 ]
 
 # Because Xcode is unpredictable. See bug 1162510 - Sync.strings are not imported
