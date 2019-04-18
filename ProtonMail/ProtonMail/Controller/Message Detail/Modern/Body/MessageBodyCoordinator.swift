@@ -49,9 +49,7 @@ class MessageBodyCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            let composeViewController = segue.destination.children[0] as! ComposeViewController
-            sharedVMService.newDraft(vmp: composeViewController)
-            let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
             if let mailTo : NSURL = sender as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                 var rawURLparts = resSpecifier.components(separatedBy: "?")
                 if (rawURLparts.count > 2) {
@@ -110,10 +108,11 @@ class MessageBodyCoordinator {
                     }
                 }
             }
-            //TODO:: finish up here
-            let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                 vm: viewModel, services: ServiceFactory.default) //set view model
-            coordinator.start()
+            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            let navigator = UINavigationController.init(rootViewController: next)
+            self.controller.present(navigator, animated: true, completion: nil)
         }
     }
 }

@@ -29,15 +29,11 @@
 import Foundation
 
 class ComposeContainerViewModel: TableContainerViewModel {
-    private let message: Message
+    internal var childViewModel: EditorViewModel
     
-    init(message: Message) {
-        self.message = message
+    init(editorViewModel: EditorViewModel) {
+        self.childViewModel = editorViewModel
         super.init()
-    }
-    
-    internal var childViewModel: EditorViewModel {
-        return EditorViewModel(msg: self.message, action: .openDraft)
     }
     
     override var numberOfSections: Int {

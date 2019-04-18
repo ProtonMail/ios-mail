@@ -74,13 +74,14 @@ class MessageHeaderViewCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
-                let composeViewController = segue.destination.children[0] as! ComposeViewController
-                sharedVMService.newDraft(vmp: composeViewController)
-                let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
-                viewModel.addToContacts(contact)
-                let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                     vm: viewModel, services: ServiceFactory.default) //set view model
-                coordinator.start()
+            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            viewModel.addToContacts(contact)
+
+            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            let navigator = UINavigationController.init(rootViewController: next)
+            self.controller.present(navigator, animated: true, completion: nil)
             
         } else if segue.identifier == kToAddContactSegue {
             if let contact = sender as? ContactVO {

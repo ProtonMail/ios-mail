@@ -142,16 +142,9 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||
                                             destination == .composerForward:
-//            guard let tapped = ComposeMessageAction(destination) else { return }
-//            let composeViewController = segue.destination.children[0] as! ComposeViewController
-//            sharedVMService.newDraft(vmp: composeViewController)
-//            let viewModel = ComposeViewModelImpl(msg: messages.first!, action: tapped)
-//            let coordinator = ComposeCoordinator(vc: composeViewController,
-//                                                 vm: viewModel, services: ServiceFactory.default) //set view model
-//            coordinator.start()
-            
+            guard let tapped = ComposeMessageAction(destination) else { return }
             let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-            next.set(viewModel: ComposeContainerViewModel(message: messages.first!))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: EditorViewModel(msg: messages.first!, action: tapped)))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             let navigator = UINavigationController.init(rootViewController: next)
             self.controller.present(navigator, animated: true, completion: nil)
