@@ -35,7 +35,10 @@ class EditorViewController: ComposeViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
+        
+        let defaultHeight = (self.viewModel as! EditorViewModel).contentHeight
+        self.height = self.view.heightAnchor.constraint(equalToConstant: defaultHeight)
+        self.height.priority = .init(999.0)
         self.height.isActive = true
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { htmlEditor, change in
@@ -47,8 +50,11 @@ class EditorViewController: ComposeViewController {
     }
     
     override func caretMovedTo(_ offset: CGFloat) {
-        // FIXME: improve
-        self.enclosingScroller?.scroller.contentOffset = CGPoint(x: 0, y: offset + 185)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
+            let offsetAreaInCell = CGRect(x: 0, y: offset, width: 1, height: 100) // FIXME: approx height of our text row
+            let offsetArea = self.view.convert(offsetAreaInCell, to: self.enclosingScroller!.scroller)
+            self.enclosingScroller?.scroller.scrollRectToVisible(offsetArea, animated: true)
+        }
     }
 }
 

@@ -57,8 +57,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         self.childrenHeightObservations = [
             childViewModel.observe(\.contentHeight) { [weak self] _, _ in
-                self?.tableView.beginUpdates()
-                self?.tableView.endUpdates()
+                UIView.animate(withDuration: 0.001, animations: {
+                    self?.saveOffset()
+                    self?.tableView.beginUpdates()
+                    self?.tableView.endUpdates()
+                    self?.restoreOffset()
+                })
             },
             header.observe(\.size) { [weak self] _, _ in
                 self?.tableView.beginUpdates()
