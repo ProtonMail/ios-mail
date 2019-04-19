@@ -387,17 +387,20 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         } else if segue.identifier == kToComposerSegue {
-            let destination = segue.destination.children[0] as! ComposeViewController
+            guard let nav = segue.destination as? UINavigationController,
+                let next = nav.viewControllers.first as? ComposeContainerViewController else
+            {
+                return
+            }
+            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
-                sharedVMService.newDraft(vmp: destination)
-                //TODO::fixme finish up here fix services partservices
-                let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
                 viewModel.addToContacts(contactGroupVO)
-                let coordinator = ComposeCoordinator(vc: destination, vm: viewModel, services: ServiceFactory.default)
-                coordinator.start()
             }
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController
             popup.delegate = self

@@ -52,8 +52,6 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
         
-        let vmService = sharedServices.get() as ViewModelService
-        vmService.newDraft(vmp: child)
         let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: sharedServices)
         coordinator.start()
         self.editor = child

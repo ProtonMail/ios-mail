@@ -112,42 +112,34 @@ class MailboxCoordinator : DefaultCoordinator {
             self.viewModel.resetNotificationMessage()
             
         case .composer:
-            guard let nav = destination as? UINavigationController else {
+            guard let nav = destination as? UINavigationController,
+                let next = nav.viewControllers.first as? ComposeContainerViewController else
+            {
                 return false
             }
-            guard let next = nav.firstViewController() as? ComposeViewController else {
-                return false
-            }
-            let vmService = services.get() as ViewModelService
-            vmService.newDraft(vmp: next)
-            let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
-            let coordinator = ComposeCoordinator(vc: next, vm: viewModel, services: services)
-            coordinator.start()
+            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            
         case .composeShow:
             self.viewController?.cancelButtonTapped()
-            guard let nav = destination as? UINavigationController else {
-                return false
-            }
-            guard let next = nav.firstViewController() as? ComposeViewController else {
-                return false
-            }
-            let vmService = services.get() as ViewModelService
-            vmService.newDraft(vmp: next)
             
-            guard let message = sender as? Message else {
+            guard let nav = destination as? UINavigationController,
+                let next = nav.viewControllers.first as? ComposeContainerViewController,
+                let message = sender as? Message else
+            {
                 return false
             }
-            let viewModel = ComposeViewModelImpl(msg: message, action: .openDraft)
-            let coordinator = ComposeCoordinator(vc: next, vm: viewModel, services: services)
-            coordinator.start()
+            
+            let viewModel = EditorViewModel(msg: message, action: .openDraft)
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
+            
         case .search, .onboarding:
             return true
         case .feedback:
             return false
-            //            let popup = segue.destination as! FeedbackPopViewController
-            //            popup.feedbackDelegate = self
-            //            //popup.viewModel = LabelViewModelImpl(msg: self.getSelectedMessages())
-        //            self.setPresentationStyleForSelfController(self, presentingController: popup)
+
         case .feedbackView:
             return false
         case .humanCheck:
