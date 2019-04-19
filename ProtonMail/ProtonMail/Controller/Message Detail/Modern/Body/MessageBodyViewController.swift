@@ -76,6 +76,9 @@ class MessageBodyViewController: UIViewController {
         self.scrollDecelerationOverlayObservation = nil
         
         if let webView = self.webView {
+            webView.scrollView.delegate = nil
+            webView.uiDelegate = nil
+            webView.navigationDelegate = nil
             self.loader.eject(from: webView.configuration)
         }
     }
