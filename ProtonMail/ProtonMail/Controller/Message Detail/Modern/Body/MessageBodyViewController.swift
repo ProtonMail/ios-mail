@@ -42,7 +42,7 @@ class MessageBodyViewController: UIViewController {
     private var renderObservation: NSKeyValueObservation!
     private var loadingObservation: NSKeyValueObservation!
     
-    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
+    internal weak var enclosingScroller: ScrollableContainer?
     private var verticalRecognizer: UIPanGestureRecognizer!
     private var gestureInitialOffset: CGPoint = .zero
     

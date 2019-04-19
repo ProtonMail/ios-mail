@@ -28,8 +28,8 @@
 
 import UIKit
 
-class EditorViewController: ComposeViewController {
-    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
+class ContainableComposeViewController: ComposeViewController {
+    internal weak var enclosingScroller: ScrollableContainer?
     private var heightObservation: NSKeyValueObservation!
     private var height: NSLayoutConstraint!
     
@@ -44,7 +44,7 @@ class EditorViewController: ComposeViewController {
             guard change.oldValue != change.newValue else { return }
             let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
             self.height.constant = totalHeight
-            (self.viewModel as! EditorViewModel).contentHeight = totalHeight
+            (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
     }
     
@@ -65,8 +65,4 @@ class EditorViewController: ComposeViewController {
         super.composeViewDidTapExpirationButton(composeView)
         self.enclosingScroller?.scroller.isScrollEnabled = false
     }
-}
-
-class EditorViewModel: ComposeViewModelImpl {
-    @objc internal dynamic var contentHeight: CGFloat = 0.1
 }

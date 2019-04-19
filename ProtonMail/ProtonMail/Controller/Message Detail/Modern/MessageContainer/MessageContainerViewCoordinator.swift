@@ -144,7 +144,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
                                             destination == .composerForward:
             guard let tapped = ComposeMessageAction(destination) else { return }
             let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-            next.set(viewModel: ComposeContainerViewModel(editorViewModel: EditorViewModel(msg: messages.first!, action: tapped)))
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!, action: tapped)))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             let navigator = UINavigationController.init(rootViewController: next)
             self.controller.present(navigator, animated: true, completion: nil)

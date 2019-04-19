@@ -74,7 +74,7 @@ class MessageHeaderViewCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
-            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             viewModel.addToContacts(contact)
 
             let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)

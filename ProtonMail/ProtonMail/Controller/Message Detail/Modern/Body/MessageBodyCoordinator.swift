@@ -33,7 +33,7 @@ class MessageBodyCoordinator {
     private let kToComposerSegue : String    = "toCompose"
     
     init(controller: MessageBodyViewController,
-         enclosingScroller: MessageBodyScrollingDelegate)
+         enclosingScroller: ScrollableContainer)
     {
         self.controller = controller
         self.controller.enclosingScroller = enclosingScroller
@@ -49,7 +49,7 @@ class MessageBodyCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             if let mailTo : NSURL = sender as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                 var rawURLparts = resSpecifier.components(separatedBy: "?")
                 if (rawURLparts.count > 2) {

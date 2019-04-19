@@ -32,7 +32,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
     private var header: ComposeHeaderViewController!
-    private var editor: EditorViewController!
+    private var editor: ContainableComposeViewController!
     
     init(controller: ComposeContainerViewController, services: ServiceFactory) {
         self.controller = controller
@@ -55,10 +55,10 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.editor.sendAction(sender)
     }
     
-    internal func createEditor(_ childViewModel: EditorViewModel) {
+    internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
         let prechild = UIStoryboard(name: "Composer", bundle: nil).make(ComposeViewController.self)
-        object_setClass(prechild, EditorViewController.self)
-        guard let child = prechild as? EditorViewController else {
+        object_setClass(prechild, ContainableComposeViewController.self)
+        guard let child = prechild as? ContainableComposeViewController else {
             fatalError()
         }
         child.injectHeader(self.header)

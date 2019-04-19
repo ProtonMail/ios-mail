@@ -28,7 +28,7 @@
 
 import UIKit
 
-protocol MessageBodyScrollingDelegate: class {
+protocol ScrollableContainer: class {
     func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
     var scroller: UIScrollView { get }
     
@@ -36,7 +36,7 @@ protocol MessageBodyScrollingDelegate: class {
     func restoreOffset()
 }
 
-class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, MessageBodyScrollingDelegate, CoordinatedNew, ViewModelProtocol, BannerPresenting
+class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, ScrollableContainer, CoordinatedNew, ViewModelProtocol, BannerPresenting
 {
 
     @IBOutlet weak var tableView: UITableView!

@@ -80,7 +80,7 @@ class ShareUnlockCoordinator : PushCoordinator {
             return
         }
         
-        let viewModel = EditorViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
+        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
         let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))

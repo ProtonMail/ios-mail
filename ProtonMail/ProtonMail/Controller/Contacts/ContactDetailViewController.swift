@@ -274,7 +274,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             {
                 return
             }
-            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
             }

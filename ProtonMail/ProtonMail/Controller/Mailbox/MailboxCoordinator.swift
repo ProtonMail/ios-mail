@@ -117,7 +117,7 @@ class MailboxCoordinator : DefaultCoordinator {
             {
                 return false
             }
-            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
@@ -131,7 +131,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
             
-            let viewModel = EditorViewModel(msg: message, action: .openDraft)
+            let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             

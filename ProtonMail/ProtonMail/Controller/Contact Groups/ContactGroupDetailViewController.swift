@@ -148,7 +148,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             {
                 return
             }
-            let viewModel = EditorViewModel(msg: nil, action: .newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO(ID: result.0, name: result.1)
                 contactGroupVO.selectAllEmailFromGroup()
