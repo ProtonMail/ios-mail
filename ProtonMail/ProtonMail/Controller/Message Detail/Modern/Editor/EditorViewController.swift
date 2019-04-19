@@ -36,8 +36,7 @@ class EditorViewController: ComposeViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let defaultHeight = (self.viewModel as! EditorViewModel).contentHeight
-        self.height = self.view.heightAnchor.constraint(equalToConstant: defaultHeight)
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
@@ -69,5 +68,5 @@ class EditorViewController: ComposeViewController {
 }
 
 class EditorViewModel: ComposeViewModelImpl {
-    @objc internal dynamic var contentHeight: CGFloat = 0.0
+    @objc internal dynamic var contentHeight: CGFloat = 0.1
 }
