@@ -79,14 +79,12 @@ class ShareUnlockCoordinator : PushCoordinator {
         {
             return
         }
-        //TODO:: this compose should get from the current viewModel.
-        let viewModel = ComposeViewModelImpl(subject: vc.inputSubject,
-                                             body: vc.inputContent,
-                                             files: vc.files,
-                                             action: .newDraftFromShare)
-        let compose = ComposeCoordinator(navigation: navigationController, vm: viewModel, services: self.services)
-        self.nextCoordinator = compose
-        compose.start()
+        
+        let viewModel = EditorViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
+        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
+        navigationController.setViewControllers([next], animated: true)
     }
     
     func go(dest: Destination) {

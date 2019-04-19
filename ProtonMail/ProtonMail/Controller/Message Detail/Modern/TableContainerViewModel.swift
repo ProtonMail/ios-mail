@@ -48,7 +48,11 @@ extension TableContainerViewModel: BannerRequester {
     internal func showErrorBanner(_ title: String, action: @escaping ()->Void) {
         let config = BannerView.ButtonConfiguration(title: LocalString._retry, action: action)
         self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, offset: 8.0)
-        UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
+        #if !APP_EXTENSION
+            UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
+        #else
+        // FIXME: send message via window
+        #endif
     }
 }
 

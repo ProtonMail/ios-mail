@@ -75,6 +75,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         // FIXME: that logic should be in VM of EditorViewController
         self.coordinator.cancelAction(sender)
     }
+    @IBAction func sendAction(_ sender: UIBarButtonItem) {
+        // FIXME: that logic should be in VM of EditorViewController
+        self.coordinator.sendAction(sender)
+    }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return .lightContent

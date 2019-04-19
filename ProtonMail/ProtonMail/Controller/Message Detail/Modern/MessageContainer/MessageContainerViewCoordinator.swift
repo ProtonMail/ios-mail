@@ -200,12 +200,6 @@ extension MessageContainerViewCoordinator: LablesViewControllerDelegate {
     }
 }
 
-extension TableContainerViewCoordinator: CoordinatorNew {
-    func start() {
-        // ?
-    }
-}
-
 extension ComposeMessageAction {
     init?(_ destination: MessageContainerViewCoordinator.Destinations) {
         switch destination {

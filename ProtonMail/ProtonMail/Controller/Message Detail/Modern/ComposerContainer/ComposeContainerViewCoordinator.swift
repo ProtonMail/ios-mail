@@ -30,17 +30,29 @@ import Foundation
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
+    private weak var services: ServiceFactory!
     private var header: ComposeHeaderViewController!
     private var editor: EditorViewController!
     
-    init(controller: ComposeContainerViewController) {
+    init(controller: ComposeContainerViewController, services: ServiceFactory) {
         self.controller = controller
+        self.services = services
         super.init()
     }
     
+    #if !APP_EXTENSION
+    init(controller: ComposeContainerViewController) {
+        self.controller = controller
+        self.services = sharedServices
+        super.init()
+    }
+    #endif
+    
     internal func cancelAction(_ sender: UIBarButtonItem) {
-        // FIXME
         self.editor.cancelAction(sender)
+    }
+    @IBAction func sendAction(_ sender: UIBarButtonItem) {
+        self.editor.sendAction(sender)
     }
     
     internal func createEditor(_ childViewModel: EditorViewModel) {
@@ -52,7 +64,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
         
-        let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: sharedServices)
+        let coordinator = ComposeCoordinator(vc: child, vm: childViewModel, services: self.services)
         coordinator.start()
         self.editor = child
     }

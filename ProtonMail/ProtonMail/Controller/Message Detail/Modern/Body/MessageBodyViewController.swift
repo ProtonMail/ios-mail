@@ -28,14 +28,6 @@
 
 import UIKit
 
-protocol MessageBodyScrollingDelegate: class {
-    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
-    var scroller: UIScrollView { get }
-    
-    func saveOffset()
-    func restoreOffset()
-}
-
 class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!

@@ -27,7 +27,10 @@
 
 
 import UIKit
+
+#if !APP_EXTENSION
 import SWRevealViewController
+#endif
 
 ///Notes:: can't use it because the generac class can't do extension with @objc functions. like tableviewdelegate
 class ViewController<T_vm, T_Coordinator : CoordinatorNew> : UIViewController, ViewModelProtocol, CoordinatedNew {
@@ -80,6 +83,7 @@ extension UIViewController {
     class func setup(_ controller: UIViewController,
                      _ menuButton: UIBarButtonItem!,
                      _ shouldShowMenu: Bool) {
+        #if !APP_EXTENSION
         if let revealViewController = controller.revealViewController() {
             
             if (shouldShowMenu && menuButton != nil) {
@@ -93,6 +97,7 @@ extension UIViewController {
                 revealViewController.tapGestureRecognizer()
             }
         }
+        #endif
         
         UIViewController.configureNavigationBar(controller)
         controller.setNeedsStatusBarAppearanceUpdate()

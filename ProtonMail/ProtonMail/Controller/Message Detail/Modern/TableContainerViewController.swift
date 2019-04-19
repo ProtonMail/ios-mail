@@ -28,6 +28,14 @@
 
 import UIKit
 
+protocol MessageBodyScrollingDelegate: class {
+    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
+    var scroller: UIScrollView { get }
+    
+    func saveOffset()
+    func restoreOffset()
+}
+
 class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinator: TableContainerViewCoordinator>: UIViewController, ProtonMailViewControllerProtocol, UITableViewDelegate, UITableViewDataSource, MessageBodyScrollingDelegate, CoordinatedNew, ViewModelProtocol, BannerPresenting
 {
 
@@ -174,5 +182,11 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     
     @objc internal func restoreOffset() {
         self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
+    }
+}
+
+extension TableContainerViewCoordinator: CoordinatorNew {
+    func start() {
+        // ?
     }
 }

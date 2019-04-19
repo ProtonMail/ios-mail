@@ -27,8 +27,6 @@
 
 
 import UIKit
-import WebKit
-import JavaScriptCore
 import PromiseKit
 import AwaitKit
 import MBProgressHUD

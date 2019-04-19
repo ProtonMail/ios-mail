@@ -56,7 +56,7 @@
                     <navigationItem key="navigationItem" id="J9F-Xh-oG8">
                         <barButtonItem key="rightBarButtonItem" image="sent_compose" id="iiy-bz-03S">
                             <connections>
-                                <action selector="sendAction:" destination="WHe-68-Fm2" id="QCK-Xs-OVN"/>
+                                <action selector="sendAction:" destination="MYS-qk-SMJ" id="WVA-F3-IFg"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -98,13 +98,6 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" id="lNu-HA-Ydw">
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="vYP-h5-SU9">
-                            <connections>
-                                <action selector="sendAction:" destination="WHe-68-Fm2" id="WwG-rn-UWU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="expirationPicker" destination="dgj-ed-8tL" id="m3c-sG-9uv"/>
                         <outlet property="htmlEditor" destination="rtW-Jq-ZP6" id="TtU-Iu-u9s"/>
