@@ -689,12 +689,12 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
 
-    func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
+    @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 1
         self.view.bringSubviewToFront(expirationPicker)
     }
 
-    func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
+    @objc func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 0
     }
 

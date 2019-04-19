@@ -56,6 +56,16 @@ class EditorViewController: ComposeViewController {
             self.enclosingScroller?.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
     }
+    
+    override func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
+        super.composeViewHideExpirationView(composeView)
+        self.enclosingScroller?.scroller.isScrollEnabled = true
+    }
+    
+    override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
+        super.composeViewDidTapExpirationButton(composeView)
+        self.enclosingScroller?.scroller.isScrollEnabled = false
+    }
 }
 
 class EditorViewModel: ComposeViewModelImpl {

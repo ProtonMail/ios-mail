@@ -68,7 +68,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dgj-ed-8tL">
-                                <rect key="frame" x="0.0" y="451" width="375" height="216"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
                                 <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="C6r-en-xsF"/>
@@ -77,7 +77,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="dgj-ed-8tL" secondAttribute="bottom" id="NUP-V1-QoY"/>
+                            <constraint firstAttribute="top" secondItem="dgj-ed-8tL" secondAttribute="top" id="NUP-V1-QoY"/>
                             <constraint firstAttribute="trailing" secondItem="dgj-ed-8tL" secondAttribute="trailing" id="RNi-ND-4tJ"/>
                             <constraint firstItem="dgj-ed-8tL" firstAttribute="leading" secondItem="rtW-Jq-ZP6" secondAttribute="leading" id="bn5-3W-eJo"/>
                         </constraints>
