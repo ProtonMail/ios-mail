@@ -113,9 +113,16 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     override internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         let standalone = self.controller.viewModel.thread[indexPath.section]
         switch standalone.divisions[indexPath.row] {
-        case .header: self.embedHeader(index: indexPath.section, onto: cell.contentView)
-        case .attachments: self.embedAttachments(index: indexPath.section, onto: cell.contentView)
-        case .body: self.embedBody(index: indexPath.section, onto: cell.contentView)
+        case .header:
+            cell.clipsToBounds = true // this is needed only with old EmailHeaderView in order to cut off its bottom line
+            self.embedHeader(index: indexPath.section, onto: cell.contentView)
+            
+        case .attachments:
+            self.embedAttachments(index: indexPath.section, onto: cell.contentView)
+            
+        case .body:
+            self.embedBody(index: indexPath.section, onto: cell.contentView)
+            
         default:
             assert(false, "Child not embedded")
             break

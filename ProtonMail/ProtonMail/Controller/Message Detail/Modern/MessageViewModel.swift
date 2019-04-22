@@ -168,7 +168,9 @@ class MessageViewModel: NSObject {
                         }
                         checkCount -= 1
                         if checkCount == 0 {
-                            self?.body = updatedBody
+                            DispatchQueue.main.async {
+                                self?.body = updatedBody
+                            }
                         }
                     }
 
