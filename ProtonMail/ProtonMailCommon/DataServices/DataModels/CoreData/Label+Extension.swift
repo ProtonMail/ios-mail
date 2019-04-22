@@ -69,4 +69,8 @@ extension Label {
                                                    forKey: Attributes.name,
                                                    matchingValue: name) as? Label
     }
+    
+    class func labelGroup( by name: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name : name, Attributes.type : "2"]) as? Label
+    }
 }
