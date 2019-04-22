@@ -150,11 +150,11 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
             self.webView?.loadHTMLString(sanitized, baseURL: URL(string: "about:blank")!)
         }
         
-        if let preheight = dict["preheight"] as? CGFloat {
-            self.renderedContents.preheight = preheight
+        if let preheight = dict["preheight"] as? Double {
+            self.renderedContents.preheight = CGFloat(preheight)
         }
-        if let height = dict["height"] as? CGFloat {
-            self.renderedContents.height = height
+        if let height = dict["height"] as? Double {
+            self.renderedContents.height = CGFloat(height)
         }
     }
     
