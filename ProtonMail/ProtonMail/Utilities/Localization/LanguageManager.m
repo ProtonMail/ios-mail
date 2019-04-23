@@ -29,17 +29,23 @@
 #import "LanguageManager.h"
 #import "NSBundle+Language.h"
 
+//TODO:: we need port this to swift
+
 static NSString * const LanguageCodes[] = { @"en", @"de", @"fr",
                                             @"ru", @"es", @"tr",
                                             @"pl", @"uk", @"nl",
                                             @"it", @"pt-BR",
-                                            @"zh-Hans", @"zh-Hant", @"ca", @"da", @"cs", @"pt", @"ro", @"hr"
+                                            @"zh-Hans", @"zh-Hant", @"ca", @"da", @"cs", @"pt", @"ro", @"hr",
+                                            @"hu", @"is", @"kab", @"sv"
 };
 
 static NSString * const LanguageStrings[] = { @"English", @"German", @"French",
                                               @"Russian", @"Spanish", @"Turkish",
-                                              @"Polish", @"Ukrainian", @"Dutch", @"Italian", @"PortugueseBrazil",
-                                              @"Chinese Simplified", @"Chinese Traditional", @"Catalan", @"Danish", @"Czech", @"portuguese", @"Romanian", @"Croatian"
+                                              @"Polish", @"Ukrainian", @"Dutch",
+                                              @"Italian", @"PortugueseBrazil", @"Chinese Simplified",
+                                              @"Chinese Traditional", @"Catalan", @"Danish",
+                                              @"Czech", @"portuguese", @"Romanian", @"Croatian",
+                                              @"Hungarian", @"Icelandic", @"Kabyle", @"Swedish"
 };
 
 static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
@@ -48,6 +54,15 @@ static NSString * const LanguageSaveKey = @"kProtonMailCurrentLanguageKey";
 static NSString * const LanguageAppGroup = @"group.com.protonmail.protonmail";
 #else
 static NSString * const LanguageAppGroup = @"group.ch.protonmail.protonmail";
+#endif
+
+#if !defined(NS_BLOCK_ASSERTIONS)
+#define STATIC_ASSERT(cond, message_var_name) \
+extern char static_assert_##message_var_name[(cond) ? 1 : -1]
+
+STATIC_ASSERT(ELanguageCount == sizeof(LanguageCodes) / sizeof(NSString*), language_count_mismatch_add_or_remove_languageCodes);
+STATIC_ASSERT(ELanguageCount == sizeof(LanguageStrings) / sizeof(NSString*), language_count_mismatch_add_or_remove_LanguageStrings);
+
 #endif
 
 @implementation LanguageManager
