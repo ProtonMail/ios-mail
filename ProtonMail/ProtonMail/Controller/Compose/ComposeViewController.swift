@@ -359,22 +359,33 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         
         stopAutoSave()
         self.collectDraftData().done {
-            self.viewModel.sendMessage(hasExtenal: self.headerView.hasNonePMEmails)
-            
-            #if APP_EXTENSION
-            self.isSending = true
-            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-                self.isSending = false
-                self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-            })
-            #else
-            // show messagex
-            delay(0.5) {
-                NSError.alertMessageSendingToast()
+            if #available(iOS 11.0, *) {
+                self.sendMessageStepThree()
+            } else {
+                delay(0.5) {
+                    self.sendMessageStepThree()
+                }
             }
-            self.dismiss()
-            #endif
         }
+    }
+    
+    func sendMessageStepThree() {
+        self.viewModel.sendMessage(hasExtenal: self.headerView.hasNonePMEmails)
+        #if APP_EXTENSION
+        self.isSending = true
+        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
+            self.isSending = false
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        })
+        #else
+        
+        // show message
+        delay(0.5) {
+            NSError.alertMessageSendingToast()
+        }
+        
+        self.dismiss()
+        #endif
     }
     
     #if APP_EXTENSION
