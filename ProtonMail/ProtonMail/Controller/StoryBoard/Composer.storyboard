@@ -70,10 +70,10 @@
             </objects>
             <point key="canvasLocation" x="9543" y="1546"/>
         </scene>
-        <!--Compose View Controller-->
+        <!--Containable Compose View Controller-->
         <scene sceneID="sfl-7G-h3U">
             <objects>
-                <viewController storyboardIdentifier="ComposeViewController" id="WHe-68-Fm2" customClass="ComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContainableComposeViewController" id="WHe-68-Fm2" customClass="ContainableComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OJ9-vF-8Va"/>
                         <viewControllerLayoutGuide type="bottom" id="BU5-MI-n2Q"/>

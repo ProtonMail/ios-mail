@@ -108,11 +108,14 @@ class MessageBodyCoordinator {
                     }
                 }
             }
-            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            guard let navigator = segue.destination as? UINavigationController,
+            let next = navigator.viewControllers.first as? ComposeContainerViewController else
+            {
+                assert(false, "Wrong root view controller in Compose storyboard")
+                return
+            }
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            let navigator = UINavigationController.init(rootViewController: next)
-            self.controller.present(navigator, animated: true, completion: nil)
         }
     }
 }

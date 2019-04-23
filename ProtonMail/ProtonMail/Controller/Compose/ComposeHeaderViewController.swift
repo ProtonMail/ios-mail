@@ -246,6 +246,7 @@ class ComposeHeaderViewController: UIViewController {
         super.viewDidLoad()
         
         self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
+        self.height.priority = .init(999.0)
         self.height.isActive = true
         
         fromLable.text = LocalString._composer_from_label

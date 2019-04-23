@@ -56,11 +56,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
-        let prechild = UIStoryboard(name: "Composer", bundle: nil).make(ComposeViewController.self)
-        object_setClass(prechild, ContainableComposeViewController.self)
-        guard let child = prechild as? ContainableComposeViewController else {
-            fatalError()
-        }
+        let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
         child.injectHeader(self.header)
         child.enclosingScroller = self.controller
         

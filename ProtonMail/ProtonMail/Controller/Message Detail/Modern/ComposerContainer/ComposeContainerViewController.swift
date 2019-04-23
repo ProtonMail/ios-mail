@@ -35,6 +35,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var bottomPadding: NSLayoutConstraint!
     
     deinit {
+        self.childrenHeightObservations = []
         NotificationCenter.default.removeKeyboardObserver(self)
         NotificationCenter.default.removeObserver(self)
     }

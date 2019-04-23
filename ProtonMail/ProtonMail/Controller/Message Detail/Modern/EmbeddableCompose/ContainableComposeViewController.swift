@@ -40,19 +40,24 @@ class ContainableComposeViewController: ComposeViewController {
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
-        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { htmlEditor, change in
-            guard change.oldValue != change.newValue else { return }
+        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
+            guard let self = self, change.oldValue != change.newValue else { return }
             let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
             self.height.constant = totalHeight
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
     }
     
+    deinit {
+        self.heightObservation = nil
+    }
+    
     override func caretMovedTo(_ offset: CGFloat) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
+            guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
             let offsetAreaInCell = CGRect(x: 0, y: offset, width: 1, height: 100) // FIXME: approx height of our text row
-            let offsetArea = self.view.convert(offsetAreaInCell, to: self.enclosingScroller!.scroller)
-            self.enclosingScroller?.scroller.scrollRectToVisible(offsetArea, animated: true)
+            let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
+            enclosingScroller.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
     }
     

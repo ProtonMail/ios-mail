@@ -76,12 +76,15 @@ class MessageHeaderViewCoordinator {
         if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             viewModel.addToContacts(contact)
-
-            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            
+            guard let navigator = segue.destination as? UINavigationController,
+                let next = navigator.viewControllers.first as? ComposeContainerViewController else
+            {
+                assert(false, "Wrong root view controller in Compose storyboard")
+                return
+            }
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            let navigator = UINavigationController.init(rootViewController: next)
-            self.controller.present(navigator, animated: true, completion: nil)
             
         } else if segue.identifier == kToAddContactSegue {
             if let contact = sender as? ContactVO {

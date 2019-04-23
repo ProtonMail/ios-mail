@@ -149,12 +149,15 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||
                                             destination == .composerForward:
-            guard let tapped = ComposeMessageAction(destination) else { return }
-            let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+            guard let tapped = ComposeMessageAction(destination),
+                let navigator = segue.destination as? UINavigationController,
+                let next = navigator.viewControllers.first as? ComposeContainerViewController else
+            {
+                assert(false, "Wrong root view controller in Compose storyboard")
+                return
+            }
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!, action: tapped)))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
-            let navigator = UINavigationController.init(rootViewController: next)
-            self.controller.present(navigator, animated: true, completion: nil)
             
         case .some(.labels):
             let popup = segue.destination as! LablesViewController
