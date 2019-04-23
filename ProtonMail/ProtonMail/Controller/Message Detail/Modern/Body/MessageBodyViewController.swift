@@ -301,3 +301,7 @@ fileprivate class ViewBlowingAfterTouch: UIView {
         return target
     }
 }
+
+@available(iOS 10.0, *) extension WKDataDetectorTypes {
+    public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
+}

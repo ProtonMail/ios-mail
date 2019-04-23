@@ -273,7 +273,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
                 return Promise.value(())
             }
         }.then { _ -> Promise<CGFloat> in
-            self.run(with: "document.body.offsetHeight")
+            self.run(with: "document.body.scrollHeight")
         }.done { (height) in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
