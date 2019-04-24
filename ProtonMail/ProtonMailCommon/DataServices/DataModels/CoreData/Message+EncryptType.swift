@@ -47,8 +47,6 @@ extension Message {
         // didn't in localizable string because no place show this yet
         var description : String {
             switch(self){
-                //        case .plain:
-            //            return LocalString._general_enc_type_plain_text
             case .inner:
                 return LocalString._general_enc_pm_emails
             case .external:

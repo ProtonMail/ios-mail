@@ -43,6 +43,47 @@ extension NSManagedObjectContext {
         }
     }
     
+    func managedObjectWithEntityName(_ entityName: String, matching values : [String : CVarArg]) -> NSManagedObject? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+        
+        var subPredication : [NSPredicate] = []
+        for (key, value) in values {
+            let predicate = NSPredicate(format: "%K == %@", key, value)
+            subPredication.append(predicate)
+        }
+        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
+        fetchRequest.predicate = predicateCompound
+        
+        do {
+            let results = try fetch(fetchRequest)
+            return results.first as? NSManagedObject
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
+    }
+    
+    func managedObjectsWithEntityName(_ entityName: String, matching values : [String : CVarArg]) -> [NSManagedObject]? {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+       
+        var subPredication : [NSPredicate] = []
+        for (key, value) in values {
+            let predicate = NSPredicate(format: "%K == %@", key, value)
+            subPredication.append(predicate)
+        }
+        let predicateCompound = NSCompoundPredicate.init(type: .and, subpredicates: subPredication)
+        fetchRequest.predicate = predicateCompound
+        
+        do {
+            let results = try fetch(fetchRequest)
+            return results as? [NSManagedObject]
+        } catch let ex as NSError {
+            PMLog.D("error: \(ex)")
+        }
+        return nil
+    }
+    
+    
     func managedObjectWithEntityName(_ entityName: String, forKey key: String, matchingValue value: CVarArg) -> NSManagedObject? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = NSPredicate(format: "%K == %@", key, value)

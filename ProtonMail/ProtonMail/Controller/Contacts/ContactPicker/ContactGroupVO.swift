@@ -160,8 +160,8 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         selectedMembers.removeAll()
         
         let context = sharedCoreDataService.mainManagedObjectContext
-        if let label = Label.labelForLabelName(contactTitle,
-                                               inManagedObjectContext: context) {
+        
+        if let label = Label.labelGroup(by: contactTitle, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
                 let member = DraftEmailData.init(name: email.name,
                                                  email: email.email)
