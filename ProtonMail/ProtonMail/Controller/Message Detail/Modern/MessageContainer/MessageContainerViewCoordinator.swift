@@ -33,7 +33,7 @@ protocol PdfPagePrintable {
     func printPageRenderer() -> UIPrintPageRenderer
 }
 
-class MessageViewCoordinator: NSObject {
+class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
         case labels = "toApplyLabelsSegue"
@@ -41,12 +41,14 @@ class MessageViewCoordinator: NSObject {
         case composerReplyAll = "toComposeReplyAll"
         case composerForward = "toComposeForward"
     }
-    private weak var controller: MessageViewController!
-    private var tempClearFileURL: URL?
     
-    init(controller: MessageViewController) {
+    internal weak var controller: MessageContainerViewController!
+    
+    init(controller: MessageContainerViewController) {
         self.controller = controller
     }
+    
+    private var tempClearFileURL: URL?
     
     internal func go(to destination: Destinations) {
         self.controller.performSegue(withIdentifier: destination.rawValue, sender: nil)
@@ -54,13 +56,13 @@ class MessageViewCoordinator: NSObject {
     
     // Create controllers
     
-    private var headerControllers: [MessageHeaderViewController] = []
-    private var bodyControllers: [MessageBodyViewController] = []
-    private var attachmentsControllers: [MessageAttachmentsViewController] = []
+    private var headerControllers: [UIViewController] = []
+    private var bodyControllers: [UIViewController] = []
+    private var attachmentsControllers: [UIViewController] = []
 
-    typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)
-    
-    internal func createChildControllers(with children: [ChildViewModelPack]) {
+    internal func createChildControllers(with viewModel: MessageContainerViewModel) {
+        let children = viewModel.children()
+        
         // TODO: good place for generics
         self.bodyControllers = []
         self.headerControllers = []
@@ -103,45 +105,38 @@ class MessageViewCoordinator: NSObject {
     internal func printableChildren() -> [PdfPagePrintable] {
         var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
         children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
-        children.append(contentsOf: self.bodyControllers.compactMap { $0 as PdfPagePrintable })
+        children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
         return children
     }
     
     // Embed subviews
-    
-    internal func embedBody(index: Int, onto view: UIView) {
-        self.embed(self.bodyControllers[index], onto: view)
-    }
-    internal func embedHeader(index: Int, onto view: UIView) {
-        self.embed(self.headerControllers[index], onto: view)
-    }
-    internal func embedAttachments(index: Int, onto view: UIView) {
-        self.embed(self.attachmentsControllers[index], onto: view)
-    }
-    
-    private func embed(_ child: UIViewController, onto view: UIView) {
-        assert(self.controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
-        
-        // remove child from old parent
-        if let parent = child.parent, parent != self.controller {
-            child.willMove(toParent: nil)
-            if child.isViewLoaded {
-                child.view.removeFromSuperview()
-            }
-            child.removeFromParent()
+    override internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
+        let standalone = self.controller.viewModel.thread[indexPath.section]
+        switch standalone.divisions[indexPath.row] {
+        case .header:
+            cell.clipsToBounds = true // this is needed only with old EmailHeaderView in order to cut off its bottom line
+            self.embedHeader(index: indexPath.section, onto: cell.contentView)
+            
+        case .attachments:
+            self.embedAttachments(index: indexPath.section, onto: cell.contentView)
+            
+        case .body:
+            self.embedBody(index: indexPath.section, onto: cell.contentView)
+            
+        default:
+            assert(false, "Child not embedded")
+            break
         }
-        
-        // add child to new parent
-        self.controller.addChild(child)
-        child.view.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(child.view) 
-        child.didMove(toParent: self.controller)
-        
-        // autolayout
-        view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+    }
+    
+    private func embedBody(index: Int, onto view: UIView) {
+        self.embed(self.bodyControllers[index], onto: view, ownedBy: self.controller)
+    }
+    private func embedHeader(index: Int, onto view: UIView) {
+        self.embed(self.headerControllers[index], onto: view, ownedBy: self.controller)
+    }
+    private func embedAttachments(index: Int, onto view: UIView) {
+        self.embed(self.attachmentsControllers[index], onto: view, ownedBy: self.controller)
     }
     
     internal func dismiss() {
@@ -154,13 +149,15 @@ class MessageViewCoordinator: NSObject {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||
                                             destination == .composerForward:
-            guard let tapped = ComposeMessageAction(destination) else { return }
-            let composeViewController = segue.destination.children[0] as! ComposeViewController
-            sharedVMService.newDraft(vmp: composeViewController)
-            let viewModel = ComposeViewModelImpl(msg: messages.first!, action: tapped)
-            let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                 vm: viewModel, services: ServiceFactory.default) //set view model
-            coordinator.start()
+            guard let tapped = ComposeMessageAction(destination),
+                let navigator = segue.destination as? UINavigationController,
+                let next = navigator.viewControllers.first as? ComposeContainerViewController else
+            {
+                assert(false, "Wrong root view controller in Compose storyboard")
+                return
+            }
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!, action: tapped)))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .some(.labels):
             let popup = segue.destination as! LablesViewController
@@ -186,7 +183,7 @@ class MessageViewCoordinator: NSObject {
     }
 }
 
-extension MessageViewCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
+extension MessageContainerViewCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     internal func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
         return 1
     }
@@ -201,7 +198,7 @@ extension MessageViewCoordinator: QLPreviewControllerDataSource, QLPreviewContro
     }
 }
 
-extension MessageViewCoordinator: LablesViewControllerDelegate {
+extension MessageContainerViewCoordinator: LablesViewControllerDelegate {
     func dismissed() {
         // FIXME: update header
     }
@@ -213,14 +210,8 @@ extension MessageViewCoordinator: LablesViewControllerDelegate {
     }
 }
 
-extension MessageViewCoordinator: CoordinatorNew {
-    func start() {
-        // ?
-    }
-}
-
 extension ComposeMessageAction {
-    init?(_ destination: MessageViewCoordinator.Destinations) {
+    init?(_ destination: MessageContainerViewCoordinator.Destinations) {
         switch destination {
         case .composerReply: self = ComposeMessageAction.reply
         case .composerReplyAll: self = ComposeMessageAction.replyAll

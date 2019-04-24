@@ -73,33 +73,6 @@ html_editor.getCaretYPosition = function() {
     return topPosition;
 }
 
-//html_editor.getCaretYPosition = function() {
-//    var y = 0;
-//    var sel = window.getSelection();
-//    if (sel.rangeCount) {
-//        var range = sel.getRangeAt(0);
-//        var needsWorkAround = (range.startOffset == 0)
-//        /* Removing fixes bug when node name other than 'div' */
-//        // && range.startContainer.nodeName.toLowerCase() == 'div');
-//        if (needsWorkAround) {
-//            y = range.startContainer.offsetTop - window.pageYOffset;
-//        } else {
-//            if (range.getClientRects) {
-//                var rects=range.getClientRects();
-//                if (rects.length > 0) {
-//                    y = rects[0].top;
-//                }
-//            }
-//        }
-//    }
-//
-//    return y;
-//};
-
-//html_editor.editor.addEventListener("focus", function() {
-//  html_editor.delegate("focus")
-//});
-
 /// delegate. the swift part could catch the events
 html_editor.delegate = function(event) {
     window.location.href = "delegate://" + event
@@ -131,8 +104,4 @@ html_editor.removeEmbedImage = function(cid) {
         });
 
     }
-}
-
-html_editor.updateHeaderHeight = function(height) {
-    html_editor.editor_header.style.height = height + 'px';
 }

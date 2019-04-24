@@ -1,6 +1,6 @@
 //
-//  MessageViewModelImpl.swift
-//  ProtonMail - Created on 3/22/16.
+//  EmbeddingViewModel.swift
+//  ProtonMail - Created on 11/04/2019.
 //
 //
 //  The MIT License
@@ -24,11 +24,41 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-
-class MessageViewModelImpl : MessageViewModel {
+class TableContainerViewModel: NSObject {
+    private var latestErrorBanner: BannerView?
     
+    var numberOfSections: Int {
+        fatalError()
+    }
+    
+    func numberOfRows(in section: Int) -> Int {
+        fatalError()
+    }
+}
+
+extension TableContainerViewModel: BannerRequester {
+    internal func errorBannerToPresent() -> BannerView? {
+        return self.latestErrorBanner
+    }
+    
+    internal func showErrorBanner(_ title: String, action: @escaping ()->Void) {
+        let config = BannerView.ButtonConfiguration(title: LocalString._retry, action: action)
+        self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, offset: 8.0)
+        #if !APP_EXTENSION
+            UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
+        #else
+        // FIXME: send message via window
+        #endif
+    }
+}
+
+@objc protocol BannerPresenting {
+    @objc func presentBanner(_ sender: BannerRequester)
+}
+@objc protocol BannerRequester {
+    @objc func errorBannerToPresent() -> BannerView?
 }

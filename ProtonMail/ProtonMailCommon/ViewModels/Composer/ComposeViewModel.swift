@@ -83,7 +83,7 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 }
 
 
-class ComposeViewModel {
+class ComposeViewModel: NSObject {
     var message : Message?
     var messageAction : ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = []
@@ -109,8 +109,6 @@ class ComposeViewModel {
     var bccChanged : Bool = false;
     var titleChanged : Bool = false;
     var bodyChanged : Bool = false;
-    
-    init() { }
     
     func isValidNumberOfRecipients() -> Bool {
         let allRecipients = [toSelectedContacts,

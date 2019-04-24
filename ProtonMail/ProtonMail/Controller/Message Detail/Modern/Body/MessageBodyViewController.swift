@@ -28,14 +28,6 @@
 
 import UIKit
 
-protocol MessageBodyScrollingDelegate: class {
-    func propogate(scrolling: CGPoint, boundsTouchedHandler: ()->Void)
-    var scroller: UIScrollView { get }
-    
-    func saveOffset()
-    func restoreOffset()
-}
-
 class MessageBodyViewController: UIViewController {
     private var webView: WKWebView!
     private var coordinator: MessageBodyCoordinator!
@@ -50,7 +42,7 @@ class MessageBodyViewController: UIViewController {
     private var renderObservation: NSKeyValueObservation!
     private var loadingObservation: NSKeyValueObservation!
     
-    internal weak var enclosingScroller: MessageBodyScrollingDelegate?
+    internal weak var enclosingScroller: ScrollableContainer?
     private var verticalRecognizer: UIPanGestureRecognizer!
     private var gestureInitialOffset: CGPoint = .zero
     
@@ -308,4 +300,8 @@ fileprivate class ViewBlowingAfterTouch: UIView {
         }
         return target
     }
+}
+
+@available(iOS 10.0, *) extension WKDataDetectorTypes {
+    public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
 }

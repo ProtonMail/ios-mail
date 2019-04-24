@@ -30,7 +30,7 @@ import Foundation
 import PromiseKit
 import AwaitKit
 
-final class ComposeViewModelImpl : ComposeViewModel {
+class ComposeViewModelImpl : ComposeViewModel {
     
     enum RuntimeError : String, Error, CustomErrorVar {
         

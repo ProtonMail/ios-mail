@@ -35,16 +35,19 @@ import UIKit
 class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        guard let attributesToReturn = super.layoutAttributesForElements(in: rect) else {
+        guard let initialAttributes = super.layoutAttributesForElements(in: rect) else {
             return nil
         }
-        for attributes in attributesToReturn {
-            if (nil == attributes.representedElementKind) {
-                let indexPath = attributes.indexPath
-                if let f = self.layoutAttributesForItem(at: indexPath)?.frame {
-                    attributes.frame = f
-                }
+        
+        let attributesToReturn = initialAttributes.map { attributes -> UICollectionViewLayoutAttributes in
+            guard attributes.representedElementKind == nil,
+                let f = self.layoutAttributesForItem(at: attributes.indexPath)?.frame,
+                let copy = attributes.copy() as? UICollectionViewLayoutAttributes else
+            {
+                return attributes
             }
+            copy.frame = f
+            return copy
         }
         
         return attributesToReturn
@@ -54,7 +57,7 @@ class ContactCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         
         /// supper item attributes at indexPath
-        guard let currentItemAttributes = super.layoutAttributesForItem(at: indexPath) else {
+        guard let currentItemAttributes = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes else {
             return nil
         }
         

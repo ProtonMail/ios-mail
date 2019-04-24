@@ -1,6 +1,6 @@
 //
-//  MessageViewModel.swift
-//  ProtonMail - Created on 07/03/2019.
+//  Standalone.swift
+//  ProtonMail - Created on 14/03/2019.
 //
 //
 //  The MIT License
@@ -28,227 +28,155 @@
 
 import Foundation
 
-
-/// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
+/// ViewModel object representing one Message in a thread
 class MessageViewModel: NSObject {
-    private(set) var messages: [Message]
-    private var latestErrorBanner: BannerView?
-    private var observationsHeader: [NSKeyValueObservation] = []
-    private var observationsBody: [NSKeyValueObservation] = []
-    private var attachmentsObservation: [NSKeyValueObservation] = []
     
-    // model - viewModel connections
-    @objc private(set) dynamic var thread: [Standalone]
-    internal func message(for standalone: Standalone) -> Message? {
-        return self.messages.first { $0.messageID == standalone.messageID }
+    internal enum Divisions: Int { // TODO: refactor with OptionSet
+        // each division is perpresented by a single row in tableView
+        case header = 0, attachments, remoteContent, body, expiration
     }
     
-    init(conversation messages: [Message]) {
-        self.messages = messages
-        self.thread = messages.map(Standalone.init)
-        
-        super.init()
-        
-        NotificationCenter.default.addObserver(forName: NSNotification.Name.reachabilityChanged, object: nil, queue: nil) { [weak self] notification in
-            guard let manager = notification.object as? Reachability,
-                manager.currentReachabilityStatus() != .NotReachable else
-            {
-                return
-            }
-            
-            if let _ = self?.messages.first(where: { !$0.isDetailDownloaded }) {
-                self?.downloadThreadDetails()
+    internal let messageID: String
+    @objc internal dynamic var body: String?
+    @objc internal dynamic var header: HeaderData
+    @objc internal dynamic var attachments: [AttachmentInfo]
+    internal let expiration: Date?
+    
+    @objc internal dynamic var heightOfHeader: CGFloat = 0.0
+    @objc internal dynamic var heightOfBody: CGFloat = 0.0
+    @objc internal dynamic var heightOfAttachments: CGFloat = 0.0
+    
+    @objc internal dynamic var divisionsCount: Int
+    private(set) var divisions: [Divisions] {
+        didSet { self.divisionsCount = divisions.count }
+    }
+    
+    @objc private(set) dynamic var remoteContentModeObservable: WebContents.RemoteContentPolicy.RawValue
+    internal var remoteContentMode: WebContents.RemoteContentPolicy {
+        get { return WebContents.RemoteContentPolicy(rawValue: self.remoteContentModeObservable)! }
+        set {
+            self.remoteContentModeObservable = newValue.rawValue
+            if newValue == .allowed {
+                self.divisions = self.divisions.filter { $0 != .remoteContent}
             }
         }
     }
     
     convenience init(message: Message) {
-        self.init(conversation: [message])
+        self.init(message: message, embeddingImages: true)
     }
     
-    deinit {
-        self.observationsHeader = []
-        self.observationsBody = []
-        self.attachmentsObservation = []
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    internal func locationsForMoreButton() -> [Message.Location] {
-        let locations: Array<Message.Location> = [.inbox, .spam, .archive]
-        let message = self.messages.first!
-        let suitableLocations = locations.filter {
-            !message.contains(label: $0) && !(message.contains(label: .sent) && $0 == .inbox)
+    init(message: Message, embeddingImages: Bool) {
+        // 0. expiration
+        self.expiration = message.expirationTime
+        let expired = (self.expiration ?? .distantFuture).compare(Date()) == .orderedAscending
+        
+        // 1. header
+        self.header = HeaderData(message: message)
+        
+        // 2. body
+        var body: String? = nil
+        do {
+            body = try message.decryptBodyIfNeeded() ?? LocalString._unable_to_decrypt_message
+        } catch let ex as NSError {
+            PMLog.D("purifyEmailBody error : \(ex)")
+            body = message.bodyToHtml()
         }
-        return suitableLocations
-    }
-    
-    internal func moveThread(to location: Message.Location) {
-        messages.forEach { message in
-            guard let label = message.firstValidFolder() else { return }
-            sharedMessageDataService.move(message: message, from: label, to: location.rawValue)
+        if expired {
+            body = LocalString._message_expired
         }
-    }
-    
-    internal func reload(message: Message) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.reload(from: message)
-    }
-    
-    internal func reload(message: Message, with bodyPlaceholder: String) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.body = bodyPlaceholder
-    }
-    
-    internal func markThread(read: Bool) {
-        self.messages.forEach {
-            sharedMessageDataService.mark(message: $0, unRead: !read)
+        if !message.isDetailDownloaded {
+            body = nil
         }
-    }
-    internal func removeThread() {
-        self.messages.forEach { message in
-            if message.contains(label: .trash) || message.contains(label: .spam) {
-                sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
-            } else {
-                if let label = message.firstValidFolder() {
-                    sharedMessageDataService.move(message: message, from: label, to: Message.Location.trash.rawValue)
-                }
+        self.body = body
+        
+        // 3. attachments
+        var atts: [AttachmentInfo] = (message.attachments.allObjects as? [Attachment])?.map(AttachmentNormal.init) ?? [] // normal
+        atts.append(contentsOf: message.tempAtts ?? []) // inline
+        self.attachments = atts
+        
+        // 4. remote content policy
+        // should not show Allow button if there is no remote content, even when global settings require
+        self.remoteContentModeObservable = (sharedUserDataService.autoLoadRemoteImages || !(body ?? "").hasImage())
+                                    ? WebContents.RemoteContentPolicy.allowed.rawValue
+                                    : WebContents.RemoteContentPolicy.disallowed.rawValue
+        
+        // 5. divisions
+        self.divisions = []
+        self.divisions.append(.header)
+        if self.expiration != nil {
+            self.divisions.append(.expiration)
+        }
+        if !self.attachments.isEmpty, !expired  {
+            self.divisions.append(.attachments)
+        }
+        if self.remoteContentModeObservable != WebContents.RemoteContentPolicy.allowed.rawValue, !expired {
+            self.divisions.append(.remoteContent)
+        }
+        self.divisions.append(.body)
+        
+        // others
+        self.messageID = message.messageID
+        self.divisionsCount = self.divisions.count
+        
+        super.init()
+        
+        if embeddingImages, let body = body {
+            self.showEmbedImage(message, body: body)
+        }
+        
+        if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
+                self?.reload(from: message)
             }
         }
     }
     
-    internal func print(_ parts: [UIPrintPageRenderer]) -> URL { // TODO: this one will not work for threads
-        guard let message = self.messages.first else {
-            assert(false, "No messages in thread")
-            return URL(fileURLWithPath: "")
-        }
-        
-        var filename = message.subject
-        filename = filename.preg_replace("[^a-zA-Z0-9_]+", replaceto: "-")
-        let documentsPath = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("\(filename).pdf")
-        PMLog.D(documentsPath.absoluteString)
-        
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, CGRect.zero, nil)
-        
-        let bounds = UIGraphicsGetPDFContextBounds()
-        let numberOfPages = parts.reduce(0, { maximum, renderer -> Int in
-            return max(maximum, renderer.numberOfPages)
-        })
-        for i in 0..<numberOfPages {
-            UIGraphicsBeginPDFPage();
-            PMLog.D("\(bounds)")
-            parts.forEach { $0.drawPage(at: i, in: bounds) }
-        }
-        UIGraphicsEndPDFContext()
+    internal func reload(from message: Message) {
+        let temp = MessageViewModel(message: message, embeddingImages: false)
 
-        try? pdfData.write(to: documentsPath, options: [.atomic])
-        return documentsPath
-    }
-    
-    internal func headersTemporaryUrl() -> URL { // TODO: this one will not work for threads
-        guard let message = self.messages.first else {
-            assert(false, "No messages in thread")
-            return URL(fileURLWithPath: "")
+        self.header = temp.header
+        self.attachments = temp.attachments
+        self.remoteContentMode = temp.remoteContentMode
+        self.body = temp.body
+        self.divisions = temp.divisions
+        
+        if let body = temp.body {
+            self.showEmbedImage(message, body: body)
         }
-        let headers = message.header
-        let formatter = DateFormatter()
-        formatter.calendar = Calendar(identifier: .gregorian)
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let filename = formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
-        let tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
-        try? FileManager.default.removeItem(at: tempFileUri)
-        try? headers?.write(to: tempFileUri, atomically: true, encoding: .utf8)
-        return tempFileUri
     }
-    
-    internal func reportPhishing(completion: @escaping (NSError?)->Void) { // TODO: this one will not work for threads
-        guard let standalone = self.thread.first else {
-            completion(NSError())
-            assert(false, "No standalones in thread")
+
+    private func showEmbedImage(_ message: Message, body: String) {
+        var updatedBody = body
+        
+        guard message.isDetailDownloaded,
+            let allAttachments = message.attachments.allObjects as? [Attachment],
+            case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }), !atts.isEmpty else
+        {
             return
         }
-
-        BugDataService().reportPhishing(messageID: standalone.messageID, messageBody: standalone.body ?? LocalString._error_no_object) { error in
-            completion(error)
-        }
-    }
-    
-    private func errorWhileReloading(message: Message, error: NSError) {
-        switch error.code {
-        case NSURLErrorTimedOut:
-            self.showErrorBanner(LocalString._general_request_timed_out)
-            self.reload(message: message, with: LocalString._general_request_timed_out)
-
-        case NSURLErrorNotConnectedToInternet, NSURLErrorCannotConnectToHost:
-            self.showErrorBanner(LocalString._general_no_connectivity_detected)
-            self.reload(message: message, with: LocalString._general_no_connectivity_detected)
-
-        case APIErrorCode.API_offline:
-            self.showErrorBanner(error.localizedDescription)
-            self.reload(message: message, with: error.localizedDescription)
-
-        case APIErrorCode.HTTP503, NSURLErrorBadServerResponse:
-            self.showErrorBanner(LocalString._general_api_server_not_reachable)
-            self.reload(message: message, with: LocalString._general_api_server_not_reachable)
-
-        default:
-            self.showErrorBanner(LocalString._cant_download_message_body_please_try_again)
-            self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
-        }
-        PMLog.D("error: \(error)")
-    }
-    
-    internal func subscribe(toUpdatesOf children: [MessageViewCoordinator.ChildViewModelPack]) {
-        self.observationsHeader = []
-        self.observationsBody = []
         
-        children.enumerated().forEach { index, child in
-            let headObservation = child.head.observe(\.contentsHeight) { [weak self] head, _ in
-                self?.thread[index].heightOfHeader = head.contentsHeight
-            }
-            self.observationsHeader.append(headObservation)
-            
-            let attachmentsObservation = child.attachments.observe(\.contentsHeight) { [weak self] attachments, _ in
-                self?.thread[index].heightOfAttachments = attachments.contentsHeight
-            }
-            self.observationsHeader.append(attachmentsObservation)
-            
-            let bodyObservation = child.body.observe(\.contentHeight) { [weak self] body, _ in
-                self?.thread[index].heightOfBody = body.contentHeight
-            }
-            self.observationsHeader.append(bodyObservation)
-        }
-    }
-    
-    internal func downloadThreadDetails() {
-        self.messages.forEach { [weak self] message in
-            message.fetchDetailIfNeeded() { _, _, _, error in
-                guard error == nil else {
-                    self?.errorWhileReloading(message: message, error: error!)
-                    return
+        var checkCount = atts.count
+        let queue: DispatchQueue = .global(qos: .userInteractive)
+
+        DispatchQueue.global(qos: .userInitiated).async {
+            for att in atts {
+                att.base64AttachmentData { [weak self] based64String in
+                    let work = DispatchWorkItem {
+                        if !based64String.isEmpty {
+                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(att.contentID()!)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                        }
+                        checkCount -= 1
+                        if checkCount == 0 {
+                            DispatchQueue.main.async {
+                                self?.body = updatedBody
+                            }
+                        }
+                    }
+
+                    queue.async(execute: work)
                 }
-                self?.reload(message: message)
             }
         }
     }
-}
-
-extension MessageViewModel: BannerRequester {
-    internal func errorBannerToPresent() -> BannerView? {
-        return self.latestErrorBanner
-    }
-    
-    private func showErrorBanner(_ title: String) {
-        let config = BannerView.ButtonConfiguration(title: LocalString._retry, action: self.downloadThreadDetails)
-        self.latestErrorBanner = BannerView(appearance: .red, message: title, buttons: config, offset: 8.0)
-        UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
-    }
-}
-
-@objc protocol BannerPresenting {
-    @objc func presentBanner(_ sender: BannerRequester)
-}
-@objc protocol BannerRequester {
-    @objc func errorBannerToPresent() -> BannerView?
 }

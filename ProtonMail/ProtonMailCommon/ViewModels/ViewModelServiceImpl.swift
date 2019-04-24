@@ -53,84 +53,7 @@ class ViewModelServiceImpl: ViewModelService {
             }
         }
     }
-    
-    override func openDraft(vmp: ViewModelProtocolBase, with msg: Message!) {
-        let viewModel = ComposeViewModelImpl(msg: msg, action: .openDraft)
-        self.setup(composer: vmp)
-    }
-    
-    override func newDraft(vmp: ViewModelProtocolBase, with msg: Message!, action: ComposeMessageAction) {
-        let viewModel = ComposeViewModelImpl(msg: msg, action: action)
-        self.setup(composer: vmp)
-    }
-    
-    override func newDraft(vmp: ViewModelProtocolBase, with mailTo: URL?) {
-        let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
-        if let mailTo : NSURL = mailTo as NSURL?, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
-            var rawURLparts = resSpecifier.components(separatedBy: "?")
-            if (rawURLparts.count > 2) {
-                
-            } else {
-                let defaultRecipient = rawURLparts[0]
-                if defaultRecipient.count > 0 { //default to
-                    if defaultRecipient.isValidEmail() {
-                        viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
-                    }
-                    PMLog.D("to: \(defaultRecipient)")
-                }
-                
-                if (rawURLparts.count == 2) {
-                    let queryString = rawURLparts[1]
-                    let params = queryString.components(separatedBy: "&")
-                    for param in params {
-                        var keyValue = param.components(separatedBy: "=")
-                        if (keyValue.count != 2) {
-                            continue
-                        }
-                        let key = keyValue[0].lowercased()
-                        var value = keyValue[1]
-                        value = value.removingPercentEncoding ?? ""
-                        if key == "subject" {
-                            PMLog.D("subject: \(value)")
-                            viewModel.setSubject(value)
-                        }
-                        
-                        if key == "body" {
-                            PMLog.D("body: \(value)")
-                            viewModel.setBody(value)
-                        }
-                        
-                        if key == "to" {
-                            PMLog.D("to: \(value)")
-                            if value.isValidEmail() {
-                                viewModel.addToContacts(ContactVO(name: value, email: value))
-                            }
-                        }
-                        
-                        if key == "cc" {
-                            PMLog.D("cc: \(value)")
-                            if value.isValidEmail() {
-                                viewModel.addCcContacts(ContactVO(name: value, email: value))
-                            }
-                        }
-                        
-                        if key == "bcc" {
-                            PMLog.D("bcc: \(value)")
-                            if value.isValidEmail() {
-                                viewModel.addBccContacts(ContactVO(name: value, email: value))
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        self.setup(composer: vmp)
-    }
-    
-    override func newDraft(vmp: ViewModelProtocolBase) {
-        self.setup(composer: vmp)
-    }
-    
+        
     // msg details
     override func messageDetails(fromList vmp: ViewModelProtocolBase) {
         activeViewControllerNew = vmp
@@ -243,13 +166,7 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     // composer
-    override func buildComposer<T: ViewModelProtocol>(_ vmp: T, subject: String, content: String, files: [FileData]) {
-        let latestComposerViewModel = ComposeViewModelImpl(subject: subject, body: content, files: files, action: .newDraftFromShare)
-        guard let viewModel = latestComposerViewModel as? T.viewModelType else {
-            return
-        }
-        vmp.set(viewModel: viewModel)
-    }
+
     
     func buildTerms(_ base : ViewModelProtocolBase) {
         let model = TermsWebViewModelImpl()

@@ -27,8 +27,6 @@
 
 
 import UIKit
-import WebKit
-import JavaScriptCore
 import PromiseKit
 import AwaitKit
 import MBProgressHUD
@@ -44,8 +42,7 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     ///  UI
     @IBOutlet var htmlEditor: HtmlEditor!
     @IBOutlet weak var expirationPicker: UIPickerView!
-    var headerView : ComposeView!
-    private var cancelButton: UIBarButtonItem! //cancel button.
+    weak var headerView: ComposeHeaderViewController!
     
     ///
     private var timer : Timer? //auto save timer
@@ -63,8 +60,6 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     #if APP_EXTENSION
     private var isSending = false
     #endif
-    
-    private var cachedHeaderHeight : CGFloat      = 186 //offsets default
 
     /// const values
     private let kNumberOfColumnsInTimePicker: Int = 2
@@ -100,38 +95,23 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         NotificationCenter.default.removeObserver(self)
     }
     
+    internal func injectHeader(_ header: ComposeHeaderViewController) {
+        self.headerView = header
+        self.headerView.delegate = self
+        self.headerView.datasource = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         assert(self.coordinator != nil)
         assert(self.viewModel != nil)
         
-        self.cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button,
-                                            style: UIBarButtonItem.Style.plain,
-                                            target: self,
-                                            action: #selector(ComposeViewController.cancelAction(_:)))
-        self.navigationItem.leftBarButtonItem = cancelButton
-        
-        self.configureNavigationBar()
-        self.setNeedsStatusBarAppearanceUpdate()
-        
-        ///
-        self.headerView = ComposeView(nibName: "ComposeView", bundle: nil)
-        self.headerView.view.frame = CGRect(x: 0, y: 0,
-                                            width: self.view.frame.width,
-                                            height: self.cachedHeaderHeight + 60)
-        self.headerView.delegate = self
-        self.headerView.datasource = self
         self.htmlEditor.delegate = self
-        self.htmlEditor.set(header: self.headerView.view)
         
         ///
         self.automaticallyAdjustsScrollViewInsets = false
         self.extendedLayoutIncludesOpaqueBars = true
-        
-        ///
-        self.headerView.delegate = self
-        self.headerView.datasource = self
         
         //  update header view data
         self.updateMessageView()
@@ -310,16 +290,6 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.headerView.viewDidAppear(animated)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        self.headerView.notifyViewSize(false)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentButton()
         super.viewWillAppear(animated)
@@ -327,44 +297,18 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
                                                selector: #selector(ComposeViewController.willResignActiveNotification(_:)),
                                                name: UIApplication.willResignActiveNotification,
                                                object:nil)
-        NotificationCenter.default.addKeyboardObserver(self)
         setupAutoSave()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeObserver(self)
-        NotificationCenter.default.removeKeyboardObserver(self)
         stopAutoSave()
     }
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
         dismissKeyboard()
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return .lightContent
-    }
-    
-    func configureNavigationBar() {
-        self.navigationController?.navigationBar.barStyle = UIBarStyle.black
-        self.navigationController?.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        
-        let navigationBarTitleFont = Fonts.h2.light
-        self.navigationController?.navigationBar.titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor.white,
-            NSAttributedString.Key.font: navigationBarTitleFont
-        ]
-        
-        self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
-        cancelButton.title = LocalString._general_cancel_button
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {
@@ -462,7 +406,7 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     }
     #endif
     
-    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
+    func cancelAction(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
@@ -611,8 +555,12 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     }
 }
 extension ComposeViewController : HtmlEditorDelegate {
-    func ContentLoaded() {
+    func htmlEditorDidFinishLoadingContent() {
         self.updateEmbedImages()
+    }
+    
+    @objc func caretMovedTo(_ offset: CGFloat) {
+        fatalError("should be overridden")
     }
 }
 
@@ -621,17 +569,17 @@ extension ComposeViewController : HtmlEditorDelegate {
 extension ComposeViewController : ComposeViewDelegate {
     
     func composeViewWillPresentSubview() {
-        self.htmlEditor.isScrollEnabled = false
+        // FIXME
     }
     func composeViewWillDismissSubview() {
-        self.htmlEditor.isScrollEnabled = true
+        // FIXME
     }
     
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
         self.viewModel.lockerCheck(model: model, progress: progress, complete: complete)
     }
     
-    func composeViewPickFrom(_ composeView: ComposeView) {
+    func composeViewPickFrom(_ composeView: ComposeHeaderViewController) {
         var needsShow : Bool = false
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
                                                 message: nil,
@@ -675,20 +623,14 @@ extension ComposeViewController : ComposeViewDelegate {
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
-        self.cachedHeaderHeight = size.height
-        // resize header view
-        self.headerView.view.frame.size.height = self.cachedHeaderHeight
-        self.headerView.view.frame.size.width = self.view.frame.width
-        self.htmlEditor.isScrollEnabled = !showPicker
-        self.htmlEditor.updateHeaderHeight()
+        // FIXME
     }
     
     func ComposeViewDidOffsetChanged(_ offset: CGPoint) {
-        
+        // FIXME
     }
     
-    
-    func composeViewDidTapNextButton(_ composeView: ComposeView) {
+    func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController) {
         switch(actualEncryptionStep) {
         case EncryptionStep.DefinePassword:
             self.encryptionPassword = (composeView.encryptedPasswordTextField.text ?? "").trim()
@@ -718,11 +660,11 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
 
-    func composeViewDidTapEncryptedButton(_ composeView: ComposeView) {
+    func composeViewDidTapEncryptedButton(_ composeView: ComposeHeaderViewController) {
         self.coordinator?.go(to: .password)
     }
     
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void)) {
         self.pickedGroup = contactGroup
@@ -730,7 +672,7 @@ extension ComposeViewController : ComposeViewDelegate {
         self.coordinator?.go(to: .subSelection)
     }
 
-    func composeViewDidTapAttachmentButton(_ composeView: ComposeView) {
+    func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController) {
         //TODO:: change this to segue
         self.autoSaveTimer()
         if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
@@ -745,21 +687,21 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
 
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView) {
+    @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 1
         self.view.bringSubviewToFront(expirationPicker)
     }
 
-    func composeViewHideExpirationView(_ composeView: ComposeView) {
+    @objc func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 0
     }
 
-    func composeViewCancelExpirationData(_ composeView: ComposeView) {
+    func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
         self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
     }
 
-    func composeViewCollectExpirationData(_ composeView: ComposeView) {
+    func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController) {
         let selectedDay = expirationPicker.selectedRow(inComponent: 0)
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
         if self.headerView.setExpirationValue(selectedDay, hour: selectedHour) {
@@ -775,7 +717,7 @@ extension ComposeViewController : ComposeViewDelegate {
         self.headerView.reloadPicker()
     }
 
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
+    func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {
         if (picker == self.headerView.toContactPicker) {
             self.viewModel.toSelectedContacts.append(contact)
         } else if (picker == headerView.ccContactPicker) {
@@ -806,7 +748,7 @@ extension ComposeViewController : ComposeViewDelegate {
         }
     }
 
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
+    func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker) {
         // here each logic most same, need refactor later
         if (picker == self.headerView.toContactPicker) {
             var contactIndex = -1
@@ -816,7 +758,7 @@ extension ComposeViewController : ComposeViewDelegate {
                     if (contact.displayEmail == selectedContact.displayEmail) {
                         contactIndex = index
                     }
-                } else if let contactGroup = contact as? ContactGroupVO {
+                } else if let _ = contact as? ContactGroupVO {
                     if (contact.contactTitle == selectedContact.contactTitle) {
                         contactIndex = index
                     }
@@ -855,7 +797,7 @@ extension ComposeViewController : ComposeViewDelegate {
 // MARK : compose data source
 extension ComposeViewController : ComposeViewDataSource {
 
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol] {
+    func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol] {
         return contacts
     }
     
@@ -863,7 +805,7 @@ extension ComposeViewController : ComposeViewDataSource {
         return !self.viewModel.ccSelectedContacts.isEmpty || !self.viewModel.bccSelectedContacts.isEmpty
     }
 
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) ->  [ContactPickerModelProtocol] {
         var selectedContacts: [ContactPickerModelProtocol] = []
         if (picker == composeView.toContactPicker) {
             selectedContacts = self.viewModel.toSelectedContacts
@@ -948,28 +890,4 @@ extension ComposeViewController: UIPickerViewDelegate {
         return super.canPerformAction(action, withSender: sender)
     }
 
-}
-
-
-extension ComposeViewController: NSNotificationCenterKeyboardObserverProtocol {
-    func keyboardWillHideNotification(_ notification: Notification) {
-        self.htmlEditor.update(footer: 0.0)
-        self.htmlEditor.update(kbHeight: 0.0)
-    }
-    
-    func keyboardWillShowNotification(_ notification: Notification) {
-        let keyboardInfo = notification.keyboardInfo
- 
-        let showed = abs(keyboardInfo.beginFrame.origin.y - keyboardInfo.endFrame.origin.y) < 50
-        if !self.htmlEditor.responderCheck() && !showed {
-            self.htmlEditor.update(footer: keyboardInfo.beginFrame.height)
-        }
-        self.htmlEditor.update(kbHeight: keyboardInfo.beginFrame.height)
-        
-        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
-            let keyboardRectangle = keyboardFrame.cgRectValue
-            let keyboardHeight = keyboardRectangle.height
-            self.htmlEditor.update(kbHeight: keyboardHeight)
-        }
-    }
 }

@@ -33,7 +33,7 @@ class MessageBodyCoordinator {
     private let kToComposerSegue : String    = "toCompose"
     
     init(controller: MessageBodyViewController,
-         enclosingScroller: MessageBodyScrollingDelegate)
+         enclosingScroller: ScrollableContainer)
     {
         self.controller = controller
         self.controller.enclosingScroller = enclosingScroller
@@ -49,9 +49,7 @@ class MessageBodyCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            let composeViewController = segue.destination.children[0] as! ComposeViewController
-            sharedVMService.newDraft(vmp: composeViewController)
-            let viewModel = ComposeViewModelImpl(msg: nil, action: ComposeMessageAction.newDraft)
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
             if let mailTo : NSURL = sender as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                 var rawURLparts = resSpecifier.components(separatedBy: "?")
                 if (rawURLparts.count > 2) {
@@ -110,10 +108,14 @@ class MessageBodyCoordinator {
                     }
                 }
             }
-            //TODO:: finish up here
-            let coordinator = ComposeCoordinator(vc: composeViewController,
-                                                 vm: viewModel, services: ServiceFactory.default) //set view model
-            coordinator.start()
+            guard let navigator = segue.destination as? UINavigationController,
+            let next = navigator.viewControllers.first as? ComposeContainerViewController else
+            {
+                assert(false, "Wrong root view controller in Compose storyboard")
+                return
+            }
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
     }
 }

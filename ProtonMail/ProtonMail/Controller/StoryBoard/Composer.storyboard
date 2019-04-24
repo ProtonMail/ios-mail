@@ -9,20 +9,81 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Compose View Controller-->
+        <!--Compose Container View Controller-->
+        <scene sceneID="Amn-w9-Un0">
+            <objects>
+                <viewController storyboardIdentifier="ComposeContainerViewController" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AdR-nB-BQy"/>
+                        <viewControllerLayoutGuide type="bottom" id="Gop-XX-JaS"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Wvh-H5-vnK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="1" translatesAutoresizingMaskIntoConstraints="NO" id="kII-As-Kc3">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="W7I-fq-afX" userLabel="Footer placeholder">
+                                    <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="28o-bw-N5Z">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="28o-bw-N5Z" id="0g4-PX-jst">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="MYS-qk-SMJ" id="mLt-qW-kXv"/>
+                                    <outlet property="delegate" destination="MYS-qk-SMJ" id="QdM-J1-dCf"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="kII-As-Kc3" secondAttribute="trailing" id="BdW-gr-P5M"/>
+                            <constraint firstItem="kII-As-Kc3" firstAttribute="leading" secondItem="Wvh-H5-vnK" secondAttribute="leading" id="WSW-0W-YJy"/>
+                            <constraint firstItem="kII-As-Kc3" firstAttribute="top" secondItem="AdR-nB-BQy" secondAttribute="bottom" id="hyD-eO-AiV"/>
+                            <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="kII-As-Kc3" secondAttribute="bottom" placeholder="YES" id="u5a-gy-lr1"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="J9F-Xh-oG8">
+                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="iiy-bz-03S">
+                            <connections>
+                                <action selector="sendAction:" destination="MYS-qk-SMJ" id="WVA-F3-IFg"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backButton" destination="8NV-DO-oBM" id="JC9-RG-1I5"/>
+                        <outlet property="tableView" destination="kII-As-Kc3" id="nXg-o5-ymb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mn9-1U-yfM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Item" id="8NV-DO-oBM"/>
+            </objects>
+            <point key="canvasLocation" x="9543" y="1546"/>
+        </scene>
+        <!--Containable Compose View Controller-->
         <scene sceneID="sfl-7G-h3U">
             <objects>
-                <viewController storyboardIdentifier="ComposeViewController" id="WHe-68-Fm2" customClass="ComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ContainableComposeViewController" id="WHe-68-Fm2" customClass="ContainableComposeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OJ9-vF-8Va"/>
                         <viewControllerLayoutGuide type="bottom" id="BU5-MI-n2Q"/>
                     </layoutGuides>
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="rtW-Jq-ZP6" customClass="HtmlEditor" customModule="ProtonMail" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <pickerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dgj-ed-8tL">
-                                <rect key="frame" x="0.0" y="387" width="375" height="216"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
                                 <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="C6r-en-xsF"/>
@@ -31,19 +92,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="dgj-ed-8tL" secondAttribute="bottom" id="NUP-V1-QoY"/>
+                            <constraint firstAttribute="top" secondItem="dgj-ed-8tL" secondAttribute="top" id="NUP-V1-QoY"/>
                             <constraint firstAttribute="trailing" secondItem="dgj-ed-8tL" secondAttribute="trailing" id="RNi-ND-4tJ"/>
                             <constraint firstItem="dgj-ed-8tL" firstAttribute="leading" secondItem="rtW-Jq-ZP6" secondAttribute="leading" id="bn5-3W-eJo"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" id="lNu-HA-Ydw">
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="vYP-h5-SU9">
-                            <connections>
-                                <action selector="sendAction:" destination="WHe-68-Fm2" id="WwG-rn-UWU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
                     <connections>
                         <outlet property="expirationPicker" destination="dgj-ed-8tL" id="m3c-sG-9uv"/>
                         <outlet property="htmlEditor" destination="rtW-Jq-ZP6" id="TtU-Iu-u9s"/>
@@ -67,12 +121,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="WHe-68-Fm2" kind="relationship" relationship="rootViewController" id="Fi3-4Y-1Z3"/>
+                        <segue destination="MYS-qk-SMJ" kind="relationship" relationship="rootViewController" id="beZ-6K-S4q"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kvm-NR-MsA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8600.7999999999993" y="2228.6356821589206"/>
+            <point key="canvasLocation" x="8641" y="1546"/>
         </scene>
         <!--Compose Password View Controller-->
         <scene sceneID="g0c-ZH-mGZ">
@@ -423,7 +477,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="10623" y="2229"/>
+            <point key="canvasLocation" x="10985" y="2124"/>
         </scene>
         <!--Contact Group Sub-selection-->
         <scene sceneID="JOC-TF-O7q">
@@ -711,7 +765,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xu-ny-cIQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10353" y="2992"/>
+            <point key="canvasLocation" x="10985" y="2821"/>
         </scene>
     </scenes>
     <resources>

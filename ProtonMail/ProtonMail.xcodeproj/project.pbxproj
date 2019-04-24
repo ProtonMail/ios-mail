@@ -25,6 +25,7 @@
 		01D251FA524D6C9913EF31A24A18669A /* MailboxRateReviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 51839FC05409900589885A21EB220CEA /* MailboxRateReviewCell.xib */; };
 		01F14EB26FC13BD97570BC745E77F93C /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
 		02203B615FEF5A1901A7978082298EB2 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF670755650E5DD985579607F574B57 /* DeepLink.swift */; };
+		0235193F7A2F38323026959C31F5963A /* TableContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */; };
 		026FDC523CDCC9EB159410811B46433B /* PaymentsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8CC344BC6333396483DB05F9F1516D8 /* PaymentsAPI.swift */; };
 		02B5904D049F6EC59AC0B3A96F01FDFD /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 942B9E881D2DF16816299A285CD5CDFC /* Array+Extension.swift */; };
 		02FA2D4C14FAB65F01A26CF51368DF7E /* ProtonMail.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
@@ -106,7 +107,6 @@
 		0EB9E2B8B9C3009FA7FBABFE623E3735 /* ServicePlanDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E27BF80474BDA474725D747C488AC95 /* ServicePlanDataService.swift */; };
 		0EF91AB028CCDAB64505615526B819F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		0F4558D5FC030B10CF54D2B09FA18E49 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */; };
-		0F7E6BD08FF7A01CA1F4D9EA65C18B39 /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */; };
 		0FB4FBA1CA741535F5F7EBA66CBDACB5 /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */; };
 		0FF75DFB105A3E3D3527915A994D062F /* DebugDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C7F21312E00992676D7D963F599A5F /* DebugDetailsViewController.swift */; };
 		10159D8FA61DFAF925AEDE5E09DE2490 /* ContactGroupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */; };
@@ -122,9 +122,9 @@
 		11BEB9D5DE45AA1D834BE054C6C46B81 /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
 		11CD2AA862685F9B1925B05E2DBBE2FC /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3EA17FDE88C464B5F52A70C225CF21 /* SplashViewController.swift */; };
 		12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
-		1263D860FFB444CDF01B7A5248D81DE9 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */; };
 		1271DC63F29907F20E0886920C06E9B5 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		128160C6FF148EBB77A4E415CAA291FD /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
+		128CDBCC93FC51813B9D07FC78DAE31B /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */; };
 		12A7ED0C1170A82BBE7D1703E5C3F18F /* FeedbackHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC90A48609F6E2D4A4E1E648A5DF2382 /* FeedbackHeadCell.swift */; };
 		12AAFF92E168A189A438BFBCBB70330F /* MessageDataService+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDF208C261F450A9BBE8F9F119EF8848 /* MessageDataService+Error.swift */; };
 		12D06F10A5FE6566CA3094B56479D4F9 /* HTMLStringSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F77EB229D9DDF9BDD8D5653F7AB7A0 /* HTMLStringSecureLoader.swift */; };
@@ -134,6 +134,8 @@
 		13C7DC28728D738A4A44B81151FDA2F3 /* MessageAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */; };
 		13C85B16671D62B6BCE376C84FC9F84A /* ContactDetailsDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539074996CE23757D22112375FC84A40 /* ContactDetailsDisplayCell.swift */; };
 		14346E6FF9EB1D75199D8F7DAF30E2C6 /* PhotoAttachmentProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */; };
+		1456D60563F0F1A8681B7C803A337028 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */; };
+		1456F3F717B302360A0709CB74EAAC20 /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */; };
 		146758F8128B7B09EAF1E7CFCB6F94F8 /* ProtonMail-Bridging-Header.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E20C729B58B3E8CDD72CE5DCB2AD4CFF /* ProtonMail-Bridging-Header.cpp */; };
 		147684DE4D10FD9CE6E2A4CBC3381F88 /* TestAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = D696BC7A9D9CECB6B6E9876B61032680 /* TestAPI.swift */; };
 		14B45EEEF11C4D7C89ADDD7436652B5D /* Keymaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB38B7EF60BE4599C8E519598ACE3C62 /* Keymaker.framework */; };
@@ -166,6 +168,7 @@
 		1893B1330F8436A5A38076EB834037BD /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDB859D696ED07B574FA18C09EFF40F /* TwoFACodeViewController.swift */; };
 		18D337EE4E9982D8792E8AC98A534966 /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */; };
 		192052DDC4796F4C4F7843C953473DC3 /* DeepLinkTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD8C4CC74ED6A16BE0EF0107B371E77A /* DeepLinkTest.swift */; };
+		1956BF710291752DA968C0629799B42B /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */; };
 		199A0E8E456F9625F468F4E20A6A9CB6 /* ExpirationWarningEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */; };
 		19B636BA9476FA64B3F512E5A3CA3A99 /* HumanCheckMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE8BDF8407201DBD2012A5B66289F42E /* HumanCheckMenuViewController.swift */; };
 		19BC0877EFBC7090B03600D4815D726A /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
@@ -193,16 +196,18 @@
 		1D2DE80C19210B09480A635948107D6A /* ContactCollectionViewPromptCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCDC9E5C0ABB64938146DA5CA9CE02C /* ContactCollectionViewPromptCell.swift */; };
 		1D5C3D806B156861755D0FC71D26AACC /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77368B93333AC4EFB38D113EE990299 /* TimePickerViewController.xib */; };
 		1DA650F751113860992907168BC4771D /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E5E13AFADBB0364C9E03E546AD572 /* PersistentQueue.swift */; };
+		1E60BAA2DDA7B2438A483B6918019E1F /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
 		1E7522BABCC657E429D5D4E38D7326E5 /* SignUp+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA5381880B0C6A39960C43331E92C147 /* SignUp+Error.swift */; };
 		1E770FDF3FC672350828887EDCB3B8E7 /* ServicePlanTableSectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC7416468AD82FAC6F802B130FB6F2A9 /* ServicePlanTableSectionHeader.swift */; };
 		1E92D5B48EE786A330104B204C64A2FA /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9F7ABCAF7FAA86F73DFE589A932C6C /* AttachmentTableViewCell.xib */; };
 		1EAB7E376F72ED3A6DC23D28E61A5CCC /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		1EB7641F18E90182D192C09DF06E0355 /* UserDefaultsSaverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD5BAB7C8FFB0A2267AF8CEF4E33985 /* UserDefaultsSaverTests.swift */; };
 		1EBB770BC84B7697CD50C6F5B425DE32 /* Pods_PushService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */; };
+		1F0B019E44004D6BB651FC83BA99A742 /* MessageContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F55C55943511B9C45672F5FBE6F1C6F /* MessageContainerViewCoordinator.swift */; };
 		1F41471EE68B6375498F2AAD5EA910F0 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		1F4BAC01B00915AE36B0160EA6A98296 /* NSMutableAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904EF45ADECDB5E125026F6A85A0C571 /* NSMutableAttributedString+Extension.swift */; };
 		1F4CBCDC3BF4CAE8DD9F8CAA2EB18CCB /* ContactGroupSubSelectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03E85409930EE316CC8D01F495EE28 /* ContactGroupSubSelectionHeaderCell.swift */; };
-		1F7B39E3C53D6BAF33EC9316A71F1C9B /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288D42DCDC17C73B0718015FA45AE979 /* MessageViewController.swift */; };
+		1F8AB288F16F9EB4DBC0D7BFBFC2E6BC /* ComposeHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */; };
 		1FB7C27E695081EDB41246AB9E194048 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F351276C93109510B9F97661FCF81A1B /* LabelApplyViewModelImpl.swift */; };
 		1FF8F1476C862C9E6FE82915BBF0F5DC /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE94FE1BA9AF24B47D7D08A72823DA5 /* PinCodeViewController.swift */; };
 		20030A41ECBDB268DA2775985626700E /* AttachmentCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E128E6B209F18F6AD6E52E140D8684F7 /* AttachmentCollectionViewCell.swift */; };
@@ -210,6 +215,7 @@
 		209E2CB82E8B5259A5B61C5625AF5AE3 /* ShareUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC1D0B3C7C1383DD41710D67F9A11804 /* ShareUnlockCoordinator.swift */; };
 		20BDE0BE0904FEE3B3C4A92E9173A06A /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 14F9568A88F8951E16C13659E130542C /* editor.css */; };
 		20E4123A31CCA836BAEF69FC775BCB2F /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
+		20EE5BF5BE3044D77AEEDD068AAEA198 /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */; };
 		2101C3C50B8E66DA8A5FBB45BADD455E /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407B0CA4032535BBADC8490567F04F98 /* ServiceFactory.swift */; };
 		2109A2D4704614406944E7B9EF228AE3 /* APIService+ResponseTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75CC12E6A05F63928C9357ACB88E7D63 /* APIService+ResponseTransformer.swift */; };
 		2115341073B4E1411C8602ED6D957DE0 /* LabelEditingViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E02CBD399158DCE526BEE904399BA8 /* LabelEditingViewModelImpl.swift */; };
@@ -258,6 +264,7 @@
 		26E0B74EFB2B283741058752612A06A4 /* AttachmentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5001058BC4DB4742070EDC912918C2ED /* AttachmentTableViewCell.swift */; };
 		26F6AC771B1A31ECB6BA10B47CB7DDF7 /* ContactGroupSubSelectionViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C59E968B84EFA98595260E397FD856 /* ContactGroupSubSelectionViewModelImpl.swift */; };
 		270C5CE050A2B4BE21757902232B36DB /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B4974E9CC194892692CE0F147C1428 /* ContactsDetailsWarningCell.swift */; };
+		276D206E64C836A2C2A8E580CBDE97CD /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */; };
 		2772542013F06485B38389BA9213C31E /* UIAlertAction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 033BA643D53FC04548412B132F956D8D /* UIAlertAction+Extension.swift */; };
 		27D60B8702C889F750BBDF6F78F21642 /* ContactGroupSubSelectionEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */; };
 		27E095426CBD3309EEA057439A1D157E /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
@@ -304,6 +311,7 @@
 		2D7D707D01EC1B9F17DCF80BFECDC3D4 /* ContactEditFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FD1390FBEF4B2659BCC1CF967626A5F /* ContactEditFieldCell.swift */; };
 		2D9C8564B25958BF619F258CFFAF91B3 /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C178973BACB0B6484835660600335F4 /* MailboxMessageCell.swift */; };
 		2DA9A5296BCA9CE8897B37FB502B325E /* Keymaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB38B7EF60BE4599C8E519598ACE3C62 /* Keymaker.framework */; };
+		2DBD51FB4F4A5713D8CDA20B3BC7018E /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */; };
 		2DE62EFABFBF12EC018B83384DA928B3 /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */; };
 		2DE831C32E377A411D9283BD89794AE5 /* RecipientCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BDD87CFD77E615C0DA70A39CBBD09F6 /* RecipientCell.swift */; };
 		2E0B870E9E541FE454E4B94FD678D4CD /* MessageBodyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AE488010690CA7863FFDF74D281CDBB /* MessageBodyViewModel.swift */; };
@@ -374,6 +382,7 @@
 		37E6341675484BA5AB76775412FBF750 /* ViewModelServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14199450E90754880823E59D3068A8F4 /* ViewModelServiceImpl.swift */; };
 		37F859AF2D4F48027EFE98068D61FAA1 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
 		380AEB9683E863E7403569C665F2080C /* MimeTypesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 70FE55DF3A79F3EFFA81CDC0D860284A /* MimeTypesTests.swift */; };
+		381D0EBFC5AA08E11E88C3B3AD80677F /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */; };
 		387832640C727E100C27150D9B07FE8A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */; };
 		387A6FDD3FE10F5B1F99956AA8AAD231 /* URL+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */; };
 		38FBA82B3B38DC4B7262C39122E45CE9 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */; };
@@ -426,6 +435,8 @@
 		413A923DD1212DEA97850BAAE9506D60 /* Storefront.swift in Sources */ = {isa = PBXBuildFile; fileRef = E95E431F81A077FD137760B6D07EB572 /* Storefront.swift */; };
 		413DCFED4BAF8787646B2892B9F831A4 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
 		41400D940BEBF23E70821A6EDABC2D12 /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
+		41608DE532AA3C5EDA7D668406B08E35 /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */; };
+		416E9BBF244CD41FFBB9CC9AF6787606 /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */; };
 		4185C861C0E604AEFC2F4A5D0C9463BE /* QuickViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */; };
 		41B62F89AB1A576E8423CCA6F9ECE9C1 /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		41C820D8868B009587B14B9836B407AA /* APIService+SettingsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04FD71845357210A9E9B06A14940100F /* APIService+SettingsExtension.swift */; };
@@ -437,6 +448,7 @@
 		4347C2A1C7472299C71C4B4E78050E83 /* GeneralSettingSinglelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */; };
 		437870C4018B87318E8A5836A11EDE44 /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
 		439AC649AC6D99252FA59E6771AFCCB2 /* Keymaker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CB38B7EF60BE4599C8E519598ACE3C62 /* Keymaker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		43C087153C696F5399DACBA35A71A7BC /* TableContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */; };
 		43E064A834A18827A899967F3EA0AA6D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		4404F72B9CBF480A32D75DD619C70E41 /* Pods_ProtonMailUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1545191026EA961FCFC35504641D5E45 /* Pods_ProtonMailUITests.framework */; };
 		44338554D399CC6B3888A218C865FB05 /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
@@ -445,6 +457,7 @@
 		44BA9354B7960F0D530F15A528A1A2F4 /* ForceUpgradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76AA9CD05E95098F2E1A5F5ADED547BF /* ForceUpgradeView.swift */; };
 		44D5B94E288F1DFB58B401F5C310ADAE /* ContactGroupSelectEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 868B9DB322FDF331F2E057421684798D /* ContactGroupSelectEmailViewModel.swift */; };
 		44D9562BF3BFD11754EE64C1A9858052 /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9124F85553079D292C10B6135CE2CD /* ShareUnlockPinCodeModelImpl.swift */; };
+		44DF3E5C973937C4F6949B666FF48BC1 /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */; };
 		44F5D14DCFA2F573BEE3FBFBFBFA8351 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE81D376E0F8F347F32607EFABE1337 /* LoadingView.swift */; };
 		450274178DA746A715093E42431BFF60 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		450818E1FCADD68E679DEDEAAA97676D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
@@ -560,6 +573,7 @@
 		5354EDCDF1470AE357B736FF60EB9CA9 /* Settings+Defined.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BE9D2FABB2F4204098EE8B5588DE5C /* Settings+Defined.swift */; };
 		537A13B4E7CA371FD97CE98AA753473B /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
 		53A25777BE3320B7FE5A4F458B272A3A /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
+		5429CC7CD78541EF25F41F8F32372377 /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */; };
 		5446133D837F9D2267140E36F92A5D71 /* ContactGroupEditViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4AE8D82B4296D43BDF2F9E5F25ED52A3 /* ContactGroupEditViewCell.xib */; };
 		54488797C6447FE287C34F2A9F342B0F /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 780829CF1C02F4C2F3D316D9263AB303 /* WebViewController.swift */; };
 		5456D28DAA72FA380E90D950AC8DA532 /* MessageQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9B142492E7764F95AE62A0DC0372EAB /* MessageQueue.swift */; };
@@ -573,6 +587,7 @@
 		55D3D7CBB24618558793C9A5A2B45430 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6D8F3AAEA3F00B15BDC137F506D95 /* ChangePasswordViewController.swift */; };
 		55EB2659F5F57DFEEB4BACF5EAF166E3 /* PMView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */; };
 		560D452C2FEAC1EABE37A09B3678F05E /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
+		566CFF63A8138447F0612058CB38A11A /* ContainableComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */; };
 		567C446A342DFC8F203AD7F70549E09F /* APIService+AttachmentExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87A393D6E5869452F381061A31E34594 /* APIService+AttachmentExtension.swift */; };
 		567D0322CE3C59E82E44203ABCC5E4E5 /* APIErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090959F01713916918218A20B1ED07FF /* APIErrors.swift */; };
 		56AB2FC32CF834C801E42DDEE3564378 /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB2C8C70329A749308561A4CE0D54D /* NSBundle+Language.m */; };
@@ -582,8 +597,8 @@
 		56E68D657FC1507D2D478DB5813E0B21 /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		5760367C76753230FCD257D432AEEB05 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */; };
 		57685B51B021ACAED8F73B1AA683864A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D92DEE740435769B951F10DDEACF596 /* Email.swift */; };
+		5781D9E114DFE42BE584DAF9ECBF39DB /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */; };
 		5788DAA2CA9FE2A5D9051DFE67E3B094 /* SignUpUserNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2CEFA26A1BF2F0E6FED78804862460 /* SignUpUserNameViewController.swift */; };
-		579BBBAD60CBDB8455A5914528FF3C83 /* MessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288D42DCDC17C73B0718015FA45AE979 /* MessageViewController.swift */; };
 		57C1074B363458CC8D924B8064CA9AA0 /* LabelsCollectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6886224A11D93BE6583A5EA1A3D2185A /* LabelsCollectionView.xib */; };
 		57F8A687A1582541DC9BF89E37032BE1 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F998300BF1488833A537930F5E9187A4 /* Contact.storyboard */; };
 		57FE3284FD603BEE400D649A8A955752 /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */; };
@@ -596,8 +611,10 @@
 		596D801115C6A66EB7B8367156D655D7 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCEB3AB6A95864C955CC7CE2F7C50B5 /* UserNotifications.framework */; };
 		59994D91FE05DD4D1283051DF8A6622D /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
 		59AA311CABAABBC95956E913F48EE84A /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
+		59AD7F3F46A26D651A2DE45DE9FD066E /* MessageContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F55C55943511B9C45672F5FBE6F1C6F /* MessageContainerViewCoordinator.swift */; };
 		59C7D0750DE7B6687387C389A224DE25 /* PushNotificationServiceSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37148171E21C75FFBFE2661ED75A49AE /* PushNotificationServiceSubscription.swift */; };
 		59CC41C90F6A4C5D6A97C0AB7B2B90E2 /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802CFC07A6A34A5D00DFB1F7B580798 /* Localization.swift */; };
+		59DC4CD7A235E0B61902BFB864BE9A65 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		59E20B72AC1E7CF935623D13782998A9 /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
 		59FA00AF2DA2F2F2CEA9BF70D5AA8952 /* Pods_Siri.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A076C738684BFFC293CBA3752782EA09 /* Pods_Siri.framework */; };
 		5A2F085CC1F662AD9E48CBCA794395C2 /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A22C634A036FFC8E1055518DB9867 /* APIServiceDefined.swift */; };
@@ -617,9 +634,11 @@
 		5C2712380BD9E0263321582C41E6922E /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		5C2DA902BBCEF81F0C3D892748CB23D6 /* HtmlEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFB9E3A7321E2BFD3B7FCC5AD0C60AE /* HtmlEditor.swift */; };
 		5C37B01A078A55449B117C8CF63BA54F /* GeneralSettingSinglelineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */; };
+		5C3ADCEBFEAE621580DA7F53D9DA5C87 /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */; };
 		5C51567BC587E14B368F0FF5D7E09559 /* Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB654B37DC6C08F1719348B39220081 /* Migrate.swift */; };
 		5C56480223AC89083A884B0C44D0D525 /* HumanCheckViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */; };
 		5C5D92354DECD3F4992AB81A5C21481E /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
+		5C62F5D429DD8819CF18B4E6B926F703 /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */; };
 		5C66676E9FF29792F2045A1922BE7664 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6070AD30387D7CA0B61DDC4BD7CF501D /* SettingsViewModel.swift */; };
 		5C79744F9469DA49B0B96132345E1666 /* ContactGroupDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C976B26437FACD375C470F5BAD0747D /* ContactGroupDataService.swift */; };
 		5CA230BF5D4D8DEBFDF7DC68CC9AED7C /* UpgradeAlertViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642BAB85BF31A87E9AE6400AB84E65CF /* UpgradeAlertViewModel.swift */; };
@@ -629,13 +648,13 @@
 		5D4B287716271AD24A78F5D953B9E8E1 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		5D54AAF67422DFA0DF0BB069CD821ABA /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
 		5D779BFC077F5F9AB7666F2C55E6B045 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
+		5D9FBFFDCA4D8DB4D01DBC097E724939 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */; };
 		5DAA91D765514FC5462375D9AD1CF13B /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED0222F585298654890FE8BF6620AC /* SignInViewModelImpl.swift */; };
 		5E03B814A4CED2A3A335AC7387A2398E /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE7858BA56DBC87D4AF3B339EADD91 /* MenuLabelViewCell.swift */; };
 		5E198A1FB696672702E9EE13617F0F79 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EADB00B07025BF5A9274B0179C16871 /* UserAgent.swift */; };
 		5E5C5AD16467920BA6A0E72718F4613F /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
 		5E811663A8C6FC2BB2F9FBE3F49B788F /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
 		5EB160FC490AD34FF908ABF03EDD654E /* WebContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8668BBC5EBD231D99F6FCA87C19655E0 /* WebContents.swift */; };
-		5EE5530646577B6FA80B1B256EE52A50 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F00240A54257098EAF2093EFBDD844 /* Standalone.swift */; };
 		5EEF491F109173AE120E9EC8AA002AD4 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */; };
 		5F091CACF9DAF2B5D3A4EBA123478B35 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		5F1E7B8CA83F9786B328F35A27487117 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */; };
@@ -644,12 +663,14 @@
 		5F42CB7DFBF2BB3759386C0551010150 /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */; };
 		5F4CF71DBDFEAA16961FE01A82D4AFE4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61A3F7FEB833E1B45FB6F23517638989 /* Logger.swift */; };
 		5F58BBC265469C1C14456DDD84C68D42 /* Attachment+Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 941D5FCDD408868B206C57C473DB5BD1 /* Attachment+Info.swift */; };
+		5F625E85761CB00E7DE49E815BBAE8E1 /* TableContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */; };
 		5F7C85F9C67F7BC1F94D69BA25449BCF /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
 		5F9C61A3B61421917B0944A475EA4BB1 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B407C906A05CDC7454653B0AD961BC1 /* SwitchTableViewCell.swift */; };
 		5FBC7E38BF61CE739ACAB89758FBB3C6 /* AnyImagePickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603C9D7A4E9C4372230A199F1AC898E /* AnyImagePickerDelegate.swift */; };
 		5FF13942718159EFB2BCADAEF2A0364F /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E9998E7EE18E2896590E4A25AF8E2 /* LanguageManager.m */; };
 		6018EF1B3EAB11D9E7C207D0111A0377 /* ContactGroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */; };
 		6032658A32AA3D0DB307F7AE5C91D06E /* ContactGroupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */; };
+		609516ABB00948DF1C785959E31E6B15 /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */; };
 		609DE3EC0CA993B8521524E1E5F22192 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */; };
 		611508EE286DFE83A1FDDC11F212FB20 /* ContactEditPhoneCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CC6AC93EA817E53F80A6B7F61686052 /* ContactEditPhoneCell.swift */; };
 		611B705D8210806CBB9FEFBD436C98BF /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
@@ -669,6 +690,7 @@
 		62AA2B38B172FE096BC01DC4ED264BE6 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		62C340121D678DE05D0F22C36FA3383B /* Message+EncryptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA3EDD47D591D28907C504F3FF5CBE /* Message+EncryptType.swift */; };
 		6349F11C87EEEE7BDF517E6CC6A131B1 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
+		63535249B2909F68D363A6AC41FE53D9 /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */; };
 		6365A577351B5C7C3A67A6379285D4B7 /* NSString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C51DC65328A7CEC55ECB5D02FF357E1 /* NSString+Extension.swift */; };
 		636B235F96E5D2628C8DB14D172D8BD9 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7737039039B0057CB8287F7A03624B /* Compare.swift */; };
 		63BCEE393BF2F43A7EBA7DEC1EDCF68E /* Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = B802CFC07A6A34A5D00DFB1F7B580798 /* Localization.swift */; };
@@ -830,6 +852,7 @@
 		79467A4316EB790565DFDE8907164B69 /* Part.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E69C5B65182DB326ABC46A0FAAE2CE1 /* Part.swift */; };
 		79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		79A8AD48860F7F790C22A8CD98D5FDEC /* SwipeAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60C325968088FD68E27D9274AE99D4BB /* SwipeAction.swift */; };
+		79CD57A492525E74C841BFD2133BBA59 /* TableContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */; };
 		79F8C671E737174FD00BFC55BDDDC156 /* LabelViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3E9A265BC9A4B517966D356B1B3711 /* LabelViewModel.swift */; };
 		7A45B2643B59929DB4D84393DF482230 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9449421CDCABB3B457718D77434366A7 /* MessageAction.swift */; };
 		7A4BFDC60F8065DB0671845768461F58 /* ServicePlanCapability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C72AECCA82274734884B82F1B91B4C /* ServicePlanCapability.swift */; };
@@ -845,6 +868,7 @@
 		7BEB27AE7378DB2746F3AC5615475070 /* CustomHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB397285117812BF94A2953E4B56D9C /* CustomHeaderView.swift */; };
 		7C019D8513CC1BAF0C1FC708A9E87C95 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		7C50881C043B81E7296B008D8E0F7850 /* LoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E13E3D765166B667E1D94C71F3646178 /* LoadingView.xib */; };
+		7C8AAF69F6E57DE4A0458F85E093BB97 /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */; };
 		7CC0A1B87B176EE865FCD8317F7C9FA6 /* ContactGroupDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74B9D8479C48831A69305E90F288B2A3 /* ContactGroupDefined.swift */; };
 		7CD8CAC4531AC6FBEA2752DF1D9FA831 /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */; };
 		7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
@@ -898,6 +922,7 @@
 		84951B6CDBDA98B6C74E39CC3E7360DD /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
 		84A1485FF687B4EDB215C80E63308A72 /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B88E2413886FE850E623F218CD4530D6 /* CoreDataService.swift */; };
 		84B80DE0DB21C29D799FA783FE0EBB3A /* FileManager+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 366440FD86C2A31F36A17127B4F2D8B4 /* FileManager+Extension.swift */; };
+		84C8BEDB2814C9D655CF41DC2A96C699 /* ComposeHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */; };
 		84D3FC7461FABC26290F12405A1619FD /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		852C81FAB24147A8C7BB8E379737174B /* APIServiceDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7A22C634A036FFC8E1055518DB9867 /* APIServiceDefined.swift */; };
 		85334145731E3EF6AD961FEF9EBFAD47 /* Message+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45197333CE217D153E2CB7F49C9449CD /* Message+Location.swift */; };
@@ -915,6 +940,7 @@
 		86EF1BFC9C83976CD6B0EC49785839A2 /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D2272BFBD1D2F8E751E112D142E6D /* UIAlertController+Extension.swift */; };
 		871898B7C24C611415A842947272D3CB /* ShareUnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9124F85553079D292C10B6135CE2CD /* ShareUnlockPinCodeModelImpl.swift */; };
 		872A3181F118ABDED530F7CC0DDDC89E /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
+		8740631437736915509F669790555659 /* ContainableComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */; };
 		8757389140B103FF47BF8448446DCBC1 /* MessageDetailBottomView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C8467A3031510A103A6E92A47B946526 /* MessageDetailBottomView.xib */; };
 		878CA6C66ABFBA86D30E46969C7E87FC /* ExpirationWarningEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */; };
 		87F13D8A8311798BCB374E4424B559D5 /* EmailAttachmentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DEECD545CB13CB019BB43ED956B9CC /* EmailAttachmentView.swift */; };
@@ -931,13 +957,13 @@
 		88E8136CCD42FC01FDE5D4BEB24E80A1 /* ShareAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */; };
 		8911B3E0448510AE9F31C7EA0700209A /* ContactDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */; };
 		894458D6BEE71AADCC3BEAE62867E030 /* MenuItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A1C852E9CC196C3905CADD4C2704291 /* MenuItem.swift */; };
+		8946B141296B9D8B8298046B28CC4888 /* TableContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */; };
 		896C1B8DE3BBD5EF41813218B8F3F08B /* GeneralSettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */; };
 		899B289FF6339103D81AEA51AC327B19 /* OpenPGP+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */; };
 		89ADB34623E0749F3B62FE8D703F00BA /* AppCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175BF8CBA30FAFFA1B1BBCF6B2A4079A /* AppCache.swift */; };
 		89EB084442ADBB786FB098860EB36022 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F63E64A2521F20E5630AC0AC144F79 /* UIImage+Extension.swift */; };
 		8A3D877F6A4EDD87232735F8FE14595B /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6212048241C8B5D38449A43140A027 /* NSError+Extension.swift */; };
 		8A44BC41710FC284BC8621BE5BC2241C /* CoordinatorSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = F932D364704D3F3037FE7D04D015C303 /* CoordinatorSegue.swift */; };
-		8A4E43703BAF0D9B55A009FCC6D1510B /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */; };
 		8A75D7BA711AAA0BB256FB79F74F19F1 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
 		8A99489069F5835CF7B0E2AFA9D39007 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		8AD928675659266C1C75D3EF4E42F794 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
@@ -964,12 +990,14 @@
 		8EF538E546179C95F10BB3BE733DB149 /* ExternalURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EFC10F4C4155F6A047011CE0654648 /* ExternalURL.swift */; };
 		8EFD3A66717F5DE4FEA692888C4D7AA2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AB6E3213453075852FF02AF616CE4F7 /* Reachability.m */; };
 		8F1859DC0ED20C19B64D9A728E63B83A /* UpdateTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5659ADC577F02FBBD35B34B299A700FD /* UpdateTime.swift */; };
+		8F3763AF2B141355C31E8F77271679CE /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */; };
 		8F48D718F35B62127232C1FE3A312BC2 /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		8F977BC18AFA01FC63593BABB2FE4910 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E0D2B5CF12579C2B54BCEB3F3000A8 /* Images.xcassets */; };
 		8FE1623F99C7681DA119ECB245D695E5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		8FF5CCFD5C3BA7750FFA49C28199F08C /* SetPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 700DA224ABB81B86B4681189A741EB8A /* SetPinCodeModelImpl.swift */; };
 		904B4BDE785C86CDFD7EE47A668AC142 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */; };
 		906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E341C7A4C59A405508EE4D80B2D742E /* TouchID+Helper.swift */; };
+		90A7B7B324826D314FFDCD9B60D62545 /* ComposeHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */; };
 		90C55B2C6E8CC57EBD51056F45819CD1 /* ExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F5408DF95C062F7A79C7C4B2C8D2EE /* ExpirationView.swift */; };
 		90DF3A0765C91FDC4678D8BF443E5F38 /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
 		90F964393A0A945EAB4449C47BC4BFAE /* CoreDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */; };
@@ -997,6 +1025,7 @@
 		959BE19AB36E5CD6F655DE21BF4AA2E3 /* UITableViewCell+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5620449C63CBC17B0B3B39E86E6F35 /* UITableViewCell+Extension.swift */; };
 		95AA447AEFDA858547B27F85F7808CDA /* Label.swift in Sources */ = {isa = PBXBuildFile; fileRef = 052B8D056C5CE08382D71EDBD635B6A5 /* Label.swift */; };
 		95B954B9A89B4F49DAFF04EB781347EF /* Message+EncryptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA3EDD47D591D28907C504F3FF5CBE /* Message+EncryptType.swift */; };
+		95DA030AF8E1BA620AD03EA83AB04755 /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */; };
 		968010BF03A805AA1D1C0C972EE3B3BA /* ContactGroupSubSelectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03E85409930EE316CC8D01F495EE28 /* ContactGroupSubSelectionHeaderCell.swift */; };
 		9717061947CD25B973A744B1BAE5FD65 /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
 		97609BE67F6BF74B98CDF7D0D3110D20 /* ServicePlanDataServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A4AAF40B11D32F944FF9256347D29E2 /* ServicePlanDataServiceTests.swift */; };
@@ -1027,7 +1056,6 @@
 		9A41C0F9EAC33424C7F709B635A2AD4E /* MessageHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041912DF058CB1143755E65F3FAE61BC /* MessageHeaderViewModel.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		9A6D30A29F517856961DEFAF4A2DCC5D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
-		9A94BA41C9C8FA4B70480BEA5B6D2DA1 /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */; };
 		9A98F44ABC8F88F107A698052D7273AA /* StorefrontCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9C5E235DFE3343462EF534F416108 /* StorefrontCollectionViewController.swift */; };
 		9AA29992A0F05CB6AD3521A6AA12450D /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EFB2E7F66C228E239E6B8C080B2355 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
 		9AB608008A263A2D8557E4FD1BD861F3 /* ContactGroupSelectColorViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9567663E4789DC9C691D57DA60A5ED80 /* ContactGroupSelectColorViewModelImpl.swift */; };
@@ -1046,6 +1074,7 @@
 		9BCCE7FD2E2CFA14D09A4E5537042438 /* SignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3D751CFCE2A178E14C1341D4CDF7D7 /* SignupViewModel.swift */; };
 		9BE113EF467CECC1A46FDB54C3AB6F47 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		9BFFAF8C3F49CFDB874CC27B586366AA /* ContactModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0477F89137AAA9A42BC73B09D025A29 /* ContactModel.swift */; };
+		9C2970DF58E5E60B3D2F1E46800D9B93 /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */; };
 		9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC99702EB4FAE95D39DBCC4235BBC74C /* ComposeViewModelTests.swift */; };
 		9C918AABBAE3CF2566CD0D82911C430B /* Composer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2AE92CF3E2B773E6DB01E47DE5B6983 /* Composer.storyboard */; };
 		9CEE379D2972180C86BA507E0CF028C9 /* CalendarIntervalRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493E60450A08C78D9D259E95FA6E897C /* CalendarIntervalRule.swift */; };
@@ -1067,12 +1096,10 @@
 		9F05230EFD377F24AD44CE71E6722B02 /* LanguageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = FA5E9998E7EE18E2896590E4A25AF8E2 /* LanguageManager.m */; };
 		9F0D97C4EB20B34B3345D59776AF0FE0 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */; };
 		9F2FC6EFAD75108FDCCBEBD1A71C7371 /* ServicePlanSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E2957EBDCBB9F7FE72DAF76100E70 /* ServicePlanSubscription.swift */; };
-		9F5846F52DC7C14637BB589727BD1249 /* MessageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1072295C12EF984A1E4E35DD9B596A66 /* MessageViewCoordinator.swift */; };
 		9F66C8E5A2D4AF25DDC5431FCD6F251D /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
 		9FB2B7F49425717BB9D6166C5CCA7EDA /* TwoFACodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3DD65FC5D2C14D4424C5634F44F0E2ED /* TwoFACodeView.xib */; };
 		9FD73B446F3F0931EF91E64B20F6E5A0 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		9FF40A7A7656FDE69397612451539E89 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */; };
-		A0549E3B0917C4F391C34DDD4355D223 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */; };
 		A07D710E56B39CF6A9E9F94E5511CE24 /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */; };
 		A0978C5D06F4B6C098352E6F58804710 /* ProtonMail.xcdatamodeld in Resources */ = {isa = PBXBuildFile; fileRef = BB002B5675ED1988C1C86F59FDB410DA /* ProtonMail.xcdatamodeld */; };
 		A0B13DBE786FFB4D428541DDFDFD7B62 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB243FAF3121155DBEE7A75E1784BBE3 /* UIView+Extension.swift */; };
@@ -1087,7 +1114,6 @@
 		A1AAF98BCD90B7BE9D59D8DD897D76D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCAB5DB98BC9590C78EF30CF1746F200 /* AppDelegate.swift */; };
 		A1BD0EF7030903A95EFCFC606731B1C0 /* QuotedPrintable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0869F01BF78BFA135AF9E1654905D3A9 /* QuotedPrintable.swift */; };
 		A1D9BDBED5208B754E4AC0F01554F8D8 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
-		A1EE9432C4E9636784D2B1A2ED5CC477 /* MessageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1072295C12EF984A1E4E35DD9B596A66 /* MessageViewCoordinator.swift */; };
 		A21125188FF098B1B6BC1E97A8183CBF /* Message.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */; };
 		A220B4FDC0CAC7B9AB2E626850E7E2DC /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6070AD30387D7CA0B61DDC4BD7CF501D /* SettingsViewModel.swift */; };
 		A277A9A2DB0F2B4A521FB1927FF4CECB /* MenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA29C04562C536E6841584F83A8AB0CD /* MenuViewModel.swift */; };
@@ -1142,7 +1168,6 @@
 		A9367265490F11199C43CD280A517B92 /* StoreKitManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87EBF32E5771CDBD303FD1803019AE8D /* StoreKitManager.swift */; };
 		A938EF1FB8EF43E5A846EC92ED933640 /* MessageDataService+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F2543A95CCB31AFB636BE8E06CD04F /* MessageDataService+FileManager.swift */; };
 		A940CA56D22DCAECC20E0A619E8BFF65 /* AppCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */; };
-		A94A043120C0641EA622CC261CCCB05C /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3F00240A54257098EAF2093EFBDD844 /* Standalone.swift */; };
 		A953B17F097ED7CA04515D817654036B /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8C80E6D633A44CD88C80A06E0EB89FE /* Fonts.swift */; };
 		A953C3B2789F4A8945E2CB27F58ABDA9 /* NSManagedObjectExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55D431E59E92DCD1B3B034B3FE874D02 /* NSManagedObjectExtension.swift */; };
 		A957B02677FD3EE17309DA66DFCAE28F /* MessageAPI+Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222F810FE516B49C36333F506F09E4E5 /* MessageAPI+Response.swift */; };
@@ -1284,6 +1309,7 @@
 		BC98A05C235CFD45E40F281F9B9DCF07 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */; };
 		BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
 		BCAECB14A11E1D5A316DFB1639B66A11 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96C351D63254CEA37CCEC1D2B914848B /* OnboardingView.swift */; };
+		BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
 		BCE32CBA5055BDC8A96A88E97F0E2B01 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		BD22A569DF01AFBB3C05008520CDAED2 /* MailboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */; };
 		BD3F4D1C5F071C7E815AB76D1841141F /* MessageAPI+Packages.swift in Sources */ = {isa = PBXBuildFile; fileRef = E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */; };
@@ -1365,10 +1391,12 @@
 		C8DCAA5B202AC205B81A99CB5509695B /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 715458403C778DA3437ED30E431AA4CD /* SettingsNotificationsSnooze.storyboard */; };
 		C908FFF67430AA75AC531FBA2C63151E /* RecipientView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 09FF1FBAD2BDFD1136C90DF2200029B9 /* RecipientView.xib */; };
 		C91E6D0981798B5A65CA681C37F44260 /* ShareExtensionEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */; };
+		C9346C4569862EEA933FA0B584F245CA /* ComposeHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */; };
 		C9B8E5E3C5B8C9AEB8F16B2819DB196A /* Pods_SiriDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B874B017458C7227D9E2D4617DD04D /* Pods_SiriDev.framework */; };
 		CA4F2196C4ED76829194A8DBA8E2194D /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
 		CA824D3E15BACF8AC0CA1AE936B906FE /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		CA9013D6BA0968AE1F36FC633D769A69 /* MessageAttachmentsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCC7036AD90B54B13C4D8BA64C3C77EE /* MessageAttachmentsCoordinator.swift */; };
+		CAA27F438CDB44A419FBB71A7A255C81 /* ComposeHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */; };
 		CAAED218FE946433880EBCDCF71970A4 /* SettingsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32DF826768B937E9DCA34E60159FA9C9 /* SettingsCoordinator.swift */; };
 		CAC0CA49C8433FED4D25CD0E905E8FEF /* ContactGroupVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DF7B5EADC1B632524F1B8C23C90E9A /* ContactGroupVO.swift */; };
 		CAD2F312EE677EFF26ACDB2B9F0C9615 /* phone_country_code.geojson in Resources */ = {isa = PBXBuildFile; fileRef = D736053B8C3AFD58DD1A72FF7D49DBCC /* phone_country_code.geojson */; };
@@ -1392,6 +1420,7 @@
 		CD07E383A2BDFF942800966A006F8BFB /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */; };
 		CD3101D13A8492585D2803C8A3D19579 /* ContactCollectionViewContactCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 969E254553B2D3B139F9689BDF62BAE1 /* ContactCollectionViewContactCell.swift */; };
 		CD363AB14F086A2C9C56132A0F944DDA /* NotificationsSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9250CDB4D28C069EF3344225BBC3F04B /* NotificationsSnoozerCore.swift */; };
+		CD44E208A2BFF920C5A1522C228422DE /* ComposeContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */; };
 		CD5FB8A0100858CC555A3F920FD4853A /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
 		CDA5B512F336587A086D0A03F4AD35DF /* MailboxPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48B369C13968C162D731DEB212C31537 /* MailboxPasswordViewController.swift */; };
 		CDD1059413217A7AE3A6975A5873E7FF /* MimeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5893FDE19FD570A2A4670A50896625A1 /* MimeTypes.swift */; };
@@ -1412,7 +1441,7 @@
 		CF597DC1C88A9D05489A9563AF19A523 /* AttachmentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A9F7ABCAF7FAA86F73DFE589A932C6C /* AttachmentTableViewCell.xib */; };
 		CF7AD0B4A5C6ADE095CA73E0F8799EF5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */; };
 		CF9377D8366CAE8B3AC401E0353B1714 /* PinCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5ECE5CE544C98F7C824484FF62D8DD9 /* PinCodeView.swift */; };
-		CFC090803919FAB50D615ED2E426FCF5 /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */; };
+		CFB9BC89F54DFF0754EBDEECD07990B2 /* BannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8396D4F077F593F8E96ABB96990C418 /* BannerView.swift */; };
 		CFC725251CE7138E8B0205E35278C3EF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8E0D2B5CF12579C2B54BCEB3F3000A8 /* Images.xcassets */; };
 		CFCED06A20CD74A99CA490471659B454 /* SettingsNotificationsSnoozeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */; };
 		CFE00E85FB61BB461C5C80563127445A /* LastUpdateCacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2311228F521C0D85D7EA882A10B49A40 /* LastUpdateCacheTests.swift */; };
@@ -1445,13 +1474,11 @@
 		D3414D96B1D6BBD4B3FE886566CF458C /* PHAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 143C96A0E19B4D8FE22D4A7744818B98 /* PHAsset+Extension.swift */; };
 		D347A4FD324BC0E3982A152A870D59AF /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
-		D3C1A621FED969F6B8310107F924D93B /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */; };
 		D3C357F6C07D7DF0877F6E4A01B925BD /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
 		D408B45EA4F4F6F577D93DFC701BA112 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */; };
 		D41813CD24AF3CB64799B2D49BB7353F /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
 		D436CB80B266144B0099F7E712B59739 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
 		D439E103DA71A0E9F99D9ACE570267F9 /* ContactCell+Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD8DBF7CB24230E04BA6EE2259E2F4 /* ContactCell+Share.swift */; };
-		D43A857B247A666A7388743D5FBCC453 /* ComposeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */; };
 		D441FFCC8CBD6946FA018531B4C7F6B9 /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
 		D46FAC5275012CEA2B686470892376AD /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */; };
 		D496F72DA8FC94D1B72754BA271FA250 /* Keymaker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CB38B7EF60BE4599C8E519598ACE3C62 /* Keymaker.framework */; };
@@ -1463,6 +1490,7 @@
 		D4F3D7D6DA1A96685161DB06BBED0124 /* NSManagedObjectContextExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6576E6B2E5753D73F5405E8DA8E1137 /* NSManagedObjectContextExtension.swift */; };
 		D52C6389F6A71C017C60A4D6CB086CB2 /* editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 14F9568A88F8951E16C13659E130542C /* editor.css */; };
 		D53CCA2D4BA18FBCEECA1ABE23059331 /* ContactDetailsDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539074996CE23757D22112375FC84A40 /* ContactDetailsDisplayCell.swift */; };
+		D546D7972B7F94BC4762476BD6B3A2FD /* ContainableComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */; };
 		D5680476E4D22D8C0B895AB7DF8E33F3 /* ContactGroupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04CAE4733926A58198B65D2DC1B50F00 /* ContactGroupViewModelImpl.swift */; };
 		D574B7D252A6D566DAA5BD6C11E6990D /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9F63E64A2521F20E5630AC0AC144F79 /* UIImage+Extension.swift */; };
 		D592D991445A4F24F42522EFF1A1F7E3 /* ServicePlanSubscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809E2957EBDCBB9F7FE72DAF76100E70 /* ServicePlanSubscription.swift */; };
@@ -1501,6 +1529,7 @@
 		D8F737DCC11AC0F6F47231E95E17AB94 /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
 		D938CBE8ACB1D06AD17D6A6CA17785CF /* UIAlertController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 614D2272BFBD1D2F8E751E112D142E6D /* UIAlertController+Extension.swift */; };
 		D9E1F5D8A1D9BBF47D56FAA028FF64A4 /* CalendarIntervalRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */; };
+		D9F96603C6FE63884B873B689D7F2631 /* MessageContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD38D35319D1AB5477B35E4939E40A6 /* MessageContainerViewModel.swift */; };
 		DA17BF8C926357204AC2D951BE51BEEF /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
 		DA37822B6C2BBEC1B508C8CA6B7C2E2A /* CountryCodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98986FA637D74088D03FFE7085BB35CF /* CountryCodeTableViewCell.swift */; };
 		DA67E7CB367233596A58810E0E4D0282 /* APIService+ContactExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC7E1E9A56A7D74BBF9EFBB27C845267 /* APIService+ContactExtension.swift */; };
@@ -1515,6 +1544,7 @@
 		DBC06EBE48F93DC4050A4015196DD56F /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6133E1C8223EFD8B37CE8AE20D623283 /* SharePinUnlockViewController.xib */; };
 		DBC491209D11D1799652D42FBD8FA599 /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		DBCB89791B91CBC55B00527170AEFE4F /* MessageBodyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB9BDDB75E240CE0F4EC2AFD815FDD3 /* MessageBodyCoordinator.swift */; };
+		DBE1712FC99F9709E9EA1CC44BC99E91 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */; };
 		DC0DA3B0F6580EF4DA4A4EDB94D2DF2B /* ContactCollectionViewPromptCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FCDC9E5C0ABB64938146DA5CA9CE02C /* ContactCollectionViewPromptCell.swift */; };
 		DC0E80BBC5CC9E72BF916605EE52735C /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64B6ABEC2E603996347C40E51E0189F /* Data+Mime.swift */; };
 		DC3D554BB42B9D4C8632903080986F79 /* ServicePlanCapability.xib in Resources */ = {isa = PBXBuildFile; fileRef = 08FE91B0222C95441762B30F6BBFFD5C /* ServicePlanCapability.xib */; };
@@ -1525,6 +1555,7 @@
 		DCE885BAFF867DC033BD64050224EF9C /* EncryptionKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2300A42E73CE48B7B3B4F8A70ABFA3C /* EncryptionKit.swift */; };
 		DCF2755582078BB9EB05A31DEAA9472C /* Composer.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E2AE92CF3E2B773E6DB01E47DE5B6983 /* Composer.storyboard */; };
 		DD1A36F94A80BAA0E2A42B5CB66174B9 /* EncryptionSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B1EEA115E42E413F8FDB45264AED3AB /* EncryptionSetupViewController.swift */; };
+		DD1EEF4A80A7EDC2946062EE83693964 /* ContainableComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */; };
 		DD1EFF3B4B4A6ADC8B362E53255E7C62 /* PushNotificationDecryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */; };
 		DD2A3D3A6796006E2BDFE61A6117B6A0 /* Message+Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342422724509A168047AB7CC97F8CC0 /* Message+Constants.swift */; };
 		DD689CDC73E8E07910D2F8CF30D2454D /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
@@ -1580,6 +1611,7 @@
 		E494FC92E16FC4D7EE0B4D538EC8167A /* MessageHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014A0B32E769C66C2A670651D2F90F29 /* MessageHeaderViewController.swift */; };
 		E4A7F23025FF576C9420BEE714445243 /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
 		E4D07DC908C6383FE33E86A273BFE13F /* UnlockManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A468C765C57673CCF7F0A66C7B99B38 /* UnlockManager.swift */; };
+		E4D38A4204DB567C620CC75FF430A16B /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */; };
 		E5411238A1ABB000EC01545D251FA034 /* ServerNotice.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */; };
 		E58CB37E3EE15655942A918C2FF36521 /* ContactPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7385ADE4EA34EE7A7F64BBA0E0E5BF7D /* ContactPicker.swift */; };
 		E5EC4179035B718A47361FB83DE07D68 /* LastUpdatedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21126C97B5EB1DCAC67FFC28CB6D406F /* LastUpdatedStore.swift */; };
@@ -1589,7 +1621,6 @@
 		E6432221E2B7E718950896E6FDC6803B /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6133E1C8223EFD8B37CE8AE20D623283 /* SharePinUnlockViewController.xib */; };
 		E6461EC075A5FDFC6B76788300D70C64 /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
 		E6501C97FE6E5D690873063C65157B3B /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */; };
-		E661B7CAB6D3F164057DC63E8ED65C15 /* EmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */; };
 		E662DE35F31EA39D1EA4866BF3280F1F /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */; };
 		E684BFA505F9281CCA520C64695C0D5C /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		E68C562A6D88714C82782BD866B0D6EA /* SharedCacheBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFCE533884CA182718B493B6066DAB3 /* SharedCacheBase.swift */; };
@@ -1633,9 +1664,12 @@
 		EAE40B24672C34917D246D4A61FCDDC2 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F092E325F64EA09A865FC4BB1A07EED /* IntentHandler.swift */; };
 		EAFCD103D4EE4E4076C7C1A1DF292E81 /* Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB654B37DC6C08F1719348B39220081 /* Migrate.swift */; };
 		EB5AFAD22E5B6B33A37272C15FA18272 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */; };
+		EB694372F55877C8F07887F42DD9D5DE /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */; };
 		EBF129F32A76CF4D29C856D4878D6218 /* MessageDataService+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A9290E97B86BEF7B76F5C74E77B040 /* MessageDataService+Builder.swift */; };
 		EC0AB91B5107AA4BFDADAB2DF388CD9D /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		EC9A72EA6291E3CC2FFA351145800DFD /* ReportsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6091B78F12AD67F146868F7DFE61D46B /* ReportsAPI.swift */; };
+		ECBA88E2E47B1A04648E80A32D2A5D6A /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */; };
+		ECD711F48A122CDDB2FCD7423CB1D3FE /* MessageContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BD38D35319D1AB5477B35E4939E40A6 /* MessageContainerViewModel.swift */; };
 		ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
 		ED1066357FF807C1ACB0E3926F01D9EA /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */; };
 		ED2F8582FE389C523E7CC4C4A98FE4A1 /* Keymaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D7B237413C9BDC548261C22C8EDEF /* Keymaker.swift */; };
@@ -1651,6 +1685,7 @@
 		EE90A6AC40F9DDC748A9F9E9AC0936E2 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7737039039B0057CB8287F7A03624B /* Compare.swift */; };
 		EE929D9A66FC3CCE296CD5240C7DAC44 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CFE3868B0060D33182C2D17832CAF5F /* APIService.swift */; };
 		EE951060648FC2470C6C7636EFD067EF /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */; };
+		EEDC79D2E6BE35ABC71BB57D211883F2 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		EEE15D9F801E890D3DC796D14B18FE79 /* Attachments.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F70C88329B41BBB3CE7F3D35E2402879 /* Attachments.storyboard */; };
 		EF0080E30BCD0BA12D6F4B42214E8FF9 /* LabelApplyViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F351276C93109510B9F97661FCF81A1B /* LabelApplyViewModelImpl.swift */; };
 		EF5866725A8677EF8D3A90C4F8108603 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D5DC00E9140DB71FF9B9BEA827021B87 /* Settings.bundle */; };
@@ -1665,7 +1700,6 @@
 		F0D68E28AC981A5439DD9CBEA8F71299 /* ComposeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */; };
 		F1130D0F02453E2A7E09974CE02C945E /* NSBundle+Language.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFB2C8C70329A749308561A4CE0D54D /* NSBundle+Language.m */; };
 		F12AC7779D16FC5210B2104AA681C3BF /* ContactGroupSubSelectionEmailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE4331F081AA90E7986906F6000B49CE /* ContactGroupSubSelectionEmailCell.xib */; };
-		F13376E7F49BB7E07542309C7B020117 /* ComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */; };
 		F1454014AC5FCA1D59508F52196F8755 /* AnyImagePickerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F603C9D7A4E9C4372230A199F1AC898E /* AnyImagePickerDelegate.swift */; };
 		F15E0B4F1D2877F3B3E6D0BBC24F81A7 /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAFA09C0C974E273A1A8842BE85C707 /* APIServiceResponse.swift */; };
 		F15FA732479019F599F9A67226DE6B63 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
@@ -1688,6 +1722,7 @@
 		F3E09335DB7FB95EAB0BB1D8FD818DB2 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
 		F418580D6A3A8B5BC33D71ABA49D0CE6 /* NSError+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A6212048241C8B5D38449A43140A027 /* NSError+Extension.swift */; };
 		F453914F7D249579FC1DF03DBF3F7401 /* Message+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB29120F5790918FFD03682C6F93931D /* Message+Extension.swift */; };
+		F47DA8D73C1F72CC945A91E6B2AABB08 /* ComposeContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */; };
 		F4BCEAD77AFE0FBE3F024EFD5673AA14 /* UpgradeAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E31A8775E09B34F474D6DACB8E7FB5FE /* UpgradeAlertViewController.swift */; };
 		F4DF1DC2F9464756F4BFD7937790DA97 /* APIServiceRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2293514215254B488A7DC1E65D59FF02 /* APIServiceRequest.swift */; };
 		F4EF8D76F44033244254F81380805D58 /* MonitorSavesDataService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08DE22D2A52126D2B633EBEDD802C63B /* MonitorSavesDataService+Extension.swift */; };
@@ -1733,6 +1768,7 @@
 		F9742A460F501120C85DD691DA98FB78 /* UserDefaultsSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2985F86E3CBF92AC6C7595C6AD6BDC11 /* UserDefaultsSaver.swift */; };
 		F984BD814BEA6C487FA370FD895AFEED /* CountryPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E881FED17DB3A7856062CCB053EBDBD3 /* CountryPickerViewController.swift */; };
 		F999C98F2CB95DC37FEFA511F8BF5F6F /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD33FB43FF1E3BBC252FE8EEE22868F /* NotificationService.swift */; };
+		F9BAFFD7CD8072073FD376DF519A926A /* ComposeContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */; };
 		F9C48A895870C64AB0209F905E7B898B /* NSFetchedResultsController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BC3A915CE5C2DCBE33816238C7A3E83 /* NSFetchedResultsController+Extension.swift */; };
 		F9D3E49546700CD2C74EAA98A73F4F42 /* ServicePlanTableSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C4884B5A901DFE9E295326E72125058 /* ServicePlanTableSectionHeader.xib */; };
 		F9E4518AD9C857A79681DA373D6C6508 /* MessageAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9449421CDCABB3B457718D77434366A7 /* MessageAction.swift */; };
@@ -1922,7 +1958,6 @@
 /* Begin PBXFileReference section */
 		00345B8B27EA3497339A80F5B054645B /* Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		00918B56B68A9926D7490AA22F6B62B4 /* PushService.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PushService.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		0103B7C1FC16F7B8A0AE6F4F6FAC5808 /* MessageViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModel.swift; sourceTree = "<group>"; };
 		010626773F86444E682C621F12E317AE /* CalendarIntervalRuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalendarIntervalRuleTests.swift; sourceTree = "<group>"; };
 		011FA1E6F22339C03CC75F7017A45924 /* ViewModelServiceImpl+Share.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ViewModelServiceImpl+Share.swift"; sourceTree = "<group>"; };
 		013738496623C6A8ADC4FE5EFD9A9FB2 /* purify.min.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = purify.min.js; path = ../../../DOMPurify/dist/purify.min.js; sourceTree = "<group>"; };
@@ -1981,7 +2016,6 @@
 		102AF496AB07249410599991EBB97156 /* Message+Var+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Var+Extension.swift"; sourceTree = "<group>"; };
 		10540E9AFB359D3F20458471D5DD16FE /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueManager.swift; sourceTree = "<group>"; };
-		1072295C12EF984A1E4E35DD9B596A66 /* MessageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewCoordinator.swift; sourceTree = "<group>"; };
 		11369BE95525600AC7EB4F2133AFF25F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeysAPI.swift; sourceTree = "<group>"; };
 		13E4F4D1468CCEA2F32B1C38858CC1B1 /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
@@ -2016,6 +2050,8 @@
 		1B3055A244AAD264664E2E6C96BE6938 /* Pods-ProtonMailTests.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailTests.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests.distribution.xcconfig"; sourceTree = "<group>"; };
 		1B61D2D5C0B4BD97409E6104098DB003 /* Siri.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Siri.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1BBAB3378173BB2EA0DA5B8ED856A693 /* ru */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1BD38D35319D1AB5477B35E4939E40A6 /* MessageContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainerViewModel.swift; sourceTree = "<group>"; };
+		1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeContainerViewCoordinator.swift; sourceTree = "<group>"; };
 		1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
 		1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
@@ -2055,7 +2091,6 @@
 		283624B6469818966374EF6D3D48C809 /* PMWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMWebView.swift; sourceTree = "<group>"; };
 		28408082E1D11285894493C5D792517E /* AnyStorefrontItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyStorefrontItem.swift; sourceTree = "<group>"; };
 		28648BC22177DBCB7499250A93D64316 /* QueueConstant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueueConstant.swift; sourceTree = "<group>"; };
-		288D42DCDC17C73B0718015FA45AE979 /* MessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageViewController.swift; sourceTree = "<group>"; };
 		28FA25E2EEE3FC1EFAACBC1CA95424E9 /* ReportBugsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReportBugsViewController.swift; sourceTree = "<group>"; };
 		2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInManager.swift; sourceTree = "<group>"; };
 		29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
@@ -2078,7 +2113,7 @@
 		2E341C7A4C59A405508EE4D80B2D742E /* TouchID+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TouchID+Helper.swift"; sourceTree = "<group>"; };
 		2E8C06C3305D50BDED1D25F5075C29A7 /* ContactAlertViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactAlertViewModelImpl.swift; sourceTree = "<group>"; };
 		2E9124F85553079D292C10B6135CE2CD /* ShareUnlockPinCodeModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareUnlockPinCodeModelImpl.swift; sourceTree = "<group>"; };
-		2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeView.xib; sourceTree = "<group>"; };
+		2F55C55943511B9C45672F5FBE6F1C6F /* MessageContainerViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainerViewCoordinator.swift; sourceTree = "<group>"; };
 		301E63428F7A6F953FE721E906925C83 /* ProtonMailTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProtonMailTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		304EB5D67CD0DF808BAD447D812C0CCF /* ShowImageView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowImageView.xib; sourceTree = "<group>"; };
 		304EBAE13534EEE358F03C9DF7F79797 /* ContactUpgradeCellDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactUpgradeCellDelegate.swift; sourceTree = "<group>"; };
@@ -2108,6 +2143,7 @@
 		3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
 		3B402218BE33D7472F069518E76A588D /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3C2ECDE676236E467CC81AEDFAF886B7 /* LabelEditViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelEditViewModel.swift; sourceTree = "<group>"; };
+		3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeHeaderViewController.swift; sourceTree = "<group>"; };
 		3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		3D4357DB71ED5A64ECBF92DAB46C33DA /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		3D862595AAE0D77A38550B7D182DA51F /* Test Second Encoding.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = "Test Second Encoding.bundle"; sourceTree = "<group>"; };
@@ -2119,6 +2155,7 @@
 		3EADB00B07025BF5A9274B0179C16871 /* UserAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgent.swift; sourceTree = "<group>"; };
 		3EC70018679D8EB92AC81A27EBA49C35 /* BCrypt+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BCrypt+Extension.swift"; sourceTree = "<group>"; };
 		3F9C1DB9DCA27A1E893B9BFE52A76926 /* TermsWebViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TermsWebViewModelImpl.swift; sourceTree = "<group>"; };
+		401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableContainerViewModel.swift; sourceTree = "<group>"; };
 		407B0CA4032535BBADC8490567F04F98 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
 		40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMail.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2211,11 +2248,13 @@
 		5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickViewViewController.swift; sourceTree = "<group>"; };
 		5C3C45196C742337934AB7387537109A /* DomainsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DomainsTableViewCell.xib; sourceTree = "<group>"; };
 		5C4884B5A901DFE9E295326E72125058 /* ServicePlanTableSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServicePlanTableSectionHeader.xib; sourceTree = "<group>"; };
+		5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainableComposeViewModel.swift; sourceTree = "<group>"; };
 		5C9E81B78EB38C40F2A8409E0E1F8686 /* CollectionViewCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewCells.swift; sourceTree = "<group>"; };
 		5D177BAB644338B3576C9A2FEE1934BF /* UIWindow+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIWindow+Extension.swift"; sourceTree = "<group>"; };
 		5D1BEB8606CB3CF8775F504C746071BA /* NSBundle+Language.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Language.h"; sourceTree = "<group>"; };
 		5D2CEFA26A1BF2F0E6FED78804862460 /* SignUpUserNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpUserNameViewController.swift; sourceTree = "<group>"; };
 		5D6B83584F0CD5F2C0B216F53174C444 /* MBProgressHUD+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MBProgressHUD+Helper.swift"; sourceTree = "<group>"; };
+		5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeContainerViewController.swift; sourceTree = "<group>"; };
 		5DD7AE1B303AE44D28D7D9F65983E721 /* FolderboxViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderboxViewModelImpl.swift; sourceTree = "<group>"; };
 		5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainSaver.swift; sourceTree = "<group>"; };
 		5EC7E2650D5B2BA5C995439ECF2D48E1 /* ContactGroupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupViewModel.swift; sourceTree = "<group>"; };
@@ -2254,11 +2293,9 @@
 		6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Message.storyboard; sourceTree = "<group>"; };
 		6A9E73EDBDAD67A3D064D904162F3AEE /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6ADC24E80EEFDC87919D4B7125217067 /* ContactGroupDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModel.swift; sourceTree = "<group>"; };
-		6B5510312FDA10387130A66280981BB6 /* MessageViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageViewModelImpl.swift; sourceTree = "<group>"; };
 		6B553E0FE138B6EB544BF3C3DBE10AF1 /* ChangePasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewModel.swift; sourceTree = "<group>"; };
 		6BA7289C7A00897216DF37D848BDD1EE /* GeneralSettingViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeneralSettingViewCell.swift; sourceTree = "<group>"; };
 		6BD83722A1989FBEACE70896416C38CF /* OpenPGP+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenPGP+Extension.swift"; sourceTree = "<group>"; };
-		6BE9BE4D06B98755374635BFE8886043 /* ComposeViewHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeViewHeader.xib; sourceTree = "<group>"; };
 		6C94282905B31CB4FD9261528DC8F5C7 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = SearchViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
 		6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ExpirationWarningHeaderCell.xib; sourceTree = "<group>"; };
@@ -2321,6 +2358,7 @@
 		81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationCenter+KeyboardExtension.swift"; sourceTree = "<group>"; };
 		82061900AD00D062F230AFE4937B3B1E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		830618ABE4869953324AE823B8628469 /* Pods-ProtonMail.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.debug.xcconfig"; sourceTree = "<group>"; };
+		8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableContainerViewController.swift; sourceTree = "<group>"; };
 		8386FECF18884638287496DF015DBF6A /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		83D6D4F0FE71F616455353AE8720D609 /* Push.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Push.entitlements; sourceTree = "<group>"; };
 		84751B802B5BDE37C499F5D87B0AA6C3 /* MoveAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveAction.swift; sourceTree = "<group>"; };
@@ -2346,6 +2384,7 @@
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableContainerViewCoordinator.swift; sourceTree = "<group>"; };
 		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
 		8B7F1E2698842DF474D535ECC28EBA76 /* OnePasswordExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordExtension.m; sourceTree = "<group>"; };
 		8B812CAA39BC5A4D26E257A555C70F71 /* Intents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = Intents.intentdefinition; sourceTree = "<group>"; };
@@ -2373,6 +2412,7 @@
 		934EB5CEA1ACDD4A4555A00DDA4B7F8D /* ContactDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ContactDataService.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		93883D12D7CAC56167961DFB8D30257A /* ContactDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactDetailViewController.swift; sourceTree = "<group>"; };
 		93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = MessageDataService.swift; sourceTree = "<group>"; wrapsLines = 0; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeContainerViewModel.swift; sourceTree = "<group>"; };
 		941D5FCDD408868B206C57C473DB5BD1 /* Attachment+Info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Attachment+Info.swift"; sourceTree = "<group>"; };
 		942B9E881D2DF16816299A285CD5CDFC /* Array+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		9449421CDCABB3B457718D77434366A7 /* MessageAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAction.swift; sourceTree = "<group>"; };
@@ -2464,7 +2504,6 @@
 		B0E4AC8179E64BE4F4E1C508F653E628 /* Message+String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+String+Extension.swift"; sourceTree = "<group>"; };
 		B137A765D86C92D0E3B9007AE1FDE92B /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewModel.swift; sourceTree = "<group>"; };
-		B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeView.swift; sourceTree = "<group>"; };
 		B29DF1214047A26946ED6A9F0DC9D6AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B353F65994664847D220F289184C2A5B /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		B35751CF9CE35E80B816BBFBB22B39E3 /* Message+SpamScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Message+SpamScore.swift"; sourceTree = "<group>"; };
@@ -2495,6 +2534,7 @@
 		BDF208C261F450A9BBE8F9F119EF8848 /* MessageDataService+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageDataService+Error.swift"; sourceTree = "<group>"; };
 		BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelService.swift; sourceTree = "<group>"; };
 		BFB5CCCB0EA86A485AFF69337731EF2D /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComposeHeaderViewController.xib; sourceTree = "<group>"; };
 		BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataCache.swift; sourceTree = "<group>"; };
 		C09137556D3681AD33BD9F3943941B20 /* PushNotificationDecryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationDecryptor.swift; sourceTree = "<group>"; };
 		C0997E3D991587C293174A583ABEE1B1 /* Pods-ProtonMailUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMailUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMailUITests/Pods-ProtonMailUITests.release.xcconfig"; sourceTree = "<group>"; };
@@ -2508,6 +2548,7 @@
 		C29317A6BB406175EC4E38250EE69C77 /* OnboardingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingView.xib; sourceTree = "<group>"; };
 		C2D6D5A691CEA0462FCBFEB24DA4AA38 /* LabelCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LabelCell.xib; sourceTree = "<group>"; };
 		C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsViewModel.swift; sourceTree = "<group>"; };
+		C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainableComposeViewController.swift; sourceTree = "<group>"; };
 		C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppCoordinator.swift; sourceTree = "<group>"; };
 		C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+JSON+Extension.swift"; sourceTree = "<group>"; };
 		C454B0EB20457CA14B2ED3F3D5809882 /* DocumentAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentAttachmentProvider.swift; sourceTree = "<group>"; };
@@ -2550,13 +2591,12 @@
 		D2C8506C5AB6E854E72FEDCB1E37893E /* Pods-Share.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Share.release.xcconfig"; path = "Pods/Target Support Files/Pods-Share/Pods-Share.release.xcconfig"; sourceTree = "<group>"; };
 		D3034A73BB562CFA651FB7AFF2BAB6E1 /* GeneralSettingSinglelineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingSinglelineCell.swift; sourceTree = "<group>"; };
 		D38CE7A7F7FA2232E80B2E163E45D7BE /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
-		D3CF5C7C637BE9E706A20D676FE39A1B /* OldMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldMessageViewController.swift; sourceTree = "<group>"; };
-		D3F00240A54257098EAF2093EFBDD844 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Keymaker+SharedKeychain.swift"; sourceTree = "<group>"; };
 		D49BCB4318BCFFCE099F79DE542209BE /* MailboxCaptchaViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxCaptchaViewController.swift; sourceTree = "<group>"; };
 		D533254DE35A3B8DF75F0B5919C1EEB8 /* Pods-ShareDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareDev.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareDev/Pods-ShareDev.release.xcconfig"; sourceTree = "<group>"; };
 		D533DF06F3F17CCCDC18F209E8859A0C /* ContactGroupSubSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupSubSelectionViewModel.swift; sourceTree = "<group>"; };
 		D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeCoordinator.swift; sourceTree = "<group>"; };
+		D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainerViewController.swift; sourceTree = "<group>"; };
 		D5887596B04BF70C7D63938EBE82923B /* ContactsAndGroupsSharedCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsAndGroupsSharedCode.swift; sourceTree = "<group>"; };
 		D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelDisplayView.swift; sourceTree = "<group>"; };
 		D5DC00E9140DB71FF9B9BEA827021B87 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -2619,7 +2659,6 @@
 		E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactFieldType.swift; sourceTree = "<group>"; };
 		E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWeekdaysTableViewController.swift; sourceTree = "<group>"; };
 		E4809B81E683764D08E1015C74ED8F26 /* ServerNotice.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerNotice.swift; sourceTree = "<group>"; };
-		E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailView.swift; sourceTree = "<group>"; };
 		E5D43C34BA636164CB98130F1336206B /* AppCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCacheService.swift; sourceTree = "<group>"; };
 		E613D0715CC835821135FDA1AAF95B22 /* MessageAPI+Packages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MessageAPI+Packages.swift"; sourceTree = "<group>"; };
 		E6286CDFA472ABD288218EA86185FB40 /* Pods-ProtonMail.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.distribution.xcconfig"; sourceTree = "<group>"; };
@@ -2638,7 +2677,6 @@
 		EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ContactSectionHeadView.xib; sourceTree = "<group>"; };
 		EA59AD999B62E695D152A787E8BAAD0C /* Pods_ProtonMailDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ProtonMailDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EAF5A5BA89D281954143CF30E55D2F6C /* Pods-PushServiceDev.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PushServiceDev.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-PushServiceDev/Pods-PushServiceDev.distribution.xcconfig"; sourceTree = "<group>"; };
-		EBBCED7054D92850583A6EE2E2BEE176 /* ComposeViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewHeader.swift; sourceTree = "<group>"; };
 		EBF547CEFCD814853B222CFBADF77BA6 /* HumanCheckViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HumanCheckViewModel.swift; sourceTree = "<group>"; };
 		EC1D0B3C7C1383DD41710D67F9A11804 /* ShareUnlockCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareUnlockCoordinator.swift; sourceTree = "<group>"; };
 		EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Parse+Extension.swift"; sourceTree = "<group>"; };
@@ -3583,6 +3621,16 @@
 			path = Upgrade;
 			sourceTree = "<group>";
 		};
+		85084ED600E4D2CF7C2AD6F6931F8357 /* MessageContainer */ = {
+			isa = PBXGroup;
+			children = (
+				D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */,
+				2F55C55943511B9C45672F5FBE6F1C6F /* MessageContainerViewCoordinator.swift */,
+				1BD38D35319D1AB5477B35E4939E40A6 /* MessageContainerViewModel.swift */,
+			);
+			path = MessageContainer;
+			sourceTree = "<group>";
+		};
 		8885EBB3E76E67C74FB67A7E325E4CC1 /* DurationPickerViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -3632,6 +3680,15 @@
 				85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		8D2F83D9FA3466F259745405372753B0 /* EmbeddableCompose */ = {
+			isa = PBXGroup;
+			children = (
+				C38AEFE1F8311E28775081FF956F60E1 /* ContainableComposeViewController.swift */,
+				5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */,
+			);
+			path = EmbeddableCompose;
 			sourceTree = "<group>";
 		};
 		90F230708ECD00FCDF1936ED051FDBA1 /* Pickers */ = {
@@ -3793,6 +3850,16 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		A586D6AEF0EEE47BCE41DB6C3A9D177F /* ComposerContainer */ = {
+			isa = PBXGroup;
+			children = (
+				5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */,
+				1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */,
+				93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */,
+			);
+			path = ComposerContainer;
+			sourceTree = "<group>";
+		};
 		ABF92807800349CCF2D23F1407BD145B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -3810,11 +3877,14 @@
 			children = (
 				CA3E5F82034096C9713CB2857D382F02 /* Attachments */,
 				4A1EF47DD9C1EFE8C727AA0A554969DA /* Body */,
+				A586D6AEF0EEE47BCE41DB6C3A9D177F /* ComposerContainer */,
+				8D2F83D9FA3466F259745405372753B0 /* EmbeddableCompose */,
 				91DCE8FA07873AC794834B55F5E74997 /* Header */,
-				288D42DCDC17C73B0718015FA45AE979 /* MessageViewController.swift */,
-				1072295C12EF984A1E4E35DD9B596A66 /* MessageViewCoordinator.swift */,
+				85084ED600E4D2CF7C2AD6F6931F8357 /* MessageContainer */,
 				7BF8EB10116489150B352CA2348A2154 /* MessageViewModel.swift */,
-				D3F00240A54257098EAF2093EFBDD844 /* Standalone.swift */,
+				8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */,
+				8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */,
+				401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */,
 			);
 			path = Modern;
 			sourceTree = "<group>";
@@ -3829,7 +3899,6 @@
 				4BF12BF920B64E042094F978A675ACD8 /* Labels */,
 				1FFD6F9C5AD15E51A6809BBFCE8D5258 /* Mailbox */,
 				F677D57953C5CEA83F919CD082738B05 /* Menu */,
-				ECD9BFB80893413B3D70BA2EE2250591 /* MessageDetail */,
 				A0B93BEFC4368D882DAF3AF5B7D8B985 /* PinCode */,
 				0FA11D1DCBF8E69D3675D5013683F6AA /* Settings */,
 				7A3256339B15D2424DA7411575938B6C /* SignIn */,
@@ -4018,12 +4087,10 @@
 				D53EC1CF75FC773E5C3AECEB66DDB7B3 /* ComposeCoordinator.swift */,
 				7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */,
 				14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */,
+				3C96D05BB5B21C2C8489BFB8B359F9F7 /* ComposeHeaderViewController.swift */,
+				BFD1AC9D81CED0E0EDC1849A9613D5BC /* ComposeHeaderViewController.xib */,
 				8641F7C9FE8AAC5D53AA6888F93E65CC /* ComposePasswordViewController.swift */,
-				B26025DF4D9E834882A400DBA0A69A97 /* ComposeView.swift */,
-				2F0CF26D6E44314FDA0EB77EBF3AA635 /* ComposeView.xib */,
 				435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */,
-				EBBCED7054D92850583A6EE2E2BEE176 /* ComposeViewHeader.swift */,
-				6BE9BE4D06B98755374635BFE8886043 /* ComposeViewHeader.xib */,
 				7CC182C1B583843D594847F2DB05E0E1 /* ExpirationWarningEmailCell.swift */,
 				667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */,
 				6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */,
@@ -4118,7 +4185,6 @@
 				2A9F7ABCAF7FAA86F73DFE589A932C6C /* AttachmentTableViewCell.xib */,
 				B5DEECD545CB13CB019BB43ED956B9CC /* EmailAttachmentView.swift */,
 				45885E1634D5EACB18C02CB6678FA056 /* EmailHeaderView.swift */,
-				E582E5E46BFB6B6254432DD37705FF0C /* EmailView.swift */,
 				16F5408DF95C062F7A79C7C4B2C8D2EE /* ExpirationView.swift */,
 				76E557A37E9C2EAF13725A6B0B37F3E0 /* ExpirationView.xib */,
 				F8C71A38010A1C6BBE25E17DAF3F34A2 /* LabelCell.swift */,
@@ -4127,7 +4193,6 @@
 				6886224A11D93BE6583A5EA1A3D2185A /* LabelsCollectionView.xib */,
 				9DFE6E6DFA3A62BB937E31929EDC1EAE /* MessageDetailBottomView.swift */,
 				C8467A3031510A103A6E92A47B946526 /* MessageDetailBottomView.xib */,
-				D3CF5C7C637BE9E706A20D676FE39A1B /* OldMessageViewController.swift */,
 				5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */,
 				0BDD87CFD77E615C0DA70A39CBBD09F6 /* RecipientCell.swift */,
 				6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */,
@@ -4248,15 +4313,6 @@
 				BCD5BAB7C8FFB0A2267AF8CEF4E33985 /* UserDefaultsSaverTests.swift */,
 			);
 			path = Saver;
-			sourceTree = "<group>";
-		};
-		ECD9BFB80893413B3D70BA2EE2250591 /* MessageDetail */ = {
-			isa = PBXGroup;
-			children = (
-				0103B7C1FC16F7B8A0AE6F4F6FAC5808 /* MessageViewModel.swift */,
-				6B5510312FDA10387130A66280981BB6 /* MessageViewModelImpl.swift */,
-			);
-			path = MessageDetail;
 			sourceTree = "<group>";
 		};
 		ECDFE4C747EE53D7F577784F4E85B95A /* Sign In */ = {
@@ -4889,8 +4945,9 @@
 			files = (
 				684A0ECB5E4E40630BAF4C5960742B36 /* AttachmentTableViewCell.xib in Resources */,
 				AA5EE7644EE1EE9DAC9D673594B529FA /* Attachments.storyboard in Resources */,
+				BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */,
 				C42888E34AB2F5F0830226505F79BA93 /* ComposeErrorView.xib in Resources */,
-				D43A857B247A666A7388743D5FBCC453 /* ComposeView.xib in Resources */,
+				90A7B7B324826D314FFDCD9B60D62545 /* ComposeHeaderViewController.xib in Resources */,
 				DCF2755582078BB9EB05A31DEAA9472C /* Composer.storyboard in Resources */,
 				55042959A5D06C6E1C493B5BBB972AB9 /* ContactCollectionViewContactCell.xib in Resources */,
 				0D9B313BF0A7343E477F57D19AA2CA37 /* ContactGroupSubSelectionEmailCell.xib in Resources */,
@@ -4952,7 +5009,7 @@
 				B73D81F124A180A9716EFDBD0992A008 /* Attachments.storyboard in Resources */,
 				11BEB9D5DE45AA1D834BE054C6C46B81 /* BannerView.xib in Resources */,
 				5D54AAF67422DFA0DF0BB069CD821ABA /* ComposeErrorView.xib in Resources */,
-				0F7E6BD08FF7A01CA1F4D9EA65C18B39 /* ComposeView.xib in Resources */,
+				1F8AB288F16F9EB4DBC0D7BFBFC2E6BC /* ComposeHeaderViewController.xib in Resources */,
 				4A7B1F2D49D6066E0DC9CA2A658DE06A /* Composer.storyboard in Resources */,
 				57F8A687A1582541DC9BF89E37032BE1 /* Contact.storyboard in Resources */,
 				505DC82E54FC1F329CDB9743C00A26F5 /* ContactCollectionViewContactCell.xib in Resources */,
@@ -5021,7 +5078,7 @@
 				EEE15D9F801E890D3DC796D14B18FE79 /* Attachments.storyboard in Resources */,
 				E79975DF86132EC9C8CE2281129E1A23 /* BannerView.xib in Resources */,
 				7665C366A01036025928CF09DD5EE2C4 /* ComposeErrorView.xib in Resources */,
-				9A94BA41C9C8FA4B70480BEA5B6D2DA1 /* ComposeView.xib in Resources */,
+				CAA27F438CDB44A419FBB71A7A255C81 /* ComposeHeaderViewController.xib in Resources */,
 				30B1735FB830AFA0A25EF2A7E5223ABF /* Composer.storyboard in Resources */,
 				7F8A712DEBBDFA0860FDA29AFE58BA41 /* Contact.storyboard in Resources */,
 				8101491AE70F00A1794B28FF1676CCDA /* ContactCollectionViewContactCell.xib in Resources */,
@@ -5126,8 +5183,9 @@
 			files = (
 				CF597DC1C88A9D05489A9563AF19A523 /* AttachmentTableViewCell.xib in Resources */,
 				E9830A69C0AB30142A16D78268A99286 /* Attachments.storyboard in Resources */,
+				1E60BAA2DDA7B2438A483B6918019E1F /* BannerView.xib in Resources */,
 				0DD4B730D8978097A7204438D68E1877 /* ComposeErrorView.xib in Resources */,
-				CFC090803919FAB50D615ED2E426FCF5 /* ComposeView.xib in Resources */,
+				84C8BEDB2814C9D655CF41DC2A96C699 /* ComposeHeaderViewController.xib in Resources */,
 				9C918AABBAE3CF2566CD0D82911C430B /* Composer.storyboard in Resources */,
 				6E106032E25D6367964D58BECCCBD968 /* ContactCollectionViewContactCell.xib in Resources */,
 				F12AC7779D16FC5210B2104AA681C3BF /* ContactGroupSubSelectionEmailCell.xib in Resources */,
@@ -5775,10 +5833,13 @@
 				F094C0DB4B6155C8D1A9089136C707DF /* CollectionViewTableLayout.swift in Sources */,
 				A4A5A10BA50CA491A47857763ED878D2 /* Colors.swift in Sources */,
 				F1F4FEE6D25087F294ABC0D4F878B139 /* Compare.swift in Sources */,
+				44DF3E5C973937C4F6949B666FF48BC1 /* ComposeContainerViewController.swift in Sources */,
+				EB694372F55877C8F07887F42DD9D5DE /* ComposeContainerViewCoordinator.swift in Sources */,
+				CD44E208A2BFF920C5A1522C228422DE /* ComposeContainerViewModel.swift in Sources */,
 				F0D68E28AC981A5439DD9CBEA8F71299 /* ComposeCoordinator.swift in Sources */,
 				9FF40A7A7656FDE69397612451539E89 /* ComposeErrorView.swift in Sources */,
+				C9346C4569862EEA933FA0B584F245CA /* ComposeHeaderViewController.swift in Sources */,
 				F8F8306BFF45B8301F645C9EB2F0AF70 /* ComposePasswordViewController.swift in Sources */,
-				D3C1A621FED969F6B8310107F924D93B /* ComposeView.swift in Sources */,
 				B5960C080B5837397D7F14277430E7F0 /* ComposeViewController.swift in Sources */,
 				0E29BAA2714CDAC375CEEB88F3E4EBED /* ComposeViewModel.swift in Sources */,
 				DFE01119627DC2A77827CEFE78B5C807 /* ComposeViewModelImpl.swift in Sources */,
@@ -5864,6 +5925,8 @@
 				365A38334F22DF3A489CA31F0C4EDE20 /* ContactsViewController.swift in Sources */,
 				8AE880B99047B45BAB89A20E473E0108 /* ContactsViewModel.swift in Sources */,
 				1618555CAFF94EC13FE4DF078D531CDF /* ContactsViewModelImpl.swift in Sources */,
+				DD1EEF4A80A7EDC2946062EE83693964 /* ContainableComposeViewController.swift in Sources */,
+				416E9BBF244CD41FFBB9CC9AF6787606 /* ContainableComposeViewModel.swift in Sources */,
 				01645F8C975E78A920F1704F52E49013 /* Coordinator+SWReveal.swift in Sources */,
 				D4A4A47759EB2CB2A23797DB1FEB572E /* Coordinator.swift in Sources */,
 				99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */,
@@ -5895,7 +5958,6 @@
 				DDAF977C701787637111DE70FFF6382F /* EmailAttachmentView.swift in Sources */,
 				67CEC080B53587446D17C87DCAF1FA14 /* EmailHeaderView.swift in Sources */,
 				25ED77CA36C79A4FC909093974ED8C30 /* EmailVerifyViewController.swift in Sources */,
-				A0549E3B0917C4F391C34DDD4355D223 /* EmailView.swift in Sources */,
 				DCE885BAFF867DC033BD64050224EF9C /* EncryptionKit.swift in Sources */,
 				DD1A36F94A80BAA0E2A42B5CB66174B9 /* EncryptionSetupViewController.swift in Sources */,
 				640FA534D105BAC006DCDF9ADCB29D8B /* Error+Extension.swift in Sources */,
@@ -6007,6 +6069,9 @@
 				B0128F2D76AEF0D8E5B9A83D5B0DC697 /* MessageBodyCoordinator.swift in Sources */,
 				7030C8F6319C3B96C5E19E1E8858DF45 /* MessageBodyViewController.swift in Sources */,
 				0862A5B090F306DDE1DCA4D1A855BA4F /* MessageBodyViewModel.swift in Sources */,
+				5D9FBFFDCA4D8DB4D01DBC097E724939 /* MessageContainerViewController.swift in Sources */,
+				1F0B019E44004D6BB651FC83BA99A742 /* MessageContainerViewCoordinator.swift in Sources */,
+				D9F96603C6FE63884B873B689D7F2631 /* MessageContainerViewModel.swift in Sources */,
 				A7CCB60AFBF1785ED3624FB7F6AA49E1 /* MessageDataService+Builder.swift in Sources */,
 				6BFC39C8004B5C7D6180DC0BA4734F7B /* MessageDataService+Error.swift in Sources */,
 				C8BA5043DC630079025108E1B09E764F /* MessageDataService+FileManager.swift in Sources */,
@@ -6016,8 +6081,6 @@
 				406EC2D4451D286F276DA44C82D1D3C9 /* MessageHeaderViewCoordinator.swift in Sources */,
 				CC49DC2230DC9C573F6B76B7E8E95588 /* MessageHeaderViewModel.swift in Sources */,
 				5456D28DAA72FA380E90D950AC8DA532 /* MessageQueue.swift in Sources */,
-				579BBBAD60CBDB8455A5914528FF3C83 /* MessageViewController.swift in Sources */,
-				A1EE9432C4E9636784D2B1A2ED5CC477 /* MessageViewCoordinator.swift in Sources */,
 				F2764AF9918CE7C892F13D9B1D6FD695 /* MessageViewModel.swift in Sources */,
 				EAFCD103D4EE4E4076C7C1A1DF292E81 /* Migrate.swift in Sources */,
 				CD07E383A2BDFF942800966A006F8BFB /* MimeTypes.swift in Sources */,
@@ -6130,7 +6193,6 @@
 				A34C37B43A37A7F335F1C6984F1FBE82 /* SplashSignInSegue.swift in Sources */,
 				6D5311D939BA60286BFAEFC1882EAEF4 /* SplashViewController.swift in Sources */,
 				18D337EE4E9982D8792E8AC98A534966 /* SrpClient+Extension.swift in Sources */,
-				5EE5530646577B6FA80B1B256EE52A50 /* Standalone.swift in Sources */,
 				64AF52E9DAFC3EEE894A815B2022947F /* StorageLimit.swift in Sources */,
 				4C558A3C4C901D07A3DECBD805B51453 /* StorageViewCell.swift in Sources */,
 				F8AB06BA308E97379EEC19AFE8E3DF73 /* StoreKitManager.swift in Sources */,
@@ -6149,6 +6211,9 @@
 				8456B74CA4800147CE7F505FFFAFFC2F /* SwipeAction.swift in Sources */,
 				5F9C61A3B61421917B0944A475EA4BB1 /* SwitchTableViewCell.swift in Sources */,
 				DFD682D0DDB4BBEB4721AB2C0A387967 /* TableCellLabelView.swift in Sources */,
+				0235193F7A2F38323026959C31F5963A /* TableContainerViewController.swift in Sources */,
+				5781D9E114DFE42BE584DAF9ECBF39DB /* TableContainerViewCoordinator.swift in Sources */,
+				41608DE532AA3C5EDA7D668406B08E35 /* TableContainerViewModel.swift in Sources */,
 				07079172F08408217599170910D87AB1 /* TermsWebViewModelImpl.swift in Sources */,
 				147684DE4D10FD9CE6E2A4CBC3381F88 /* TestAPI.swift in Sources */,
 				B227B580CB2F218C2B5532C3C2DABAEC /* TextInsetTextField.swift in Sources */,
@@ -6289,10 +6354,13 @@
 				4A486958ED614F9B4404C4256DA2B809 /* CollectionViewTableLayout.swift in Sources */,
 				D1DE1C8F121B201850D00945B4B87C17 /* Colors.swift in Sources */,
 				D1675D9B00EBAF7515681C48A4B40926 /* Compare.swift in Sources */,
+				63535249B2909F68D363A6AC41FE53D9 /* ComposeContainerViewController.swift in Sources */,
+				1456D60563F0F1A8681B7C803A337028 /* ComposeContainerViewCoordinator.swift in Sources */,
+				5429CC7CD78541EF25F41F8F32372377 /* ComposeContainerViewModel.swift in Sources */,
 				422BBB682CA041E3D98BDB9271E1F73F /* ComposeCoordinator.swift in Sources */,
 				FBB1A86128070133A8331DF6E6C227A7 /* ComposeErrorView.swift in Sources */,
+				95DA030AF8E1BA620AD03EA83AB04755 /* ComposeHeaderViewController.swift in Sources */,
 				51F8182E24BDDE5131AA1ABCEB5EEDAC /* ComposePasswordViewController.swift in Sources */,
-				8A4E43703BAF0D9B55A009FCC6D1510B /* ComposeView.swift in Sources */,
 				1566F8F46A6456E7906FC35965BAF884 /* ComposeViewController.swift in Sources */,
 				F3E09335DB7FB95EAB0BB1D8FD818DB2 /* ComposeViewModel.swift in Sources */,
 				4B77B461130CB53376665C3AC4FA8465 /* ComposeViewModelImpl.swift in Sources */,
@@ -6378,6 +6446,8 @@
 				C33DEFFB8D89C9DC382058C38FC4F0E1 /* ContactsViewController.swift in Sources */,
 				802DF89A8E0947671F0885794AEC265D /* ContactsViewModel.swift in Sources */,
 				A90550F71DB25CC3C44267C0BE964D18 /* ContactsViewModelImpl.swift in Sources */,
+				8740631437736915509F669790555659 /* ContainableComposeViewController.swift in Sources */,
+				128CDBCC93FC51813B9D07FC78DAE31B /* ContainableComposeViewModel.swift in Sources */,
 				2841C58C2A0122D642FCE7C3D1C5B65A /* Coordinator+SWReveal.swift in Sources */,
 				C3D0F75EF0E316DBD18EAA98EA5DBE27 /* Coordinator.swift in Sources */,
 				B183086FB1922468D48C3BA7A91CE383 /* CoordinatorNew.swift in Sources */,
@@ -6408,7 +6478,6 @@
 				87F13D8A8311798BCB374E4424B559D5 /* EmailAttachmentView.swift in Sources */,
 				2CA987A99BA548163C52A18096ED8802 /* EmailHeaderView.swift in Sources */,
 				06F8E4CE09002AE1CC623A254CCDB438 /* EmailVerifyViewController.swift in Sources */,
-				E661B7CAB6D3F164057DC63E8ED65C15 /* EmailView.swift in Sources */,
 				486CBCF4AC39A214D999D5F34A2F0600 /* EncryptionKit.swift in Sources */,
 				15F548FC8107D722C2C7717C61C66AE4 /* EncryptionSetupViewController.swift in Sources */,
 				F6AA17DB27CCECEA32E099B870D5E884 /* Error+Extension.swift in Sources */,
@@ -6520,6 +6589,9 @@
 				DBCB89791B91CBC55B00527170AEFE4F /* MessageBodyCoordinator.swift in Sources */,
 				A2945EA2E06356DC02B9FCAE006BD456 /* MessageBodyViewController.swift in Sources */,
 				2E0B870E9E541FE454E4B94FD678D4CD /* MessageBodyViewModel.swift in Sources */,
+				DBE1712FC99F9709E9EA1CC44BC99E91 /* MessageContainerViewController.swift in Sources */,
+				59AD7F3F46A26D651A2DE45DE9FD066E /* MessageContainerViewCoordinator.swift in Sources */,
+				ECD711F48A122CDDB2FCD7423CB1D3FE /* MessageContainerViewModel.swift in Sources */,
 				EBF129F32A76CF4D29C856D4878D6218 /* MessageDataService+Builder.swift in Sources */,
 				05841A4AA5433B28DCB6DFD3CA4C21B7 /* MessageDataService+Error.swift in Sources */,
 				3B002CC8F3864169108B5E3391ABE482 /* MessageDataService+FileManager.swift in Sources */,
@@ -6529,8 +6601,6 @@
 				28F2C31D69830B2633678D107EE5D575 /* MessageHeaderViewCoordinator.swift in Sources */,
 				9A41C0F9EAC33424C7F709B635A2AD4E /* MessageHeaderViewModel.swift in Sources */,
 				83EBC3DC6638F49E0EC2354B009D984B /* MessageQueue.swift in Sources */,
-				1F7B39E3C53D6BAF33EC9316A71F1C9B /* MessageViewController.swift in Sources */,
-				9F5846F52DC7C14637BB589727BD1249 /* MessageViewCoordinator.swift in Sources */,
 				E888DF834FBCA63AA95E285A475712D2 /* MessageViewModel.swift in Sources */,
 				741A15D28D9D078AC7A80A656C16A808 /* Migrate.swift in Sources */,
 				CDD1059413217A7AE3A6975A5873E7FF /* MimeTypes.swift in Sources */,
@@ -6642,7 +6712,6 @@
 				012A936828605B01A9B9C8BECF912ADF /* SplashSignInSegue.swift in Sources */,
 				11CD2AA862685F9B1925B05E2DBBE2FC /* SplashViewController.swift in Sources */,
 				EA212D5B40735DAC2BD08462EB788A81 /* SrpClient+Extension.swift in Sources */,
-				A94A043120C0641EA622CC261CCCB05C /* Standalone.swift in Sources */,
 				052C1245242682AF00C4101A1674C86A /* StorageLimit.swift in Sources */,
 				E9EFA13B197397523B678F3DD3FE4686 /* StorageViewCell.swift in Sources */,
 				A9367265490F11199C43CD280A517B92 /* StoreKitManager.swift in Sources */,
@@ -6661,6 +6730,9 @@
 				74F422AB95B8B51656E734006F8A9955 /* SwipeAction.swift in Sources */,
 				E97C650E2E5051FB60F495B3F16D753E /* SwitchTableViewCell.swift in Sources */,
 				33614903A8407F333ED0ECA3437E4048 /* TableCellLabelView.swift in Sources */,
+				5F625E85761CB00E7DE49E815BBAE8E1 /* TableContainerViewController.swift in Sources */,
+				2DBD51FB4F4A5713D8CDA20B3BC7018E /* TableContainerViewCoordinator.swift in Sources */,
+				5C62F5D429DD8819CF18B4E6B926F703 /* TableContainerViewModel.swift in Sources */,
 				248DA163C0E7E06AE32010BCEFC74778 /* TermsWebViewModelImpl.swift in Sources */,
 				46144FE04C87C476002403318E4E9897 /* TestAPI.swift in Sources */,
 				27E86034A9B9C03D99F70C6A5D873AE6 /* TextInsetTextField.swift in Sources */,
@@ -6793,14 +6865,18 @@
 				D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */,
 				3F4E2BB0216F0E3F69D3034CD4CFC9B3 /* AuthCredential.swift in Sources */,
 				E6BDC64FFEF73F55ACB5E49EBCE1F6CB /* BCrypt+Extension.swift in Sources */,
+				381D0EBFC5AA08E11E88C3B3AD80677F /* BannerView.swift in Sources */,
 				946EFE2BD395638E4B98D70582531EF3 /* BugDataService.swift in Sources */,
 				B65DCCDC996ACE934E04D6F8D901E75A /* Bundle+Extension.swift in Sources */,
 				6D4A534E9CF9D8EACB5BC5B93223D7DF /* Colors.swift in Sources */,
 				636B235F96E5D2628C8DB14D172D8BD9 /* Compare.swift in Sources */,
+				5C3ADCEBFEAE621580DA7F53D9DA5C87 /* ComposeContainerViewController.swift in Sources */,
+				9C2970DF58E5E60B3D2F1E46800D9B93 /* ComposeContainerViewCoordinator.swift in Sources */,
+				7C8AAF69F6E57DE4A0458F85E093BB97 /* ComposeContainerViewModel.swift in Sources */,
 				F0A89B4297078118AA7CD3CD61C73DC3 /* ComposeCoordinator.swift in Sources */,
 				854E4DF1B2BDF7CDEF4289EAB8732F97 /* ComposeErrorView.swift in Sources */,
+				276D206E64C836A2C2A8E580CBDE97CD /* ComposeHeaderViewController.swift in Sources */,
 				F2D8524DC677E7ADD2FEB527D3439126 /* ComposePasswordViewController.swift in Sources */,
-				F13376E7F49BB7E07542309C7B020117 /* ComposeView.swift in Sources */,
 				F7F3F852C74207AD1931379F9028E87D /* ComposeViewController.swift in Sources */,
 				B40F64D2404B94FDD236B3A42B994ACF /* ComposeViewModel.swift in Sources */,
 				74289135107AD4D3F5934A6E368145E5 /* ComposeViewModelImpl.swift in Sources */,
@@ -6834,6 +6910,8 @@
 				30BA8AD09CC43B01F4FB87C008777B9B /* ContactsAPI.swift in Sources */,
 				8C63716F0669474FF595988CF6501F12 /* ContactsDefined.swift in Sources */,
 				3D9F3CE433274727A4E1D3245D831122 /* ContactsTableViewCell.swift in Sources */,
+				D546D7972B7F94BC4762476BD6B3A2FD /* ContainableComposeViewController.swift in Sources */,
+				1956BF710291752DA968C0629799B42B /* ContainableComposeViewModel.swift in Sources */,
 				AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */,
 				988CCA13A99E964B53176E7ED1ECF0B7 /* CoordinatorNew.swift in Sources */,
 				B8CC2898D3A06DB3053DB9C0A65260CA /* CoordinatorSegue.swift in Sources */,
@@ -6931,6 +7009,7 @@
 				759615B64EBA6C81044604CD4E8CC779 /* PinCodeModel.swift in Sources */,
 				A6FA13C8511B9C94F3D88FC668B24127 /* PinCodeView.swift in Sources */,
 				D0E6F54C99854B36E16A024FD4716F34 /* ProtonMail.xcdatamodeld in Sources */,
+				59DC4CD7A235E0B61902BFB864BE9A65 /* ProtonMailViewController.swift in Sources */,
 				D1E9B49A9DF9F8C5340E8DB3A42C21DF /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */,
 				B1A77D1BD034F34946FEDF248B6B48BC /* QueueConstant.swift in Sources */,
 				88A1F5419E81730BED3A992B25CA7E06 /* QuotedPrintable.swift in Sources */,
@@ -6960,6 +7039,9 @@
 				2CC92C6FE8931C8CFAB8FF8BAA10CF45 /* String+Toast+Share+Extension.swift in Sources */,
 				C89196462C77914570FCC2474A05A6E0 /* SwiftTryCatch.m in Sources */,
 				79A8AD48860F7F790C22A8CD98D5FDEC /* SwipeAction.swift in Sources */,
+				8946B141296B9D8B8298046B28CC4888 /* TableContainerViewController.swift in Sources */,
+				20EE5BF5BE3044D77AEEDD068AAEA198 /* TableContainerViewCoordinator.swift in Sources */,
+				ECBA88E2E47B1A04648E80A32D2A5D6A /* TableContainerViewModel.swift in Sources */,
 				6E86DCFDB68700018C27F02F04F02E4B /* Themes.swift in Sources */,
 				09F780646B51A97138C2B511683B066C /* Threading.swift in Sources */,
 				9BABADC79684C07E334346B9CA37F132 /* TimeInterval+Extension.swift in Sources */,
@@ -7047,14 +7129,18 @@
 				AC9F2845E7C86BC273B7A347BB35167F /* AuthAPI.swift in Sources */,
 				5AB260D27701C2784A4B89F9057199B1 /* AuthCredential.swift in Sources */,
 				2492ED78B3ECA7F50E37AD920587F8A5 /* BCrypt+Extension.swift in Sources */,
+				CFB9BC89F54DFF0754EBDEECD07990B2 /* BannerView.swift in Sources */,
 				A90A2CA597607B9C986F940F36F77351 /* BugDataService.swift in Sources */,
 				CC991EB544982FC7416A2D97BDC573D5 /* Bundle+Extension.swift in Sources */,
 				E7DD0041AAE7660B8B47401D4863F9CF /* Colors.swift in Sources */,
 				EE90A6AC40F9DDC748A9F9E9AC0936E2 /* Compare.swift in Sources */,
+				F47DA8D73C1F72CC945A91E6B2AABB08 /* ComposeContainerViewController.swift in Sources */,
+				F9BAFFD7CD8072073FD376DF519A926A /* ComposeContainerViewCoordinator.swift in Sources */,
+				8F3763AF2B141355C31E8F77271679CE /* ComposeContainerViewModel.swift in Sources */,
 				77B9D63C86DF905A06EB977E9F4A500E /* ComposeCoordinator.swift in Sources */,
 				4FFB318A7F47E5EC94367D2D8FD43FD6 /* ComposeErrorView.swift in Sources */,
+				1456F3F717B302360A0709CB74EAAC20 /* ComposeHeaderViewController.swift in Sources */,
 				0335414921335B5514E82A3B18E11EBD /* ComposePasswordViewController.swift in Sources */,
-				1263D860FFB444CDF01B7A5248D81DE9 /* ComposeView.swift in Sources */,
 				6B1E5F96BDA1AF2639A234F4EFD3F0C4 /* ComposeViewController.swift in Sources */,
 				99C001676B3887C8A48557482E8C8E2C /* ComposeViewModel.swift in Sources */,
 				1BFE10E43A58AD456AB5C1892A59B1C6 /* ComposeViewModelImpl.swift in Sources */,
@@ -7088,6 +7174,8 @@
 				FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */,
 				359D16B44AEA3CDDC4BDAED3121F88E7 /* ContactsDefined.swift in Sources */,
 				06D1C80810CD7621E12520B58765D1A4 /* ContactsTableViewCell.swift in Sources */,
+				566CFF63A8138447F0612058CB38A11A /* ContainableComposeViewController.swift in Sources */,
+				609516ABB00948DF1C785959E31E6B15 /* ContainableComposeViewModel.swift in Sources */,
 				B11559B52AC717C77AB67E07CD508DCE /* Coordinator.swift in Sources */,
 				EC0AB91B5107AA4BFDADAB2DF388CD9D /* CoordinatorNew.swift in Sources */,
 				2CA4DB264C0C177131A2C2D644C99392 /* CoordinatorSegue.swift in Sources */,
@@ -7185,6 +7273,7 @@
 				CADAA3819E2720FD06F36926AD23CC05 /* PinCodeModel.swift in Sources */,
 				CF9377D8366CAE8B3AC401E0353B1714 /* PinCodeView.swift in Sources */,
 				4BF7A8251077B2E36057081B81E52335 /* ProtonMail.xcdatamodeld in Sources */,
+				EEDC79D2E6BE35ABC71BB57D211883F2 /* ProtonMailViewController.swift in Sources */,
 				CF31D73AC1A95AF58DA6F2B7BC66103F /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */,
 				6B83402A5AE4ADCF885F31E0C53A59D1 /* QueueConstant.swift in Sources */,
 				61335B96C8F33EB4B56D4D459D39A01F /* QuotedPrintable.swift in Sources */,
@@ -7214,6 +7303,9 @@
 				AFD52AE22A0950F7AEB73EA2D7BA5AC3 /* String+Toast+Share+Extension.swift in Sources */,
 				2A07B875B14503AB79DCC0ED40B92AD3 /* SwiftTryCatch.m in Sources */,
 				17FFBAEA232D4852DA76C9226258670D /* SwipeAction.swift in Sources */,
+				43C087153C696F5399DACBA35A71A7BC /* TableContainerViewController.swift in Sources */,
+				79CD57A492525E74C841BFD2133BBA59 /* TableContainerViewCoordinator.swift in Sources */,
+				E4D38A4204DB567C620CC75FF430A16B /* TableContainerViewModel.swift in Sources */,
 				39176CAD616DEAAFEB9623915A65A1B3 /* Themes.swift in Sources */,
 				079820C378B20013072796A9BAC58158 /* Threading.swift in Sources */,
 				B6D0F31B6521BE408244AEE60EC86DCA /* TimeInterval+Extension.swift in Sources */,

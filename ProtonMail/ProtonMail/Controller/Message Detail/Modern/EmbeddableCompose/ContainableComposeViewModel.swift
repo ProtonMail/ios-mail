@@ -1,6 +1,6 @@
 //
-//  ViewModelServiceImpl+Share.swift
-//  ProtonMail - Created on 7/19/17.
+//  EditorViewModel.swift
+//  ProtonMail - Created on 19/04/2019.
 //
 //
 //  The MIT License
@@ -24,14 +24,10 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-//keep this unique
-let sharedVMService : ViewModelService = ViewModelServiceShareImpl()
-final class ViewModelServiceShareImpl: ViewModelService {
-    private weak var latestComposerViewModel : ComposeViewModel?
-    
-
+class ContainableComposeViewModel: ComposeViewModelImpl {
+    @objc internal dynamic var contentHeight: CGFloat = 0.1
 }

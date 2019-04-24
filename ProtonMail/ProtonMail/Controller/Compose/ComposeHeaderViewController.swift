@@ -36,33 +36,39 @@ protocol ComposeViewDelegate: class {
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool)
     func ComposeViewDidOffsetChanged(_ offset: CGPoint)
-    func composeViewDidTapNextButton(_ composeView: ComposeView)
-    func composeViewDidTapEncryptedButton(_ composeView: ComposeView)
-    func composeViewDidTapAttachmentButton(_ composeView: ComposeView)
-    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeView,
+    func composeViewDidTapNextButton(_ composeView: ComposeHeaderViewController)
+    func composeViewDidTapEncryptedButton(_ composeView: ComposeHeaderViewController)
+    func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController)
+    func composeViewDidTapContactGroupSubSelection(_ composeView: ComposeHeaderViewController,
                                                    contactGroup: ContactGroupVO,
                                                    callback: @escaping (([DraftEmailData]) -> Void))
     
-    func composeView(_ composeView: ComposeView, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
-    func composeView(_ composeView: ComposeView, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
+    func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker)
+    func composeView(_ composeView: ComposeHeaderViewController, didRemoveContact contact: ContactPickerModelProtocol, fromPicker picker: ContactPicker)
     
-    func composeViewHideExpirationView(_ composeView: ComposeView)
-    func composeViewCancelExpirationData(_ composeView: ComposeView)
-    func composeViewDidTapExpirationButton(_ composeView: ComposeView)
-    func composeViewCollectExpirationData(_ composeView: ComposeView)
+    func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController)
+    func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController)
+    func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController)
+    func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController)
     
-    func composeViewPickFrom(_ composeView: ComposeView)
+    func composeViewPickFrom(_ composeView: ComposeHeaderViewController)
 
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ComposeViewDataSource: class {
     func ccBccIsShownInitially() -> Bool
-    func composeViewContactsModelForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
-    func composeViewSelectedContactsForPicker(_ composeView: ComposeView, picker: ContactPicker) -> [ContactPickerModelProtocol]
+    func composeViewContactsModelForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
+    func composeViewSelectedContactsForPicker(_ composeView: ComposeHeaderViewController, picker: ContactPicker) -> [ContactPickerModelProtocol]
 }
 
-class ComposeView: UIViewController {
+class ComposeHeaderViewController: UIViewController {
+    private var height: NSLayoutConstraint!
+    @objc internal dynamic var size: CGSize = .zero {
+        didSet {
+            self.height.constant = size.height
+        }
+    }
     var pickerHeight : CGFloat = 0.0
     
     var toContactPicker: ContactPicker!
@@ -220,8 +226,6 @@ class ComposeView: UIViewController {
     weak var datasource: ComposeViewDataSource?
     weak var delegate: ComposeViewDelegate?
     
-    var selfView : UIView!
-    
     // MARK: - Constants
     fileprivate let kDefaultRecipientHeight : Int = 44
     fileprivate let kErrorMessageHeight: CGFloat = 48.0
@@ -240,7 +244,10 @@ class ComposeView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.selfView = self.view;
+        
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
+        self.height.priority = .init(999.0)
+        self.height.isActive = true
         
         fromLable.text = LocalString._composer_from_label
         subject.placeholder = LocalString._composer_subject_placeholder
@@ -366,7 +373,7 @@ class ComposeView: UIViewController {
         encryptedPasswordTextField.leftViewMode = UITextField.ViewMode.always
         
         let nextButton = UIButton()
-        nextButton.addTarget(self, action: #selector(ComposeView.didTapNextButton), for: UIControl.Event.touchUpInside)
+        nextButton.addTarget(self, action: #selector(ComposeHeaderViewController.didTapNextButton), for: UIControl.Event.touchUpInside)
         nextButton.setImage(UIImage(named: "next"), for: UIControl.State())
         nextButton.sizeToFit()
         
@@ -382,7 +389,7 @@ class ComposeView: UIViewController {
         expirationDateTextField.leftViewMode = UITextField.ViewMode.always
         
         self.confirmExpirationButton = UIButton()
-        confirmExpirationButton.addTarget(self, action: #selector(ComposeView.didTapConfirmExpirationButton), for: UIControl.Event.touchUpInside)
+        confirmExpirationButton.addTarget(self, action: #selector(ComposeHeaderViewController.didTapConfirmExpirationButton), for: UIControl.Event.touchUpInside)
         confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
         confirmExpirationButton.sizeToFit()
         
@@ -412,8 +419,8 @@ class ComposeView: UIViewController {
     internal func notifyViewSize(_ animation : Bool) {
         UIView.animate(withDuration: animation ? self.kAnimationDuration : 0, delay:0, options: UIView.AnimationOptions(), animations: {
             self.updateViewSize()
-            let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
-            self.delegate?.ComposeViewDidSizeChanged(size, showPicker: self.pickerHeight > 0.0)
+            self.size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height + self.pickerHeight)
+            self.delegate?.ComposeViewDidSizeChanged(self.size, showPicker: self.pickerHeight > 0.0)
             }, completion: nil)
     }
     
@@ -510,8 +517,8 @@ class ComposeView: UIViewController {
         
         self.errorView.mas_updateConstraints { (update) -> Void in
             update?.removeExisting = true
-            let _ = update?.left.equalTo()(self.selfView)
-            let _ = update?.right.equalTo()(self.selfView)
+            let _ = update?.left.equalTo()(self.view)
+            let _ = update?.right.equalTo()(self.view)
             let _ = update?.height.equalTo()(self.kErrorMessageHeight)
             let _ = update?.top.equalTo()(self.encryptedPasswordTextField.mas_bottom)
         }
@@ -573,7 +580,7 @@ class ComposeView: UIViewController {
     }
     
     fileprivate func updateViewSize() {
-        //let size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
+        self.size = CGSize(width: self.view.frame.width, height: self.passwordView.frame.origin.y + self.passwordView.frame.height)
         //self.htmlEditor.view.frame = CGRect(x: 0, y: size.height, width: editorSize.width, height: editorSize.height)
         //self.htmlEditor.setFrame(CGRect(x: 0, y: 0, width: editorSize.width, height: editorSize.height))
     }
@@ -588,8 +595,8 @@ class ComposeView: UIViewController {
         
         toContactPicker.mas_makeConstraints { (make) -> Void in
             let _ = make?.top.equalTo()(self.fromView.mas_bottom)?.with().offset()(5)
-            let _ = make?.left.equalTo()(self.selfView)
-            let _ = make?.right.equalTo()(self.selfView)
+            let _ = make?.left.equalTo()(self.view)
+            let _ = make?.right.equalTo()(self.view)
             let _ = make?.height.equalTo()(self.kDefaultRecipientHeight)
         }
     }
@@ -604,8 +611,8 @@ class ComposeView: UIViewController {
         
         ccContactPicker.mas_makeConstraints { (make) -> Void in
             let _ = make?.top.equalTo()(self.toContactPicker.mas_bottom)
-            let _ = make?.left.equalTo()(self.selfView)
-            let _ = make?.right.equalTo()(self.selfView)
+            let _ = make?.left.equalTo()(self.view)
+            let _ = make?.right.equalTo()(self.view)
             let _ = make?.height.equalTo()(self.toContactPicker)
         }
     }
@@ -620,8 +627,8 @@ class ComposeView: UIViewController {
         
         bccContactPicker.mas_makeConstraints { (make) -> Void in
             let _ = make?.top.equalTo()(self.ccContactPicker.mas_bottom)
-            let _ = make?.left.equalTo()(self.selfView)
-            let _ = make?.right.equalTo()(self.selfView)
+            let _ = make?.left.equalTo()(self.view)
+            let _ = make?.right.equalTo()(self.view)
             let _ = make?.height.equalTo()(self.ccContactPicker)
         }
     }
@@ -631,8 +638,8 @@ class ComposeView: UIViewController {
             toContactPicker.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.top.equalTo()(self.fromView.mas_bottom)
-                let _ = make?.left.equalTo()(self.selfView)
-                let _ = make?.right.equalTo()(self.selfView)
+                let _ = make?.left.equalTo()(self.view)
+                let _ = make?.right.equalTo()(self.view)
                 let _ = make?.height.equalTo()(newHeight)
             })
         }
@@ -640,16 +647,16 @@ class ComposeView: UIViewController {
             ccContactPicker.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.top.equalTo()(self.toContactPicker.mas_bottom)
-                let _ = make?.left.equalTo()(self.selfView)
-                let _ = make?.right.equalTo()(self.selfView)
+                let _ = make?.left.equalTo()(self.view)
+                let _ = make?.right.equalTo()(self.view)
                 let _ = make?.height.equalTo()(newHeight)
             })
         } else if (contactPicker == self.bccContactPicker) {
             bccContactPicker.mas_updateConstraints({ (make) -> Void in
                 make?.removeExisting = true
                 let _ = make?.top.equalTo()(self.ccContactPicker.mas_bottom)
-                let _ = make?.left.equalTo()(self.selfView)
-                let _ = make?.right.equalTo()(self.selfView)
+                let _ = make?.left.equalTo()(self.view)
+                let _ = make?.right.equalTo()(self.view)
                 let _ = make?.height.equalTo()(newHeight)
             })
         }
@@ -668,7 +675,7 @@ class ComposeView: UIViewController {
 
 
 // MARK: - ContactPickerDataSource
-extension ComposeView: ContactPickerDataSource {
+extension ComposeHeaderViewController: ContactPickerDataSource {
     
     func picker(contactPicker: ContactPicker, model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         self.delegate?.lockerCheck(model: model, progress: progress, complete: complete)
@@ -693,7 +700,7 @@ extension ComposeView: ContactPickerDataSource {
 
 
 // MARK: - ContactPickerDelegate
-extension ComposeView: ContactPickerDelegate {
+extension ComposeHeaderViewController: ContactPickerDelegate {
     func finishLockCheck() {
         self.notifyViewSize(false)
     }
@@ -820,7 +827,7 @@ extension ComposeView: ContactPickerDelegate {
 
 
 // MARK: - UITextFieldDelegate
-extension ComposeView: UITextFieldDelegate {
+extension ComposeHeaderViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if (textField == expirationDateTextField) {
             return false

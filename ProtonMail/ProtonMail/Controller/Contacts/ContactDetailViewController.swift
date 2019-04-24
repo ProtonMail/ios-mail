@@ -269,17 +269,17 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             addContactViewController.delegate = self
             sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
-            let destination = segue.destination.children[0] as! ComposeViewController
-            let contact = sender as? ContactVO
-            sharedVMService.newDraft(vmp: destination)
-            let viewModel = ComposeViewModelImpl(msg: nil, action: .newDraft)
-            if let c = contact {
-                viewModel.addToContacts(c)
+            guard let nav = segue.destination as? UINavigationController,
+                let next = nav.viewControllers.first as? ComposeContainerViewController else
+            {
+                return
             }
-            
-            //TODO:: finish up here,
-            let coordinator = ComposeCoordinator(vc: destination, vm: viewModel, services: ServiceFactory.default)
-            coordinator.start()
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
+            if let contact = sender as? ContactVO {
+                viewModel.addToContacts(contact)
+            }
+            next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+            next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         } else if segue.identifier == kToUpgradeAlertSegue {
             let popup = segue.destination as! UpgradeAlertViewController

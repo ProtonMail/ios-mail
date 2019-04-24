@@ -1,6 +1,6 @@
 //
-//  MessageViewModel.swift
-//  ProtonMail - Created on 3/22/16.
+//  ComposeContainerViewModel.swift
+//  ProtonMail - Created on 15/04/2019.
 //
 //
 //  The MIT License
@@ -24,12 +24,22 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-
+    
 
 import Foundation
 
-
-
-class MessageViewModel {
+class ComposeContainerViewModel: TableContainerViewModel {
+    internal var childViewModel: ContainableComposeViewModel
     
+    init(editorViewModel: ContainableComposeViewModel) {
+        self.childViewModel = editorViewModel
+        super.init()
+    }
+    
+    override var numberOfSections: Int {
+        return 1
+    }
+    override func numberOfRows(in section: Int) -> Int {
+        return 2
+    }
 }
