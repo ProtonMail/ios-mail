@@ -78,11 +78,27 @@ public struct Part: CustomStringConvertible {
     public var contentCID: String? { return self.headers[.contentID]?.name }
     public var cid: String? { return self.headers[.contentID]?.body }
     func partCID() -> Part? {
-        if self.contentCID?.contains("Content-ID") == true { return self }
+        if self.contentCID?.contains("Content-ID") == true {
+            return self
+        }
         for part in self.subParts {
-            if let sub = part.partCID() { return sub }
+            if let sub = part.partCID() {
+                return sub
+            }
         }
         return nil
+    }
+    
+    func partCIDs() -> [Part] {
+        var ret = [Part]()
+        if self.contentCID?.contains("Content-ID") == true {
+            ret.append(self)
+        }
+        for part in self.subParts {
+            let subRet = part.partCIDs()
+            ret.append(contentsOf: subRet)
+        }
+        return ret
     }
     
     

@@ -121,6 +121,9 @@ class Standalone: NSObject {
         
         super.init()
         
+        // this code will trigger showEmbed func two times and they will all download the attachments.
+        // revert it back to avoid some unexpected issues before release
+        // TODO:: try to remove this on 1.11.8 and do QA - btw reload func always be called. so that is why this seems like unnecessary
         if embeddingImages, let body = body {
             self.showEmbedImage(message, body: body)
         }
@@ -173,7 +176,6 @@ class Standalone: NSObject {
                             }
                         }
                     }
-
                     queue.async(execute: work)
                 }
             }
