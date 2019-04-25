@@ -68,7 +68,7 @@ html_editor.getCaretYPosition = function() {
     var span = document.createElement('span');// something happening here preventing selection of elements
     range.collapse(false);
     range.insertNode(span);
-    var topPosition = span.offsetTop;
+    var topPosition = span.getBoundingClientRect().top; // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
     span.parentNode.removeChild(span);
     return topPosition;
 }
