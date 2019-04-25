@@ -606,6 +606,7 @@ class MessageDataService : Service {
     
     // old functions
     var isFirstTimeSaveAttData : Bool = false
+    
     /// downloadTask returns the download task for use with UIProgressView+AFNetworking
     func fetchAttachmentForAttachment(_ attachment: Attachment,
                                       customAuthCredential: AuthCredential? = nil,
@@ -627,19 +628,22 @@ class MessageDataService : Service {
                                                     completion: { task, fileURL, error in
                                                         var error = error
                                                         if let context = attachment.managedObjectContext {
-                                                            context.performAndWait {
-                                                                if let fileURL = fileURL {
-                                                                    attachment.localURL = fileURL
+                                                            if let fileURL = fileURL {
+                                                                attachment.localURL = fileURL
+                                                                if #available(iOS 12, *) {
                                                                     if !self.isFirstTimeSaveAttData {
                                                                         attachment.fileData = try? Data(contentsOf: fileURL)
                                                                     }
+                                                                } else {
+                                                                    attachment.fileData = try? Data(contentsOf: fileURL)
+                                                                }
+                                                                context.performAndWait {
                                                                     error = context.saveUpstreamIfNeeded()
                                                                     if error != nil  {
                                                                         PMLog.D(" error: \(String(describing: error))")
                                                                     }
                                                                 }
                                                             }
-                                                            
                                                         }
                                                         completion?(task, fileURL, error)
                 })
@@ -921,7 +925,9 @@ class MessageDataService : Service {
     }
     
     fileprivate func cleanMessage() {
-        sharedMessageDataService.isFirstTimeSaveAttData = true
+        if #available(iOS 12, *) {
+            sharedMessageDataService.isFirstTimeSaveAttData = true
+        }
         
         Message.deleteAll(inContext: sharedCoreDataService.mainManagedObjectContext) // will cascadely remove appropriate Attacments also
         UIApplication.setBadge(badge: 0)

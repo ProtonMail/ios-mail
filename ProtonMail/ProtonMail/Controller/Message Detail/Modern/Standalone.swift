@@ -121,10 +121,12 @@ class Standalone: NSObject {
         
         super.init()
         
-        // this code will trigger showEmbed func two times and they will all downlading the attachemtns.
-//        if embeddingImages, let body = body {
-//            self.showEmbedImage(message, body: body)
-//        }
+        // this code will trigger showEmbed func two times and they will all download the attachments.
+        // revert it back to avoid some unexpected issues before release
+        // TODO:: try to remove this on 1.11.8 and do QA - btw reload func always be called. so that is why this seems like unnecessary
+        if embeddingImages, let body = body {
+            self.showEmbedImage(message, body: body)
+        }
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
@@ -162,24 +164,19 @@ class Standalone: NSObject {
 
         DispatchQueue.global(qos: .userInitiated).async {
             for att in atts {
-                // only need to check inline atts
-                if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    att.base64AttachmentData { [weak self] based64String in
-                        let work = DispatchWorkItem {
-                            if !based64String.isEmpty {
-                                updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(att.contentID()!)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
-                            }
-                            checkCount -= 1
-                            if checkCount == 0 {
-                                DispatchQueue.main.async {
-                                    self?.body = updatedBody
-                                }
+                att.base64AttachmentData { [weak self] based64String in
+                    let work = DispatchWorkItem {
+                        if !based64String.isEmpty {
+                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(att.contentID()!)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                        }
+                        checkCount -= 1
+                        if checkCount == 0 {
+                            DispatchQueue.main.async {
+                                self?.body = updatedBody
                             }
                         }
-                        queue.async(execute: work)
                     }
-                } else {
-                    checkCount -= 1
+                    queue.async(execute: work)
                 }
             }
         }
