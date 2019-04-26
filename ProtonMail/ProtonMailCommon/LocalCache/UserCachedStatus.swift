@@ -54,12 +54,9 @@ final class UserCachedStatus : SharedCacheBase {
         
         
         static let autoLockTime = "autoLockTime" ///user cache but could restore
-        
+        static let linkOpeningMode = "linkOpeningMode"
         static let lastLoggedInUser = "lastLoggedInUser" //user cache but could restore
         static let lastPinFailedTimes = "lastPinFailedTimes" //user cache can't restore
-        
-        
-        
         
         //wait
         static let lastFetchMessageID = "last_fetch_message_id"
@@ -218,6 +215,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.currentSubscription)
         getShared().removeObject(forKey: Key.defaultPlanDetails)
         getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
+        getShared().removeObject(forKey: Key.linkOpeningMode)
                         
         getShared().synchronize()
     }
@@ -284,6 +282,22 @@ extension UserCachedStatus {
 
 
 #if !APP_EXTENSION
+extension UserCachedStatus {
+    var linkOpeningMode: LinkOpeningMode {
+        get {
+            guard let string = sharedKeychain.keychain.string(forKey: Key.linkOpeningMode),
+                let mode = LinkOpeningMode(rawValue: string) else
+            {
+                return .confirmationAlert
+            }
+            return mode
+        }
+        set {
+            sharedKeychain.keychain.setString(newValue.rawValue, forKey: Key.linkOpeningMode)
+        }
+    }
+}
+
 extension UserCachedStatus: ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? {
         get {

@@ -255,10 +255,10 @@ class EmailView: UIView, UIScrollViewDelegate{
     }
 }
 
-extension EmailView: WKNavigationDelegate, WKUIDelegate {
+extension EmailView: WKNavigationDelegate, WKUIDelegate, LinkOpeningValidator {
     @available(iOS 10.0, *)
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return false
+        return userCachedStatus.linkOpeningMode == .allowPickAndPop
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
@@ -268,8 +268,13 @@ extension EmailView: WKNavigationDelegate, WKUIDelegate {
             decisionHandler(.cancel)
             
         case .linkActivated where navigationAction.request.url != nil:
-            UIApplication.shared.openURL(navigationAction.request.url!)
-            decisionHandler(.cancel)
+            let url = navigationAction.request.url!
+            self.validateNotPhishing(url) { allowedToOpen in
+                if allowedToOpen {
+                    UIApplication.shared.openURL(url)
+                }
+                decisionHandler(.cancel)
+            }
             
         default:
             decisionHandler(.allow)
