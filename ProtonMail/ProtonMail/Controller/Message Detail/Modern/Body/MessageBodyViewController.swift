@@ -188,7 +188,7 @@ extension MessageBodyViewController: UIGestureRecognizerDelegate {
     }
 }
 
-extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
+extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate, LinkOpeningValidator {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
     }
@@ -200,8 +200,13 @@ extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
             decisionHandler(.cancel)
             
         case .linkActivated where navigationAction.request.url != nil:
-            self.coordinator?.open(url: navigationAction.request.url!)
-            decisionHandler(.cancel)
+            let url = navigationAction.request.url!
+            self.validateNotPhishing(url) { allowedToOpen in
+                if allowedToOpen {
+                    self.coordinator?.open(url: url)
+                }
+                decisionHandler(.cancel)
+            }
             
         default:
             self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
@@ -223,7 +228,7 @@ extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate {
     
     @available(iOS 10.0, *)
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return false // by some reason PM do not want 3d touch here yet
+        return userCachedStatus.linkOpeningMode == .allowPickAndPop
     }
 }
 
