@@ -51,6 +51,7 @@ class LocalizedString {
 
     // Mark Link Opening Confirmaiton
     lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
+    lazy var _request_link_confirmation = NSLocalizedString("Request Link Confirmation", comment: "link opeining confirmation")
 
     // Mark Settings
 

@@ -57,7 +57,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .version] //.Debug,
     
     var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .cleanCache, .notificationsSnooze]
+                                                            .mbp, .autoLoadImage, .linkOpeningMode, .cleanCache, .notificationsSnooze]
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -123,9 +123,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .cleanCache]
+            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .cleanCache]
         } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .cleanCache]
+            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .cleanCache]
         }
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             setting_general_items.append(.notificationsSnooze)
@@ -246,6 +246,14 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                     feedback(false)
                                 }
                             })
+                        }
+                        cellout = cell
+                    case .linkOpeningMode:
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                        cell.configCell(itme.description, bottomLine: "", status: userCachedStatus.linkOpeningMode == .confirmationAlert) { cell, newStatus, feedback in
+                            userCachedStatus.linkOpeningMode = newStatus ? .confirmationAlert : .openAtWill
                         }
                         cellout = cell
                     }
@@ -504,7 +512,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         }
                     case .notificationsSnooze:
                         self.coordinator?.go(to: .snooze)
-                    case .autoLoadImage:
+                    case .autoLoadImage, .linkOpeningMode:
                         break
                     }
                 }
