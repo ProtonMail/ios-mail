@@ -39,6 +39,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
         return UIAlertAction(title: LocalString._import_file_from_, style: UIAlertAction.Style.default, handler: { (action) -> Void in
             let types = [
                 kUTTypeMovie as String,
+                kUTTypeVideo as String,
                 kUTTypeImage as String,
                 kUTTypeText as String,
                 kUTTypePDF as String,
@@ -88,14 +89,18 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 }
                 
             #else
-                guard let data = try? Data(contentsOf: url) else {
-                    self.controller.error(LocalString._cant_load_the_file)
-                    return
-                }
+            do {
+                url.startAccessingSecurityScopedResource()
+                let data = try Data(contentsOf: url)
+                url.stopAccessingSecurityScopedResource()
                 fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)
+            } catch let error {
+                PMLog.D("Error while importing attachment: \(error.localizedDescription)")
+                self.controller.error(LocalString._cant_load_the_file)
+            }
             #endif
             
-            self.controller.finish(fileData)
+            self.controller.fileSuccessfullyImported(as: fileData)
         }
         
         if error != nil {

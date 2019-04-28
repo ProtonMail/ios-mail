@@ -55,15 +55,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     fileprivate var currentAttachmentSize : Int = 0
     
     //
-    fileprivate lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
-    fileprivate lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
+    internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
+    internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
     
     // pre - defined
-    private let file_types : [String]  = [kUTTypeImage as String,
-                                          kUTTypeMovie as String,
-                                          kUTTypeVideo as String,
-                                          kUTTypeFileURL as String,
-                                          kUTTypeVCard as String]
     private let propertylist_ket = kUTTypePropertyList as String
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
@@ -123,9 +118,9 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
             if let attachments = item.attachments {
                 for att in attachments {
                     let itemProvider = att
-                    if let type = itemProvider.hasItem(types: file_types) {
+                    if let type = itemProvider.hasItem(types: self.filetypes) {
                         group.enter() //#1
-                        self.loadItem(itemProvider, type: type) {
+                        self.importFile(itemProvider, type: type) {
                             group.leave() //#1
                         }
                     } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
@@ -247,7 +242,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
 }
 
-extension ShareUnlockViewController: AttachmentController {
+extension ShareUnlockViewController: AttachmentController, FileImporter {
     var barItem: UIBarButtonItem? {
         return nil
     }
@@ -256,7 +251,7 @@ extension ShareUnlockViewController: AttachmentController {
         self.localized_errors.append(description)
     }
     
-    func finish(_ fileData: FileData) {
+    func fileSuccessfullyImported(as fileData: FileData) {
         guard fileData.contents.dataSize < ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
             self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return
@@ -265,56 +260,7 @@ extension ShareUnlockViewController: AttachmentController {
         self.files.append(fileData)
     }
 
-    func loadItem(_ itemProvider: NSItemProvider, type: String, handler: @escaping ()->Void) {
-        itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async
-            defer {
-                // important: whole this closure contents will be run synchronously, so we can call the handler in the end of scope
-                // if this situation will change some day, handler should be passed over
-                handler()
-            }
-            
-            guard error == nil else {
-                self.error(error?.localizedDescription ?? "")
-                return
-            }
-        
-            //TODO:: the process(XXX:) functions below. they could be abstracted out. all type of process in the same place.
-            if let url = item as? URL {
-                self.documentAttachmentProvider.process(fileAt: url) // sync
-            } else if let img = item as? UIImage {
-                self.imageAttachmentProvider.process(original: img) // sync
-            } else if (type as CFString == kUTTypeVCard), let data = item as? Data {
-                var fileName = "\(NSUUID().uuidString).vcf"
-                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
-                    fileName = name
-                }
-                let fileData = ConcreteFileData<Data>(name: fileName, ext: "text/vcard", contents: data)
-                self.finish(fileData)
-            } else if let data = item as? Data {
-                var fileName = NSUUID().uuidString
-                if #available(iOSApplicationExtension 11.0, *), let name = itemProvider.suggestedName {
-                    fileName = name
-                }
-                
-                let type = (itemProvider.registeredTypeIdentifiers.first ?? type) as CFString
-                // this method does not work correctly with "text/vcard" mime by some reson, so VCards have separate `else if`
-                guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
-                    let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
-                {
-                    self.error(LocalString._failed_to_determine_file_type)
-                    return
-                }
-                let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
-                self.finish(fileData)
-            } else {
-                self.error(LocalString._unsupported_file)
-            }
-        }
-    }
+    
 }
 
-extension NSItemProvider {
-    func hasItem(types: [String]) -> String? {
-        return types.first(where: self.hasItemConformingToTypeIdentifier)
-    }
-}
+

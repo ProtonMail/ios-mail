@@ -32,7 +32,15 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
     private var header: ComposeHeaderViewController!
-    private var editor: ContainableComposeViewController!
+    internal var editor: ContainableComposeViewController!
+    
+    private var attachmentsObservation: NSKeyValueObservation!
+    private var messageObservation: NSKeyValueObservation!
+    
+    deinit {
+        self.attachmentsObservation = nil
+        self.messageObservation = nil
+    }
     
     init(controller: ComposeContainerViewController, services: ServiceFactory) {
         self.controller = controller
@@ -65,8 +73,17 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.editor = child
     }
     
-    internal func createHeader() -> ComposeHeaderViewController {
+    internal func createHeader(_ childViewModel: ContainableComposeViewModel) -> ComposeHeaderViewController {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
+        
+        self.messageObservation = childViewModel.observe(\.message) { [weak self] childViewModel, _ in
+            self?.attachmentsObservation = childViewModel.message?.observe(\.numAttachments) { [weak self] message, _ in
+                DispatchQueue.main.async {
+                    self?.header.updateAttachmentButton(message.numAttachments.intValue != 0)
+                }
+            }
+        }
+        
         return self.header
     }
     
