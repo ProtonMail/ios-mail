@@ -70,6 +70,7 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         self.tableView.rowHeight = UITableView.automaticDimension
         self.tableView.estimatedRowHeight = 85
         self.tableView.bounces = false
+        self.tableView.separatorInset = .zero
         
         // events
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)

@@ -92,8 +92,10 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     override func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         switch indexPath.row {
-        case 0: self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
-        case 1: self.embed(self.editor, onto: cell.contentView, ownedBy: self.controller)
+        case 0:
+            self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
+        case 1:
+            self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.readableContentGuide, ownedBy: self.controller)
         default:
             assert(false, "Children number misalignment")
             return
