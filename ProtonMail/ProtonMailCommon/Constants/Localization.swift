@@ -49,6 +49,9 @@ class LocalizedString {
     /// "2fa Authentication failed please try to login again"
     lazy var _signup_2fa_auth_failed = NSLocalizedString("2FA failed. Please try to login again.", comment: "2fa verification failed")
 
+    // Mark Link Opening Confirmaiton
+    lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
+    lazy var _request_link_confirmation = NSLocalizedString("Request Link Confirmation", comment: "link opeining confirmation")
 
     // Mark Settings
 
@@ -678,6 +681,8 @@ class LocalizedString {
     lazy var _enter_your_existing_email_address = NSLocalizedString("Enter your existing email address.", comment: "top title")
     /// "Continue"
     lazy var _genernal_continue = NSLocalizedString("Continue", comment: "Action")
+    /// "Continue and Don't ask again"
+    lazy var _genernal_continue_and_dont_ask_again = NSLocalizedString("Continue and Don't ask again", comment: "Action")
     /// "Retry after %d seconds"
     lazy var _retry_after_seconds = NSLocalizedString("Retry after %d seconds", comment: "email verify code resend count down")
     /// "Send Verification Code"
