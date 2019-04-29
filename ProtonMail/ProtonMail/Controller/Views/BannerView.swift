@@ -201,8 +201,10 @@ extension BannerView: UIGestureRecognizerDelegate {
             let anchor = self.springBehavior.anchorPoint
             let translation = gesture.translation(in: referenceView).y
 
-            let y: CGFloat
-            if (self.superView.bounds.height / 2) - self.center.y < (self.superView.bounds.height / 2) - self.center.y + translation {
+            var y: CGFloat
+            let left = (self.superView.bounds.height / 2) - self.center.y
+            let right = (self.superView.bounds.height / 2) - self.center.y + translation
+            if left < right  {
                 let unboundedY = anchor.y + translation
                 y = rubberBandDistance( offset: unboundedY - anchor.y, dimension: referenceView.bounds.height - anchor.y)
             } else {

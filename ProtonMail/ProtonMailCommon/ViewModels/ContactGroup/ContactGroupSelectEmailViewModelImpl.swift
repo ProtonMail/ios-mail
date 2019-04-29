@@ -32,7 +32,7 @@ import Foundation
 class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
 {
     /// all of the emails that the user have in the contact
-    private let allEmails: [Email]
+    private var allEmails: [Email]
     
     /// the email result for search bar to use
     private var emailsForDisplay: [Email]

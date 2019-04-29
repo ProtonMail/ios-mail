@@ -4868,6 +4868,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				fr,
@@ -4884,6 +4885,16 @@
 				hu,
 				is,
 				kab,
+				sv,
+				es,
+				id,
+				it,
+				nl,
+				pl,
+				"pt-BR",
+				ro,
+				ru,
+				uk,
 			);
 			mainGroup = C17EB90EF5076A849C4E2A0A715035BA;
 			productRefGroup = 7828F3448BB043564580FD2E6E5D5A54 /* Products */;
