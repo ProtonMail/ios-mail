@@ -29,9 +29,8 @@
 import Foundation
 
 protocol FileImporter {
-    func importFile(_ itemProvider: NSItemProvider, type: String, handler: @escaping ()->Void)
+    func importFile(_ itemProvider: NSItemProvider, type: String, errorHandler: @escaping (String)->Void, handler: @escaping ()->Void)
     func fileSuccessfullyImported(as fileData: FileData)
-    func error(_ description: String)
     
     var documentAttachmentProvider: DocumentAttachmentProvider { get }
     var imageAttachmentProvider: PhotoAttachmentProvider { get }
@@ -43,7 +42,11 @@ extension FileImporter {
         return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard"]
     }
     
-    func importFile(_ itemProvider: NSItemProvider, type: String, handler: @escaping ()->Void) {
+    func importFile(_ itemProvider: NSItemProvider,
+                    type: String,
+                    errorHandler: @escaping (String)->Void,
+                    handler: @escaping ()->Void)
+    {
         itemProvider.loadItem(forTypeIdentifier: type, options: nil) { item, error in // async
             defer {
                 // important: whole this closure contents will be run synchronously, so we can call the handler in the end of scope
@@ -52,7 +55,7 @@ extension FileImporter {
             }
             
             guard error == nil else {
-                self.error(error?.localizedDescription ?? "")
+                errorHandler(error?.localizedDescription ?? "")
                 return
             }
             
@@ -79,13 +82,13 @@ extension FileImporter {
                 guard let filetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassFilenameExtension)?.takeRetainedValue() as String?,
                     let mimetype = UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType)?.takeRetainedValue() as String? else
                 {
-                    self.error(LocalString._failed_to_determine_file_type)
+                    errorHandler(LocalString._failed_to_determine_file_type)
                     return
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName + "." + filetype, ext: mimetype, contents: data)
                 self.fileSuccessfullyImported(as: fileData)
             } else {
-                self.error(LocalString._unsupported_file)
+                errorHandler(LocalString._unsupported_file)
             }
         }
     }

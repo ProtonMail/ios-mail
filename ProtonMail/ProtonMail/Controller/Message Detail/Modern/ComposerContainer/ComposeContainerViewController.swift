@@ -35,9 +35,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     
-    internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
-    internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
-    
     deinit {
         self.childrenHeightObservations = []
         NotificationCenter.default.removeKeyboardObserver(self)
@@ -125,14 +122,19 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 
     // drag and drop
     
+    private func error(_ description: String) {
+        let alert = description.alertController()
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView,
                    canHandle session: UIDropSession) -> Bool
     {
         // return true only if all the files are supported
-        return session.items.reduce(true, { (result, item) -> Bool in
-            return result && item.itemProvider.hasItem(types: self.filetypes) != nil
-        })
+        let itemProviders = session.items.map { $0.itemProvider }
+        return self.viewModel.filesAreSupported(from: itemProviders)
     }
     
     @available(iOS 11.0, *)
@@ -178,29 +180,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     func tableView(_ tableView: UITableView,
                    performDropWith coordinator: UITableViewDropCoordinator)
     {
-        coordinator.items.forEach { dropItem in
-            let itemProvider = dropItem.dragItem.itemProvider
-            guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
-            self.importFile(itemProvider, type: type, handler: { /* nothing */ })
-        }
-    }
-}
-
-extension ComposeContainerViewController: FileImporter, AttachmentController {
-    var barItem: UIBarButtonItem? {
-        return nil // not needed for DnD
-    }
-    
-    func fileSuccessfullyImported(as fileData: FileData) {
-        let attachment = fileData.contents.toAttachment(self.viewModel.childViewModel.message!,
-                                                        fileName: fileData.name,
-                                                        type: fileData.ext)
-        self.viewModel.childViewModel.uploadAtt(attachment)
-    }
-    
-    func error(_ description: String) {
-        let alert = description.alertController()
-        alert.addOKAction()
-        self.present(alert, animated: true, completion: nil)
+        let itemProviders = coordinator.items.map { $0.dragItem.itemProvider }
+        self.viewModel.importFiles(from: itemProviders, errorHandler: self.error, successHandler: { /* nothing */})
     }
 }

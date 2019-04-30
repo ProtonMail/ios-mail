@@ -86,8 +86,8 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 } catch let error {
                     PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                     self.controller.error(LocalString._cant_copy_the_file)
+                    return
                 }
-                
             #else
             do {
                 url.startAccessingSecurityScopedResource()
@@ -97,6 +97,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
             } catch let error {
                 PMLog.D("Error while importing attachment: \(error.localizedDescription)")
                 self.controller.error(LocalString._cant_load_the_file)
+                return
             }
             #endif
             

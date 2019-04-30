@@ -31,3 +31,12 @@ import Foundation
 class ContainableComposeViewModel: ComposeViewModelImpl {
     @objc internal dynamic var contentHeight: CGFloat = 0.1
 }
+
+extension ContainableComposeViewModel {
+    internal var currentAttachmentsSize: Int {
+        guard let message = self.message else { return 0}
+        return message.attachments.reduce(into: 0) {
+            $0 += ($1 as? Attachment)?.fileSize.intValue ?? 0
+        }
+    }
+}

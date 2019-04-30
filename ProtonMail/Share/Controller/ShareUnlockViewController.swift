@@ -120,7 +120,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
                     let itemProvider = att
                     if let type = itemProvider.hasItem(types: self.filetypes) {
                         group.enter() //#1
-                        self.importFile(itemProvider, type: type) {
+                        self.importFile(itemProvider, type: type, errorHandler: self.error) {
                             group.leave() //#1
                         }
                     } else if itemProvider.hasItemConformingToTypeIdentifier(propertylist_ket) {
@@ -252,7 +252,7 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
     }
     
     func fileSuccessfullyImported(as fileData: FileData) {
-        guard fileData.contents.dataSize < ( self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
+        guard fileData.contents.dataSize < (self.kDefaultAttachmentFileSize - self.currentAttachmentSize) else {
             self.error(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return
         }
