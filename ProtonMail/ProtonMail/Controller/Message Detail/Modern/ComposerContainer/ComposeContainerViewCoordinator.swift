@@ -77,9 +77,12 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
         
         self.messageObservation = childViewModel.observe(\.message) { [weak self] childViewModel, _ in
-            self?.attachmentsObservation = childViewModel.message?.observe(\.numAttachments) { [weak self] message, _ in
+            self?.attachmentsObservation = childViewModel.message?.observe(\.numAttachments, options: [.new, .old]) { [weak self] message, change in
                 DispatchQueue.main.async {
                     self?.header.updateAttachmentButton(message.numAttachments.intValue != 0)
+                    if change.oldValue?.intValue != change.newValue?.intValue {
+                        self?.header.attachmentButton.shake(5, offset: 5.0)
+                    }
                 }
             }
         }
