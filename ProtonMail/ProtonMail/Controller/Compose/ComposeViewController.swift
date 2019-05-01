@@ -572,7 +572,7 @@ extension ComposeViewController : HtmlEditorBehaviourDelegate {
         self.updateEmbedImages()
     }
     
-    @objc func caretMovedTo(_ offset: CGFloat) {
+    @objc func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
     }
 }

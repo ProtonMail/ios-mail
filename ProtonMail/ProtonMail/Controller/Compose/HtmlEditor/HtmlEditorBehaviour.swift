@@ -36,7 +36,7 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
 
 protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
-    func caretMovedTo(_ offset: CGFloat)
+    func caretMovedTo(_ offset: CGPoint)
 }
 
 /// Html editor
@@ -280,16 +280,23 @@ extension HtmlEditorBehaviour {
                 isEditorLoaded = true
             }
         } else if method.hasPrefix("cursor/") {
-            let value = method.preg_replace_none_regex("cursor/", replaceto: "")
-            if let coursorPosition : CGFloat =  NumberFormatter().number(from: value) as? CGFloat {
-                firstly { () -> Promise<CGFloat> in
-                    self.run(with: "document.body.offsetHeight")
-                }.done { (height) in
-                    self.contentHeight = height
-                    self.delegate?.caretMovedTo(coursorPosition)
-                }.catch { _ in
-                    self.delegate?.caretMovedTo(coursorPosition)
-                }
+            let values = method.preg_replace_none_regex("cursor/", replaceto: "")
+                               .splitByComma()
+                               .compactMap { NumberFormatter().number(from: $0) as? CGFloat }
+            
+            guard let coursorPositionX = values.first, let coursorPositionY =  values.last,
+                case let coursorPosition = CGPoint(x: coursorPositionX, y: coursorPositionY) else
+            {
+                return
+            }
+            
+            firstly { () -> Promise<CGFloat> in
+                self.run(with: "document.body.offsetHeight")
+            }.done { (height) in
+                self.contentHeight = height
+                self.delegate?.caretMovedTo(coursorPosition)
+            }.catch { _ in
+                self.delegate?.caretMovedTo(coursorPosition)
             }
         }
     }

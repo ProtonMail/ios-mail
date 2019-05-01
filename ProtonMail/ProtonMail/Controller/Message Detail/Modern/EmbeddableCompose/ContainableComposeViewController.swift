@@ -50,10 +50,18 @@ class ContainableComposeViewController: ComposeViewController {
         self.heightObservation = nil
     }
     
-    override func caretMovedTo(_ offset: CGFloat) {
+    override func caretMovedTo(_ offset: CGPoint) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
             guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
-            let offsetAreaInCell = CGRect(x: 0, y: offset, width: 1, height: 100) // FIXME: approx height of our text row
+             // approx height and width of our text row
+            let сaretBounds = CGSize(width: 100, height: 100)
+            
+            // horizontal
+            let offsetAreaInWebView = CGRect(x: offset.x - сaretBounds.width/2, y: 0, width: сaretBounds.width, height: 1)
+            self.webView.scrollView.scrollRectToVisible(offsetAreaInWebView, animated: true)
+            
+            // vertical
+            let offsetAreaInCell = CGRect(x: 0, y: offset.y - сaretBounds.height/2, width: 1, height: сaretBounds.height)
             let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
             enclosingScroller.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
