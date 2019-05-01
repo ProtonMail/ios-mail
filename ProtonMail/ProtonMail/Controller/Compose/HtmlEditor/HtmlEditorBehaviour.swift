@@ -34,13 +34,13 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
     @objc var inputAccessoryView: AnyObject? { return nil }
 }
 
-protocol HtmlEditorDelegate : AnyObject {
+protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGFloat)
 }
 
 /// Html editor
-class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
+class HtmlEditorBehaviour: NSObject {
     
     enum Exception: Error {
         case castError
@@ -54,10 +54,10 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     @objc private(set) dynamic var contentHeight : CGFloat = 0
     
     //
-    private var webView: WKWebView
+    private weak var webView: WKWebView!
     
     //
-    weak var delegate : HtmlEditorDelegate?
+    weak var delegate : HtmlEditorBehaviourDelegate?
     //
     func responderCheck() -> Bool {
         for v in self.webView.scrollView.subviews {
@@ -68,65 +68,12 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         return false
     }
     
-    deinit {
-        // without this line iOS 9 crashes trying to retain HtmlEditor too many times
-        self.webView.scrollView.delegate = nil
-    }
-    
-    // MARK: Initialization
-    override init(frame: CGRect) {
-        let webConfiguration = WKWebViewConfiguration()
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = true
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        webConfiguration.preferences = preferences
-        self.webView = WKWebView(frame: .zero, configuration: webConfiguration)
-        super.init(frame: frame)
-        self.setup()
-    }
-    
-    required init(coder aDecoder: NSCoder) {
-        let webConfiguration = WKWebViewConfiguration()
-        let preferences = WKPreferences()
-        preferences.javaScriptEnabled = true
-        preferences.javaScriptCanOpenWindowsAutomatically = false
-        webConfiguration.preferences = preferences
-        self.webView = WKWebView(frame:  .zero, configuration: webConfiguration)
-        super.init(coder: aDecoder)!
-        self.setup()
-    }
-    
-    private func setup() {
-        self.addSubview(webView)
-        self.backgroundColor = .white
-        self.webView.backgroundColor = .white
-        self.webView.uiDelegate = self
-        self.webView.navigationDelegate = self
-        self.webView.scrollView.delegate = self
+    internal func setup(webView: WKWebView) {
+        self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
-        self.webView.scrollView.bounces = false
-        self.webView.scrollView.isScrollEnabled = false
-    
-        self.webView.autoresizesSubviews = true
-        self.webView.translatesAutoresizingMaskIntoConstraints = false
-        self.webView.allowsBackForwardNavigationGestures = false   // Disable swiping to navigate
-        self.webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        self.contentHeight = self.webView.scrollView.contentSize.height
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
-        
-        //add constraint
-        self.addConstraints([
-            NSLayoutConstraint(item: self.webView, attribute: .top, relatedBy: .equal,
-                               toItem: self, attribute: .top, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: self.webView, attribute: .bottom, relatedBy: .equal,
-                               toItem: self, attribute: .bottom, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: self.webView, attribute: .left, relatedBy: .equal,
-                               toItem: self, attribute: .left, multiplier: 1.0, constant: 0),
-            NSLayoutConstraint(item: self.webView, attribute: .right, relatedBy: .equal,
-                               toItem: self, attribute: .right, multiplier: 1.0, constant: 0)
-            ])
         
         // Load editor 3 parts
         guard let htmlPath = Bundle.main.path(forResource: "HtmlEditor", ofType: "html"),
@@ -267,7 +214,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
         }.then { (_) -> Promise<CGFloat> in
             self.run(with: "document.body.scrollWidth")
         }.then { (width) -> Promise<Void> in
-            if width > self.bounds.width {
+            if width > self.webView.bounds.width {
                 return self.run(with: "html_editor.setWidth('\(width)')")
             } else {
                 return Promise.value(())
@@ -322,22 +269,7 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     
 }
 
-extension HtmlEditor: UIScrollViewDelegate {
-
-    /// when content inset changed
-    func scrollViewDidChangeAdjustedContentInset(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .zero // is this right?
-    }
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        scrollView.contentOffset = .zero // is this right?
-    }
-
-    func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
-        return true
-    }
-}
-
-extension HtmlEditor: WKNavigationDelegate {
+extension HtmlEditorBehaviour {
     
     /// Called when actions are received from JavaScript
     /// - parameter method: String with the name of the method and optional parameters that were passed in
@@ -369,10 +301,7 @@ extension HtmlEditor: WKNavigationDelegate {
         }
     }
     
-    func webView(_ webView: WKWebView,
-                 decidePolicyFor navigationAction: WKNavigationAction,
-                 decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        
+    func webView(_ webView: WKWebView, wasAskedToDecidePolicyFor navigationAction: WKNavigationAction) {
         if let url = navigationAction.request.url {
             let scheme = "delegate"
             if url.scheme == scheme {
@@ -381,6 +310,5 @@ extension HtmlEditor: WKNavigationDelegate {
                 self.performCommand(command)
             }
         }
-        decisionHandler(.allow)
     }
 }

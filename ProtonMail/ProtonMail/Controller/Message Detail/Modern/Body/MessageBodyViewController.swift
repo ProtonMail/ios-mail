@@ -72,7 +72,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
         self.coordinator.prepare(for: segue, sender: sender)
     }
     
-    override func isWebContentValid() -> Bool {
+    override func shouldDefaultObserveContentSizeChanges() -> Bool {
         return self.loader.renderedContents.isValid == true
     }
 }

@@ -60,13 +60,17 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         }
     }
     
-    func prepareWebView(with loader: WebContentsSecureLoader) {
+    func webViewPreferences() -> WKPreferences {
         let preferences = WKPreferences()
         preferences.javaScriptEnabled = false
         preferences.javaScriptCanOpenWindowsAutomatically = false
-        
+        return preferences
+    }
+    
+    func prepareWebView(with loader: WebContentsSecureLoader? = nil) {
+        let preferences = self.webViewPreferences()
         let config = WKWebViewConfiguration()
-        loader.inject(into: config)
+        loader?.inject(into: config)
         config.preferences = preferences
         if #available(iOS 10.0, *) {
             config.dataDetectorTypes = .pm_email
@@ -148,7 +152,8 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.height.constant = newHeight
     }
     
-    func isWebContentValid() -> Bool {
+    /// Switch off to disable observations of self.webView.scrollView.contentSize and webView.estimatedProgress
+    func shouldDefaultObserveContentSizeChanges() -> Bool {
         return true
     }
 }
@@ -168,12 +173,12 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
             guard change.newValue?.height != change.oldValue?.height else { return }
-            guard self?.isWebContentValid() == true else { return }
+            guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
             self?.updateHeight(to: scrollView.contentSize.height)
         }
         
         self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress) { [weak self] webView, _ in
-            guard self?.isWebContentValid() == true else { return }
+            guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
             self?.updateHeight(to: webView.scrollView.contentSize.height)
         }
         decisionHandler(.allow)

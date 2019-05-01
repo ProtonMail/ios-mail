@@ -29,23 +29,21 @@
 import UIKit
 
 class ContainableComposeViewController: ComposeViewController {
-    internal weak var enclosingScroller: ScrollableContainer?
     private var heightObservation: NSKeyValueObservation!
-    private var height: NSLayoutConstraint!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
-        self.height.priority = .init(999.0)
-        self.height.isActive = true
-        
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
-            let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
-            self.height.constant = totalHeight
+            let totalHeight = htmlEditor.contentHeight
+            self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
+    }
+    
+    override func shouldDefaultObserveContentSizeChanges() -> Bool {
+        return false
     }
     
     deinit {
@@ -69,5 +67,22 @@ class ContainableComposeViewController: ComposeViewController {
     override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
         super.composeViewDidTapExpirationButton(composeView)
         self.enclosingScroller?.scroller.isScrollEnabled = false
+    }
+    
+    override func webViewPreferences() -> WKPreferences {
+        let preferences = WKPreferences()
+        preferences.javaScriptEnabled = true
+        preferences.javaScriptCanOpenWindowsAutomatically = false
+        return preferences
+    }
+    
+    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        self.htmlEditor.webView(webView, wasAskedToDecidePolicyFor: navigationAction)
+        super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)
+    }
+    
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.htmlEditor.webView(webView, didFinish: navigation)
+        super.webView(webView, didFinish: navigation)
     }
 }
