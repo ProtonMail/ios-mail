@@ -347,7 +347,8 @@ class HtmlEditor: UIView, WKUIDelegate, UIGestureRecognizerDelegate {
     ///   - cid: embed image content id
     ///   - blob: based64 encoded. don't need run escape
     func update(embedImage cid : String, encoded blob : String) {
-        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(blob)\");").catch { (error) in
+        let escapedBlob: String = blob.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
+        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
