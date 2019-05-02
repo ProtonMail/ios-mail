@@ -37,8 +37,7 @@ protocol AttachmentProvider {
 protocol AttachmentController: class {
     func present(_ controller: UIViewController, animated: Bool, completion: (()->Void)?)
     func error(_ description: String)
-    func finish(_ fileData: FileData)
-    
+    func fileSuccessfullyImported(as fileData: FileData)
     
     @available(iOS, deprecated: 11.0, message: "ios 10 and below required sourceView&sourceRect or barButtonItem")
     var barItem : UIBarButtonItem? {get}
@@ -55,7 +54,7 @@ extension AttachmentsTableViewController {
         self.delegate?.attachments(self, didReachedSizeLimitation: size)
     }
     
-    func finish(_ fileData: FileData) {
+    func fileSuccessfullyImported(as fileData: FileData) {
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
             let size = fileData.contents.dataSize

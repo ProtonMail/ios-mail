@@ -31,6 +31,11 @@ import Foundation
 class ComposeContainerViewModel: TableContainerViewModel {
     internal var childViewModel: ContainableComposeViewModel
     
+    // for FileImporter
+    internal lazy var documentAttachmentProvider = DocumentAttachmentProvider(for: self)
+    internal lazy var imageAttachmentProvider = PhotoAttachmentProvider(for: self)
+    internal let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
+    
     init(editorViewModel: ContainableComposeViewModel) {
         self.childViewModel = editorViewModel
         super.init()
@@ -41,5 +46,43 @@ class ComposeContainerViewModel: TableContainerViewModel {
     }
     override func numberOfRows(in section: Int) -> Int {
         return 2
+    }
+    
+    internal func filesExceedSizeLimit() -> Bool {
+        return self.childViewModel.currentAttachmentsSize >= self.kDefaultAttachmentFileSize
+    }
+    
+    internal func filesAreSupported(from itemProviders: [NSItemProvider]) -> Bool {
+        return itemProviders.reduce(true) { $0 && $1.hasItem(types: self.filetypes) != nil }
+    }
+    
+    internal func importFiles(from itemProviders: [NSItemProvider],
+                              errorHandler: @escaping (String)->Void,
+                              successHandler: @escaping ()->Void) {
+        for itemProvider in itemProviders {
+            guard let type = itemProvider.hasItem(types: self.filetypes) else { return }
+            self.importFile(itemProvider, type: type, errorHandler: errorHandler, handler: successHandler)
+        }
+    }
+}
+
+extension ComposeContainerViewModel: FileImporter, AttachmentController {
+    func present(_ controller: UIViewController, animated: Bool, completion: (() -> Void)?) {
+        fatalError()
+    }
+    var barItem: UIBarButtonItem? {
+        return nil
+    }
+    func error(_ description: String) {
+        self.showErrorBanner(description)
+    }
+    
+    func fileSuccessfullyImported(as fileData: FileData) {
+        guard self.childViewModel.currentAttachmentsSize + fileData.contents.dataSize < self.kDefaultAttachmentFileSize else {
+            self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
+            return
+        }
+        let attachment = fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext)
+        self.childViewModel.uploadAtt(attachment)
     }
 }

@@ -101,6 +101,8 @@ class BannerView : PMView {
         if let config = buttons {
             self.button.isHidden = false
             self.button.setTitle(config.title, for: .normal)
+        } else {
+            self.button.isHidden = true
         }
         
         messageLabel.sizeToFit()

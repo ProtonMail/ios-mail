@@ -57,7 +57,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             fileData = ConcreteFileData<UIImage>(name: fileName, ext: ext, contents: originalImage)
         #endif
         
-        self.controller.finish(fileData)
+        self.controller.fileSuccessfullyImported(as: fileData)
     }
     
     internal func process(asset: PHAsset) {
@@ -76,7 +76,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                 
                 let fileName = asset.url.lastPathComponent
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
-                self.controller.finish(fileData)
+                self.controller.fileSuccessfullyImported(as: fileData)
             })
             
         default:
@@ -100,7 +100,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                     }
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
-                self.controller.finish(fileData)
+                self.controller.fileSuccessfullyImported(as: fileData)
             }
         }
     }

@@ -1,6 +1,6 @@
 //
-//  EditorViewModel.swift
-//  ProtonMail - Created on 19/04/2019.
+//  DropLandingZone.swift
+//  ProtonMail - Created on 29/04/2019.
 //
 //
 //  The MIT License
@@ -26,17 +26,29 @@
 //  THE SOFTWARE.
     
 
-import Foundation
+import UIKit
 
-class ContainableComposeViewModel: ComposeViewModelImpl {
-    @objc internal dynamic var contentHeight: CGFloat = 0.1
-}
-
-extension ContainableComposeViewModel {
-    internal var currentAttachmentsSize: Int {
-        guard let message = self.message else { return 0}
-        return message.attachments.reduce(into: 0) {
-            $0 += ($1 as? Attachment)?.fileSize.intValue ?? 0
-        }
+@available(iOS 11.0, *)
+class DropLandingZone: UIVisualEffectView {
+    convenience init(frame: CGRect) {
+        let blur = UIBlurEffect(style: .prominent)
+        self.init(effect: blur)
+        
+        self.frame = frame
+        self.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        let vibrancy = UIVibrancyEffect(blurEffect: blur)
+        let vibrancyOverlay = UIVisualEffectView(effect: vibrancy)
+        vibrancyOverlay.frame = frame
+        vibrancyOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        
+        let subtitle = UILabel()
+        subtitle.text = "+ Drop here to add as attachment"
+        subtitle.textColor = .black
+        subtitle.sizeToFit()
+        subtitle.center = vibrancyOverlay.center
+        
+        vibrancyOverlay.contentView.addSubview(subtitle)
+        self.contentView.addSubview(vibrancyOverlay)
     }
 }

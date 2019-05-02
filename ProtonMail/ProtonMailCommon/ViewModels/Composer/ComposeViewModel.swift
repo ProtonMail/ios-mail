@@ -84,7 +84,7 @@ struct ConcreteFileData<Base: AttachmentConvertible>: FileData {
 
 
 class ComposeViewModel: NSObject {
-    var message : Message?
+    @objc dynamic var message: Message?
     var messageAction : ComposeMessageAction = .newDraft
     var toSelectedContacts: [ContactPickerModelProtocol] = []
     var ccSelectedContacts: [ContactPickerModelProtocol] = []

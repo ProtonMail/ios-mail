@@ -28,11 +28,12 @@
 
 import UIKit
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
     private var bottomPadding: NSLayoutConstraint!
+    private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     
     deinit {
         self.childrenHeightObservations = []
@@ -42,6 +43,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if #available(iOS 11.0, *) {
+            self.tableView.dropDelegate = self
+        }
+        
         NotificationCenter.default.addKeyboardObserver(self)
         
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
@@ -53,7 +58,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         self.configureNavigationBar()
         
         let childViewModel = self.viewModel.childViewModel
-        let header = self.coordinator.createHeader()
+        let header = self.coordinator.createHeader(childViewModel)
         self.coordinator.createEditor(childViewModel)
         
         self.childrenHeightObservations = [
@@ -113,5 +118,69 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             self.bottomPadding.constant = keyboardFrame.cgRectValue.height
         }
+    }
+
+    // drag and drop
+    
+    private func error(_ description: String) {
+        let alert = description.alertController()
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView,
+                   canHandle session: UIDropSession) -> Bool
+    {
+        // return true only if all the files are supported
+        let itemProviders = session.items.map { $0.itemProvider }
+        return self.viewModel.filesAreSupported(from: itemProviders)
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView,
+                   dropSessionDidUpdate session: UIDropSession,
+                   withDestinationIndexPath destinationIndexPath: IndexPath?) -> UITableViewDropProposal
+    {
+        return UITableViewDropProposal(operation: .copy, intent: .insertIntoDestinationIndexPath)
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView, dropSessionDidEnter session: UIDropSession) {
+        if self.dropLandingZone == nil {
+            let blurOverlay = DropLandingZone(frame: self.tableView.frame)
+            blurOverlay.alpha = 0.0
+            self.tableView.addSubview(blurOverlay)
+            self.dropLandingZone = blurOverlay
+        }
+        
+        UIView.animate(withDuration: 0.3) {
+            self.dropLandingZone?.alpha = 1.0
+        }
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView, dropSessionDidExit session: UIDropSession) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.dropLandingZone?.alpha = 0.0
+        })
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView, dropSessionDidEnd session: UIDropSession) {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.dropLandingZone?.alpha = 0.0
+        }) { _ in
+            self.dropLandingZone?.removeFromSuperview()
+            self.dropLandingZone = nil
+        }
+    }
+    
+    @available(iOS 11.0, *)
+    func tableView(_ tableView: UITableView,
+                   performDropWith coordinator: UITableViewDropCoordinator)
+    {
+        let itemProviders = coordinator.items.map { $0.dragItem.itemProvider }
+        self.viewModel.importFiles(from: itemProviders, errorHandler: self.error, successHandler: { /* nothing */})
     }
 }
