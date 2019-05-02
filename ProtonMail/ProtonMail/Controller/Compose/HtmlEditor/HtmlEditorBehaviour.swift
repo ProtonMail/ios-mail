@@ -99,9 +99,9 @@ class HtmlEditorBehaviour: NSObject {
                 assert(false, "purify.min.js not present in the bundle")
                 return // error
         }
-        guard let jsQuotesPath = Bundle.main.path(forResource: "Quotes", ofType: "js"),
+        guard let jsQuotesPath = Bundle.main.path(forResource: "QuoteBreaker", ofType: "js"),
             let jsQuotes = try? String(contentsOfFile: jsQuotesPath) else {
-                assert(false, "Quotes.js not present in the bundle")
+                assert(false, "QuoteBreaker.js not present in the bundle")
                 return // error
         }
         

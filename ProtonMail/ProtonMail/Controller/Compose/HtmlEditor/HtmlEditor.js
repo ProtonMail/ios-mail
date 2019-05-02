@@ -13,12 +13,11 @@ window.onload = function() {
 /// init
 html_editor.init = function() {
     
-}
+};
 
 /// the editor tag. div
 html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
-html_editor.quotes = new Quotes(html_editor.editor);
 
 /// cached embed image cids
 html_editor.cachedCIDs = "";
@@ -61,9 +60,9 @@ html_editor.editor.addEventListener("input", function() {
     html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
 });
 
-// breaks the blockquote into two if possible
+/// breaks the blockquote into two if possible
 html_editor.editor.addEventListener("keydown", function(key) {
-    html_editor.quotes.breakQuote(key);
+    quote_breaker.breakQuoteIfNeeded(key);
 });
 
 html_editor.getCaretYPosition = function() {
