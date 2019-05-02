@@ -18,6 +18,7 @@ html_editor.init = function() {
 /// the editor tag. div
 html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
+html_editor.quotes = new Quotes(html_editor.editor);
 
 /// cached embed image cids
 html_editor.cachedCIDs = "";
@@ -55,9 +56,14 @@ html_editor.setPlaceholderText = function(text) {
     html_editor.editor.setAttribute("placeholder", text);
 };
 
-///
+/// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
     html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+});
+
+// breaks the blockquote into two if possible
+html_editor.editor.addEventListener("keydown", function(key) {
+    html_editor.quotes.breakQuote(key);
 });
 
 html_editor.getCaretYPosition = function() {

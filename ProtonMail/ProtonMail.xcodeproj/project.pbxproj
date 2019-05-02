@@ -56,7 +56,6 @@
 		066B9EAC905451A3766D949D632243BF /* ContactPickerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA8ACAC5B030EF83EF34E6CBB3E73A /* ContactPickerDefined.swift */; };
 		0680AE959438B57E7CC698235FC3A964 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */; };
 		0696394104C3C38308A216E266021717 /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */; };
-		06A08F9BF97235808FE3EB03BCD907F5 /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */; };
 		06D1C80810CD7621E12520B58765D1A4 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
 		06F8E4CE09002AE1CC623A254CCDB438 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB9C7FB68E73B3DBE86E1C6308AC56 /* EmailVerifyViewController.swift */; };
@@ -1064,7 +1063,6 @@
 		99C001676B3887C8A48557482E8C8E2C /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
 		99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
 		99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
-		9A34F5E01FE8F35FD7FC94FD9ED832E8 /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		9A41C0F9EAC33424C7F709B635A2AD4E /* MessageHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041912DF058CB1143755E65F3FAE61BC /* MessageHeaderViewModel.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		9A6D30A29F517856961DEFAF4A2DCC5D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
@@ -1553,7 +1551,6 @@
 		DB9A2F95200199A773432BADDB291D67 /* HTTPRequestSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */; };
 		DBA9A63B855DDA9101810026C5B2E685 /* ContactGroupSelectEmailViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C028D31CF1D299694502B944C26548 /* ContactGroupSelectEmailViewModelImpl.swift */; };
 		DBC06EBE48F93DC4050A4015196DD56F /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6133E1C8223EFD8B37CE8AE20D623283 /* SharePinUnlockViewController.xib */; };
-		DBC2E7FF1E6177E739E71EB3ACF9F80A /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		DBC491209D11D1799652D42FBD8FA599 /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		DBCB89791B91CBC55B00527170AEFE4F /* MessageBodyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB9BDDB75E240CE0F4EC2AFD815FDD3 /* MessageBodyCoordinator.swift */; };
 		DBE1712FC99F9709E9EA1CC44BC99E91 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */; };
@@ -1835,7 +1832,6 @@
 		FE2F31434CB677889A79FC9FF142543F /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */; };
 		FE53BB9CC4204394E042F3933F14CCA3 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */; };
-		FE9C11D210E00623F1391541534C86AF /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		FEDF1EBAA909B9DB90CFA996E7586414 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
@@ -2192,7 +2188,6 @@
 		42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
 		42E21667F1C859137B9CE6DD7A47DE59 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
 		42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModelImpl.swift; sourceTree = "<group>"; };
-		42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jsSetup.js; sourceTree = "<group>"; };
 		435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ServiceLevel.storyboard; sourceTree = "<group>"; };
 		44085B624A400826C97F51354D48AF8C /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -3565,7 +3560,6 @@
 				83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */,
 				E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */,
 				618DE0AD635EEEF3CBEF32FD71F80593 /* String+Html+Ext.swift */,
-				42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */,
 			);
 			path = HtmlEditor;
 			sourceTree = "<group>";
@@ -5037,7 +5031,6 @@
 				7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */,
 				20BDE0BE0904FEE3B3C4A92E9173A06A /* editor.css in Resources */,
 				2F3C7B8F4D939F36A4DCDF721D3F80C4 /* flags.bundle in Resources */,
-				06A08F9BF97235808FE3EB03BCD907F5 /* jsSetup.js in Resources */,
 				118DCF6124767E388997EED96B6261CF /* phone_country_code.geojson in Resources */,
 				353C76548EFD3FD29DA2D1CC87DF9EE2 /* purify.min.js in Resources */,
 				DFA6F56AE07D7985C94AB6D44E4DA7B3 /* test_html.html in Resources */,
@@ -5135,7 +5128,6 @@
 				AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */,
 				D52C6389F6A71C017C60A4D6CB086CB2 /* editor.css in Resources */,
 				7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */,
-				9A34F5E01FE8F35FD7FC94FD9ED832E8 /* jsSetup.js in Resources */,
 				CAD2F312EE677EFF26ACDB2B9F0C9615 /* phone_country_code.geojson in Resources */,
 				746EA1028C65A1D811A05787C3E51CB2 /* purify.min.js in Resources */,
 				FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */,
@@ -5207,7 +5199,6 @@
 				BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */,
 				CCB1C5AFBD562C8C633860687936ED5C /* editor.css in Resources */,
 				12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */,
-				DBC2E7FF1E6177E739E71EB3ACF9F80A /* jsSetup.js in Resources */,
 				38FBA82B3B38DC4B7262C39122E45CE9 /* phone_country_code.geojson in Resources */,
 				23F67E7389A9F29D8B488D2A2C658DFD /* purify.min.js in Resources */,
 				2E89DBD8BBFFEA0DFB17E3F2E9E51311 /* test_html.html in Resources */,
@@ -5283,7 +5274,6 @@
 				20E4123A31CCA836BAEF69FC775BCB2F /* backup.css in Resources */,
 				13994C5C41A68EF791656462769BFFF4 /* editor.css in Resources */,
 				8651FE846584F084635142A3048A4FBD /* flags.bundle in Resources */,
-				FE9C11D210E00623F1391541534C86AF /* jsSetup.js in Resources */,
 				8C4EBC5FF98D963986D59A071BD2176E /* phone_country_code.geojson in Resources */,
 				BC699662711B5D42383578C99E311A25 /* purify.min.js in Resources */,
 				FCFC1724C3A150EA4F36764A519795DB /* test_html.html in Resources */,
