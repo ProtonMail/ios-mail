@@ -99,9 +99,19 @@ class HtmlEditorBehaviour: NSObject {
                 assert(false, "purify.min.js not present in the bundle")
                 return // error
         }
+        guard let jsQuotesPath = Bundle.main.path(forResource: "Quotes", ofType: "js"),
+            let jsQuotes = try? String(contentsOfFile: jsQuotesPath) else {
+                assert(false, "Quotes.js not present in the bundle")
+                return // error
+        }
+        guard let jsSetupPath = Bundle.main.path(forResource: "jsSetup", ofType: "js"),
+            let jsSetup = try? String(contentsOfFile: jsSetupPath) else {
+                assert(false, "jsSetup.js not present in the bundle")
+                return // error
+        }
         
         let editor = html.preg_replace_none_regex("<!--ReplaceToSytle-->", replaceto: css)
-                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: [js, purifier].joined(separator: "\n"))
+                         .preg_replace_none_regex("<!--ReplaceToScript-->", replaceto: [js, purifier, jsQuotes, jsSetup].joined(separator: "\n"))
         self.webView.loadHTMLString(editor, baseURL: URL(string: "about:blank"))
     }
 

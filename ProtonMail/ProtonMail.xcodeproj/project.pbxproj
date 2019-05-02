@@ -50,11 +50,13 @@
 		059AD030DBB9695542C264CA0078355E /* SettingDebugTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB3D37EE9B1F2A764D88FD1AA824BC76 /* SettingDebugTableViewController.swift */; };
 		05A47B232000358F2CDEC45340B0FF94 /* PinCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2E1DF4B9083F68972C3AD18616B2856E /* PinCodeView.xib */; };
 		05C7CABF44CAFB5D976922CADEAD7ECE /* ContactsAndGroupsSharedCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5887596B04BF70C7D63938EBE82923B /* ContactsAndGroupsSharedCode.swift */; };
+		05E88747D6FEE3A86886C333253A9E6A /* Quotes.js in Resources */ = {isa = PBXBuildFile; fileRef = E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */; };
 		0621ED02994086B6239722C6F6B6F1B4 /* Label+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 689E467CCACC05F98A905583E5C070A1 /* Label+Extension.swift */; };
 		064213991900E11E3BD314117A605B90 /* ContactGroupCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90CA6E9D6176EC19AD5536DA95CBD04C /* ContactGroupCoordinator.swift */; };
 		066B9EAC905451A3766D949D632243BF /* ContactPickerDefined.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA8ACAC5B030EF83EF34E6CBB3E73A /* ContactPickerDefined.swift */; };
 		0680AE959438B57E7CC698235FC3A964 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D359947F79BF6B029DC3D1D35D9C4B3 /* UITableView+Extension.swift */; };
 		0696394104C3C38308A216E266021717 /* MonitorSavesDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47AA066E127A4E761C07732C013385F4 /* MonitorSavesDataService.swift */; };
+		06A08F9BF97235808FE3EB03BCD907F5 /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		06B46E22C06D6B5445D59C61F2B1A711 /* String+ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8B1ACF5D8081189219FF2956764AE39 /* String+ExtensionTests.swift */; };
 		06D1C80810CD7621E12520B58765D1A4 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
 		06F8E4CE09002AE1CC623A254CCDB438 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB9C7FB68E73B3DBE86E1C6308AC56 /* EmailVerifyViewController.swift */; };
@@ -406,6 +408,7 @@
 		3AFEC8A60695BF5C16DA52A859ED72F4 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9AF0A74A77653AD47949D28EACEC7 /* Int+Extension.swift */; };
 		3B002CC8F3864169108B5E3391ABE482 /* MessageDataService+FileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F2543A95CCB31AFB636BE8E06CD04F /* MessageDataService+FileManager.swift */; };
 		3B3EB631508378EFA9A2DCA17435E447 /* Test Failed Htmls.bundle in Resources */ = {isa = PBXBuildFile; fileRef = A13A32AF7BD96A9F3A2A25AA87F4C40C /* Test Failed Htmls.bundle */; };
+		3B5311CC5EBF8FF579CFD2BE9138B21E /* Quotes.js in Resources */ = {isa = PBXBuildFile; fileRef = E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */; };
 		3B537F1E5496FA470D704F56C54169D7 /* UserInfo+Locked.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7950986E426E685964099CF9286868B2 /* UserInfo+Locked.swift */; };
 		3B68E4407D52E2078EF8B727575E1FE0 /* SettingsWeekdaysTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44E8C94EC355ADF770FAB0226BEC145 /* SettingsWeekdaysTableViewController.swift */; };
 		3BA41E40CF93C151F446E20DC0F70696 /* SignatureAlertViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFB1E8E98A4D9DDE74D08672B33D7D /* SignatureAlertViewModelImpl.swift */; };
@@ -1061,6 +1064,7 @@
 		99C001676B3887C8A48557482E8C8E2C /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29702CCB5249E56A99A11AF8FF0AED36 /* ComposeViewModel.swift */; };
 		99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6E0EEFD5426C6C3B21A1C794DCCEF1 /* Sender.swift */; };
 		99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
+		9A34F5E01FE8F35FD7FC94FD9ED832E8 /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		9A41C0F9EAC33424C7F709B635A2AD4E /* MessageHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041912DF058CB1143755E65F3FAE61BC /* MessageHeaderViewModel.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
 		9A6D30A29F517856961DEFAF4A2DCC5D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
@@ -1549,6 +1553,7 @@
 		DB9A2F95200199A773432BADDB291D67 /* HTTPRequestSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F82923963C21B47DB5174A561F923FCB /* HTTPRequestSecureLoader.swift */; };
 		DBA9A63B855DDA9101810026C5B2E685 /* ContactGroupSelectEmailViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C028D31CF1D299694502B944C26548 /* ContactGroupSelectEmailViewModelImpl.swift */; };
 		DBC06EBE48F93DC4050A4015196DD56F /* SharePinUnlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6133E1C8223EFD8B37CE8AE20D623283 /* SharePinUnlockViewController.xib */; };
+		DBC2E7FF1E6177E739E71EB3ACF9F80A /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		DBC491209D11D1799652D42FBD8FA599 /* UserTempCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */; };
 		DBCB89791B91CBC55B00527170AEFE4F /* MessageBodyCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB9BDDB75E240CE0F4EC2AFD815FDD3 /* MessageBodyCoordinator.swift */; };
 		DBE1712FC99F9709E9EA1CC44BC99E91 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */; };
@@ -1642,6 +1647,7 @@
 		E701FD8D6CA00EF6B6EC41C933E47842 /* MessageDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93B58028DD144CB7DBE3910795D25907 /* MessageDataService.swift */; };
 		E71702FA38B6800FED81A54652FCB3ED /* HTMLStringSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F77EB229D9DDF9BDD8D5653F7AB7A0 /* HTMLStringSecureLoader.swift */; };
 		E750311BA5A597D9FDF9DC85C5FE277E /* CoreDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */; };
+		E754D84A8BD62CB6E19791D1374034CA /* Quotes.js in Resources */ = {isa = PBXBuildFile; fileRef = E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */; };
 		E7869D2C4A19111693E47FE985159B91 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F6D37F0A6272E8EAE461BB707C35C4 /* Analytics.swift */; };
 		E78EC1E76187F0A6402E3F570C6E13FB /* MIMEMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC54E43D3775EFE1C17ACEBCF879C1C1 /* MIMEMessage.swift */; };
 		E79975DF86132EC9C8CE2281129E1A23 /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
@@ -1715,6 +1721,7 @@
 		F15E0B4F1D2877F3B3E6D0BBC24F81A7 /* APIServiceResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAFA09C0C974E273A1A8842BE85C707 /* APIServiceResponse.swift */; };
 		F15FA732479019F599F9A67226DE6B63 /* UserSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29D45CBF615966A3BF8366CB1F9699EE /* UserSettings.swift */; };
 		F19E1AAE7156602B3360B9A9B184B703 /* HtmlEditor.html in Resources */ = {isa = PBXBuildFile; fileRef = C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */; };
+		F1EFDF9DADC882D44468A8E331B6E302 /* Quotes.js in Resources */ = {isa = PBXBuildFile; fileRef = E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */; };
 		F1F3F93C1C1433C9DF97B2FA0BEAC3A6 /* SharePinUnlockCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7578306A989094FC9AA14DDBF059C4A3 /* SharePinUnlockCoordinator.swift */; };
 		F1F4FEE6D25087F294ABC0D4F878B139 /* Compare.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF7737039039B0057CB8287F7A03624B /* Compare.swift */; };
 		F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DDB859D696ED07B574FA18C09EFF40F /* TwoFACodeViewController.swift */; };
@@ -1828,6 +1835,7 @@
 		FE2F31434CB677889A79FC9FF142543F /* Message+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4510D080E8717C074690A6B039935D89 /* Message+Helper.swift */; };
 		FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */ = {isa = PBXBuildFile; fileRef = 64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */; };
 		FE53BB9CC4204394E042F3933F14CCA3 /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C57CA6DB7B96640D8E5ADE7AA38DAEB4 /* AddressBookService.swift */; };
+		FE9C11D210E00623F1391541534C86AF /* jsSetup.js in Resources */ = {isa = PBXBuildFile; fileRef = 42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */; };
 		FEC08DB44B517A212D160200C9BA5B43 /* ContactsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B698B7E32E1425A4A64AC8322B47EE27 /* ContactsAPI.swift */; };
 		FEDF1EBAA909B9DB90CFA996E7586414 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
@@ -2184,6 +2192,7 @@
 		42D5DFE2634FAF06FD70058B916FE86F /* ContactGroupDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewController.swift; sourceTree = "<group>"; };
 		42E21667F1C859137B9CE6DD7A47DE59 /* ContactEditViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewModelImpl.swift; sourceTree = "<group>"; };
 		42E5115764FDFD724E7F73CD01929A1B /* ContactGroupDetailViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupDetailViewModelImpl.swift; sourceTree = "<group>"; };
+		42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = jsSetup.js; sourceTree = "<group>"; };
 		435497D587584C850EC2B1A04CE6D372 /* ComposeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ServiceLevel.storyboard; sourceTree = "<group>"; };
 		44085B624A400826C97F51354D48AF8C /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -2700,6 +2709,7 @@
 		E6286CDFA472ABD288218EA86185FB40 /* Pods-ProtonMail.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProtonMail.distribution.xcconfig"; path = "Pods/Target Support Files/Pods-ProtonMail/Pods-ProtonMail.distribution.xcconfig"; sourceTree = "<group>"; };
 		E62C3AA33B3CFEBDC6C8534BCC758323 /* SpamScoreWarningView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SpamScoreWarningView.xib; sourceTree = "<group>"; };
 		E6876F407300B7C74C7758E98FFB52EE /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
+		E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Quotes.js; sourceTree = "<group>"; };
 		E70AF41322A446E55F95D09BAA01E033 /* Siri.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Siri.entitlements; sourceTree = "<group>"; };
 		E768DEAD34185A825D764EC6D3ACA116 /* AutolockTimeout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutolockTimeout.swift; sourceTree = "<group>"; };
 		E77368B93333AC4EFB38D113EE990299 /* TimePickerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TimePickerViewController.xib; sourceTree = "<group>"; };
@@ -3553,7 +3563,9 @@
 				C5CAEDD4BF1C083D26B5050E226CE4DC /* HtmlEditor.html */,
 				A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */,
 				83B4F42BCC35342AD0794E4523B1C56C /* HtmlEditorBehaviour.swift */,
+				E6CCC90A75DE002995B6B12C03634EF7 /* Quotes.js */,
 				618DE0AD635EEEF3CBEF32FD71F80593 /* String+Html+Ext.swift */,
+				42F08A5860675E04C933C3AED88EB580 /* jsSetup.js */,
 			);
 			path = HtmlEditor;
 			sourceTree = "<group>";
@@ -5017,6 +5029,7 @@
 				8FE1623F99C7681DA119ECB245D695E5 /* InfoPlist.strings in Resources */,
 				DB7155C8CFDA4C01882F0E8527370704 /* Localizable.strings in Resources */,
 				4707DDC46D30856D64FED5C8B756A36C /* PinCodeView.xib in Resources */,
+				05E88747D6FEE3A86886C333253A9E6A /* Quotes.js in Resources */,
 				495C00E75B6BDBE54C6F205CB489B8F5 /* Settings.bundle in Resources */,
 				DBC06EBE48F93DC4050A4015196DD56F /* SharePinUnlockViewController.xib in Resources */,
 				EA6103CADB67A20AA141E264ECC1CF29 /* ShareUnlockViewController.xib in Resources */,
@@ -5024,6 +5037,7 @@
 				7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */,
 				20BDE0BE0904FEE3B3C4A92E9173A06A /* editor.css in Resources */,
 				2F3C7B8F4D939F36A4DCDF721D3F80C4 /* flags.bundle in Resources */,
+				06A08F9BF97235808FE3EB03BCD907F5 /* jsSetup.js in Resources */,
 				118DCF6124767E388997EED96B6261CF /* phone_country_code.geojson in Resources */,
 				353C76548EFD3FD29DA2D1CC87DF9EE2 /* purify.min.js in Resources */,
 				DFA6F56AE07D7985C94AB6D44E4DA7B3 /* test_html.html in Resources */,
@@ -5102,6 +5116,7 @@
 				25C3CB595E9A8922D8367F2A2D0B5550 /* OnboardingView.xib in Resources */,
 				C351B993D74CC790DEE52942054CF50E /* PasswordExtension.strings in Resources */,
 				CE2165155EF9AFC8784F1902ED7A2E4D /* PinCodeView.xib in Resources */,
+				3B5311CC5EBF8FF579CFD2BE9138B21E /* Quotes.js in Resources */,
 				545B11D6CE84977628E24821F509641D /* RecipientCell.xib in Resources */,
 				C908FFF67430AA75AC531FBA2C63151E /* RecipientView.xib in Resources */,
 				31C64CEE09B1836D31E616AAD138135D /* ServiceLevel.storyboard in Resources */,
@@ -5120,6 +5135,7 @@
 				AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */,
 				D52C6389F6A71C017C60A4D6CB086CB2 /* editor.css in Resources */,
 				7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */,
+				9A34F5E01FE8F35FD7FC94FD9ED832E8 /* jsSetup.js in Resources */,
 				CAD2F312EE677EFF26ACDB2B9F0C9615 /* phone_country_code.geojson in Resources */,
 				746EA1028C65A1D811A05787C3E51CB2 /* purify.min.js in Resources */,
 				FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */,
@@ -5172,6 +5188,7 @@
 				EDE761D3F5EE9171EA5FC0A86C9AEB97 /* PasswordExtension.strings in Resources */,
 				DED4543642C29F57B82AB63EA52398D7 /* PinCodeView.xib in Resources */,
 				A0978C5D06F4B6C098352E6F58804710 /* ProtonMail.xcdatamodeld in Resources */,
+				E754D84A8BD62CB6E19791D1374034CA /* Quotes.js in Resources */,
 				6417B7F49C96B749B89E14642C685B53 /* RecipientCell.xib in Resources */,
 				F61E588D8C8CD528C70D9BC4350F83F4 /* RecipientView.xib in Resources */,
 				0A0CC6D3D0AA947BC5E7E8392498B0CB /* ServiceLevel.storyboard in Resources */,
@@ -5190,6 +5207,7 @@
 				BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */,
 				CCB1C5AFBD562C8C633860687936ED5C /* editor.css in Resources */,
 				12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */,
+				DBC2E7FF1E6177E739E71EB3ACF9F80A /* jsSetup.js in Resources */,
 				38FBA82B3B38DC4B7262C39122E45CE9 /* phone_country_code.geojson in Resources */,
 				23F67E7389A9F29D8B488D2A2C658DFD /* purify.min.js in Resources */,
 				2E89DBD8BBFFEA0DFB17E3F2E9E51311 /* test_html.html in Resources */,
@@ -5257,6 +5275,7 @@
 				CF7AD0B4A5C6ADE095CA73E0F8799EF5 /* InfoPlist.strings in Resources */,
 				C00533F4B61410FC05BC94AC15556A83 /* Localizable.strings in Resources */,
 				05A47B232000358F2CDEC45340B0FF94 /* PinCodeView.xib in Resources */,
+				F1EFDF9DADC882D44468A8E331B6E302 /* Quotes.js in Resources */,
 				F7A4A3DB3DAE14639BBCC6C304C64F3A /* Settings.bundle in Resources */,
 				E6432221E2B7E718950896E6FDC6803B /* SharePinUnlockViewController.xib in Resources */,
 				736B40CC36BA18B5D3965E674D98A13A /* ShareUnlockViewController.xib in Resources */,
@@ -5264,6 +5283,7 @@
 				20E4123A31CCA836BAEF69FC775BCB2F /* backup.css in Resources */,
 				13994C5C41A68EF791656462769BFFF4 /* editor.css in Resources */,
 				8651FE846584F084635142A3048A4FBD /* flags.bundle in Resources */,
+				FE9C11D210E00623F1391541534C86AF /* jsSetup.js in Resources */,
 				8C4EBC5FF98D963986D59A071BD2176E /* phone_country_code.geojson in Resources */,
 				BC699662711B5D42383578C99E311A25 /* purify.min.js in Resources */,
 				FCFC1724C3A150EA4F36764A519795DB /* test_html.html in Resources */,
