@@ -28,34 +28,46 @@
 
 import UIKit
 
+
+/// The class hierarchy is following: ContainableComposeViewController > ComposeViewController > HorizontallyScrollableWebViewContainer > UIViewController
+///
+/// HtmlEditorBehavior only adds some functionality to HorizontallyScrollableWebViewContainer's webView, is not a UIView or webView's delegate any more. ComposeViewController is tightly coupled with ComposeHeaderViewController and needs separate refactor, while ContainableComposeViewController and HorizontallyScrollableWebViewContainer contain absolute minimum of logic they need: logic allowing to embed composer into tableView cell and logic allowing 2D scroll in fullsize webView.
+///
 class ContainableComposeViewController: ComposeViewController {
-    internal weak var enclosingScroller: ScrollableContainer?
     private var heightObservation: NSKeyValueObservation!
-    private var height: NSLayoutConstraint!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
-        self.height.priority = .init(999.0)
-        self.height.isActive = true
+        self.webView.scrollView.clipsToBounds = false
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
-            let totalHeight = htmlEditor.contentHeight + self.headerView.view.bounds.height
-            self.height.constant = totalHeight
+            let totalHeight = htmlEditor.contentHeight
+            self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
+    }
+    
+    override func shouldDefaultObserveContentSizeChanges() -> Bool {
+        return false
     }
     
     deinit {
         self.heightObservation = nil
     }
     
-    override func caretMovedTo(_ offset: CGFloat) {
+    override func caretMovedTo(_ offset: CGPoint) {
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
             guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
-            let offsetAreaInCell = CGRect(x: 0, y: offset, width: 1, height: 100) // FIXME: approx height of our text row
+             // approx height and width of our text row
+            let сaretBounds = CGSize(width: 100, height: 100)
+            
+            // horizontal
+            let offsetAreaInWebView = CGRect(x: offset.x - сaretBounds.width/2, y: 0, width: сaretBounds.width, height: 1)
+            self.webView.scrollView.scrollRectToVisible(offsetAreaInWebView, animated: true)
+            
+            // vertical
+            let offsetAreaInCell = CGRect(x: 0, y: offset.y - сaretBounds.height/2, width: 1, height: сaretBounds.height)
             let offsetArea = self.view.convert(offsetAreaInCell, to: enclosingScroller.scroller)
             enclosingScroller.scroller.scrollRectToVisible(offsetArea, animated: true)
         }
@@ -69,5 +81,22 @@ class ContainableComposeViewController: ComposeViewController {
     override func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
         super.composeViewDidTapExpirationButton(composeView)
         self.enclosingScroller?.scroller.isScrollEnabled = false
+    }
+    
+    override func webViewPreferences() -> WKPreferences {
+        let preferences = WKPreferences()
+        preferences.javaScriptEnabled = true
+        preferences.javaScriptCanOpenWindowsAutomatically = false
+        return preferences
+    }
+    
+    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        self.htmlEditor.webView(webView, wasAskedToDecidePolicyFor: navigationAction)
+        super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)
+    }
+    
+    override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        self.htmlEditor.webView(webView, didFinish: navigation)
+        super.webView(webView, didFinish: navigation)
     }
 }

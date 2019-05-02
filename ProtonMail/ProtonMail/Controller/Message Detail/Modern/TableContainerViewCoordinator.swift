@@ -33,7 +33,10 @@ class TableContainerViewCoordinator: NSObject {
         fatalError()
     }
     
-    internal func embed(_ child: UIViewController, onto view: UIView, ownedBy controller: UIViewController) {
+    internal func embed(_ child: UIViewController,
+                        onto view: UIView,
+                        layoutGuide: UILayoutGuide? = nil,
+                        ownedBy controller: UIViewController) {
         assert(controller.isViewLoaded, "Attempt to embed child VC before parent's view was loaded - will cause glitches")
         
         // remove child from old parent
@@ -51,10 +54,22 @@ class TableContainerViewCoordinator: NSObject {
         view.addSubview(child.view)
         child.didMove(toParent: controller)
         
-        // autolayout
-        view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
-        view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
-        view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
-        view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        // autolayout guides priority: parameter, safeArea, no guide
+        if let specialLayoutGuide = layoutGuide {
+            specialLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+            specialLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+            specialLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+            specialLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        } else if #available(iOS 11.0, *) {
+            view.safeAreaLayoutGuide.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+            view.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+            view.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+            view.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        } else {
+            view.topAnchor.constraint(equalTo: child.view.topAnchor).isActive = true
+            view.bottomAnchor.constraint(equalTo: child.view.bottomAnchor).isActive = true
+            view.leadingAnchor.constraint(equalTo: child.view.leadingAnchor).isActive = true
+            view.trailingAnchor.constraint(equalTo: child.view.trailingAnchor).isActive = true
+        }
     }
 }

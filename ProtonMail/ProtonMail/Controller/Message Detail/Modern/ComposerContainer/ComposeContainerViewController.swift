@@ -49,6 +49,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         NotificationCenter.default.addKeyboardObserver(self)
         
+        self.tableView.cellLayoutMarginsFollowReadableWidth = true
+        
         self.bottomPadding = self.view.bottomAnchor.constraint(equalTo: self.tableView.bottomAnchor)
         self.bottomPadding.constant = 0.0
         self.bottomPadding.isActive = true

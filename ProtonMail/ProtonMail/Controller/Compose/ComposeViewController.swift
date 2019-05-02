@@ -31,7 +31,7 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 
-class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNew {
+class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -40,9 +40,9 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
     private var coordinator: ComposeCoordinator?
 
     ///  UI
-    @IBOutlet var htmlEditor: HtmlEditor!
     @IBOutlet weak var expirationPicker: UIPickerView!
     weak var headerView: ComposeHeaderViewController!
+    lazy var htmlEditor = HtmlEditorBehaviour()
     
     ///
     private var timer : Timer? //auto save timer
@@ -107,7 +107,9 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         assert(self.coordinator != nil)
         assert(self.viewModel != nil)
         
+        self.prepareWebView()
         self.htmlEditor.delegate = self
+        self.htmlEditor.setup(webView: self.webView)
         
         ///
         self.automaticallyAdjustsScrollViewInsets = false
@@ -565,12 +567,12 @@ class ComposeViewController : UIViewController, ViewModelProtocol, CoordinatedNe
         }
     }
 }
-extension ComposeViewController : HtmlEditorDelegate {
+extension ComposeViewController : HtmlEditorBehaviourDelegate {
     func htmlEditorDidFinishLoadingContent() {
         self.updateEmbedImages()
     }
     
-    @objc func caretMovedTo(_ offset: CGFloat) {
+    @objc func caretMovedTo(_ offset: CGPoint) {
         fatalError("should be overridden")
     }
 }

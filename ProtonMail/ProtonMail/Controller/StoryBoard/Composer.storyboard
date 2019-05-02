@@ -78,7 +78,7 @@
                         <viewControllerLayoutGuide type="top" id="OJ9-vF-8Va"/>
                         <viewControllerLayoutGuide type="bottom" id="BU5-MI-n2Q"/>
                     </layoutGuides>
-                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="rtW-Jq-ZP6" customClass="HtmlEditor" customModule="ProtonMail" customModuleProvider="target">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="rtW-Jq-ZP6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -90,7 +90,7 @@
                                 </constraints>
                             </pickerView>
                         </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="1" green="0.0" blue="0.73353732670000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="top" secondItem="dgj-ed-8tL" secondAttribute="top" id="NUP-V1-QoY"/>
                             <constraint firstAttribute="trailing" secondItem="dgj-ed-8tL" secondAttribute="trailing" id="RNi-ND-4tJ"/>
@@ -100,7 +100,6 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
                         <outlet property="expirationPicker" destination="dgj-ed-8tL" id="m3c-sG-9uv"/>
-                        <outlet property="htmlEditor" destination="rtW-Jq-ZP6" id="TtU-Iu-u9s"/>
                         <segue destination="Rhr-Kb-Xse" kind="presentation" identifier="toContactGroupSubSelection" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="ptq-KY-KHm"/>
                         <segue destination="iup-Ok-tgO" kind="presentation" identifier="to_eo_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="8VI-B0-waP"/>
                         <segue destination="5RO-QY-c50" kind="presentation" identifier="expiration_warning_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="JDD-0U-kJK"/>
