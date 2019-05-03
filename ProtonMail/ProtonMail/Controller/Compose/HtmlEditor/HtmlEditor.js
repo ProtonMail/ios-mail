@@ -13,7 +13,7 @@ window.onload = function() {
 /// init
 html_editor.init = function() {
     
-}
+};
 
 /// the editor tag. div
 html_editor.editor = document.getElementById('editor');
@@ -55,9 +55,14 @@ html_editor.setPlaceholderText = function(text) {
     html_editor.editor.setAttribute("placeholder", text);
 };
 
-///
+/// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
     html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+});
+
+/// breaks the blockquote into two if possible
+html_editor.editor.addEventListener("keydown", function(key) {
+    quote_breaker.breakQuoteIfNeeded(key);
 });
 
 html_editor.getCaretYPosition = function() {
