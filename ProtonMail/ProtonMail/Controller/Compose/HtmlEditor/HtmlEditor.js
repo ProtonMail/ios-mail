@@ -118,7 +118,8 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
         found.forEach(function(image) {
             image.setAttribute('src-original-pm-cid', cid);
             html_editor.cachedCIDs += cid;
-            image.setAttribute('src', blobdata);
+            var originalImageData = decodeURIComponent(blobdata);
+            image.setAttribute('src', originalImageData);
         });
     }
 }
