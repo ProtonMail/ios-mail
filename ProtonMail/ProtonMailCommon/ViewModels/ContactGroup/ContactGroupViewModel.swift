@@ -30,14 +30,15 @@ import Foundation
 import CoreData
 import PromiseKit
 
-enum ContactGroupsViewModelState
-{
-    case ViewAllContactGroups
-    case MultiSelectContactGroupsForContactEmail
-}
+//enum ContactGroupsViewModelState
+//{
+//    case ViewAllContactGroups
+//    case MultiSelectContactGroupsForContactEmail
+//}
 
 protocol ContactGroupsViewModel {
-    func getState() -> ContactGroupsViewModelState
+    
+    func initEditing() -> Bool
     
     func save()
     func isSelected(groupID: String) -> Bool
@@ -52,13 +53,15 @@ protocol ContactGroupsViewModel {
     func removeSelectedGroup(ID: String, indexPath: IndexPath)
     func removeAllSelectedGroups()
     
-    func totalRows() -> Int
-    func cellForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int)
-    
+    func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? 
     // search
-    func setFetchResultController(fetchedResultsController: inout NSFetchedResultsController<NSFetchRequestResult>?)
-    func search(text: String?)
+    func search(text: String?, searchActive: Bool)
     
     // contact groups deletion
     func deleteGroups() -> Promise<Void>
+    
+    // table count
+    func searchingActive() -> Bool 
+    func count() -> Int
+    func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool)
 }

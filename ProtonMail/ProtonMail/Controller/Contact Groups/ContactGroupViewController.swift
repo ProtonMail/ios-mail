@@ -75,6 +75,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     
     func inactiveViewModel() {
+        
     }
     
     override func viewDidLoad() {
@@ -84,58 +85,38 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         self.extendedLayoutIncludesOpaqueBars = true
         
         prepareTable()
-        
         prepareFetchedResultsController()
-        
         prepareSearchBar()
         
-        switch viewModel.getState() {
-        case .ViewAllContactGroups:
+        if self.viewModel.initEditing() {
+            isEditingState = true
+            tableView.allowsMultipleSelection = true
+            prepareNavigationItemTitle()
+            self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem
+        } else {
             prepareRefreshController()
             prepareLongPressGesture()
             prepareNavigationItemRightDefault()
             updateNavigationBar()
-        case .MultiSelectContactGroupsForContactEmail:
-            isEditingState = true
-            tableView.allowsMultipleSelection = true
-            
-            prepareNavigationItemTitle()
-            
-            self.navigationItem.leftBarButtonItem = self.navigationItem.backBarButtonItem
-        }  
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if viewModel.getState() == .ViewAllContactGroups {
-            self.viewModel.timerStart(true)
-        }
-        
+        self.viewModel.timerStart(true)
         self.isOnMainView = true
         NotificationCenter.default.addKeyboardObserver(self)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if viewModel.getState() == .ViewAllContactGroups {
-            self.viewModel.timerStop()
-        }
-        
+        self.viewModel.timerStop()
         viewModel.save()
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
     private func prepareFetchedResultsController() {
-        fetchedContactGroupResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
-        fetchedContactGroupResultsController?.delegate = self
-        if let fetchController = fetchedContactGroupResultsController {
-            do {
-                try fetchController.performFetch()
-            } catch let error as NSError {
-                PMLog.D("fetchedContactGroupResultsController Error: \(error.userInfo)")
-            }
-        }
+        self.fetchedContactGroupResultsController = self.viewModel.setFetchResultController(delegate: self)
     }
     
     private func prepareRefreshController() {
@@ -320,8 +301,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     private func prepareSearchBar() {
-        viewModel.setFetchResultController(fetchedResultsController: &fetchedContactGroupResultsController)
-        
+
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
         searchController.searchBar.setValue(LocalString._general_done_button,
@@ -357,10 +337,10 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     @objc func fireFetch() {
         firstly {
             return self.viewModel.fetchLatestContactGroup()
-        }.done {
-            self.refreshControl.endRefreshing()
-        }.catch { error in
-            error.alert(at: self.view)
+            }.done {
+                self.refreshControl.endRefreshing()
+            }.catch { error in
+                error.alert(at: self.view)
         }
     }
     
@@ -409,18 +389,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     func selectRow(at indexPath: IndexPath, groupID: String) {
-        tableView.selectRow(at: indexPath,
-                            animated: true,
-                            scrollPosition: .none)
-        
+        tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
         viewModel.addSelectedGroup(ID: groupID, indexPath: indexPath)
         totalSelectedContactGroups = viewModel.getSelectedCount()
     }
     
     func deselectRow(at indexPath: IndexPath, groupID: String) {
-        tableView.deselectRow(at: indexPath,
-                              animated: true)
-        
+        tableView.deselectRow(at: indexPath, animated: true)
         viewModel.removeSelectedGroup(ID: groupID, indexPath: indexPath)
         totalSelectedContactGroups = viewModel.getSelectedCount()
     }
@@ -429,7 +404,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
 extension ContactGroupsViewController: UISearchBarDelegate, UISearchResultsUpdating
 {
     func updateSearchResults(for searchController: UISearchController) {
-        viewModel.search(text: searchController.searchBar.text)
+        viewModel.search(text: searchController.searchBar.text, searchActive: searchController.isActive)
         queryString = searchController.searchBar.text ?? ""
         tableView.reloadData()
     }
@@ -442,65 +417,23 @@ extension ContactGroupsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch viewModel.getState() {
-        case .MultiSelectContactGroupsForContactEmail:
-            return viewModel.totalRows()
-        case .ViewAllContactGroups:
-            if let fetchedController = fetchedContactGroupResultsController {
-                return fetchedController.fetchedObjects?.count ?? 0
-            }
-        }
-        return 0
+        return self.viewModel.count()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = self.tableView.dequeueReusableCell(withIdentifier: kContactGroupCellIdentifier, for: indexPath)
-        
         if let cell = cell as? ContactGroupsViewCell {
-            switch viewModel.getState() {
-            case .MultiSelectContactGroupsForContactEmail:
-                let data = viewModel.cellForRow(at: indexPath)
-                cell.config(labelID: data.ID,
-                            name: data.name,
-                            queryString: self.queryString,
-                            count: data.count,
-                            color: data.color,
-                            wasSelected: viewModel.isSelected(groupID: data.ID),
-                            showSendEmailIcon: false,
-                            delegate: self)
-                if viewModel.isSelected(groupID: data.ID) {
-                    tableView.selectRow(at: indexPath,
-                                        animated: true,
-                                        scrollPosition: .none)
-                }
-            case .ViewAllContactGroups:
-                if let fetchedController = fetchedContactGroupResultsController {
-                    if let label = fetchedController.object(at: indexPath) as? Label {
-                        cell.config(labelID: label.labelID,
-                                    name: label.name,
-                                    queryString: self.queryString,
-                                    count: label.emails.count,
-                                    color: label.color,
-                                    wasSelected: false,
-                                    showSendEmailIcon: true,
-                                    delegate: self)
-                        
-                        if viewModel.isSelected(groupID: label.labelID) {
-                            tableView.selectRow(at: indexPath,
-                                                animated: true,
-                                                scrollPosition: .none)
-                        }
-                    } else {
-                        // TODO: better error handling
-                        cell.config(labelID: "",
-                                    name: "Error in retrieving contact group name in core data",
-                                    queryString: "",
-                                    count: 0,
-                                    color: ColorManager.defaultColor,
-                                    wasSelected: false,
-                                    showSendEmailIcon: false)
-                    }
-                }
+            let data = self.viewModel.dateForRow(at: indexPath)
+            cell.config(labelID: data.ID,
+                        name: data.name,
+                        queryString: self.queryString,
+                        count: data.count,
+                        color: data.color,
+                        wasSelected: viewModel.isSelected(groupID: data.ID),
+                        showSendEmailIcon: data.showEmailIcon,
+                        delegate: self)
+            if viewModel.isSelected(groupID: data.ID) {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             }
         }
         
@@ -508,14 +441,13 @@ extension ContactGroupsViewController: UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? ContactGroupsViewCell {
-            if viewModel.getState() == .MultiSelectContactGroupsForContactEmail {
-                if viewModel.isSelected(groupID: cell.getLabelID()) {
-                    self.selectRow(at: indexPath, groupID: cell.getLabelID())
-                }
+        guard let cell = cell as? ContactGroupsViewCell else {
+            return
+        }
+        if viewModel.initEditing() {
+            if viewModel.isSelected(groupID: cell.getLabelID()) {
+                self.selectRow(at: indexPath, groupID: cell.getLabelID())
             }
-        } else {
-            PMLog.D("Downcasting failed")
         }
     }
 }
@@ -523,7 +455,7 @@ extension ContactGroupsViewController: UITableViewDataSource
 extension ContactGroupsViewController: ContactGroupsViewCellDelegate
 {
     func isMultiSelect() -> Bool {
-        return isEditingState || viewModel.getState() == .MultiSelectContactGroupsForContactEmail
+        return isEditingState || viewModel.initEditing()
     }
     
     func sendEmailToGroup(ID: String, name: String) {
@@ -591,22 +523,18 @@ extension ContactGroupsViewController: UITableViewDelegate
                 self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
                 return
             }
-            
             if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
                 self.selectRow(at: indexPath, groupID: cell.getLabelID())
-                
-                if viewModel.getState() == .MultiSelectContactGroupsForContactEmail {
-                    cell.setCount(viewModel.cellForRow(at: indexPath).count)
+                if viewModel.initEditing() {
+                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
                 }
             } else {
                 PMLog.D("FatalError: Conversion failed")
             }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
-            
             if let fetchedController = fetchedContactGroupResultsController {
-                self.performSegue(withIdentifier: kToContactGroupDetailSegue,
-                                  sender: fetchedController.object(at: indexPath))
+                self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: fetchedController.object(at: indexPath))
             }
         }
     }
@@ -622,11 +550,8 @@ extension ContactGroupsViewController: UITableViewDelegate
             
             if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
                 self.deselectRow(at: indexPath, groupID: cell.getLabelID())
-                
-                if viewModel.getState() == .MultiSelectContactGroupsForContactEmail {
-                    if viewModel.getState() == .MultiSelectContactGroupsForContactEmail {
-                        cell.setCount(viewModel.cellForRow(at: indexPath).count)
-                    }
+                if viewModel.initEditing() {
+                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
                 }
             } else {
                 PMLog.D("FatalError: Conversion failed")
@@ -674,6 +599,9 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                     at indexPath: IndexPath?,
                     for type: NSFetchedResultsChangeType,
                     newIndexPath: IndexPath?) {
+        if self.viewModel.searchingActive() {
+            return
+        }
         switch type {
         case .insert:
             if let newIndexPath = newIndexPath {
@@ -684,28 +612,19 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
                 tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
-            if let cell = tableView.cellForRow(at: indexPath!) as? ContactGroupsViewCell {
-                if let fetchedController = fetchedContactGroupResultsController {
-                    if let label = fetchedController.object(at: indexPath!) as? Label {
-                        cell.config(labelID: label.labelID,
-                                    name: label.name,
-                                    queryString: self.queryString,
-                                    count: label.emails.count,
-                                    color: label.color,
-                                    wasSelected: false,
-                                    showSendEmailIcon: true,
-                                    delegate: self)
-                    } else {
-                        // TODO; better error handling
-                        cell.config(labelID: "",
-                                    name: "Error in retrieving contact group name in core data",
-                                    queryString: "",
-                                    count: 0,
-                                    color: ColorManager.defaultColor,
-                                    wasSelected: false,
-                                    showSendEmailIcon: false)
-                    }
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                guard let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell else {
+                    return
                 }
+                let data = self.viewModel.dateForRow(at: newIndexPath)
+                cell.config(labelID: data.ID,
+                            name: data.name,
+                            queryString: self.queryString,
+                            count: data.count,
+                            color: data.color,
+                            wasSelected: viewModel.isSelected(groupID: data.ID),
+                            showSendEmailIcon: data.showEmailIcon,
+                            delegate: self)
             }
         case .move: // group order might change! (renaming)
             if let indexPath = indexPath {
@@ -715,7 +634,6 @@ extension ContactGroupsViewController: NSFetchedResultsControllerDelegate
             if let newIndexPath = newIndexPath {
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
-            
             return
         }
     }
