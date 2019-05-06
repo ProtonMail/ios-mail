@@ -58,6 +58,7 @@ html_editor.setPlaceholderText = function(text) {
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
     html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+    html_editor.acquireEmbeddedImages();
 });
 
 /// breaks the blockquote into two if possible
@@ -106,6 +107,35 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
     }
 }
 
+html_editor.acquireEmbeddedImages = function() {
+    var found = document.querySelectorAll('img[src^="blob:null"]');
+    if (found.length) {
+        found.forEach(function(image) {
+          html_editor.getBase64FromImageUrl(image.src, function(data){
+                image.src = data;
+            });
+        });
+    }
+}
+
+html_editor.getBase64FromImageUrl = function(url, callback) {
+    var img = new Image();
+    img.setAttribute('crossOrigin', 'anonymous');
+    img.onload = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width =this.width;
+        canvas.height =this.height;
+        
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0);
+        
+        var dataURL = canvas.toDataURL("image/jpg");
+        callback(dataURL);
+    };
+    
+    img.src = url;
+}
+
 html_editor.removeEmbedImage = function(cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
     if (found.length) {
@@ -115,3 +145,4 @@ html_editor.removeEmbedImage = function(cid) {
 
     }
 }
+
