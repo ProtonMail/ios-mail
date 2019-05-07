@@ -86,7 +86,7 @@ html_editor.getCaretYPosition = function() {
 
 /// delegate. the swift part could catch the events
 html_editor.delegate = function(event) {
-    window.location.href = "delegate://" + event
+    window.webkit.messageHandlers.moveCaret.postMessage({ "delegate": "delegate://" + event });
 };
 
 //this is for update protonmail email signature
@@ -100,39 +100,42 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
     var found = document.querySelectorAll('img[src="' + cid + '"]');
     if (found.length) {
         found.forEach(function(image) {
-            image.setAttribute('src-original-pm-cid', cid);
-            html_editor.cachedCIDs += cid;
-            image.setAttribute('src', blobdata);
+            html_editor.setImageData(image, cid, blobdata);
         });
     }
+}
+
+html_editor.setImageData = function(image, cid, blobdata) {
+    image.setAttribute('src-original-pm-cid', cid);
+    html_editor.cachedCIDs += cid;
+    image.setAttribute('src', blobdata);
 }
 
 html_editor.acquireEmbeddedImages = function() {
     var found = document.querySelectorAll('img[src^="blob:null"]');
     if (found.length) {
         found.forEach(function(image) {
-          html_editor.getBase64FromImageUrl(image.src, function(data){
-                image.src = data;
-            });
+          html_editor.getBase64FromImageUrl(image.src, function(url, data){
+                html_editor.setImageData(image, url, data);
+                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": data });
+          });
         });
     }
 }
 
 html_editor.getBase64FromImageUrl = function(url, callback) {
     var img = new Image();
-    img.setAttribute('crossOrigin', 'anonymous');
     img.onload = function () {
         var canvas = document.createElement("canvas");
-        canvas.width =this.width;
-        canvas.height =this.height;
+        canvas.width = this.width;
+        canvas.height = this.height;
         
         var ctx = canvas.getContext("2d");
         ctx.drawImage(this, 0, 0);
         
-        var dataURL = canvas.toDataURL("image/jpg");
-        callback(dataURL);
+        var data = canvas.toDataURL("image/png");
+        callback(src, data);
     };
-    
     img.src = url;
 }
 

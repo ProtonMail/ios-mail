@@ -71,6 +71,8 @@ class HtmlEditorBehaviour: NSObject {
     internal func setup(webView: WKWebView) {
         self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
+        webView.configuration.userContentController.add(self, name: "addImage")
+        webView.configuration.userContentController.add(self, name: "moveCaret")
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
@@ -312,15 +314,33 @@ extension HtmlEditorBehaviour {
             self.loadContent()
         }
     }
-    
-    func webView(_ webView: WKWebView, wasAskedToDecidePolicyFor navigationAction: WKNavigationAction) {
-        if let url = navigationAction.request.url {
-            let scheme = "delegate"
-            if url.scheme == scheme {
-                PMLog.D(url.absoluteString)
-                let command = url.absoluteString.preg_replace_none_regex(scheme + "://", replaceto: "")
-                self.performCommand(command)
-            }
+}
+
+extension HtmlEditorBehaviour: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage)
+    {
+        print(message.body)
+        guard let userInfo = message.body as? Dictionary<String, Any> else {
+            assert(false, "Broken message: not a dictionary")
+            return
         }
+        
+        if let path = userInfo["url"] as? String, let base64DataString = userInfo["data"] as? String {
+            // add as attachment, JS will repalce link with blob itself
+            // 1. why not rendered?
+            // 2. how will we replace them back in draft?
+            return 
+        }
+        
+        let scheme = "delegate"
+        if let delegation = userInfo[scheme] as? String {
+            PMLog.D(delegation)
+            let command = delegation.preg_replace_none_regex(scheme + "://", replaceto: "")
+            self.performCommand(command)
+            return
+        }
+        
+        assert(false, "Broken message: lost url or data")
     }
 }
