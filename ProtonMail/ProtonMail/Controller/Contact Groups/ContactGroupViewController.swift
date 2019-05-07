@@ -59,7 +59,6 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     private let kToContactGroupDetailSegue = "toContactGroupDetailSegue"
     private let kToComposerSegue = "toComposer"
     
-    private var fetchedContactGroupResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     private var refreshControl: UIRefreshControl!
     private var searchController: UISearchController!
     
@@ -116,7 +115,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     }
     
     private func prepareFetchedResultsController() {
-        self.fetchedContactGroupResultsController = self.viewModel.setFetchResultController(delegate: self)
+        let _ = self.viewModel.setFetchResultController(delegate: self)
     }
     
     private func prepareRefreshController() {
@@ -533,8 +532,8 @@ extension ContactGroupsViewController: UITableViewDelegate
             }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
-            if let fetchedController = fetchedContactGroupResultsController {
-                self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: fetchedController.object(at: indexPath))
+            if let label = self.viewModel.labelForRow(at: indexPath) {d
+                self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: label)
             }
         }
     }

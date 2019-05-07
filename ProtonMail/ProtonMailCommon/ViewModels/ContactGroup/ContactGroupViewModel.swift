@@ -64,4 +64,6 @@ protocol ContactGroupsViewModel {
     func searchingActive() -> Bool 
     func count() -> Int
     func dateForRow(at indexPath: IndexPath) -> (ID: String, name: String, color: String, count: Int, wasSelected: Bool, showEmailIcon: Bool)
+    
+    func labelForRow(at indexPath: IndexPath) -> Label?
 }

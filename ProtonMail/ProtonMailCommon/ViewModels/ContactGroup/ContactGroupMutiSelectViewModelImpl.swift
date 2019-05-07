@@ -282,6 +282,9 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         return (data.ID, data.name, data.color, data.count, isSelected(groupID: data.ID), false)
     }
     
+    func labelForRow(at indexPath: IndexPath) -> Label? {
+        return nil
+    }
     
     func searchingActive() -> Bool {
         return isSearching

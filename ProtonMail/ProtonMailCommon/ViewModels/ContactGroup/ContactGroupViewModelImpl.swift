@@ -227,6 +227,17 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         
     }
     
+    func labelForRow(at indexPath: IndexPath) -> Label? {
+        if self.isSearching {
+            guard self.filtered.count > indexPath.row else {
+                return nil
+            }
+            let label = filtered[indexPath.row]
+            return label
+        }
+        return fetchedResultsController?.object(at: indexPath) as? Label
+    }
+    
     
     func searchingActive() -> Bool {
         return self.isSearching
