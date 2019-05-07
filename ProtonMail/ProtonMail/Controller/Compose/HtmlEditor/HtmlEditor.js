@@ -117,7 +117,8 @@ html_editor.acquireEmbeddedImages = function() {
         found.forEach(function(image) {
           html_editor.getBase64FromImageUrl(image.src, function(url, data){
                 html_editor.setImageData(image, url, data);
-                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": data });
+                image.setAttribute('class', "proton-embedded");
+                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": data.replace(/data:image\/[a-z]+;base64,/, '') });
           });
         });
     }
@@ -134,7 +135,7 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
         ctx.drawImage(this, 0, 0);
         
         var data = canvas.toDataURL("image/png");
-        callback(src, data);
+        callback(url, data);
     };
     img.src = url;
 }

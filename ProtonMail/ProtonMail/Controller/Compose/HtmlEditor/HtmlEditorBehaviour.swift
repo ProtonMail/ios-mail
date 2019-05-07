@@ -37,6 +37,7 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
 protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
+    func addInlineAttachment(_ sid: String, data: Data)
 }
 
 /// Html editor
@@ -326,11 +327,12 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
             return
         }
         
-        if let path = userInfo["url"] as? String, let base64DataString = userInfo["data"] as? String {
-            // add as attachment, JS will repalce link with blob itself
-            // 1. why not rendered?
-            // 2. how will we replace them back in draft?
-            return 
+        if let path = userInfo["url"] as? String,
+            let base64DataString = userInfo["data"] as? String,
+            let base64Data = Data(base64Encoded: base64DataString)
+        {
+            self.delegate?.addInlineAttachment(path, data: base64Data)
+            return
         }
         
         let scheme = "delegate"
