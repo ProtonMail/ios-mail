@@ -205,8 +205,8 @@ extension MessageBodyViewController: WKNavigationDelegate, WKUIDelegate, LinkOpe
                 if allowedToOpen {
                     self.coordinator?.open(url: url)
                 }
-                decisionHandler(.cancel)
             }
+            decisionHandler(.cancel)
             
         default:
             self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
