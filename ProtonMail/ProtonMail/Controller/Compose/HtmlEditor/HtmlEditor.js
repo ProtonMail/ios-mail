@@ -20,7 +20,7 @@ html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
 
 /// cached embed image cids
-html_editor.cachedCIDs = "";
+html_editor.cachedCIDs = {};
 
 /// set html body
 html_editor.setHtml = function(htmlBody, sanitizeConfig) {
@@ -29,9 +29,16 @@ html_editor.setHtml = function(htmlBody, sanitizeConfig) {
     // could update the viewport width here in the future.
 };
 
-/// get the html.
+/// get the html. first removes embedded blobs, then takes the html, then puts embedded stuff back
 html_editor.getHtml = function() {
-    return html_editor.editor.innerHTML;
+    for (var cid in html_editor.cachedCIDs) {
+        html_editor.hideEmbedImage(cid);
+    }
+    var emptyHtml = html_editor.editor.innerHTML;
+    for (var cid in html_editor.cachedCIDs) {
+        html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
+    }
+    return emptyHtml;
 };
 
 /// get clear test
@@ -105,9 +112,18 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
     }
 }
 
+html_editor.hideEmbedImage = function(cid) {
+    var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+    if (found.length) {
+        found.forEach(function(image) {
+                      image.setAttribute('src', cid);
+                      });
+    }
+}
+
 html_editor.setImageData = function(image, cid, blobdata) {
     image.setAttribute('src-original-pm-cid', cid);
-    html_editor.cachedCIDs += cid;
+    html_editor.cachedCIDs[cid] = blobdata;
     image.setAttribute('src', blobdata);
 }
 
@@ -115,11 +131,11 @@ html_editor.acquireEmbeddedImages = function() {
     var found = document.querySelectorAll('img[src^="blob:null"]');
     if (found.length) {
         found.forEach(function(image) {
-          html_editor.getBase64FromImageUrl(image.src, function(url, data){
+            html_editor.getBase64FromImageUrl(image.src, function(url, data) {
                 html_editor.setImageData(image, url, data);
-                image.setAttribute('class', "proton-embedded");
-                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": data.replace(/data:image\/[a-z]+;base64,/, '') });
-          });
+                var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
+                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": bits });
+            });
         });
     }
 }

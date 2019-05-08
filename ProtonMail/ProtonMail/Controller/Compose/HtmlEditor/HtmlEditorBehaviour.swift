@@ -72,6 +72,7 @@ class HtmlEditorBehaviour: NSObject {
     internal func setup(webView: WKWebView) {
         self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
+        webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         webView.configuration.userContentController.add(self, name: "addImage")
         webView.configuration.userContentController.add(self, name: "moveCaret")
         
