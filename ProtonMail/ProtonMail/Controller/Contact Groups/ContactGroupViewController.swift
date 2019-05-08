@@ -532,7 +532,7 @@ extension ContactGroupsViewController: UITableViewDelegate
             }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
-            if let label = self.viewModel.labelForRow(at: indexPath) {d
+            if let label = self.viewModel.labelForRow(at: indexPath) {
                 self.performSegue(withIdentifier: kToContactGroupDetailSegue, sender: label)
             }
         }
