@@ -61,7 +61,9 @@ extension LinkOpeningValidator {
             handler(false)
         }
         [proceed, doNotShowAgain, cancel].forEach(alert.addAction)
-        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+
+        // will deliver to the topmost view controller in responder chain
+        UIApplication.shared.sendAction(#selector(UIViewController.present(_:animated:completion:)), to: nil, from: alert, for: nil)
     }
 }
 
