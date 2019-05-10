@@ -125,16 +125,17 @@ html_editor.setImageData = function(image, cid, blobdata) {
     image.setAttribute('src-original-pm-cid', cid);
     html_editor.cachedCIDs[cid] = blobdata;
     image.setAttribute('src', blobdata);
+    image.class = 'proton-embedded';
 }
 
 html_editor.acquireEmbeddedImages = function() {
     var found = document.querySelectorAll('img[src^="blob:null"]');
     if (found.length) {
         found.forEach(function(image) {
-            html_editor.getBase64FromImageUrl(image.src, function(url, data) {
-                html_editor.setImageData(image, url, data);
+            html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
+                html_editor.setImageData(image, "cid:" + cid, data);
                 var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
-                window.webkit.messageHandlers.addImage.postMessage({ "url": url, "data": bits });
+                window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
             });
         });
     }
@@ -151,7 +152,8 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
         ctx.drawImage(this, 0, 0);
         
         var data = canvas.toDataURL("image/png");
-        callback(url, data);
+        var cid = url.replace("blob:null\/", '');
+        callback(cid, data);
     };
     img.src = url;
 }

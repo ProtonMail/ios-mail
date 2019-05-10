@@ -328,7 +328,7 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
             return
         }
         
-        if let path = userInfo["url"] as? String,
+        if let path = userInfo["cid"] as? String,
             let base64DataString = userInfo["data"] as? String,
             let base64Data = Data(base64Encoded: base64DataString)
         {

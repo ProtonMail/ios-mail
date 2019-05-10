@@ -569,9 +569,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 }
 extension ComposeViewController : HtmlEditorBehaviourDelegate {
     func addInlineAttachment(_ sid: String, data: Data) {
-        guard let attachment = data.toAttachment(self.viewModel.message!, fileName: sid) else { return }
-        attachment.headerInfo = "{\"content-disposition\":\"inline\",\"content-id\":\"\(sid))\"}"
-        attachment.mimeType = "image/png" // FIXME
+        guard let attachment = data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png") else { return }
+        attachment.headerInfo = sid
         self.viewModel.uploadAtt(attachment)
     }
     
