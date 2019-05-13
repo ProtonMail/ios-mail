@@ -40,7 +40,7 @@ quote_breaker.getOpenTags = function() {
     var parents = [];
     var parent = coursor.parentNode;
     var parentNode = coursor.parentNode;
-    var indexOfLast = -1;
+    var index = -1;
 
     while (parent !== this.node) {
         parents.push({

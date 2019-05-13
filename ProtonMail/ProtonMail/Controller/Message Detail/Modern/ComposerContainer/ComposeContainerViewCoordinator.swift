@@ -63,6 +63,10 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.editor.sendAction(sender)
     }
     
+    internal func headerFrame() -> CGRect {
+        return self.header.view.frame
+    }
+    
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {
         let child = UIStoryboard(name: "Composer", bundle: nil).make(ContainableComposeViewController.self)
         child.injectHeader(self.header)

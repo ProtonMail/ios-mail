@@ -37,6 +37,7 @@ fileprivate final class InputAccessoryHackHelper: NSObject {
 protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
+    func addInlineAttachment(_ sid: String, data: Data)
 }
 
 /// Html editor
@@ -71,6 +72,9 @@ class HtmlEditorBehaviour: NSObject {
     internal func setup(webView: WKWebView) {
         self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
+        webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+        webView.configuration.userContentController.add(self, name: "addImage")
+        webView.configuration.userContentController.add(self, name: "moveCaret")
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
@@ -312,15 +316,34 @@ extension HtmlEditorBehaviour {
             self.loadContent()
         }
     }
-    
-    func webView(_ webView: WKWebView, wasAskedToDecidePolicyFor navigationAction: WKNavigationAction) {
-        if let url = navigationAction.request.url {
-            let scheme = "delegate"
-            if url.scheme == scheme {
-                PMLog.D(url.absoluteString)
-                let command = url.absoluteString.preg_replace_none_regex(scheme + "://", replaceto: "")
-                self.performCommand(command)
-            }
+}
+
+extension HtmlEditorBehaviour: WKScriptMessageHandler {
+    func userContentController(_ userContentController: WKUserContentController,
+                               didReceive message: WKScriptMessage)
+    {
+        print(message.body)
+        guard let userInfo = message.body as? Dictionary<String, Any> else {
+            assert(false, "Broken message: not a dictionary")
+            return
         }
+        
+        if let path = userInfo["cid"] as? String,
+            let base64DataString = userInfo["data"] as? String,
+            let base64Data = Data(base64Encoded: base64DataString)
+        {
+            self.delegate?.addInlineAttachment(path, data: base64Data)
+            return
+        }
+        
+        let scheme = "delegate"
+        if let delegation = userInfo[scheme] as? String {
+            PMLog.D(delegation)
+            let command = delegation.preg_replace_none_regex(scheme + "://", replaceto: "")
+            self.performCommand(command)
+            return
+        }
+        
+        assert(false, "Broken message: lost url or data")
     }
 }

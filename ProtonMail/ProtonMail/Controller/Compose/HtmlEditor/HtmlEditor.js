@@ -20,7 +20,7 @@ html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
 
 /// cached embed image cids
-html_editor.cachedCIDs = "";
+html_editor.cachedCIDs = {};
 
 /// set html body
 html_editor.setHtml = function(htmlBody, sanitizeConfig) {
@@ -29,9 +29,16 @@ html_editor.setHtml = function(htmlBody, sanitizeConfig) {
     // could update the viewport width here in the future.
 };
 
-/// get the html.
+/// get the html. first removes embedded blobs, then takes the html, then puts embedded stuff back
 html_editor.getHtml = function() {
-    return html_editor.editor.innerHTML;
+    for (var cid in html_editor.cachedCIDs) {
+        html_editor.hideEmbedImage(cid);
+    }
+    var emptyHtml = html_editor.editor.innerHTML;
+    for (var cid in html_editor.cachedCIDs) {
+        html_editor.updateEmbedImage(cid, html_editor.cachedCIDs[cid]);
+    }
+    return emptyHtml;
 };
 
 /// get clear test
@@ -58,6 +65,7 @@ html_editor.setPlaceholderText = function(text) {
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
     html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+    html_editor.acquireEmbeddedImages();
 });
 
 /// breaks the blockquote into two if possible
@@ -85,7 +93,7 @@ html_editor.getCaretYPosition = function() {
 
 /// delegate. the swift part could catch the events
 html_editor.delegate = function(event) {
-    window.location.href = "delegate://" + event
+    window.webkit.messageHandlers.moveCaret.postMessage({ "delegate": "delegate://" + event });
 };
 
 //this is for update protonmail email signature
@@ -99,11 +107,55 @@ html_editor.updateEmbedImage = function(cid, blobdata) {
     var found = document.querySelectorAll('img[src="' + cid + '"]');
     if (found.length) {
         found.forEach(function(image) {
-            image.setAttribute('src-original-pm-cid', cid);
-            html_editor.cachedCIDs += cid;
-            image.setAttribute('src', blobdata);
+            html_editor.setImageData(image, cid, blobdata);
         });
     }
+}
+
+html_editor.hideEmbedImage = function(cid) {
+    var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
+    if (found.length) {
+        found.forEach(function(image) {
+                      image.setAttribute('src', cid);
+                      });
+    }
+}
+
+html_editor.setImageData = function(image, cid, blobdata) {
+    image.setAttribute('src-original-pm-cid', cid);
+    html_editor.cachedCIDs[cid] = blobdata;
+    image.setAttribute('src', blobdata);
+    image.class = 'proton-embedded';
+}
+
+html_editor.acquireEmbeddedImages = function() {
+    var found = document.querySelectorAll('img[src^="blob:null"]');
+    if (found.length) {
+        found.forEach(function(image) {
+            html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
+                html_editor.setImageData(image, "cid:" + cid, data);
+                var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
+                window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
+            });
+        });
+    }
+}
+
+html_editor.getBase64FromImageUrl = function(url, callback) {
+    var img = new Image();
+    img.onload = function () {
+        var canvas = document.createElement("canvas");
+        canvas.width = this.width;
+        canvas.height = this.height;
+        
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(this, 0, 0);
+        
+        var data = canvas.toDataURL("image/png");
+        var cid = url.replace("blob:null\/", '');
+        callback(cid, data);
+    };
+    img.src = url;
 }
 
 html_editor.removeEmbedImage = function(cid) {
@@ -115,3 +167,4 @@ html_editor.removeEmbedImage = function(cid) {
 
     }
 }
+

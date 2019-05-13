@@ -150,10 +150,12 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     @available(iOS 11.0, *)
     func tableView(_ tableView: UITableView, dropSessionDidEnter session: UIDropSession) {
         if self.dropLandingZone == nil {
-            let blurOverlay = DropLandingZone(frame: self.tableView.frame)
-            blurOverlay.alpha = 0.0
-            self.tableView.addSubview(blurOverlay)
-            self.dropLandingZone = blurOverlay
+            var dropFrame = self.tableView.frame
+            dropFrame.size.height = self.coordinator.headerFrame().size.height
+            let dropZone = DropLandingZone(frame: dropFrame)
+            dropZone.alpha = 0.0
+            self.tableView.addSubview(dropZone)
+            self.dropLandingZone = dropZone
         }
         
         UIView.animate(withDuration: 0.3) {

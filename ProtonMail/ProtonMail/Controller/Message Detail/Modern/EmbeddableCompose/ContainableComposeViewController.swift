@@ -90,11 +90,6 @@ class ContainableComposeViewController: ComposeViewController {
         return preferences
     }
     
-    override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        self.htmlEditor.webView(webView, wasAskedToDecidePolicyFor: navigationAction)
-        super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)
-    }
-    
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.htmlEditor.webView(webView, didFinish: navigation)
         super.webView(webView, didFinish: navigation)

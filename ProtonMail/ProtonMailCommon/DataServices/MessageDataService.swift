@@ -1194,11 +1194,14 @@ class MessageDataService : Service {
             return
         }
         
-        let params = [
+        var params = [
             "Filename": attachment.fileName,
             "MIMEType": attachment.mimeType,
             "MessageID": attachment.message.messageID
         ]
+        if let headerInfo = attachment.headerInfo, !headerInfo.isEmpty {
+            params["ContentID"] = headerInfo
+        }
         
         let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
         let pubkey = attachment.message.cachedAddress?.keys.first?.private_key ?? sharedUserDataService.getAddressPrivKey(address_id: address)
