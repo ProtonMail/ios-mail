@@ -121,9 +121,7 @@ class MessageViewModel: NSObject {
         
         super.init()
         
-        if embeddingImages, let body = body {
-            self.showEmbedImage(message, body: body)
-        }
+        // there was a method embedding images here, revert and debug in case of problems
         
         if let expirationOffset = message.expirationTime?.timeIntervalSinceNow, expirationOffset > 0 {
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(Int(expirationOffset))) { [weak self, message] in
@@ -173,7 +171,6 @@ class MessageViewModel: NSObject {
                             }
                         }
                     }
-
                     queue.async(execute: work)
                 }
             }

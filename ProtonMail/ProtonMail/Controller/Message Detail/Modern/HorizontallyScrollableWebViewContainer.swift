@@ -39,6 +39,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
     private var loadingObservation: NSKeyValueObservation!
     
     internal weak var enclosingScroller: ScrollableContainer?
+    private var enclosingScrollerObservation: NSKeyValueObservation!
     private var verticalRecognizer: UIPanGestureRecognizer!
     private var gestureInitialOffset: CGPoint = .zero
     
@@ -52,6 +53,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.contentSizeObservation = nil
         self.loadingObservation = nil
         self.scrollDecelerationOverlayObservation = nil
+         self.enclosingScrollerObservation = nil
         
         if let webView = self.webView {
             webView.scrollView.delegate = nil
@@ -59,6 +61,34 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
             webView.navigationDelegate = nil
         }
     }
+    
+     override func viewWillAppear(_ animated: Bool) {
+         super.viewWillAppear(animated)
+         self.workaroundWebKitRenderingBug(swithOn: true)
+     }
+    
+     override func viewWillDisappear(_ animated: Bool) {
+         super.viewWillDisappear(animated)
+         self.workaroundWebKitRenderingBug(swithOn: false)
+     }
+    
+    
+     /// WebKit has a bug on iOS 10 that makes rendering incorrect when the webView is resized inside cell
+     /// workaround is to relayout the webView on scrolling
+     /// SO: https://stackoverflow.com/questions/39549103/wkwebview-not-rendering-correctly-in-ios-10
+     ///
+     /// Should be switched off by the time viewController is dismissed: iOS 9 and 10 crash if observable object (tableView) is deinit before observation (enclosingScrollerObservation) which will definitely happen cuz tableView's controller is higher in hierarchy
+     private func workaroundWebKitRenderingBug(swithOn: Bool) {
+         guard swithOn else {
+             self.enclosingScrollerObservation = nil;
+             return
+         }
+         if #available(iOS 11.0, *) { /* nothing */ } else if #available(iOS 10.0, *) {
+             self.enclosingScrollerObservation = self.enclosingScroller?.scroller.observe(\.contentOffset) { [weak self] _, _ in
+                 self?.webView?.setNeedsLayout()
+             }
+         } else { /* nothing */ }
+     }
     
     func webViewPreferences() -> WKPreferences {
         let preferences = WKPreferences()

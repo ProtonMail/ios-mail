@@ -27,6 +27,11 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         case contentDisposition = "content-disposition"
     }
     
+    public enum ContentDisposition : String {
+        case inline = "inline"
+        case attachment = "attachment"
+    }
+    
     let raw: String
     let name: String
     let kind: Kind?
@@ -40,6 +45,14 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
         self.body = Array(components[1...]).joined(separator: ":").trimmingCharacters(in: .whitespaces)
         self.kind = Kind(rawValue: self.name.lowercased())
         self.raw = string
+    }
+    
+    func isAttachment() -> Bool {
+        return isContent(type: .attachment) || isContent(type: .inline)
+    }
+    
+    func isContent( type: ContentDisposition) -> Bool {
+        return self.body.contains(check: type.rawValue)
     }
     
     var keyValues: [String: String] {
@@ -93,11 +106,17 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
 
 extension Array where Element == Header {
     func allHeaders(ofKind kind: Header.Kind) -> [Header] {
-        return self.filter { header in return header.kind == kind }
+        return self.filter { header in
+            return header.kind == kind
+        }
     }
     
     subscript(_ kind: Header.Kind) -> Header? {
-        for header in self { if header.kind == kind { return header }}
+        for header in self {
+            if header.kind == kind {
+                return header
+            }
+        }
         return nil
     }
 }

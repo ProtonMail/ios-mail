@@ -33,7 +33,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
     private var viewModel: MessageBodyViewModel!
     private var contentsObservation: NSKeyValueObservation!
     private var renderObservation: NSKeyValueObservation!
-    
+
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
             return HTTPRequestSecureLoader(addSpacerIfNeeded: false)
@@ -62,7 +62,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
             self.webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
         }
     }
-    
+
     override func updateHeight(to newHeight: CGFloat) {
         super.updateHeight(to: newHeight)
         self.viewModel.contentHeight = newHeight
@@ -77,7 +77,7 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
     }
 }
 
-extension MessageBodyViewController {
+extension MessageBodyViewController : LinkOpeningValidator {
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         switch navigationAction.navigationType {
         case .linkActivated where navigationAction.request.url?.scheme == "mailto":
@@ -96,6 +96,11 @@ extension MessageBodyViewController {
             
             super.webView(webView, decidePolicyFor: navigationAction, decisionHandler: decisionHandler)
         }
+    }
+    
+    @available(iOS 10.0, *)
+    override func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
+        return userCachedStatus.linkOpeningMode == .allowPickAndPop
     }
 }
 

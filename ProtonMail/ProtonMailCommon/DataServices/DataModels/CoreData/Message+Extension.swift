@@ -424,14 +424,17 @@ extension Message {
                         body = "<html><body>\(body.ln2br())</body></html>"
                     }
                     
-                    if let cidPart = mimeMsg.mainPart.partCID(),
-                        var cid = cidPart.cid,
-                        let rawBody = cidPart.rawBodyString {
-                        cid = cid.preg_replace("<", replaceto: "")
-                        cid = cid.preg_replace(">", replaceto: "")
-                        let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                        let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                        body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                    let cidParts = mimeMsg.mainPart.partCIDs()
+                    
+                    for cidPart in cidParts {
+                        if var cid = cidPart.cid,
+                            let rawBody = cidPart.rawBodyString {
+                            cid = cid.preg_replace("<", replaceto: "")
+                            cid = cid.preg_replace(">", replaceto: "")
+                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
+                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
+                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
+                        }
                     }
                     /// cache the decrypted inline attachments
                     let atts = mimeMsg.mainPart.findAtts()

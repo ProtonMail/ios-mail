@@ -69,7 +69,12 @@ extension MessageAttachmentsViewModel {
                        _ opener: @escaping (URL)->Void)
     {
         guard let attachment = attachmentInfo.att else {
-            assert(false, "can this happen at all?")
+            // two attachment types. inline and normal att in core data
+            // inline att doesn't need to decrypt and it saved in cache temporarily when decrypting the message
+            // in this case just try to open it directly
+            if let url = attachmentInfo.localUrl {
+                opener(url)
+            }
             return
         }
 

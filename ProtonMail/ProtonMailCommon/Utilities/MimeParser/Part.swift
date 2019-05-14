@@ -34,7 +34,7 @@ public struct Part: CustomStringConvertible {
     
     public func findAtts() -> [Part] {
         var ret = [Part]()
-        if let cd = self.contentDisposition, cd.body.contains(check: "attachment") {
+        if let cd = self.contentDisposition, cd.isAttachment() {
             ret.append(self)
         }
         for part in self.subParts {
@@ -78,16 +78,41 @@ public struct Part: CustomStringConvertible {
     public var contentCID: String? { return self.headers[.contentID]?.name }
     public var cid: String? { return self.headers[.contentID]?.body }
     func partCID() -> Part? {
-        if self.contentCID?.contains("Content-ID") == true { return self }
+        if self.contentCID?.contains("Content-ID") == true {
+            return self
+        }
         for part in self.subParts {
-            if let sub = part.partCID() { return sub }
+            if let sub = part.partCID() {
+                return sub
+            }
         }
         return nil
     }
     
+    func partCIDs() -> [Part] {
+        var ret = [Part]()
+        if self.contentCID?.contains("Content-ID") == true {
+            ret.append(self)
+        }
+        for part in self.subParts {
+            let subRet = part.partCIDs()
+            ret.append(contentsOf: subRet)
+        }
+        return ret
+    }
     
-    public var contentType: String? { return self.headers[.contentType]?.body }
-    public var contentEncoding: ContentEncoding? { return ContentEncoding(rawValue: self.headers[.contentTransferEncoding]?.body ?? "") }
+    
+    public var contentType: String? {
+        return self.headers[.contentType]?.body
+    }
+    public var contentEncoding: ContentEncoding? {
+        if let body = self.headers[.contentTransferEncoding]?.body {
+            let trimmedBody = body.trimmingCharacters(in: .whitespacesAndNewlines)
+             return ContentEncoding(rawValue: trimmedBody)
+        }
+        return nil
+    }
+    
     func part(ofType type: String) -> Part? {
         let lower = type.lowercased()
         if self.contentType?.lowercased().contains(lower) == true { return self }

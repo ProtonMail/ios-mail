@@ -55,6 +55,11 @@ extension Attachment {
     
     // MARK: - This is private functions
     
+    class func attachment(for attID: String, inManagedObjectContext context: NSManagedObjectContext) -> Attachment? {
+        return context.managedObjectWithEntityName(Attributes.entityName, forKey: Attributes.attachmentID, matchingValue: attID) as? Attachment
+    }
+    
+    
     var downloaded: Bool {
         return localURL != nil
     }
