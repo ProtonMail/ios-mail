@@ -51,7 +51,7 @@ class WebContents: NSObject {
                 return "default-src 'none'; style-src 'self' 'unsafe-inline';"
                 
             case .disallowed: // this cuts off all remote content
-                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data:; script-src 'none';"
+                return "default-src 'none'; style-src 'self' 'unsafe-inline'; img-src 'unsafe-inline' data: blob:; script-src 'none';"
                 
             case .allowed: // this cuts off only scripts and connections
                 return "default-src 'self'; connect-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; script-src 'none';"
