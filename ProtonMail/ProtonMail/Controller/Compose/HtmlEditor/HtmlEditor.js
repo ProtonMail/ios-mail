@@ -103,6 +103,18 @@ html_editor.updateSignature = function(html, sanitizeConfig) {
     signature.innerHTML = DOMPurify.sanitize(cleanByConfig);
 }
 
+// for calls from Swift
+html_editor.updateEncodedEmbedImage = function(cid, blobdata) {
+    var found = document.querySelectorAll('img[src="' + cid + '"]');
+    if (found.length) {
+        found.forEach(function(image) {
+            var originalImageData = decodeURIComponent(blobdata);
+            html_editor.setImageData(image, cid, originalImageData);
+        });
+    }
+}
+
+// for calls from JS
 html_editor.updateEmbedImage = function(cid, blobdata) {
     var found = document.querySelectorAll('img[src="' + cid + '"]');
     if (found.length) {

@@ -254,7 +254,7 @@ class HtmlEditorBehaviour: NSObject {
     ///   - blob: based64 encoded. don't need run escape
     func update(embedImage cid : String, encoded blob : String) {
         let escapedBlob: String = blob.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
-        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
+        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
