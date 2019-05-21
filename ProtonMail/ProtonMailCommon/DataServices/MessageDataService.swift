@@ -1242,6 +1242,11 @@ class MessageDataService : Service {
                 attachment.keyPacket = keyPacket.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                 attachment.fileData = nil // encrypted attachment is successfully uploaded -> no longer need it cleartext
                 
+                // proper headers from BE - important for inline attachments
+                if let headerInfoDict = attDict["Headers"] as? Dictionary<String, String> {
+                    attachment.headerInfo = "{" + headerInfoDict.compactMap { " \"\($0)\":\"\($1)\" " }.joined(separator: ",") + "}"
+                }
+                
                 if let fileUrl = attachment.localURL,
                     let _ = try? FileManager.default.removeItem(at: fileUrl)
                 {
