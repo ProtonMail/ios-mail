@@ -569,9 +569,23 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 }
 extension ComposeViewController : HtmlEditorBehaviourDelegate {
     func addInlineAttachment(_ sid: String, data: Data) {
+        // Data.toAttachment will automatically increment number of attachments in the message
         guard let attachment = data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png") else { return }
         attachment.headerInfo = sid
         self.viewModel.uploadAtt(attachment)
+    }
+    
+    func removeInlineAttachment(_ sid: String) {
+        // find attachment to remove
+        guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
+        
+        // decrement number of attachments in message manually
+        if let number = self.viewModel.message?.numAttachments.int32Value {
+            let newNum = number > 0 ? number - 1 : 0
+            self.viewModel.message?.numAttachments = NSNumber(value: newNum)
+        }
+        
+        self.viewModel.deleteAtt(attachment)
     }
     
     func htmlEditorDidFinishLoadingContent() {

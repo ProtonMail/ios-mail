@@ -7,17 +7,31 @@ var html_editor = {};
 
 /// onload
 window.onload = function() {
-    
+
 };
 
 /// init
 html_editor.init = function() {
-    
+
 };
 
 /// the editor tag. div
 html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
+
+/// track changes in DOM tree
+var mutationObserver = new MutationObserver(function(events) {
+    events.forEach(function(event) {
+        event.removedNodes.forEach(function(removedNode) {
+            if (removedNode.getAttribute('src-original-pm-cid')) {
+                var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
+                var cid = cidWithPrefix.replace("cid:", "");
+                window.webkit.messageHandlers.removeImage.postMessage({ "cid": cid });
+            }
+        });
+    });
+});
+mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
 
 /// cached embed image cids
 html_editor.cachedCIDs = {};
@@ -54,7 +68,7 @@ html_editor.setCSP = function(content) {
 /// update view port width. set to the content size otherwise the text selection will not work
 html_editor.setWidth = function(width) {
     var mvp = document.getElementById('myViewport');
-    mvp.setAttribute('content','user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
+    mvp.setAttribute('content', 'user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
 };
 
 /// we don't use it for now.
@@ -64,7 +78,7 @@ html_editor.setPlaceholderText = function(text) {
 
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
-    html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+    html_editor.delegate("cursor/" + html_editor.getCaretYPosition());
     html_editor.acquireEmbeddedImages();
 });
 
@@ -78,15 +92,15 @@ html_editor.getCaretYPosition = function() {
     // Next line is comented to prevent deselecting selection. It looks like work but if there are any issues will appear then uconmment it as well as code above.
     //sel.collapseToStart();
     var range = sel.getRangeAt(0);
-    var span = document.createElement('span');// something happening here preventing selection of elements
+    var span = document.createElement('span'); // something happening here preventing selection of elements
     range.collapse(false);
     range.insertNode(span);
-    
+
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
     var rect = span.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
-    
+
     span.parentNode.removeChild(span);
     return [leftPosition, topPosition];
 }
@@ -128,8 +142,8 @@ html_editor.hideEmbedImage = function(cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
     if (found.length) {
         found.forEach(function(image) {
-                      image.setAttribute('src', cid);
-                      });
+            image.setAttribute('src', cid);
+        });
     }
 }
 
@@ -155,14 +169,14 @@ html_editor.acquireEmbeddedImages = function() {
 
 html_editor.getBase64FromImageUrl = function(url, callback) {
     var img = new Image();
-    img.onload = function () {
+    img.onload = function() {
         var canvas = document.createElement("canvas");
         canvas.width = this.width;
         canvas.height = this.height;
-        
+
         var ctx = canvas.getContext("2d");
         ctx.drawImage(this, 0, 0);
-        
+
         var data = canvas.toDataURL("image/png");
         var cid = url.replace("blob:null\/", '');
         callback(cid, data);
@@ -179,4 +193,3 @@ html_editor.removeEmbedImage = function(cid) {
 
     }
 }
-
