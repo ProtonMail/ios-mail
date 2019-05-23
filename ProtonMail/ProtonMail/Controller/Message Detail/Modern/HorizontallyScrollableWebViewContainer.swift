@@ -46,7 +46,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
     private lazy var animator = UIDynamicAnimator(referenceView: self.enclosingScroller!.scroller)
     private var pushBehavior: UIPushBehavior!
     private var frictionBehaviour: UIDynamicItemBehavior!
-    private var scrollDecelerationOverlay: UIView!
+    private var scrollDecelerationOverlay: ViewBlowingAfterTouch!
     private var scrollDecelerationOverlayObservation: NSKeyValueObservation!
     
     deinit {
@@ -143,8 +143,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         case .began:
             self.animator.removeAllBehaviors()
             self.gestureInitialOffset = .zero
-            self.scrollDecelerationOverlayObservation = nil
-            self.scrollDecelerationOverlay?.removeFromSuperview()
+            self.stopInertia()
             
         case .ended:
             let magic: CGFloat = 100 // this constant makes inertia feel right, something about the mass of UIKit objects
@@ -163,7 +162,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
             self.frictionBehaviour.density = (magic * magic) / (self.scrollDecelerationOverlay.frame.size.height * self.scrollDecelerationOverlay.frame.size.width)
             self.animator.addBehavior(self.frictionBehaviour)
             
-            self.scrollDecelerationOverlayObservation = self.scrollDecelerationOverlay.observe(\UIView.center, options: [.old, .new]) { [weak self] pixel, change in
+            self.scrollDecelerationOverlayObservation = self.scrollDecelerationOverlay.observe(\ViewBlowingAfterTouch.center, options: [.old, .new]) { [weak self] pixel, change in
                 guard let _ = pixel.superview else { return }
                 guard let new = change.newValue, let old = change.oldValue else { return }
                 self?.enclosingScroller?.propogate(scrolling: .init(x: new.x - old.x, y: new.y - old.y),
@@ -176,6 +175,11 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
                                               boundsTouchedHandler: { /* nothing */ })
             self.gestureInitialOffset = translation
         }
+    }
+    
+    internal func stopInertia() {
+        self.scrollDecelerationOverlayObservation = nil
+        self.scrollDecelerationOverlay?.blow()
     }
     
     internal func updateHeight(to newHeight: CGFloat) {
@@ -261,11 +265,15 @@ fileprivate class ViewBlowingAfterTouch: UIView {
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let target = super.hitTest(point, with: event)
         if target == self {
-            DispatchQueue.main.async {
-                self.removeFromSuperview()
-            }
+            self.blow()
         }
         return target
+    }
+    
+    func blow() {
+        DispatchQueue.main.async {
+            self.removeFromSuperview()
+        }
     }
 }
 

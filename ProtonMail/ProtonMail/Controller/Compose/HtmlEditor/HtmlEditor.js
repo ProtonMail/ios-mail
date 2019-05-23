@@ -7,17 +7,58 @@ var html_editor = {};
 
 /// onload
 window.onload = function() {
-    
+
 };
 
 /// init
 html_editor.init = function() {
-    
+
 };
 
 /// the editor tag. div
 html_editor.editor = document.getElementById('editor');
 html_editor.editor_header = document.getElementById('editor_header');
+
+/// track changes in DOM tree
+var mutationObserver = new MutationObserver(function(events) {
+    for (var i = 0; i < events.length; i++) {
+        var event = events[i];
+
+        // check if removed image was our inline embedded attachment
+        for (var j = 0; j < event.removedNodes.length; j++) {
+            var removedNode = event.removedNodes[j];
+            if (removedNode.nodeType === Node.ELEMENT_NODE) {
+                if (removedNode.getAttribute('src-original-pm-cid')) {
+                    var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
+                    var cid = cidWithPrefix.replace("cid:", "");
+                    window.webkit.messageHandlers.removeImage.postMessage({ "cid": cid });
+                }
+            }
+        }
+
+        var insertedImages = false;
+
+        // find all img in inserted nodes and update height once they are loaded
+        for (var k = 0; k < event.addedNodes.length; k++) {
+            var element = event.addedNodes[k];
+            if (element.nodeType === Node.ELEMENT_NODE) {
+                var children = element.querySelectorAll('img')
+                for (var m = 0; m < children.length; m++) {
+                    insertedImages = true;
+                    children[m].onload = function() {
+                        window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+                    };
+                }
+            }
+        }
+
+        // update height if some cached img were inserted which will never have onload called
+        if (insertedImages) {
+            window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+        }
+    }
+});
+mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
 
 /// cached embed image cids
 html_editor.cachedCIDs = {};
@@ -54,7 +95,7 @@ html_editor.setCSP = function(content) {
 /// update view port width. set to the content size otherwise the text selection will not work
 html_editor.setWidth = function(width) {
     var mvp = document.getElementById('myViewport');
-    mvp.setAttribute('content','user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
+    mvp.setAttribute('content', 'user-scalable=no, width=' + width + ',initial-scale=1.0, maximum-scale=1.0');
 };
 
 /// we don't use it for now.
@@ -64,7 +105,7 @@ html_editor.setPlaceholderText = function(text) {
 
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
-    html_editor.delegate("cursor/"+ html_editor.getCaretYPosition());
+    html_editor.delegate("cursor/" + html_editor.getCaretYPosition());
     html_editor.acquireEmbeddedImages();
 });
 
@@ -78,15 +119,15 @@ html_editor.getCaretYPosition = function() {
     // Next line is comented to prevent deselecting selection. It looks like work but if there are any issues will appear then uconmment it as well as code above.
     //sel.collapseToStart();
     var range = sel.getRangeAt(0);
-    var span = document.createElement('span');// something happening here preventing selection of elements
+    var span = document.createElement('span'); // something happening here preventing selection of elements
     range.collapse(false);
     range.insertNode(span);
-    
+
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
     var rect = span.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
-    
+
     span.parentNode.removeChild(span);
     return [leftPosition, topPosition];
 }
@@ -103,21 +144,27 @@ html_editor.updateSignature = function(html, sanitizeConfig) {
     signature.innerHTML = DOMPurify.sanitize(cleanByConfig);
 }
 
+// for calls from Swift
+html_editor.updateEncodedEmbedImage = function(cid, blobdata) {
+    var found = document.querySelectorAll('img[src="' + cid + '"]');
+    for (var i = 0; i < found.length; i++) {
+        var originalImageData = decodeURIComponent(blobdata);
+        html_editor.setImageData(found[i], cid, originalImageData);
+    }
+}
+
+// for calls from JS
 html_editor.updateEmbedImage = function(cid, blobdata) {
     var found = document.querySelectorAll('img[src="' + cid + '"]');
-    if (found.length) {
-        found.forEach(function(image) {
-            html_editor.setImageData(image, cid, blobdata);
-        });
+    for (var i = 0; i < found.length; i++) {
+        html_editor.setImageData(found[i], cid, blobdata);
     }
 }
 
 html_editor.hideEmbedImage = function(cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
-    if (found.length) {
-        found.forEach(function(image) {
-                      image.setAttribute('src', cid);
-                      });
+    for (var i = 0; i < found.length; i++) {
+        found[i].setAttribute('src', cid);
     }
 }
 
@@ -129,28 +176,27 @@ html_editor.setImageData = function(image, cid, blobdata) {
 }
 
 html_editor.acquireEmbeddedImages = function() {
-    var found = document.querySelectorAll('img[src^="blob:null"]');
-    if (found.length) {
-        found.forEach(function(image) {
-            html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
-                html_editor.setImageData(image, "cid:" + cid, data);
-                var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
-                window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
-            });
+    var found = document.querySelectorAll('img[src^="blob:null"], img[src^="webkit-fake-url://"]');
+    for (var i = 0; i < found.length; i++) {
+        var image = found[i];
+        html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
+            html_editor.setImageData(image, "cid:" + cid, data);
+            var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
+            window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
         });
     }
 }
 
 html_editor.getBase64FromImageUrl = function(url, callback) {
     var img = new Image();
-    img.onload = function () {
+    img.onload = function() {
         var canvas = document.createElement("canvas");
         canvas.width = this.width;
         canvas.height = this.height;
-        
+
         var ctx = canvas.getContext("2d");
         ctx.drawImage(this, 0, 0);
-        
+
         var data = canvas.toDataURL("image/png");
         var cid = url.replace("blob:null\/", '');
         callback(cid, data);
@@ -160,11 +206,7 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
 
 html_editor.removeEmbedImage = function(cid) {
     var found = document.querySelectorAll('img[src-original-pm-cid="' + cid + '"]');
-    if (found.length) {
-        found.forEach(function(image) {
-            image.remove();
-        });
-
+    for (var i = 0; i < found.length; i++) {
+        found[i].remove();
     }
 }
-

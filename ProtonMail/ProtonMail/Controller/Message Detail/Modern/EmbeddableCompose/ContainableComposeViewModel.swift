@@ -30,6 +30,7 @@ import Foundation
 
 class ContainableComposeViewModel: ComposeViewModelImpl {
     @objc internal dynamic var contentHeight: CGFloat = 0.1
+    private let kDefaultAttachmentFileSize : Int = 25 * 1000 * 1000 // 25 mb
 }
 
 extension ContainableComposeViewModel {
@@ -38,5 +39,9 @@ extension ContainableComposeViewModel {
         return message.attachments.reduce(into: 0) {
             $0 += ($1 as? Attachment)?.fileSize.intValue ?? 0
         }
+    }
+    
+    internal func validateAttachmentsSize(withNew data: Data) -> Bool {
+        return self.currentAttachmentsSize + data.dataSize < self.kDefaultAttachmentFileSize
     }
 }

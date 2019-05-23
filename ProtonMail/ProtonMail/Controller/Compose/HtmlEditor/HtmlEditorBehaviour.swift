@@ -38,6 +38,7 @@ protocol HtmlEditorBehaviourDelegate : AnyObject {
     func htmlEditorDidFinishLoadingContent()
     func caretMovedTo(_ offset: CGPoint)
     func addInlineAttachment(_ sid: String, data: Data)
+    func removeInlineAttachment(_ sid: String)
 }
 
 /// Html editor
@@ -74,7 +75,9 @@ class HtmlEditorBehaviour: NSObject {
         self.webView.scrollView.keyboardDismissMode = .interactive
         webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         webView.configuration.userContentController.add(self, name: "addImage")
+        webView.configuration.userContentController.add(self, name: "removeImage")
         webView.configuration.userContentController.add(self, name: "moveCaret")
+        webView.configuration.userContentController.add(self, name: "heightUpdated")
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
@@ -254,7 +257,7 @@ class HtmlEditorBehaviour: NSObject {
     ///   - blob: based64 encoded. don't need run escape
     func update(embedImage cid : String, encoded blob : String) {
         let escapedBlob: String = blob.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
-        self.run(with: "html_editor.updateEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
+        self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
             PMLog.D("Error is \(error.localizedDescription)");
         }
     }
@@ -301,7 +304,7 @@ extension HtmlEditorBehaviour {
             }
             
             firstly { () -> Promise<CGFloat> in
-                self.run(with: "document.body.offsetHeight")
+                self.run(with: "document.body.scrollHeight")
             }.done { (height) in
                 self.contentHeight = height
                 self.delegate?.caretMovedTo(coursorPosition)
@@ -323,12 +326,12 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
     func userContentController(_ userContentController: WKUserContentController,
                                didReceive message: WKScriptMessage)
     {
-        print(message.body)
         guard let userInfo = message.body as? Dictionary<String, Any> else {
             assert(false, "Broken message: not a dictionary")
             return
         }
         
+        // add image
         if let path = userInfo["cid"] as? String,
             let base64DataString = userInfo["data"] as? String,
             let base64Data = Data(base64Encoded: base64DataString)
@@ -337,6 +340,19 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
             return
         }
         
+        // remove image
+        if let path = userInfo["cid"] as? String{
+            self.delegate?.removeInlineAttachment(path)
+            return
+        }
+        
+        // height updated
+        if let newHeight = userInfo["height"] as? Double {
+            self.contentHeight = CGFloat(newHeight)
+            return
+        }
+        
+        // move caret
         let scheme = "delegate"
         if let delegation = userInfo[scheme] as? String {
             PMLog.D(delegation)

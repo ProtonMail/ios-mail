@@ -33,9 +33,10 @@ import UIKit
 ///
 /// HtmlEditorBehavior only adds some functionality to HorizontallyScrollableWebViewContainer's webView, is not a UIView or webView's delegate any more. ComposeViewController is tightly coupled with ComposeHeaderViewController and needs separate refactor, while ContainableComposeViewController and HorizontallyScrollableWebViewContainer contain absolute minimum of logic they need: logic allowing to embed composer into tableView cell and logic allowing 2D scroll in fullsize webView.
 ///
-class ContainableComposeViewController: ComposeViewController {
+class ContainableComposeViewController: ComposeViewController, BannerRequester {
+    private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.webView.scrollView.clipsToBounds = false
@@ -57,6 +58,7 @@ class ContainableComposeViewController: ComposeViewController {
     }
     
     override func caretMovedTo(_ offset: CGPoint) {
+        self.stopInertia()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
             guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
              // approx height and width of our text row
@@ -93,5 +95,26 @@ class ContainableComposeViewController: ComposeViewController {
     override func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.htmlEditor.webView(webView, didFinish: navigation)
         super.webView(webView, didFinish: navigation)
+    }
+    
+    override func addInlineAttachment(_ sid: String, data: Data) {
+        guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
+            DispatchQueue.main.async {
+                self.latestErrorBanner = BannerView(appearance: .red, message: LocalString._the_total_attachment_size_cant_be_bigger_than_25mb, buttons: nil, offset: 8.0)
+                #if !APP_EXTENSION
+                UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
+                #else
+                // FIXME: send message via window
+                #endif
+            }
+            
+            self.htmlEditor.remove(embedImage: "cid:\(sid)")
+            return
+        }
+        super.addInlineAttachment(sid, data: data)
+    }
+    
+    func errorBannerToPresent() -> BannerView? {
+        return self.latestErrorBanner
     }
 }
