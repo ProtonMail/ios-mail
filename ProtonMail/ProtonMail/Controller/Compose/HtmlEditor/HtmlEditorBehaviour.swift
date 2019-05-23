@@ -77,6 +77,7 @@ class HtmlEditorBehaviour: NSObject {
         webView.configuration.userContentController.add(self, name: "addImage")
         webView.configuration.userContentController.add(self, name: "removeImage")
         webView.configuration.userContentController.add(self, name: "moveCaret")
+        webView.configuration.userContentController.add(self, name: "heightUpdated")
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
@@ -342,6 +343,12 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
         // remove image
         if let path = userInfo["cid"] as? String{
             self.delegate?.removeInlineAttachment(path)
+            return
+        }
+        
+        // height updated
+        if let newHeight = userInfo["height"] as? Double {
+            self.contentHeight = CGFloat(newHeight)
             return
         }
         
