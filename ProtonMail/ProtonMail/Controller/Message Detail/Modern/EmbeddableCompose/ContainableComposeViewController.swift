@@ -58,6 +58,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     }
     
     override func caretMovedTo(_ offset: CGPoint) {
+        self.stopInertia()
         DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(1)) { [weak self] in
             guard let self = self, let enclosingScroller = self.enclosingScroller else { return }
              // approx height and width of our text row
