@@ -125,21 +125,18 @@ html_editor.editor.addEventListener("keydown", function(key) {
     quote_breaker.breakQuoteIfNeeded(key);
 });
 
+html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function() {
-    var sel = window.getSelection();
-    // Next line is comented to prevent deselecting selection. It looks like work but if there are any issues will appear then uconmment it as well as code above.
-    //sel.collapseToStart();
-    var range = sel.getRangeAt(0);
-    var caret = document.createElement('caret'); // something happening here preventing selection of elements
-    range.collapse(false);
-    range.insertNode(caret);
+    var range = window.getSelection().getRangeAt(0);
+    if (html_editor.caret != range.endContainer.nextElementSibling) {
+        range.insertNode(html_editor.caret);
+    }
 
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
-    var rect = caret.getBoundingClientRect();
+    var rect = html_editor.caret.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
 
-    caret.parentNode.removeChild(caret);
     window.webkit.messageHandlers.moveCaret.postMessage({ "cursorX": leftPosition, "cursorY": topPosition, "height": document.body.scrollHeight });
 }
 
