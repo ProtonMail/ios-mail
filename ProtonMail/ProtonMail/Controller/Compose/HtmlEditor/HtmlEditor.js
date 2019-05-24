@@ -105,7 +105,7 @@ html_editor.setPlaceholderText = function(text) {
 
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
-    html_editor.delegate("cursor/" + html_editor.getCaretYPosition());
+    html_editor.getCaretYPosition();
     html_editor.acquireEmbeddedImages();
 });
 
@@ -129,13 +129,8 @@ html_editor.getCaretYPosition = function() {
     var topPosition = rect.top + window.scrollY;
 
     span.parentNode.removeChild(span);
-    return [leftPosition, topPosition];
+    window.webkit.messageHandlers.moveCaret.postMessage({ "cursorX":  leftPosition, "cursorY":  topPosition, "height": document.body.scrollHeight});
 }
-
-/// delegate. the swift part could catch the events
-html_editor.delegate = function(event) {
-    window.webkit.messageHandlers.moveCaret.postMessage({ "delegate": "delegate://" + event });
-};
 
 //this is for update protonmail email signature
 html_editor.updateSignature = function(html, sanitizeConfig) {

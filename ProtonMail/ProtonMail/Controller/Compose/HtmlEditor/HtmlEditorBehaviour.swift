@@ -292,25 +292,6 @@ extension HtmlEditorBehaviour {
             if !isEditorLoaded {
                 isEditorLoaded = true
             }
-        } else if method.hasPrefix("cursor/") {
-            let values = method.preg_replace_none_regex("cursor/", replaceto: "")
-                               .splitByComma()
-                               .compactMap { NumberFormatter().number(from: $0) as? CGFloat }
-            
-            guard let coursorPositionX = values.first, let coursorPositionY =  values.last,
-                case let coursorPosition = CGPoint(x: coursorPositionX, y: coursorPositionY) else
-            {
-                return
-            }
-            
-            firstly { () -> Promise<CGFloat> in
-                self.run(with: "document.body.scrollHeight")
-            }.done { (height) in
-                self.contentHeight = height
-                self.delegate?.caretMovedTo(coursorPosition)
-            }.catch { _ in
-                self.delegate?.caretMovedTo(coursorPosition)
-            }
         }
     }
 
@@ -346,18 +327,18 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
             return
         }
         
+        // move caret
+        if let coursorPositionX = userInfo["cursorX"] as? Double,
+            let coursorPositionY = userInfo["cursorY"] as? Double,
+            let newHeight = userInfo["height"] as? Double
+        {
+            self.contentHeight = CGFloat(newHeight)
+            self.delegate?.caretMovedTo(CGPoint(x: coursorPositionX, y: coursorPositionY))
+        }
+        
         // height updated
         if let newHeight = userInfo["height"] as? Double {
             self.contentHeight = CGFloat(newHeight)
-            return
-        }
-        
-        // move caret
-        let scheme = "delegate"
-        if let delegation = userInfo[scheme] as? String {
-            PMLog.D(delegation)
-            let command = delegation.preg_replace_none_regex(scheme + "://", replaceto: "")
-            self.performCommand(command)
             return
         }
         
