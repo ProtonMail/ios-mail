@@ -62,10 +62,10 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         }
     }
     
-     override func viewWillAppear(_ animated: Bool) {
-         super.viewWillAppear(animated)
-         self.workaroundWebKitRenderingBug(swithOn: true)
-     }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.workaroundWebKitRenderingBug(swithOn: true)
+    }
     
      override func viewWillDisappear(_ animated: Bool) {
          super.viewWillDisappear(animated)
