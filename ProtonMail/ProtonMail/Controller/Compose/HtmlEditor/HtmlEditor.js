@@ -217,7 +217,7 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
 
         var data = canvas.toDataURL("image/png");
         var cid = url.replace("blob:null\/", '');
-        callback(cid, data);
+        callback(cid + ".png", data);
     };
     img.src = url;
 }
