@@ -197,11 +197,23 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
     var img = new Image();
     img.onload = function() {
         var canvas = document.createElement("canvas");
-        canvas.width = this.width;
-        canvas.height = this.height;
+
+        // Canvas has a limitation for maximum image size, different for every device.
+        // Since we do not want receiver to know which device the message was written on,
+        // we'll stick to one the oldest supported - iPhone 5 - which is 3 Mp.
+        // (according to SO: https://stackoverflow.com/a/23391599/4751521)
+        var sizeLimit = 3 * 1024 * 1024;
+        if (this.width * this.height < sizeLimit) {
+            canvas.width = this.width;
+            canvas.height = this.height;
+        } else {
+            var coefficient = sizeLimit / (this.width * this.height);
+            canvas.width = this.width * coefficient;
+            canvas.height = this.height * coefficient;
+        }
 
         var ctx = canvas.getContext("2d");
-        ctx.drawImage(this, 0, 0);
+        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
         var data = canvas.toDataURL("image/png");
         var cid = url.replace("blob:null\/", '');
