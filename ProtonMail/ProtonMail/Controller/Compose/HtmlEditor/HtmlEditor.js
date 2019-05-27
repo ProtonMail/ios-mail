@@ -27,7 +27,7 @@ var mutationObserver = new MutationObserver(function(events) {
         // check if removed image was our inline embedded attachment
         for (var j = 0; j < event.removedNodes.length; j++) {
             var removedNode = event.removedNodes[j];
-            if (removedNode.nodeType === Node.ELEMENT_NODE) {
+            if (removedNode.nodeType === Node.ELEMENT_NODE && removedNode.tagName != 'CARET') {
                 if (removedNode.getAttribute('src-original-pm-cid')) {
                     var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
                     var cid = cidWithPrefix.replace("cid:", "");
@@ -41,20 +41,32 @@ var mutationObserver = new MutationObserver(function(events) {
         // find all img in inserted nodes and update height once they are loaded
         for (var k = 0; k < event.addedNodes.length; k++) {
             var element = event.addedNodes[k];
-            if (element.nodeType === Node.ELEMENT_NODE) {
-                var children = element.querySelectorAll('img')
-                for (var m = 0; m < children.length; m++) {
+            if (element.nodeType === Node.ELEMENT_NODE && element.tagName != 'CARET') {
+                var spotImg = function(img) {
                     insertedImages = true;
-                    children[m].onload = function() {
+                    img.onload = function() {
                         window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
                     };
+                };
+
+                if (element.tagName == 'IMG') {
+                    spotImg(element);
+                    continue;
+                }
+
+                var children = Array.from(element.querySelectorAll('img'));
+                for (var m = 0; m < children.length; m++) {
+                    spotImg(children[m]);
                 }
             }
         }
 
-        // update height if some cached img were inserted which will never have onload called
         if (insertedImages) {
+            // update height if some cached img were inserted which will never have onload called
             window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+
+            // process new inline images
+            html_editor.acquireEmbeddedImages();
         }
     }
 });
@@ -105,8 +117,7 @@ html_editor.setPlaceholderText = function(text) {
 
 /// transmits caret position to the app
 html_editor.editor.addEventListener("input", function() {
-    html_editor.delegate("cursor/" + html_editor.getCaretYPosition());
-    html_editor.acquireEmbeddedImages();
+    html_editor.getCaretYPosition();
 });
 
 /// breaks the blockquote into two if possible
@@ -114,28 +125,20 @@ html_editor.editor.addEventListener("keydown", function(key) {
     quote_breaker.breakQuoteIfNeeded(key);
 });
 
+html_editor.caret = document.createElement('caret'); // something happening here preventing selection of elements
 html_editor.getCaretYPosition = function() {
-    var sel = window.getSelection();
-    // Next line is comented to prevent deselecting selection. It looks like work but if there are any issues will appear then uconmment it as well as code above.
-    //sel.collapseToStart();
-    var range = sel.getRangeAt(0);
-    var span = document.createElement('span'); // something happening here preventing selection of elements
-    range.collapse(false);
-    range.insertNode(span);
+    var range = window.getSelection().getRangeAt(0);
+    if (html_editor.caret != range.endContainer.nextElementSibling) {
+        range.insertNode(html_editor.caret);
+    }
 
     // relative to the viewport, while offsetTop is relative to parent, which differs when editing the quoted message text
-    var rect = span.getBoundingClientRect();
+    var rect = html_editor.caret.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
 
-    span.parentNode.removeChild(span);
-    return [leftPosition, topPosition];
+    window.webkit.messageHandlers.moveCaret.postMessage({ "cursorX": leftPosition, "cursorY": topPosition, "height": document.body.scrollHeight });
 }
-
-/// delegate. the swift part could catch the events
-html_editor.delegate = function(event) {
-    window.webkit.messageHandlers.moveCaret.postMessage({ "delegate": "delegate://" + event });
-};
 
 //this is for update protonmail email signature
 html_editor.updateSignature = function(html, sanitizeConfig) {
