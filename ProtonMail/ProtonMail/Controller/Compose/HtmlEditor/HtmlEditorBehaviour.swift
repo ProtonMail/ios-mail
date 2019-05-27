@@ -50,6 +50,10 @@ class HtmlEditorBehaviour: NSObject {
         case jsError(Error)
     }
     
+    private enum MessageTopics: String {
+        case addImage, removeImage, moveCaret, heightUpdated
+    }
+    
     //
     private var isEditorLoaded: Bool = false
     private var contentHTML: WebContents = WebContents(body: "", remoteContentMode: .lockdown)
@@ -74,10 +78,10 @@ class HtmlEditorBehaviour: NSObject {
         self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
         webView.configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
-        webView.configuration.userContentController.add(self, name: "addImage")
-        webView.configuration.userContentController.add(self, name: "removeImage")
-        webView.configuration.userContentController.add(self, name: "moveCaret")
-        webView.configuration.userContentController.add(self, name: "heightUpdated")
+        webView.configuration.userContentController.add(self, topic: MessageTopics.addImage)
+        webView.configuration.userContentController.add(self, topic: MessageTopics.removeImage)
+        webView.configuration.userContentController.add(self, topic: MessageTopics.moveCaret)
+        webView.configuration.userContentController.add(self, topic: MessageTopics.heightUpdated)
         
         ///
         self.hidesInputAccessoryView() //after called this. you can't find subview `WKContent`
@@ -232,7 +236,7 @@ class HtmlEditorBehaviour: NSObject {
                 return Promise.value(())
             }
         }.then { _ -> Promise<CGFloat> in
-            self.run(with: "document.body.scrollHeight")
+            self.run(with: "html_editor.getContentsHeight()")
         }.done { (height) in
             self.contentHeight = height
             self.delegate?.htmlEditorDidFinishLoadingContent()
@@ -312,36 +316,55 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
             return
         }
         
-        // add image
-        if let path = userInfo["cid"] as? String,
-            let base64DataString = userInfo["data"] as? String,
-            let base64Data = Data(base64Encoded: base64DataString)
+        guard let topicRaw = userInfo["messageHandler"] as? String,
+            let messageTopic = MessageTopics(rawValue: topicRaw) else
         {
+            assert(false, "Broken message: unknown topic")
+            return
+        }
+        
+        switch messageTopic {
+        case .addImage:
+            guard let path = userInfo["cid"] as? String,
+                let base64DataString = userInfo["data"] as? String,
+                let base64Data = Data(base64Encoded: base64DataString) else
+            {
+                assert(false, "Broken message: lack important data")
+                return
+            }
             self.delegate?.addInlineAttachment(path, data: base64Data)
-            return
-        }
-        
-        // remove image
-        if let path = userInfo["cid"] as? String{
-            self.delegate?.removeInlineAttachment(path)
-            return
-        }
-        
-        // move caret
-        if let coursorPositionX = userInfo["cursorX"] as? Double,
-            let coursorPositionY = userInfo["cursorY"] as? Double,
-            let newHeight = userInfo["height"] as? Double
-        {
+            
+        case .heightUpdated:
+            guard let newHeight = userInfo["height"] as? Double else {
+                assert(false, "Broken message: lack important data")
+                return
+            }
+            self.contentHeight = CGFloat(newHeight)
+            
+        case .moveCaret:
+            guard let coursorPositionX = userInfo["cursorX"] as? Double,
+                let coursorPositionY = userInfo["cursorY"] as? Double,
+                let newHeight = userInfo["height"] as? Double else
+            {
+                assert(false, "Broken message: lack important data")
+                return
+            }
             self.contentHeight = CGFloat(newHeight)
             self.delegate?.caretMovedTo(CGPoint(x: coursorPositionX, y: coursorPositionY))
-        }
         
-        // height updated
-        if let newHeight = userInfo["height"] as? Double {
-            self.contentHeight = CGFloat(newHeight)
-            return
+        case .removeImage:
+            guard let path = userInfo["cid"] as? String else {
+                assert(false, "Broken message: lack important data")
+                return
+            }
+            self.delegate?.removeInlineAttachment(path)
         }
-        
-        assert(false, "Broken message: lost url or data")
+    }
+}
+
+// syntax sugar
+fileprivate extension WKUserContentController {
+    fileprivate func add<T: RawRepresentable>(_ scriptMessageHandler: WKScriptMessageHandler, topic: T) where T.RawValue == String {
+        self.add(scriptMessageHandler, name: topic.rawValue)
     }
 }

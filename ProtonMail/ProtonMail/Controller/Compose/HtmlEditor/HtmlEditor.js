@@ -31,7 +31,7 @@ var mutationObserver = new MutationObserver(function(events) {
                 if (removedNode.getAttribute('src-original-pm-cid')) {
                     var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
                     var cid = cidWithPrefix.replace("cid:", "");
-                    window.webkit.messageHandlers.removeImage.postMessage({ "cid": cid });
+                    window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
                 }
             }
         }
@@ -45,7 +45,8 @@ var mutationObserver = new MutationObserver(function(events) {
                 var spotImg = function(img) {
                     insertedImages = true;
                     img.onload = function() {
-                        window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+                        var contentsHeight = html_editor.getContentsHeight();
+                        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
                     };
                 };
 
@@ -63,7 +64,8 @@ var mutationObserver = new MutationObserver(function(events) {
 
         if (insertedImages) {
             // update height if some cached img were inserted which will never have onload called
-            window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+            var contentsHeight = html_editor.getContentsHeight();
+            window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 
             // process new inline images
             html_editor.acquireEmbeddedImages();
@@ -136,8 +138,9 @@ html_editor.getCaretYPosition = function() {
     var rect = html_editor.caret.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
+    var contentsHeight = html_editor.getContentsHeight();
 
-    window.webkit.messageHandlers.moveCaret.postMessage({ "cursorX": leftPosition, "cursorY": topPosition, "height": document.body.scrollHeight });
+    window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": leftPosition, "cursorY": topPosition, "height": contentsHeight });
 }
 
 //this is for update protonmail email signature
@@ -185,7 +188,7 @@ html_editor.acquireEmbeddedImages = function() {
         html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
             html_editor.setImageData(image, "cid:" + cid, data);
             var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
-            window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
+            window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": bits });
         });
     }
 }
@@ -212,4 +215,9 @@ html_editor.removeEmbedImage = function(cid) {
     for (var i = 0; i < found.length; i++) {
         found[i].remove();
     }
+}
+
+html_editor.getContentsHeight = function() {
+    var rects = document.body.getBoundingClientRect();
+    return rects.height;
 }
