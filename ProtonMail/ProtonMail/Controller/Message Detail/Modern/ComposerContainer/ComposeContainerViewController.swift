@@ -184,7 +184,15 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     func tableView(_ tableView: UITableView,
                    performDropWith coordinator: UITableViewDropCoordinator)
     {
+        DispatchQueue.main.async {
+            LocalString._importing_drop.alertToastBottom()
+        }
+        
         let itemProviders = coordinator.items.map { $0.dragItem.itemProvider }
-        self.viewModel.importFiles(from: itemProviders, errorHandler: self.error, successHandler: { /* nothing */})
+        self.viewModel.importFiles(from: itemProviders, errorHandler: self.error) {
+            DispatchQueue.main.async {
+                LocalString._drop_finished.alertToastBottom()
+            }
+        }
     }
 }
