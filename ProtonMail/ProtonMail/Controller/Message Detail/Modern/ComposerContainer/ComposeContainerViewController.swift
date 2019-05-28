@@ -32,6 +32,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
+    @IBOutlet private var sendButton: UIBarButtonItem! //cancel button.
     private var bottomPadding: NSLayoutConstraint!
     private var dropLandingZone: UIView? // drag and drop session items dropped on this view will be added as attachments
     
@@ -77,6 +78,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
                 self?.tableView.endUpdates()
             }
         ]
+        
+        // accessibility
+        self.sendButton.accessibilityLabel = LocalString._general_send_action
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
