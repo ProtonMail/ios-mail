@@ -273,6 +273,15 @@ class ComposeHeaderViewController: UIViewController {
         self.view.bringSubviewToFront(subject);
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
+        
+        // accessibility
+        self.view.isAccessibilityElement = false
+        self.accessibilityElements = [ self.fromPickerButton,
+                                       self.toContactPicker,
+                                       self.ccContactPicker, self.bccContactPicker,
+                                       self.subject,
+                                       self.expirationView, self.buttonView, self.passwordView
+        ]
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -327,8 +336,11 @@ class ComposeHeaderViewController: UIViewController {
         let _ = self.toContactPicker.becomeFirstResponder()
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.passwordView.alpha = 0.0
+            self.passwordView.isHidden = true
             self.buttonView.alpha = 0.0
+            self.buttonView.isHidden = true
             self.expirationView.alpha = 1.0
+            self.expirationView.isHidden = false
             
             self.toContactPicker.isUserInteractionEnabled = false
             self.ccContactPicker.isUserInteractionEnabled = false
@@ -507,7 +519,11 @@ class ComposeHeaderViewController: UIViewController {
         
         UIView.animate(withDuration: self.kAnimationDuration, animations: { () -> Void in
             self.expirationView.alpha = 0.0
+            self.expirationView.isHidden = true
+            self.passwordView.alpha = 1.0
+            self.passwordView.isHidden = false
             self.buttonView.alpha = 1.0
+            self.buttonView.isHidden = false
             self.delegate?.composeViewHideExpirationView(self)
         })
     }

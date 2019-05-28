@@ -186,6 +186,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
         
         self.expirationPicker.alpha = 0.0
+        self.expirationPicker.isHidden = true
         self.expirationPicker.dataSource = self
         self.expirationPicker.delegate = self
 
@@ -722,11 +723,13 @@ extension ComposeViewController : ComposeViewDelegate {
 
     @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 1
+        self.expirationPicker.isHidden = false
         self.view.bringSubviewToFront(expirationPicker)
     }
 
     @objc func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
         self.expirationPicker.alpha = 0
+        self.expirationPicker.isHidden = true
     }
 
     func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController) {
@@ -739,6 +742,7 @@ extension ComposeViewController : ComposeViewDelegate {
         let selectedHour = expirationPicker.selectedRow(inComponent: 1)
         if self.headerView.setExpirationValue(selectedDay, hour: selectedHour) {
             self.expirationPicker.alpha = 0
+            self.expirationPicker.isHidden = true
         }
         self.updateEO()
     }

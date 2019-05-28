@@ -62,6 +62,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="backButton" destination="8NV-DO-oBM" id="JC9-RG-1I5"/>
+                        <outlet property="sendButton" destination="iiy-bz-03S" id="lm1-LK-kdA"/>
                         <outlet property="tableView" destination="kII-As-Kc3" id="nXg-o5-ymb"/>
                     </connections>
                 </viewController>

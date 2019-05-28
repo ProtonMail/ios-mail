@@ -902,14 +902,17 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if (!editingMode) {
             if (self.composeBarButtonItem == nil) {
                 self.composeBarButtonItem = BarItem(image: UIImage.Top.compose, action: #selector(composeButtonTapped))
+                self.composeBarButtonItem.accessibilityLabel = LocalString._composer_compose_action
             }
             
             if (self.searchBarButtonItem == nil) {
                 self.searchBarButtonItem = BarItem(image: UIImage.Top.search, action: #selector(searchButtonTapped))
+                self.searchBarButtonItem.accessibilityLabel = LocalString._general_search_placeholder
             }
             
             if (self.moreBarButtonItem == nil) {
                 self.moreBarButtonItem = BarItem(image: UIImage.Top.more, action: #selector(moreButtonTapped))
+                self.moreBarButtonItem.accessibilityLabel = LocalString._general_more
             }
             
             if viewModel.isShowEmptyFolder() {
@@ -920,22 +923,27 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         } else {
             if (self.unreadBarButtonItem == nil) {
                 self.unreadBarButtonItem = BarItem(image: UIImage.Top.unread, action: #selector(unreadTapped))
+                self.unreadBarButtonItem.accessibilityLabel = LocalString._mark_as_unread
             }
             
             if (self.labelBarButtonItem == nil) {
                 self.labelBarButtonItem = BarItem(image: UIImage.Top.label, action: #selector(labelButtonTapped))
+                self.labelBarButtonItem.accessibilityLabel = LocalString._label_as_
             }
             
             if (self.folderBarButtonItem == nil) {
                 self.folderBarButtonItem = BarItem(image: UIImage.Top.folder, action: #selector(folderButtonTapped))
+                self.folderBarButtonItem.accessibilityLabel = LocalString._move_to_
             }
             
             if (self.removeBarButtonItem == nil) {
                 self.removeBarButtonItem = BarItem(image: UIImage.Top.trash, action: #selector(removeButtonTapped))
+                self.removeBarButtonItem.accessibilityLabel = LocalString._menu_trash_title
             }
             
             if (self.moreBarButtonItem == nil) {
                 self.moreBarButtonItem = BarItem(image: UIImage.Top.more, action: #selector(moreButtonTapped))
+                self.moreBarButtonItem.accessibilityLabel = LocalString._general_more
             }
             
             if (viewModel.isDrafts()) {
