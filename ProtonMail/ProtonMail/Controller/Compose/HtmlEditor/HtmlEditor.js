@@ -31,7 +31,7 @@ var mutationObserver = new MutationObserver(function(events) {
                 if (removedNode.getAttribute('src-original-pm-cid')) {
                     var cidWithPrefix = removedNode.getAttribute('src-original-pm-cid');
                     var cid = cidWithPrefix.replace("cid:", "");
-                    window.webkit.messageHandlers.removeImage.postMessage({ "cid": cid });
+                    window.webkit.messageHandlers.removeImage.postMessage({ "messageHandler": "removeImage", "cid": cid });
                 }
             }
         }
@@ -45,7 +45,8 @@ var mutationObserver = new MutationObserver(function(events) {
                 var spotImg = function(img) {
                     insertedImages = true;
                     img.onload = function() {
-                        window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+                        var contentsHeight = html_editor.getContentsHeight();
+                        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
                     };
                 };
 
@@ -63,7 +64,8 @@ var mutationObserver = new MutationObserver(function(events) {
 
         if (insertedImages) {
             // update height if some cached img were inserted which will never have onload called
-            window.webkit.messageHandlers.heightUpdated.postMessage({ "height": document.body.scrollHeight });
+            var contentsHeight = html_editor.getContentsHeight();
+            window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 
             // process new inline images
             html_editor.acquireEmbeddedImages();
@@ -136,8 +138,9 @@ html_editor.getCaretYPosition = function() {
     var rect = html_editor.caret.getBoundingClientRect();
     var leftPosition = rect.left + window.scrollX;
     var topPosition = rect.top + window.scrollY;
+    var contentsHeight = html_editor.getContentsHeight();
 
-    window.webkit.messageHandlers.moveCaret.postMessage({ "cursorX": leftPosition, "cursorY": topPosition, "height": document.body.scrollHeight });
+    window.webkit.messageHandlers.moveCaret.postMessage({ "messageHandler": "moveCaret", "cursorX": leftPosition, "cursorY": topPosition, "height": contentsHeight });
 }
 
 //this is for update protonmail email signature
@@ -185,7 +188,7 @@ html_editor.acquireEmbeddedImages = function() {
         html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
             html_editor.setImageData(image, "cid:" + cid, data);
             var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
-            window.webkit.messageHandlers.addImage.postMessage({ "cid": cid, "data": bits });
+            window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": bits });
         });
     }
 }
@@ -194,15 +197,27 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
     var img = new Image();
     img.onload = function() {
         var canvas = document.createElement("canvas");
-        canvas.width = this.width;
-        canvas.height = this.height;
+
+        // Canvas has a limitation for maximum image size, different for every device.
+        // Since we do not want receiver to know which device the message was written on,
+        // we'll stick to one the oldest supported - iPhone 5 - which is 3 Mp.
+        // (according to SO: https://stackoverflow.com/a/23391599/4751521)
+        var sizeLimit = 3 * 1024 * 1024;
+        if (this.width * this.height < sizeLimit) {
+            canvas.width = this.width;
+            canvas.height = this.height;
+        } else {
+            var coefficient = sizeLimit / (this.width * this.height);
+            canvas.width = this.width * coefficient;
+            canvas.height = this.height * coefficient;
+        }
 
         var ctx = canvas.getContext("2d");
-        ctx.drawImage(this, 0, 0);
+        ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
         var data = canvas.toDataURL("image/png");
         var cid = url.replace("blob:null\/", '');
-        callback(cid, data);
+        callback(cid + ".png", data);
     };
     img.src = url;
 }
@@ -212,4 +227,9 @@ html_editor.removeEmbedImage = function(cid) {
     for (var i = 0; i < found.length; i++) {
         found[i].remove();
     }
+}
+
+html_editor.getContentsHeight = function() {
+    var rects = document.body.getBoundingClientRect();
+    return rects.height;
 }
