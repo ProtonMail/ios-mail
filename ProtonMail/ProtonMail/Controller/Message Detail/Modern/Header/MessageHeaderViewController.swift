@@ -42,6 +42,8 @@ class MessageHeaderViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        self.accessibilityElements = self.emailHeaderView.accessibilityElements
+        
         self.emailHeaderView.makeConstraints()
         self.emailHeaderView.isShowingDetail = false
         self.emailHeaderView.backgroundColor = .white

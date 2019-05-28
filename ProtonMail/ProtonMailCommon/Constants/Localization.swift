@@ -1712,4 +1712,7 @@ class LocalizedString {
     /// Invalid URL
     lazy var _invalid_url = NSLocalizedString("Invalid URL",
                                               comment: "Invalid URL error when click a url in contact")
+    
+    lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
+    
 }

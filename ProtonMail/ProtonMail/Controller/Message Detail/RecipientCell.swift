@@ -89,10 +89,10 @@ class RecipientCell: UITableViewCell {
         set {
             self._model = newValue
             
-            let n = (self._model.displayName ?? "")
-            let e = (self._model.displayEmail ?? "")
-            self.senderName.text = n.isEmpty ? e : n
-            self.email.text =  e
+            let name = (self._model.displayName ?? "")
+            let email = (self._model.displayEmail ?? "")
+            self.senderName.text = name.isEmpty ? email : name
+            self.email.text = email
             
             if _showLocker {
                 self.lockButton.isHidden = false
@@ -102,7 +102,17 @@ class RecipientCell: UITableViewCell {
                 self.lockButton.isHidden = true
                 self.lockImage.isHidden = true
             }
+            
+            // accessibility
+            self.accessibilityLabel = name.isEmpty ? email : "\(name), \(email)"
+            self.accessibilityElements = []
+            self.isAccessibilityElement = true
         }
+    }
+    
+    override func accessibilityActivate() -> Bool {
+        self.arrowAction(self)
+        return true
     }
     
     func checkLock() {

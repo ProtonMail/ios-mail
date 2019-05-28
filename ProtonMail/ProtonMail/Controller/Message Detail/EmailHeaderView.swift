@@ -325,13 +325,25 @@ class EmailHeaderView: UIView {
         self.date = Date()
         self.starred = false
         self.attachmentCount = 0
-        
+
         self.addSubviews()
-        
         self.layoutIfNeeded()
-        
-        
         self.visible = true
+        
+        // accessibility
+        self.emailToTable.accessibilityLabel = LocalString._general_to_label
+        self.emailFromTable.accessibilityLabel = LocalString._general_from_label
+        self.emailCcTable.accessibilityLabel = LocalString._general_cc_label
+        self.emailBccTable.accessibilityLabel = LocalString._general_bcc_label
+        self.accessibilityElements = [self.emailTitle,
+                                      self.emailFrom, self.emailFromTable,
+                                      self.emailTo, self.emailToTable,
+                                      self.emailCc, self.emailCcTable,
+                                      self.emailBcc, self.emailBccTable,
+                                      self.emailShortTime,
+                                      self.date ,
+                                      self.emailFavoriteButton,
+                                      self.emailDetailButton]
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -404,6 +416,7 @@ class EmailHeaderView: UIView {
         self.emailBcc.attributedText = bccShortAttr
         
         self.emailFavoriteButton.isSelected = self.starred
+        self.emailFavoriteButton.accessibilityLabel = self.starred ? "Starred" : "Add Star"
         
         let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
         let at = LocalString._general_at_label
@@ -902,6 +915,10 @@ class EmailHeaderView: UIView {
     @objc internal func detailsButtonTapped() {
         self.isShowingDetail = !self.isShowingDetail
         self.updateDetailsView(self.isShowingDetail)
+        
+        // accessibility
+        UIAccessibility.post(notification: UIAccessibility.Notification.layoutChanged,
+                             argument: self.isShowingDetail ? self.emailCc : self.emailDetailButton);
     }
     
     @objc internal func emailFavoriteButtonTapped() {
