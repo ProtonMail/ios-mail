@@ -43,7 +43,7 @@ class DropLandingZone: UIVisualEffectView {
         vibrancyOverlay.autoresizingMask = [.flexibleWidth]
         
         let subtitle = UILabel()
-        subtitle.text = "+ Drop here to add as attachment"
+        subtitle.text = LocalString._drop_here
         subtitle.textColor = .black
         subtitle.sizeToFit()
         subtitle.center = vibrancyOverlay.center

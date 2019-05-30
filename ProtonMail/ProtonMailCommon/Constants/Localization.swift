@@ -1709,6 +1709,14 @@ class LocalizedString {
                                                  comment: "The preconditions are not met")
     
     
+    // Drag and drop
+    lazy var _drop_here = NSLocalizedString("+ Drop here to add as attachment", comment: "Drag and drop zone for attachments")
+    
+    lazy var _importing_drop = NSLocalizedString("Importing attachment, that can take a while", comment: "Drag and drop zone for attachments")
+    
+    lazy var _drop_finished = NSLocalizedString("Attachment imported", comment: "Drag and drop zone for attachments")
+    
+    
     /// Invalid URL
     lazy var _invalid_url = NSLocalizedString("Invalid URL",
                                               comment: "Invalid URL error when click a url in contact")

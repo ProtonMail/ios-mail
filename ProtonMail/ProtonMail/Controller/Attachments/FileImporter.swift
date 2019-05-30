@@ -39,7 +39,7 @@ protocol FileImporter {
 extension FileImporter {
     var filetypes: [String] {
         // list from Share extension NSExtensionActivationRule, except text and URLs
-        return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard"]
+        return ["public.file-url", "public.xml", "com.adobe.pdf", "public.image", "public.playlist", "public.archive", "public.spreadsheet", "public.presentation", "public.calendar-event", "public.vcard", "public.data"]
     }
     
     func importFile(_ itemProvider: NSItemProvider,
