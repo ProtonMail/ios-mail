@@ -21,6 +21,8 @@ html_editor.editor_header = document.getElementById('editor_header');
 
 /// track changes in DOM tree
 var mutationObserver = new MutationObserver(function(events) {
+    var insertedImages = false;
+
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
 
@@ -35,8 +37,6 @@ var mutationObserver = new MutationObserver(function(events) {
                 }
             }
         }
-
-        var insertedImages = false;
 
         // find all img in inserted nodes and update height once they are loaded
         for (var k = 0; k < event.addedNodes.length; k++) {
@@ -61,15 +61,15 @@ var mutationObserver = new MutationObserver(function(events) {
                 }
             }
         }
+    }
 
-        if (insertedImages) {
-            // update height if some cached img were inserted which will never have onload called
-            var contentsHeight = html_editor.getContentsHeight();
-            window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
+    if (insertedImages) {
+        // update height if some cached img were inserted which will never have onload called
+        var contentsHeight = html_editor.getContentsHeight();
+        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 
-            // process new inline images
-            html_editor.acquireEmbeddedImages();
-        }
+        // process new inline images
+        html_editor.acquireEmbeddedImages();
     }
 });
 mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
