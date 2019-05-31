@@ -56,10 +56,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     var encryptionConfirmPassword: String = ""
     var encryptionPasswordHint: String    = ""
     private var hasAccessToAddressBook: Bool      = false
-    
-    #if APP_EXTENSION
-    private var isSending = false
-    #endif
 
     /// const values
     private let kNumberOfColumnsInTimePicker: Int = 2
@@ -226,7 +222,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }
     }
 
-    private func dismiss() {
+    @objc internal func dismiss() {
         if self.presentingViewController != nil {
             self.dismiss(animated: true, completion: nil)
         } else {
@@ -374,65 +370,20 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     func sendMessageStepThree() {
         self.viewModel.sendMessage(hasExtenal: self.headerView.hasNonePMEmails)
-        #if APP_EXTENSION
-        self.isSending = true
-        self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-            self.isSending = false
-            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
-        })
-        #else
-        
-        // show message
+
         delay(0.5) {
             NSError.alertMessageSendingToast()
         }
         
         self.dismiss()
-        #endif
     }
-    
-    #if APP_EXTENSION
-    private var observation: NSKeyValueObservation?
-    func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
-        let alert = UIAlertController(title: self.isSending ? LocalString._sending_message : LocalString._closing_draft,
-                                      message: LocalString._please_wait_in_foreground,
-                                      preferredStyle: .alert)
-        self.present(alert, animated: true, completion: nil)
-        
-        [self.headerView.toContactPicker,
-         self.headerView.ccContactPicker,
-         self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
-        
-        self.observation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
-            if sharedMessageQueue.queue.isEmpty {
-                let animationBlock: ()->Void = {
-                    if let view = self?.navigationController?.view {
-                        view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
-                    }
-                }
-                alert.dismiss(animated: true, completion: nil)
-                self?.observation?.invalidate()
-                self?.observation = nil
-                keymaker.lockTheApp()
-                UIView.animate(withDuration: 0.25, animations: animationBlock, completion: completion)
-            }
-        }
-    }
-    #endif
     
     func cancelAction(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
             
-            #if APP_EXTENSION
-            self.hideExtensionWithCompletionHandler(completion: { (Bool) -> Void in
-                let cancelError = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError, userInfo: nil)
-                self.extensionContext?.cancelRequest(withError: cancelError)
-            })
-            #else
             self.dismiss()
-            #endif
         }
         
         if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
@@ -491,12 +442,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     @objc func autoSaveTimer() {
-        #if APP_EXTENSION
-        // we do not need to save draft after we've already started sending.
-        // this is not relevant to main target because it dismisses the controller once Send is tapped.
-        guard !self.isSending else { return}
-        #endif
-        
         self.updateCIDs().then {
             self.collectDraftData()
         }.done {
