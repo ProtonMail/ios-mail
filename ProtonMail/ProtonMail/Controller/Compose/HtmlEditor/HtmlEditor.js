@@ -207,9 +207,9 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
             canvas.width = this.width;
             canvas.height = this.height;
         } else {
-            var coefficient = sizeLimit / (this.width * this.height);
-            canvas.width = this.width * coefficient;
-            canvas.height = this.height * coefficient;
+            var coefficient = Math.sqrt(sizeLimit / (this.height * this.width));
+            canvas.width = coefficient * this.width;
+            canvas.height = coefficient * this.height;
         }
 
         var ctx = canvas.getContext("2d");
