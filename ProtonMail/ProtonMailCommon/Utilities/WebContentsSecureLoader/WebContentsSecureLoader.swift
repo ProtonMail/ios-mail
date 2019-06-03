@@ -30,16 +30,16 @@ import Foundation
 import WebKit
 
 class RenderedContents: NSObject {
-    @objc internal dynamic var preheight: CGFloat = 0.0
-    @objc internal dynamic var height: CGFloat = 0.0
+    @objc internal dynamic var preheight: CGFloat = 0.1
+    @objc internal dynamic var height: CGFloat = 0.1
     
     internal func invalidate() {
-        self.preheight = 0.0
-        self.height = 0.0
+        self.preheight = 0.1
+        self.height = 0.1
     }
     
     internal var isValid: Bool {
-        return self.height != 0.0
+        return self.height != 0.1
     }
 }
 
