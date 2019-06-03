@@ -29,6 +29,13 @@
 import Foundation
 import MBProgressHUD
 
+extension MBProgressHUD {
+    // this will make MBProgressHUDs totally untappable. Make sure to fix this one if will need buttons on them
+    override open func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        return self.mode == .text ? nil : super.hitTest(point, with: event)
+    }
+}
+
 extension MBProgressHUD
 {
     class func alertToast(errorString: String) -> Void {
