@@ -85,7 +85,12 @@ extension MessageBodyViewController : LinkOpeningValidator {
             decisionHandler(.cancel)
             
         case .linkActivated where navigationAction.request.url != nil:
-            self.coordinator?.open(url: navigationAction.request.url!)
+            let url = navigationAction.request.url!
+            self.validateNotPhishing(url) { allowedToOpen in
+                if allowedToOpen {
+                    self.coordinator?.open(url: url)
+                }
+            }
             decisionHandler(.cancel)
             
         default:
@@ -100,7 +105,7 @@ extension MessageBodyViewController : LinkOpeningValidator {
     
     @available(iOS 10.0, *)
     override func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return userCachedStatus.linkOpeningMode == .allowPickAndPop
+        return userCachedStatus.linkOpeningMode == .allowPickAndPop || userCachedStatus.linkOpeningMode == .openAtWill
     }
 }
 
