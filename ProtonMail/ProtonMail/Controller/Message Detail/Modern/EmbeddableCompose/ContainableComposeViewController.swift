@@ -113,11 +113,13 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     override func addInlineAttachment(_ sid: String, data: Data) {
         guard (self.viewModel as? ContainableComposeViewModel)?.validateAttachmentsSize(withNew: data) == true else {
             DispatchQueue.main.async {
+                self.latestErrorBanner?.remove(animated: true)
                 self.latestErrorBanner = BannerView(appearance: .red, message: LocalString._the_total_attachment_size_cant_be_bigger_than_25mb, buttons: nil, offset: 8.0)
                 #if !APP_EXTENSION
                 UIApplication.shared.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
                 #else
-                // FIXME: send message via window
+                // hackish way to get to UIApplication in Share extension
+                (self.view.window?.next as? UIApplication)?.sendAction(#selector(BannerPresenting.presentBanner(_:)), to: nil, from: self, for: nil)
                 #endif
             }
             

@@ -21,6 +21,8 @@ html_editor.editor_header = document.getElementById('editor_header');
 
 /// track changes in DOM tree
 var mutationObserver = new MutationObserver(function(events) {
+    var insertedImages = false;
+
     for (var i = 0; i < events.length; i++) {
         var event = events[i];
 
@@ -35,8 +37,6 @@ var mutationObserver = new MutationObserver(function(events) {
                 }
             }
         }
-
-        var insertedImages = false;
 
         // find all img in inserted nodes and update height once they are loaded
         for (var k = 0; k < event.addedNodes.length; k++) {
@@ -61,15 +61,15 @@ var mutationObserver = new MutationObserver(function(events) {
                 }
             }
         }
+    }
 
-        if (insertedImages) {
-            // update height if some cached img were inserted which will never have onload called
-            var contentsHeight = html_editor.getContentsHeight();
-            window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
+    if (insertedImages) {
+        // update height if some cached img were inserted which will never have onload called
+        var contentsHeight = html_editor.getContentsHeight();
+        window.webkit.messageHandlers.heightUpdated.postMessage({ "messageHandler": "heightUpdated", "height": contentsHeight });
 
-            // process new inline images
-            html_editor.acquireEmbeddedImages();
-        }
+        // process new inline images
+        html_editor.acquireEmbeddedImages();
     }
 });
 mutationObserver.observe(html_editor.editor, { childList: true, subtree: true });
@@ -207,9 +207,9 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
             canvas.width = this.width;
             canvas.height = this.height;
         } else {
-            var coefficient = sizeLimit / (this.width * this.height);
-            canvas.width = this.width * coefficient;
-            canvas.height = this.height * coefficient;
+            var coefficient = Math.sqrt(sizeLimit / (this.height * this.width));
+            canvas.width = coefficient * this.width;
+            canvas.height = coefficient * this.height;
         }
 
         var ctx = canvas.getContext("2d");

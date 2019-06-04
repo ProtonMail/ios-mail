@@ -320,7 +320,11 @@ extension Data: AttachmentConvertible {
     }
     
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
-        let attachment = Attachment(context: message.managedObjectContext!)//TODO:: need check context nil or not instead of !
+        guard let context = message.managedObjectContext else {
+            assert(false, "Context improperly destroyed")
+            return nil
+        }
+        let attachment = Attachment(context: context)//TODO:: need check context nil or not instead of !
         attachment.attachmentID = "0"
         attachment.fileName = fileName
         attachment.mimeType = type
@@ -348,7 +352,10 @@ extension Data: AttachmentConvertible {
 
 extension URL: AttachmentConvertible {
     func toAttachment(_ message: Message, fileName: String, type: String) -> Attachment? {
-        guard let context = message.managedObjectContext else { return nil }
+        guard let context = message.managedObjectContext else {
+            assert(false, "Context improperly destroyed")
+            return nil
+        }
         let attachment = Attachment(context: context)
         attachment.attachmentID = "0"
         attachment.fileName = fileName
