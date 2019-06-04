@@ -36,6 +36,7 @@ import UIKit
 class ContainableComposeViewController: ComposeViewController, BannerRequester {
     private var latestErrorBanner: BannerView?
     private var heightObservation: NSKeyValueObservation!
+    private var queueObservation: NSKeyValueObservation!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,6 +48,17 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             self.updateHeight(to: totalHeight)
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
+        
+        // notifications
+        #if APP_EXTENSION
+        NotificationCenter.default.addObserver(forName: NSError.errorOccuredNotification, object: nil, queue: nil) { [weak self] notification in
+            self?.latestError = notification.userInfo?["text"] as? String
+            self?.step.insert(.sendingFinishedWithError)
+        }
+        NotificationCenter.default.addObserver(forName: NSError.noErrorNotification, object: nil, queue: nil) { [weak self] notification in
+            self?.step.insert(.sendingFinishedSuccessfully)
+        }
+        #endif
     }
     
     override func shouldDefaultObserveContentSizeChanges() -> Bool {
@@ -55,6 +67,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     
     deinit {
         self.heightObservation = nil
+        self.queueObservation = nil
     }
     
     override func caretMovedTo(_ offset: CGPoint) {
@@ -117,4 +130,106 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     func errorBannerToPresent() -> BannerView? {
         return self.latestErrorBanner
     }
+
+// TODO: when refactoring ComposeViewController, place this stuff in a higher level ViewModel and Controller - ComposeContainer
+#if APP_EXTENSION
+    private var latestError: String?
+    private struct SendingStep: OptionSet {
+        let rawValue: Int
+        
+        static var composing = SendingStep(rawValue: 1 << 0)
+        static var composingCanceled = SendingStep(rawValue: 1 << 1)
+        static var sendingStarted = SendingStep(rawValue: 1 << 2)
+        static var sendingFinishedWithError = SendingStep(rawValue: 1 << 3)
+        static var sendingFinishedSuccessfully = SendingStep(rawValue: 1 << 4)
+        static var resultAcknowledged = SendingStep(rawValue: 1 << 5)
+        static var queueIsEmpty = SendingStep(rawValue: 1 << 6)
+    }
+    
+    private var step: SendingStep = .composing {
+        didSet {
+            guard !step.contains(.composing) else {
+                return
+            }
+            if step.contains(.resultAcknowledged) && step.contains(.queueIsEmpty) {
+                self.dismissAnimation()
+                return
+            }
+
+            if step.contains(.sendingFinishedSuccessfully) {
+                let alert = UIAlertController(title: "✅", message: LocalString._message_sent_ok_desc, preferredStyle: .alert)
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
+                    self.step.insert(.resultAcknowledged)
+                }
+                self.stepAlert = alert
+                return
+            }
+            if step.contains(.sendingFinishedWithError) {
+                let alert = UIAlertController(title: "⚠️", message: self.latestError, preferredStyle: .alert)
+                alert.addAction(.init(title: "Ok", style: .default, handler: { _ in self.step = .composing }))
+                self.stepAlert = alert
+                return
+            }
+            if step.contains(.composingCanceled) {
+                self.stepAlert = UIAlertController(title: LocalString._closing_draft,
+                                                   message: LocalString._please_wait_in_foreground,
+                                                   preferredStyle: .alert)
+                return
+            }
+            if step.contains(.sendingStarted) {
+                self.stepAlert = UIAlertController(title: LocalString._sending_message,
+                                                   message: LocalString._please_wait_in_foreground,
+                                                   preferredStyle: .alert)
+                return
+            }
+        }
+    }
+    private var stepAlert: UIAlertController? {
+        willSet {
+            self.stepAlert?.dismiss(animated: false)
+        }
+        didSet {
+            if let alert = self.stepAlert {
+                self.present(alert, animated: false, completion: nil)
+            }
+        }
+    }
+    
+    override func cancelAction(_ sender: UIBarButtonItem) {
+        super.cancelAction(sender)
+        self.step = .composingCanceled
+        self.step.insert(.resultAcknowledged)
+    }
+    
+    override func sendMessageStepThree() {
+        super.sendMessageStepThree()
+        self.step = .sendingStarted
+    }
+    
+    override func dismiss() {
+        [self.headerView.toContactPicker,
+         self.headerView.ccContactPicker,
+         self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
+        
+        self.queueObservation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
+            if sharedMessageQueue.queue.isEmpty {
+                self?.step.insert(.queueIsEmpty)
+            }
+        }
+    }
+    
+    private func dismissAnimation() {
+        let animationBlock: ()->Void = { [weak self] in
+            if let view = self?.navigationController?.view {
+                view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
+            }
+        }
+        keymaker.lockTheApp()
+        UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
+            self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
+        }
+    }
+    
+#endif
 }
+
