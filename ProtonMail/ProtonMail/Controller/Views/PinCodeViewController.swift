@@ -59,6 +59,7 @@ class PinCodeViewController : UIViewController {
     
     internal func setUpView(_ reset: Bool) {
         pinCodeView.updateViewText(viewModel.title(), cancelText: viewModel.cancel(), resetPin: reset)
+        pinCodeView.updateBackButton(viewModel.backButtonIcon())
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -120,7 +121,19 @@ extension PinCodeViewController : PinCodeViewDelegate {
     }
     
     func Cancel() {
-        delegate?.Cancel()
+        guard self.viewModel.needsLogoutConfirmation() else {
+            self.proceedCancel()
+            return
+        }
+        
+        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
+        alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: self.proceedCancel))
+        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func proceedCancel(_ sender: Any? = nil) {
+        self.delegate?.Cancel()
         let _ = self.navigationController?.popViewController(animated: true)
     }
     

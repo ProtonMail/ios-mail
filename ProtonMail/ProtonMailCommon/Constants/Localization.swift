@@ -1723,4 +1723,6 @@ class LocalizedString {
     
     lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
     
+    /// Logout
+    lazy var _logout_confirmation = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
 }
