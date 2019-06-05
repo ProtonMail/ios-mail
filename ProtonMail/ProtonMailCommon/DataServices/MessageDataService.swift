@@ -1212,8 +1212,8 @@ class MessageDataService : Service {
             "MIMEType": attachment.mimeType,
             "MessageID": attachment.message.messageID
         ]
-        if let headerInfo = attachment.headerInfo, !headerInfo.isEmpty {
-            params["ContentID"] = headerInfo
+        if attachment.inline() {
+            params["ContentID"] = attachment.contentID()
         }
         
         let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
