@@ -196,7 +196,7 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
             "ClientEphemeral" : self.clientEphemeral,
             "ClientProof" : self.clientProof,
             "SRPSession": self.SRPSession,
-            "NotificationEmail" : email
+            "Email" : email
         ]
         
         if let code = tfaCode {
