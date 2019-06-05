@@ -76,6 +76,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             header.observe(\.size) { [weak self] _, _ in
                 self?.tableView.beginUpdates()
                 self?.tableView.endUpdates()
+            },
+            childViewModel.observe(\.showExpirationPicker) { [weak self] viewModel, _ in
+                // TODO: this index is hardcoded position of expiration view, not flexible approach. Fix when decoupling Header and ExpirationPicker from old ComposeViewController
+                self?.tableView.reloadRows(at: [IndexPath.init(row: 1, section: 0)], with: .fade)
             }
         ]
         
@@ -112,6 +116,22 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         self.navigationItem.leftBarButtonItem?.title = LocalString._general_cancel_button
         cancelButton.title = LocalString._general_cancel_button
+    }
+    
+    // tableView
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard self.viewModel.childViewModel.showExpirationPicker && indexPath.row == 1 else {
+            return super.tableView(tableView, cellForRowAt: indexPath)
+        }
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: ExpirationPickerCell.self), for: indexPath) as? ExpirationPickerCell else {
+            assert(false, "Broken expiration cell")
+            return UITableViewCell()
+        }
+        
+        self.coordinator.inject(cell.picker)
+        return cell
     }
     
     // keyboard
@@ -199,4 +219,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             }
         }
     }
+}
+
+
+class ExpirationPickerCell: UITableViewCell {
+    @IBOutlet weak var picker: UIPickerView!
 }

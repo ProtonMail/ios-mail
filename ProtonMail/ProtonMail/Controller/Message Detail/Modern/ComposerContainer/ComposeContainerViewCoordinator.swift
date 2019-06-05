@@ -31,6 +31,7 @@ import Foundation
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
+    
     private var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
     
@@ -65,6 +66,10 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     internal func headerFrame() -> CGRect {
         return self.header.view.frame
+    }
+    
+    internal func inject(_ picker: UIPickerView) {
+        self.editor.injectExpirationPicker(picker)
     }
     
     internal func createEditor(_ childViewModel: ContainableComposeViewModel) {

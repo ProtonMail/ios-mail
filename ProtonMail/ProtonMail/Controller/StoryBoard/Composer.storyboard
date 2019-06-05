@@ -25,7 +25,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="W7I-fq-afX" userLabel="Footer placeholder">
-                                    <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="116" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
@@ -37,6 +37,28 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ExpirationPickerCell" id="Eyr-cf-v8r" customClass="ExpirationPickerCell" customModule="ProtonMail" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eyr-cf-v8r" id="g1k-Sm-BLM">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qb1-OD-sCC">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="qb1-OD-sCC" secondAttribute="bottom" id="5Oy-yD-xvM"/>
+                                                <constraint firstItem="qb1-OD-sCC" firstAttribute="leading" secondItem="g1k-Sm-BLM" secondAttribute="leading" id="S9V-dj-oT0"/>
+                                                <constraint firstAttribute="trailing" secondItem="qb1-OD-sCC" secondAttribute="trailing" id="aao-LC-iaD"/>
+                                                <constraint firstItem="qb1-OD-sCC" firstAttribute="top" secondItem="g1k-Sm-BLM" secondAttribute="top" id="b86-jc-Flx"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="picker" destination="qb1-OD-sCC" id="r5l-33-3JG"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -82,25 +104,10 @@
                     <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="rtW-Jq-ZP6">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <pickerView alpha="0.0" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dgj-ed-8tL">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
-                                <color key="backgroundColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="162" id="C6r-en-xsF"/>
-                                </constraints>
-                            </pickerView>
-                        </subviews>
                         <color key="backgroundColor" red="1" green="0.0" blue="0.73353732670000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="top" secondItem="dgj-ed-8tL" secondAttribute="top" id="NUP-V1-QoY"/>
-                            <constraint firstAttribute="trailing" secondItem="dgj-ed-8tL" secondAttribute="trailing" id="RNi-ND-4tJ"/>
-                            <constraint firstItem="dgj-ed-8tL" firstAttribute="leading" secondItem="rtW-Jq-ZP6" secondAttribute="leading" id="bn5-3W-eJo"/>
-                        </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <connections>
-                        <outlet property="expirationPicker" destination="dgj-ed-8tL" id="m3c-sG-9uv"/>
                         <segue destination="Rhr-Kb-Xse" kind="presentation" identifier="toContactGroupSubSelection" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="ptq-KY-KHm"/>
                         <segue destination="iup-Ok-tgO" kind="presentation" identifier="to_eo_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="8VI-B0-waP"/>
                         <segue destination="5RO-QY-c50" kind="presentation" identifier="expiration_warning_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="JDD-0U-kJK"/>
