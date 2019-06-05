@@ -184,16 +184,15 @@ html_editor.setImageData = function(image, cid, blobdata) {
 html_editor.acquireEmbeddedImages = function() {
     var found = document.querySelectorAll('img[src^="blob:null"], img[src^="webkit-fake-url://"]');
     for (var i = 0; i < found.length; i++) {
-        var image = found[i];
-        html_editor.getBase64FromImageUrl(image.src, function(cid, data) {
-            html_editor.setImageData(image, "cid:" + cid, data);
+        html_editor.getBase64FromImageUrl(found[i], function(oldImage, cid, data) {
+            html_editor.setImageData(oldImage, "cid:" + cid, data);
             var bits = data.replace(/data:image\/[a-z]+;base64,/, '');
             window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": cid, "data": bits });
         });
     }
 }
 
-html_editor.getBase64FromImageUrl = function(url, callback) {
+html_editor.getBase64FromImageUrl = function(oldImage, callback) {
     var img = new Image();
     img.onload = function() {
         var canvas = document.createElement("canvas");
@@ -216,10 +215,10 @@ html_editor.getBase64FromImageUrl = function(url, callback) {
         ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 
         var data = canvas.toDataURL("image/png");
-        var cid = url.replace("blob:null\/", '');
-        callback(cid + ".png", data);
+        var cid = oldImage.src.replace("blob:null\/", '');
+        callback(oldImage, cid + ".png", data);
     };
-    img.src = url;
+    img.src = oldImage.src;
 }
 
 html_editor.removeEmbedImage = function(cid) {
