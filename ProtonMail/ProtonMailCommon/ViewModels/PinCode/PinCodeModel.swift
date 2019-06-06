@@ -38,6 +38,14 @@ enum PinCodeStep: Int {
 
 class PinCodeViewModel : NSObject {
     
+    func needsLogoutConfirmation() -> Bool {
+        return false
+    }
+    
+    func backButtonIcon() -> UIImage {
+        return UIImage(named: "top_back")!
+    }
+    
     func title() -> String {
         fatalError("This method must be overridden")
     }

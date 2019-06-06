@@ -36,6 +36,14 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     
     var enterPin : String = ""
     
+    override func needsLogoutConfirmation() -> Bool {
+        return true
+    }
+    
+    override func backButtonIcon() -> UIImage {
+        return UIImage(named: "menu_logout-active")!
+    }
+    
     override func title() -> String {
         return titleText
     }

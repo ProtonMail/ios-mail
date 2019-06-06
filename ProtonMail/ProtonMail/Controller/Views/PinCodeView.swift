@@ -71,6 +71,11 @@ class PinCodeView : PMView {
         touchIDButton.isHidden = true
     }
     
+    func updateBackButton(_ icon: UIImage) {
+        backButton.setImage(icon, for: UIControl.State())
+        backButton.setTitle("", for: UIControl.State())
+    }
+    
     func updateViewText(_ title : String, cancelText : String, resetPin : Bool) {
         titleLabel.text = title
         logoutButton.setTitle(cancelText, for: UIControl.State())
