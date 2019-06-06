@@ -465,6 +465,7 @@ class UserDataService : Service {
                 if error == nil {
                     self.username = username
                     self.passwordMode = mpwd != nil ? 1 : 2
+                    self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
                     
                     onSuccess(mpwd)
                 } else {
