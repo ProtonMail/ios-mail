@@ -4721,7 +4721,7 @@
 				33CD7D25D48DDB5F3CEABC15249C58AB /* Sources */,
 				85D3B7A03E5E6FC4F98F651AAFE03D93 /* Frameworks */,
 				577D604FBA606E88292D081338F1CCA7 /* Resources */,
-				A679E432B73D0D9378A93A019C1A0232 /* [CP] Embed Pods Frameworks */,
+				EB0A7EFAB78746DD88073A12437B7CDB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -4784,6 +4784,7 @@
 					10AE226907E28369B3D152C04DA2B0D9 = {
 						CreatedOnToolsVersion = 10.1;
 						DevelopmentTeam = 2SB5Z68H26;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.Keychain = {
@@ -4807,6 +4808,7 @@
 					4C4094ADA302FE10FF33218039B6C756 = {
 						CreatedOnToolsVersion = 10.0;
 						DevelopmentTeam = 2SB5Z68H26;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					528CABDE5FC7422D1D0E7976ADAA8CAD = {
@@ -4829,7 +4831,7 @@
 					55608604485FE7632E52ED7BBE6A939B = {
 						CreatedOnToolsVersion = 9.1;
 						DevelopmentTeam = 2SB5Z68H26;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -4839,7 +4841,7 @@
 					};
 					5C6761FECCEBDA639D93B2A606D16447 = {
 						DevelopmentTeam = 2SB5Z68H26;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.iOS = {
@@ -4870,6 +4872,7 @@
 					};
 					6C2152B9B3009541EC36C038232F5EE3 = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
@@ -4904,7 +4907,7 @@
 					7CC48161B0FC946A8DB234B96B6A66DD = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 2SB5Z68H26;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
@@ -4927,12 +4930,13 @@
 					8150D92393298F02FA3A03CA9FE6DF20 = {
 						CreatedOnToolsVersion = 6.1.1;
 						DevelopmentTeam = 2SB5Z68H26;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
 					E58F8EBDBFE12A31920BD0A7F6639E46 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Manual;
 					};
 					E900B623493DA0C67875BBDA4D4D90ED = {
@@ -5462,28 +5466,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A679E432B73D0D9378A93A019C1A0232 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
-				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
-				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		B15B017DF84D254D641D53281B450644 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5672,6 +5654,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EB0A7EFAB78746DD88073A12437B7CDB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AFNetworking/AFNetworking.framework",
+				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AFNetworking.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */ = {
@@ -7683,7 +7687,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -7712,7 +7716,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ProtonMail;
 			};
@@ -7745,7 +7749,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Protonmail Siri kit release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -7808,7 +7812,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -7843,7 +7847,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -8088,7 +8092,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -8132,7 +8136,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -8380,7 +8384,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMailTests/Supporting Files/ProtonMailTests-Bridging-Header.h";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Release;
@@ -8415,7 +8419,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -8451,7 +8455,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG USE_ON_FLY_LOCALIZATION";
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -8560,7 +8564,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ProtonMail;
 			};
@@ -8596,7 +8600,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -8632,7 +8636,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -8666,7 +8670,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "";
 				SWIFT_OBJC_INTERFACE_HEADER_NAME = "ProtonMail-Swift.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -8698,7 +8702,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "Protonmail Siri kit release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -8744,7 +8748,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -8803,7 +8807,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMailTests/Supporting Files/ProtonMailTests-Bridging-Header.h";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Debug;
@@ -8835,7 +8839,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "protonmail push service release";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -8870,7 +8874,7 @@
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = USE_ON_FLY_LOCALIZATION;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMail/Supporting Files/ProtonMail-Bridging-Header.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -8942,7 +8946,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Distribution;
@@ -9055,7 +9059,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = NO;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -9141,7 +9145,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = ProtonMail;
 			};
@@ -9175,7 +9179,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OBJC_BRIDGING_HEADER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -9271,7 +9275,7 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "${SRCROOT}/ProtonMailTests/Supporting Files/ProtonMailTests-Bridging-Header.h";
 				SWIFT_PRECOMPILE_BRIDGING_HEADER = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ProtonMail.app/ProtonMail";
 			};
 			name = Distribution;

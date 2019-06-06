@@ -68,7 +68,7 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         let type = viewModel.getPickedType()
         let types = viewModel.getDefinedTypes()
         
-        if let index = types.index(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
+        if let index = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
             tableView(self.tableView, didSelectRowAt: indexPath);

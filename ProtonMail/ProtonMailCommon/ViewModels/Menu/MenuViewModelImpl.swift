@@ -114,13 +114,13 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func find(section: MenuSection, item: MenuItem) -> IndexPath {
-        let s = sections.index(of: section) ?? 0
+        let s = sections.firstIndex(of: section) ?? 0
         var r = 0
         switch section {
         case .inboxes:
-            r = inboxItems.index(of: item) ?? 0
+            r = inboxItems.firstIndex(of: item) ?? 0
         case .others:
-            r = otherItems.index(of: item) ?? 0
+            r = otherItems.firstIndex(of: item) ?? 0
         default:
             break
         }

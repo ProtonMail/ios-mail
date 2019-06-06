@@ -55,7 +55,7 @@ final public class LabelEditingViewModelImple : LabelEditViewModel {
     
     override public func seletedIndex() -> IndexPath {
         let currentColor = currentLabel.color
-        if let index = colors.index(of: currentColor) {
+        if let index = colors.firstIndex(of: currentColor) {
             return IndexPath(row: index, section: 0)
         } else {
             return super.seletedIndex()

@@ -165,7 +165,7 @@ class MessageContainerViewModel: TableContainerViewModel {
         let filename = formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
         let tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
         try? FileManager.default.removeItem(at: tempFileUri)
-        try? headers?.write(to: tempFileUri, atomically: true, encoding: .utf8)
+        ((try? headers?.write(to: tempFileUri, atomically: true, encoding: .utf8)) as ()??)
         return tempFileUri
     }
     

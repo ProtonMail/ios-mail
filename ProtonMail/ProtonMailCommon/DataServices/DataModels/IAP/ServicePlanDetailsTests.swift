@@ -265,7 +265,7 @@ class ServicePlanDetailsTests: XCTestCase {
 
     func testDecode() {
         guard let data = self.json.data(using: .utf8),
-            let dictionary = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? Dictionary<String, Any> else
+            let dictionary = ((try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? Dictionary<String, Any>) as Dictionary<String, Any>??) else
         {
             XCTAssertTrue(false, "Failed to serialize mock data")
             return

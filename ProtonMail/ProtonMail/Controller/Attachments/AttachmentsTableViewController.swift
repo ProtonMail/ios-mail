@@ -225,7 +225,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                 }
                 
                 self.delegate?.attachments(self, didDeletedAttachment: att)
-                if let index = self.attachments.index(of: att) {
+                if let index = self.attachments.firstIndex(of: att) {
                     self.attachments.remove(at: index)
                 }
             }

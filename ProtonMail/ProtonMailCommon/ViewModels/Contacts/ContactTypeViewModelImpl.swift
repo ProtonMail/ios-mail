@@ -46,7 +46,7 @@ class ContactTypeViewModelImpl : ContactTypeViewModel {
     override func getCustomType() -> ContactFieldType {
         let type = typeInterface.getCurrentType()
         let types = getDefinedTypes()
-        if let _ = types.index(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
+        if let _ = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             
         } else {
             return type

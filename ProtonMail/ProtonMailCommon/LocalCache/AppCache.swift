@@ -143,7 +143,7 @@ extension AppCache {
         
         // mailboxPassword
         if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
-            let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)
+            let cleartextMailboxPassword = ((try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)) as String??)
         {
             sharedUserDataService.mailboxPassword = cleartextMailboxPassword
         }

@@ -90,7 +90,7 @@ extension UIView {
         //self.layer.sublayers?.removeAll(where: { $0.name == border.name })
         
         //swift 4
-        while let index = self.layer.sublayers?.index(where: { $0.name == border.name }) {
+        while let index = self.layer.sublayers?.firstIndex(where: { $0.name == border.name }) {
             self.layer.sublayers?.remove(at: index)
         }
         self.layer.addSublayer(border)
