@@ -88,7 +88,8 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         var metaWidth = document.createElement('meta');
         metaWidth.name = "viewport";
         metaWidth.content = "width=device-width";
-        var ratio = document.body.offsetWidth/document.body.scrollWidth;
+        var rects = document.body.getBoundingClientRect();
+        var ratio = document.body.offsetWidth/rects.width;
         if (ratio < 1) {
         metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
         } else {
@@ -119,7 +120,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
                 items[i].style.height = "auto";
             };
         };
-        window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * document.body.scrollHeight, 'clearBody':document.documentElement.innerHTML});
+        window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody':document.documentElement.innerHTML});
         """
         
         let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
@@ -138,11 +139,12 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
             userContentController.removeAllUserScripts()
             
             let message = """
-            var ratio = document.body.offsetWidth/document.body.scrollWidth;
+            var rects = document.body.getBoundingClientRect();
+            var ratio = document.body.offsetWidth/rects.width;
             if (ratio > 1) {
                 ratio = 1;
             };
-            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * rects.height});
             """
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)
