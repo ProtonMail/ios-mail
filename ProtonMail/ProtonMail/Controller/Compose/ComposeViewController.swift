@@ -40,7 +40,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private var coordinator: ComposeCoordinator?
     
     ///  UI
-    @IBOutlet weak var expirationPicker: UIPickerView!
+    private weak var expirationPicker: UIPickerView?
     weak var headerView: ComposeHeaderViewController!
     lazy var htmlEditor = HtmlEditorBehaviour()
     
@@ -95,6 +95,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.headerView = header
         self.headerView.delegate = self
         self.headerView.datasource = self
+    }
+    
+    internal func injectExpirationPicker(_ picker: UIPickerView) {
+        self.expirationPicker = picker
+        picker.dataSource = self
+        picker.delegate = self
     }
     
     override func viewDidLoad() {
@@ -180,11 +186,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             // TODO: handle error
             PMLog.D("Load all contacts and groups error \(error)")
         }
-        
-        self.expirationPicker.alpha = 0.0
-        self.expirationPicker.isHidden = true
-        self.expirationPicker.dataSource = self
-        self.expirationPicker.delegate = self
 
         self.attachments = viewModel.getAttachments()
 
@@ -667,27 +668,27 @@ extension ComposeViewController : ComposeViewDelegate {
     }
 
     @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
-        self.expirationPicker.alpha = 1
-        self.expirationPicker.isHidden = false
-        self.view.bringSubviewToFront(expirationPicker)
+        (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = true
     }
 
     @objc func composeViewHideExpirationView(_ composeView: ComposeHeaderViewController) {
-        self.expirationPicker.alpha = 0
-        self.expirationPicker.isHidden = true
+        (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = false
     }
 
     func composeViewCancelExpirationData(_ composeView: ComposeHeaderViewController) {
-        self.expirationPicker.selectRow(0, inComponent: 0, animated: true)
-        self.expirationPicker.selectRow(0, inComponent: 1, animated: true)
+        self.expirationPicker?.selectRow(0, inComponent: 0, animated: true)
+        self.expirationPicker?.selectRow(0, inComponent: 1, animated: true)
     }
 
     func composeViewCollectExpirationData(_ composeView: ComposeHeaderViewController) {
-        let selectedDay = expirationPicker.selectedRow(inComponent: 0)
-        let selectedHour = expirationPicker.selectedRow(inComponent: 1)
+        guard let selectedDay = expirationPicker?.selectedRow(inComponent: 0),
+            let selectedHour = expirationPicker?.selectedRow(inComponent: 1) else
+        {
+            assert(false, "Expiration picker does not exist")
+            return
+        }
         if self.headerView.setExpirationValue(selectedDay, hour: selectedHour) {
-            self.expirationPicker.alpha = 0
-            self.expirationPicker.isHidden = true
+            (self.viewModel as? ContainableComposeViewModel)?.showExpirationPicker = false
         }
         self.updateEO()
     }
