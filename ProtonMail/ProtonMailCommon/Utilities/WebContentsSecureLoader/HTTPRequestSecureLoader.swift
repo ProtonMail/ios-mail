@@ -119,7 +119,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         metaWidth.name = "viewport";
         metaWidth.content = "width=device-width";
         var rects = document.body.getBoundingClientRect();
-        var ratio = document.body.offsetWidth/rects.width;
+        var ratio = document.body.offsetWidth/document.body.scrollWidth;
         if (ratio < 1) {
             metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
         } else {
@@ -173,7 +173,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             
             let message = """
             var rects = document.body.getBoundingClientRect();
-            var ratio = document.body.offsetWidth/rects.width;
+            var ratio = document.body.offsetWidth/document.body.scrollWidth;
             if (ratio > 1) {
                 ratio = 1;
             };
