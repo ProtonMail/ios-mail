@@ -423,7 +423,7 @@ class UserDataService : Service {
 
     func setFromEvents(address: Address) {
         if let user = self.userInfo {
-            if let index = user.userAddresses.index(where: { $0.address_id == address.address_id }) {
+            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
                 user.userAddresses.remove(at: index)
             }
             user.userAddresses.append(address)
@@ -436,7 +436,7 @@ class UserDataService : Service {
     
     func deleteFromEvents(addressID: String) {
         if let user = self.userInfo {
-            if let index = user.userAddresses.index(where: { $0.address_id == addressID }) {
+            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
                 user.userAddresses.remove(at: index)
                 self.userInfo = user
             }

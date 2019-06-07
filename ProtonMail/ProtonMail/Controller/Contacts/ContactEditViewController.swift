@@ -374,7 +374,7 @@ extension ContactEditViewController: ContactEditCellDelegate, ContactEditTextVie
 extension ContactEditViewController: ContactTypeViewControllerDelegate {
     func done(sectionType: ContactEditSectionType) {
         let sections = self.viewModel.getSections()
-        if let sectionIndex = sections.index(of: sectionType) {
+        if let sectionIndex = sections.firstIndex(of: sectionType) {
             tableView.reloadSections(IndexSet(integer: sectionIndex), with: .automatic)
         } else {
             tableView.reloadData()

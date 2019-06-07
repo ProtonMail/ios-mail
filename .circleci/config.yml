@@ -8,7 +8,7 @@ version: 2
 jobs:
     build-and-test:
         macos:
-            xcode: "10.0.0"
+            xcode: "10.2.1"
         working_directory: /Users/distiller/protonmail_ios/
         environment:
             FL_OUTPUT_DIR: output
