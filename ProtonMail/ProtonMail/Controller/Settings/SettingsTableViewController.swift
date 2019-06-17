@@ -252,8 +252,22 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                        cell.configCell(itme.description, bottomLine: "", status: userCachedStatus.linkOpeningMode == .confirmationAlert) { cell, newStatus, feedback in
-                            userCachedStatus.linkOpeningMode = newStatus ? .confirmationAlert : .openAtWill
+                        if let userInfo = userInfo {
+                            cell.configCell(itme.description, bottomLine: "", status: userInfo.linkConfirmation == .confirmationAlert) { cell, newStatus, feedback in
+                                let view = UIApplication.shared.keyWindow ?? UIView()
+                                MBProgressHUD.showAdded(to: view, animated: true)
+                                sharedUserDataService.updateLinkConfirmation(newStatus ? .confirmationAlert : .openAtWill) { userInfo, _, error in
+                                    MBProgressHUD.hide(for: view, animated: true)
+                                    if let error = error {
+                                        feedback(false)
+                                        let alertController = error.alertController()
+                                        alertController.addOKAction()
+                                        self.present(alertController, animated: true, completion: nil)
+                                    } else {
+                                        feedback(true)
+                                    }
+                                }
+                            }
                         }
                         cellout = cell
                     }

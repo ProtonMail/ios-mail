@@ -105,7 +105,7 @@ extension MessageBodyViewController : LinkOpeningValidator {
     
     @available(iOS 10.0, *)
     override func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return userCachedStatus.linkOpeningMode == .allowPickAndPop || userCachedStatus.linkOpeningMode == .openAtWill
+        return sharedUserDataService.linkConfirmation == .openAtWill
     }
 }
 

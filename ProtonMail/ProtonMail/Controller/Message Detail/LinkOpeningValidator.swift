@@ -33,7 +33,7 @@ protocol LinkOpeningValidator {
 }
 extension LinkOpeningValidator {
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
-        guard userCachedStatus.linkOpeningMode == .confirmationAlert else {
+        guard sharedUserDataService.linkConfirmation == .confirmationAlert else {
             handler(true)
             return
         }
@@ -54,7 +54,7 @@ extension LinkOpeningValidator {
             handler(true)
         }
         let doNotShowAgain = UIAlertAction(title: LocalString._genernal_continue_and_dont_ask_again, style: .destructive) { _ in
-            userCachedStatus.linkOpeningMode = .openAtWill
+            sharedUserDataService.updateLinkConfirmation(.openAtWill) { _, _, _ in /* nothing */ }
             handler(true)
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in

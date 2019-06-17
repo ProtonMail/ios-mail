@@ -340,6 +340,9 @@ struct SettingsAPI {
     
     /// Update login password [PUT]
     static let v_update_login_password : Int = 3
+    
+    /// Update login password [PUT]
+    static let v_update_link_confirmation : Int = 3
 }
 
 //Users API
