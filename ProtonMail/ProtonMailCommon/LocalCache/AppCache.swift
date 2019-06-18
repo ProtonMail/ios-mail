@@ -45,7 +45,8 @@ class AppCache : Migrate {
         }
     }
     
-    internal var supportedVersions: [Int] = [Version.v110.rawValue]
+    internal var supportedVersions: [Int] = [Version.v110.rawValue,
+                                             Version.v111.rawValue]
     
     internal var initalRun: Bool {
         get {
@@ -60,9 +61,10 @@ class AppCache : Migrate {
     }
     
     enum Version : Int {
-        static let CacheVersion : Int = 111 // this is app cache version
+        static let CacheVersion : Int = 112 // this is app cache version
         
         case v110 = 110
+        case v111 = 111
     }
 
     init() {
@@ -87,6 +89,7 @@ class AppCache : Migrate {
         sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
         sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.AuthCredential.keychainStore)
         sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)
@@ -118,6 +121,10 @@ class AppCache : Migrate {
         case (110, 111):
             // add try later
             return self.migrate_110_111()
+            
+        case (111, 112):
+            return self.migrate_111_112()
+            
         default:
             return false
         }
@@ -125,6 +132,12 @@ class AppCache : Migrate {
 }
 
 extension AppCache {
+    func migrate_111_112() -> Bool {
+        // LinkOpeningMode was previously local for every device and stored in UserCachedStatus, but as of 1.11.9 it will be part of UserInfo and should be received from BE. This method is only needed to clear old value.
+        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
+        
+        return true
+    }
     
     func migrate_110_111() -> Bool {
         /// if dev devices have run 1.11.3 before. some of the keys are stuck in the keychain. and if reinstall the app from the apple store(<= 1.11.2) and upgrade to the 1.11.3. the app will get the date from keychain which are shouldn't be there. so migrate from 110-111 should clean the data in keymaker which are saved in keychain. the same case also happens on core data migration but that cache could be removed from the reinstall app.
@@ -198,6 +211,8 @@ extension AppCache {
             static let isTouchIDEnabled     = "isTouchIDEnabled"
             static let touchIDEmail         = "touchIDEmail"
             static let lastLocalMobileSignature = "last_local_mobile_signature"
+            
+            static let linkOpeningMode = "linkOpeningMode"
         }
         enum UserDataService {
             static let password                  = "passwordKey"

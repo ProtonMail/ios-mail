@@ -604,6 +604,7 @@
 		56B9EA2FF796B33DEE72B9EA0BA85AA0 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
 		56BA566B46E01696F935E3F7C1106250 /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
 		56CAE030C61EA97880BD08CA85E206FE /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
+		56DBFED67D6D72AB844A75F42B4AD3D6 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		56E68D657FC1507D2D478DB5813E0B21 /* AddressAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04025B7C6436895719C25378EBFF48C9 /* AddressAPI.swift */; };
 		5760367C76753230FCD257D432AEEB05 /* LabelsDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2407BF5796C9E19D445712F8FD6D18A2 /* LabelsDataService.swift */; };
 		57685B51B021ACAED8F73B1AA683864A /* Email.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D92DEE740435769B951F10DDEACF596 /* Email.swift */; };
@@ -721,6 +722,7 @@
 		651F2C7B0E5AE8DD7034BD2F6FB23F10 /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
 		652584122CE15FC9E5D31DF97880189F /* CoreDataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C7A0F9BCC6AC42892A9E6B5DF67120 /* CoreDataStore.swift */; };
 		65F1E4F60651566208B4712F8704166A /* ShareAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */; };
+		65FE86FE3C88B02A177BA6ECC18D2D12 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		66E9F09FB00042C83ADC068C5F06797C /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218348D8D5386E202A585F3C1D3CF0A8 /* UITextField+Extension.swift */; };
@@ -7055,6 +7057,7 @@
 				334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */,
 				9915208DB3B59CFA36F7E8D14582BC8A /* LanguageManager.m in Sources */,
 				5F42CB7DFBF2BB3759386C0551010150 /* LastUpdatedStore.swift in Sources */,
+				56DBFED67D6D72AB844A75F42B4AD3D6 /* LinkOpeningMode.swift in Sources */,
 				0C093207E24F37E6B5D58615B869444A /* LoadingView.swift in Sources */,
 				63BCEE393BF2F43A7EBA7DEC1EDCF68E /* Localization.swift in Sources */,
 				B9B310E8F3C08FC506C8AF15A2C3AEDE /* Logger.swift in Sources */,
@@ -7322,6 +7325,7 @@
 				5760367C76753230FCD257D432AEEB05 /* LabelsDataService.swift in Sources */,
 				6F42ADF3ED65100FB0FB7FA423EE7D25 /* LanguageManager.m in Sources */,
 				6755EA60DD06C67151033E1E9551646A /* LastUpdatedStore.swift in Sources */,
+				65FE86FE3C88B02A177BA6ECC18D2D12 /* LinkOpeningMode.swift in Sources */,
 				44F5D14DCFA2F573BEE3FBFBFBFA8351 /* LoadingView.swift in Sources */,
 				59CC41C90F6A4C5D6A97C0AB7B2B90E2 /* Localization.swift in Sources */,
 				69FF6B75A2D009991D64578347101051 /* Logger.swift in Sources */,

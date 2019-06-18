@@ -51,19 +51,6 @@ final class UserInfo : NSObject {
     var userId: String
     
     var userKeys: [Key] //user key
-    //"VPN": { //TODO::handle this in the future
-    //    "Status": 1,
-    //    "ExpirationTime": 0,
-    //    "PlanName": "visionary",
-    //    "MaxConnect": 10,
-    //    "MaxTier": 2
-    //}
-//    "Name": "jason",
-//    "Currency": "USD",
-//    "Credit": 0,
-//    "Private": 1,
-//    "Subscribed": 1,
-//    "Services": 1,
 
     //1.9.1 mail settings
     var displayName: String = ""
@@ -77,6 +64,7 @@ final class UserInfo : NSObject {
     }
     var swipeLeft : Int = 3
     var swipeRight : Int = 0
+    var linkConfirmation: LinkOpeningMode = .confirmationAlert
     
     
     var attachPublicKey : Int = 0
@@ -88,6 +76,7 @@ final class UserInfo : NSObject {
     var swipeRightAction: MessageSwipeAction! {
         return MessageSwipeAction(rawValue: self.swipeRight)
     }
+    
     
     //1.9.1 user settings
     var notificationEmail: String = ""
@@ -107,7 +96,8 @@ final class UserInfo : NSObject {
         keys : [Key]?,
         userId: String?,
         sign: Int?,
-        attachPublicKey: Int?)
+        attachPublicKey: Int?,
+        linkConfirmation: String?)
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
@@ -135,6 +125,10 @@ final class UserInfo : NSObject {
         
         // addresses
         self.userAddresses = userAddresses ?? [Address]()
+        
+        if let linkConfirmation = linkConfirmation {
+            self.linkConfirmation = LinkOpeningMode(rawValue: linkConfirmation) ?? .confirmationAlert
+        }
     }
 
     // init from api
@@ -143,7 +137,8 @@ final class UserInfo : NSObject {
                   role:Int?,
                   delinquent : Int?,
                   keys : [Key]?,
-                  userId: String?) {
+                  userId: String?,
+                  linkConfirmation : Int?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
@@ -152,6 +147,7 @@ final class UserInfo : NSObject {
         self.delinquent = delinquent ?? 0
         self.userId = userId ?? ""
         self.userKeys = keys ?? [Key]()
+        self.linkConfirmation = linkConfirmation == 0 ? .openAtWill : .confirmationAlert
     }
     
     /// Update user addresses
@@ -172,6 +168,7 @@ final class UserInfo : NSObject {
         self.role = userinfo.role
         self.delinquent = userinfo.delinquent
         self.userId = userinfo.userId
+        self.linkConfirmation = userinfo.linkConfirmation
         self.userKeys = userinfo.userKeys
     }
     
@@ -192,6 +189,7 @@ final class UserInfo : NSObject {
             self.showImages = ShowImages(rawValue: settings["ShowImages"] as? Int ?? 0)
             self.swipeLeft = settings["SwipeLeft"] as? Int ?? 3
             self.swipeRight = settings["SwipeRight"] as? Int ?? 0
+            self.linkConfirmation = settings["ConfirmLink"] as? Int == 0 ? .openAtWill : .confirmationAlert
             
             self.attachPublicKey = settings["AttachPublicKey"] as? Int ?? 0
             self.sign = settings["Sign"] as? Int ?? 0
@@ -241,7 +239,8 @@ extension UserInfo {
             role : response["Role"] as? Int,
             delinquent : response["Delinquent"] as? Int,
             keys : uKeys,
-            userId: userId
+            userId: userId,
+            linkConfirmation: response["ConfirmLink"] as? Int
         )
     }
 }
@@ -276,6 +275,8 @@ extension UserInfo: NSCoding {
         
         static let attachPublicKey = "attachPublicKey"
         static let sign = "sign"
+        
+        static let linkConfirmation = "linkConfirmation"
     }
     
     convenience init(coder aDecoder: NSCoder) {
@@ -303,7 +304,9 @@ extension UserInfo: NSCoding {
             keys: aDecoder.decodeObject(forKey: CoderKey.userKeys) as? [Key],
             userId: aDecoder.decodeStringForKey(CoderKey.userId),
             sign: aDecoder.decodeInteger(forKey: CoderKey.sign),
-            attachPublicKey: aDecoder.decodeInteger(forKey: CoderKey.attachPublicKey)
+            attachPublicKey: aDecoder.decodeInteger(forKey: CoderKey.attachPublicKey),
+            
+            linkConfirmation: aDecoder.decodeStringForKey(CoderKey.linkConfirmation)
         )
     }
     
@@ -333,6 +336,8 @@ extension UserInfo: NSCoding {
         
         aCoder.encode(sign, forKey: CoderKey.sign)
         aCoder.encode(attachPublicKey, forKey: CoderKey.attachPublicKey)
+        
+        aCoder.encode(linkConfirmation.rawValue, forKey: CoderKey.linkConfirmation)
     }
 }
 

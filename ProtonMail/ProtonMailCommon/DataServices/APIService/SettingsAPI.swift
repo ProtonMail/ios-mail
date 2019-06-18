@@ -305,6 +305,32 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
     }
 }
 
+final class UpdateLinkConfirmation : ApiRequest<ApiResponse> {
+    private let status: LinkOpeningMode
+
+    init(status: LinkOpeningMode, authCredential: AuthCredential?) {
+        self.status = status
+        super.init()
+        self.authCredential = authCredential
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        return ["ConfirmLink" : NSNumber(value: self.status == .confirmationAlert).intValue]
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func path() -> String {
+        return SettingsAPI.path + "/mail/confirmlink" + Constants.App.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return SettingsAPI.v_update_link_confirmation
+    }
+}
+
 // MARK : update left swipe action
 final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
     let newAction : MessageSwipeAction!

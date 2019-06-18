@@ -29,5 +29,5 @@
 import Foundation
 
 enum LinkOpeningMode: String {
-    case confirmationAlert, openAtWill, allowPickAndPop
+    case confirmationAlert, openAtWill
 }

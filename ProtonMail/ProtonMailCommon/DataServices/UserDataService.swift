@@ -290,6 +290,10 @@ class UserDataService : Service {
         return userInfo?.swipeRightAction ?? .trash
     }
     
+    var linkConfirmation: LinkOpeningMode {
+        return userInfo?.linkConfirmation ?? .confirmationAlert
+    }
+    
     var addresses: [Address] { //never be null
         return userInfo?.userAddresses ?? [Address]()
     }
@@ -361,10 +365,8 @@ class UserDataService : Service {
     // MARK: - methods
     init(check : Bool = true) {
         if check {
-            defer {
-                cleanUpIfFirstRun()
-                launchCleanUp()
-            }
+            cleanUpIfFirstRun()
+            launchCleanUp()
         }
     }
     
@@ -587,6 +589,27 @@ class UserDataService : Service {
             completion(self.userInfo, nil, response?.error)
         }
     }
+    
+    #if !APP_EXTENSION
+    func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+        guard let authCredential = AuthCredential.fetchFromKeychain(),
+            let userInfo = self.userInfo,
+            let cachedMainKey = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
+        api.call { (task, response, hasError) in
+            if !hasError {
+                userInfo.linkConfirmation = status
+                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
+            }
+            completion(self.userInfo, nil, response?.error)
+        }
+    }
+    #endif
 
     func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
         guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
