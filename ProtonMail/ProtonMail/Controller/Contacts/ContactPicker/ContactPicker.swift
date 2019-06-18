@@ -83,9 +83,9 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         }
         self.keyboardFrame = keyboardFrame
         
-        // should work only for device orientation changes
         if notification.name == UIResponder.keyboardWillHideNotification {
-            self.hideSearchTableView()
+            self.keyboardFrame = .zero
+            self.searchWindow?.frame = self.frameForContactSearch
         }
     }
     
@@ -177,6 +177,10 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
                                                name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(hideSearchTableView),
+                                               name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
     
@@ -347,7 +351,7 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
-    internal func hideSearchTableView() {
+    @objc internal func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
         self.searchWindow?.rootViewController = nil
