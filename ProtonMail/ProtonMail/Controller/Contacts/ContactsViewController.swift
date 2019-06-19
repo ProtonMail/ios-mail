@@ -131,8 +131,14 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     private func prepareSearchBar() {
         searchController = UISearchController(searchResultsController: nil)
         searchController.searchBar.placeholder = LocalString._general_search_placeholder
-        searchController.searchBar.setValue(LocalString._general_done_button,
-                                            forKey:"_cancelButtonText")
+        
+        if #available(iOS 13.0, *) {
+            // Terminating app due to uncaught exception 'NSGenericException', reason: 'Access to UISearchBar's set_cancelButtonText: ivar is prohibited. This is an application bug'
+        } else {
+            searchController.searchBar.setValue(LocalString._general_done_button,
+                                                forKey:"_cancelButtonText")
+        }
+        
         self.searchController.searchResultsUpdater = self
         self.searchController.dimsBackgroundDuringPresentation = false
         self.searchController.searchBar.delegate = self
