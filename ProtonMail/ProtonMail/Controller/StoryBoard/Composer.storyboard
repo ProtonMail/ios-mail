@@ -12,7 +12,7 @@
         <!--Compose Container View Controller-->
         <scene sceneID="Amn-w9-Un0">
             <objects>
-                <viewController storyboardIdentifier="ComposeContainerViewController" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComposeContainerViewController" modalPresentationStyle="fullScreen" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AdR-nB-BQy"/>
                         <viewControllerLayoutGuide type="bottom" id="Gop-XX-JaS"/>
@@ -120,7 +120,7 @@
         <!--Navigation Controller-->
         <scene sceneID="JVY-ut-tHc">
             <objects>
-                <navigationController storyboardIdentifier="ref_composer_nav_controller" automaticallyAdjustsScrollViewInsets="NO" id="In7-0f-UnN" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="ref_composer_nav_controller" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="In7-0f-UnN" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ix3-qt-5km">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
