@@ -118,7 +118,7 @@ html_editor.setPlaceholderText = function(text) {
 };
 
 /// transmits caret position to the app
-html_editor.editor.addEventListener("input", function() {
+html_editor.editor.addEventListener("input", function() { // input and not keydown/keyup/keypress cuz need to move caret when inserting text via autocomplete too
     html_editor.getCaretYPosition();
 });
 
@@ -131,6 +131,7 @@ html_editor.caret = document.createElement('caret'); // something happening here
 html_editor.getCaretYPosition = function() {
     var range = window.getSelection().getRangeAt(0);
     if (html_editor.caret != range.endContainer.nextElementSibling) {
+        range.collapse(false);
         range.insertNode(html_editor.caret);
     }
 
