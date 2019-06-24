@@ -102,25 +102,7 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     }
     
     func onError(error: NSError) {
-        #if DEBUG
-        guard #available(iOS 10.0, *) else { return }
-        let timeTrigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-        let content = UNMutableNotificationContent()
-        content.title = "🦐 API ERROR"
-        content.subtitle = error.localizedDescription
-        content.body = error.userInfo.debugDescription
-        
-        if let data = error.userInfo["com.alamofire.serialization.response.error.data"] as? Data,
-            let resObj = String(data: data, encoding: .utf8)
-        {
-            content.body = resObj + content.body
-        }
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: timeTrigger)
-        UNUserNotificationCenter.current().add(request) { error in }
-        #else
         error.alertToast()
-        #endif
     }
 }
 
@@ -140,12 +122,6 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         
         Analytics.shared.setup()
-        
-        #if DEBUG // will fire local notifications on errors instead of toasts
-        if #available(iOS 10.0, *) {
-            UNUserNotificationCenter.current().delegate = self
-        }
-        #endif
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
         
@@ -349,15 +325,3 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 }
-
-#if DEBUG
-@available(iOS 10.0, *) extension AppDelegate: UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification,
-                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
-    {
-        // Display notification as regular alert and play sound
-        completionHandler([.alert, .sound])
-    }
-}
-#endif

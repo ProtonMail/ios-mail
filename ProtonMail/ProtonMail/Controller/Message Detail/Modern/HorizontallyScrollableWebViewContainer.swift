@@ -206,21 +206,12 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         self.contentSizeObservation = self.webView.scrollView.observe(\.contentSize, options: [.initial, .new, .old]) { [weak self] scrollView, change in
-            guard change.newValue?.height != change.oldValue?.height else { return }
             guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
+            // as of iOS 13 beta 2, contentSize increases by 1pt after every updateHeight causing infinite loop. This 10pt treshold will prevent looping
+            guard let new = change.newValue?.height, let old = change.oldValue?.height, new - old > 10.0 else { return }
             self?.updateHeight(to: scrollView.contentSize.height)
         }
-        
-        /*
-         DISABLED FOR A QA TEST! REMOVE AFTER 1.11.9 IF STABLE OR UNCOMMENT BEFORE 1.11.9 RELEASE!
-         https://github.com/ProtonMail/protonmail_ios/issues/973#issuecomment-497623769
-         
-        self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.estimatedProgress) { [weak self] webView, change in
-            guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
-            guard webView.estimatedProgress > 0.1 else { return } // skip first call because it will inherit irrelevant contentSize
-            self?.updateHeight(to: webView.scrollView.contentSize.height)
-        }
-        */
+ 
         decisionHandler(.allow)
     }
     

@@ -83,9 +83,9 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         }
         self.keyboardFrame = keyboardFrame
         
-        // should work only for device orientation changes
         if notification.name == UIResponder.keyboardWillHideNotification {
-            self.hideSearchTableView()
+            self.keyboardFrame = .zero
+            self.searchWindow?.frame = self.frameForContactSearch
         }
     }
     
@@ -177,6 +177,10 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
                                                name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(hideSearchTableView),
+                                               name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
     
@@ -328,6 +332,7 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         }
         guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
+        self.searchWindow?.frame = self.frameForContactSearch
         self.searchWindow = self.searchWindow ?? WindowOverlay(frame: self.frameForContactSearch)
         self.searchWindow?.rootViewController = self.searchTableViewController
         self.searchWindow?.isHidden = false
@@ -347,15 +352,17 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
 
-    internal func hideSearchTableView() {
+    @objc internal func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
         self.searchTableViewController = nil
         self.searchWindow?.rootViewController = nil
-        self.searchWindow?.isHidden = true
         
-        if #available(iOS 10.0, *) { // iOS 10-12, app
+        if #available(iOS 13.0, *) { // iOS 13
+            // iOS 13 freaks out when hiding window, so we're just removing rootViewController and make window transparent for touches
+        } else if #available(iOS 10.0, *) { // iOS 10-12, app
         #if APP_EXTENSION
             // in extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
+            self.searchWindow?.isHidden = true
         #else
             // in the app we can re-create new windows many times
             self.searchWindow = nil
@@ -368,14 +375,15 @@ class ContactPicker: UIView, WindowOverlayDelegate {
     }
     
     private var frameForContactSearch: CGRect {
-        guard let window = self.delegate?.view.window else {
+        guard let superview = self.delegate?.view, let window = superview.window else {
             return .zero
         }
         
         var topLine = self.convert(CGPoint.zero, to: window)
         topLine.y += self.frame.size.height
         let size = CGSize(width: window.bounds.width, height: window.bounds.size.height - self.keyboardFrame.size.height - topLine.y)
-        return .init(origin: topLine, size: size)
+        let intersection = CGRect(origin: .zero, size: size).intersection(superview.frame.insetBy(dx: 0, dy: -1 * window.frame.height))
+        return CGRect(origin: topLine, size: intersection.size)
     }
 }
 
@@ -468,10 +476,17 @@ protocol WindowOverlayDelegate: class {
     func hideSearchTableView()
     func resignFirstResponder() -> Bool
 }
+
+@available(iOS, deprecated: 13.0, message: "iPadOS 13 does not treat UIWindow.isHidden toggling gracefully")
 class WindowOverlay: UIWindow {
     weak var delegate: WindowOverlayDelegate?
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        // iOS 13 can not hide the window, so we're removing its rootViewController in hideSearchTableView() and make it transparent for touches here
+        guard self.rootViewController != nil else {
+            return nil
+        }
+        
         // point is given in window's coordinates, we're closing it if tapped in area above window (because below window is a keyboard and ios 11 freaks out)
         if !self.isHidden, point.y < 0 {
             let _ = self.delegate?.resignFirstResponder()
