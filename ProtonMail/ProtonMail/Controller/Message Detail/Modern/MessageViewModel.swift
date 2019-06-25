@@ -58,6 +58,8 @@ class MessageViewModel: NSObject {
             self.remoteContentModeObservable = newValue.rawValue
             if newValue == .allowed {
                 self.divisions = self.divisions.filter { $0 != .remoteContent}
+            } else if !self.divisions.contains(.remoteContent), let bodyIndex = self.divisions.firstIndex(of: .body) {
+                self.divisions.insert(.remoteContent, at: bodyIndex)
             }
         }
     }
@@ -96,10 +98,7 @@ class MessageViewModel: NSObject {
         self.attachments = atts
         
         // 4. remote content policy
-        // should not show Allow button if there is no remote content, even when global settings require
-        self.remoteContentModeObservable = (sharedUserDataService.autoLoadRemoteImages || !(body ?? "").hasImage())
-                                    ? WebContents.RemoteContentPolicy.allowed.rawValue
-                                    : WebContents.RemoteContentPolicy.disallowed.rawValue
+        self.remoteContentModeObservable = sharedUserDataService.autoLoadRemoteImages ? WebContents.RemoteContentPolicy.allowed.rawValue : WebContents.RemoteContentPolicy.disallowed.rawValue
         
         // 5. divisions
         self.divisions = []
@@ -109,9 +108,6 @@ class MessageViewModel: NSObject {
         }
         if !self.attachments.isEmpty, !expired  {
             self.divisions.append(.attachments)
-        }
-        if self.remoteContentModeObservable != WebContents.RemoteContentPolicy.allowed.rawValue, !expired {
-            self.divisions.append(.remoteContent)
         }
         self.divisions.append(.body)
         
@@ -135,9 +131,15 @@ class MessageViewModel: NSObject {
 
         self.header = temp.header
         self.attachments = temp.attachments
-        self.remoteContentMode = temp.remoteContentMode
         self.body = temp.body
         self.divisions = temp.divisions
+        
+        DispatchQueue.global().async {
+            let hasImage = (self.body ?? "").hasImage() // this method is slow
+            DispatchQueue.main.async {
+                self.remoteContentMode = (sharedUserDataService.autoLoadRemoteImages || !hasImage) ? .allowed : .disallowed
+            }
+        }
         
         if let body = temp.body {
             self.showEmbedImage(message, body: body)
@@ -145,8 +147,6 @@ class MessageViewModel: NSObject {
     }
 
     private func showEmbedImage(_ message: Message, body: String) {
-        var updatedBody = body
-        
         guard message.isDetailDownloaded,
             let allAttachments = message.attachments.allObjects as? [Attachment],
             case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }), !atts.isEmpty else
@@ -154,18 +154,24 @@ class MessageViewModel: NSObject {
             return
         }
         
-        var checkCount = atts.count
+        let checkCount = atts.count
         let queue: DispatchQueue = .global(qos: .userInteractive)
-
+        
         DispatchQueue.global(qos: .userInitiated).async {
+            var strings: [String:String] = [:]
             for att in atts {
                 att.base64AttachmentData { [weak self] based64String in
                     let work = DispatchWorkItem {
                         if !based64String.isEmpty {
-                            updatedBody = updatedBody.stringBySetupInlineImage("src=\"cid:\(att.contentID()!)\"", to: "src=\"data:\(att.mimeType);base64,\(based64String)\"" )
+                            strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
                         }
-                        checkCount -= 1
-                        if checkCount == 0 {
+                        
+                        if checkCount == strings.count {
+                            var updatedBody = body
+                            for (cid, base64) in strings {
+                                updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
+                            }
+                            
                             DispatchQueue.main.async {
                                 self?.body = updatedBody
                             }
