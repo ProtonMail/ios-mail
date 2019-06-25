@@ -481,16 +481,12 @@ class APIService {
     
     func debugError(_ error: NSError?) {
         #if DEBUG
-        if let error = error {
-            self.delegate?.onError(error: error)
-        }
+        // nothing
         #endif
     }
     func debugError(_ error: Error?) {
         #if DEBUG
-        if let error = error {
-            self.delegate?.onError(error: error as NSError)
-        }
+        // nothing
         #endif
     }
 }
