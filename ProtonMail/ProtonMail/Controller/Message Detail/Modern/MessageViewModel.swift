@@ -58,6 +58,8 @@ class MessageViewModel: NSObject {
             self.remoteContentModeObservable = newValue.rawValue
             if newValue == .allowed {
                 self.divisions = self.divisions.filter { $0 != .remoteContent}
+            } else if !self.divisions.contains(.remoteContent), let bodyIndex = self.divisions.firstIndex(of: .body) {
+                self.divisions.insert(.remoteContent, at: bodyIndex)
             }
         }
     }
@@ -107,9 +109,6 @@ class MessageViewModel: NSObject {
         if !self.attachments.isEmpty, !expired  {
             self.divisions.append(.attachments)
         }
-        if self.remoteContentModeObservable != WebContents.RemoteContentPolicy.allowed.rawValue, !expired {
-            self.divisions.append(.remoteContent)
-        }
         self.divisions.append(.body)
         
         // others
@@ -132,7 +131,6 @@ class MessageViewModel: NSObject {
 
         self.header = temp.header
         self.attachments = temp.attachments
-        self.remoteContentMode = temp.remoteContentMode
         self.body = temp.body
         self.divisions = temp.divisions
         
