@@ -104,7 +104,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         case 0:
             self.embed(self.header, onto: cell.contentView, ownedBy: self.controller)
         case 1:
-            self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.readableContentGuide, ownedBy: self.controller)
+            self.embed(self.editor, onto: cell.contentView, layoutGuide: cell.contentView.layoutMarginsGuide, ownedBy: self.controller)
         default:
             assert(false, "Children number misalignment")
             return
