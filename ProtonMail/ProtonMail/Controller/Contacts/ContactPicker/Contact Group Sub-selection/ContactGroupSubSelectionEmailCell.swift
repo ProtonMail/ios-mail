@@ -136,7 +136,11 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
     }
     
     private func getDisplayText() -> String {
-        return "\(self.data?.name ?? "") <\(self.data?.email ?? "")>"
+        if self.data?.name == self.data?.email {
+            return "\(self.data?.name ?? "")" // prevents duplication in case when contact name is similar to email address
+        } else {
+            return "\(self.data?.name ?? "")\n<\(self.data?.email ?? "")>" // two lines
+        }
     }
     
     func rowTapped() {

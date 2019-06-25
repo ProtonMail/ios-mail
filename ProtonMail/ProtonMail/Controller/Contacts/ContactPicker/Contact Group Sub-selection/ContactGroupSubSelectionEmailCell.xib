@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,8 +26,8 @@
                             <constraint firstAttribute="height" constant="13" id="BrY-cb-rQ7"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="DMu-pl-jCd">
-                        <rect key="frame" x="42" y="14" width="237" height="16"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DMu-pl-jCd">
+                        <rect key="frame" x="42" y="12" width="237" height="19.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -48,12 +48,12 @@
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="DMu-pl-jCd" firstAttribute="top" secondItem="KMv-hP-rXA" secondAttribute="top" id="2ao-De-PxW"/>
+                    <constraint firstAttribute="bottom" secondItem="DMu-pl-jCd" secondAttribute="bottom" constant="12" id="2fn-2J-Ywv"/>
                     <constraint firstItem="KMv-hP-rXA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="18" id="5rv-yl-q8a"/>
                     <constraint firstItem="DMu-pl-jCd" firstAttribute="leading" secondItem="vlv-MU-coK" secondAttribute="trailing" constant="8" id="8Q2-LH-w7x"/>
                     <constraint firstItem="qox-6q-KCy" firstAttribute="leading" secondItem="DMu-pl-jCd" secondAttribute="trailing" constant="8" id="9Ga-4q-Wvl"/>
                     <constraint firstItem="qox-6q-KCy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="DVz-XQ-PdG"/>
-                    <constraint firstItem="DMu-pl-jCd" firstAttribute="bottom" secondItem="KMv-hP-rXA" secondAttribute="bottom" id="VzP-xr-WN0"/>
+                    <constraint firstItem="DMu-pl-jCd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="VMu-yo-fio"/>
                     <constraint firstItem="DMu-pl-jCd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="WZr-jk-fPL"/>
                     <constraint firstItem="vlv-MU-coK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="21" id="g0H-rg-HTV"/>
                     <constraint firstItem="vlv-MU-coK" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="hma-Sy-kM2"/>
@@ -73,7 +73,7 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="internal_normal" width="10.666666984558105" height="10.666666984558105"/>
+        <image name="internal_normal" width="16" height="16"/>
         <image name="mail_check-active" width="24" height="24"/>
     </resources>
 </document>
