@@ -141,5 +141,30 @@ class String_ExtensionTests: XCTestCase {
         //Address is valid but the Top Level Domain begins with a number
         //XCTAssertFalse("email@111.222.333.44444".isValidEmail())
     }
+    
+    func testHasImage() {
+        let testSrc1 = "<embed type=\"image/svg+xml\" src=\"cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com\"/>"
+        XCTAssertFalse(testSrc1.hasImage())
+        let testSrc2 = "<embed type=\"image/svg+xml\" src='cid:5d13cdcaf81f4108654c36fc.svg@www.emailprivacytester.com'/>"
+        XCTAssertFalse(testSrc2.hasImage())
+        let testSrc3 = "<img width=\"16\" height=\"16\" src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=img\"/><img src=\"#\" width=\"16\" height=\"16\"/>"
+        XCTAssertTrue(testSrc3.hasImage())
+        let testSrc4 = "<script type=\"text/javascript\" src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=js\">"
+         XCTAssertTrue(testSrc4.hasImage())
+        let testSrc5 = "<video src=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=video\" width=\"1\" height=\"1\"></video>"
+        XCTAssertTrue(testSrc5.hasImage())
+        let testSrc6 = "<iframe width=\"1\" height=\"1\" src=\"data:text/html;charset=utf-8,&amp;lt;html&amp;gt;&amp;lt;head&amp;gt;&amp;lt;meta http-equiv=&amp;quot;Refresh&amp;quot; content=&amp;quot;1; URLhttps://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=iframeRefresh&amp;quot;&amp;gt;&amp;lt;/head&amp;gt;&amp;lt;body&amp;gt;&amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt;\"></iframe>"
+        XCTAssertTrue(testSrc6.hasImage())
+        let testUrl1 = "<p style=\"background-image:url(&#x27;https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=backgroundImage&#x27;);\"></p>"
+        XCTAssertTrue(testUrl1.hasImage())
+        let testUrl2 = "<p style=\"content:url(&#x27;https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=cssContent&#x27;);\"></p>"
+        XCTAssertTrue(testUrl2.hasImage())
+        let testposter = "<video poster=\"https://api.emailprivacytester.com/callback?code=5d13cdcaf81f4108654c36fc&amp;test=videoPoster\" width=\"1\" height=\"1\">"
+        XCTAssertTrue(testposter.hasImage())
+        let testxlink = "<svg viewBox=\"0 0 160 40\" xmlns=\"http://www.w3.org/2000/svg\"><a xlink:href=\"https://developer.mozilla.org/\"><text x=\"10\" y=\"25\">MDN Web Docs</text></a> </svg>"
+        XCTAssertTrue(testxlink.hasImage())
+        let testBackground1 = "<body background=\"URL\">"
+        XCTAssertTrue(testBackground1.hasImage())
+    }
 }
 
