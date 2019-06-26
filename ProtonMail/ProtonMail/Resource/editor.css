@@ -186,12 +186,7 @@ img {
 }
 
 td {
-    width: auto;
     max-width: 100%;
-}
-
-table img {
-    max-width: none;
 }
 
 table {
