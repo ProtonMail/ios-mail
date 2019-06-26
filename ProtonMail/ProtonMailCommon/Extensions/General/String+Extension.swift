@@ -285,23 +285,7 @@ extension String {
     }
     //<link rel="stylesheet" type="text/css" href="http://url/">
     func hasImage () -> Bool {
-        
-        if self.preg_match("\\ssrc='(?!cid:)") {
-            return true
-        }
-        if self.preg_match("\\ssrc=\"(?!cid:)") {
-            return true
-        }
-        if self.preg_match("xlink:href=") {
-            return true
-        }
-        if self.preg_match("poster=") {
-            return true
-        }
-        if self.preg_match("background=") {
-            return true
-        }
-        if self.preg_match("url\\(|url&#40;|url&#x28;|url&lpar;") {
+        if self.preg_match("\\ssrc='(?!cid:)|\\ssrc=\"(?!cid:)|xlink:href=|poster=|background=|url\\(|url&#40;|url&#x28;|url&lpar;") {
             return true
         }
         return false
