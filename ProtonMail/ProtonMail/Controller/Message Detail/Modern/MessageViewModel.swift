@@ -131,13 +131,14 @@ class MessageViewModel: NSObject {
 
         self.header = temp.header
         self.attachments = temp.attachments
-        self.body = temp.body
         self.divisions = temp.divisions
         
         DispatchQueue.global().async {
-            let hasImage = (self.body ?? "").hasImage() // this method is slow
+            let hasImage = (temp.body ?? "").hasImage() // this method is slow
             DispatchQueue.main.async {
-                self.remoteContentMode = (sharedUserDataService.autoLoadRemoteImages || !hasImage) ? .allowed : .disallowed
+                if hasImage && !sharedUserDataService.autoLoadRemoteImages { // we only care if there is remote content and loading is not allowed
+                    self.remoteContentMode = .disallowed
+                }
             }
         }
         
@@ -149,8 +150,12 @@ class MessageViewModel: NSObject {
     private func showEmbedImage(_ message: Message, body: String) {
         guard message.isDetailDownloaded,
             let allAttachments = message.attachments.allObjects as? [Attachment],
-            case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }), !atts.isEmpty else
+            case let atts = allAttachments.filter({ $0.inline() && $0.contentID()?.isEmpty == false }),
+            !atts.isEmpty else
         {
+            if self.body != body {
+                self.body = body
+            }
             return
         }
         
