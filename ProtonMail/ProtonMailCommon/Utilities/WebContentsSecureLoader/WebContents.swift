@@ -33,6 +33,10 @@ class WebContents: NSObject {
     internal let body: String
     internal let remoteContentMode: RemoteContentPolicy
     
+    var bodyForJS: String {
+        return self.body.escaped
+    }
+
     init(body: String, remoteContentMode: RemoteContentPolicy) {
         self.body = body
         self.remoteContentMode = remoteContentMode
