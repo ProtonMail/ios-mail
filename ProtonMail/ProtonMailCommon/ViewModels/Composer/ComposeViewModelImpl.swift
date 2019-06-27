@@ -598,7 +598,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
             }
-            return .init(body: body.escaped, remoteContentMode: globalRemoteContentMode)
+            return .init(body: body, remoteContentMode: globalRemoteContentMode)
         case .reply, .replyAll:
             
             var body = ""
@@ -624,8 +624,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
             let result = " \(head) \(signatureHtml) \(sp) \(body)</blockquote><div><br></div><div><br></div>\(foot)"
-            /// escaped should call only once, also we could consider put escaped call in WebContents init
-            return .init(body: result.escaped, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .forward:
             let on = LocalString._composer_on
             let at = LocalString._general_at_label
@@ -659,32 +658,32 @@ class ComposeViewModelImpl : ComposeViewModel {
             }
             let sp = "<div><br></div><div><br></div><blockquote class=\"protonmail_quote\" type=\"cite\">\(forwardHeader)</div> "
             let result = "\(head)\(signatureHtml)\(sp)\(body)\(foot)"
-            return .init(body: result.escaped, remoteContentMode: globalRemoteContentMode)
+            return .init(body: result, remoteContentMode: globalRemoteContentMode)
         case .newDraft:
             if !self.body.isEmpty {
                 let newhtmlString = "\(head) \(self.body!) \(signatureHtml) \(foot)"
                 self.body = ""
-                return .init(body: newhtmlString.escaped, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             } else {
                 if signatureHtml.trim().isEmpty {
                     let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>" //add some space
                     return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
                 }
             }
-            return .init(body: signatureHtml.escaped, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
         case .newDraftFromShare:
             if !self.body.isEmpty {
                 let newhtmlString = """
                 \(head) \(self.body!.ln2br()) \(signatureHtml) \(foot)
                 """
                 
-                return .init(body: newhtmlString.escaped, remoteContentMode: globalRemoteContentMode)
+                return .init(body: newhtmlString, remoteContentMode: globalRemoteContentMode)
             } else if signatureHtml.trim().isEmpty {
                 //add some space
                 let ret_body = "<div><br></div><div><br></div><div><br></div><div><br></div>"
                 return .init(body: ret_body, remoteContentMode: globalRemoteContentMode)
             }
-            return .init(body: signatureHtml.escaped, remoteContentMode: globalRemoteContentMode)
+            return .init(body: signatureHtml, remoteContentMode: globalRemoteContentMode)
         }
         
     }
