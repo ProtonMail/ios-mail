@@ -118,11 +118,11 @@ html_editor.setPlaceholderText = function(text) {
 };
 
 /// transmits caret position to the app
-html_editor.editor.addEventListener("input", function(e) {
+html_editor.editor.addEventListener("input", function() {
     html_editor.getCaretYPosition();
 });
 
-/// transmits caret position to the app
+/// cathes pasted images to turn them into data blobs and add as attachments
 html_editor.editor.addEventListener("paste", function(event) {
         var items = event.clipboardData.items;
         for (var m = 0; m < items.length; m++) { 
@@ -130,9 +130,10 @@ html_editor.editor.addEventListener("paste", function(event) {
             if (file == undefined || file == null) {
                 continue;
             }
-            event.preventDefault();
-            getOrientation(file, function(orientation, base64) {
-                var name = createUUID() + "_" + file.name;
+            event.preventDefault(); // prevent default only if a file is pasted
+
+            html_editor.getBase64FromFile(file, function(base64) {
+                var name = html_editor.createUUID() + "_" + file.name;
                 var bits = "data:" + file.type + ";base64," + base64;
                 var img = new Image();
                 window.getSelection().getRangeAt(0).insertNode(img);
@@ -254,67 +255,23 @@ html_editor.getContentsHeight = function() {
     return rects.height;
 }
 
-// https://stackoverflow.com/a/32490603
-function getOrientation(file, callback) {
+html_editor.getBase64FromFile = function(file, callback) {
     var reader = new FileReader();
     reader.onloadend = function(e) {
-        var base64 = arrayBufferToBase64(e.target.result);
-
-        var view = new DataView(e.target.result);
-        if (view.getUint16(0, false) != 0xFFD8)
-        {
-            return callback(-2, base64);
+        var binary = '';
+        var bytes = new Uint8Array(e.target.result);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode( bytes[ i ] );
         }
-        var length = view.byteLength, offset = 2;
-        while (offset < length) 
-        {
-            if (view.getUint16(offset+2, false) <= 8) return callback(-1);
-            var marker = view.getUint16(offset, false);
-            offset += 2;
-            if (marker == 0xFFE1) 
-            {
-                if (view.getUint32(offset += 2, false) != 0x45786966) 
-                {
-                    return callback(-1, base64);
-                }
-
-                var little = view.getUint16(offset += 6, false) == 0x4949;
-                offset += view.getUint32(offset + 4, little);
-                var tags = view.getUint16(offset, little);
-                offset += 2;
-                for (var i = 0; i < tags; i++)
-                {
-                    if (view.getUint16(offset + (i * 12), little) == 0x0112)
-                    {
-                        return callback(view.getUint16(offset + (i * 12) + 8, little), base64);
-                    }
-                }
-            }
-            else if ((marker & 0xFF00) != 0xFF00)
-            {
-                break;
-            }
-            else
-            { 
-                offset += view.getUint16(offset, false);
-            }
-        }
-        return callback(-1, base64);
+        var base64 = window.btoa( binary );
+        return callback(base64);
     };
     reader.readAsArrayBuffer(file);
 }
 
-function arrayBufferToBase64( buffer ) {
-    var binary = '';
-    var bytes = new Uint8Array( buffer );
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-        binary += String.fromCharCode( bytes[ i ] );
-    }
-    return window.btoa( binary );
-}
-
-function createUUID() {
+html_editor.createUUID = function() {
+    // https://stackoverflow.com/a/873856
     // http://www.ietf.org/rfc/rfc4122.txt
     var s = [];
     var hexDigits = "0123456789abcdef";
