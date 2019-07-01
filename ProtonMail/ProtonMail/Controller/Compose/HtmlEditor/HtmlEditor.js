@@ -122,6 +122,37 @@ html_editor.editor.addEventListener("input", function() {
     html_editor.getCaretYPosition();
 });
 
+html_editor.editor.addEventListener("drop", function(event) {
+    var items = event.dataTransfer.items;
+    html_editor.absorbImage(event, items, event.target);
+});
+
+html_editor.editor.addEventListener("paste", function(event) {
+    var items = event.clipboardData.items;
+    html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
+});
+
+/// cathes pasted images to turn them into data blobs and add as attachments
+html_editor.absorbImage = function(event, items, target) {
+        for (var m = 0; m < items.length; m++) { 
+            var file = items[m].getAsFile();
+            if (file == undefined || file == null) {
+                continue;
+            }
+            event.preventDefault(); // prevent default only if a file is pasted
+
+            html_editor.getBase64FromFile(file, function(base64) {
+                var name = html_editor.createUUID() + "_" + file.name;
+                var bits = "data:" + file.type + ";base64," + base64;
+                var img = new Image();
+                target.appendChild(img);
+                html_editor.setImageData(img, "cid:" + name, bits);
+                
+                window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": name, "data": base64 });
+            });
+        }
+};
+
 /// breaks the blockquote into two if possible
 html_editor.editor.addEventListener("keydown", function(key) {
     quote_breaker.breakQuoteIfNeeded(key);
@@ -194,7 +225,7 @@ html_editor.acquireEmbeddedImages = function() {
 
 html_editor.getBase64FromImageUrl = function(oldImage, callback) {
     var img = new Image();
-    img.onload = function() {
+    img.onload = function(e) {        
         var canvas = document.createElement("canvas");
 
         // Canvas has a limitation for maximum image size, different for every device.
@@ -218,7 +249,7 @@ html_editor.getBase64FromImageUrl = function(oldImage, callback) {
         var cid = oldImage.src.replace("blob:null\/", '');
         callback(oldImage, cid + ".png", data);
     };
-    img.src = oldImage.src;
+   img.src = oldImage.src;
 }
 
 html_editor.removeEmbedImage = function(cid) {
@@ -231,4 +262,35 @@ html_editor.removeEmbedImage = function(cid) {
 html_editor.getContentsHeight = function() {
     var rects = document.body.getBoundingClientRect();
     return rects.height;
+}
+
+html_editor.getBase64FromFile = function(file, callback) {
+    var reader = new FileReader();
+    reader.onloadend = function(e) {
+        var binary = '';
+        var bytes = new Uint8Array(e.target.result);
+        var len = bytes.byteLength;
+        for (var i = 0; i < len; i++) {
+            binary += String.fromCharCode( bytes[ i ] );
+        }
+        var base64 = window.btoa( binary );
+        return callback(base64);
+    };
+    reader.readAsArrayBuffer(file);
+}
+
+html_editor.createUUID = function() {
+    // https://stackoverflow.com/a/873856
+    // http://www.ietf.org/rfc/rfc4122.txt
+    var s = [];
+    var hexDigits = "0123456789abcdef";
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    s[14] = "4";  // bits 12-15 of the time_hi_and_version field to 0010
+    s[19] = hexDigits.substr((s[19] & 0x3) | 0x8, 1);  // bits 6-7 of the clock_seq_hi_and_reserved to 01
+    s[8] = s[13] = s[18] = s[23] = "-";
+
+    var uuid = s.join("");
+    return uuid;
 }
