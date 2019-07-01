@@ -219,6 +219,8 @@ class LocalizedString {
     lazy var _messages_has_been_deleted = NSLocalizedString("Message has been deleted.", comment: "Title")
     /// "Message has been moved."
     lazy var _messages_has_been_moved = NSLocalizedString("Message has been moved.", comment: "Title")
+    /// "You're going to delete the message irreversibly. Are you sure?"
+    lazy var _messages_will_be_removed_irreversibly = NSLocalizedString("You're going to delete the message irreversibly. Are you sure?", comment: "Confirmation message before deleting a message")
     /// "Archived"
     lazy var _messages_archived = NSLocalizedString("Archived", comment: "Description")
     /// "Spammed"

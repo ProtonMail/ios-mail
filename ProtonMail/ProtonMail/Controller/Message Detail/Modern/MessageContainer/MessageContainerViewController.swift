@@ -111,8 +111,22 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.coordinator.previewQuickLook(for: url)
     }
     @objc func topTrashButtonTapped(_ sender: UIBarButtonItem) {
-        self.viewModel.removeThread()
-        self.coordinator.dismiss()
+        func remove() {
+            self.viewModel.removeThread()
+            self.coordinator.dismiss()
+        }
+        
+        guard self.viewModel.isRemoveIrreversible() else {
+            remove()
+            return
+        }
+        
+        let alert = UIAlertController(title: LocalString._warning, message: LocalString._messages_will_be_removed_irreversibly, preferredStyle: .alert)
+        let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { _ in remove() }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ })
+        [yes, cancel].forEach(alert.addAction)
+        
+        self.present(alert, animated: true, completion: nil)
     }
     @objc func topFolderButtonTapped(_ sender: UIBarButtonItem) {
         self.coordinator.go(to: .folders)

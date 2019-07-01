@@ -314,13 +314,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
         if viewModel.isDelete() {
-            self.viewModel.delete(IDs: self.selectedIDs)
-            showMessageMoved(title: LocalString._messages_has_been_deleted)
+            let alert = UIAlertController(title: LocalString._warning, message: LocalString._messages_will_be_removed_irreversibly, preferredStyle: .alert)
+            let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [unowned self] _ in
+                self.viewModel.delete(IDs: self.selectedIDs)
+                self.showMessageMoved(title: LocalString._messages_has_been_deleted)
+                self.cancelButtonTapped()
+            }
+            let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { [unowned self] _ in
+                self.cancelButtonTapped()
+            }
+            [yes, cancel].forEach(alert.addAction)
+            
+            self.present(alert, animated: true, completion: nil)
         } else {
             moveMessages(to: .trash)
             showMessageMoved(title: LocalString._messages_has_been_moved)
+            self.cancelButtonTapped()
         }
-        self.cancelButtonTapped()
     }
 
     @objc internal func moreButtonTapped() {
