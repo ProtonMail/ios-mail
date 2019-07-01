@@ -111,7 +111,12 @@ class MessageContainerViewModel: TableContainerViewModel {
             sharedMessageDataService.mark(message: $0, unRead: !read)
         }
     }
-    internal func removeThread() {
+    
+    internal func isRemoveIrreversible() -> Bool { // TODO: validation logic should be different for threads
+        return self.messages.first(where: { $0.contains(label: .trash) || $0.contains(label: .spam) }) != nil
+    }
+    
+    internal func removeThread() { // TODO: remove logic should be different for threads
         self.messages.forEach { message in
             if message.contains(label: .trash) || message.contains(label: .spam) {
                 sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
