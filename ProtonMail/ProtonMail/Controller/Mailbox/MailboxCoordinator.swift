@@ -149,7 +149,6 @@ class MailboxCoordinator : DefaultCoordinator {
             next.viewModel = CaptchaViewModelImpl()
             next.delegate = self.viewController
         case .folder:
-            self.viewController?.cancelButtonTapped()
             guard let next = destination as? LablesViewController else {
                 return false
             }
@@ -161,7 +160,6 @@ class MailboxCoordinator : DefaultCoordinator {
             next.viewModel = FolderApplyViewModelImpl(msg: messages)
             next.delegate = self.viewController
         case .labels:
-            self.viewController?.cancelButtonTapped()
             guard let next = destination as? LablesViewController else {
                 return false
             }
