@@ -74,6 +74,14 @@ class HtmlEditorBehaviour: NSObject {
         return false
     }
     
+    // fixes retain cycle: userContentController retains his message handlers
+    internal func eject() {
+        self.webView.configuration.userContentController.remove(MessageTopics.addImage)
+        self.webView.configuration.userContentController.remove(MessageTopics.removeImage)
+        self.webView.configuration.userContentController.remove(MessageTopics.moveCaret)
+        self.webView.configuration.userContentController.remove(MessageTopics.heightUpdated)
+    }
+    
     internal func setup(webView: WKWebView) {
         self.webView = webView
         self.webView.scrollView.keyboardDismissMode = .interactive
@@ -364,7 +372,10 @@ extension HtmlEditorBehaviour: WKScriptMessageHandler {
 
 // syntax sugar
 fileprivate extension WKUserContentController {
-    fileprivate func add<T: RawRepresentable>(_ scriptMessageHandler: WKScriptMessageHandler, topic: T) where T.RawValue == String {
+    func add<T: RawRepresentable>(_ scriptMessageHandler: WKScriptMessageHandler, topic: T) where T.RawValue == String {
         self.add(scriptMessageHandler, name: topic.rawValue)
+    }
+    func remove<T: RawRepresentable>(_ topic: T) where T.RawValue == String {
+        self.removeScriptMessageHandler(forName: topic.rawValue)
     }
 }

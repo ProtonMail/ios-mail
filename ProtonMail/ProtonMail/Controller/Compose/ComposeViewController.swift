@@ -89,6 +89,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+        self.htmlEditor.eject()
     }
     
     internal func injectHeader(_ header: ComposeHeaderViewController) {
