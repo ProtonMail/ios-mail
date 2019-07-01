@@ -1019,6 +1019,8 @@ extension MailboxViewController : LablesViewControllerDelegate {
     }
     
     func apply(type: LabelFetchType) {
+        self.cancelButtonTapped() // this will finish multiselection mode
+        
         if type == .label {
             showMessageMoved(title: LocalString._messages_labels_applied)
         } else if type == .folder {
