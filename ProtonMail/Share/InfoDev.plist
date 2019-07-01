@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>XPC!</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.11.9</string>
+	<string>1.11.10</string>
 	<key>CFBundleVersion</key>
 	<string>Debug</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
