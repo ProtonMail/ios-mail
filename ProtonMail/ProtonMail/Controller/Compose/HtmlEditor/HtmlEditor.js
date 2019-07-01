@@ -122,9 +122,18 @@ html_editor.editor.addEventListener("input", function() {
     html_editor.getCaretYPosition();
 });
 
-/// cathes pasted images to turn them into data blobs and add as attachments
+html_editor.editor.addEventListener("drop", function(event) {
+    var items = event.dataTransfer.items;
+    html_editor.absorbImage(event, items, event.target);
+});
+
 html_editor.editor.addEventListener("paste", function(event) {
-        var items = event.clipboardData.items;
+    var items = event.clipboardData.items;
+    html_editor.absorbImage(event, items, window.getSelection().getRangeAt(0).commonAncestorContainer);
+});
+
+/// cathes pasted images to turn them into data blobs and add as attachments
+html_editor.absorbImage = function(event, items, target) {
         for (var m = 0; m < items.length; m++) { 
             var file = items[m].getAsFile();
             if (file == undefined || file == null) {
@@ -136,13 +145,13 @@ html_editor.editor.addEventListener("paste", function(event) {
                 var name = html_editor.createUUID() + "_" + file.name;
                 var bits = "data:" + file.type + ";base64," + base64;
                 var img = new Image();
-                window.getSelection().getRangeAt(0).insertNode(img);
+                target.appendChild(img);
                 html_editor.setImageData(img, "cid:" + name, bits);
                 
                 window.webkit.messageHandlers.addImage.postMessage({ "messageHandler": "addImage", "cid": name, "data": base64 });
             });
         }
-});
+};
 
 /// breaks the blockquote into two if possible
 html_editor.editor.addEventListener("keydown", function(key) {
