@@ -162,6 +162,13 @@
 /* Title */
 "All contacts are imported" = "Все контакты импортированы";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные письма будут утеряны навсегда, но вы по-прежнему сможете смотреть свои нешифрованные письма.
+
+ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
+
 /* archive when apply label */
 "Also Archive" = "Перенести в архив";
 
@@ -438,7 +445,7 @@
 "Confirm Mailbox Password" = "Подтвердите пароль почтового ящика";
 
 /* Placeholder */
-"Confirm Password" = "Подтверждение пароля";
+"Confirm Password" = "Подтвердите пароль";
 
 /* Title */
 "Confirm new login password" = "Подтвердите новый входной пароль";
@@ -961,10 +968,10 @@
 "Invalid URL" = "Неверный URL";
 
 /* title */
-"Invalid UserName" = "Неправильное имя пользователя";
+"Invalid UserName" = "Недопустимое имя пользователя";
 
 /* Error message */
-"Invalid UserName!" = "Неправильное имя пользователя!";
+"Invalid UserName!" = "Недопустимое имя пользователя!";
 
 /* None */
 "Invalid access token please relogin" = "Некорректный токен доступа. Пожалуйста, войдите повторно";
@@ -1268,7 +1275,7 @@
 "On EE, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "В EE, MMM d, yyyy в %1$@, %2$@ пишет:";
+"On EE, MMM d, yyyy at %@, %@ wrote:" = "В EE, MMM d, yyyy в %1$@, %2$@ написано:";
 
 /* None */
 "OpenDraft" = "Открыть черновик";
@@ -1780,7 +1787,7 @@
 "The highest level of encryption available." = "Максимально возможный из доступных уровень шифрования.";
 
 /* None */
-"The label name is duplicate" = "Имя ярлыка дублируется";
+"The label name is duplicate" = "Название ярлыка дублируется";
 
 /* Error */
 "The mailbox password is incorrect." = "Неверный пароль почтового ящика.";
@@ -2043,7 +2050,7 @@
 
 /* 
  & alert title */
-"User name invalid" = "Неправильное имя пользователя";
+"User name invalid" = "Недопустимое имя пользователя";
 
 /* Title */
 "Username" = "Имя пользователя";
@@ -2058,7 +2065,7 @@
 "Verification error" = "Ошибка подтверждения";
 
 /* error details */
-"Verification of this content’s signature failed" = "Проверка подписи этого контакта не удалась";
+"Verification of this content’s signature failed" = "Ошибка проверки подписи содержимого";
 
 /* None */
 "Version %@ %@" = "Версия %@ %@";
@@ -2128,7 +2135,7 @@
 "You have %d new emails!" = "У вас %d новых сообщений!";
 
 /* Title */
-"You have a new email!" = "Вы получили новое сообщение!";
+"You have a new email!" = "Вы получили новое письмо!";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";

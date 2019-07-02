@@ -72,7 +72,9 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Adgang til denne konto er deaktiveret grundet manglende betaling. Log ind via protonmail.com for at betale din udestående faktura.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Adgang til denne konte er deaktiveret grundet restance. Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vidensdatabasen</a> for yderligere information.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Adgang til denne konte er deaktiveret grundet restance.
+
+Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vidensdatabasen</a> for yderligere information.";
 
 /* 
  & title */
@@ -160,6 +162,13 @@
 
 /* Title */
 "All contacts are imported" = "Alle kontakter er importeret";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Alle dine eksisterende krypterede e-mails vil gå tabt for evigt, men du vil stadig kunne se dine ukrypterede e-mails.
+
+DENNE HANDLING ER IRREVERSIBEL!";
 
 /* archive when apply label */
 "Also Archive" = "Arkivér også";
@@ -1860,7 +1869,9 @@
 "To" = "Til";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "For at forhindre misbrug af ProtonMail,\r\n skal det brkræftes, at du er en person.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "For at forhindre misbrug af ProtonMail
+ skal det brkræftes, at du er en person.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Benyt webversionen af ProtonMail via protonmail.com for at nulstille din postkasseadgangskode";
@@ -2149,7 +2160,9 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Din nye krypterede e-mailkonto er opsat og er klar til at sende og modtage krypterede beskeder.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Din nye sikre e-mailkonto\r\n er klar.";
+"Your new secure email
+ account is ready." = "Din nye sikre e-mailkonto
+ er klar.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Din abonnementskvota er aktiv indtil";

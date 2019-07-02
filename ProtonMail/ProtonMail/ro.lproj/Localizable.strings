@@ -163,6 +163,13 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "All contacts are imported" = "S-au importat toate contactele";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. 
+
+ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
+
 /* archive when apply label */
 "Also Archive" = "Și arhivează";
 

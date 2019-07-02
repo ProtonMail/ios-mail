@@ -72,7 +72,9 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "L'accés a aquest compte està desactivat per falta de pagament. Inicieu la sessió a través de protonmail.com per pagar la factura no pagada.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.\r\n\r\nVisiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de coneixement</a> per més informació.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "L'accés a aquest compte està deshabilitat per falta de pagament.
+
+Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de coneixement</a> per més informació.";
 
 /* 
  & title */
@@ -160,6 +162,13 @@
 
 /* Title */
 "All contacts are imported" = "S'importen tots els contactes";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Tots els vostres correus electrònics xifrats existents es perdran per sempre, però encara podreu veure els vostres correus electrònics sense xifrar.
+
+AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* archive when apply label */
 "Also Archive" = "Archivar també";
@@ -1860,7 +1869,9 @@
 "To" = "Per a";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,\r\n  necessitem verificar que sou humà.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "Per evitar l'ús abusiu de ProtonMail,
+ necessitem verificar que sou humà.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Per restablir la contrasenya de la vostra bústia, si us plau, feu servir la versió de ProtonMail a protonmail.com";
@@ -2149,7 +2160,10 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "La seva nova compte de correu electrònic ja està configurada i llesta per enviar i rebre missatges xifrats.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "El vostre nou compte de correu electrònic\r\n segur està preparat.";
+"Your new secure email
+ account is ready." = "El vostre nou compte de correu electrònic
+
+ segur està preparat.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "El vostre plà restarà actiu fins";

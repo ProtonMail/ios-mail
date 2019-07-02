@@ -163,6 +163,13 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 /* Title */
 "All contacts are imported" = "Tutti i contatti sono stati importati";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Tutte le tue mail cifrate presenti saranno perse per sempre, ma quelle non cifrate saranno ancora leggibili.
+
+QUESTA OPERAZIONE NON PUÒ ESSERE ANNULLATA!";
+
 /* archive when apply label */
 "Also Archive" = "Anche archivia";
 

@@ -163,6 +163,13 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "All contacts are imported" = "Allir tengiliðir fluttir inn";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun tapast endanlega, en þú munt áfram geta skoðað póst sem ekki hefur verið dulritaður.
+
+ÞESSA AÐGERÐ ER EKKI HÆGT AÐ AFTURKALLA!";
+
 /* archive when apply label */
 "Also Archive" = "Einnig safn";
 
