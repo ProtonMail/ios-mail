@@ -72,7 +72,9 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago. Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de conocimiento</a> para más información.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "El acceso a esta cuenta está deshabilitado por falta de pago.
+
+Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la base de conocimiento</a> para más información.";
 
 /* 
  & title */
@@ -160,6 +162,13 @@
 
 /* Title */
 "All contacts are imported" = "Todos los contactos están importados";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.
+
+¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
 
 /* archive when apply label */
 "Also Archive" = "Además archivar";
@@ -1860,7 +1869,9 @@
 "To" = "Para";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Para prevenir abusos de ProtonMail,\r\n necesitamos verificar que es humano.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "Para prevenir abusos de ProtonMail,
+ necesitamos verificar que es humano.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com";
@@ -2149,7 +2160,9 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Su nueva cuenta de email cifrado se ha configurado y está lista para enviar y recibir mensajes cifrados.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Su nueva cuenta de correo\r\n seguro está lista.";
+"Your new secure email
+ account is ready." = "Su nueva cuenta de correo
+ seguro está lista.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Su plan está activo hasta";

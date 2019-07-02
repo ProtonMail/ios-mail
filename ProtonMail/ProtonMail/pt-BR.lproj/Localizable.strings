@@ -163,6 +163,13 @@ Por favor visite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "All contacts are imported" = "Todos os contatos foram importados";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Todos seus e-mails criptografados existentes serão perdidos para sempre, mas você ainda será capaz de ver os seus e-mails não criptografados. 
+
+ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
+
 /* archive when apply label */
 "Also Archive" = "Também arquivar";
 
@@ -817,7 +824,7 @@ Por favor visite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Feedback" = "Feedback";
 
 /* Error */
-"Fetch user info failed" = "Falha na busca de informações do usuário";
+"Fetch user info failed" = "Falha na pesquisa de informações do usuário";
 
 /* VoiceOver: email belongs to folder */
 "Folder" = "Pasta";
@@ -1685,7 +1692,7 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 "Spanish" = "Espanhol";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+"Srp single password keyslat invalid!" = "Srp senha única de keysalt inválida!";
 
 /* Title */
 "Star" = "Estrela";

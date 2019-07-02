@@ -163,6 +163,13 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "All contacts are imported" = "Minden névjegy importálva";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Az összes meglévő titkosított üzenete örökre el fog veszni, de a nem titkosított üzenetekhez továbbra is hozzáférhet.
+
+EZ A MŰVELET NEM VONHATÓ VISSZA!";
+
 /* archive when apply label */
 "Also Archive" = "Archiválás";
 

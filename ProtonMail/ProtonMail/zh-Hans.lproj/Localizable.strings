@@ -60,7 +60,7 @@
 "A paid ProtonMail plan is required to use this feature" = "此功能需要付费";
 
 /* settings touchid error */
-"A passcode has not been set, enable it in the system Settings" = "您尚未设置密码，请在系统设置中启用它";
+"A passcode has not been set, enable it in the system Settings" = "口令未设置，请在系统设置中开启";
 
 /* when server not reachable */
 "API Server not reachable..." = "API 服务器无法访问...";
@@ -69,7 +69,7 @@
 "ARCHIVE" = "已存档";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "此帐户由于欠费已经被禁止访问。请登录 protonmail.com 进行支付。";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "此账户因欠费已被停用。请登录 protonmail.com 续费。";
 
 /* None */
 "Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "此账户因欠费已被停用。
@@ -162,6 +162,13 @@
 
 /* Title */
 "All contacts are imported" = "所有联系人已经被导入";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件，但未加密的邮件不受影响。
+
+此操作无法撤销！";
 
 /* archive when apply label */
 "Also Archive" = "同时存档";
@@ -282,7 +289,7 @@
 "Can take several minutes to setup." = "可能需要几分钟的时间才能完成设置。";
 
 /* Error */
-"Can't copy the file" = "无法加载该文件";
+"Can't copy the file" = "复制文件失败";
 
 /* update password error */
 "Can't create a SRP Client" = "不能创建 SRP 客户端";
@@ -379,7 +386,7 @@
 "Change Password" = "更改密码";
 
 /* settings protection section title */
-"Change Pin" = "更改 PIN";
+"Change Pin" = "更改口令";
 
 /* Title */
 "Change Single Password" = "修改密码";
@@ -696,10 +703,10 @@
 "Enable Mobile Signature" = "使用移动设备落款";
 
 /* Title */
-"Enable Notification Email" = "启用电子邮件推送";
+"Enable Notification Email" = "接收邮件通知";
 
 /* settings protection section title */
-"Enable Pin Protection" = "启用 PIN 码保护";
+"Enable Pin Protection" = "开启口令保护";
 
 /* settings protection section title */
 "Enable TouchID" = "启用 TouchID";
@@ -744,10 +751,10 @@
 "End-to-end encrypted message" = "端对端加密信息";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "来自验证过邮箱的端对端加密信息";
+"End-to-end encrypted message from verified address" = "来自已验证地址的端到端加密邮件";
 
 /* encryption lock description */
-"End-to-end encrypted to verified address" = "发送端对端加密信息到验证过的邮箱";
+"End-to-end encrypted to verified address" = "与已验证的地址经过端到端加密";
 
 /* Action */
 "English" = "英语";
@@ -759,10 +766,10 @@
 "Enter Verification Code" = "输入验证码";
 
 /* set pin title */
-"Enter your PIN" = "请输入您的 PIN";
+"Enter your PIN" = "输入口令";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "输入您的 PIN 码解锁收件箱。";
+"Enter your PIN to unlock your inbox." = "输入口令解锁收件箱。";
 
 /* human verification top title */
 "Enter your cell phone number" = "输入您的手机号码";
@@ -832,7 +839,7 @@
 "For individuals that need more capacity, customization and advanced features" = "适合需要更大存储空间、更多功能、更高自由度的个人";
 
 /* Service Plan description */
-"For organizations that need multi-user support and additional productivity features" = "适合需要支持多用户和生产力功能的组织";
+"For organizations that need multi-user support and additional productivity features" = "适合需要支持多用户和生产力功能的机构";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "适合极其注重匿名和隐私的高级用户和组织";
@@ -904,7 +911,7 @@
 "Hours" = "小时";
 
 /* Description */
-"Human Check Failed" = "人工检查失败";
+"Human Check Failed" = "身份验证失败";
 
 /* human check warning title */
 "Human Check Warning" = "身份验证提示";
@@ -935,7 +942,7 @@
 "Inbox" = "收件箱";
 
 /* Error */
-"Incorrect PIN," = "PIN 错误。";
+"Incorrect PIN," = "口令错误。";
 
 /* Title */
 "Incorrect password" = "密码错误";
@@ -944,10 +951,10 @@
 "Input Display Name ..." = "输入对外名称...";
 
 /* place holder */
-"Input Notification Email ..." = "输入通知电子邮件...";
+"Input Notification Email ..." = "输入通知邮箱...";
 
 /* Error */
-"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "目前暂时禁用创建 ProtonMail 帐户功能。请访问 https://protonmail.com/invite，获得邀请。";
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "ProtonMail 暂停注册，请前往 https://protonmail.com/invite 获取邀请。";
 
 /* The preconditions are not met */
 "Internal Error" = "系统错误";
@@ -1062,7 +1069,7 @@
 "Login Password" = "登录密码";
 
 /* Error */
-"Login password doesn't match" = "登陆密码不正确";
+"Login password doesn't match" = "登录密码错误";
 
 /* menu title */
 "Logout" = "退出";
@@ -1148,7 +1155,7 @@
 "Mobile Signature" = "移动设备落款";
 
 /* Description */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "移动启用注册暂时禁用。请稍后再试，或者可以尝试使用电脑访问 protonmail.com 注册";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "移动端注册已暂停，请稍后再试，或使用电脑前往 protonmail.com 尝试注册。";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "修改或关闭预置的移动设备落款需要付费。";
@@ -1245,16 +1252,16 @@
 "Notification / Recovery Email" = "密保/通知邮箱";
 
 /* Title */
-"Notification Email" = "通知邮件";
+"Notification Email" = "通知邮箱";
 
 /* title of action sheet */
-"Notification Snooze" = "延迟通知";
+"Notification Snooze" = "免打扰";
 
 /* VoiceOver description */
-"Notifications Are Snoozed" = "通知已被延迟";
+"Notifications Are Snoozed" = "免打扰已开启";
 
 /* VoiceOver description */
-"Notifications Snooze Off" = "关闭通知延迟";
+"Notifications Snooze Off" = "免打扰已关闭";
 
 /* Action */
 "OK" = "确定";
@@ -1287,16 +1294,16 @@
 "Outbox" = "发件箱";
 
 /* encryption lock description */
-"PGP-encrypted" = "PGP 加密";
+"PGP-encrypted" = "已经过 PGP 加密";
 
 /* encryption lock description */
-"PGP-encrypted message" = "PGP 加密的消息";
+"PGP-encrypted message" = "PGP 加密的邮件";
 
 /* encryption lock description */
-"PGP-encrypted message from verified address" = "来自已验证地址的 PGP 加密消息";
+"PGP-encrypted message from verified address" = "来自已验证地址的 PGP 加密邮件";
 
 /* encryption lock description */
-"PGP-signed" = "PGP签名";
+"PGP-signed" = "已经过 PGP 签名";
 
 /* encryption lock description */
 "PGP-signed message from verified address" = "来自已验证地址的 PGP 签名邮件";
@@ -1338,7 +1345,7 @@
 "Photo Library" = "照片库";
 
 /* Description */
-"Pin code can't be empty." = "PIN 不能为空。";
+"Pin code can't be empty." = "口令不能为空。";
 
 /* Title */
 "Plain text" = "纯文本";
@@ -1418,7 +1425,7 @@
 "Please use the web version of ProtonMail to change your passwords!" = "请使用 ProtonMail 的 web 版本更改登录密码 ！";
 
 /* Description */
-"Please use your new password when signing in." = "请使用新密码登录";
+"Please use your new password when signing in." = "请使用新密码登录。";
 
 /* The */
 "Please wait until the email downloaded!" = "请耐心等待，邮件下载中 ！";
@@ -1458,7 +1465,7 @@
 "ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "升级到 ProtonMail 增强版、专业版或尊享版即可编辑移动设备落款。";
 
 /* Description */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不卖广告或出售您的隐私。您的支持对于 ProtonMail 至关重要。您可以升级到付费帐户或捐助以支持 ProtonMail。";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不经营广告业务，也不侵犯用户隐私。您的支持对 ProtonMail 至关重要。您可以升级付费账户或捐款来支持 ProtonMail。";
 
 /* Title */
 "ProtonMail encrypted emails" = "ProtonMail 加密电子邮件";
@@ -1479,7 +1486,7 @@
 "Rate & Review" = "评分和评论";
 
 /* set pin title */
-"Re-Enter your PIN" = "重新输入您的 PIN 码";
+"Re-Enter your PIN" = "再次输入口令";
 
 /* abbreviation of reply: */
 "Re:" = "回复：";
@@ -1512,7 +1519,7 @@
 "Reply" = "回复";
 
 /* reply all action */
-"Reply All" = "回复全部";
+"Reply All" = "回复所有人";
 
 /* composer view model impl */
 "Reply message" = "回复邮件";
@@ -1599,7 +1606,7 @@
 "Send plain but stored enc" = "纯文本发送但加密存储";
 
 /* encryption lock description */
-"Sender Verification Failed" = "发送方验证失败";
+"Sender Verification Failed" = "发件人验证失败";
 
 /* Description */
 "Sending Message" = "发送消息";
@@ -1620,7 +1627,7 @@
 "Sent by ProtonMail with zero access encryption" = "通过 ProtonMail 全封闭加密发送";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "由您发送, 端到端加密";
+"Sent by you with end-to-end encryption" = "您通过端到端加密发送";
 
 /* Description */
 "Server proofs not valid!" = "服务器验证无效!";
@@ -1659,13 +1666,13 @@
 "Single Password" = "单一密码";
 
 /* settings option */
-"Snooze Notifications" = "延迟通知";
+"Snooze Notifications" = "免打扰";
 
 /* title of action sheet when quick snooze is active (Snoozed for 30min) */
-"Snoozed for" = "延迟提醒";
+"Snoozed for" = "免打扰时间";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
-"Snoozed till" = "推迟到：";
+"Snoozed till" = "免打扰直到";
 
 /* Error message for beta users */
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！";
@@ -1883,7 +1890,7 @@
 "Too many recipients" = "收件人过多";
 
 /* settings touchid error */
-"TouchID is not enrolled, enable it in the system Settings" = "TouchID 未配置，在系统设置中启用它";
+"TouchID is not enrolled, enable it in the system Settings" = "TouchID 未设置，请在系统设置中开启";
 
 /* settings touchid/faceid error */
 "TouchID not available" = "TouchID 不可用";
@@ -1906,7 +1913,7 @@
 "Tweet about ProtonMail" = "推文分享ProtonMail";
 
 /* Placeholder */
-"Two Factor Code" = "两步验证码";
+"Two Factor Code" = "双重验证码";
 
 /* Internal type casting error */
 "Type casting error" = "类型转换出错";
@@ -2003,7 +2010,7 @@
 "Update Contact" = "更新联系人";
 
 /* update notification email error title */
-"Update Notification Email" = "更新通知电子邮件";
+"Update Notification Email" = "更改通知邮箱";
 
 /* title */
 "Update Now" = "立即更新";
@@ -2123,13 +2130,13 @@
 "You can't set %@ address as default because it is a paid feature." = "您需要付费才能将 %@ 设为首选地址。";
 
 /* description */
-"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "你启用了邮件限时功能，但不是所有的收件人都支持此功能。请添加一个密码和/或关闭PGP发送功能为所有的收件人启用限时邮件。";
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "您设置了邮件有效期，但并非所有收件人都能使用此功能。给邮件添加密码或关闭 PGP 方可为所有收件人设置邮件有效期。";
 
 /* Message */
-"You have %d new emails!" = "您有 %d 个新邮件 ！";
+"You have %d new emails!" = "您收到了 %d 封新邮件！";
 
 /* Title */
-"You have a new email!" = "你有1个新的邮件 ！";
+"You have a new email!" = "您收到了一封新邮件！";
 
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您的改动尚未保存，要保存吗？";
@@ -2158,7 +2165,7 @@
  现已就绪。";
 
 /* Service plan description footer */
-"Your plan is currently active until" = "您的计划当前处于活动状态, 直到";
+"Your plan is currently active until" = "您的订阅有效期至";
 
 /* Service plan description footer */
 "Your plan will automatically renew on" = "您的订阅将自动更新于";

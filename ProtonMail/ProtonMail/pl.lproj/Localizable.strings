@@ -163,6 +163,13 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 /* Title */
 "All contacts are imported" = "Wszystkie kontakty zostały zaimportowane";
 
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Wszystkie zaszyfrowane wiadomości e-mail zostaną utracone, ale nadal będziesz mógł wyświetlać niezaszyfrowane wiadomości.
+
+TEGO DZIAŁANIA NIE MOŻNA COFNĄĆ!";
+
 /* archive when apply label */
 "Also Archive" = "Również archiwizuj";
 
@@ -771,7 +778,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Enter your existing email address." = "Wpisz swój istniejący adres e-mail.";
 
 /* settings debug section title */
-"Error Logs" = "Logi błędów";
+"Error Logs" = "Dzienniki błędów";
 
 /* Error alert title */
 "Error occured" = "Wystąpił błąd";
@@ -1040,7 +1047,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Limited to 150 messages sent/day" = "Limit do 150 wysłanych wiadomości na dzień";
 
 /* Action */
-"Load remote content" = "Ładowanie zawartości zdalnej";
+"Load remote content" = "Załaduj zawartość zdalną";
 
 /* None */
 "Loading..." = "Ładowanie...";
@@ -1452,10 +1459,10 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus jest wymagany, aby dostosować podpis mobilny";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary pozwala na dodanie oraz edycję większej ilości danych kontaktowych niż tylko samej nazwy oraz adresu e-mail. Używając ProtonMaila, dane te zostaną zabezpieczone poprzez szyfrowanie end-to-end, tak samo jak Twoje wiadomości e-mail.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Profesjonalny/Wizjoner pozwala na dodanie oraz edycję większej ilości danych kontaktowych niż tylko samej nazwy oraz adresu e-mail. Używając ProtonMaila, dane te zostaną zabezpieczone poprzez szyfrowanie end-to-end, tak samo jak Twoje wiadomości e-mail.";
 
 /* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary umożliwia dostosowanie podpisu mobilnego.";
+"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Profesjonalny/Wizjoner umożliwia dostosowanie podpisu mobilnego.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nie sprzedaje reklam ani Twojej prywatności. Twoja pomoc jest niezbędna do utrzymania działania serwisu. Wesprzyj nas, przekazując darowiznę lub ulepszając konto do wersji płatnej.";
@@ -1671,7 +1678,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Nie możemy przetworzyć zakupów w wersji beta aplikacji na iOS. Dziękujemy za uczestnictwo w naszym programie beta!";
 
 /* None */
-"Space Warning" = "Ostrzeżenie o przestrzeni";
+"Space Warning" = "Ostrzeżenie o przestrzeni dyskowej";
 
 /* mail location desc
    menu title */
@@ -2074,10 +2081,10 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Warning" = "Ostrzeżenie";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Uwaga: dopóki nie sprawdzimy, że jesteś człowiekiem, nie możesz wysyłać wiadomości!!!";
+"Warning: Before you pass the human check you can't sent email!!!" = "Ostrzeżenie: dopóki nie sprawdzimy, że jesteś człowiekiem, nie możesz wysyłać wiadomości!!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Uwaga: Nie dodano adresu e-mail odzyskiwania/powiadomień, przypisanego do konta. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez podawania tego adresu?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodano adresu e-mail odzyskiwania/powiadomień, przypisanego do konta. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez podawania tego adresu?";
 
 /* Error message */
 "We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Twoja subskrypcja została pomyślnie aktywowana. Uruchom aplikację ponownie, aby rozpocząć korzystanie z nowego planu taryfowego.";

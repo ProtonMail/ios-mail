@@ -72,7 +72,9 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja. Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Pristup ovom računu je onemogućen zbog neplaćanja.
+
+Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">našu bazu znanja</a> za više informacija.";
 
 /* 
  & title */
@@ -160,6 +162,13 @@
 
 /* Title */
 "All contacts are imported" = "Svi kontakti su uvezeni";
+
+/* Description */
+"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
+
+THIS ACTION CANNOT BE UNDONE!" = "Sve vaše postojeće šifrirane poruke e-pošte biti će zauvijek izgubljene, ali i dalje ćete moći vidjeti svoje nešifrirane poruke e-pošte.
+
+OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* archive when apply label */
 "Also Archive" = "Također i arhivu";
@@ -1134,7 +1143,7 @@
 "Message sending failed. Please try again." = "Slanje poruke nije uspjelo. Molimo pokušajte ponovno.";
 
 /* Description after message have been sent */
-"Message sent" = "Poruka poslana";
+"Message sent" = "Poruka je poslana";
 
 /* Description */
 "Messages you send can be set to auto delete after a certain time period." = "Poruke koje šaljete mogu se podesiti na automatsko brisanje nakon određenog vremenskog razdoblja.";
@@ -1860,7 +1869,9 @@
 "To" = "Za";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,\r\n morate potvrditi da ste čovjek.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "Da biste spriječili zlouporabu ProtonMaila,
+ morate potvrditi da ste čovjek.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com";
@@ -2149,7 +2160,9 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Vaš novi, sigurni račun\r\n e-pošte je spreman.";
+"Your new secure email
+ account is ready." = "Vaš novi, sigurni račun
+ e-pošte je spreman.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Vaš plan je trenutno aktivan do";

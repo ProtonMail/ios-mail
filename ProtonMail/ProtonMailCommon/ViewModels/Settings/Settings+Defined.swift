@@ -80,6 +80,10 @@ extension ELanguage {
                 return "Kabyle"
             case .swedish:
                 return "Svenska"
+            case .japanese:
+                return "日本語"
+            case .indonesian:
+                return "Bahasa Indonesia"
             case .count:
                 return ""
             }
@@ -135,6 +139,10 @@ extension ELanguage {
                 return "kab-DZ"
             case .swedish:
                 return "sv_SE"
+            case .japanese:
+                return "ja_JP"
+            case .indonesian:
+                return "in_ID"
             case .count:
                 return "en_US"
             }
@@ -191,6 +199,10 @@ extension ELanguage {
                 return "kab"
             case .swedish:
                 return "sv"
+            case .japanese:
+                return "ja"
+            case .indonesian:
+                return "id"
             case .count:
                 return "en"
             }
@@ -232,7 +244,9 @@ extension ELanguage {
             .german,
             .hungarian,
             .icelandic,
+            .indonesian,
             .italian,
+            .japanese,
             .kabyle,
             .polish,
             .portuguese,
