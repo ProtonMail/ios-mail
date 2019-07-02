@@ -60,7 +60,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         self.prepareRendering(contents, into: webView.configuration)
         
         let lockdownBody = """
-        <html><head><meta http-equiv="Content-Security-Policy" content="\(WebContents.RemoteContentPolicy.lockdown.cspRaw)"></head>\(contents.body)</html>
+        <html><head><meta http-equiv="Content-Security-Policy" content="\(WebContents.RemoteContentPolicy.lockdown.cspRaw)"></head>\(contents.bodyForJS)</html>
         """
         webView.loadHTMLString(lockdownBody, baseURL: URL(string: "about:blank")!)
     }
