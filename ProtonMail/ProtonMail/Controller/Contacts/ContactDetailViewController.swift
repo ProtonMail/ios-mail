@@ -214,6 +214,22 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
 
     }
     
+    private func systemPhoneCall(phone: ContactEditPhone) {
+        var allowedCharactersSet = NSCharacterSet.decimalDigits
+        allowedCharactersSet.insert("+")
+        allowedCharactersSet.insert(",")
+        allowedCharactersSet.insert("*")
+        allowedCharactersSet.insert("#")
+        let formatedNumber = phone.newPhone.components(separatedBy: allowedCharactersSet.inverted).joined(separator: "")
+        let phoneUrl = "tel://\(formatedNumber)"
+        if let phoneCallURL = URL(string: phoneUrl) {
+            let application:UIApplication = UIApplication.shared
+            if (application.canOpenURL(phoneCallURL)) {
+                application.openURL(phoneCallURL)
+            }
+        }
+    }
+    
     @IBAction func didTapSendToPrimaryEmailButton(_ sender: UIButton) {
         let emails = viewModel.getEmails()
         let email = emails[0]
@@ -226,14 +242,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
     }
     
     @IBAction func didTapCallContactButton(_ sender: UIButton) {
-        let phone = self.viewModel.getPhones()[0]
-        let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
-        let phoneUrl = "tel://\(formatedNumber)"
-        if let phoneCallURL = URL(string: phoneUrl) {
-            let application:UIApplication = UIApplication.shared
-            if (application.canOpenURL(phoneCallURL)) {
-                application.openURL(phoneCallURL)
-            }
+        if let phone = self.viewModel.getPhones().first {
+            self.systemPhoneCall(phone: phone)
         }
     }
     
@@ -582,14 +592,7 @@ extension ContactDetailViewController: UITableViewDelegate {
             break
         case .cellphone:
             let phone = self.viewModel.getPhones()[row]
-            let formatedNumber = phone.newPhone.components(separatedBy: NSCharacterSet.decimalDigits.inverted).joined(separator: "")
-            let phoneUrl = "tel://\(formatedNumber)"
-            if let phoneCallURL = URL(string: phoneUrl) {
-                let application:UIApplication = UIApplication.shared
-                if (application.canOpenURL(phoneCallURL)) {
-                    application.openURL(phoneCallURL)
-                }
-            }
+            self.systemPhoneCall(phone: phone)
         case .home_address:
             let addrs = viewModel.getAddresses()
             let addr = addrs[row]
