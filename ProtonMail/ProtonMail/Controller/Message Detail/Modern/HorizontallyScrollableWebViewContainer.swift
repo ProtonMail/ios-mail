@@ -211,6 +211,12 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
             guard let new = change.newValue?.height, let old = change.oldValue?.height, new - old > 10.0 else { return }
             self?.updateHeight(to: scrollView.contentSize.height)
         }
+  
+        self.loadingObservation = self.loadingObservation ?? self.webView.observe(\.isLoading) { [weak self] webView, change in
+            guard self?.shouldDefaultObserveContentSizeChanges() == true else { return }
+            guard webView.estimatedProgress > 0.1 else { return } // skip first call because it will inherit irrelevant contentSize
+            self?.updateHeight(to: webView.scrollView.contentSize.height)
+        }
  
         decisionHandler(.allow)
     }
