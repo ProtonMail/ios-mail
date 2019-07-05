@@ -23,7 +23,7 @@ def common_pods
     #based on 1.0.4
     pod 'NSDate+Helper', :git => 'https://github.com/ProtonMail/nsdate-helper.git', :branch => 'master'
     #key chain
-    pod 'UICKeyChainStore', '2.1.1'
+#    pod 'UICKeyChainStore', '2.1.1'
     
     #auto layou lib. need to find a replacement
     pod 'Masonry', '1.1.0'
@@ -55,7 +55,7 @@ def pm_share
 end
 
 def pm_siri
-    pod 'UICKeyChainStore', '2.1.1'
+#    pod 'UICKeyChainStore', '2.1.1'
 end
 
 #targets
@@ -111,7 +111,7 @@ end
 
 
 target 'Keymaker' do
-    pod 'UICKeyChainStore', '2.1.1'
+#    pod 'UICKeyChainStore', '2.1.1'
     pod 'EllipticCurveKeyPair', '1.0.2'
 end
 

@@ -91,7 +91,6 @@ PODS:
     - Sentry/Core (= 4.1.0)
   - Sentry/Core (4.1.0)
   - SWRevealViewController (2.3.0)
-  - UICKeyChainStore (2.1.1)
   - "UIColor+Hex (1.0.1)":
     - "UIColor+Hex/NSColor (= 1.0.1)"
     - "UIColor+Hex/UIColor (= 1.0.1)"
@@ -117,7 +116,6 @@ DEPENDENCIES:
   - RHAddressBook (= 1.1.1)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
-  - UICKeyChainStore (= 2.1.1)
   - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
@@ -142,7 +140,6 @@ SPEC REPOS:
     - SDWebImage
     - Sentry
     - SWRevealViewController
-    - UICKeyChainStore
     - "UIColor+Hex"
 
 EXTERNAL SOURCES:
@@ -187,9 +184,8 @@ SPEC CHECKSUMS:
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
-  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: c565eee4c6f3072c06ca31003f659e8c4275dbff
+PODFILE CHECKSUM: 822af8df090412abb11f49b43c5e9cbc12adc051
 
 COCOAPODS: 1.7.2
