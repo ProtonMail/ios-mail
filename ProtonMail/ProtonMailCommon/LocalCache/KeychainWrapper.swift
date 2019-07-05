@@ -27,24 +27,25 @@
 
 
 import Foundation
-import Keymaker
+#if canImport(Keymaker)
+    // Keymaker framework is not linked with PushService to keep lower memory footprint
+    // Keychain class is a member of PushService target alone
+    import Keymaker
+#endif
 
 final class KeychainWrapper: Keychain {
-    private var prefix : String!
-    private var service : String!
-    private var group : String!
     
     public static var keychain = KeychainWrapper()
     
     init() {
         #if Enterprise
-            prefix = "6UN54H93QT."
-            group = prefix + "com.protonmail.protonmail"
-            service = "com.protonmail"
+            let prefix = "6UN54H93QT."
+            let group = prefix + "com.protonmail.protonmail"
+            let service = "com.protonmail"
         #else
-            prefix = "2SB5Z68H26."
-            group = prefix + "ch.protonmail.protonmail"
-            service = "ch.protonmail"
+            let prefix = "2SB5Z68H26."
+            let group = prefix + "ch.protonmail.protonmail"
+            let service = "ch.protonmail"
         #endif
         
         super.init(service: service, accessGroup: group)
