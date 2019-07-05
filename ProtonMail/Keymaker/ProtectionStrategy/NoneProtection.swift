@@ -27,7 +27,6 @@
 
 
 import Foundation
-import UICKeyChainStore
 
 public struct NoneProtection: ProtectionStrategy {
     public let keychain: UICKeyChainStore

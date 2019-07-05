@@ -27,7 +27,7 @@
 
 
 import Foundation
-import UICKeyChainStore
+import Keymaker
 
 let sharedKeychain = KeychainWrapper()
 final class KeychainWrapper {

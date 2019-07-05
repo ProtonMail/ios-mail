@@ -28,7 +28,6 @@
 
 import Foundation
 import Security
-import UICKeyChainStore
 
 public protocol ProtectionStrategy {
     var keychain: UICKeyChainStore { get }

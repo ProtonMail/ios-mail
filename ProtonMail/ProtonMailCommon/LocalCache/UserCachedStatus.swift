@@ -27,7 +27,6 @@
 
 
 import Foundation
-import UICKeyChainStore
 import Keymaker
 
 let userCachedStatus = UserCachedStatus()

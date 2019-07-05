@@ -28,7 +28,6 @@
 
 import Foundation
 import Crypto
-import UICKeyChainStore
 
 public struct PinProtection: ProtectionStrategy {
     public let keychain: UICKeyChainStore

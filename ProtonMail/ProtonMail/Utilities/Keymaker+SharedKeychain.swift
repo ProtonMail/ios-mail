@@ -28,7 +28,6 @@
 
 import Foundation
 import Keymaker
-import UICKeyChainStore
 
 var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
                         keychain: sharedKeychain.keychain)

@@ -29,7 +29,6 @@
 import Foundation
 import Security
 import EllipticCurveKeyPair
-import UICKeyChainStore
 
 public struct BioProtection: ProtectionStrategy {
     private static var privateLabelKey = String(describing: BioProtection.self) + ".private"
