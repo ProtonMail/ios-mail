@@ -30,24 +30,24 @@ import Foundation
 import Keymaker
 
 var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
-                        keychain: sharedKeychain.keychain)
+                        keychain: KeychainWrapper.keychain)
 
 extension UserCachedStatus: SettingsProvider {}
 
 extension PinProtection {
     init(pin: String) {
-        self.init(pin: pin, keychain: sharedKeychain.keychain)
+        self.init(pin: pin, keychain: KeychainWrapper.keychain)
     }
 }
 
 extension NoneProtection {
     init() {
-        self.init(keychain: sharedKeychain.keychain)
+        self.init(keychain: KeychainWrapper.keychain)
     }
 }
 
 extension BioProtection {
     init() {
-        self.init(keychain: sharedKeychain.keychain)
+        self.init(keychain: KeychainWrapper.keychain)
     }
 }

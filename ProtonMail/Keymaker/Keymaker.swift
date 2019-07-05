@@ -33,8 +33,8 @@ public class Keymaker: NSObject {
     public typealias Key = Array<UInt8>
     
     private var autolocker: Autolocker?
-    private let keychain: UICKeyChainStore
-    public init(autolocker: Autolocker?, keychain: UICKeyChainStore) {
+    private let keychain: Keychain
+    public init(autolocker: Autolocker?, keychain: Keychain) {
         self.autolocker = autolocker
         self.keychain = keychain
         

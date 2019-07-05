@@ -1204,7 +1204,7 @@
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
-		AB86DAD322CF3F3D00D17352 /* UICKeyChainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* UICKeyChainStore.swift */; };
+		AB86DAD322CF3F3D00D17352 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
@@ -2528,7 +2528,7 @@
 		AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		AB4A207B966135395353A3E6DC5E907E /* ProtectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStrategy.swift; sourceTree = "<group>"; };
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
-		AB86DAD222CF3F3D00D17352 /* UICKeyChainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICKeyChainStore.swift; sourceTree = "<group>"; };
+		AB86DAD222CF3F3D00D17352 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
@@ -3004,7 +3004,7 @@
 				8EDB7F8EA1E18ACB6339461B9923556F /* Keymaker.h */,
 				B56D7B237413C9BDC548261C22C8EDEF /* Keymaker.swift */,
 				22D74412FBEEF02994B25A48A3347822 /* Locked.swift */,
-				AB86DAD222CF3F3D00D17352 /* UICKeyChainStore.swift */,
+				AB86DAD222CF3F3D00D17352 /* Keychain.swift */,
 				97716E80A4749362840D571CEBAE3540 /* LockedTests.swift */,
 				533933BED7A2CBBC2F10D98D87F3DE17 /* StringCryptoTransformerTests.swift */,
 			);
@@ -6380,7 +6380,7 @@
 				DC5D3CCE5644D806E4BA28723715BF0C /* CryptoTransformer.swift in Sources */,
 				ED2F8582FE389C523E7CC4C4A98FE4A1 /* Keymaker.swift in Sources */,
 				C708FD786593234826D4310186EE989E /* Locked.swift in Sources */,
-				AB86DAD322CF3F3D00D17352 /* UICKeyChainStore.swift in Sources */,
+				AB86DAD322CF3F3D00D17352 /* Keychain.swift in Sources */,
 				793564A009AD368AD157AE73A329DBEE /* NoneProtection.swift in Sources */,
 				E15B6D1F2656AF445A6FA81F85A99F8F /* PinProtection.swift in Sources */,
 				D74DACAD510DA151F9214932CF43FD9C /* ProtectionStrategy.swift in Sources */,

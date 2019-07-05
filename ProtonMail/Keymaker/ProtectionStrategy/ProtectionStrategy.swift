@@ -30,21 +30,21 @@ import Foundation
 import Security
 
 public protocol ProtectionStrategy {
-    var keychain: UICKeyChainStore { get }
+    var keychain: Keychain { get }
     func lock(value: Keymaker.Key) throws
     func unlock(cypherBits: Data) throws -> Keymaker.Key
 }
 public extension ProtectionStrategy {
-    static func saveCyphertext(_ cypher: Data, in keychain: UICKeyChainStore) {
-        keychain.setData(cypher, forKey: String(describing: Self.self))
+    static func saveCyphertext(_ cypher: Data, in keychain: Keychain) {
+        keychain.set(cypher, forKey: String(describing: Self.self))
     }
-    static func removeCyphertext(from keychain: UICKeyChainStore) {
-        keychain.removeItem(forKey: String(describing: Self.self))
+    static func removeCyphertext(from keychain: Keychain) {
+        keychain.remove(forKey: String(describing: Self.self))
     }
     func removeCyphertextFromKeychain() {
-        self.keychain.removeItem(forKey: String(describing: Self.self))
+        self.keychain.remove(forKey: String(describing: Self.self))
     }
-    static func getCypherBits(from keychain: UICKeyChainStore) -> Data? {
+    static func getCypherBits(from keychain: Keychain) -> Data? {
         return keychain.data(forKey: String(describing: Self.self))
     }
     func getCypherBits() -> Data? {

@@ -35,7 +35,7 @@ class UserDefaultsSaver<T>: Saver<T> where T: Codable {
 }
 
 extension UserDefaults: KeyValueStoreProvider {
-    func intager(forKey key: String) -> Int? {
+    func int(forKey key: String) -> Int? {
         return self.object(forKey: key) as? Int
     }
     
@@ -52,7 +52,7 @@ extension UserDefaults: KeyValueStoreProvider {
         self.setValue(data, forKey: key)
     }
     
-    func removeItem(forKey key: String) {
+    func remove(forKey key: String) {
         self.removeObject(forKey: key)
     }
 

@@ -29,15 +29,12 @@
 import Foundation
 import Keymaker
 
-let sharedKeychain = KeychainWrapper()
-final class KeychainWrapper {
+final class KeychainWrapper: Keychain {
     private var prefix : String!
     private var service : String!
     private var group : String!
     
-    public lazy var keychain: UICKeyChainStore = {
-        return UICKeyChainStore(service: service, accessGroup: group)
-    }()
+    public static var keychain = KeychainWrapper()
     
     init() {
         #if Enterprise
@@ -49,5 +46,7 @@ final class KeychainWrapper {
             group = prefix + "ch.protonmail.protonmail"
             service = "ch.protonmail"
         #endif
+        
+        super.init(service: service, accessGroup: group)
     }
 }

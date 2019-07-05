@@ -35,13 +35,13 @@ public struct BioProtection: ProtectionStrategy {
     private static var publicLabelKey = String(describing: BioProtection.self) + ".public"
     private static var legacyLabelKey = String(describing: BioProtection.self) + ".legacy"
     
-    public let keychain: UICKeyChainStore
+    public let keychain: Keychain
     
-    public init(keychain: UICKeyChainStore) {
+    public init(keychain: Keychain) {
         self.keychain = keychain
     }
     
-    private static func makeAsymmetricEncryptor(in keychain: UICKeyChainStore) -> EllipticCurveKeyPair.Manager {
+    private static func makeAsymmetricEncryptor(in keychain: Keychain) -> EllipticCurveKeyPair.Manager {
         let publicAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAlwaysThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let privateAccessControl = EllipticCurveKeyPair.AccessControl(protection: kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly, flags: [.userPresence, .privateKeyUsage])
         let config = EllipticCurveKeyPair.Config(publicLabel: self.publicLabelKey,
@@ -57,7 +57,7 @@ public struct BioProtection: ProtectionStrategy {
     
     
     // for iOS older than 10.3 - not capable of elliptic curve encryption
-    private static func makeSymmetricEncryptor(in keychain: UICKeyChainStore) -> Keymaker.Key {
+    private static func makeSymmetricEncryptor(in keychain: Keychain) -> Keymaker.Key {
         guard let key = keychain.data(forKey: self.legacyLabelKey) else {
             let oldAccessibility = keychain.accessibility
             let oldAuthPolicy = keychain.authenticationPolicy
@@ -65,7 +65,7 @@ public struct BioProtection: ProtectionStrategy {
             keychain.setAccessibility(.afterFirstUnlockThisDeviceOnly, authenticationPolicy: .userPresence)
             
             let ethemeralKey = BioProtection.generateRandomValue(length: 32)
-            keychain.setData(Data(bytes: ethemeralKey), forKey: self.legacyLabelKey)
+            keychain.set(Data(bytes: ethemeralKey), forKey: self.legacyLabelKey)
 
             keychain.setAccessibility(oldAccessibility, authenticationPolicy: oldAuthPolicy)
             return ethemeralKey
@@ -103,9 +103,9 @@ public struct BioProtection: ProtectionStrategy {
         return cleardata
     }
     
-    public static func removeCyphertext(from keychain: UICKeyChainStore) {
+    public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
         try? BioProtection.makeAsymmetricEncryptor(in: keychain).deleteKeyPair()
-        keychain.removeItem(forKey: self.legacyLabelKey)
+        keychain.remove(forKey: self.legacyLabelKey)
     }
 }

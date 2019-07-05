@@ -187,7 +187,7 @@ final class AuthCredential: NSObject, NSCoding {
         {
             return
         }
-        sharedKeychain.keychain.setData(locked.encryptedValue, forKey: Key.keychainStore)
+        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: Key.keychainStore)
     }
     
     class func getPrivateKey() -> String! {
@@ -201,7 +201,7 @@ final class AuthCredential: NSObject, NSCoding {
     // MARK - Class methods
     class func clearFromKeychain() {
         userCachedStatus.isForcedLogout = true
-        sharedKeychain.keychain.removeItem(forKey: Key.keychainStore) //newer version
+        KeychainWrapper.keychain.remove(forKey: Key.keychainStore) //newer version
     }
     
     class func expireOrClear(_ token : String?) {
@@ -218,7 +218,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     class func fetchFromKeychain() -> AuthCredential? {
         guard let mainKey = keymaker.mainKey,
-            let encryptedData = sharedKeychain.keychain.data(forKey: Key.keychainStore),
+            let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
             case let locked = Locked<Data>(encryptedValue: encryptedData),
             let data = try? locked.unlock(with: mainKey),
             let authCredential = AuthCredential.unarchive(data: data as NSData) else

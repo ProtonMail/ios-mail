@@ -200,10 +200,10 @@ class ViewModelServiceImpl: ViewModelService {
             
             //keychain part
             oldDefault.removeObject(forKey: "keychainStoreKey")
-            UICKeyChainStore.removeItem(forKey: "keychainStoreKey")
+            KeychainWrapper.keychain.remove(forKey: "keychainStoreKey")
             
             oldDefault.removeObject(forKey: "UserTempCachedStatusKey")
-            UICKeyChainStore.removeItem(forKey: "UserTempCachedStatusKey")
+            KeychainWrapper.keychain.remove(forKey: "UserTempCachedStatusKey")
             
             oldDefault.synchronize()
         }

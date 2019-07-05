@@ -121,16 +121,16 @@ class UserTempCachedStatus: NSObject, NSCoding {
     
     func storeInKeychain() {
         userCachedStatus.isForcedLogout = false
-        sharedKeychain.keychain.setData(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
+        KeychainWrapper.keychain.set(NSKeyedArchiver.archivedData(withRootObject: self), forKey: Key.keychainStore)
     }
     
     // MARK - Class methods
     class func clearFromKeychain() {
-        sharedKeychain.keychain.removeItem(forKey: Key.keychainStore) //newer version
+        KeychainWrapper.keychain.remove(forKey: Key.keychainStore) //newer version
     }
     
     class func fetchFromKeychain() -> UserTempCachedStatus? {
-        if let data = UICKeyChainStore.data(forKey: Key.keychainStore) {
+        if let data = KeychainWrapper.keychain.data(forKey: Key.keychainStore) {
             if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                 return authCredential
             }

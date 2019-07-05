@@ -32,7 +32,7 @@ import Security
 // TODO: rename into something more reasonable
 // TODO: write keychain-related logic
 
-public class UICKeyChainStore {
+open class Keychain {
     enum Accessibility {
         case afterFirstUnlockThisDeviceOnly
     }
@@ -60,27 +60,16 @@ public class UICKeyChainStore {
     public func set(_ intValue: Int, forKey key: String) {
         
     }
-    public func setValue(_ intValue: Int, forKey key: String) {
-        
-    }
-    
-    public func setData(_ data: Data, forKey key: String) {
-        
-    }
     
     public func set(_ data: Data, forKey key: String) {
         
     }
     
-    public func setString(_ string: String?, forKey key: String) {
-        
+    public func set(_ string: String, forKey key: String) {
+
     }
     
     public func data(forKey key: String) -> Data? {
-        return nil
-    }
-    
-    public static func data(forKey key: String) -> Data? {
         return nil
     }
     
@@ -88,19 +77,11 @@ public class UICKeyChainStore {
         return nil
     }
     
-    public func value(forKey key: String) -> Int? {
+    public func int(forKey key: String) -> Int? {
         return nil
     }
     
-    public func intager(forKey key: String) -> Int? {
-        return nil
-    }
-    
-    public func removeItem(forKey key: String) {
-        
-    }
-    
-    public static func removeItem(forKey key: String) {
+    public func remove(forKey key: String) {
         
     }
 }

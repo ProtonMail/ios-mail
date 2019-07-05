@@ -116,12 +116,12 @@ final class UserCachedStatus : SharedCacheBase {
     }
     
     func isSplashOk() -> Bool {
-        let splashVersion = getShared().integer(forKey: Key.lastSplashViersion)
+        let splashVersion = getShared().int(forKey: Key.lastSplashViersion)
         return splashVersion == Constants.App.SplashVersion
     }
     
     func isTourOk() -> Bool {
-        let tourVersion = getShared().integer(forKey: Key.lastTourViersion)
+        let tourVersion = getShared().int(forKey: Key.lastTourViersion)
         return tourVersion == Constants.App.TourVersion
     }
     
@@ -130,7 +130,7 @@ final class UserCachedStatus : SharedCacheBase {
     }
     
     func isAuthCacheOk() -> Bool {
-        let cachedVersion = getShared().integer(forKey: Key.lastAuthCacheVersion)
+        let cachedVersion = getShared().int(forKey: Key.lastAuthCacheVersion)
         return cachedVersion == Constants.App.AuthCacheVersion
     }
     
@@ -200,12 +200,12 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
         
         //for version <= 1.6.5 clean old stuff.
-        UICKeyChainStore.removeItem(forKey: Key.lastLoggedInUser)
-        UICKeyChainStore.removeItem(forKey: Key.autoLockTime)
+        KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
+        KeychainWrapper.keychain.remove(forKey: Key.autoLockTime)
         
         //for newer version > 1.6.5
-        sharedKeychain.keychain.removeItem(forKey: Key.lastLoggedInUser)
-        sharedKeychain.keychain.removeItem(forKey: Key.autoLockTime)
+        KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
+        KeychainWrapper.keychain.remove(forKey: Key.autoLockTime)
         
         // Clean the keys Anatoly added
         getShared().removeObject(forKey: Key.snoozeConfiguration)
@@ -245,7 +245,7 @@ extension UserCachedStatus {
     
     var lockTime: AutolockTimeout { // historically, it was saved as String
         get {
-            guard let string = sharedKeychain.keychain.string(forKey: Key.autoLockTime),
+            guard let string = KeychainWrapper.keychain.string(forKey: Key.autoLockTime),
                 let number = Int(string) else
             {
                 return .always
@@ -253,22 +253,26 @@ extension UserCachedStatus {
             return AutolockTimeout(rawValue: number)
         }
         set {
-            sharedKeychain.keychain.setString("\(newValue.rawValue)", forKey: Key.autoLockTime)
+            KeychainWrapper.keychain.set("\(newValue.rawValue)", forKey: Key.autoLockTime)
             keymaker.resetAutolock()
         }
     }
     
     var lastLoggedInUser : String? {
         get {
-            return sharedKeychain.keychain.string(forKey: Key.lastLoggedInUser)
+            return KeychainWrapper.keychain.string(forKey: Key.lastLoggedInUser)
         }
         set {
-            sharedKeychain.keychain.setString(newValue, forKey: Key.lastLoggedInUser)
+            if let value = newValue {
+                KeychainWrapper.keychain.set(value, forKey: Key.lastLoggedInUser)
+            } else {
+                KeychainWrapper.keychain.remove(forKey: Key.lastLoggedInUser)
+            }
         }
     }
     
     func alreadyAskedEnableTouchID () -> Bool {
-        let code = getShared().integer(forKey: Key.askEnableTouchID)
+        let code = getShared().int(forKey: Key.askEnableTouchID)
         return code == Constants.App.AskTouchID
     }
     
