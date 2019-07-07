@@ -42,7 +42,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         super.viewDidLoad()
         self.webView.scrollView.clipsToBounds = false
         
-        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
+        self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old, .initial]) { [weak self] htmlEditor, change in
             guard let self = self, change.oldValue != change.newValue else { return }
             let totalHeight = htmlEditor.contentHeight
             self.updateHeight(to: totalHeight)

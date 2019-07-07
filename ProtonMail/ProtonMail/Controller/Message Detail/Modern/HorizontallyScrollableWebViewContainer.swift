@@ -236,6 +236,8 @@ extension HorizontallyScrollableWebViewContainer: UIScrollViewDelegate {
     }
     
     func scrollViewDidEndZooming(_ scrollView: UIScrollView, with view: UIView?, atScale scale: CGFloat) {
+        guard self.shouldDefaultObserveContentSizeChanges() == true else { return } // cuz there is no zoom in Composer
+        
         var newSize = scrollView.contentSize
         newSize = newSize.applying(self.lastZoom.inverted()).applying(self.initialZoom)
         
