@@ -27,7 +27,7 @@
 
 
 import Foundation
-import RHAddressBook
+import Contacts
 
 class AddressBookService: Service {
     enum RuntimeError : String, Error, CustomErrorVar {
@@ -57,63 +57,79 @@ class AddressBookService: Service {
     
     typealias AuthorizationCompletionBlock = (_ granted: Bool, _ error: Error?) -> Void
     
-    fileprivate var addressBook: RHAddressBook!
-    
-    init() {
-        addressBook = RHAddressBook()
-    }
+    private lazy var store: CNContactStore = CNContactStore()
     
     func hasAccessToAddressBook() -> Bool {
-        return RHAddressBook.authorizationStatus() == RHAuthorizationStatusAuthorized
+        return CNContactStore.authorizationStatus(for: .contacts) == .authorized
     }
     
     func requestAuthorizationWithCompletion(_ completion: @escaping AuthorizationCompletionBlock) {
-        if let addressBook = addressBook {
-            addressBook.requestAuthorization(completion: completion)
-        } else {
-            completion(false, nil)
-        }
+        store.requestAccess(for: .contacts, completionHandler: completion)
     }
     
-    func contactsWith(_ name: String?, email: String?) -> NSArray {
-        let filteredPeople = NSMutableArray()
+    // TODO: this method is exact copy of ContactImportViewController.contacts property defined in ContactImportViewController.swift:156
+    private func getAllContacts() -> [CNContact] {
+        let keysToFetch : [CNKeyDescriptor] = [
+            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
+            CNContactEmailAddressesKey as CNKeyDescriptor,
+            CNContactPhoneNumbersKey as CNKeyDescriptor,
+            CNContactImageDataAvailableKey as CNKeyDescriptor,
+            CNContactImageDataKey as CNKeyDescriptor,
+            CNContactThumbnailImageDataKey as CNKeyDescriptor,
+            CNContactIdentifierKey as CNKeyDescriptor,
+            CNContactNoteKey as CNKeyDescriptor,
+            CNContactVCardSerialization.descriptorForRequiredKeys()]
         
-        if let name = name {
-            filteredPeople.addObjects(from: addressBook.people(withName: name))
+        // Get all the containers
+        var allContainers: [CNContainer] = []
+        do {
+            allContainers = try store.containers(matching: nil)
+        } catch {
+            PMLog.D("Error fetching containers")
         }
         
-        if let email = email {
-            filteredPeople.addObjects(from: addressBook.people(withEmail: email))
+        var results: [CNContact] = []
+        
+        // Iterate all containers and append their contacts to our results array
+        for container in allContainers {
+            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
+            do {
+                let containerResults = try store.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
+                results.append(contentsOf: containerResults)
+            } catch {
+                PMLog.D("Error fetching results for container")
+            }
         }
-
-        return filteredPeople
+        
+        return results
     }
     
     func contacts() -> [ContactVO] {
         var contactVOs: [ContactVO] = []
-        if let contacts = self.addressBook.peopleOrderedByUsersPreference() as? [RHPerson] {
-            for contact: RHPerson in contacts {
-                var name: String? = contact.name
-                let emails: RHMultiValue = contact.emails
-                let count = UInt(emails.count())
-                for emailIndex in 0 ..< count {
-                    let index = UInt(emailIndex)
-                    if let emailAsString = emails.value(at: index) as? String {
-                        DispatchQueue.main.sync {
-                            if (emailAsString.isValidEmail()) {
-                                let email = emailAsString
-                                if (name == nil) {
-                                    name = email
-                                }
-                                contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
-                            }
+        
+        guard case let contacts = self.getAllContacts(), !contacts.isEmpty else {
+            Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
+            return []
+        }
+        
+        for contact in contacts {
+            var name: String = [contact.givenName, contact.middleName, contact.familyName].filter { !$0.isEmpty }.joined(separator: " ")
+            
+            let emails = contact.emailAddresses
+            for email in emails {
+                let emailAsString = email.value as String
+                DispatchQueue.main.sync {
+                    if (emailAsString.isValidEmail()) {
+                        let email = emailAsString
+                        if (name.isEmpty) {
+                            name = email
                         }
+                        contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                     }
                 }
             }
-        } else {
-            Analytics.shared.recordError(RuntimeError.cant_get_contacts.error)
         }
+
         return contactVOs
     }
 }
