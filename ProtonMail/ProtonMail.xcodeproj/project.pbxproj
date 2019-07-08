@@ -1204,6 +1204,7 @@
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
+		AB7F088B22D32F5C0031B1FF /* KeychainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7F088922D325680031B1FF /* KeychainTests.swift */; };
 		AB976A6922CF9CFF00EA101D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
 		AB976A6A22CF9D0000EA101D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
 		AB976A6B22CF9D0E00EA101D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
@@ -2530,6 +2531,7 @@
 		AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		AB4A207B966135395353A3E6DC5E907E /* ProtectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStrategy.swift; sourceTree = "<group>"; };
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		AB7F088922D325680031B1FF /* KeychainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainTests.swift; sourceTree = "<group>"; };
 		AB86DAD222CF3F3D00D17352 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
@@ -3007,6 +3009,7 @@
 				B56D7B237413C9BDC548261C22C8EDEF /* Keymaker.swift */,
 				22D74412FBEEF02994B25A48A3347822 /* Locked.swift */,
 				AB86DAD222CF3F3D00D17352 /* Keychain.swift */,
+				AB7F088922D325680031B1FF /* KeychainTests.swift */,
 				97716E80A4749362840D571CEBAE3540 /* LockedTests.swift */,
 				533933BED7A2CBBC2F10D98D87F3DE17 /* StringCryptoTransformerTests.swift */,
 			);
@@ -5807,6 +5810,7 @@
 				D9E1F5D8A1D9BBF47D56FAA028FF64A4 /* CalendarIntervalRuleTests.swift in Sources */,
 				9C3B841CCD848FA7D6DE94ED5D2BF9F8 /* ComposeViewModelTests.swift in Sources */,
 				B4DF187853E5344B0436F47CF0CC0326 /* CoreDataCacheTests.swift in Sources */,
+				AB7F088B22D32F5C0031B1FF /* KeychainTests.swift in Sources */,
 				FC18FAC59ED376590727DD25AB91B776 /* CoreDataServiceTests.swift in Sources */,
 				5AC313799E564E00DB83D3783F4D7DD3 /* CoreDataStoreTest.swift in Sources */,
 				6CB05D83812878B94588321FDD387885 /* GoOpenPGPTests.swift in Sources */,

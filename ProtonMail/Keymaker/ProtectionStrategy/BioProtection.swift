@@ -62,12 +62,12 @@ public struct BioProtection: ProtectionStrategy {
             let oldAccessibility = keychain.accessibility
             let oldAuthPolicy = keychain.authenticationPolicy
             
-            keychain.setAccessibility(.afterFirstUnlockThisDeviceOnly, authenticationPolicy: .userPresence)
+            keychain.switchAccessibilitySettings(.afterFirstUnlockThisDeviceOnly, authenticationPolicy: .userPresence)
             
             let ethemeralKey = BioProtection.generateRandomValue(length: 32)
             keychain.set(Data(bytes: ethemeralKey), forKey: self.legacyLabelKey)
 
-            keychain.setAccessibility(oldAccessibility, authenticationPolicy: oldAuthPolicy)
+            keychain.switchAccessibilitySettings(oldAccessibility, authenticationPolicy: oldAuthPolicy)
             return ethemeralKey
         }
         return key.bytes

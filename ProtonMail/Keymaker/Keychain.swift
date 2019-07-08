@@ -57,7 +57,7 @@ open class Keychain {
     internal let accessGroup: String
     internal let service: String
     
-    internal func setAccessibility(_ accessibility: Accessibility, authenticationPolicy: AccessControl) {
+    internal func switchAccessibilitySettings(_ accessibility: Accessibility, authenticationPolicy: AccessControl) {
         self.accessibility = accessibility
         self.authenticationPolicy = authenticationPolicy
     }
@@ -94,9 +94,9 @@ open class Keychain {
     }
     
     
-    // Private
+    // Private - internal for unit tests
     
-    private func getData(forKey key: String) -> Data? {
+    internal func getData(forKey key: String) -> Data? {
         var query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
@@ -127,7 +127,7 @@ open class Keychain {
     }
     
     @discardableResult
-    private func remove(_ key: String) -> Bool {
+    internal func remove(_ key: String) -> Bool {
         let query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
@@ -147,7 +147,7 @@ open class Keychain {
     }
     
     @discardableResult
-    private func add(data value: Data, forKey key: String) -> Bool {
+    internal func add(data value: Data, forKey key: String) -> Bool {
         // search for existing
         let query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -167,7 +167,7 @@ open class Keychain {
                 kSecAttrSynchronizable as String: NSNumber(booleanLiteral: false),
                 kSecValueData as String: value as AnyObject
             ]
-            self.addAccessControl(&updateAttributes)
+            self.injectAccessControlAttributes(into: &updateAttributes)
             
             let codeUpdate = SecItemUpdate(query as CFDictionary, updateAttributes as CFDictionary)
             assert(codeUpdate == noErr, "Error updating \(key) to Keychain: \(codeUpdate)")
@@ -178,14 +178,14 @@ open class Keychain {
         var newAttributes = query
         newAttributes[kSecAttrSynchronizable as String] = NSNumber(booleanLiteral: false)
         newAttributes[kSecValueData as String] = value as AnyObject
-        self.addAccessControl(&newAttributes)
+        self.injectAccessControlAttributes(into: &newAttributes)
 
         let code = SecItemAdd(newAttributes as CFDictionary, nil)
         assert(code == noErr, "Error saving \(key) to Keychain: \(code)")
         return code == noErr
     }
     
-    private func addAccessControl(_ attributes: inout [String: AnyObject]) {
+    private func injectAccessControlAttributes(into attributes: inout [String: AnyObject]) {
         if let auth = self.authenticationPolicy.flags,
             let accessControl = SecAccessControlCreateWithFlags(kCFAllocatorDefault, self.accessibility.cfString, auth, nil)
         {
@@ -198,7 +198,7 @@ open class Keychain {
     // Debug
     
     @discardableResult
-    private func removeEverything() -> Bool { // currently used for debug only
+    internal func removeEverything() -> Bool { // currently used for unit tests only
         let query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
