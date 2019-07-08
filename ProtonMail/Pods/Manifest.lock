@@ -82,7 +82,6 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.8.3):
     - PromiseKit/CorePromise
-  - RHAddressBook (1.1.1)
   - SDWebImage/Core (4.4.6)
   - SDWebImage/GIF (4.4.6):
     - FLAnimatedImage (~> 1.0)
@@ -113,7 +112,6 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - OpenPGP (from `../OpenPGP`)
   - PromiseKit (~> 6.0)
-  - RHAddressBook (= 1.1.1)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
   - "UIColor+Hex (= 1.0.1)"
@@ -136,7 +134,6 @@ SPEC REPOS:
     - OHHTTPStubs
     - OpenSSL
     - PromiseKit
-    - RHAddressBook
     - SDWebImage
     - Sentry
     - SWRevealViewController
@@ -180,12 +177,11 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 822af8df090412abb11f49b43c5e9cbc12adc051
+PODFILE CHECKSUM: 8e1b9e0583d17dc74bd6a5adaa69e1cfb11935cd
 
 COCOAPODS: 1.7.2

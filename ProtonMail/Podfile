@@ -28,7 +28,7 @@ def common_pods
     #auto layou lib. need to find a replacement
     pod 'Masonry', '1.1.0'
     #too old need to find a replacement
-    pod 'RHAddressBook', '1.1.1'
+#    pod 'RHAddressBook', '1.1.1'
     pod 'UIColor+Hex', '1.0.1'
     pod 'MCSwipeTableViewCell', '~> 2.1.4'
     
