@@ -153,42 +153,7 @@ class ContactImportViewController: UIViewController {
         }
     }
     
-    lazy var contacts: [CNContact] = {
-        let contactStore = CNContactStore()
-        let keysToFetch : [CNKeyDescriptor] = [
-            CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
-            CNContactEmailAddressesKey as CNKeyDescriptor,
-            CNContactPhoneNumbersKey as CNKeyDescriptor,
-            CNContactImageDataAvailableKey as CNKeyDescriptor,
-            CNContactImageDataKey as CNKeyDescriptor,
-            CNContactThumbnailImageDataKey as CNKeyDescriptor,
-            CNContactIdentifierKey as CNKeyDescriptor,
-            CNContactNoteKey as CNKeyDescriptor,
-            CNContactVCardSerialization.descriptorForRequiredKeys()]
-        
-        // Get all the containers
-        var allContainers: [CNContainer] = []
-        do {
-            allContainers = try contactStore.containers(matching: nil)
-        } catch {
-            PMLog.D("Error fetching containers")
-        }
-        
-        var results: [CNContact] = []
-        
-        // Iterate all containers and append their contacts to our results array
-        for container in allContainers {
-            let fetchPredicate = CNContact.predicateForContactsInContainer(withIdentifier: container.identifier)
-            do {
-                let containerResults = try contactStore.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
-                results.append(contentsOf: containerResults)
-            } catch {
-                PMLog.D("Error fetching results for container")
-            }
-        }
-        
-        return results
-    }()
+    lazy var contacts: [CNContact] = sharedServices.get(by: AddressBookService.self).getAllContacts()
     
     internal func retrieveContactsWithStore(store: CNContactStore) {
         guard let mailboxPassword = sharedUserDataService.mailboxPassword,

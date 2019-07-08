@@ -67,8 +67,7 @@ class AddressBookService: Service {
         store.requestAccess(for: .contacts, completionHandler: completion)
     }
     
-    // TODO: this method is exact copy of ContactImportViewController.contacts property defined in ContactImportViewController.swift:156
-    private func getAllContacts() -> [CNContact] {
+    func getAllContacts() -> [CNContact] {
         let keysToFetch : [CNKeyDescriptor] = [
             CNContactFormatter.descriptorForRequiredKeys(for: .fullName),
             CNContactEmailAddressesKey as CNKeyDescriptor,
