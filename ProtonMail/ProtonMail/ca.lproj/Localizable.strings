@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*OPCIONAL";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Obri aquí per afegir com a fitxer adjunt";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/usuari";
 
@@ -163,13 +166,6 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 /* Title */
 "All contacts are imported" = "S'importen tots els contactes";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Tots els vostres correus electrònics xifrats existents es perdran per sempre, però encara podreu veure els vostres correus electrònics sense xifrar.
-
-AQUESTA ACCIÓ NO ES POT DESFER!";
-
 /* archive when apply label */
 "Also Archive" = "Archivar també";
 
@@ -209,6 +205,12 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Description */
 "Archived" = "Arxivat";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Esteu segur que voleu tancar la sessió?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Fitxer adjunt importat";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Adjunts";
@@ -277,7 +279,7 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 "By using protonmail, you agree to our" = "Fent ús de protonmail, accepteu la nostra";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Utilitzant protonmail, accepteu les nostres %@ i %@.";
+"By using protonmail, you agree to our %@ and %@." = "Si utilitzeu protonmail, accepteu el nostre %1$@ i %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* None */
 "Cant' decrypt this attachment!" = "Impossible desxifrar aquest fitxer adjunt.";
 
-/* Action */
-"Catalan" = "Català";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -408,12 +407,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* loading message */
 "Checking ...." = "Comprovant....";
-
-/* Action */
-"Chinese Simplified" = "Xinès simplificat";
-
-/* Action */
-"Chinese Traditional" = "Xinès tradicional";
 
 /* place holder */
 "Choose a Password" = "Escull una contrasenya";
@@ -479,6 +472,9 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* Action */
 "Continue" = "Continua";
 
+/* Action */
+"Continue and Don't ask again" = "Continua i no ho tornis a preguntar";
+
 /* Title */
 "Copy address" = "Copia l'adreça";
 
@@ -512,9 +508,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* error message title when create new user */
 "Create user failed" = "No s'ha pogut crear l'usuari";
 
-/* Action */
-"Croatian" = "Croat";
-
 /* Change language title */
 "Current Language is: " = "Idioma actual: ";
 
@@ -528,17 +521,11 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
    contacts default label type */
 "Custom" = "Personalitza";
 
-/* Action */
-"Czech" = "Txec";
-
 /* Title */
 "DECRYPT MAILBOX" = "DESXIFRAR BÚSTIA DE CORREU";
 
 /* mail location title */
 "DRAFTS" = "ESBORRANYS";
-
-/* Action */
-"Danish" = "Danès";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -595,7 +582,7 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 "Discard changes" = "Descarta els canvis";
 
 /* Action */
-"Discard draft" = "Desa l’esborrany";
+"Discard draft" = "Esborra l’esborrany";
 
 /* Title in settings */
 "Display Name" = "Nom a mostrar";
@@ -636,9 +623,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* menu title */
 "Drafts" = "Esborranys";
-
-/* Action */
-"Dutch" = "Holandès";
 
 /* Action */
 "Edit" = "Edita";
@@ -724,16 +708,13 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 "Encrypted from outside" = "Xifrat des de fora";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Xifrat de PGP/inline exterior";
+"Encrypted from outside PGP inline" = "Xifrat des de fora de PGP en línia";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Xifrat de PGP/MIME exterior";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Xifrat de PGP/MIME signat exterior";
-
-/* encryption lock description */
-"Encrypted outside" = "Xifrat a l'exterior";
 
 /* key setup top title */
 "Encryption Setup" = "Configuració de xifratge";
@@ -755,9 +736,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "D'extrem a extrem encriptada a l'adreça verificada";
-
-/* Action */
-"English" = "Anglès";
 
 /* Action in 2fa popup view */
 "Enter" = "Entrar";
@@ -850,9 +828,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* forwarded message title */
 "Forwarded message" = "Missatge reenviat";
 
-/* Action */
-"French" = "Francès";
-
 /* Title */
 "From" = "Des de";
 
@@ -867,9 +842,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Title */
 "General Settings" = "Canviar configuració";
-
-/* Action */
-"German" = "Alemany";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Obtingui %@";
@@ -934,6 +906,9 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* import contact title */
 "Importing Contacts" = "Importació de contactes";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importació d’adjunts, que pot trigar una estona";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Per utilitzar els nostres serveis, haureu d'acceptar les Condicions del servei de ProtonMail.";
 
@@ -994,9 +969,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No hem pogut comprobar el producte que heu comprat AppStore amb els productes al nostre servidor. Empleneu l’informe d’errors i el nostre equip de suport al client es posarà en contacte amb vostè.";
-
-/* Action */
-"Italian" = "Italià";
 
 /* Title */
 "Keep me updated about new features" = "Mantén-me actualitzat sobre les noves funcions";
@@ -1077,9 +1049,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* error title */
 "Logs" = "Registres";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Voleu editar o desactivar la vostra signatura mòbil?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Esteu buscant la informació dels vostres contactes?";
 
@@ -1159,6 +1128,9 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modificar o desactivar la signatura móbil predeterminada es una funció de pagament.";
+
+/* More actions button */
+"More" = "Mes";
 
 /* Screen header */
 "More Credits" = "Més Crèdits";
@@ -1276,7 +1248,7 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 "On EE, MMM d, yyyy at %@" = "El EE, d MMM, yyyy a les %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "El EE, d MMM, yyyy a les %1$@, %2$@ va escriure:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, MMM d, yyyy a les %1$@, %2$@, va escriure:";
 
 /* None */
 "OpenDraft" = "EsborranyObert";
@@ -1346,9 +1318,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Description */
 "Pin code can't be empty." = "El codi del Pin no pot estar buit.";
-
-/* Title */
-"Plain text" = "Text pla";
 
 /* alert description */
 "Please add a password for the following recipients." = "Si us plau, afegiu una contrasenya per als destinataris següents.";
@@ -1435,15 +1404,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 "Please, manage it in your phone." = "Si us plau, féu-ho en el telèfon.";
 
 /* Action */
-"Polish" = "Polonès";
-
-/* Action */
-"Portuguese" = "Portuguès";
-
-/* Action */
-"Portuguese Brazil" = "Portuguès Brasil";
-
-/* Action */
 "Print" = "Imprimeix";
 
 /* Title */
@@ -1460,9 +1420,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionario li permet afegir i editar detalls de contacte més enllà del nom i correu electrònic del vostre contacte. Mitjançant l'ús de ProtonMail, aquestes dades seran tan segures com el vostre correu electrònic xifrat extrem a extrem.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary us permet personalitzar la vostra signatura mòbil.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no ven anuncis ni abusos de la vostra privadesa. El vostre suport és essencial per mantenir funcionant ProtonMail. Podeu actualitzar a un compte de pagament o donar per donar suport a ProtonMail.";
@@ -1536,6 +1493,9 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "En informar d’un missatge com a intent de suplantació d’identitat aquest se’ns serà enviat, per poder analitzar-lo i millorar-ne els filtres. Això significa que podrem veure el contingut del missatge sencer.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Sol·licita Confirmació d'Enllaços";
+
 /* Title */
 "Resetting message cache ..." = "S'està restablint la memòria cau del missatge ...";
 
@@ -1544,12 +1504,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Torneu a provar després de %d segons";
-
-/* Action */
-"Romanian" = "Romanès";
-
-/* Action */
-"Russian" = "Rus";
 
 /* mail location title */
 "SENT" = "ENVIAT";
@@ -1686,9 +1640,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Description */
 "Spammed" = "Correu brossa";
-
-/* Action */
-"Spanish" = "Castellà";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp única clau keyslat no és vàlid!";
@@ -1903,9 +1854,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* Title */
 "Trouble shooting guide" = "Guia de resolució de problemes";
 
-/* Action */
-"Turkish" = "Turc";
-
 /* action sheet option */
 "Turn Off" = "Apagar";
 
@@ -1923,9 +1871,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 
 /* Title */
 "USER LOGIN" = "LOGIN D'USUARI";
-
-/* Action */
-"Ukrainian" = "Ucraïnès";
 
 /* Description */
 "Unable to connect to the server" = "No es pot connectar al servidor";
@@ -2027,9 +1972,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* alert description */
 "Upgrade to get all paid features." = "Actualitzeu per rebre totes les funcionalitats de pagament.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "L'actualització no és possible a l'aplicació.";
-
 /* Action */
 "Upload Contacts" = "Puja contactes";
 
@@ -2120,6 +2062,9 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* Error message */
 "Yes, attach details of payment" = "Sí, adjuntar dades de pagament";
 
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Esteu a punt de llançar el navegador web i navegar fins a";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Pots personalitzar els gestos de lliscament en la configuració de l'aplicació de ProtonMail.";
 
@@ -2162,7 +2107,6 @@ AQUESTA ACCIÓ NO ES POT DESFER!";
 /* view top title */
 "Your new secure email
  account is ready." = "El vostre nou compte de correu electrònic
-
  segur està preparat.";
 
 /* Service plan description footer */
