@@ -56,8 +56,8 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
         
         self.prepareWebView(with: self.loader)
         
-        if let contents = self.viewModel.contents {
-                self.loader.load(contents: contents, in: self.webView)
+        if let contents = self.viewModel.contents, !contents.body.isEmpty {
+            self.loader.load(contents: contents, in: self.webView)
         } else {
             self.webView.loadHTMLString(self.viewModel.placeholderContent, baseURL: URL(string: "about:blank"))
         }

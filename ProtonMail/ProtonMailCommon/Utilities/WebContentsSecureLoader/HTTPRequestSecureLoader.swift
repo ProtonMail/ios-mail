@@ -60,6 +60,11 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
     }
     
     func load(contents: WebContents, in webView: WKWebView) {
+        self.webView?.stopLoading()
+        self.renderedContents.invalidate()
+        self.webView?.configuration.userContentController.removeAllUserScripts()
+        self.webView?.loadHTMLString("⏱", baseURL: URL(string: "about:blank")!)
+        
         self.webView = webView
         
         let urlString = (UUID().uuidString + ".proton").lowercased()
@@ -67,8 +72,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         let request = URLRequest(url: url)
         let data = contents.body.data(using: .unicode)
         self.loopbacks[url] = data
-        
-        self.renderedContents.invalidate()
         
         let blockRules = """
         [{
@@ -127,21 +130,6 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         };
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
-        let spacer: String = { () -> String in
-            if #available(iOS 12.0, *) {
-                return ""
-            } else if self.addSpacerIfNeeded {
-                return """
-                var div = document.createElement('p');
-                div.style.width = '100%';
-                div.style.height = 1000/ratio + 'px';
-                div.style.display = 'block';
-                document.body.appendChild(div);
-                """
-            } else {
-                return ""
-            }
-        }()
         
         let message = """
         var items = document.body.getElementsByTagName('*');
@@ -153,7 +141,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody': document.documentElement.outerHTML.toString()});
         """
         
-        let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
+        let sanitize = WKUserScript(source: sanitizeRaw + message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
         config.userContentController.removeAllUserScripts()
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
         config.userContentController.addUserScript(sanitize)

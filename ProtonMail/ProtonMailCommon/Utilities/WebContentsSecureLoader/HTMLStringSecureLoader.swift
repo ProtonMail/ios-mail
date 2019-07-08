@@ -56,11 +56,16 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
     }
     
     func load(contents: WebContents, in webView: WKWebView) {
+        self.webView?.stopLoading()
+        self.renderedContents.invalidate()
+        self.webView?.configuration.userContentController.removeAllUserScripts()
+        self.webView?.loadHTMLString("⏱", baseURL: URL(string: "about:blank")!)
+        
         self.webView = webView
         self.prepareRendering(contents, into: webView.configuration)
         
         let lockdownBody = """
-        <html><head><meta http-equiv="Content-Security-Policy" content="\(WebContents.RemoteContentPolicy.lockdown.cspRaw)"></head>\(contents.bodyForJS)</html>
+        <html><head><meta http-equiv="Content-Security-Policy" content="\(WebContents.RemoteContentPolicy.lockdown.cspRaw)"></head>\(contents.body)</html>
         """
         webView.loadHTMLString(lockdownBody, baseURL: URL(string: "about:blank")!)
     }
@@ -97,21 +102,6 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         };
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
-        let spacer: String = { () -> String in
-            if #available(iOS 12.0, *) {
-                return ""
-            } else if self.addSpacerIfNeeded {
-                return """
-                var div = document.createElement('p');
-                div.style.width = '100%';
-                div.style.height = 1000/ratio + 'px';
-                div.style.display = 'block';
-                document.body.appendChild(div);
-                """
-            } else {
-                return ""
-            }
-        }()
         
         let message = """
         var items = document.body.getElementsByTagName('*');
@@ -123,7 +113,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         window.webkit.messageHandlers.loaded.postMessage({'preheight': ratio * rects.height, 'clearBody':document.documentElement.innerHTML});
         """
         
-        let sanitize = WKUserScript(source: sanitizeRaw + spacer + message, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+        let sanitize = WKUserScript(source: sanitizeRaw + message, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
         config.userContentController.removeAllUserScripts()
         config.userContentController.addUserScript(WebContents.domPurifyConstructor)
         config.userContentController.addUserScript(sanitize)
