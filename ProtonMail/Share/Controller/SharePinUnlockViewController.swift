@@ -124,8 +124,9 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                     if matched {
                         self.pinCodeView.hideAttempError(true)
                         self.viewModel.done() { _ in
-                            self.delegate?.next()
-                            self.dismiss(animated: true, completion: { })
+                            self.dismiss(animated: true, completion: {
+                                self.delegate?.next()
+                            })
                         }
                     } else {
                         let count = self.viewModel.getPinFailedRemainingCount()
