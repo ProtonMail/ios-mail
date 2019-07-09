@@ -33,7 +33,7 @@ public class SharedCacheBase {
     
     fileprivate var userDefaults : UserDefaults!
     
-    func getShared() ->UserDefaults! {
+    func getShared() -> UserDefaults! {
         return self.userDefaults
     }
     

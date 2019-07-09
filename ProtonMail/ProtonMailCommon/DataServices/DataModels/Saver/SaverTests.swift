@@ -31,7 +31,7 @@ import XCTest
 
 class SaverTests: XCTestCase {
     
-    private class StoreMock : KeyValueStoreProvider {
+    private class StoreMock : KeyValueStoreProvider {        
         var log: String = ""
         func resetLog() {
             log = ""
@@ -42,7 +42,7 @@ class SaverTests: XCTestCase {
             return cachedData[key] as? Data
         }
         
-        func intager(forKey key: String) -> Int? {
+        func int(forKey key: String) -> Int? {
             log += "g-key"
             return cachedData[key] as? Int
         }
@@ -57,7 +57,7 @@ class SaverTests: XCTestCase {
             cachedData[key] = data
         }
         
-        func removeItem(forKey key: String) {
+        func remove(forKey key: String) {
             log += "r-key"
             cachedData.removeValue(forKey: key)
         }

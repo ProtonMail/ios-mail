@@ -84,12 +84,12 @@ class AppCache : Migrate {
     
     func cleanLagacy() {
         // Clear up the old stuff on fresh installs also
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.AuthCredential.keychainStore)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserDataService.password)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.AuthCredential.keychainStore)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)
@@ -134,7 +134,7 @@ class AppCache : Migrate {
 extension AppCache {
     func migrate_111_112() -> Bool {
         // LinkOpeningMode was previously local for every device and stored in UserCachedStatus, but as of 1.11.9 it will be part of UserInfo and should be received from BE. This method is only needed to clear old value.
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
+        KeychainWrapper.keychain.remove(forKey: DeprecatedKeys.UserCachedStatus.linkOpeningMode)
         
         return true
     }
@@ -155,14 +155,14 @@ extension AppCache {
         }
         
         // mailboxPassword
-        if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
+        if let triviallyProtectedMailboxPassword = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
             let cleartextMailboxPassword = ((try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)) as String??)
         {
             sharedUserDataService.mailboxPassword = cleartextMailboxPassword
         }
         
         // AuthCredential
-        if let credentialRaw = sharedKeychain.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
+        if let credentialRaw = KeychainWrapper.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
             let credential = AuthCredential.unarchive(data: credentialRaw as NSData)
         {
             credential.storeInKeychain()
@@ -181,7 +181,7 @@ extension AppCache {
         
         // via pin
         if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
-            let pin = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
         {
             appWasLocked = true
             appLockMigration.enter()

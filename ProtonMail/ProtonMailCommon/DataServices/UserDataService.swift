@@ -303,7 +303,7 @@ class UserDataService : Service {
     }
     
     var isMailboxPasswordStored: Bool {
-        return sharedKeychain.keychain.data(forKey: Key.mailboxPassword) != nil
+        return KeychainWrapper.keychain.data(forKey: Key.mailboxPassword) != nil
     }
     
     var isNewUser : Bool = false
@@ -315,7 +315,7 @@ class UserDataService : Service {
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            guard let cypherBits = sharedKeychain.keychain.data(forKey: Key.mailboxPassword),
+            guard let cypherBits = KeychainWrapper.keychain.data(forKey: Key.mailboxPassword),
                 let key = keymaker.mainKey else
             {
                 return nil
@@ -329,17 +329,17 @@ class UserDataService : Service {
     }
     private func saveMailboxPassword(_ newValue: String?, protectedBy cachedKey: Keymaker.Key? = nil) {
         guard let newValue = newValue else {
-            sharedKeychain.keychain.removeItem(forKey: Key.mailboxPassword)
+            KeychainWrapper.keychain.remove(forKey: Key.mailboxPassword)
             return
         }
         guard let key = cachedKey ?? keymaker.mainKey,
             let locked = try? Locked<String>(clearValue: newValue, with: key) else
         {
-            sharedKeychain.keychain.removeItem(forKey: Key.mailboxPassword)
+            KeychainWrapper.keychain.remove(forKey: Key.mailboxPassword)
             return
         }
         
-        sharedKeychain.keychain.setData(locked.encryptedValue, forKey: Key.mailboxPassword)
+        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: Key.mailboxPassword)
     }
     
     var maxSpace: Int64 {

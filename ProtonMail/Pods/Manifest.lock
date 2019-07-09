@@ -82,7 +82,6 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.8.3):
     - PromiseKit/CorePromise
-  - RHAddressBook (1.1.1)
   - SDWebImage/Core (4.4.6)
   - SDWebImage/GIF (4.4.6):
     - FLAnimatedImage (~> 1.0)
@@ -91,7 +90,6 @@ PODS:
     - Sentry/Core (= 4.1.0)
   - Sentry/Core (4.1.0)
   - SWRevealViewController (2.3.0)
-  - UICKeyChainStore (2.1.1)
   - "UIColor+Hex (1.0.1)":
     - "UIColor+Hex/NSColor (= 1.0.1)"
     - "UIColor+Hex/UIColor (= 1.0.1)"
@@ -114,10 +112,8 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - OpenPGP (from `../OpenPGP`)
   - PromiseKit (~> 6.0)
-  - RHAddressBook (= 1.1.1)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
-  - UICKeyChainStore (= 2.1.1)
   - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
@@ -138,11 +134,9 @@ SPEC REPOS:
     - OHHTTPStubs
     - OpenSSL
     - PromiseKit
-    - RHAddressBook
     - SDWebImage
     - Sentry
     - SWRevealViewController
-    - UICKeyChainStore
     - "UIColor+Hex"
 
 EXTERNAL SOURCES:
@@ -180,16 +174,14 @@ SPEC CHECKSUMS:
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
   OHHTTPStubs: ef33a2c353110d306bb98f695435ec56ff5a26c3
-  OpenPGP: 0563b77b6f4e95c5fc913bf7a216c6f3735b0e28
+  OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  RHAddressBook: 870e9e0b34cb917b9c4c600fc3b7d5b530b23b13
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
-  UICKeyChainStore: 239558492fa260531a0774cfc611ea83a6eaff3a
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: c565eee4c6f3072c06ca31003f659e8c4275dbff
+PODFILE CHECKSUM: 8e1b9e0583d17dc74bd6a5adaa69e1cfb11935cd
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.7.2

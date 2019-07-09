@@ -30,11 +30,10 @@ import Foundation
 
 protocol KeyValueStoreProvider: class {
     func data(forKey key: String) -> Data?
-    func intager(forKey key: String) -> Int?
-    ///TODO:: could try to use the setValue with Any. keychain and userdefault are support it.
+    func int(forKey key: String) -> Int?
     func set(_ intValue: Int, forKey key: String)
     func set(_ data: Data, forKey key: String)
-    func removeItem(forKey key: String)
+    func remove(forKey key: String)
 }
 
 class Saver<T: Codable> {
@@ -67,7 +66,7 @@ extension Saver where T == String {
         guard let value = newValue,
             let raw = value.data(using: .utf8) else
         {
-            self.store.removeItem(forKey: key)
+            self.store.remove(forKey: key)
             return
         }
         self.store.set(raw, forKey: key)
@@ -87,7 +86,7 @@ extension Saver where T == String {
 
 extension Saver where T == Int {
     private func getInt() -> Int? {
-        guard let raw = self.store.intager(forKey: key) else {
+        guard let raw = self.store.int(forKey: key) else {
             return nil
         }
         return raw
@@ -98,7 +97,7 @@ extension Saver where T == Int {
             self.value = newValue
         }
         guard let value = newValue else {
-            self.store.removeItem(forKey: key)
+            self.store.remove(forKey: key)
             return
         }
         self.store.set(value, forKey: key)
@@ -131,7 +130,7 @@ extension Saver where T: Codable {
         guard let value = newValue,
             let raw = try? PropertyListEncoder().encode(value) else
         {
-            self.store.removeItem(forKey: key)
+            self.store.remove(forKey: key)
             return
         }
         self.store.set(raw, forKey: key)

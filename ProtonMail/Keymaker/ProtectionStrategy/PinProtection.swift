@@ -28,13 +28,12 @@
 
 import Foundation
 import Crypto
-import UICKeyChainStore
 
 public struct PinProtection: ProtectionStrategy {
-    public let keychain: UICKeyChainStore
+    public let keychain: Keychain
     private let pin: String
     
-    public init(pin: String, keychain: UICKeyChainStore) {
+    public init(pin: String, keychain: Keychain) {
         self.pin = pin
         self.keychain = keychain
     }
@@ -55,7 +54,7 @@ public struct PinProtection: ProtectionStrategy {
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey.bytes)
         
         PinProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
-        self.keychain.setData(Data(bytes: salt), forKey: PinProtection.saltKeychainKey)
+        self.keychain.set(Data(bytes: salt), forKey: PinProtection.saltKeychainKey)
     }
     
     public func unlock(cypherBits: Data) throws -> Keymaker.Key {
@@ -75,9 +74,9 @@ public struct PinProtection: ProtectionStrategy {
         }
     }
     
-    public static func removeCyphertext(from keychain: UICKeyChainStore) {
+    public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
-        keychain.removeItem(forKey: self.saltKeychainKey)
+        keychain.remove(forKey: self.saltKeychainKey)
     }
 }
 

@@ -175,14 +175,14 @@ extension AppVersion {
         }
         
         // mailboxPassword
-        if let triviallyProtectedMailboxPassword = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
+        if let triviallyProtectedMailboxPassword = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
             let cleartextMailboxPassword = try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)
         {
             sharedUserDataService.mailboxPassword = cleartextMailboxPassword
         }
         
         // AuthCredential
-        if let credentialRaw = sharedKeychain.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
+        if let credentialRaw = KeychainWrapper.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
             let credential = NSKeyedUnarchiver.unarchiveObject(with: credentialRaw) as? AuthCredential
         {
             credential.storeInKeychain()
@@ -201,7 +201,7 @@ extension AppVersion {
         
         // via pin
         if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
-            let pin = sharedKeychain.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
         {
             appWasLocked = true
             appLockMigration.enter()
@@ -214,11 +214,11 @@ extension AppVersion {
         }
         
         // Clear up the old stuff on fresh installs also
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.AuthCredential.keychainStore)
-        sharedKeychain.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
+        KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.password)
+        KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserDataService.mailboxPassword)
+        KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+        KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.AuthCredential.keychainStore)
+        KeychainWrapper.keychain.removeItem(forKey: DeprecatedKeys.UserCachedStatus.enterBackgroundTime)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled)
         userCachedStatus.getShared().removeObject(forKey: DeprecatedKeys.UserCachedStatus.isManuallyLockApp)

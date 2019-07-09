@@ -27,12 +27,11 @@
 
 
 import Foundation
-import UICKeyChainStore
 
 public struct NoneProtection: ProtectionStrategy {
-    public let keychain: UICKeyChainStore
+    public let keychain: Keychain
     
-    public init(keychain: UICKeyChainStore) {
+    public init(keychain: Keychain) {
         self.keychain = keychain
     }
     

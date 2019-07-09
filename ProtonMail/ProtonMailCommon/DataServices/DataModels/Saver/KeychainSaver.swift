@@ -30,28 +30,19 @@ import Foundation
 
 class KeychainSaver<T>: Saver<T> where T: Codable {
     convenience init(key: String, cachingInMemory: Bool = true) {
-        self.init(key: key, store: sharedKeychain, cachingInMemory: cachingInMemory)
+        self.init(key: key, store: KeychainWrapper.keychain, cachingInMemory: cachingInMemory)
     }
 }
 
 extension KeychainWrapper: KeyValueStoreProvider {
-    func set(_ intValue: Int, forKey key: String) {
-        self.keychain.setValue(intValue, forKey: key)
+    public func set(_ intValue: Int, forKey key: String) {
+        assert(false, "Looks like this one is never actually used")
     }
     
-    func set(_ data: Data, forKey key: String) {
-        self.keychain.setData(data, forKey: key)
+    public func int(forKey key: String) -> Int? {
+        assert(false, "Looks like this one is never actually used")
+        return nil
     }
     
-    func data(forKey key: String) -> Data? {
-        return self.keychain.data(forKey: key)
-    }
     
-    func intager(forKey key: String) -> Int? {
-        return self.keychain.value(forKey: key) as? Int
-    }
-    
-    func removeItem(forKey key: String) {
-        self.keychain.removeItem(forKey: key)
-    }
 }

@@ -27,15 +27,14 @@
 
 
 import Foundation
-import UICKeyChainStore
 
 public class Keymaker: NSObject {
     public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
     public typealias Key = Array<UInt8>
     
     private var autolocker: Autolocker?
-    private let keychain: UICKeyChainStore
-    public init(autolocker: Autolocker?, keychain: UICKeyChainStore) {
+    private let keychain: Keychain
+    public init(autolocker: Autolocker?, keychain: Keychain) {
         self.autolocker = autolocker
         self.keychain = keychain
         
