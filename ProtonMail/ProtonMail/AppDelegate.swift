@@ -349,3 +349,23 @@ extension AppDelegate: UIApplicationDelegate {
         self.coordinator.restoreState(coder)
     }
 }
+
+
+@available(iOS 13.0, *)
+class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
+    var window: UIWindow?
+    lazy var coordinator = WindowsCoordinator()
+    
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        return scene.userActivity
+    }
+ 
+    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        self.coordinator.start()
+    }
+    
+    func configure(window: UIWindow?, with activity: NSUserActivity) -> Bool {
+
+        return false
+    }
+}

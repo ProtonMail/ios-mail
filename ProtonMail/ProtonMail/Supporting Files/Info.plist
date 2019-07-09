@@ -101,6 +101,27 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string></string>
+					<key>UISceneConfigurationName</key>
+					<string></string>
+					<key>UISceneDelegateClassName</key>
+					<string>ProtonMail.WindowSceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Menu</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>
