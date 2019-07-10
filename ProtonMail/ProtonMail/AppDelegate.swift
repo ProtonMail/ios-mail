@@ -348,12 +348,22 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
         self.coordinator.restoreState(coder)
     }
+    
+    // MARK: - Multiwindow
+    @available(iOS 13.0, *)
+    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
+    {
+        let config = UISceneConfiguration.init(name: "Example", sessionRole: connectingSceneSession.role)
+        config.delegateClass = WindowSceneDelegate.self
+        return config
+    }
 }
 
 
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
+    var scene: UIWindowScene?
     lazy var coordinator = WindowsCoordinator()
     
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
@@ -361,6 +371,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
  
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+        self.coordinator.scene = scene
         self.coordinator.start()
     }
     

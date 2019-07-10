@@ -52,6 +52,17 @@ class WindowsCoordinator: CoordinatorNew {
         case lockWindow, appWindow, signInWindow
     }
     
+    internal var scene: AnyObject? {
+        didSet {
+            // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
+            if #available(iOS 13.0, *) {
+                assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
+            } else {
+                assert(false, "Scenes are unavailable on iOS 12 and older")
+            }
+        }
+    }
+    
     init() {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
@@ -74,6 +85,9 @@ class WindowsCoordinator: CoordinatorNew {
     
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
+        if #available(iOS 13.0, *) {
+            placeholder.windowScene = self.scene as? UIWindowScene
+        }
         placeholder.rootViewController = UIViewController()
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
@@ -130,17 +144,17 @@ class WindowsCoordinator: CoordinatorNew {
             switch dest {
             case .signInWindow:
                 self.appWindow = nil
-                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
+                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn, scene: self.scene))
             case .lockWindow:
                 if self.lockWindow == nil {
-                    let lock = UIWindow(storyboard: .signIn)
+                    let lock = UIWindow(storyboard: .signIn, scene: self.scene)
                     lock.windowLevel = .alert
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock
                 }
             case .appWindow:
                 if self.appWindow.rootViewController is PlaceholderVC {
-                    self.appWindow = UIWindow(storyboard: .inbox)
+                    self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
                 self.navigate(from: self.currentWindow, to: self.appWindow)
             }
