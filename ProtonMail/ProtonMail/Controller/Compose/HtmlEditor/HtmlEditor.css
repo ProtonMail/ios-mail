@@ -228,3 +228,8 @@ legend {
 .pm_font_larger {
     font-size: 1.8em;
 }
+
+body > #editor {
+    /*  temp solve the click range too small when no signature  */
+    min-height: 300px;
+}

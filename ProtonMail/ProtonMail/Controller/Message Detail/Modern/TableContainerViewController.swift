@@ -72,6 +72,8 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
         self.tableView.bounces = false
         self.tableView.separatorInset = .zero
         
+        self.tableView.separatorColor = .clear
+        
         // events
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: .touchStatusBar, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(restoreOffset), name: UIApplication.willEnterForegroundNotification, object: nil)
