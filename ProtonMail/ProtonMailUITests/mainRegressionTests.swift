@@ -190,17 +190,7 @@ class mainRegressionTests: XCTestCase {
     }
     
     func testEmailMoveBetweenFolders() {
-        
-
-        if (tablesQuery.staticTexts["  Folder  "].exists == false) {
-            
-        }
-        
-        if (tablesQuery.staticTexts["  Label  "].exists == false) {
-            
-        }
-        
-        
+    
         var doneClicked = false
         
         Thread.sleep(forTimeInterval: 3)
