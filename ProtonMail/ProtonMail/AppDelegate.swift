@@ -65,10 +65,19 @@ let sharedServices: ServiceFactory = {
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
+<<<<<<< HEAD
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
     lazy var coordinator = WindowsCoordinator()
+=======
+    lazy var coordinator: WindowsCoordinator = {
+        if #available(iOS 13.0, *) {
+            assert(false, "AppDelegate should not use its WindowsCoordinator in multiwindow environment")
+        }
+        return WindowsCoordinator()
+    }()
+>>>>>>> better app lifecycle management
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -179,7 +188,11 @@ extension AppDelegate: UIApplicationDelegate {
             //self.generateToken()
         }
         
-        self.coordinator.start()
+        if #available(iOS 13.0, *) {
+            // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
+        } else {
+            self.coordinator.start()
+        }
         return true
     }
     
@@ -246,6 +259,7 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
+    // FIXME: will not be called on iOS 13
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
         sharedMessageDataService.purgeOldMessages()
@@ -353,8 +367,9 @@ extension AppDelegate: UIApplicationDelegate {
     @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
     {
-        let config = UISceneConfiguration.init(name: "Example", sessionRole: connectingSceneSession.role)
-        config.delegateClass = WindowSceneDelegate.self
+        let scene = Scenes.fullApp // TODO: add more scenes
+        let config = UISceneConfiguration(name: scene.rawValue, sessionRole: connectingSceneSession.role)
+        config.delegateClass = scene.delegateClass
         return config
     }
 }
@@ -366,17 +381,34 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     var scene: UIWindowScene?
     lazy var coordinator = WindowsCoordinator()
     
-    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-        return scene.userActivity
-    }
- 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
         self.coordinator.start()
     }
     
     func configure(window: UIWindow?, with activity: NSUserActivity) -> Bool {
-
         return false
+    }
+    
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        self.coordinator.willEnterForeground()
+    }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        self.coordinator.didEnterBackground()
+    }
+}
+
+@available(iOS 13.0, *)
+enum Scenes: String {
+    case fullApp
+    case messageView
+    case composer
+    
+    var delegateClass: AnyClass {
+        switch self {
+        case .fullApp:  return WindowSceneDelegate.self
+        default:        fatalError("not implemented yet")
+        }
     }
 }

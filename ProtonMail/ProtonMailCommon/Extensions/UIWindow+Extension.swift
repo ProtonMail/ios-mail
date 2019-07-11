@@ -42,11 +42,15 @@ extension UIWindow {
     }
     
     convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject?) {
+<<<<<<< HEAD
         self.init(root: UIStoryboard.instantiateInitialViewController(storyboard: storyboard), scene: scene)
     }
 
     convenience init(root: UIViewController, scene: AnyObject?) {
         if #available(iOS 13.0, *), let scene = scene as? UIWindowScene { // uncomment when adding Xcode 11 support
+=======
+        if #available(iOS 13.0, *), let scene = scene as? UIWindowScene {
+>>>>>>> better app lifecycle management
             self.init(windowScene: scene)
         } else {
             self.init(frame: UIScreen.main.bounds)

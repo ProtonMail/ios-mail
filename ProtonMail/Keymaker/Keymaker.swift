@@ -40,10 +40,14 @@ public class Keymaker: NSObject {
         
         super.init()
         defer {
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.willEnterForegroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                   name: UIApplication.didBecomeActiveNotification, object: nil)
+            if #available(iOS 13.0, *) {
+                // FIXME: those notifications will never arrive
+            } else {
+                NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                                       name: UIApplication.willEnterForegroundNotification, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
+                                                       name: UIApplication.didBecomeActiveNotification, object: nil)
+            }
         }
     }
     
