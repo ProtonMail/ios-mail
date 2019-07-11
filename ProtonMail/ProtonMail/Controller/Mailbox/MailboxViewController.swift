@@ -126,11 +126,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-//        self.viewModel.resetFetchedController() // this line is removed in multiwindow support branch with elaborate comment
+        /*
+         We've been invalidating FetchedResultsController here, but that does not make sense in multiwindow env on iOS 13
+         Revert if there will be strange bugs with FetchedResultsController
+        */
     }
     
     deinit {
-        self.inactiveViewModel()
+        self.viewModel.resetFetchedController()
     }
     
     @objc func doEnterForeground() {
