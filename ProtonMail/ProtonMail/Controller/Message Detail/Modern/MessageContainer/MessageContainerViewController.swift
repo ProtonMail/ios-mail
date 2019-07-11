@@ -35,6 +35,13 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 13.0, *) {
+            self.view.window?.windowScene?.title = self.viewModel.thread.first?.header.title
+        }
+    }
+    
     override func viewDidLoad() {
         self.restorationClass = MessageContainerViewController.self
         super.viewDidLoad()
