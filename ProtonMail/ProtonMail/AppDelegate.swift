@@ -259,7 +259,7 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
-    // FIXME: will not be called on iOS 13
+    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
         sharedMessageDataService.purgeOldMessages()
@@ -396,6 +396,11 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         self.coordinator.didEnterBackground()
+        
+        // app gone background if all of scenes are background
+        if nil == UIApplication.shared.openSessions.first(where: { $0.scene?.activationState != .background }) {
+            UIApplication.shared.delegate?.applicationDidEnterBackground?(UIApplication.shared)
+        }
     }
 }
 
