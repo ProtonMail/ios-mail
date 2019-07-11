@@ -106,7 +106,17 @@ extension SWRevealViewController {
 // MARK: - consider move this to coordinator
 extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     func onLogout(animated: Bool) {
-        self.coordinator.go(dest: .signInWindow)
+        if #available(iOS 13.0, *) {
+            let sessions = Array(UIApplication.shared.openSessions)
+            (sessions.last?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow)
+            for session in sessions.dropLast() {
+                UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
+                    print(error)
+                }
+            }
+        } else {
+            self.coordinator.go(dest: .signInWindow)
+        }
     }
     
     func isReachable() -> Bool {
