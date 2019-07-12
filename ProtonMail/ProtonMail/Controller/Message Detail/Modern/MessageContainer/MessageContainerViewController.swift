@@ -36,6 +36,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var standalonesObservation: [NSKeyValueObservation] = []
     
     override func viewDidLoad() {
+        self.restorationClass = MessageContainerViewController.self
         super.viewDidLoad()
         
         // child view controllers
@@ -247,5 +248,30 @@ extension MessageContainerViewController: MessageDetailBottomViewDelegate {
     }
     func forwardAction() {
         self.coordinator.go(to: .composerForward)
+    }
+}
+
+extension MessageContainerViewController: UIViewControllerRestoration {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+        let next = UIStoryboard(name: "Message", bundle: .main).make(MessageContainerViewController.self)
+        
+        guard let data = coder.decodeObject() as? Data,
+            let messageID = String(data: data, encoding: .utf8),
+            let message = sharedMessageDataService.fetchMessages(withIDs: NSMutableSet(array: [messageID])).first else
+        {
+                return nil
+        }
+            
+        next.set(viewModel: .init(message: message))
+        next.set(coordinator: .init(controller: next))
+        
+        return next
+    }
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        if let messageID = self.viewModel.messages.first?.messageID {
+            coder.encode(messageID.data(using: .utf8))
+        }
+        super.encodeRestorableState(with: coder)
     }
 }
