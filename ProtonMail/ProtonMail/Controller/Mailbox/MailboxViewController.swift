@@ -1430,12 +1430,33 @@ extension MailboxViewController: UIViewControllerRestoration {
         if let data = try? JSONEncoder().encode(self.viewModel) {
             coder.encode(data, forKey: "viewModel")
         }
+        let selection = self.selectedIDs.compactMap { $0 as? String }
+        if let selectionData = try? JSONEncoder().encode(selection) {
+            coder.encode(selectionData, forKey: "selectedIDs")
+        }
+        coder.encode(self.listEditing, forKey: "listEditing")
         super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        if let selectionData = coder.decodeObject(forKey: "selectedIDs") as? Data,
+            let selection = try? JSONDecoder().decode(Array<String>.self, from: selectionData),
+            !selection.isEmpty
+        {
+            self.selectedIDs.removeAllObjects()
+            self.selectedIDs.addObjects(from: selection)
+        }
+        self.listEditing = coder.decodeBool(forKey: "listEditing")
+        
+        super.decodeRestorableState(with: coder)
     }
     
     override func applicationFinishedRestoringState() {
         super.applicationFinishedRestoringState()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+        
+        self.updateNavigationController(self.listEditing)
+        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
     }
 }
 
