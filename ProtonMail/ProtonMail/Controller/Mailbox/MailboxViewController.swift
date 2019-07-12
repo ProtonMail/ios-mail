@@ -149,6 +149,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.restorationClass = MailboxViewController.self
+        
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
@@ -1403,7 +1405,27 @@ extension MailboxViewController: UITableViewDelegate {
     }
 }
 
-extension MailboxViewController {
+extension MailboxViewController: UIViewControllerRestoration {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+        let next = UIStoryboard(name: "Menu", bundle: .main).make(MailboxViewController.self)
+
+        sharedVMService.mailbox(fromMenu: next)
+
+        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
+            let viewModel = (try? JSONDecoder().decode(MailboxViewModelImpl.self, from: data))
+                ?? (try? JSONDecoder().decode(LabelboxViewModelImpl.self, from: data))
+                ?? (try? JSONDecoder().decode(FolderboxViewModelImpl.self, from: data)) else
+        {
+            return nil
+        }
+
+        sharedVMService.mailbox(fromMenu: next)
+        next.set(viewModel: viewModel)
+        next.set(coordinator: MailboxCoordinator(vc: next, vm: viewModel, services: sharedServices))
+
+        return next
+    }
+    
     override func encodeRestorableState(with coder: NSCoder) {
         if let data = try? JSONEncoder().encode(self.viewModel) {
             coder.encode(data, forKey: "viewModel")
@@ -1411,18 +1433,8 @@ extension MailboxViewController {
         super.encodeRestorableState(with: coder)
     }
     
-    override func decodeRestorableState(with coder: NSCoder) {
-        if let data = coder.decodeObject(forKey: "viewModel") as? Data {
-            let viewModel = (try? JSONDecoder().decode(MailboxViewModelImpl.self, from: data))
-                ?? (try? JSONDecoder().decode(LabelboxViewModelImpl.self, from: data))
-                ?? (try? JSONDecoder().decode(FolderboxViewModelImpl.self, from: data))
-            
-            self.viewModel = viewModel
-        }
-        super.decodeRestorableState(with: coder)
-    }
-    
     override func applicationFinishedRestoringState() {
-        self.viewDidLoad()
+        super.applicationFinishedRestoringState()
+        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
     }
 }
