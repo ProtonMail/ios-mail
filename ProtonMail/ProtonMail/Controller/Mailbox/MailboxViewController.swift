@@ -1438,3 +1438,14 @@ extension MailboxViewController: UIViewControllerRestoration {
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
     }
 }
+
+// these methods will not get called if UITableView will not have its own restoration identifier in Storyboard
+extension MailboxViewController: UIDataSourceModelAssociation {
+    func modelIdentifierForElement(at idx: IndexPath, in view: UIView) -> String? {
+        return self.viewModel.item(index: idx)?.messageID
+    }
+    
+    func indexPathForElement(withModelIdentifier identifier: String, in view: UIView) -> IndexPath? {
+        return self.viewModel.indexPath(by: identifier)
+    }
+}

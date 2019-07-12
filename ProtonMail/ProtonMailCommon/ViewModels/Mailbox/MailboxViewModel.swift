@@ -243,6 +243,15 @@ class MailboxViewModel {
         return nil
     }
     
+    func indexPath(by messageID: String) -> IndexPath? {
+        guard let object = self.message(by: messageID),
+            let index = self.fetchedResultsController?.indexPath(forObject: object) else
+        {
+            return nil
+        }
+        return index
+    }
+    
     /// rating index
     var ratingIndex : IndexPath? {
         get {
