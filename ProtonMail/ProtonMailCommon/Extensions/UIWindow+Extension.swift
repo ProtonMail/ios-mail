@@ -41,9 +41,18 @@ extension UIWindow {
         return topController
     }
     
-    convenience init(storyboard: UIStoryboard.Storyboard) {
+    convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject? = nil) { // choose multiwindow's branch version of this line when merging
         self.init(frame: UIScreen.main.bounds)
         self.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+    }
+    
+    convenience init(root: UIViewController, scene: AnyObject?) {
+        if #available(iOS 13.0, *), let scene = scene as? UIWindowScene {
+            self.init(windowScene: scene)
+        } else {
+            self.init(frame: UIScreen.main.bounds)
+        }
+        self.rootViewController = root
     }
 }
 

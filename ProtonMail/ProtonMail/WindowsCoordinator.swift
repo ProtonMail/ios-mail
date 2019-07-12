@@ -29,6 +29,8 @@
 import Foundation
 import Keymaker
 
+import SWRevealViewController // for state restoration
+
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
@@ -166,6 +168,24 @@ class WindowsCoordinator: CoordinatorNew {
         }
         
         return true
+    }
+    
+    // Preserving and Restoring State
+    
+    internal func saveForRestoration(_ coder: NSCoder) {
+        guard let root = self.appWindow?.rootViewController else {
+            return
+        }
+        coder.encodeRootObject(root)
+    }
+    
+    internal func restoreState(_ coder: NSCoder) {
+        // SWRevealViewController is restorable, but not all of its children are
+        guard let root = coder.decodeObject() as? SWRevealViewController,
+            root.frontViewController != nil else {
+                return
+        }
+        self.appWindow = UIWindow(root: root, scene: nil)
     }
 }
 

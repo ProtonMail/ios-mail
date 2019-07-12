@@ -324,4 +324,20 @@ extension AppDelegate: UIApplicationDelegate {
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
     }
+
+    // MARK: State restoration
+    
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        // without mainKey available we will not be able to load any content in the restored VC model, so no restoration possible
+        return keymaker.mainKey != nil
+    }
+    func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
+        self.coordinator.saveForRestoration(coder)
+    }
+    func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
+        self.coordinator.restoreState(coder)
+    }
 }

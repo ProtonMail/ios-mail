@@ -1402,3 +1402,27 @@ extension MailboxViewController: UITableViewDelegate {
         }
     }
 }
+
+extension MailboxViewController {
+    override func encodeRestorableState(with coder: NSCoder) {
+        if let data = try? JSONEncoder().encode(self.viewModel) {
+            coder.encode(data, forKey: "viewModel")
+        }
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func decodeRestorableState(with coder: NSCoder) {
+        if let data = coder.decodeObject(forKey: "viewModel") as? Data {
+            let viewModel = (try? JSONDecoder().decode(MailboxViewModelImpl.self, from: data))
+                ?? (try? JSONDecoder().decode(LabelboxViewModelImpl.self, from: data))
+                ?? (try? JSONDecoder().decode(FolderboxViewModelImpl.self, from: data))
+            
+            self.viewModel = viewModel
+        }
+        super.decodeRestorableState(with: coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        self.viewDidLoad()
+    }
+}

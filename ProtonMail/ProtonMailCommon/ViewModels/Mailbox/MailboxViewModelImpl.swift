@@ -38,6 +38,16 @@ final class MailboxViewModelImpl : MailboxViewModel {
         super.init(labelID: label.rawValue, msgService: service, pushService: pushService)
     }
     
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let labelID = try container.decode(String.self, forKey: .labelID)
+        guard let label = Message.Location(rawValue: labelID) else {
+            throw Errors.decoding
+        }
+        self.label = label
+        try super.init(from: decoder)
+    }
+    
     override var localizedNavigationTitle: String {
         return self.label.localizedTitle
     }
