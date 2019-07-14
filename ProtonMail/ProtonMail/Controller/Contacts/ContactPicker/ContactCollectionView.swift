@@ -95,10 +95,11 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
         self.allowsTextInput = true
         self._showPrompt = true
         
-        let layout = self.collectionViewLayout as! ContactCollectionViewFlowLayout
-        layout.minimumInteritemSpacing = 0 //5
-        layout.minimumLineSpacing = 0 // 1
-        layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
+        if let layout = self.collectionViewLayout as? ContactCollectionViewFlowLayout {
+            layout.minimumInteritemSpacing = 0 //5
+            layout.minimumLineSpacing = 0 // 1
+            layout.sectionInset = UIEdgeInsets.init(top: 0, left: 6, bottom: 0, right: 6)
+        }
         
         self.prototypeCell = ContactCollectionViewContactCell()
         
@@ -139,7 +140,8 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     override func reloadData() {
         super.reloadData()
         self.collectionViewLayout.invalidateLayout()
-        self.forceRelayout()
+        // FIXME: next like with forceRelayout() sometimes causes cycle of relayouts because ContactCollectionViewFlowLayout then calls reloadData() again and the app crashes. It happens 100% when restoring saved state of Composer. Check if it's safe to remove
+        // self.forceRelayout()
     }
     
     func forceRelayout() {
