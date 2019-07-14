@@ -126,7 +126,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-        self.viewModel.resetFetchedController()
+//        self.viewModel.resetFetchedController() // this line is removed in multiwindow support branch with elaborate comment
     }
     
     deinit {
