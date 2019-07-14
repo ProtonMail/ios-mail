@@ -73,6 +73,15 @@ class MessageContainerViewModel: TableContainerViewModel {
         self.init(conversation: [message])
     }
     
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let messageIDs = try container.decode(Array<String>.self, forKey: .messageIDs)
+        
+        let messages = sharedMessageDataService.fetchMessages(withIDs: NSMutableSet(array: messageIDs))
+        
+        self.init(conversation: messages)
+    }
+    
     deinit {
         self.observationsHeader = []
         self.observationsBody = []
@@ -260,5 +269,22 @@ class MessageContainerViewModel: TableContainerViewModel {
                 self?.reload(message: message)
             }
         }
+    }
+}
+
+extension MessageContainerViewModel: Codable {
+    enum CodingKeys: CodingKey {
+        case messageIDs
+    }
+    
+    enum Errors: Error {
+        case decoding
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        let messageIDs = self.thread.map { $0.messageID }
+        try container.encode(messageIDs, forKey: .messageIDs)
     }
 }

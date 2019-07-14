@@ -255,23 +255,23 @@ extension MessageContainerViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         let next = UIStoryboard(name: "Message", bundle: .main).make(MessageContainerViewController.self)
         
-        guard let data = coder.decodeObject() as? Data,
-            let messageID = String(data: data, encoding: .utf8),
-            let message = sharedMessageDataService.fetchMessages(withIDs: NSMutableSet(array: [messageID])).first else
+        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
+            let viewModel = try? JSONDecoder().decode(MessageContainerViewModel.self, from: data) else
         {
                 return nil
         }
             
-        next.set(viewModel: .init(message: message))
+        next.set(viewModel: viewModel)
         next.set(coordinator: .init(controller: next))
         
         return next
     }
     
     override func encodeRestorableState(with coder: NSCoder) {
-        if let messageID = self.viewModel.messages.first?.messageID {
-            coder.encode(messageID.data(using: .utf8))
+        if let viewModel = try? JSONEncoder().encode(self.viewModel) {
+            coder.encode(viewModel, forKey: "viewModel")
         }
+        
         super.encodeRestorableState(with: coder)
     }
 }
