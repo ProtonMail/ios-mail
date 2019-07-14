@@ -31,10 +31,14 @@ import Keymaker
 
 import SWRevealViewController // for state restoration
 
+
+// this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
+fileprivate class PlaceholderVC: UIViewController { }
+
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
-    private var appWindow: UIWindow?
+    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(), scene: nil)
     
     private var lockWindow: UIWindow?
     
@@ -64,7 +68,10 @@ class WindowsCoordinator: CoordinatorNew {
         //let cacheService : AppCacheService = serviceHolder.get()
         //cacheService.restoreCacheAfterAuthorized()
     }
-
+    func prepare() {
+        self.currentWindow = self.appWindow
+    }
+    
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
         placeholder.rootViewController = UIViewController()
@@ -132,9 +139,10 @@ class WindowsCoordinator: CoordinatorNew {
                     self.lockWindow = lock
                 }
             case .appWindow:
-                let next = self.appWindow ?? UIWindow(storyboard: .inbox)
-                self.appWindow = next
-                self.navigate(from: self.currentWindow, to: next)
+                if self.appWindow.rootViewController is PlaceholderVC {
+                    self.appWindow = UIWindow(storyboard: .inbox)
+                }
+                self.navigate(from: self.currentWindow, to: self.appWindow)
             }
         }
     }
@@ -185,7 +193,7 @@ class WindowsCoordinator: CoordinatorNew {
             root.frontViewController != nil else {
                 return
         }
-        self.appWindow = UIWindow(root: root, scene: nil)
+        self.appWindow?.rootViewController = root
     }
 }
 
