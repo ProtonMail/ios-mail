@@ -1407,10 +1407,6 @@ extension MailboxViewController: UITableViewDelegate {
 
 extension MailboxViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        let next = UIStoryboard(name: "Menu", bundle: .main).make(MailboxViewController.self)
-
-        sharedVMService.mailbox(fromMenu: next)
-
         guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
             let viewModel = (try? JSONDecoder().decode(MailboxViewModelImpl.self, from: data))
                 ?? (try? JSONDecoder().decode(LabelboxViewModelImpl.self, from: data))
@@ -1419,6 +1415,7 @@ extension MailboxViewController: UIViewControllerRestoration {
             return nil
         }
 
+        let next = UIStoryboard(name: "Menu", bundle: .main).make(MailboxViewController.self)
         sharedVMService.mailbox(fromMenu: next)
         next.set(viewModel: viewModel)
         next.set(coordinator: MailboxCoordinator(vc: next, vm: viewModel, services: sharedServices))

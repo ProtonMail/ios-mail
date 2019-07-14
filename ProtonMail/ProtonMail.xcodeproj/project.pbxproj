@@ -1209,6 +1209,10 @@
 		AB976A6A22CF9D0000EA101D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
 		AB976A6B22CF9D0E00EA101D /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB86DAD222CF3F3D00D17352 /* Keychain.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
+		ABC050AA22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */; };
+		ABC050AB22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */; };
+		ABC050AC22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */; };
+		ABC050AD22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
 		AC1F531805973E8279B06947E230FE05 /* ContactGroupSubSelectionEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */; };
@@ -2535,6 +2539,7 @@
 		AB86DAD222CF3F3D00D17352 /* Keychain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
+		ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerNavigationController.swift; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3921,6 +3926,7 @@
 			isa = PBXGroup;
 			children = (
 				5D95FC7E213ADE18198C13F6B0EA76F6 /* ComposeContainerViewController.swift */,
+				ABC050A922DB8AFB007DCE09 /* ComposerNavigationController.swift */,
 				1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */,
 				93F7D4B4DA1E25D05F22D83C8C4CB850 /* ComposeContainerViewModel.swift */,
 			);
@@ -5335,6 +5341,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n";
 		};
+		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Proton Sentry script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "if which sentry-cli >/dev/null; then\nsource ~/.bashrc\nERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+		};
 		0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5500,24 +5524,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Proton Sentry script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "if which sentry-cli >/dev/null; then\nsource ~/.bashrc\nERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 		B15B017DF84D254D641D53281B450644 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -6339,6 +6345,7 @@
 				F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */,
 				BEEA05B8AEE78727C04DAB427C63B07D /* TwoFAViewModel.swift in Sources */,
 				2772542013F06485B38389BA9213C31E /* UIAlertAction+Extension.swift in Sources */,
+				ABC050AA22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */,
 				86EF1BFC9C83976CD6B0EC49785839A2 /* UIAlertController+Extension.swift in Sources */,
 				D22372133B08B26CD3ACAF2A29481B98 /* UIApplication+BadgeNumber.swift in Sources */,
 				AFCB9D83BE3960601910519DBAC2FA2D /* UIApplication+InfoExtension.swift in Sources */,
@@ -6853,6 +6860,7 @@
 				5F625E85761CB00E7DE49E815BBAE8E1 /* TableContainerViewController.swift in Sources */,
 				2DBD51FB4F4A5713D8CDA20B3BC7018E /* TableContainerViewCoordinator.swift in Sources */,
 				5C62F5D429DD8819CF18B4E6B926F703 /* TableContainerViewModel.swift in Sources */,
+				ABC050AC22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */,
 				248DA163C0E7E06AE32010BCEFC74778 /* TermsWebViewModelImpl.swift in Sources */,
 				46144FE04C87C476002403318E4E9897 /* TestAPI.swift in Sources */,
 				27E86034A9B9C03D99F70C6A5D873AE6 /* TextInsetTextField.swift in Sources */,
@@ -7153,6 +7161,7 @@
 				871898B7C24C611415A842947272D3CB /* ShareUnlockPinCodeModelImpl.swift in Sources */,
 				E9710A92098A25BB8602D3866E923039 /* ShareUnlockViewController.swift in Sources */,
 				3016A2818AD0AC78137FB8F30A6B0D2F /* ShareUnlockViewModel.swift in Sources */,
+				ABC050AB22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */,
 				D7D858E3F4A1862BB465B161B10516C8 /* SharedCacheBase.swift in Sources */,
 				88CE8F5EDB2D1F7CA9809944517F8B3A /* SignInManager.swift in Sources */,
 				30D795950C3FD319170AF0D02C81F49A /* SignInViewModel.swift in Sources */,
@@ -7421,6 +7430,7 @@
 				44D9562BF3BFD11754EE64C1A9858052 /* ShareUnlockPinCodeModelImpl.swift in Sources */,
 				D7DA5E5DB8BC10AF6E6F6ABCB9C48514 /* ShareUnlockViewController.swift in Sources */,
 				B1E66D0F1C55A9A6B85C39459B04AEB4 /* ShareUnlockViewModel.swift in Sources */,
+				ABC050AD22DB8AFB007DCE09 /* ComposerNavigationController.swift in Sources */,
 				0427E0E7A940DD28E610F9AB5D87DF32 /* SharedCacheBase.swift in Sources */,
 				5D779BFC077F5F9AB7666F2C55E6B045 /* SignInManager.swift in Sources */,
 				3657A7B97B19CD78B774E808CCDBBA8E /* SignInViewModel.swift in Sources */,

@@ -253,14 +253,13 @@ extension MessageContainerViewController: MessageDetailBottomViewDelegate {
 
 extension MessageContainerViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        let next = UIStoryboard(name: "Message", bundle: .main).make(MessageContainerViewController.self)
-        
         guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
             let viewModel = try? JSONDecoder().decode(MessageContainerViewModel.self, from: data) else
         {
                 return nil
         }
-            
+        
+        let next = UIStoryboard(name: "Message", bundle: .main).make(MessageContainerViewController.self)
         next.set(viewModel: viewModel)
         next.set(coordinator: .init(controller: next))
         
