@@ -76,10 +76,10 @@ class HtmlEditorBehaviour: NSObject {
     
     // fixes retain cycle: userContentController retains his message handlers
     internal func eject() {
-        self.webView.configuration.userContentController.remove(MessageTopics.addImage)
-        self.webView.configuration.userContentController.remove(MessageTopics.removeImage)
-        self.webView.configuration.userContentController.remove(MessageTopics.moveCaret)
-        self.webView.configuration.userContentController.remove(MessageTopics.heightUpdated)
+        self.webView?.configuration.userContentController.remove(MessageTopics.addImage)
+        self.webView?.configuration.userContentController.remove(MessageTopics.removeImage)
+        self.webView?.configuration.userContentController.remove(MessageTopics.moveCaret)
+        self.webView?.configuration.userContentController.remove(MessageTopics.heightUpdated)
     }
     
     internal func setup(webView: WKWebView) {

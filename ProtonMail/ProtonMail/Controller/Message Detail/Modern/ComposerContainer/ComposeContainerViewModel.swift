@@ -28,6 +28,25 @@
 
 import Foundation
 
+extension ComposeContainerViewModel: Codable {
+    enum CodingKeys: CodingKey {
+        case messageID, messageAction
+    }
+    
+    enum Errors: Error {
+        case noUnderlyingMessage
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        if let message = self.childViewModel.message {
+            try container.encode(message.messageID, forKey: .messageID)
+        }
+        try container.encode(self.childViewModel.messageAction.rawValue, forKey: .messageAction)
+    }
+}
+
 class ComposeContainerViewModel: TableContainerViewModel {
     internal var childViewModel: ContainableComposeViewModel
     
@@ -39,6 +58,22 @@ class ComposeContainerViewModel: TableContainerViewModel {
     init(editorViewModel: ContainableComposeViewModel) {
         self.childViewModel = editorViewModel
         super.init()
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        let messageID = try container.decode(String.self, forKey: .messageID)
+        let messageActionRaw = try container.decode(Int.self, forKey: .messageAction)
+        
+        guard let message = sharedMessageDataService.fetchMessages(withIDs: NSMutableSet(array: [messageID])).first,
+            let action =  ComposeMessageAction(rawValue: messageActionRaw) else
+        {
+            throw Errors.noUnderlyingMessage
+        }
+        let childViewModel = ContainableComposeViewModel(msg: message, action: action)
+        
+        self.init(editorViewModel: childViewModel)
     }
     
     override var numberOfSections: Int {

@@ -47,7 +47,20 @@ class UndoMessage {
         self.newLabels  = newLabels
     }
 }
-
+extension MailboxViewModel: Codable {
+    enum CodingKeys: CodingKey {
+        case labelID
+    }
+    
+    enum Errors: Error {
+        case decoding
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.labelID, forKey: .labelID)
+    }
+}
 
 class MailboxViewModel {
     private let labelID : String
@@ -69,6 +82,15 @@ class MailboxViewModel {
         self.labelID = labelID
         self.messageService = msgService
         self.pushService = pushService
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let label = try container.decode(String.self, forKey: .labelID)
+        
+        self.labelID = label
+        self.messageService = sharedServices.get()
+        self.pushService = sharedServices.get()
     }
     
     /// localized navigation title. overrride it or return label name
@@ -219,6 +241,15 @@ class MailboxViewModel {
             return obj
         }
         return nil
+    }
+    
+    func indexPath(by messageID: String) -> IndexPath? {
+        guard let object = self.message(by: messageID),
+            let index = self.fetchedResultsController?.indexPath(forObject: object) else
+        {
+            return nil
+        }
+        return index
     }
     
     /// rating index

@@ -65,6 +65,9 @@ let sharedServices: ServiceFactory = {
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
+    var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
+        return self.coordinator.currentWindow
+    }
     lazy var coordinator = WindowsCoordinator()
 }
 
@@ -112,6 +115,11 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
+        self.coordinator.prepare()
+        return true
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let cacheService : AppCacheService = sharedServices.get()
@@ -323,5 +331,21 @@ extension AppDelegate: UIApplicationDelegate {
     func touchStatusBar() {
         let notification = Notification(name: .touchStatusBar, object: nil, userInfo: nil)
         NotificationCenter.default.post(notification)
+    }
+
+    // MARK: State restoration
+    
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+        return true
+    }
+    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        // without mainKey available we will not be able to load any content in the restored VC model, so no restoration possible
+        return keymaker.mainKey != nil
+    }
+    func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
+        self.coordinator.saveForRestoration(coder)
+    }
+    func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
+        self.coordinator.restoreState(coder)
     }
 }
