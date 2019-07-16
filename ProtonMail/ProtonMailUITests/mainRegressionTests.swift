@@ -28,119 +28,13 @@
 
 import XCTest
 
-let app = XCUIApplication()
-let tablesQuery = app.tables
-
-let inbox = "Inbox"
-let sidebarButton = "sidebarButton"
-let settingsButton = "Settings"
-let menu = "Menu"
-let reportBugs = "Report Bugs"
-let logoutText = "Logout"
-let logoutButton = "Log out" //
-let logoutMessage = "Are you sure you want to logout?"
-let moreButton = "More"
-let viewHeadersButton = "View Headers"
-let copyButton = "Copy"
-let doneButton = "Done"
-let printButton = "Print"
-let backButton = "Back"
-let trashButton = "Trash"
-let replyButton = "Reply"
-let deleteButton = "Delete"
-
-let contactsButton = "Contacts"
-let sampleContact = "Sample Contact"
-let groupsButton = "Groups"
-let emptyListGroups = "Empty list"
-let sampleContactPartial = "sam"
-
-let closeTourButton = "closeTour"
-let onboardingSubject = "Welcome to ProtonMail"
-
-let sampleMessageSubject = "Self test"
-let sampleMessageSubjectReply = "Re: Self test"
-let sampleMessageBody = "Self test 2"
-let sampleMessageInlineImage = "download.jpeg"
-let sampleMessageHeaderSubject = "2019-03-15T09:49:42-Self-test"
-let sampleMessagePrintSubject = "Self-test"
-
-
-enum SignInPage: String {
-    
-    case txtUsername
-    case txtPassword
-    case title
-    case loginButton
-    case resetLoginPassword
-    case pmLogo
-    case signUpButton
-    case forgotPasswordButton
-    case languageButton
-    case versionLabel
-    var element: XCUIElement {
-        switch self {
-        case .txtUsername:
-            return XCUIApplication().textFields["txtUsername"]
-        case .txtPassword:
-            return XCUIApplication().secureTextFields["txtPassword"]
-        case .title:
-            return XCUIApplication().staticTexts["signInTitle"]
-        case .loginButton:
-            return XCUIApplication().buttons["loginButton"]
-        case .resetLoginPassword:
-            return XCUIApplication().buttons["resetLoginPassword"]
-        case .pmLogo:
-            return XCUIApplication().images["pmLogo"]
-        case .signUpButton:
-            return XCUIApplication().buttons["signUpButton"]
-        case .forgotPasswordButton:
-            return XCUIApplication().buttons["forgotPasswordButton"]
-        case .languageButton:
-            return XCUIApplication().buttons["languageButton"]
-        case .versionLabel:
-            return XCUIApplication().staticTexts["versionLabel"]
-        }
-    }
-}
-
-enum decryptPage: String {
-    case decryptButton
-    case txtDecryptPassword
-    case showPasswordButton
-    case resetMailboxPassword
-    var element: XCUIElement {
-        switch self {
-        case .decryptButton:
-            return XCUIApplication().buttons["decryptButton"]
-        case .txtDecryptPassword:
-            return XCUIApplication().secureTextFields["txtDecryptPassword"]
-        case .showPasswordButton:
-            return XCUIApplication().buttons["showPasswordButton"]
-        case .resetMailboxPassword:
-            return XCUIApplication().buttons["resetMailboxPassword"]
-        }
-    }
-}
-
-extension XCUIApplication {
-    func filterCells(containing labels: String...) -> XCUIElementQuery {
-        var cells = self.cells
-        
-        for label in labels {
-            cells = cells.containing(NSPredicate(format: "label CONTAINS %@", label))
-        }
-        return cells
-    }
-}
-
 class mainRegressionTests: XCTestCase {
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         
         // In UI tests it is usually best to stop immediately when a failure occurs.
-        continueAfterFailure = true
+        continueAfterFailure = false
         
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         XCUIApplication().launch()
@@ -151,8 +45,8 @@ class mainRegressionTests: XCTestCase {
         
         if SignInPage.txtUsername.element.exists {
             
-            signInLogin()
-            
+            signIn(twoPasswordMode: false)
+   
         }
         
         // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
@@ -166,138 +60,20 @@ class mainRegressionTests: XCTestCase {
         super.tearDown()
         
     }
-    
-    func testLogoutLogin() {
-        
-        Thread.sleep(forTimeInterval: 3)
-        
-        app.navigationBars[inbox].buttons[sidebarButton].tap()
-        
-        app.tables.staticTexts[logoutText].tap()
-        
-        if #available(iOS 13.0, *) {
-            app.sheets[logoutMessage].scrollViews.otherElements.buttons[logoutButton].tap()
-        } else {
-            app.sheets[logoutMessage].buttons[logoutButton].tap()
-        }
-        
-        Thread.sleep(forTimeInterval: 2)
-        
-        loginAsserts()
-        
-        signInLogin()
-        
-    }
-    
-    func loginAsserts() {
-        
-        XCTAssertTrue(SignInPage.title.element.exists)
-        XCTAssertTrue(SignInPage.txtUsername.element.exists)
-        XCTAssertTrue(SignInPage.txtPassword.element.exists)
-        XCTAssertTrue(SignInPage.pmLogo.element.exists)
-        XCTAssertTrue(SignInPage.resetLoginPassword.element.exists)
-        XCTAssertTrue(SignInPage.signUpButton.element.exists)
-        XCTAssertTrue(SignInPage.forgotPasswordButton.element.exists)
-        XCTAssertTrue(SignInPage.languageButton.element.exists)
-        XCTAssertTrue(SignInPage.versionLabel.element.exists)
-        
-    }
-    
-    func testReadMessageAndReply() {
-        
-        // Read message
-        tablesQuery.staticTexts[sampleMessageSubject].tap()
-        Thread.sleep(forTimeInterval: 5)
-        XCTAssert(app.staticTexts[sampleMessageBody].exists)
-        XCTAssert(app.images[sampleMessageInlineImage].exists)
-        
-        // Check headers and print preview
-        app.navigationBars[inbox].buttons[moreButton].tap()
-        app.sheets.buttons[viewHeadersButton].tap()
-        
-        app.otherElements["QLPreviewControllerView"].children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .textView).element.press(forDuration: 1.2);
-        app.menuItems[copyButton].tap()
-        
-        let navigationBar = app.navigationBars[sampleMessageHeaderSubject]
-        navigationBar.buttons[doneButton].tap()
-        app.navigationBars[inbox].buttons[moreButton].tap()
-        
-        app.sheets.buttons[printButton].tap()
-        
-        XCTAssert(app.staticTexts[sampleMessageBody].exists)
-        
-        app.navigationBars[sampleMessagePrintSubject].buttons[doneButton].tap()
-        
-        // Prepare composer
-        app.buttons[replyButton].tap()
-        
-        if #available(iOS 13.0, *) {
-            app.tables.cells.containing(.button, identifier:"compose lock").children(matching: .textField).element(boundBy: 1).tap()
-        }
-        else if #available(iOS 11.0, *) {
-            app.tables.cells.containing(.button, identifier:"mail attachment closed").children(matching: .textField).element(boundBy: 2).tap()
-        }
-        else if #available(iOS 10.0, *) {
-            Thread.sleep(forTimeInterval: 2)
-            let mailAttachmentClosedCellsQuery = app.tables.cells.containing(.button, identifier:"mail attachment closed")
-            mailAttachmentClosedCellsQuery.children(matching: .textField).element(boundBy: 4).tap()
-            
-        }
-        
-        app.typeText(sampleContactPartial)
-        
-        app.children(matching: .window).element(boundBy: 0).tables.children(matching: .cell).element(boundBy: 0).staticTexts[sampleContact].tap()
-        
-        // Send message
-        app.navigationBars["ProtonMail.ComposeContainerView"].children(matching: .button).element(boundBy: 1).tap()
-        
-        // Inbox management
-        Thread.sleep(forTimeInterval: 5)
-        
-        let inboxNavigationBar = app.navigationBars[inbox]
-        
-        if #available(iOS 11.0, *) {
-            inboxNavigationBar.buttons[inbox].tap()
-            
-        } else {
-            inboxNavigationBar.buttons[backButton].tap()
-        }
-        
-        tablesQuery.staticTexts[sampleMessageSubjectReply].press(forDuration: 1.5);
-        app.navigationBars.buttons[trashButton].tap()
-        
-    }
-    
-    
-    func testContactsRefresh() {
-        
-        Thread.sleep(forTimeInterval: 3)
-        
-        app.navigationBars[inbox].buttons[sidebarButton].tap()
-        
-        app.tables.staticTexts[contactsButton].tap()
-        
-        if #available(iOS 13.0, *) {
-            let sectionIndexTable = app.tables.containing(.other, identifier:"Section index").element
-            sectionIndexTable.swipeDown()
-        } else {
-            let tableIndexTable = app.tables.containing(.other, identifier:"table index").element
-            tableIndexTable.swipeDown()
-        }
-        
-        app.tabBars.buttons[groupsButton].tap()
-        app.tables[emptyListGroups].swipeDown()
-        app.navigationBars[groupsButton].buttons[menu].tap()
-        
-    }
-    
+
     func testSettingsView() {
         
         Thread.sleep(forTimeInterval: 3)
         
-        app.navigationBars[inbox].buttons[sidebarButton].tap()
+        sidebarButton.tap()
         
-        app.tables.staticTexts[settingsButton].tap()
+        settingsButton.tap()
+        
+        notificationEmail.tap()
+        notificationEmailBackButton.tap()
+        
+        singlePassword.tap()
+        passwordBackButton.tap()
         
     }
     
@@ -305,71 +81,245 @@ class mainRegressionTests: XCTestCase {
         
         Thread.sleep(forTimeInterval: 3)
         
-        app.navigationBars[inbox].buttons[sidebarButton].tap()
+        sidebarButton.tap()
         
-        app.tables.staticTexts[reportBugs].tap()
+        reportBugs.tap()
         
-        app.navigationBars[reportBugs].buttons[menu].tap()
+        app.navigationBars[reportBugsLabel].buttons[menu].tap()
         
     }
     
-    func signInLogin() {
-        
-        let username = "xcodeui"
-        let password = "xcode12345!"
+    func testCreateDeleteGroup() {
         
         Thread.sleep(forTimeInterval: 3)
         
-        SignInPage.txtUsername.element.tap()
-        SignInPage.txtUsername.element.typeText(username)
+        sidebarButton.tap()
         
-        SignInPage.txtPassword.element.tap()
-        SignInPage.txtPassword.element.typeText(password)
+        contactsButton.tap()
         
-        SignInPage.loginButton.element.tap()
+        app.tabBars.buttons[groupsLabel].tap()
+        
+        let groupsNavigationBar = app.navigationBars[groupsLabel]
+        groupsNavigationBar.buttons[addLabel].tap()
+        app.sheets["Select An Option"].buttons["Add Group"].tap()
+        Thread.sleep(forTimeInterval: 1)
+        XCTAssertTrue(app.staticTexts[premiumFeatureText].exists)
+        closePremiumAdButton.tap()
+        
+    }
+    
+    func testLeftRightSwipeAndUndo() {
+        
+        Thread.sleep(forTimeInterval: 2)
+        
+        emailToSwipe.swipeRight()
+        Thread.sleep(forTimeInterval: 0.5)
+        undoButton.tap()
+        emailToSwipe.swipeLeft()
+        Thread.sleep(forTimeInterval: 0.5)
+        undoButton.tap()
+        Thread.sleep(forTimeInterval: 0.5)
+        
+        XCTAssertTrue(emailToSwipe.exists)
+        
+    }
+    
+    func testAddRemoveLabelFolder() {
+        
+        var doneClicked = false
         
         Thread.sleep(forTimeInterval: 3)
         
-        if app.scrollViews.otherElements.staticTexts[onboardingSubject].exists {
-            app.buttons[closeTourButton].tap()
-        }
+        sidebarButton.tap()
         
-    }
-    
-    func AllowNotifications() {
-        let systemAlerts = XCUIApplication(bundleIdentifier: "com.apple.springboard").alerts
-        if systemAlerts.buttons["Don’t Allow"].exists {
-            systemAlerts.buttons["Don’t Allow"].tap()
-        }
-    }
-    
-}
-
-class Springboard {
-    
-    static let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-    
-    // Terminate and delete the app via springboard
-    
-    class func deleteMyApp() {
-        XCUIApplication().terminate()
+        settingsButton.tap()
+        manageFoldersLabels.tap()
         
-        // Force delete the app from the springboard
-        let icon = springboard.icons["ProtonMail"]
-        if icon.exists {
-            let iconFrame = icon.frame
-            let springboardFrame = springboard.frame
-            icon.press(forDuration: 2.0)
+        if (tablesQuery.staticTexts["  Folder  "].exists == true) {
+ 
+        } else {
+            addFolderButton.tap()
             
-            springboard.coordinate(withNormalizedOffset: CGVector(dx: (iconFrame.minX + 3) / springboardFrame.maxX, dy: (iconFrame.minY + 3) / springboardFrame.maxY)).tap()
+            app.textFields["Folder Name"].tap()
+            app.typeText(sampleFolder)
             
             Thread.sleep(forTimeInterval: 2)
             
-            springboard.alerts.buttons[deleteButton].tap()
+            if  doneButton.exists {
+                doneButton.tap()
+                doneClicked = true
+            }
             
-            Thread.sleep(forTimeInterval: 1)
-            
-            XCUIDevice.shared.press(.home)
+            createButton.tap()
         }
+
+        if (tablesQuery.staticTexts["  Label  "].exists == true) {
+            
+        } else {
+            addLabelButton.tap()
+            
+            app.textFields["Label Name"].tap()
+            app.typeText(sampleLabel)
+            
+            Thread.sleep(forTimeInterval: 2)
+            
+            if #available(iOS 13.0, *) {
+                if  doneButton.exists {
+                    doneButton.tap()
+                }} else {
+                if  doneButton.exists && doneClicked == false {
+                    doneButton.tap()
+                    doneClicked = true
+                }
+            }
+        
+            createButton.tap()
     }
+
+        tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].tap()
+        tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].tap()
+        
+        deleteButton.tap()
+        
+        manageFoldersLabels.tap()
+        
+        Thread.sleep(forTimeInterval: 1)
+        
+        XCTAssertFalse(tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].exists)
+        XCTAssertFalse(tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].exists)
+    }
+    
+    func testEmailMoveBetweenFolders() {
+    
+        var doneClicked = false
+        
+        Thread.sleep(forTimeInterval: 3)
+        
+        let navigationBarsQuery = app.navigationBars
+        let moveToButton = navigationBarsQuery.buttons["Move to..."]
+        
+        emailToSwipe.press(forDuration: 1.5);
+        
+        navigationBarsQuery.buttons["Label as..."].tap()
+        
+        Thread.sleep(forTimeInterval: 1)
+        
+        if (tablesQuery.staticTexts["  Label  "].exists == false) {
+            addLabelButton.tap()
+            app.textFields["Label Name"].tap()
+            app.typeText(sampleLabel)
+            
+            Thread.sleep(forTimeInterval: 2)
+            
+            // Disable hardware keyboard in simulator if this part fails
+            if  doneButton.exists {
+                doneButton.tap()
+                doneClicked = true
+            }
+            
+            createButton.tap()
+            
+            tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].tap()
+            
+        } else if tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].exists {
+            tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].tap()
+        }
+        
+        applyButton.tap()
+        
+        emailToSwipe.press(forDuration: 1.5);
+        
+        moveToButton.tap()
+        
+        if tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].exists {
+            
+            tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].tap()
+            
+        } else {
+            
+            addFolderButton.tap()
+            app.textFields["Folder Name"].tap()
+            app.typeText(sampleFolder)
+            
+            Thread.sleep(forTimeInterval: 2)
+            
+            if #available(iOS 13.0, *) {
+                if  doneButton.exists {
+                    doneButton.tap()
+                } else {
+                    if  doneButton.exists && doneClicked == false {
+                        doneButton.tap()
+                        doneClicked = true
+                    }
+                }
+            }
+            createButton.tap()
+            tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].tap()
+            
+        }
+        
+        applyButton.tap()
+        sidebarButton.tap()
+        app.tables.staticTexts[sampleFolder].tap()
+        
+        emailToSwipe.tap()
+        folderNavigationBar.buttons[moreButton].tap()
+        app.sheets.buttons["Move to Inbox"].tap()
+        
+        app.tables["Empty list"].swipeDown()
+        
+        XCTAssertTrue(noMessagesText.exists)
+        
+        app.navigationBars[sampleFolder].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts[inbox].tap()
+
+        XCTAssertTrue(emailToSwipe.exists)
+        
+        removeFolderLabel()
+        
+    }
+    
+    func testSidebarButtons() {
+        
+        Thread.sleep(forTimeInterval: 3)
+        
+        sidebarButton.tap()
+        
+        app.tables.staticTexts["Drafts"].tap()
+        app.navigationBars["Drafts"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Sent"].tap()
+        app.navigationBars["Sent"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Starred"].tap()
+        app.navigationBars["Starred"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Archive"].tap()
+        app.navigationBars["Archive"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Spam"].tap()
+        app.navigationBars["Spam"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Trash"].tap()
+        app.navigationBars["Trash"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["All Mail"].tap()
+        app.navigationBars["All Mail"].buttons[sidebarButtonLabel].tap()
+        app.tables.staticTexts["Subscription"].tap()
+
+    }
+    
+    func removeFolderLabel() {
+        
+        // Remove any leftover folders and labels
+        
+        sidebarButton.tap()
+        
+        settingsButton.tap()
+        manageFoldersLabels.tap()
+        
+        if tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].exists {
+            tablesQuery.cells.containing(.staticText, identifier:"  Label  ").buttons["mail check"].tap()
+        }
+        if tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].exists {
+            tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].tap()
+        }
+        deleteButton.tap()
+        
+    }
+    
 }
