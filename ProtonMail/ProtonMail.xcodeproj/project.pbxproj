@@ -897,6 +897,7 @@
 		7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */ = {isa = PBXBuildFile; fileRef = B752C6886D60C2FFFC352721ED52A5F3 /* backup.css */; };
 		7D0CB29468C1EE49171D025513E109AC /* LabelEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F316188242477E404DB5C128DA38712 /* LabelEditViewController.swift */; };
 		7D81F14C4054D7FC71BE89D610AAE36B /* LabelboxViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07485BF822F9851BDFC28AE2401632AB /* LabelboxViewModelImpl.swift */; };
+		7DE34A09C892A6A79E836D4FD16D1F79 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */; };
 		7DFB4C294CAE23A769678D3AB6154E6C /* SettingsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7627FEBF2F33A575273ACF9A8A0AA738 /* SettingsAPI.swift */; };
 		7E76EEDF88C7A68CBD15B13B8BBD3E08 /* ContactGroupEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC1352F3E82A2BE8C234D0A7E54752B2 /* ContactGroupEditViewController.swift */; };
 		7E7AF7C9716D600287F5F255093C3AF7 /* KeychainSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DDE89BA7AA59E01F098B12A7C1D81FE /* KeychainSaver.swift */; };
@@ -1236,6 +1237,7 @@
 		AF86C8326E3381D782CE1D383F37849D /* ContactEditVIewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5212FD33F2AD11896322AA49B9B9D570 /* ContactEditVIewModel.swift */; };
 		AF8A1FB087770A50D595F4CE6D0F5553 /* PMDocumentPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3399221AA081E74249939780EA537FD0 /* PMDocumentPickerViewController.swift */; };
 		AFCB9D83BE3960601910519DBAC2FA2D /* UIApplication+InfoExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956A4E85B917F86878D23ECA9ED1FA55 /* UIApplication+InfoExtension.swift */; };
+		AFCCD7472AE7B10FDE1F1695543F8EE7 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */; };
 		AFD52AE22A0950F7AEB73EA2D7BA5AC3 /* String+Toast+Share+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 752C3F814086D0C1C2158450CB994F19 /* String+Toast+Share+Extension.swift */; };
 		AFD544874ABDF70200E5379B126277BE /* LabelAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F03C21BED10B6A6ED8D7D2660C78D4A2 /* LabelAPI.swift */; };
 		AFE34E46CF60FA7C31CE5D888704196B /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF670755650E5DD985579607F574B57 /* DeepLink.swift */; };
@@ -2098,6 +2100,7 @@
 		1C514733B44A80E557496499C961A3D8 /* ComposeContainerViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeContainerViewCoordinator.swift; sourceTree = "<group>"; };
 		1C6975591022B24982654B9F6C071D9C /* SignInViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupViewModelImpl.swift; sourceTree = "<group>"; };
+		1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Settings.storyboard; sourceTree = "<group>"; };
 		1F37FA268CD248ACD827C2188DAB3F5F /* SettingsNotificationsSnoozeTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsNotificationsSnoozeTableViewController.swift; sourceTree = "<group>"; };
 		1FFA17DEB32E13FA0D4754550343FD80 /* FolderCreatingViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderCreatingViewModelImpl.swift; sourceTree = "<group>"; };
 		20457356B822B4AA92822E628FF5B525 /* ServicePlanHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ServicePlanHeader.xib; sourceTree = "<group>"; };
@@ -3514,6 +3517,7 @@
 				262F367D949D94238B158C679184B520 /* Menu.storyboard */,
 				6A96426A54B4FDA617AAB92B46EEB6E5 /* Message.storyboard */,
 				437553B32C1B4E43F061343518A57D5D /* ServiceLevel.storyboard */,
+				1F2A28C85A4CFD1E37A659CFE55DBE2D /* Settings.storyboard */,
 				715458403C778DA3437ED30E431AA4CD /* SettingsNotificationsSnooze.storyboard */,
 				7872DBC0CE90F88AD865EFB3C8D5B51C /* SignIn.storyboard */,
 			);
@@ -5176,6 +5180,7 @@
 				4B68B9272E90EB968A3C1669CDDB0AF3 /* ServicePlanHeader.xib in Resources */,
 				F9D3E49546700CD2C74EAA98A73F4F42 /* ServicePlanTableSectionHeader.xib in Resources */,
 				3A8C441FB6EBA663470A887B6DBB88A1 /* Settings.bundle in Resources */,
+				7DE34A09C892A6A79E836D4FD16D1F79 /* Settings.storyboard in Resources */,
 				C8DCAA5B202AC205B81A99CB5509695B /* SettingsNotificationsSnooze.storyboard in Resources */,
 				9DDCBA2A0AD9491A544EF4A37FD861BB /* ShowImageView.xib in Resources */,
 				81632A2DA06303254710C356D2E56E79 /* SignIn.storyboard in Resources */,
@@ -5247,6 +5252,7 @@
 				A53F6651B5B542A82D70A2A7A6D6E0FE /* ServicePlanHeader.xib in Resources */,
 				F7414358089AD3607234E7106F259031 /* ServicePlanTableSectionHeader.xib in Resources */,
 				EF5866725A8677EF8D3A90C4F8108603 /* Settings.bundle in Resources */,
+				AFCCD7472AE7B10FDE1F1695543F8EE7 /* Settings.storyboard in Resources */,
 				C882755FA51CDDF837699725D3083617 /* SettingsNotificationsSnooze.storyboard in Resources */,
 				4D973CD5E70D3EE7EC387F5B4E0BA09A /* ShowImageView.xib in Resources */,
 				37CC5A7C62FF7FD4DDBA192C62FCBB5F /* SignIn.storyboard in Resources */,
