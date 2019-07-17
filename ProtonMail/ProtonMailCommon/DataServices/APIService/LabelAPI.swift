@@ -83,7 +83,7 @@ final class CreateLabelRequest<T : ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -111,7 +111,7 @@ final class CreateLabelRequestResponse : ApiResponse {
  
  Type don't need to be specified here since we have the exact labelID to work with
 */
-final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
+final class UpdateLabelRequest : ApiRequest<CreateLabelRequestResponse> {
     var labelID : String
     var labelName: String
     var color:String
@@ -131,7 +131,7 @@ final class UpdateLabelRequest<T: ApiResponse> : ApiRequest<T> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -166,7 +166,7 @@ final class DeleteLabelRequest<T : ApiResponse> : ApiRequest<T> {
         labelID = lable_id
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .delete
     }
     

@@ -113,7 +113,7 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
      - Returns: Promise<Bool>. true if the contact group has been deleted from core data, false if the contact group can be fetched from core data
      */
     func reload() -> Promise<Bool> {
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         if let label = Label.labelForLableID(groupID, inManagedObjectContext: context) {
             name = label.name
             color = label.color

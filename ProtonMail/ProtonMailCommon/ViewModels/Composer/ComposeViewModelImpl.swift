@@ -28,7 +28,6 @@ import AwaitKit
 class ComposeViewModelImpl : ComposeViewModel {
     
     enum RuntimeError : String, Error, CustomErrorVar {
-        
         case no_address = "Can't find the public key for this address"
         var code: Int {
             get {
@@ -50,8 +49,18 @@ class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
+    let messageService : MessageDataService
+    let user : UserManager
+    
     // for the share target to init composer VM
-    init(subject: String, body: String, files: [FileData], action : ComposeMessageAction) {
+    init(subject: String, body: String, files: [FileData],
+         action : ComposeMessageAction,
+         msgService: MessageDataService,
+         user: UserManager) {
+
+        self.messageService = msgService
+        self.user = user
+        
         super.init()
         self.message = nil
         self.setSubject(subject)
@@ -71,11 +80,12 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
         
     }
-    
-    convenience init?(msgId: String, action: ComposeMessageAction) {
-        guard let message = sharedMessageDataService.fetchMessages(withIDs: [msgId]).first, message.contains(label: .draft) else { return nil }
-        self.init(msg: message, action: action)
-    }
+    //TODO:: fix me
+//    convenience init?(msgId: String, action: ComposeMessageAction) {
+//        let msgService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me
+//        guard let message = msgService.fetchMessages(withIDs: [msgId]).first, message.contains(label: .draft) else { return nil }
+//        self.init(msg: message, action: action, msgService: msgService, user: UserManager())
+//    }
     
     var attachments : [Attachment] = []
     /// inital composer viewmodel
@@ -84,7 +94,11 @@ class ComposeViewModelImpl : ComposeViewModel {
     ///   - msg: optional value
     ///   - action: tell is the draft new / open exsiting / reply etc
     ///   - orignalLocation: if reply sent messages. need to to use the last to addresses fill the new to address
-    init(msg: Message?, action : ComposeMessageAction) {
+    init(msg: Message?, action : ComposeMessageAction, msgService: MessageDataService, user: UserManager) {
+        
+        self.messageService = msgService
+        self.user = user
+        
         super.init()
         if msg == nil || msg!.contains(label: .draft)  {
             self.message = msg
@@ -93,7 +107,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             if msg?.managedObjectContext == nil {
                 self.message = nil
             } else {
-                self.message = msg?.copyMessage(action == ComposeMessageAction.forward)
+                self.message = messageService.copyMessage(message: msg!, copyAtts: action == ComposeMessageAction.forward)
                 self.message?.action = action.rawValue as NSNumber?
                 if action == ComposeMessageAction.reply || action == ComposeMessageAction.replyAll {
                     if let title = self.message?.title {
@@ -156,18 +170,18 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func uploadAtt(_ att: Attachment!) {
         self.updateDraft()
-        sharedMessageDataService.upload(att: att)
+        messageService.upload(att: att)
         self.updateDraft()
     }
     
     override func uploadPubkey(_ att: Attachment!) {
         self.updateDraft()
-        sharedMessageDataService.upload(pubKey: att)
+        messageService.upload(pubKey: att)
         self.updateDraft()
     }
     
     override func deleteAtt(_ att: Attachment!) {
-        sharedMessageDataService.delete(att: att)
+        messageService.delete(att: att)
         self.updateDraft()
     }
     
@@ -179,7 +193,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         if self.messageAction == .forward, attachments.count > 0 {
             self.updateDraft()
             for att in attachments {
-                sharedMessageDataService.upload(att: att)
+                messageService.upload(att: att)
             }
             self.updateDraft()
         }
@@ -187,19 +201,21 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
         return async {
-            guard let userinfo = sharedUserDataService.userInfo,
-                let addr = userinfo.userAddresses.indexOfAddress(address_id),
+            let userinfo = self.user.userInfo
+            guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
                 let key = addr.keys.first else {
-                throw RuntimeError.no_address.error
+                    throw RuntimeError.no_address.error
             }
             
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
-                        guard let sessionPack = sharedUserDataService.newSchema ?
-                            try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
-                                               keys: sharedUserDataService.addressKeys) :
-                            try att.getSession(keys: sharedUserDataService.addressPrivateKeys) else { //DONE
+                        guard let sessionPack = self.user.newSchema ?
+                            try att.getSession(userKey: self.user.userPrivateKeys,
+                                               keys: self.user.addressKeys,
+                                               mailboxPassword: self.user.mailboxPassword) :
+                            try att.getSession(keys: self.user.addressPrivateKeys,
+                                               mailboxPassword: self.user.mailboxPassword) else { //DONE
                             continue
                         }
                         guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
@@ -225,11 +241,11 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.message?.addressID = address_id
             self.updateDraft()
         }
-        
+
     }
     
     override func getAddresses() -> [Address] {
-        return sharedUserDataService.addresses
+        return self.user.addresses
     }
     
     override func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
@@ -240,7 +256,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         progress()
         
-        let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
+        let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
         async {
             guard let c = model as? ContactVO else {
                 complete?(nil, -1)
@@ -251,8 +267,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                 complete?(nil, -1)
                 return
             }
-            let getEmail = UserEmailPubKeys(email: email).run()
-            let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
+            let getEmail = UserEmailPubKeys(email: emial, api: self.user.apiService).run()
+            let contactService = self.user.contactService
+            let getContact = contactService.fetch(byEmails: [emial], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
@@ -291,16 +308,21 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getDefaultSendAddress() -> Address? {
-        if self.message == nil {
-            if let addr = sharedUserDataService.addresses.defaultSendAddress() {
+        if let msg = self.message {
+            return self.messageService.defaultAddress(msg)
+        } else {
+            if let addr = self.user.userInfo.userAddresses.defaultSendAddress() {
                 return addr
             }
         }
-        return self.message?.defaultAddress
+        return nil
     }
     
     override func fromAddress() -> Address? {
-        return self.message?.fromAddress
+        if let msg = self.message {
+            return self.messageService.fromAddress(msg)
+        }
+        return nil
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
@@ -411,7 +433,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     self.toContacts(msg.ccList).forEach { self.ccSelectedContacts.append($0) }
                     self.toContacts(msg.bccList).forEach { self.bccSelectedContacts.append($0) }
                 } else {
-                    let userAddress = sharedUserDataService.addresses
+                    let userAddress = self.user.addresses
                     var senders = [ContactPickerModelProtocol]()
                     let replytos = self.toContacts(msg.replyTos ?? "")
                     if replytos.count > 0 {
@@ -423,14 +445,14 @@ class ComposeViewModelImpl : ComposeViewModel {
                             //ignore
                         }
                     }
-
+                    
                     for sender in senders {
                         if let sender = sender as? ContactVO,
                             !sender.isDuplicated(userAddress) {
                             self.toSelectedContacts.append(sender)
                         }
                     }
-
+                    
                     let toContacts = self.toContacts(msg.toList)
                     for cont in toContacts {
                         if let cont = cont as? ContactVO,
@@ -455,10 +477,11 @@ class ComposeViewModelImpl : ComposeViewModel {
     
     override func sendMessage() {
         //check if has extenral emails and if need attach key
-        if let userinfo = sharedUserDataService.userInfo,
+        let userinfo = self.user.userInfo
+        if hasExtenal == true,
             userinfo.attachPublicKey == 1,
             let msg = message,
-            let addr = msg.defaultAddress,
+            let addr = self.messageService.defaultAddress(msg),
             let key = addr.keys.first,
             let data = key.publicKey.data(using: String.Encoding.utf8) {
             
@@ -488,25 +511,25 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
         
         self.updateDraft()
-        sharedMessageDataService.send(inQueue: self.message?.messageID)  { _, _, _ in }
+        messageService.send(inQueue: self.message?.messageID)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
-        guard let mailboxPassword = sharedUserDataService.mailboxPassword else { return }
+        let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
         
         if message == nil || message?.managedObjectContext == nil {
-            self.message = Message.messageWithLocation(recipientList: toJsonString(self.toSelectedContacts),
-                                                       bccList: toJsonString(self.bccSelectedContacts),
-                                                       ccList: toJsonString(self.ccSelectedContacts),
-                                                       title: self.getSubject(),
-                                                       encryptionPassword: "",
-                                                       passwordHint: "",
-                                                       expirationTimeInterval: expir,
-                                                       body: body,
-                                                       attachments: nil,
-                                                       mailbox_pwd: mailboxPassword,
-                                                       inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext)
+            self.message = self.messageService.messageWithLocation(recipientList: toJsonString(self.toSelectedContacts),
+                                                                   bccList: toJsonString(self.bccSelectedContacts),
+                                                                   ccList: toJsonString(self.ccSelectedContacts),
+                                                                   title: self.getSubject(),
+                                                                   encryptionPassword: "",
+                                                                   passwordHint: "",
+                                                                   expirationTimeInterval: expir,
+                                                                   body: body,
+                                                                   attachments: nil,
+                                                                   mailbox_pwd: mailboxPassword,
+                                                                   inManagedObjectContext: CoreDataService.shared.mainManagedObjectContext)
             self.message?.password = pwd
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
@@ -522,11 +545,11 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
-            Message.updateMessage(self.message!,
-                                  expirationTimeInterval: expir,
-                                  body: body,
-                                  attachments: nil,
-                                  mailbox_pwd: mailboxPassword)
+            self.messageService.updateMessage(self.message!,
+                                              expirationTimeInterval: expir,
+                                              body: body,
+                                              attachments: nil,
+                                              mailbox_pwd: mailboxPassword)
             
             if let context = message?.managedObjectContext {
                 context.performAndWait {
@@ -558,11 +581,11 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func updateDraft() {
-        sharedMessageDataService.saveDraft(self.message);
+        messageService.saveDraft(self.message);
     }
     
     override func deleteDraft() {
-        sharedMessageDataService.delete(message: self.message!, label: Message.Location.draft.rawValue)
+        messageService.delete(message: self.message!, label: Message.Location.draft.rawValue)
 
     }
     
@@ -580,12 +603,15 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getHtmlBody() -> WebContents {
-        let globalRemoteContentMode: WebContents.RemoteContentPolicy = sharedUserDataService.autoLoadRemoteImages ? .allowed : .disallowed
+        return .init(body: "", remoteContentMode: .disallowed)//remove later
+        let userInfo = self.user.userInfo
         
-        var signature = self.getDefaultSendAddress()?.signature ?? sharedUserDataService.userDefaultSignature
+        let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.autoLoadRemoteImages ? .allowed : .disallowed
+        
+        var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
         signature = signature.ln2br()
         
-        var mobileSignature = sharedUserDataService.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(sharedUserDataService.mobileSignature)</div></div>" : ""
+        var mobileSignature = self.user.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
         let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
@@ -598,7 +624,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         case .openDraft:
             var body = ""
             do {
-                body = try message?.decryptBodyIfNeeded() ?? ""
+                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
             } catch let ex as NSError {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
@@ -608,7 +634,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             var body = ""
             do {
-                body = try message!.decryptBodyIfNeeded() ?? ""
+                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
             } catch let ex as NSError {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()
@@ -624,7 +650,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             var replyHeader = time + ", " + sn!
             replyHeader = replyHeader + " &lt;<a href=\"mailto:"
             replyHeader = replyHeader + se + "\" class=\"\">" + se + "</a>&gt;"
-
+            
             let w = LocalString._composer_wrote
             let sp = "<div><br></div><div><br></div>\(replyHeader) \(w)</div><blockquote class=\"protonmail_quote\" type=\"cite\"> "
             
@@ -656,7 +682,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             var body = ""
             
             do {
-                body = try message!.decryptBodyIfNeeded() ?? ""
+                body = try self.messageService.decryptBodyIfNeeded(message: self.message!) ?? ""
             } catch let ex as NSError {
                 PMLog.D("getHtmlBody OpenDraft error : \(ex)")
                 body = self.message!.bodyToHtml()

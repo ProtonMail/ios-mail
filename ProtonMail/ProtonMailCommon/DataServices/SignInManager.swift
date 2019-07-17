@@ -24,42 +24,60 @@
 import Foundation
 import Keymaker
 
-class SignInManager: NSObject {
-    static var shared = SignInManager()
+class SignInManager: Service {
     
-    internal func clean() {
+    static var shared = SignInManager(usersManager: UsersManager(server: Server.live, delegate: nil))
+    
+    let usersManager: UsersManager
+    init(usersManager: UsersManager) {
+        self.usersManager = usersManager
+    }
+    
+    //Clean up should put in to usermanager
+    internal func clean() { //TODO:: fix later
         UserTempCachedStatus.backup()
         sharedUserDataService.signOut(true)
         userCachedStatus.signOut()
-        sharedMessageDataService.launchCleanUpIfNeeded()
+        //sharedMessageDataService.launchCleanUpIfNeeded()
     }
     
     internal func isSignedIn() -> Bool {
-        return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
+        return self.usersManager.isMailboxPasswordStored
+        //return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
     }
     
-#if !APP_EXTENSION
     internal func signIn(username: String,
                          password: String,
                          cachedTwoCode: String?,
                          ask2fa: @escaping ()->Void,
                          onError: @escaping (NSError)->Void,
                          afterSignIn: @escaping ()->Void,
-                         requestMailboxPassword: @escaping ()->Void)
+                         requestMailboxPassword: @escaping ()->Void,
+                         tryUnlock:@escaping ()->Void )
     {
-        self.clean()
-        
-        let success: (String?)->Void = { mailboxpwd in
-            guard let mailboxPassword = mailboxpwd else {
+        let success: (String?, AuthCredential?, UserInfo?)->Void = { mailboxpwd, auth, userinfo in
+            guard let auth = auth, let user = userinfo else {
+                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
+                return
+            }
+            self.usersManager.add(auth: auth, user: user)//TODO:: fix me
+            guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
                 UserTempCachedStatus.restore()
-                UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
                 afterSignIn()
                 return
             }
-            self.proceedWithMailboxPassword(mailboxPassword, onError: onError)
+            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
         }
         
-        sharedUserDataService.signIn(username, password: password, twoFACode: cachedTwoCode, ask2fa: ask2fa, onError: onError, onSuccess: success)
+        // one time api and service
+        let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
+        let userService = UserDataService(check: false, api: service)
+        userService.sign(in: username,
+                         password: password,
+                         twoFACode: cachedTwoCode,
+                         ask2fa: ask2fa,
+                         onError: onError,
+                         onSuccess: success)
     }
     
     internal func mailboxPassword(from cleartextPassword: String) -> String {
@@ -71,47 +89,39 @@ class SignInManager: NSObject {
         return mailboxPassword
     }
     
-    internal func proceedWithMailboxPassword(_ mailboxPassword: String,
-                                  onError: @escaping (NSError)->Void)
-    {
-        guard let privateKey = AuthCredential.getPrivateKey(),
-            sharedUserDataService.isMailboxPasswordValid(mailboxPassword, privateKey: privateKey) else
-        {
+    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
+        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword) else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }
+        auth.udpate(password: mailboxPassword)
         
-        if !sharedUserDataService.isSet {
-            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
-        }
-        
-        do {
-            try AuthCredential.setupToken(mailboxPassword, isRememberMailbox: true)
-        } catch let ex as NSError {
-            onError(ex)
-            return
-        }
-        
-        sharedLabelsDataService.fetchLabels()
-        sharedUserDataService.fetchUserInfo().done(on: .main) { info in
+        let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
+        let labelService = user.labelService
+        let userDataService = user.userService
+        labelService.fetchLabels()
+        userDataService.fetchUserInfo().done(on: .main) { info in
             guard let info = info else {
                 onError(NSError.unknowError())
                 return
             }
-            
             guard info.delinquent < 3 else {
                 onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 return
             }
             
-            sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
+            self.usersManager.loggedIn()
+            
+            self.usersManager.update(auth: auth, user: info )
+            //usersDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
             UserTempCachedStatus.restore()
             NotificationCenter.default.post(name: .didSignIn, object: nil)
-            UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
+            
+            tryUnlock()
         }.catch(on: .main) { (error) in
             onError(error as NSError)
             self.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
-#endif
+
 }

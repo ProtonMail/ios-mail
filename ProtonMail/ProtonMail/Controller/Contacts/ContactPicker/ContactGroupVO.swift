@@ -58,7 +58,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return color
             }
             
-            let context = sharedCoreDataService.mainManagedObjectContext
+            let context = CoreDataService.shared.mainManagedObjectContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -154,7 +154,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         
         if let label = Label.labelGroup(by: contactTitle, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
@@ -177,7 +177,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             return (size, color)
         }
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         if let label = Label.labelForLabelName(contactTitle,
                                                inManagedObjectContext: context) {
             groupColor = label.color
@@ -194,7 +194,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return size
             }
             
-            let context = sharedCoreDataService.mainManagedObjectContext
+            let context = CoreDataService.shared.mainManagedObjectContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -215,7 +215,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         // (1) get all email in the contact group
         if let label = Label.labelForLabelName(self.contactTitle,
                                                inManagedObjectContext: context),

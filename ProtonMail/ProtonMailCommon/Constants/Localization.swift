@@ -1779,4 +1779,11 @@ class LocalizedString {
     
     
     lazy var _troubleshoot = NSLocalizedString("Troubleshoot", comment: "troubleshooting view button")
+    
+    /// Account Manger
+    lazy var _account = NSLocalizedString("Account", comment: "Account manager title")
+    
+    lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
+    
+    lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
 }

@@ -26,6 +26,7 @@ import CoreData
 import PromiseKit
 import AwaitKit
 import Crypto
+
 //TODO::fixme import header
 extension Attachment {
     
@@ -125,13 +126,11 @@ extension Attachment {
         }
     }
     
-    func getSession(keys: Data) throws -> SymmetricKey? {
-        guard let keyPacket = self.keyPacket,
-            let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
-        {
+    func getSession(keys: Data, mailboxPassword: String) throws -> SymmetricKey? {
+        guard let keyPacket = self.keyPacket else {
             return nil //TODO:: error throw
         }
-        
+        let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         guard let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0)) else {
             return nil //TODO:: error throw
         }
@@ -140,134 +139,127 @@ extension Attachment {
         return sessionKey
     }
     
-    func getSession(userKey: Data, keys: [Key]) throws -> SymmetricKey? {
-        guard let keyPacket = self.keyPacket,
-            let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
-        {
+    func getSession(userKey: Data, keys: [Key], mailboxPassword: String) throws -> SymmetricKey? {
+        guard let keyPacket = self.keyPacket else {
             return nil
         }
+        let passphrase = self.message.cachedPassphrase ?? mailboxPassword
         let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
         
         let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
         return sessionKey
     }
     
-    func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
-        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
-    }
+//    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
+//    func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
+//        if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+//            complete( self.base64DecryptAttachment() )
+//            return
+//        }
+//
+//        if let data = self.fileData, data.count > 0 {
+//            complete( self.base64DecryptAttachment() )
+//            return
+//        }
+//
+//        self.localURL = nil
+//        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
+//            self.localURL = url;
+//            complete( self.base64DecryptAttachment() )
+//            if error != nil {
+//                PMLog.D("\(String(describing: error))")
+//            }
+//        })
+//    }
     
-    
-    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
-    
-    func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
-        if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-            complete( self.base64DecryptAttachment() )
-            return
-        }
-        
-        if let data = self.fileData, data.count > 0 {
-            complete( self.base64DecryptAttachment() )
-            return
-        }
-        
-        self.localURL = nil
-        sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
-            self.localURL = url;
-            complete( self.base64DecryptAttachment() )
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            }
-        })
-    }
-    
-    func fetchAttachmentBody() -> Promise<String> {
-        return Promise { seal in
-            async {
-                if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                    seal.fulfill(self.base64DecryptAttachment())
-                    return
-                }
-                
-                if let data = self.fileData, data.count > 0 {
-                    seal.fulfill(self.base64DecryptAttachment())
-                    return
-                }
-                
-                self.localURL = nil
-                sharedMessageDataService.fetchAttachmentForAttachment(self,
-                                                                      customAuthCredential: self.message.cachedAuthCredential,
-                                                                      downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
-                                                                      completion: { (_, url, error) -> Void in
-                    self.localURL = url;
-                    seal.fulfill(self.base64DecryptAttachment())
-                    if error != nil {
-                        PMLog.D("\(String(describing: error))")
-                    }
-                })
-            }
-            
-        }
-    }
+//    func fetchAttachmentBody() -> Promise<String> {
+//        return Promise { seal in
+//            async {
+//                if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+//                    seal.fulfill(self.base64DecryptAttachment())
+//                    return
+//                }
+//
+//                if let data = self.fileData, data.count > 0 {
+//                    seal.fulfill(self.base64DecryptAttachment())
+//                    return
+//                }
+//
+//                self.localURL = nil
+//                sharedMessageDataService.fetchAttachmentForAttachment(self,
+//                                                                      customAuthCredential: self.message.cachedAuthCredential,
+//                                                                      downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
+//                                                                      completion: { (_, url, error) -> Void in
+//                    self.localURL = url;
+//                    seal.fulfill(self.base64DecryptAttachment())
+//                    if error != nil {
+//                        PMLog.D("\(String(describing: error))")
+//                    }
+//                })
+//            }
+//
+//        }
+//    }
     
     func base64DecryptAttachment() -> String {
-        let userInfo = self.message.cachedUser ?? sharedUserDataService.userInfo
-        let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
-        let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
-        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
-            return ""
-        }
-        
-        if let localURL = self.localURL {
-            if let data : Data = try? Data(contentsOf: localURL as URL) {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                sharedUserDataService.newSchema ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachment(keydata,
-                                                               passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeys) {
-                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch let ex as NSError{
-                    PMLog.D("\(ex)")
-                }
-            } else if let data = self.fileData, data.count > 0 {
-                do {
-                    if let key_packet = self.keyPacket {
-                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData =
-                                sharedUserDataService.newSchema ?
-                                    try data.decryptAttachment(keyPackage: keydata,
-                                                               userKeys: userPrivKeys,
-                                                               passphrase: passphrase,
-                                                               keys: addrPrivKeys) :
-                                    try data.decryptAttachment(keydata,
-                                                               passphrase: passphrase,
-                                                               privKeys: addrPrivKeys.binPrivKeys) {
-                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-                                return strBase64
-                            }
-                        }
-                    }
-                } catch let ex as NSError{
-                    PMLog.D("\(ex)")
-                }
-            }
-        }
-        
-        
-        if let data = self.fileData {
-            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
-            return strBase64
-        }
+//        let userInfo = self.message.cachedUser ?? sharedUserDataService.userInfo
+//        let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
+//        let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
+//        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
+//            return ""
+//        }
+//        
+//        if let localURL = self.localURL {
+//            if let data : Data = try? Data(contentsOf: localURL as URL) {
+//                do {
+//                    if let key_packet = self.keyPacket {
+//                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+//                            if let decryptData =
+//                                sharedUserDataService.newSchema ?
+//                                    try data.decryptAttachment(keyPackage: keydata,
+//                                                               userKeys: userPrivKeys,
+//                                                               passphrase: passphrase,
+//                                                               keys: addrPrivKeys) :
+//                                    try data.decryptAttachment(keydata,
+//                                                               passphrase: passphrase,
+//                                                               privKeys: addrPrivKeys.binPrivKeys) {
+//                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+//                                return strBase64
+//                            }
+//                        }
+//                    }
+//                } catch let ex as NSError{
+//                    PMLog.D("\(ex)")
+//                }
+//            } else if let data = self.fileData, data.count > 0 {
+//                do {
+//                    if let key_packet = self.keyPacket {
+//                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+//                            if let decryptData =
+//                                sharedUserDataService.newSchema ?
+//                                    try data.decryptAttachment(keyPackage: keydata,
+//                                                               userKeys: userPrivKeys,
+//                                                               passphrase: passphrase,
+//                                                               keys: addrPrivKeys) :
+//                                    try data.decryptAttachment(keydata,
+//                                                               passphrase: passphrase,
+//                                                               privKeys: addrPrivKeys.binPrivKeys) {
+//                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+//                                return strBase64
+//                            }
+//                        }
+//                    }
+//                } catch let ex as NSError{
+//                    PMLog.D("\(ex)")
+//                }
+//            }
+//        }
+//        
+//        
+//        if let data = self.fileData {
+//            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
+//            return strBase64
+//        }
         return ""
     }
     

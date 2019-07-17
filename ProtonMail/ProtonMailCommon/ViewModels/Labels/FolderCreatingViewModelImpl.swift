@@ -25,6 +25,14 @@ import Foundation
 
 // label creating
 final public class FolderCreatingViewModelImple : LabelEditViewModel {
+    let apiService = APIService.shared //TODO::fix me
+    private let labelService : LabelsDataService
+    
+    
+    override init() {
+        self.labelService = LabelsDataService(api: apiService, userID: "")
+    }
+    
     
     override public func title() -> String {
         return LocalString._labels_add_new_folder_title
@@ -40,11 +48,11 @@ final public class FolderCreatingViewModelImple : LabelEditViewModel {
     
     override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
         let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: true)
-        api.call { (task, response, hasError) -> Void in
+        api.call (api: self.apiService) { (task, response, hasError) -> Void in
             if hasError {
                 error(response?.code ?? 1000, response?.errorMessage ?? "");
             } else {
-                sharedLabelsDataService.addNewLabel(response?.label);
+                self.labelService.addNewLabel(response?.label);
                 complete()
             }
         }

@@ -99,6 +99,20 @@ final class UserCachedStatus : SharedCacheBase {
 //            setValue(newValue, forKey: Key.dohWarningAsk)
 //        }
 //    }
+    
+    struct CoderKey {//Conflict with Key object
+           static let mailboxPassword           = "UsersManager.AtLeastoneLoggedIn"
+           static let username                  = "usernameKeyProtectedWithMainKey"
+           
+//           static let userInfo                  = "userInfoKeyProtectedWithMainKey"
+//           static let twoFAStatus               = "twofaKey"
+//           static let userPasswordMode          = "userPasswordModeKey"
+//
+//           static let roleSwitchCache           = "roleSwitchCache"
+//           static let defaultSignatureStatus    = "defaultSignatureStatus"
+//
+//           static let firstRunKey = "FirstRunKey"
+       }
 
     var isForcedLogout : Bool = false
     
@@ -193,15 +207,6 @@ final class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    var pinFailedCount : Int {
-        get {
-            return getShared().integer(forKey: Key.lastPinFailedTimes)
-        }
-        set {
-            setValue(newValue, forKey: Key.lastPinFailedTimes)
-        }
-    }
-    
     func resetMobileSignature() {
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
         getShared().synchronize()
@@ -264,13 +269,31 @@ final class UserCachedStatus : SharedCacheBase {
 
 
 // touch id part
-extension UserCachedStatus {
+extension UserCachedStatus : CacheStatusInject {
+    var isUserCredentialStored: Bool {
+//        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.mailboxPassword) != nil
+        return KeychainWrapper.keychain.string(forKey: CoderKey.mailboxPassword) != nil
+    }
+    
+    var isMailboxPasswordStored: Bool {
+        return KeychainWrapper.keychain.string(forKey: CoderKey.mailboxPassword) != nil
+    }
+    
     var isTouchIDEnabled: Bool {
         return keymaker.isProtectorActive(BioProtection.self)
     }
     
     var isPinCodeEnabled : Bool {
         return keymaker.isProtectorActive(PinProtection.self)
+    }
+    
+    var pinFailedCount : Int {
+        get {
+            return getShared().integer(forKey: Key.lastPinFailedTimes)
+        }
+        set {
+            setValue(newValue, forKey: Key.lastPinFailedTimes)
+        }
     }
     
     var lockTime: AutolockTimeout { // historically, it was saved as String

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import Crypto
 
 struct ShowImages : OptionSet {
     let rawValue: Int
@@ -220,6 +221,48 @@ final class UserInfo : NSObject {
             }
         }
         return firstUserKey()?.private_key
+    }
+    
+    var newSchema : Bool {
+        for k in addressKeys {
+            if k.newSchema {
+                return true
+            }
+        }
+        return false
+    }
+    
+    var addressPrivateKeys : Data {
+        var out = Data()
+        var error : NSError?
+        for addr in userAddresses {
+            for key in addr.keys {
+                if let privK = ArmorUnarmor(key.private_key, &error) {
+                    out.append(privK)
+                }
+            }
+        }
+        return out
+    }
+    
+    
+    var firstUserPublicKey: String? {
+        if userKeys.count > 0 {
+            for k in userKeys {
+                return k.publicKey
+            }
+        }
+        return nil
+    }
+
+    func getAddressPrivKey(address_id : String) -> String {
+        let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
+        return addr?.keys.first?.private_key ?? ""
+    }
+    
+    func getAddressKey(address_id : String) -> Key? {
+        let addr = userAddresses.indexOfAddress(address_id) ?? userAddresses.defaultSendAddress()
+        return addr?.keys.first
     }
 }
 

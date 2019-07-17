@@ -37,15 +37,22 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private var isSearching : Bool = false
     private var filtered : [(ID: String, name: String, color: String, count: Int)] = []
     
+    private let contactGroupService: ContactGroupsDataService
+    private let messageService: MessageDataService
+    
     /**
      Init the view model with state
      
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
+    init(contactGroupService:ContactGroupsDataService,
+        groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
          refreshHandler: ((Set<String>) -> Void)? = nil) {
+        
+        self.contactGroupService = contactGroupService
+        self.messageService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me
         
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation
@@ -164,7 +171,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -172,9 +179,10 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
                         seal.fulfill(())
                     }
                 })
-                sharedContactDataService.fetchContacts { (_, error) in
-                    
-                }
+                //Fixme
+//                sharedContactDataService.fetchContacts { (_, error) in
+//
+//                }
             } else {
                 seal.fulfill(())
             }
@@ -192,8 +200,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     private func fetchContacts() {
         if isFetching == false {
             isFetching = true
-            
-            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }
@@ -235,7 +242,7 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    arrayOfPromises.append(sharedContactGroupsDataService.deleteContactGroup(groupID: groupID))
+                    arrayOfPromises.append(self.contactGroupService.deleteContactGroup(groupID: groupID))
                 }
                 
                 when(fulfilled: arrayOfPromises).done {

@@ -77,14 +77,15 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
     }
     
     func authenticateUser() {
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.viewModel.done() { shouldPop in
-                self.delegate?.Next()
-                if shouldPop {
-                    let _ = self.navigationController?.popViewController(animated: true)
-                }
-            }
-        })
+        //TODO:: fix me
+//        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
+//            self.viewModel.done() { shouldPop in
+//                self.delegate?.Next()
+//                if shouldPop {
+//                    let _ = self.navigationController?.popViewController(animated: true)
+//                }
+//            }
+//        })
     }
 }
 

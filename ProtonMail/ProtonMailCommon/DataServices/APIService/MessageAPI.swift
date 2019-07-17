@@ -44,7 +44,7 @@ final class ApplyLabelToMessages : ApiRequest<ApiResponse> {
     }
     
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -76,7 +76,7 @@ final class RemoveLabelFromMessages : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -197,12 +197,14 @@ final class FetchMessagesByLabel : ApiRequest<ApiResponse> {
 class CreateDraft : ApiRequest<MessageResponse> {
     
     let message : Message!
+    let fromAddress: Address?
     
     /// TODO:: here need remove refrence of Message should create a Draft builder and a seperate package
     ///
     /// - Parameter message: Message
-    init(message: Message!) {
+    init(message: Message!, fromAddr: Address?) {
         self.message = message
+        self.fromAddress = fromAddr
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -211,7 +213,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
             "Subject" : message.title,
             "Unread" : message.unRead]
         
-        let fromaddr = message.fromAddress ?? message.cachedAddress ?? message.defaultAddress
+        let fromaddr = fromAddress
         let name = fromaddr?.display_name ?? "unknow"
         let address = fromaddr?.email ?? "unknow"
         
@@ -254,7 +256,7 @@ class CreateDraft : ApiRequest<MessageResponse> {
         return MessageAPI.v_create_draft
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
 }
@@ -262,8 +264,8 @@ class CreateDraft : ApiRequest<MessageResponse> {
 /// message update draft api request
 final class UpdateDraft : CreateDraft {
     
-    convenience init(message: Message!, authCredential: AuthCredential? = nil) {
-        self.init(message: message)
+    convenience init(message: Message!, fromAddr: Address?, authCredential: AuthCredential? = nil) {
+        self.init(message: message, fromAddr: fromAddr)
         self.authCredential = authCredential
     }
     
@@ -275,7 +277,7 @@ final class UpdateDraft : CreateDraft {
         return MessageAPI.v_update_draft
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
 }
@@ -317,7 +319,7 @@ final class MessageActionRequest : ApiRequest<ApiResponse> {
         return MessageAPI.V_MessageActionRequest
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
 }
@@ -342,7 +344,7 @@ final class EmptyMessage : ApiRequest <ApiResponse> {
         return MessageAPI.v_empty_label_folder
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .delete
     }
 }
@@ -364,7 +366,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
     var plainTextDataPacket : String!
     var clearPlainTextBody : ClearBodyPackage?
     
-    init(messageID : String, expirationTime: Int32?,
+    init(api:API, messageID : String, expirationTime: Int32?,
          messagePackage: [AddressPackageBase]!, body : String,
          clearBody : ClearBodyPackage?, clearAtts: [ClearAttachmentPackage]?,
          mimeDataPacket : String, clearMimeBody : ClearBodyPackage?,
@@ -383,7 +385,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
         self.plainTextDataPacket = plainTextDataPacket
         self.clearPlainTextBody = clearPlainTextBody
         
-        super.init()
+        super.init(api:api)
         
         self.authCredential = authCredential
     }
@@ -522,7 +524,7 @@ final class SendMessage : ApiRequestNew<SendResponse> {
         return MessageAPI.v_send_message
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
 }

@@ -35,8 +35,15 @@ protocol APIServiceDelegate: class {
     func isReachable() -> Bool
 }
 
-let sharedAPIService = APIService()
-class APIService {
+protocol SessionDelegate: class {
+    func getToken(bySessionUID uid: String) -> String?
+}
+
+class APIService : Service {
+    
+    // fix me
+    static var shared = APIService(config: Server.live, sessionUID: "", userID: "")
+    
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
     
@@ -51,20 +58,63 @@ class APIService {
         return sessionManager;
     }
     
+    ///
     weak var delegate : APIServiceDelegate?
     
     let doh : DoH = DoHMail.default
     
     // MARK: - Internal methods
+    weak var sessionDeleaget : SessionDelegate?
     
-    init() {
-        doh.status = userCachedStatus.isDohOn ? .on : .off
+    /// the session ID. this can be changed
+    var sessionUID : String
+
+    /// network config
+    let serverConfig : APIServerConfig
+    
+    /// the user id
+    let userID : String
+    
+    //
+    static var sharedSessionManager: AFHTTPSessionManager? = nil
+    
+    private func initSessionManager(apiHostUrl: String) -> AFHTTPSessionManager {
+        let sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
+        sessionManager.requestSerializer = AFJSONRequestSerializer()
+        sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
+        sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
         
+        sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
+        
+        sessionManager.securityPolicy.validatesDomainName = false
+        sessionManager.securityPolicy.allowInvalidCertificates = false
+        #if DEBUG
+        sessionManager.securityPolicy.allowInvalidCertificates = true
+        #endif
+        
+        return sessionManager
+    }
+
+    // MARK: - Internal methods
+    required init(config: APIServerConfig, sessionUID: String, userID: String) {
         // init lock
         pthread_mutex_init(&mutex, nil)
+
+        doh.status = userCachedStatus.isDohOn ? .on : .off
+
+        // set config
+        self.serverConfig = config
+        self.sessionUID = sessionUID
+        self.userID = userID
+        // clear all response cache
         URLCache.shared.removeAllCachedResponses()
+        let apiHostUrl = self.serverConfig.hostUrl
         
-        sessionManager = AFHTTPSessionManager(baseURL: URL(string: doh.getHostUrl())!)
+//        guard let apiUrl = URL(string: apiHostUrl) else {
+//            //TODO:: need to thorw error or cchange to init?.
+//            return
+//        }
+        sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
         sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
@@ -89,6 +139,8 @@ class APIService {
             return dispositionToReturn
         }
         
+        
+        //this is groot setup
         setupValueTransforms()
     }
     
@@ -122,65 +174,81 @@ class APIService {
         }
     }
     
-    internal func fetchAuthCredential(_ completion: @escaping AuthCredentialBlock) {
+    
+    internal typealias AuthTokenBlock = (String?, String?, NSError?) -> Void
+    internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
+            let token = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
             
-            //fetch auth info
-
-            guard let credential = AuthCredential.fetchFromKeychain(), // mailbox pwd is empty should show error and logout
-                !(credential.password ?? "").isEmpty else
-            {
-                guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
-                    pthread_mutex_unlock(&self.mutex)
-                    DispatchQueue.main.async {
-                        completion(nil, NSError.authCacheLocked())
-                    }
-                    return
-                }
-                
-                //clean auth cache let user relogin
-                AuthCredential.clearFromKeychain()
-                pthread_mutex_unlock(&self.mutex)
-                DispatchQueue.main.async {
-                    completion(nil, NSError.AuthCachePassEmpty())
-                    UserTempCachedStatus.backup()
-                    sharedUserDataService.signOut(true) //NOTES:signout + errors
-                    userCachedStatus.signOut()
-                    NSError.alertBadTokenToast()
-                }
-                return
-            }
-            
-            guard !credential.isExpired else { // access token time is valid
-                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-                    self.debugError(error)
-                    pthread_mutex_unlock(&self.mutex)
-                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                        AuthCredential.clearFromKeychain()
-                        DispatchQueue.main.async {
-                            NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
-                        }
-                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        AuthCredential.clearFromKeychain()
-                        DispatchQueue.main.async {
-                            NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            completion(authCredential, error)
-                        }
-                    }
-                }
-                return
+            if token == nil {
+                PMLog.D("token is empty")
             }
             
             pthread_mutex_unlock(&self.mutex)
-            DispatchQueue.main.async {
-                completion(credential, nil)
-            }
+            
+            
+            completion(token, self.sessionUID, nil)
+            
+            return
+            
+            
+            //fetch auth info
+//            guard let credential = AuthCredential.fetchFromKeychain(), // mailbox pwd is empty should show error and logout
+//                !(credential.password ?? "").isEmpty else
+//            {
+//                pthread_mutex_unlock(&self.mutex)
+                //TODO:: UnlockManager
+//                guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
+//                    pthread_mutex_unlock(&self.mutex)
+//                    DispatchQueue.main.async {
+//                        completion(nil, NSError.authCacheLocked())
+//                    }
+//                    return
+//                }
+//
+//                //clean auth cache let user relogin
+//                AuthCredential.clearFromKeychain()
+//                pthread_mutex_unlock(&self.mutex)
+//                DispatchQueue.main.async {
+//                    completion(nil, NSError.AuthCachePassEmpty())
+//                    UserTempCachedStatus.backup()
+//                    sharedUserDataService.signOut(true) //NOTES:signout + errors
+//                    userCachedStatus.signOut()
+//                    NSError.alertBadTokenToast()
+//                }
+//                return
+//            }
+            
+//            guard !credential.isExpired else { // access token time is valid
+//                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+//                    self.debugError(error)
+//                    pthread_mutex_unlock(&self.mutex)
+//                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+//                        AuthCredential.clearFromKeychain()
+//                        DispatchQueue.main.async {
+//                            NSError.alertBadTokenToast()
+//                            self.fetchAuthCredential(completion)
+//                        }
+//                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+//                        AuthCredential.clearFromKeychain()
+//                        DispatchQueue.main.async {
+//                            NSError.alertBadTokenToast()
+//                            self.fetchAuthCredential(completion)
+//                        }
+//                    } else {
+//                        DispatchQueue.main.async {
+//                            completion(authCredential, error)
+//                        }
+//                    }
+//                }
+//                return
+//            }
+//
+//            pthread_mutex_unlock(&self.mutex)
+//            DispatchQueue.main.async {
+//                completion(credential, nil)
+//            }
         }
         
     }
@@ -197,7 +265,7 @@ class APIService {
                            customAuthCredential: AuthCredential? = nil,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion(nil, nil, error)
@@ -211,10 +279,10 @@ class APIService {
                     }
                 }
                 
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
-                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                if let userID = userID {
+                    request.setValue(userID, forHTTPHeaderField: "x-pm-uid")
                 }
                 
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
@@ -243,31 +311,31 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
         }
     }
     
-    internal func upload (byPath path: String,
-    parameters: [String:String],
-    keyPackets : Data,
-    dataPacket : Data,
-    signature : Data?,
-    headers: [String : Any]?,
-    authenticated: Bool = true,
-    customAuthCredential: AuthCredential? = nil,
-    completion: @escaping CompletionBlock) {
-        let url = self.doh.getHostUrl() + path
-        self.upload(byUrl: url,
-                    parameters: parameters,
-                    keyPackets: keyPackets,
-                    dataPacket: dataPacket,
-                    signature: signature,
-                    headers: headers,
-                    authenticated: authenticated,
-                    customAuthCredential: customAuthCredential,
-                    completion: completion)
-    }
-    
+//     internal func upload (byPath path: String,
+//     parameters: [String:String],
+//     keyPackets : Data,
+//     dataPacket : Data,
+//     signature : Data?,
+//     headers: [String : Any]?,
+//     authenticated: Bool = true,
+//     customAuthCredential: AuthCredential? = nil,
+//     completion: @escaping CompletionBlock) {
+//         let url = self.doh.getHostUrl() + path
+//         self.upload(byUrl: url,
+//                     parameters: parameters,
+//                     keyPackets: keyPackets,
+//                     dataPacket: dataPacket,
+//                     signature: signature,
+//                     headers: headers,
+//                     authenticated: authenticated,
+//                     customAuthCredential: customAuthCredential,
+//                     completion: completion)
+//     }
+
     /**
      this function only for upload attachments for now.
      
@@ -276,7 +344,7 @@ class APIService {
      :param: keyPackets encrypt attachment key package
      :param: dataPacket encrypt attachment data package
      */
-    internal func upload (byUrl url: String,
+    internal func upload (byPath path: String,
                           parameters: [String:String],
                           keyPackets : Data,
                           dataPacket : Data,
@@ -287,7 +355,10 @@ class APIService {
                           completion: @escaping CompletionBlock) {
         
         
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let url = self.serverConfig.hostUrl + path
+        
+        
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion(nil, nil, error)
@@ -309,9 +380,9 @@ class APIService {
                     }
                 }
                 
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
+                if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
                 }
                 
@@ -337,7 +408,7 @@ class APIService {
                     {
                         // retry task asynchonously
                         DispatchQueue.global(qos: .utility).async {
-                            self.upload(byUrl: url,
+                            self.upload(byPath: url,
                                     parameters: parameters,
                                     keyPackets: keyPackets,
                                     dataPacket: dataPacket,
@@ -360,7 +431,7 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -373,7 +444,7 @@ class APIService {
                  authRetry: Bool = true,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion?(nil, nil, error)
@@ -391,18 +462,18 @@ class APIService {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                            AuthCredential.expireOrClear(auth?.token)
+                           // AuthCredential.expireOrClear(auth?.token)
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
                                 self.delegate?.onError(error: error)
                                 UserTempCachedStatus.backup()
-                                sharedUserDataService.signOut(true);
+                                //sharedUserDataService.signOut(true);
                                 userCachedStatus.signOut()
                             }else {
                                 self.request(method: method,
                                              path: path,
                                              parameters: parameters,
-                                             headers: ["x-pm-apiversion": 3],
+                                             headers: [HTTPHeader.apiVersion: 3],
                                              authenticated: authenticated,
                                              customAuthCredential: customAuthCredential,
                                              completion: completion)
@@ -444,7 +515,7 @@ class APIService {
                                 self.request(method: method,
                                              path: path,
                                              parameters: parameters,
-                                             headers: ["x-pm-apiversion": 3],
+                                             headers: [HTTPHeader.apiVersion: 3],
                                              authenticated: authenticated,
                                              customAuthCredential: customAuthCredential,
                                              completion: completion)
@@ -466,8 +537,8 @@ class APIService {
                         }
                     }
                 }
-                
-                let url = self.doh.getHostUrl() + path
+                // let url = self.doh.getHostUrl() + path
+                let url = self.serverConfig.hostUrl + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,
@@ -477,9 +548,9 @@ class APIService {
                         request.setValue("\(v)", forHTTPHeaderField: k)
                     }
                 }
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
+                if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
                 }
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
@@ -525,7 +596,7 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -541,5 +612,25 @@ class APIService {
     }
 }
 
+extension APIService : API {
+    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool, customAuthCredential: AuthCredential?, completion: CompletionBlock?) {
+        
+        if customAuthCredential != nil {
+            PMLog.D("")
+        }
 
+        self.request(method: method, path: path,
+                     parameters: parameters, headers: headers,
+                     authenticated: authenticated, authRetry: true,
+                     customAuthCredential: customAuthCredential, completion: completion)
+    }
+    
+    
+    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool, completion: CompletionBlock?) {
+        self.request(method: method, path: path, parameters: parameters,
+                     headers: headers, authenticated: authenticated,
+                     customAuthCredential: nil, completion: completion)
+    }
+    
+}
 

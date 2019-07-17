@@ -28,9 +28,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
 
     private let label : Message.Location
 
-    init(label : Message.Location, service: MessageDataService, pushService: PushNotificationService) {
+    init(label : Message.Location, userManager: UserManager, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: label.rawValue, msgService: service, pushService: pushService)
+        super.init(labelID: label.rawValue, userManager: userManager, pushService: pushService)
     }
     
     required init(from decoder: Decoder) throws {
@@ -127,7 +127,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     override func emptyFolder() {
         switch(self.label) {
         case .trash, .spam, .draft:
-            sharedMessageDataService.empty(location: self.label)
+            self.messageService.empty(location: self.label)
         default:
             break
         }

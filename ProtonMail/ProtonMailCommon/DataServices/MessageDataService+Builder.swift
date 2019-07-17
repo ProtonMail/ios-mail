@@ -276,7 +276,37 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
+    
+    func fetchAttachmentBody(att: Attachment, messageDataService: MessageDataService) -> Promise<String> {
+        return Promise { seal in
+            async {
+                if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                    seal.fulfill(att.base64DecryptAttachment())
+                    return
+                }
+                
+                if let data = att.fileData, data.count > 0 {
+                    seal.fulfill(att.base64DecryptAttachment())
+                    return
+                }
+                
+                att.localURL = nil
+                messageDataService.fetchAttachmentForAttachment(att,
+                                                                customAuthCredential: att.message.cachedAuthCredential,
+                                                                downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
+                                                                completion: { (_, url, error) -> Void in
+                                                                    att.localURL = url;
+                                                                    seal.fulfill(att.base64DecryptAttachment())
+                                                                    if error != nil {
+                                                                        PMLog.D("\(String(describing: error))")
+                                                                    }
+                })
+            }
+            
+        }
+    }
+    
+    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool, msgService: MessageDataService) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 /// decrypt attachments
@@ -308,7 +338,7 @@ class SendBuilder {
                 
                 var fetchs : [Promise<String>] = [Promise<String>]()
                 for att in self.preAttachments {
-                    fetchs.append(att.att.fetchAttachmentBody())
+                    fetchs.append(self.fetchAttachmentBody(att: att.att, messageDataService: msgService))
                 }
                 //1. fetch attachment first
                 firstly {
@@ -532,7 +562,7 @@ class EOAddressBuilder : PackageBuilder {
             
             
             //start build auth package
-            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall() // will use standard auth credential
+            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall(api: APIService.shared) // will use standard auth credential
             guard let moduls_id = authModuls?.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }

@@ -27,15 +27,15 @@ import CoreData
 class FolderboxViewModelImpl : MailboxViewModel {
     private let label : Label
     
-    init(label : Label, service: MessageDataService, pushService: PushNotificationService) {
+    init(label : Label, userManager: UserManager, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: self.label.labelID, msgService: service, pushService: pushService)
+        super.init(labelID: self.label.labelID, userManager: userManager, pushService: pushService)
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let labelID = try container.decode(String.self, forKey: .labelID)
-        guard let label = Label.labelForLableID(labelID, inManagedObjectContext: sharedCoreDataService.mainManagedObjectContext) else {
+        guard let label = Label.labelForLableID(labelID, inManagedObjectContext: CoreDataService.shared.mainManagedObjectContext) else {
             throw Errors.decoding
         }
         self.label = label
@@ -70,6 +70,6 @@ class FolderboxViewModelImpl : MailboxViewModel {
     }
     
     override func emptyFolder() {
-        sharedMessageDataService.empty(labelID: self.label.labelID)
+        self.messageService.empty(labelID: self.label.labelID)
     }
 }

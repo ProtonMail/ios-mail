@@ -26,8 +26,50 @@ import CoreData
 import UIKit
 
 class MenuViewModelImpl : MenuViewModel {
+    private let kMenuCellHeight: CGFloat = 44.0
+    private let kUserCellHeight: CGFloat = 60.0
+    
+    func cellHeight(at: Int) -> CGFloat {
+        let section = self.section(at: at)
+        switch section {
+        case .users:
+            return kUserCellHeight
+        default:
+            return kMenuCellHeight
+        }
+    }
+    
+    func user(at: Int) -> UserManager? {
+        return self.usersManager.user(at: at)
+    }
+    
+    var usersCount: Int {
+        get {
+            return self.usersManager.count
+        }
+    }
+    
+    func showUsers() -> Bool {
+        showingUsers = !showingUsers
+        if showingUsers {
+            self.sections = [.users, .accountManager]
+        } else {
+            self.sections = [.inboxes, .others, .labels]
+        }
+        return showingUsers
+    }
+    
+    func hideUsers() {
+        showingUsers = false
+        self.sections = [.inboxes, .others, .labels]
+    }
+    
+    func updateCurrent(row: Int) {
+        self.usersManager.active(index: row)
+    }
+    
     //menu sections
-    private let sections : [MenuSection] = [.inboxes, .others, .labels]
+    private var sections : [MenuSection] = [.inboxes, .others, .labels]
     
     //menu actions order by index
     private let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred,
@@ -38,6 +80,22 @@ class MenuViewModelImpl : MenuViewModel {
     //fetch request result
     private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
+    private var showingUsers: Bool = false
+    
+    //
+    let usersManager : UsersManager
+    
+    //
+    var labelDataService : LabelsDataService
+    
+    init(usersManager : UsersManager) {
+        self.usersManager = usersManager
+        self.labelDataService = self.usersManager.firstUser.labelService
+    }
+    
+    func currentUser() -> UserManager? {
+        return self.usersManager.firstUser
+    }
     
     func updateMenuItems() {
         otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
@@ -50,7 +108,8 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController(.all)
+        self.labelDataService = self.usersManager.firstUser.labelService
+        self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
             do {
@@ -60,7 +119,7 @@ class MenuViewModelImpl : MenuViewModel {
             }
         }
         ///TODO::fixme not necessary
-        sharedLabelsDataService.fetchLabels()
+        self.labelDataService.fetchLabels()
     }
     
     func sectionCount() -> Int {
@@ -74,7 +133,10 @@ class MenuViewModelImpl : MenuViewModel {
         return .unknown
     }
     
-    
+    func count(by labelID: String, userID: String? = nil) -> Int {
+        return labelDataService.unreadCount(by: labelID)
+    }
+
     func inboxesCount() -> Int {
         return self.inboxItems.count
     }

@@ -44,7 +44,7 @@ final class ReportPhishing : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -93,7 +93,7 @@ final class BugReportRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     

@@ -28,7 +28,11 @@ import CoreData
 // labels and folders manager
 final class LabelManagerViewModelImpl : LabelViewModel {
     fileprivate var labelMessages : [String : LabelMessageModel]!
-    override init() {
+    
+    let labelDataService : LabelsDataService
+    
+    init(labelService: LabelsDataService) {
+        self.labelDataService = labelService
         super.init()
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -79,12 +83,12 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus == 2 { //delete
                 if value.label.managedObjectContext != nil && key == value.label.labelID {
                     let api = DeleteLabelRequest(lable_id: key)
-                    api.call(nil)
+                    api.call(api: self.labelDataService.apiService, nil) // TODO:: fix me
                     context.performAndWait { () -> Void in
                         context.delete(value.label)
                     }
@@ -99,7 +103,7 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     }
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        return sharedLabelsDataService.fetchedResultsController(.all)
+        return self.labelDataService.fetchedResultsController(.all)
     }
 
     override func getFetchType() -> LabelFetchType {

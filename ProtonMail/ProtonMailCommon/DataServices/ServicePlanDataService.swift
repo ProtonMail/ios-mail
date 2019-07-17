@@ -47,6 +47,8 @@ class ServicePlanDataService: NSObject, Service {
     typealias CompletionHandler = ()->Void
     private let localStorage: ServicePlanDataStorage
     
+    let apiService = APIService.shared
+    
     private var allPlanDetails: [ServicePlanDetails] {
         willSet { userCachedStatus.servicePlansDetails = newValue }
     }
@@ -86,15 +88,15 @@ class ServicePlanDataService: NSObject, Service {
 extension ServicePlanDataService {
     internal func updateServicePlans(completion: CompletionHandler? = nil) {
         async {
-            let statusApi = GetIAPStatusRequest()
+            let statusApi = GetIAPStatusRequest(api: self.apiService)
             let statusRes = try await(statusApi.run())
             self.isIAPAvailableOnBE = statusRes.isAvailable ?? false
             
-            let servicePlanApi = GetServicePlansRequest()
+            let servicePlanApi = GetServicePlansRequest(api: self.apiService)
             let servicePlanRes = try await(servicePlanApi.run())
             self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
             
-            let defaultServicePlanApi = GetDefaultServicePlanRequest()
+            let defaultServicePlanApi = GetDefaultServicePlanRequest(api: self.apiService)
             let defaultServicePlanRes = try await(defaultServicePlanApi.run())
             self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
 
@@ -106,7 +108,7 @@ extension ServicePlanDataService {
     
     internal func updatePaymentMethods(completion: CompletionHandler? = nil) {
         async {
-            let paymentMethodsApi = GetPaymentMethodsRequest()
+            let paymentMethodsApi = GetPaymentMethodsRequest(api: self.apiService)
             let paymentMethodsRes = try await(paymentMethodsApi.run())
             self.currentSubscription?.paymentMethods = paymentMethodsRes.methods
             completion?()
@@ -122,7 +124,7 @@ extension ServicePlanDataService {
                 let price = StoreKitManager.default.priceLabelForProduct(id: productId),
                 let currency = price.1.currencyCode,
                 let countryCode = (price.1 as NSLocale).object(forKey: .countryCode) as? String {
-                let proceedRequest = GetAppleTier(currency: currency, country: countryCode)
+                let proceedRequest = GetAppleTier(api: self.apiService, currency: currency, country: countryCode)
                 let proceed = try await(proceedRequest.run())
                 self.proceedTier54 = proceed.proceed
             }
@@ -134,7 +136,7 @@ extension ServicePlanDataService {
     internal func updateCurrentSubscription(completion: CompletionHandler? = nil) {
         self.updateServicePlans()
         async {
-            let subscriptionApi = GetSubscriptionRequest()
+            let subscriptionApi = GetSubscriptionRequest(api: self.apiService)
             let subscriptionRes = try await(subscriptionApi.run())
             self.currentSubscription = subscriptionRes.subscription
             self.updatePaymentMethods()

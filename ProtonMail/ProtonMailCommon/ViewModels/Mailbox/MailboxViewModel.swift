@@ -67,15 +67,17 @@ class MailboxViewModel {
     /// local message for rating
     private var ratingMessage : Message?
     
+    private var contactService : ContactDataService
     
     /// mailbox viewModel
     ///
     /// - Parameters:
     ///   - labelID: location id and labelid
     ///   - msgService: service instance
-    init(labelID : String, msgService: MessageDataService, pushService: PushNotificationService) {
+    init(labelID : String, userManager: UserManager, pushService: PushNotificationService) {
         self.labelID = labelID
-        self.messageService = msgService
+        self.messageService = userManager.messageService
+        self.contactService = userManager.contactService
         self.pushService = pushService
     }
     
@@ -85,6 +87,7 @@ class MailboxViewModel {
         
         self.labelID = label
         self.messageService = sharedServices.get()
+        self.contactService = sharedServices.get()
         self.pushService = sharedServices.get()
     }
     
@@ -94,6 +97,18 @@ class MailboxViewModel {
             return ""
         }
     }
+    
+    func allEmails() -> [Email] {
+        return self.contactService.allEmails()
+    }
+    
+    
+    func fetchContacts() {
+        self.contactService.fetchContacts { (_, _) in
+            
+        }
+    }
+
     
     /// create a fetch controller with labelID
     ///
@@ -218,8 +233,8 @@ class MailboxViewModel {
     /// the latest cache time of current location
     ///
     /// - Returns: location cache info
-    func lastUpdateTime() -> UpdateTime {
-        return lastUpdatedStore.labelsLastForKey(self.labelID)
+    func lastUpdateTime() -> LabelUpdate? {
+        return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID) //TODO:: fix me
     }
     
     
@@ -311,7 +326,6 @@ class MailboxViewModel {
         
     }
     
-    typealias CompletionBlock = APIService.CompletionBlock
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         messageService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
     }
@@ -327,6 +341,10 @@ class MailboxViewModel {
     ///   - completion: aync complete handler
     func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
         messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
+    func isEventIDValid() -> Bool {
+        return messageService.isEventIDValid()
     }
     
     /// get the cached notification message id

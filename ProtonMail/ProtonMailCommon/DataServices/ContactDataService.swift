@@ -29,8 +29,6 @@ import PromiseKit
 import AwaitKit
 import Crypto
 
-let sharedContactDataService = ContactDataService(addressBookService: AddressBookService())
-
 typealias ContactFetchComplete = (([Contact]?, NSError?) -> Void)
 typealias ContactAddComplete = (([Contact]?, NSError?) -> Void)
 
@@ -45,9 +43,14 @@ typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 class ContactDataService: Service  {
     
     private let addressBookService: AddressBookService
-    
-    init(addressBookService: AddressBookService) {
-        self.addressBookService = addressBookService
+    private let labelDataService: LabelsDataService
+    private let apiService : API
+    private let userID : String
+    init(api: API, userID : String) {
+        self.userID = userID
+        self.apiService = api
+        self.addressBookService = AddressBookService()
+        self.labelDataService = LabelsDataService(api: api, userID: userID)
     }
     
     /**
@@ -55,7 +58,7 @@ class ContactDataService: Service  {
      **/
     func clean() {
         lastUpdatedStore.contactsCached = 0
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = CoreDataService.shared.backgroundManagedObjectContext
         Contact.deleteAll(inContext: context)
         Email.deleteAll(inContext: context)
     }
@@ -65,7 +68,7 @@ class ContactDataService: Service  {
      
      **/
     func resultController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let moc = sharedCoreDataService.mainManagedObjectContext
+        let moc = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
@@ -88,7 +91,7 @@ class ContactDataService: Service  {
              authCredential: AuthCredential?,
              completion: ContactAddComplete?) {
         let api = ContactAddRequest<ContactAddResponse>(cards: cards, authCredential: authCredential)
-        api.call { (task, response, hasError) in
+        api.call(api: self.apiService) { (task, response, hasError) in
             var contacts_json : [[String : Any]] = []
             var lasterror : NSError?
             if let results = response?.results, !results.isEmpty {
@@ -108,7 +111,7 @@ class ContactDataService: Service  {
             }
             
             if !contacts_json.isEmpty {
-                let context = sharedCoreDataService.mainManagedObjectContext
+                let context = CoreDataService.shared.mainManagedObjectContext
                 context.performAndWait() {
                     do {
                         if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -161,7 +164,7 @@ class ContactDataService: Service  {
                     
                     let api = ContactAddRequest<ContactAddResponse>(cards: tempCards, authCredential: authCredential)
                     do {
-                        let response = try api.syncCall()
+                        let response = try api.syncCall(api: self.apiService)
                         
                         update?(processed)
                         
@@ -185,7 +188,7 @@ class ContactDataService: Service  {
                         tempCards.removeAll()
                         
                         if !contacts_json.isEmpty {
-                            let context = sharedCoreDataService.mainManagedObjectContext
+                            let context = CoreDataService.shared.mainManagedObjectContext
                             context.performAndWait() {
                                 do {
                                     if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -225,7 +228,7 @@ class ContactDataService: Service  {
                 cards: [CardData],
                 completion: ContactUpdateComplete?) {
         let api = ContactUpdateRequest<ContactDetailResponse>(contactid: contactID, cards:cards)
-        api.call { (task, response, hasError) in
+        api.call(api: self.apiService) { (task, response, hasError) in
             if hasError {
                 completion?(nil, response?.error)
             } else if var contactDict = response?.contact {
@@ -234,7 +237,7 @@ class ContactDataService: Service  {
                 if contactDict["Cards"] == nil {
                     contactDict["Cards"] = cards.toDictionary()
                 }
-                let context = sharedCoreDataService.mainManagedObjectContext
+                let context = CoreDataService.shared.mainManagedObjectContext
                 context.performAndWait() {
                     do {
                         // remove all emailID associated with the current contact in the core data
@@ -285,10 +288,10 @@ class ContactDataService: Service  {
     func delete(contactID: String,
                 completion: @escaping ContactDeleteComplete) {
         let api = ContactDeleteRequest<ApiResponse>(ids: [contactID])
-        api.call { (task, response, hasError) in
+        api.call(api: self.apiService) { (task, response, hasError) in
             if hasError {
                 if let err = response?.error, err.code == 13043 { //not exsit
-                    let context = sharedCoreDataService.backgroundManagedObjectContext
+                    let context = CoreDataService.shared.backgroundManagedObjectContext
                     context.performAndWait() {
                         if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                             context.delete(contact)
@@ -300,7 +303,7 @@ class ContactDataService: Service  {
                 }
                 completion(response?.error)
             } else {
-                let context = sharedCoreDataService.backgroundManagedObjectContext
+                let context = CoreDataService.shared.backgroundManagedObjectContext
                 context.performAndWait() {
                     if let contact = Contact.contactForContactID(contactID, inManagedObjectContext: context) {
                         context.delete(contact)
@@ -317,7 +320,7 @@ class ContactDataService: Service  {
     }
     
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
-        let context = context ?? sharedCoreDataService.backgroundManagedObjectContext
+        let context = context ?? CoreDataService.shared.backgroundManagedObjectContext
         return Promise { seal in
             async {
                 guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
@@ -479,8 +482,8 @@ class ContactDataService: Service  {
                     loop = loop - 1
                     
                     let contactsApi = ContactsRequest(page: currentPage, pageSize: pageSize)
-                    if let response = try contactsApi.syncCall() {
-                        let contacts = response.contacts
+                    if let response = try contactsApi.syncCall(api: self.apiService) {
+                        let contacts = response.contacts //TODO:: fix me set userID
                         if fetched == -1 {
                             fetched = contacts.count
                             total = response.total
@@ -488,12 +491,23 @@ class ContactDataService: Service  {
                         } else {
                             fetched = fetched + contacts.count
                         }
+                        let context = CoreDataService.shared.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
-                                let _ = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                         fromJSONArray: contacts,
-                                                                         in: context) as? [Contact]
-                                try context.save()
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                   fromJSONArray: contacts,
+                                                                                   in: context) as? [Contact] {
+                                    for c in contacts {
+                                        c.userID = self.userID
+                                    }
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)");
+                                        
+                                        {
+                                            error.alertErrorToast()
+                                        } ~> .main
+                                    }
+                                }
                             } catch let ex as NSError {
                                 PMLog.D(" error: \(ex)");
                                 
@@ -507,7 +521,7 @@ class ContactDataService: Service  {
                 
                 // fetch contact groups  //TDOO:: this fetch could be removed.
                 // TODO: if I don't manually store the labels first, the record won't be saved automatically? (cascade)
-                sharedLabelsDataService.fetchLabels(type: 2)
+                self.labelDataService.fetchLabels(type: 2)
                 
                 // fetch contact emails
                 currentPage = 0
@@ -520,7 +534,7 @@ class ContactDataService: Service  {
                     }
                     loop = loop - 1
                     let api = ContactEmailsRequest<ContactEmailsResponse>(page: currentPage, pageSize: pageSize)
-                    if let contactsRes = try api.syncCall() {
+                    if let contactsRes = try api.syncCall(api: self.apiService) {
                         currentPage = currentPage + 1
                         let contactsArray = contactsRes.contacts
                         if fetched == -1 {
@@ -533,7 +547,7 @@ class ContactDataService: Service  {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        
+                        let context = CoreDataService.shared.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
                                 if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -582,9 +596,9 @@ class ContactDataService: Service  {
     func details(contactID: String, inContext: NSManagedObjectContext? = nil) -> Promise<Contact> {
         return Promise { seal in
             let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
-            api.call { (task, response, hasError) in
+            api.call(api: self.apiService) { (task, response, hasError) in
                 if let contactDict = response?.contact {
-                    let context = inContext ?? sharedCoreDataService.mainManagedObjectContext
+                    let context = inContext ?? CoreDataService.shared.mainManagedObjectContext
                     context.performAndWait() {
                         do {
                             if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {
@@ -616,7 +630,7 @@ class ContactDataService: Service  {
     
     /// Only call from the main thread
     func allEmails() -> [Email] {
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         return self.allEmailsInManagedObjectContext(context)
     }
     
@@ -656,10 +670,10 @@ class ContactDataService: Service  {
         
         progress()
         
-        let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
+        let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
         async {
-            let getEmail = UserEmailPubKeys(email: email).run()
-            let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
+            let getEmail = UserEmailPubKeys(email: email, api: self.apiService).run()
+            let getContact = self.fetch(byEmails: [email], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 if keyRes.recipientType == 1 {
                     if let contact = contacts.first, contact.firstPgpKey != nil {
@@ -701,7 +715,7 @@ extension ContactDataService {
     func allContactVOs() -> [ContactVO] {
         var contacts: [ContactVO] = []
         
-        for email in sharedContactDataService.allEmails() {
+        for email in self.allEmails() {
             contacts.append(ContactVO(id: email.contactID,
                                       name: email.name,
                                       email: email.email,
@@ -743,9 +757,9 @@ extension ContactDataService {
             }
             
             // merge address book and core data contacts
-            let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
+            let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
             context.performAndWait() {
-                let emailsCache = sharedContactDataService.allEmailsInManagedObjectContext(context)
+                let emailsCache = self.allEmailsInManagedObjectContext(context)
                 var pm_contacts: [ContactVO] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {

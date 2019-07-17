@@ -40,12 +40,13 @@ class CoreDataCache : Migrate {
         static let coreDataVersion = "latest_core_data_cache"
     }
     enum Version : Int {
-        static let CacheVersion : Int = 1 // this is core data cache
+        static let CacheVersion : Int = 2 // this is core data cache
         
         case v1 = 1
+        case v2 = 2
         var model: String { // hard code model we don't need to cache it.
             switch self {
-            case .v1:
+            case .v1, .v2:
                 return "ProtonMail"
             }
         }
@@ -133,8 +134,11 @@ class CoreDataCache : Migrate {
         do {
             try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
         } catch {
+            //
         }
-        sharedMessageDataService.cleanUp()
+        
+        //TODO:: fix me
+        //sharedMessageDataService.cleanUp()
         self.currentVersion = self.latestVersion
     }
     

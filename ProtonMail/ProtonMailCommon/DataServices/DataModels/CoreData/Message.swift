@@ -105,6 +105,7 @@ final public class Message: NSManagedObject {
     /// Unread : is message read / unread -- 0
     @NSManaged public var unRead: Bool
     
+    @NSManaged public var userID: String
     
     /// Mark -- relationship
     

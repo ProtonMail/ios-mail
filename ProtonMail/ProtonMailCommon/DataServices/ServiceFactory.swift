@@ -32,15 +32,18 @@ final class ServiceFactory {
         let helper = ServiceFactory()
         helper.add(AppCacheService.self, for: AppCacheService())
         helper.add(AddressBookService.self, for: AddressBookService())
+        helper.add(APIService.self, for: APIService.shared)
+        
         ///TEST
+        let apiService : APIService = helper.get()
         let addrService: AddressBookService = helper.get()
-        helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-        helper.add(BugDataService.self, for: BugDataService())
+//        helper.add(ContactDataService.self, for: ContactDataService(api:apiService))
+        helper.add(BugDataService.self, for: BugDataService(api: apiService))
         
         ///
-        let msgService: MessageDataService = MessageDataService()
-        helper.add(MessageDataService.self, for: msgService)
-        
+//        let msgService: MessageDataService = MessageDataService(api: apiService)
+//        helper.add(MessageDataService.self, for: msgService)
+//
         return helper
     }()
     

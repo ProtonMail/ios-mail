@@ -106,15 +106,17 @@ class ViewModelServiceImpl: ViewModelService {
                                                       selectedGroupIDs: Set<String>,
                                                       refreshHandler: @escaping (Set<String>) -> Void) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(groupCountInformation: groupCountInformation,
-                                                             selectedGroupIDs: selectedGroupIDs,
-                                                             refreshHandler: refreshHandler))
+        //TODO:: fix me
+//        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(groupCountInformation: groupCountInformation,
+//                                                             selectedGroupIDs: selectedGroupIDs,
+//                                                             refreshHandler: refreshHandler))
     }
     
     // contact groups
     override func contactGroupsViewModel(_ vmp: ViewModelProtocolBase) {
-        activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupsViewModelImpl())
+        //activeViewControllerNew = vmp
+        //vmp.setModel(vm: ContactGroupsViewModelImpl())
+        //TODO:: fix me
     }
     
     override func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
@@ -136,11 +138,12 @@ class ViewModelServiceImpl: ViewModelService {
                                             color: String? = nil,
                                             emailIDs: Set<Email> = Set<Email>()) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state,
-                                                       groupID: groupID,
-                                                       name: name,
-                                                       color: color,
-                                                       emailIDs: emailIDs))
+        //TODO::fix me
+//        vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state, cgroupService: ContactGroupsDataService,
+//                                                       groupID: groupID,
+//                                                       name: name,
+//                                                       color: color,
+//                                                       emailIDs: emailIDs))
     }
     
     override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocolBase,
@@ -155,13 +158,15 @@ class ViewModelServiceImpl: ViewModelService {
                                                    selectedEmails: Set<Email>,
                                                    refreshHandler: @escaping (Set<Email>) -> Void) {
         activeViewControllerNew = vmp
+        //TODO:: fix me
+        let users : UsersManager = sharedServices.get()
         vmp.setModel(vm: ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
+                                                              contactService: users.firstUser.contactService,
                                                               refreshHandler: refreshHandler))
     }
     
     // composer
 
-    
     func buildTerms(_ base : ViewModelProtocolBase) {
         let model = TermsWebViewModelImpl()
         base.setModel(vm: model)
@@ -190,7 +195,7 @@ class ViewModelServiceImpl: ViewModelService {
             return
         }
         if currentVersion > 0 && currentVersion < 98 {
-            sharedCoreDataService.cleanLegacy()//clean core data
+            CoreDataService.shared.cleanLegacy()//clean core data
             
             //get default sharedbased
             let oldDefault = UserDefaults.standard

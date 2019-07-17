@@ -34,27 +34,21 @@ import Fabric
 import Crashlytics
 #endif
 
-let sharedUserDataService = UserDataService()
+let sharedUserDataService = UserDataService(api: APIService.shared)
 
-/// tempeary here.
+/// tempeary here. //device level service
 let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
-    ///
+    // app cache service
     helper.add(AppCacheService.self, for: AppCacheService())
-    helper.add(AddressBookService.self, for: AddressBookService())
-    ///
-    let addrService: AddressBookService = helper.get()
-    helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-    helper.add(BugDataService.self, for: BugDataService())
-    
-    ///
-    let msgService: MessageDataService = MessageDataService()
-    helper.add(MessageDataService.self, for: msgService)
-    
-    helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+    // view model factory
     helper.add(ViewModelService.self, for: ViewModelServiceImpl())
-    
-    helper.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+
+    //    let apiService: APIService = helper.get()
+    //    let addrService: AddressBookService = helper.get()
+    //    helper.add(ContactDataService.self, for: ContactDataService(api: apiService, addressBookService: addrService))
+    //    helper.add(BugDataService.self, for: BugDataService(api: apiService))
+    //    helper.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
     
     return helper
 }()
@@ -64,7 +58,7 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator()
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -72,7 +66,8 @@ extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
-                let viewModel = MenuViewModelImpl()
+                let usersManager : UsersManager = sharedServices.get()
+                let viewModel = MenuViewModelImpl(usersManager: usersManager)
                 let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
                 menu.start()
             }
@@ -81,8 +76,12 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
-                    let mailbox = MailboxCoordinator(rvc: self, nav: navigation, vc: mailboxViewController, vm: viewModel, services: sharedServices)
+                //    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
+                //     let mailbox = MailboxCoordinator(rvc: self, nav: navigation, vc: mailboxViewController, vm: viewModel, services: sharedServices) 
+                    let usersManager : UsersManager = sharedServices.get()
+                    let user = usersManager.firstUser
+                    let viewModel = MailboxViewModelImpl(label: .inbox, userManager: user, pushService: sharedServices.get())
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()                    
                 }
             }
@@ -150,14 +149,15 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        #if DEBUG
-        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-        #endif
-        
-        let cacheService : AppCacheService = sharedServices.get()
-        cacheService.restoreCacheWhenAppStart()
+        // #if DEBUG
+        // PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
+        // PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
+        // PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        // #endif
+
+        // moved to coordinator
+        //let cacheService : AppCacheService = sharedServices.get()
+        //cacheService.restoreCacheWhenAppStart()
         
         #if Enterprise
         Fabric.with([Crashlytics.self])
@@ -170,7 +170,7 @@ extension AppDelegate: UIApplicationDelegate {
         ///TODO::fixme refactor
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
-        sharedAPIService.delegate = self
+        APIService.shared.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
@@ -180,14 +180,14 @@ extension AppDelegate: UIApplicationDelegate {
         if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }
-        AFNetworkActivityLogger.shared().startLogging()
-        
         //start network notifier
         sharedInternetReachability.startNotifier()
         
-        sharedMessageDataService.launchCleanUpIfNeeded()
-        sharedUserDataService.delegate = self
+        // moved to coordinator
+        //sharedMessageDataService.launchCleanUpIfNeeded()
+        //sharedUserDataService.delegate = self
         
+        AFNetworkActivityLogger.shared().startLogging()
         if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
@@ -195,20 +195,19 @@ extension AppDelegate: UIApplicationDelegate {
         
         // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
-        if #available(iOS 13.0, *),
-            let code = Bundle.main.preferredLocalizations.first
-        {
+        if #available(iOS 13.0, *), let code = Bundle.main.preferredLocalizations.first {
             LanguageManager.saveLanguage(byCode: code)
         }
+        //setup language
         LanguageManager.setupCurrentLanguage()
 
-        let pushService : PushNotificationService = sharedServices.get()
-        UNUserNotificationCenter.current().delegate = pushService
-        pushService.registerForRemoteNotifications()
-        pushService.setLaunchOptions(launchOptions)
+        //        let pushService : PushNotificationService = sharedServices.get()
+        //        UNUserNotificationCenter.current().delegate = pushService
+        //        pushService.registerForRemoteNotifications()
+        //        pushService.setLaunchOptions(launchOptions)
         
-        StoreKitManager.default.subscribeToPaymentQueue()
-        StoreKitManager.default.updateAvailableProductsList()
+        //        StoreKitManager.default.subscribeToPaymentQueue()
+        //        StoreKitManager.default.updateAvailableProductsList()
         
         #if DEBUG
         NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in
@@ -223,15 +222,11 @@ extension AppDelegate: UIApplicationDelegate {
         #endif
         
         if #available(iOS 12.0, *) {
-            let intent = WipeMainKeyIntent()
-            let suggestions = [INShortcut(intent: intent)!]
-            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+//            let intent = WipeMainKeyIntent()
+//            let suggestions = [INShortcut(intent: intent)!]
+//            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
         }
-        
-        if #available(iOS 11.0, *) {
-            //self.generateToken()
-        }
-        
+
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -295,7 +290,9 @@ extension AppDelegate: UIApplicationDelegate {
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
-        sharedMessageDataService.purgeOldMessages()
+        
+        //TODO:: fixme
+//        sharedMessageDataService.purgeOldMessages()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
@@ -306,12 +303,12 @@ extension AppDelegate: UIApplicationDelegate {
             }
         }
         
-        if SignInManager.shared.isSignedIn() {
-            sharedMessageDataService.updateMessageCount()
-            sharedMessageDataService.backgroundFetch { delayedCompletion() }
-        } else {
-            delayedCompletion()
-        }
+//        if SignInManager.shared.isSignedIn() {
+//            sharedMessageDataService.updateMessageCount()
+//            sharedMessageDataService.backgroundFetch { delayedCompletion() }
+//        } else {
+//            delayedCompletion()
+//        }
         PMLog.D("Enter Background")
     }
     
@@ -330,12 +327,12 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
-        let mainContext = sharedCoreDataService.mainManagedObjectContext
+        let mainContext = CoreDataService.shared.mainManagedObjectContext
         mainContext.performAndWait {
             let _ = mainContext.saveUpstreamIfNeeded()
         }
         
-        let backgroundContext = sharedCoreDataService.mainManagedObjectContext
+        let backgroundContext = CoreDataService.shared.mainManagedObjectContext
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
         }
@@ -344,13 +341,14 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
-        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
-            completionHandler(.noData)
-            return
-        }
-        sharedMessageDataService.backgroundFetch {
-            completionHandler(.newData)
-        }
+        //TODO:: fix me
+//        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
+//            completionHandler(.noData)
+//            return
+//        }
+//        sharedMessageDataService.backgroundFetch {
+//            completionHandler(.newData)
+//        }
     }
     
     // MARK: Notification methods

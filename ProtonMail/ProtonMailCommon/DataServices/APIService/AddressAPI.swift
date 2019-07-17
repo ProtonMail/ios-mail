@@ -50,7 +50,7 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -82,7 +82,7 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -108,7 +108,7 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     

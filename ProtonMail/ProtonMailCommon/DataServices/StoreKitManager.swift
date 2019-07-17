@@ -27,6 +27,9 @@ import AwaitKit
 
 class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
+    
+    let apiService = APIService.shared
+    
     private override init() {
         super.init()
         
@@ -57,21 +60,21 @@ class StoreKitManager: NSObject {
     }
     private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            guard let currentUsername = sharedUserDataService.username else {
-                self.errorCompletion(Errors.noActiveUsernameInUserDataService)
-                return
-            }
-            
-            let message = """
-            \(error.localizedDescription)
-            \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
-            """
-            let alert = UIAlertController(title: LocalString._warning, message: message, preferredStyle: .alert)
-            alert.addAction(.init(title: LocalString._yes_bypass_validation + currentUsername,
-                                  style: .destructive,
-                                  handler: { _ in completion()} ))
-            alert.addAction(.init(title: LocalString._no_dont_bypass_validation, style: .cancel, handler: nil))
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+//            guard let currentUsername = sharedUserDataService.username else {
+//                self.errorCompletion(Errors.noActiveUsernameInUserDataService)
+//                return
+//            }
+//
+//            let message = """
+//            \(error.localizedDescription)
+//            \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
+//            """
+//            let alert = UIAlertController(title: LocalString._warning, message: message, preferredStyle: .alert)
+//            alert.addAction(.init(title: LocalString._yes_bypass_validation + currentUsername,
+//                                  style: .destructive,
+//                                  handler: { _ in completion()} ))
+//            alert.addAction(.init(title: LocalString._no_dont_bypass_validation, style: .cancel, handler: nil))
+//            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
         }
     }
     
@@ -186,10 +189,11 @@ extension StoreKitManager: SKProductsRequestDelegate {
     }
     
     private func applicationUsername() -> String? {
-        guard let username = sharedUserDataService.userInfo?.userId, !username.isEmpty else {
-            return nil
-        }
-        return username
+//        guard let username = sharedUserDataService.userInfo?.userId, !username.isEmpty else {
+//            return nil
+//        }
+//        return username
+        return ""
     }
     
     // this method attempts to match pre-1.11.1 hash which was calculated from case-insensitive username with optional "@protonmail.com" suffix for as much users as possible. Others should contact CS
@@ -252,9 +256,10 @@ extension StoreKitManager: SKPaymentTransactionObserver {
                 guard SignInManager.shared.isSignedIn() else {
                     throw Errors.pleaseSignIn
                 }
-                guard UnlockManager.shared.isUnlocked() else {
-                    throw Errors.appIsLocked
-                }
+                //TODO:: fix me
+//                guard UnlockManager.shared.isUnlocked() else {
+//                    throw Errors.appIsLocked
+//                }
                 try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify)
                 
             } catch Errors.noHashedUsernameArrivedInTransaction { // storekit bug
@@ -312,7 +317,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         let planId = try servicePlan(for: transaction.payment.productIdentifier)
         
         do {  // payments/subscription
-            let serverUpdateApi = PostRecieptRequest(reciept: receipt, andActivatePlanWithId: planId)
+            let serverUpdateApi = PostRecieptRequest(api: self.apiService, reciept: receipt, andActivatePlanWithId: planId)
             let serverUpdateRes = try await(serverUpdateApi.run())
             if let newSubscription = serverUpdateRes.newSubscription {
                 ServicePlanDataService.shared.currentSubscription = newSubscription
@@ -325,13 +330,14 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         } catch let error as NSError where error.code == 22101 {
             // Amount mismatch - try report only credits without activating the plan
             do {  // payments/credits
-                let serverUpdateApi = PostCreditRequest(reciept: receipt)
+                let serverUpdateApi = PostCreditRequest<PostCreditResponse>(api: self.apiService, reciept: receipt)
                 let _ = try await(serverUpdateApi.run())
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
-                _ = sharedUserDataService.fetchUserInfo().done(on: .main) { _ in
-                    ServicePlanDataService.shared.currentSubscription = ServicePlanDataService.shared.currentSubscription
-                }
+                //TODO:: fix me
+//                _ = sharedUserDataService.fetchUserInfo().done(on: .main) { _ in
+//                    ServicePlanDataService.shared.currentSubscription = ServicePlanDataService.shared.currentSubscription
+//                }
                 
                 self.successCompletion?()
                 
@@ -365,11 +371,11 @@ extension StoreKitManager {
         guard let hashedUsername = applicationUsername else {
             throw Errors.noHashedUsernameArrivedInTransaction
         }
-        guard hashedUsername == self.hash(username: currentUsername) ||
-            self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
-        {
-            throw Errors.haveTransactionOfAnotherUser
-        }
+//        guard hashedUsername == self.hash(username: currentUsername) ||
+//            self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
+//        {
+//            throw Errors.haveTransactionOfAnotherUser
+//        }
     }
     
     func readReceipt() throws -> String {

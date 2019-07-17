@@ -74,10 +74,11 @@ class UnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func isPinMatched(completion: @escaping (Bool)->Void) {
-        UnlockManager.shared.match(userInputPin: enterPin) { matched in
-            if !matched { self.currentStep = .enterPin }
-            completion(matched)
-        }
+        //TODO:: fix me
+//        UnlockManager.shared.match(userInputPin: enterPin) { matched in
+//            if !matched { self.currentStep = .enterPin }
+//            completion(matched)
+//        }
     }
     
     override func getPinFailedRemainingCount() -> Int {

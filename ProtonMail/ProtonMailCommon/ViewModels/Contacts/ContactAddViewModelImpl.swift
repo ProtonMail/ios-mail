@@ -377,16 +377,16 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         if isCard3Set {
             cards.append(card3)
         }
-        
-        sharedContactDataService.add(cards: [cards],
-                                     authCredential: authCredential,
-                                     completion:  { (contacts : [Contact]?, error : NSError?) in
-                                        if error == nil {
-                                            complete(nil)
-                                        } else {
-                                            complete(error)
-                                        }
-        })
+        //Fixme
+//        sharedContactDataService.add(cards: [cards],
+//                                     authCredential: authCredential,
+//                                     completion:  { (contacts : [Contact]?, error : NSError?) in
+//                                        if error == nil {
+//                                            complete(nil)
+//                                        } else {
+//                                            complete(error)
+//                                        }
+//        })
     }
     
     override func delete(complete: @escaping ContactEditViewModel.ContactEditSaveComplete) {

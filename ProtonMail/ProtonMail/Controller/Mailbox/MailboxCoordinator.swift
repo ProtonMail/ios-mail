@@ -140,7 +140,11 @@ class MailboxCoordinator : DefaultCoordinator {
                 let message = self.viewModel.item(index: indexPathForSelectedRow) else {
                     return false
             }
-            next.set(viewModel: .init(message: message))
+            
+            let users : UsersManager = services.get()
+            let user = users.firstUser
+            
+            next.set(viewModel: .init(message: message, msgService: user.messageService))
             next.set(coordinator: .init(controller: next))
         case .detailsFromNotify:
             guard let next = destination as? MessageContainerViewController else {
@@ -151,7 +155,11 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let message = self.viewModel.notificationMessage else {
                 return false
             }
-            next.set(viewModel: .init(message: message))
+            
+            let users : UsersManager = services.get()
+            let user = users.firstUser
+            
+            next.set(viewModel: .init(message: message, msgService: user.messageService))
             next.set(coordinator: .init(controller: next))
             self.viewModel.resetNotificationMessage()
             
@@ -161,7 +169,9 @@ class MailboxCoordinator : DefaultCoordinator {
             {
                 return false
             }
-            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
+            let users : UsersManager = services.get()
+            let user = users.firstUser
+            let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
@@ -174,8 +184,9 @@ class MailboxCoordinator : DefaultCoordinator {
             {
                 return false
             }
-            
-            let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft)
+            let users : UsersManager = services.get()
+            let user = users.firstUser
+            let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
@@ -239,23 +250,33 @@ class MailboxCoordinator : DefaultCoordinator {
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
             {
-                    let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
-                    details.start()
-                    details.follow(deeplink)
+                let users : UsersManager = services.get()
+                let user = users.firstUser
+                
+                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: user.messageService), services: services)
+                details.start()
+                details.follow(deeplink)
             }
         case .composeShow where path.value != nil:
-            if let messageID = path.value,
-                let nav = self.navigation,
-                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
-            {
-                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
-                composer.start()
-                composer.follow(deeplink)
-            }
+            let users : UsersManager = services.get()
+            let user = users.firstUser //TODO:: fix me
+//            if let messageID = path.value,
+//                let nav = self.navigation,
+//                let viewModel = ContainableComposeViewModel(msg: messageID,
+//                                                            action: .openDraft,
+//                                                            msgService: user.messageService,
+//                                                            user: user)
+//            {
+//                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+//                composer.start()
+//                composer.follow(deeplink)
+//            }
             
         case .composeShow where path.value == nil:
             if let nav = self.navigation {
-                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
+                let users : UsersManager = services.get()
+                let user = users.firstUser
+                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
                 composer.follow(deeplink)

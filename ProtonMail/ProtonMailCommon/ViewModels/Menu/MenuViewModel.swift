@@ -29,9 +29,20 @@ enum MenuSection {
     case others     //other options contacts, settings, signout
     case labels     //label inbox
     case unknown    //do nothing by default
+    
+    /// second screen
+    case users    //
+    case accountManager //
 }
 
 protocol MenuViewModel : AnyObject {
+    
+    func showUsers() -> Bool
+    func hideUsers()
+    func updateCurrent(row: Int)
+    func cellHeight(at: Int) -> CGFloat
+    var usersCount: Int { get }
+    
     
     func updateMenuItems()
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?)
@@ -42,6 +53,9 @@ protocol MenuViewModel : AnyObject {
     func othersCount() -> Int
     func labelsCount() -> Int
     func label(at : Int) -> Label?
+    func count(by labelID: String, userID: String?) -> Int
+    func user(at : Int) -> UserManager?
+    func currentUser() -> UserManager?
     func item(inboxes at: Int ) ->MenuItem
     func item(others at: Int ) ->MenuItem
     

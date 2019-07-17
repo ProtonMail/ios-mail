@@ -56,15 +56,17 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     private var signingOut: Bool                 = false
     
     // MARK: - Constants
-    private let kMenuCellHeight: CGFloat         = 44.0
     private let kMenuOptionsWidth: CGFloat       = 300.0 //227.0
     private let kMenuOptionsWidthOffset: CGFloat = 80.0
-    private let kMenuTableCellId: String  = "menu_table_cell"
-    private let kLabelTableCellId: String = "menu_label_cell"
+    private let kMenuTableCellId: String         = "menu_table_cell"
+    private let kLabelTableCellId: String        = "menu_label_cell"
+    private let kUserTableCellID: String         = "menu_user_cell"
+    private let kButtonTableCellID: String       = "menu_button_cell"
     
     // temp vars
     private var sectionClicked : Bool  = false
     
+    // 
     override func viewDidLoad() {
         super.viewDidLoad()
         assert(viewModel != nil, "viewModel can't be empty")
@@ -94,7 +96,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
-        
         self.sectionClicked = false
         
         self.viewModel.updateMenuItems()
@@ -120,21 +121,48 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         return .lightContent
     }
     
+    ///
+    @IBAction func usersClicked(_ sender: Any) {
+        let show = self.viewModel.showUsers()
+        UIView.transition(with: tableView,
+                          duration: 0.20,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            self.tableView.backgroundColor = show ? .white : UIColor.ProtonMail.Menu_UnSelectBackground_Label
+                            self.tableView.reloadData() })
+    }
+    
+    func hideUsers(){
+        self.viewModel.hideUsers()
+        UIView.transition(with: tableView,
+                          duration: 0.20,
+                          options: .transitionCrossDissolve,
+                          animations: {
+                            self.tableView.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground_Label
+                            self.updateEmailLabel()
+                            self.updateDisplayNameLabel()
+                            self.tableView.reloadData() })
+    }
     // MARK: - Methods
     
+    func updateEmailLabel() {
+        guard let user = self.viewModel.currentUser() else {
+            return
+        }
+        emailLabel.text = user.defaultEmail
+    }
+    
     func updateDisplayNameLabel() {
-        let displayName = sharedUserDataService.defaultDisplayName
+        guard let user = self.viewModel.currentUser() else {
+            return
+        }
+        let displayName = user.defaultDisplayName
         if !displayName.isEmpty {
             displayNameLabel.text = displayName
         } else {
             displayNameLabel.text = emailLabel.text
         }
     }
-    
-    func updateEmailLabel() {
-        emailLabel.text = sharedUserDataService.defaultEmail
-    }
-    
     func updateRevealWidth() {
         let w = UIScreen.main.bounds.width
         let offset =  (w - kMenuOptionsWidthOffset)
@@ -146,7 +174,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
             self.signingOut = true
             UserTempCachedStatus.backup()
-            sharedUserDataService.signOut(true)
+            //sharedUserDataService.signOut(true)
             userCachedStatus.signOut()
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
@@ -179,6 +207,7 @@ extension MenuViewController : OptionsDialogPresenter {
 }
 
 extension MenuViewController: UITableViewDelegate {
+    
     func closeMenu() {
         self.revealViewController().revealToggle(animated: true)
     }
@@ -188,7 +217,7 @@ extension MenuViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return kMenuCellHeight
+        return self.viewModel.cellHeight(at: indexPath.section)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -212,14 +241,15 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .settings {
                 self.coordinator?.go(to: .settings)
             } else if item == .bugs {
-                self.coordinator?.go(to: .bugs)
+                self.coordinator?.go(to: .bugsPop)
             } else if item == .contacts {
                 self.coordinator?.go(to: .contacts)
             } else if item == .feedback {
                 //self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
             } else if item == .lockapp {
                 keymaker.lockTheApp() // remove mainKey from memory
-                let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
+                //TODO:: fix me
+                //let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
                 self.sectionClicked = false
                 self.closeMenu()
             } else if item == .servicePlan {
@@ -228,6 +258,15 @@ extension MenuViewController: UITableViewDelegate {
         case .labels:
             let obj = self.viewModel.label(at: row)
             self.coordinator?.go(to: .label, sender: obj)
+        case .users:
+            // pick it as current user
+            self.viewModel.updateCurrent(row: row)
+            self.viewModel.setupLabels(delegate: self)
+            self.hideUsers()
+            self.sectionClicked = false
+            self.coordinator?.go(to: .mailbox)
+        case .accountManager:
+            self.coordinator?.go(to: .accountManager)
         default:
             break
         }
@@ -245,8 +284,12 @@ extension MenuViewController: UITableViewDataSource {
             return self.viewModel.othersCount()
         case .labels:
             return self.viewModel.labelsCount()
-        default:
+        case .users:
+            return self.viewModel.usersCount
+        case .unknown:
             return 0
+        case .accountManager:
+            return 1
         }
     }
     
@@ -257,8 +300,10 @@ extension MenuViewController: UITableViewDataSource {
         switch section {
         case .inboxes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
-            cell.configCell(self.viewModel.item(inboxes: row))
-            cell.configUnreadCount()
+            let data = self.viewModel.item(inboxes: row)
+            let count = self.viewModel.count(by: data.menuToLabel.rawValue, userID: nil)
+            cell.configCell(data)
+            cell.configUnreadCount(count: count)
             return cell
         case .others:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
@@ -268,19 +313,34 @@ extension MenuViewController: UITableViewDataSource {
         case .labels:
             let cell = tableView.dequeueReusableCell(withIdentifier: kLabelTableCellId, for: indexPath) as! MenuLabelViewCell
             if let data = self.viewModel.label(at: row) {
+                let count = self.viewModel.count(by: data.labelID, userID: data.userID)
                 cell.configCell(data)
-                cell.configUnreadCount()
+                cell.configUnreadCount(count: count)
             }
             return cell
+        case .users:
+            let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
+            if let user = self.viewModel.user(at: row) {
+                cell.configCell(name: user.defaultDisplayName, email: user.defaultEmail)
+                //TODO:: fix me Move this to user
+                let count = self.viewModel.count(by: Message.Location.inbox.rawValue, userID: user.userinfo.userId)
+                cell.configUnreadCount(count: count)
+            }
+            return cell
+        case .accountManager:
+            let cell = tableView.dequeueReusableCell(withIdentifier: kButtonTableCellID, for: indexPath) as! MenuButtonViewCell
+             return cell
         default:
             let cell: MenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             return cell
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let s = self.viewModel.section(at: section)
         switch s {
+        case .users, .accountManager:
+            return 0.5
         case .labels:
             return 0.0
         default:
@@ -315,7 +375,9 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
         }
     }
     
-    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+    func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                    didChange anObject: Any, at indexPath: IndexPath?,
+                    for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         if !signingOut {
             switch(type) {
             case .delete:
@@ -338,7 +400,8 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                     if let cell = tableView.cellForRow(at: index) as? MenuLabelViewCell {
                         if let data = self.viewModel.label(at: index.row) {
                             cell.configCell(data)
-                            cell.configUnreadCount()
+                            let count = self.viewModel.count(by: data.labelID, userID: nil)
+                            cell.configUnreadCount(count: count)
                         }
                     }
                 }

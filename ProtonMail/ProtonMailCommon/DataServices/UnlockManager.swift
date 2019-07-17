@@ -25,18 +25,45 @@ import Foundation
 import Keymaker
 import LocalAuthentication
 
-class UnlockManager: NSObject {
-    static var shared = UnlockManager()
+
+enum SignInUIFlow : Int {
+    case requirePin = 0
+    case requireTouchID = 1
+    case restore = 2
+}
+
+protocol CacheStatusInject {
+    var isPinCodeEnabled : Bool { get }
+    var isTouchIDEnabled : Bool { get }
+    var pinFailedCount : Int { get set }
+    
+    var isUserCredentialStored : Bool { get }
+    var isMailboxPasswordStored : Bool { get }
+}
+
+protocol UnlockManagerDelegate : class {
+    func cleanAll()
+    func unlocked()
+}
+
+class UnlockManager: Service {
+    var cacheStatus : CacheStatusInject
+    weak var delegate : UnlockManagerDelegate?
+    
+    init(cacheStatus: CacheStatusInject, delegate : UnlockManagerDelegate?) {
+        self.cacheStatus = cacheStatus
+        self.delegate = delegate
+    }
     
     internal func isUnlocked() -> Bool {
         return self.validate(mainKey: keymaker.mainKey)
     }
     
     internal func getUnlockFlow() -> SignInUIFlow {
-        if userCachedStatus.isPinCodeEnabled {
+        if cacheStatus.isPinCodeEnabled {
             return SignInUIFlow.requirePin
         }
-        if userCachedStatus.isTouchIDEnabled {
+        if cacheStatus.isTouchIDEnabled {
             return SignInUIFlow.requireTouchID
         }
         return SignInUIFlow.restore
@@ -44,7 +71,7 @@ class UnlockManager: NSObject {
     
     internal func match(userInputPin: String, completion: @escaping (Bool)->Void) {
         guard !userInputPin.isEmpty else {
-            userCachedStatus.pinFailedCount += 1
+            cacheStatus.pinFailedCount += 1
             completion(false)
             return
         }
@@ -54,8 +81,7 @@ class UnlockManager: NSObject {
                 completion(false)
                 return
             }
-            
-            userCachedStatus.pinFailedCount = 0;
+            self.cacheStatus.pinFailedCount = 0;
             completion(true)
         }
     }
@@ -100,7 +126,7 @@ class UnlockManager: NSObject {
         switch signinFlow {
         case .requirePin:
             requestPin()
-            
+
         case .requireTouchID:
             self.biometricAuthentication(requestMailboxPassword: requestMailboxPassword) // will send message
             
@@ -110,28 +136,27 @@ class UnlockManager: NSObject {
     }
     
     internal func unlockIfRememberedCredentials(requestMailboxPassword: ()->Void) {
-        guard keymaker.mainKeyExists(),
-            sharedUserDataService.isUserCredentialStored else
-        {
-            #if !APP_EXTENSION
-            SignInManager.shared.clean()
-            #endif
+        guard keymaker.mainKeyExists(), cacheStatus.isUserCredentialStored else {
+            self.delegate?.cleanAll()
             return
         }
         
-        guard sharedUserDataService.mailboxPassword != nil else { // this will provoke mainKey obtention
+        guard cacheStatus.isMailboxPasswordStored else { // this will provoke mainKey obtention
             requestMailboxPassword()
             return
         }
-        
-        userCachedStatus.pinFailedCount = 0
+
+        cacheStatus.pinFailedCount = 0
         
         #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()
-        sharedMessageDataService.injectTransientValuesIntoMessages()
+        //TODO:: fix me
+        //sharedMessageDataService.injectTransientValuesIntoMessages()
         self.updateUserData()
         #endif
         
+        //TODO:: fix me
+//        self.delegate?.unlocked()
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
     }
     
@@ -139,20 +164,19 @@ class UnlockManager: NSObject {
     #if !APP_EXTENSION
     // TODO: verify if some of these operations can be optimized
     private func updateUserData() { // previously this method was called loadContactsAfterInstall()
-        ServicePlanDataService.shared.updateServicePlans()
-        ServicePlanDataService.shared.updateCurrentSubscription()
-        StoreKitManager.default.processAllTransactions()
+//        ServicePlanDataService.shared.updateServicePlans()
+//        ServicePlanDataService.shared.updateCurrentSubscription()
+ //       StoreKitManager.default.processAllTransactions()
         
-        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
-        
-        //TODO:: here need to be changed
-        sharedContactDataService.fetchContacts { (contacts, error) in
-            if error != nil {
-                PMLog.D("\(String(describing: error))")
-            } else {
-                PMLog.D("Contacts count: \(contacts?.count)")
-            }
-        }
+//        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
+//        //TODO:: here need to be changed
+//        sharedContactDataService.fetchContacts { (contacts, error) in
+//            if error != nil {
+//                PMLog.D("\(String(describing: error))")
+//            } else {
+//                PMLog.D("Contacts count: \(contacts?.count)")
+//            }
+//        }
     }
     #endif
 }

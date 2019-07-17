@@ -59,7 +59,8 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
     }
     
     public func needAsk2FA() -> Bool {
-        return sharedUserDataService.twoFactorStatus == 1
+//        return sharedUserDataService.twoFactorStatus == 1
+        return false
     }
     
     public func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
@@ -77,13 +78,13 @@ public class ChangeLoginPWDViewModel : ChangePWDViewModel{
             complete(true, nil)
         }
         else {
-            sharedUserDataService.updatePassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    complete(true, nil)
-                }
-            }
+//            sharedUserDataService.updatePassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode) { _, _, error in
+//                if let error = error {
+//                    complete(false, error)
+//                } else {
+//                    complete(true, nil)
+//                }
+//            }
         }
     }
 }
@@ -109,7 +110,8 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
     }
     
     func needAsk2FA() -> Bool {
-        return sharedUserDataService.twoFactorStatus == 1
+//        return sharedUserDataService.twoFactorStatus == 1
+        return false
     }
     
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
@@ -129,13 +131,13 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
 //            complete(true, nil)
 //        }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: false) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    complete(true, nil)
-                }
-            }
+//            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: false) { _, _, error in
+//                if let error = error {
+//                    complete(false, error)
+//                } else {
+//                    complete(true, nil)
+//                }
+//            }
         }
     }
 }
@@ -162,7 +164,8 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     }
     
     func needAsk2FA() -> Bool {
-        return sharedUserDataService.twoFactorStatus == 1
+//        return sharedUserDataService.twoFactorStatus == 1
+        return false
     }
     
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
@@ -182,13 +185,13 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
             //            complete(true, nil)
             //        }
         else {
-            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: true) { _, _, error in
-                if let error = error {
-                    complete(false, error)
-                } else {
-                    complete(true, nil)
-                }
-            }
+//            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: true) { _, _, error in
+//                if let error = error {
+//                    complete(false, error)
+//                } else {
+//                    complete(true, nil)
+//                }
+//            }
         }
     }
 }
@@ -224,20 +227,20 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
         let newpwd = new_pwd//.trim();
         let confirmpwd = confirm_new_pwd//.trim();
         
-        if curr_pwd != sharedUserDataService.mailboxPassword {
-            complete(false, UpdatePasswordError.currentPasswordWrong.error)
-        }
-        else if newpwd == "" || confirmpwd == "" {
-            complete(false, UpdatePasswordError.passwordEmpty.error)
-        }
-        else if newpwd != confirmpwd {
-            complete(false, UpdatePasswordError.newNotMatch.error)
-        }
-        else if curr_pwd == newpwd {
-            complete(true, nil)
-        }
-        else {
-            complete(true, nil)
-        }
+//        if curr_pwd != sharedUserDataService.mailboxPassword {
+//            complete(false, UpdatePasswordError.currentPasswordWrong.error)
+//        }
+//        else if newpwd == "" || confirmpwd == "" {
+//            complete(false, UpdatePasswordError.passwordEmpty.error)
+//        }
+//        else if newpwd != confirmpwd {
+//            complete(false, UpdatePasswordError.newNotMatch.error)
+//        }
+//        else if curr_pwd == newpwd {
+//            complete(true, nil)
+//        }
+//        else {
+//            complete(true, nil)
+//        }
     }
 }

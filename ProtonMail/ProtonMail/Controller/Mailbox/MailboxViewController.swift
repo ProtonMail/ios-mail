@@ -70,7 +70,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
-    private lazy var replacingEmails = sharedContactDataService.allEmails()
+    private lazy var replacingEmails = viewModel.allEmails()
     private var messageID: String? // this is for when user click the notification email
     private var listEditing: Bool = false
     private var timer : Timer!
@@ -176,9 +176,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoButton.isHidden = true
         self.undoView.isHidden = true
         
+        //TODO:: fix me
         ///set default swipe action
-        self.leftSwipeAction = sharedUserDataService.swiftLeft
-        self.rightSwipeAction = sharedUserDataService.swiftRight
+//        self.leftSwipeAction = sharedUserDataService.swiftLeft
+//        self.rightSwipeAction = sharedUserDataService.swiftRight
         
         ///
         self.viewModel.cleanReviewItems()
@@ -227,9 +228,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         self.viewModel.processCachedPush()
         
-        let usedStorageSpace = sharedUserDataService.usedSpace
-        let maxStorageSpace = sharedUserDataService.maxSpace
-        StorageLimit().checkSpace(usedStorageSpace, maxSpace: maxStorageSpace)
+        //TODO:: fix me
+//        let usedStorageSpace = sharedUserDataService.usedSpace
+//        let maxStorageSpace = sharedUserDataService.maxSpace
+//        StorageLimit().checkSpace(usedStorageSpace, maxSpace: maxStorageSpace)
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
         
@@ -485,9 +487,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     private func checkContact() {
-        sharedContactDataService.fetchContacts { (_, _) in
-
-        }
+        self.viewModel.fetchContacts()
     }
     
     @discardableResult
@@ -737,18 +737,19 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard rowCount == 0 else {
             return
         }
-        let updateTime = viewModel.lastUpdateTime()
-        let recordedCount = Int(updateTime.total)
-        if updateTime.isNew || recordedCount > rowCount {
-            self.fetchingOlder = true
-            viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
-                self.fetchingOlder = false
-                if error != nil {
-                    PMLog.D("search error: \(String(describing: error))")
-                }
-                self.checkHuman()
-            })
-        }
+        //TODO:: fix me
+//        let updateTime = viewModel.lastUpdateTime()
+//        let recordedCount = Int(updateTime.total)
+//        if updateTime.isNew || recordedCount > rowCount {
+//            self.fetchingOlder = true
+//            viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
+//                self.fetchingOlder = false
+//                if error != nil {
+//                    PMLog.D("search error: \(String(describing: error))")
+//                }
+//                self.checkHuman()
+//            })
+//        }
     }
     
     func handleRequestError (_ error : NSError) {
@@ -793,10 +794,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.hideTopMessage()
         if !fetchingMessage {
             fetchingMessage = true
-            
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
-            let updateTime = viewModel.lastUpdateTime()
-            let complete : APIService.CompletionBlock = { (task, res, error) -> Void in
+            let complete : CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false
                 self.newMessageCount = 0
                 self.fetchingMessage = false
@@ -813,9 +812,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if error == nil {
                     self.onlineTimerReset()
                     self.viewModel.resetNotificationMessage()
-                    if !updateTime.isNew {
-                        
-                    }
                     if let notices = res?["Notices"] as? [String] {
                         serverNotice.check(notices)
                     }
@@ -825,7 +821,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     }
                     
                     if loadMore <= 0 {
-                        sharedMessageDataService.updateMessageCount()
+                        //TODO:: fix me
+                        //self.viewModel.
+                        //sharedMessageDataService.updateMessageCount()
                     }
                 }
                 
@@ -844,26 +842,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     let _ = self.checkHuman()
                     
                     //temperay to check message status and fetch metadata
-                    sharedMessageDataService.purgeOldMessages()
+                    //sharedMessageDataService.purgeOldMessages()
                 }
             }
-            
-            if (updateTime.isNew) {
-                if lastUpdatedStore.lastEventID == "0" {
+            if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
+                //fetch
+                self.needToShowNewMessage = true
+                viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
+                                      notificationMessageID: self.viewModel.notificationMessageID,
+                                      completion: complete)
+                self.checkEmptyMailbox()
+            } else {// this new
+                if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchMessageWithReset(time: 0, completion: complete)
                 }
                 else {
                     viewModel.fetchMessages(time: 0, foucsClean: false, completion: complete)
                 }
-            } else {
-                //fetch
-                self.needToShowNewMessage = true
-                viewModel.fetchEvents(time: Int(updateTime.start.timeIntervalSince1970),
-                                      notificationMessageID: self.viewModel.notificationMessageID,
-                                      completion: complete)
-                self.checkEmptyMailbox()
             }
-            
             self.checkContact()
         }
     }
@@ -902,26 +898,28 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return
         }
         
-        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
-            guard let objectId = msg?.objectID,
-                let message = self.viewModel.object(by: objectId),
-                message.body.isEmpty == false else
-            {
-                if error != nil {
-                    PMLog.D("error: \(String(describing: error))")
-                    let alert = LocalString._unable_to_edit_offline.alertController()
-                    alert.addOKAction()
-                    self.present(alert, animated: true, completion: nil)
-                    self.tableView.indexPathsForSelectedRows?.forEach {
-                        self.tableView.deselectRow(at: $0, animated: true)
-                    }
-                }
-                return
-            }
-            if self.checkHuman() {
-                self.coordinator?.go(to: .composeShow, sender: message)
-            }
-        }
+        //TODO:: fix me
+        
+//        sharedMessageDataService.ForcefetchDetailForMessage(message) {_, _, msg, error in
+//            guard let objectId = msg?.objectID,
+//                let message = self.viewModel.object(by: objectId),
+//                message.body.isEmpty == false else
+//            {
+//                if error != nil {
+//                    PMLog.D("error: \(String(describing: error))")
+//                    let alert = LocalString._unable_to_edit_offline.alertController()
+//                    alert.addOKAction()
+//                    self.present(alert, animated: true, completion: nil)
+//                    self.tableView.indexPathsForSelectedRows?.forEach {
+//                        self.tableView.deselectRow(at: $0, animated: true)
+//                    }
+//                }
+//                return
+//            }
+//            if self.checkHuman() {
+//                self.coordinator?.go(to: .composeShow, sender: message)
+//            }
+//        }
     }
     
     fileprivate func selectMessageIDIfNeeded() {
@@ -1345,15 +1343,17 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
                         if let msgTime = newMsg.time, newMsg.unRead {
-                            let updateTime = viewModel.lastUpdateTime()
-                            if msgTime.compare(updateTime.start as Date) != ComparisonResult.orderedAscending {
-                                self.newMessageCount += 1
+                            if let updateTime = viewModel.lastUpdateTime() {
+                                if msgTime.compare(updateTime.startTime) != ComparisonResult.orderedAscending {
+                                    self.newMessageCount += 1
+                                }
                             }
                         }
                     }
                 }
             }
         case .update:
+            //#3 is active
             /// # 1
 //            if let indexPath = indexPath {
 //                self.tableView.reloadRows(at: [indexPath], with: .fade)
@@ -1399,9 +1399,9 @@ extension MailboxViewController: UITableViewDelegate {
         guard let current = self.viewModel.item(index: indexPath) else {
             return
         }
-        let updateTime = viewModel.lastUpdateTime()
-        if let currentTime = current.time {
-            let isOlderMessage = updateTime.end.compare(currentTime as Date) != ComparisonResult.orderedAscending
+        
+        if let updateTime = viewModel.lastUpdateTime(), let currentTime = current.time {
+            let isOlderMessage = updateTime.endTime.compare(currentTime) != ComparisonResult.orderedAscending
             let loadMore = self.viewModel.loadMore(index: indexPath)
             if  (isOlderMessage || loadMore) && !self.fetchingOlder {
                 let sectionCount = self.viewModel.rowCount(section: indexPath.section)
@@ -1410,8 +1410,8 @@ extension MailboxViewController: UITableViewDelegate {
                 if updateTime.isNew || recordedCount > sectionCount {
                     self.fetchingOlder = true
                     self.tableView.showLoadingFooter()
-                    let updateTime = self.viewModel.lastUpdateTime()
-                    let unixTimt: Int = (updateTime.end as Date == Date.distantPast ) ? 0 : Int(updateTime.end.timeIntervalSince1970)
+//                    let updateTime = self.viewModel.lastUpdateTime()
+                    let unixTimt: Int = (updateTime.endTime == Date.distantPast ) ? 0 : Int(updateTime.endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
                         self.tableView.hideLoadingFooter()
                         self.fetchingOlder = false
@@ -1422,7 +1422,6 @@ extension MailboxViewController: UITableViewDelegate {
         }
     }
     
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if let rIndex = self.viewModel.ratingIndex {
             if rIndex == indexPath {
@@ -1430,7 +1429,6 @@ extension MailboxViewController: UITableViewDelegate {
             }
         }
         return kMailboxCellHeight
-
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

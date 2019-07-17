@@ -99,6 +99,14 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         picker.delegate = self
     }
     
+    //TODO:: fix me
+//    var contactService : ContactDataService {
+//        get {
+//            let users: UsersManager = sharedServices.get()
+//            return users.firstUser.contactService
+//        }
+//    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,16 +127,16 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // load all contacts and groups
         // TODO: move to view model
         firstly { () -> Promise<Void> in
-            self.contacts = sharedContactDataService.allContactVOs() // contacts in core data
-                return retrieveAllContacts() // contacts in phone book
+//            self.contacts = contactService.allContactVOs() // contacts in core data
+            return retrieveAllContacts() // contacts in phone book
         }.done { [weak self] in
             guard let self = self else { return }
             // get contact groups
             
             // TODO: figure where to put this thing
-            if sharedUserDataService.isPaidUser() {
-                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
-            }
+//            if sharedUserDataService.isPaidUser() {
+//                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+//            }
             
             // Sort contacts and contact groups
             self.contacts.sort {
@@ -191,17 +199,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     private func retrieveAllContacts() -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            sharedContactDataService.getContactVOs { (contacts, error) in
-                if let error = error {
-                    PMLog.D(" error: \(error)")
-                    // seal.reject(error) // TODO: should I?
-                }
-                self.contacts = contacts
-                seal.fulfill(())
-            }
+        return Promise { seal in
+//            contactService.getContactVOs { (contacts, error) in
+//                if let error = error {
+//                    PMLog.D(" error: \(error)")
+//                    // seal.reject(error) // TODO: should I?
+//                }
+//                self.contacts = contacts
+//                seal.fulfill(())
+//            }
         }
     }
     
@@ -210,11 +216,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    att.base64AttachmentData({ (based64String) in
+                    viewModel.base64AttachmentData(att: att) { (based64String) in
                         if !based64String.isEmpty {
                             self.htmlEditor.update(embedImage: "cid:\(content_id)", encoded: "data:\(att.mimeType);base64,\(based64String)")
                         }
-                    })
+                    }
                 }
             }
         }

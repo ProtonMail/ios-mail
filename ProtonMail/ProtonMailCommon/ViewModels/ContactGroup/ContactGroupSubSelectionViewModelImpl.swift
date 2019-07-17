@@ -49,7 +49,7 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
         
         var emailData: [ContactGroupSubSelectionViewModelEmailInfomation] = []
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         // (1)
         if let label = Label.labelForLabelName(self.groupName,
                                                inManagedObjectContext: context),

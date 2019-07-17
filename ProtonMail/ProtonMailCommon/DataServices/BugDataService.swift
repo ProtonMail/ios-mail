@@ -24,15 +24,16 @@
 import Foundation
 
 public class BugDataService: Service {
-    public init() {
-        
+    private let apiService : API
+    init(api: API) {
+        self.apiService = api
     }
     
     func reportPhishing(messageID : String, messageBody : String, completion: ((NSError?) -> Void)?) {
         let api = ReportPhishing(msgID: messageID,
                                  mimeType: "text/html",
                                  body: messageBody)
-        api.call { (task, res, hasError) in
+        api.call(api: self.apiService) { (task, res, hasError) in
             completion?(res?.error)
         }
     }
@@ -41,11 +42,12 @@ public class BugDataService: Service {
         let systemVersion = UIDevice.current.systemVersion;
         let model = UIDevice.current.model
         let mainBundle = Bundle.main
-        let username = sharedUserDataService.username ?? ""
-        let useremail = sharedUserDataService.defaultEmail 
+        //TODO:: fix me
+        let username = "" // sharedUserDataService.username ?? ""
+        let useremail = "" // sharedUserDataService.defaultEmail
         let butAPI = BugReportRequest(os: model, osVersion: "\(systemVersion)", clientVersion: mainBundle.appVersion, title: "ProtonMail App bug report", desc: bug, userName: username, email: useremail)
         
-        butAPI.call { (task, response, hasError) -> Void in
+        butAPI.call(api: self.apiService) { (task, response, hasError) -> Void in
             completion?(response?.error)
         }
     }

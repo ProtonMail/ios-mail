@@ -103,9 +103,13 @@ class ReportBugsViewController: ProtonMailViewController {
     }
     
     private func send(_ text: String) {
-        MBProgressHUD.showAdded(to: view, animated: true)
+        let v : UIView = self.navigationController?.view ?? self.view
+        MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
-        BugDataService().reportBug(text, completion: { error in
+        let users : UsersManager = sharedServices.get()
+        let user = users.firstUser
+        let bugService = 
+        BugDataService(api: APIService.shared).reportBug(text, completion: { error in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {

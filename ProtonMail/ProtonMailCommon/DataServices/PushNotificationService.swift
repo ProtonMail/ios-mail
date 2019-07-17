@@ -39,7 +39,7 @@ public class PushNotificationService: NSObject, Service {
 
     
     /// message service
-    private let messageService: MessageDataService
+    private let messageService: MessageDataService?
     
     ///
     private let subscriptionSaver: Saver<Subscription>
@@ -51,12 +51,12 @@ public class PushNotificationService: NSObject, Service {
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
-    init(service: MessageDataService,
+    init(service: MessageDataService? = nil,
          subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
-         deviceRegistrator: DeviceRegistrator = sharedAPIService,
+         deviceRegistrator: DeviceRegistrator = APIService.shared, //TODO:: fix me
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
@@ -177,7 +177,7 @@ public class PushNotificationService: NSObject, Service {
     // register on BE and validate local values
     private func report(_ settings: SubscriptionSettings) {
         self.currentSubscription = .pending(settings)
-        let completion: APIService.CompletionBlock = { _, _, error in
+        let completion: CompletionBlock = { _, _, error in
             guard error == nil else {
                 self.currentSubscription = .notReported(settings)
                 return
@@ -192,7 +192,7 @@ public class PushNotificationService: NSObject, Service {
     
     // unregister on BE and validate local values
     internal func unreport(_ settings: SubscriptionSettings) {
-        let completion: APIService.CompletionBlock = { _, _, error in
+        let completion: CompletionBlock = { _, _, error in
             guard error == nil ||               // no errors
                 error?.code == 11211 ||         // "Device does not exist"
                 error?.code == 11200 else       // "Invalid device token"
@@ -237,11 +237,13 @@ public class PushNotificationService: NSObject, Service {
     
     // MARK: - notifications
     
-    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
-        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
-            completionHandler()
-            return
-        }
+    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
+                                             forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
+        //TODO:: fix me
+        //        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
+//            completionHandler()
+//            return
+//        }
         
         let application = UIApplication.shared
         guard let messageid = messageIDForUserInfo(userInfo) else {
@@ -256,25 +258,27 @@ public class PushNotificationService: NSObject, Service {
         }
         
         self.launchOptions = nil
-        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
-            guard error == nil else {
-                completionHandler()
-                return
-            }
-            
-            
-            switch userInfo["category"] as? String {
-            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-                let link = DeepLink.init(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue)
-                NotificationCenter.default.post(name: .switchView, object: link)
-            default:
-                self.messageService.pushNotificationMessageID = messageid
-                let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
-                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
-                NotificationCenter.default.post(name: .switchView, object: link)
-            }
-            completionHandler()
-        }
+        
+        //TODO:: fix me -- look up by userid and message id
+//        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+//            guard error == nil else {
+//                completionHandler()
+//                return
+//            }
+//
+//
+//            switch userInfo["category"] as? String {
+//            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
+//                let link = DeepLink.init(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue)
+//                NotificationCenter.default.post(name: .switchView, object: link)
+//            default:
+//                self.messageService.pushNotificationMessageID = messageid
+//                let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
+//                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
+//                NotificationCenter.default.post(name: .switchView, object: link)
+//            }
+//            completionHandler()
+//        }
     }
     
     // MARK: - Private methods
@@ -308,15 +312,16 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void)
     {
-        let userInfo = response.notification.request.content.userInfo
-        if UnlockManager.shared.isUnlocked() { // unlocked
-            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-        } else if UIApplication.shared.applicationState == .inactive { // opened by push
-            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
-        } else {
-            // app is locked and not opened from push - nothing to do here
-            completionHandler()
-        }
+        //TODO:: fix me
+//        let userInfo = response.notification.request.content.userInfo
+//        if UnlockManager.shared.isUnlocked() { // unlocked
+//            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+//        } else if UIApplication.shared.applicationState == .inactive { // opened by push
+//            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+//        } else {
+//            // app is locked and not opened from push - nothing to do here
+//            completionHandler()
+//        }
     }
     
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -326,11 +331,12 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         let options: UNNotificationPresentationOptions = [.alert, .sound]
         
-        if UnlockManager.shared.isUnlocked() { // foreground
-            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
-        } else {
-            completionHandler(options)
-        }
+        //TODO:: fix me
+//        if UnlockManager.shared.isUnlocked() { // foreground
+//            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
+//        } else {
+//            completionHandler(options)
+//        }
     }
 }
 
@@ -342,7 +348,7 @@ protocol SessionIdProvider {
 
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
     var sessionID: String? {
-        return AuthCredential.fetchFromKeychain()?.userID
+        return AuthCredential.fetchFromKeychain()?.sessionID
     }
 }
 
@@ -360,13 +366,15 @@ protocol UnlockProvider {
 }
 struct UnlockManagerProvider: UnlockProvider {
     var isUnlocked: Bool {
-        return UnlockManager.shared.isUnlocked()
+        return false
+        //TODO:: fix me
+//        return UnlockManager.shared.isUnlocked()
     }
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: PushSubscriptionSettings, completion: APIService.CompletionBlock?)
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
+    func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?)
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock)
 }
 
 extension APIService: DeviceRegistrator {}

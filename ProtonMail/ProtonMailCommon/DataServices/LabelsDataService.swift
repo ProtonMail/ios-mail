@@ -25,9 +25,6 @@ import Foundation
 import CoreData
 import Groot
 
-
-let sharedLabelsDataService = LabelsDataService()
-
 enum LabelFetchType : Int {
     case all = 0
     case label = 1
@@ -37,10 +34,18 @@ enum LabelFetchType : Int {
     case folderWithOutbox = 5
 }
 
-class LabelsDataService {
+class LabelsDataService: Service {
+    
+    public let apiService: API
+    private let userID : String
+    
+    init(api: API, userID: String) {
+        self.apiService = api
+        self.userID = userID
+    }
     
     func cleanUp() {
-        Label.deleteAll(inContext: sharedCoreDataService.backgroundManagedObjectContext)
+        Label.deleteAll(inContext: CoreDataService.shared.backgroundManagedObjectContext)
     }
     
     /**
@@ -52,7 +57,7 @@ class LabelsDataService {
      */
     func fetchLabels(type: Int = 1) {
         let eventAPI = GetLabelsRequest(type: type)
-        eventAPI.call() {
+        eventAPI.call(api: self.apiService) {
             task, response, hasError in
             
             if response == nil {
@@ -72,8 +77,12 @@ class LabelsDataService {
                     labels.append(["ID": "5"]) //case allmail = "5"
                 }
                 
+                for (index, _) in labels.enumerated() {
+                    labels[index]["UserID"] = self.userID
+                }
+                
                 //save
-                let context = sharedCoreDataService.backgroundManagedObjectContext
+                let context = CoreDataService.shared.backgroundManagedObjectContext
                 context.performAndWait() {
                     do {
                         let labels_out = try GRTJSONSerialization.objects(withEntityName: Label.Attributes.entityName, fromJSONArray: labels, in: context)
@@ -100,7 +109,7 @@ class LabelsDataService {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         do {
             let results = try context.fetch(fetchRequest)
             if let results = results as? [Label] {
@@ -117,7 +126,7 @@ class LabelsDataService {
     }
     
     func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        let moc = sharedCoreDataService.mainManagedObjectContext
+        let moc = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         fetchRequest.predicate = self.fetchRequestPrecidate(type)
         
@@ -135,34 +144,34 @@ class LabelsDataService {
     private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
         switch type {
         case .all:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.userID, self.userID)
         case .folder:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
         case .folderWithInbox:
             // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
             let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
             
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .folderWithOutbox:
             // 7 - sent, 6 - archive, 3 - trash
             let defaults = NSPredicate(format: "labelID IN %@", [6, 7, 3])
             // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
             
             return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
         case .label:
-            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
         case .contactGroup:
             // in contact group searching, predicate must be consistent with this one
-            return NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+            return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
         }
     }
     
     func addNewLabel(_ response : [String : Any]?) {
         if let label = response {
-            let context = sharedCoreDataService.backgroundManagedObjectContext
+            let context = CoreDataService.shared.backgroundManagedObjectContext
             context.performAndWait() {
                 do {
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
@@ -177,7 +186,12 @@ class LabelsDataService {
     }
     
     func label(by labelID : String) -> Label? {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = CoreDataService.shared.backgroundManagedObjectContext
         return Label.labelForLableID(labelID, inManagedObjectContext: context) 
+    }
+    
+    func unreadCount(by lableID: String, userID: String? = nil) -> Int {
+        let context = CoreDataService.shared.backgroundManagedObjectContext
+        return lastUpdatedStore.unreadCount(by: lableID, userID: userID ?? self.userID, context: context)
     }
 }

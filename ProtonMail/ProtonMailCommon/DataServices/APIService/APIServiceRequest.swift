@@ -35,6 +35,12 @@ protocol Package {
 }
 
 
+//Protocol-Oriented-Networking
+protocol APIDelegate {
+    
+}
+
+
 //abstract api request base class
 class ApiRequest<T : ApiResponse> : Package {
     
@@ -85,13 +91,13 @@ class ApiRequest<T : ApiResponse> : Package {
         fatalError("This method must be overridden")
     }
     
-    func method() -> APIService.HTTPMethod {
+    func method() -> HTTPMethod {
         return .get
     }
     
-    func call(_ complete: ResponseCompletionBlock?) {
+    func call(api: API, _ complete: ResponseCompletionBlock?) {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
-        let completionWrapper:  APIService.CompletionBlock = { task, res, error in
+        let completionWrapper:  CompletionBlock = { task, res, error in
             let realType = T.self
             let apiRes = realType.init()
             
@@ -119,23 +125,40 @@ class ApiRequest<T : ApiResponse> : Package {
         var header = self.getHeaders()
         header["x-pm-apiversion"] = self.apiVersion()
         
-        sharedAPIService.request(method: self.method(),
-                                 path: self.path(),
-                                 parameters: self.toDictionary(),
-                                 headers: header,
-                                 authenticated: self.getIsAuthFunction(),
-                                 authRetry: self.authRetry(),
-                                 customAuthCredential: self.authCredential,
-                                 completion: completionWrapper)
+        api.request(method: self.method(),
+                    path: self.path(),
+                    parameters: self.toDictionary(),
+                    headers: header,
+                    authenticated: self.getIsAuthFunction(),
+                    customAuthCredential: self.authCredential,
+                    completion: completionWrapper)
+        
+         //TODO:: missing auth
+//         api.request(method: self.method(),
+//                     path: self.path(),
+//                     parameters: self.toDictionary(),
+//                     headers: [HTTPHeader.apiVersion: self.apiVersion()],
+//                     authenticated: self.getIsAuthFunction(),
+//                     completion: completionWrapper)
+        
+        
+        //api.
+//        sharedAPIService.request(method: self.method(),
+//                                 path: self.path(),
+//                                 parameters: self.toDictionary(),
+//                                 headers: ["x-pm-apiversion": self.apiVersion()],
+//                                 authenticated: self.getIsAuthFunction(),
+//                                 customAuthCredential: self.authCredential,
+//                                 completion: completionWrapper)
     }
     
     
-    public func syncCall() throws -> T? {
+    public func syncCall(api: API) throws -> T? {
         var ret_res : T? = nil
         var ret_error : NSError? = nil
         let sema = DispatchSemaphore(value: 0);
         //TODO :: 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
-        let completionWrapper:  APIService.CompletionBlock = { task, res, error in
+        let completionWrapper: CompletionBlock = { task, res, error in
             defer {
                 sema.signal();
             }
@@ -166,15 +189,12 @@ class ApiRequest<T : ApiResponse> : Package {
             ret_res = apiRes
         }
         
-        sharedAPIService.request(method: self.method(),
-                                 path: self.path(),
-                                 parameters: self.toDictionary(),
-                                 headers: ["x-pm-apiversion": self.apiVersion()],
-                                 authenticated: self.getIsAuthFunction(),
-                                 authRetry: self.authRetry(),
-                                 customAuthCredential: self.authCredential,
-                                 completion: completionWrapper)
-
+        
+        //TODO:: missing auth
+        api.request(method: self.method(), path: self.path(),
+                    parameters: self.toDictionary(), headers: [HTTPHeader.apiVersion: self.apiVersion()],
+                    authenticated: self.getIsAuthFunction(), customAuthCredential: self.authCredential, completion: completionWrapper)
+        
         //wait operations
         let _ = sema.wait(timeout: DispatchTime.distantFuture)
         if let e = ret_error {
@@ -188,7 +208,9 @@ class ApiRequest<T : ApiResponse> : Package {
 //abstract api request base class
 class ApiRequestNew<T : ApiResponse> : Package {
     
-    init () { }
+    init (api: API) {
+        self.apiService = api
+    }
     
     //add error response
     //public typealias ResponseCompletionBlock = (_ task: URLSessionDataTask?, _ response: T?, _ hasError : Bool) -> Void
@@ -221,6 +243,8 @@ class ApiRequestNew<T : ApiResponse> : Package {
     
     var authCredential: AuthCredential?
     
+    private let apiService: API
+    
     /**
      get request path
      
@@ -230,14 +254,14 @@ class ApiRequestNew<T : ApiResponse> : Package {
         fatalError("This method must be overridden")
     }
     
-    func method() -> APIService.HTTPMethod {
+    func method() -> HTTPMethod {
         return .get
     }
     
     func run() -> Promise<T> {
         // 1 make a request , 2 wait for the respons async 3. valid response 4. parse data into response 5. some data need save into database.
         let deferred = Promise<T>.pending()
-        let completionWrapper:  APIService.CompletionBlock = { task, res, error in
+        let completionWrapper:  CompletionBlock = { task, res, error in
             let realType = T.self
             let apiRes = realType.init()
             
@@ -268,14 +292,11 @@ class ApiRequestNew<T : ApiResponse> : Package {
                 deferred.resolver.fulfill(apiRes)
             }
         }
-        sharedAPIService.request(method: self.method(),
-                                 path: self.path(),
-                                 parameters: self.toDictionary(),
-                                 headers: ["x-pm-apiversion": self.apiVersion()],
-                                 authenticated: self.getIsAuthFunction(),
-                                 authRetry: self.authRetry(),
-                                 customAuthCredential: self.authCredential,
-                                 completion: completionWrapper)
+        
+        //TODO:: missing auth
+        apiService.request(method: self.method(), path: self.path(),
+                    parameters: self.toDictionary(), headers: [HTTPHeader.apiVersion: self.apiVersion()],
+                    authenticated: self.getIsAuthFunction(), customAuthCredential: self.authCredential, completion: completionWrapper)
         
         return deferred.promise
         

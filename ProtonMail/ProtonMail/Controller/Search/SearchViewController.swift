@@ -33,11 +33,15 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
-    private lazy var replacingEmails = sharedContactDataService.allEmails()
     fileprivate let kAnimationDuration: TimeInterval = 0.3
     fileprivate let kSearchCellHeight: CGFloat = 64.0
     fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
+    
+    private lazy var replacingEmails : [Email] = {
+        let users : UsersManager = sharedServices.get() //TODO:: fix me
+        return users.firstUser.contactService.allEmails()
+    }()
     
     // TODO: need better UI solution for this progress bar
     private lazy var progressBar: UIProgressView = {
@@ -157,7 +161,7 @@ class SearchViewController: ProtonMailViewController {
     }
     
     func indexLocalObjects(_ completion: @escaping ()->Void) {
-        let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
+        let context = CoreDataService.shared.makeReadonlyBackgroundManagedObjectContext()
         var count = 0
         context.performAndWait {
             do {
@@ -235,7 +239,7 @@ class SearchViewController: ProtonMailViewController {
             return nil
         }
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         context.performAndWait {
             let messages = messageIds.compactMap { oldId -> Message? in
                 let uri = oldId.uriRepresentation() // cuz contexts have different persistent store coordinators
@@ -269,34 +273,36 @@ class SearchViewController: ProtonMailViewController {
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
-        sharedMessageDataService.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
-            DispatchQueue.main.async {
-                self.tableView.hideLoadingFooter()
-            }
+        //TODO:: fix me
         
-            guard error == nil, let messages = messageBoxes else {
-                PMLog.D(" search error: \(String(describing: error))")
-                
-                if pageToLoad == 0 {
-                    self.fetchLocalObjects()
-                }
-                return
-            }
-            self.currentPage = pageToLoad
-            guard !messages.isEmpty else {
-                return
-            }
-            
-            let context = sharedCoreDataService.mainManagedObjectContext
-            context.perform {
-                let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
-                if pageToLoad > 0 {
-                    self.searchResult.append(contentsOf: mainQueueMessages)
-                } else {
-                    self.searchResult = mainQueueMessages
-                }
-            }
-        }
+//        sharedMessageDataService.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
+//            DispatchQueue.main.async {
+//                self.tableView.hideLoadingFooter()
+//            }
+//
+//            guard error == nil, let messages = messageBoxes else {
+//                PMLog.D(" search error: \(String(describing: error))")
+//
+//                if pageToLoad == 0 {
+//                    self.fetchLocalObjects()
+//                }
+//                return
+//            }
+//            self.currentPage = pageToLoad
+//            guard !messages.isEmpty else {
+//                return
+//            }
+//
+//            let context = CoreDataService.shared.mainManagedObjectContext
+//            context.perform {
+//                let mainQueueMessages = messages.compactMap { context.object(with: $0.objectID) as? Message }
+//                if pageToLoad > 0 {
+//                    self.searchResult.append(contentsOf: mainQueueMessages)
+//                } else {
+//                    self.searchResult = mainQueueMessages
+//                }
+//            }
+//        }
     }
     
     func initiateFetchIfCloseToBottom(_ indexPath: IndexPath) {
@@ -321,8 +327,9 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageContainerViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row]))
-                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
+                //TODO:: fix me
+//                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row]))
+//                messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")
             }
@@ -372,17 +379,23 @@ extension SearchViewController: UITableViewDelegate {
             return
         }
         
+        let users : UsersManager = sharedServices.get()
+        let user = users.firstUser
+        //TODO:: fix me
         // open drafts in Composer
-        if let viewModel = ContainableComposeViewModel(msgId: message.messageID, action: .openDraft),
-            let navigationController = self.navigationController
-        {
-            let composer = ComposeContainerViewCoordinator(nav: navigationController,
-                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
-                                                           services: ServiceFactory.default)
-            // this will present composer in a modal which is discouraged
-            // TODO: refactor when implementing enc search
-            composer.start()
-        }
+//        if let viewModel = ContainableComposeViewModel(msg: message.messageID,
+//                                                       action: .openDraft,
+//                                                       msgService: user.messageService,
+//                                                       user: user),
+//            let navigationController = self.navigationController
+//        {
+//            let composer = ComposeContainerViewCoordinator(nav: navigationController,
+//                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
+//                                                           services: ServiceFactory.default)
+//            // this will present composer in a modal which is discouraged
+//            // TODO: refactor when implementing enc search
+//            composer.start()
+//        }
     }
     
     @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

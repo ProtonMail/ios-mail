@@ -76,6 +76,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case contacts  = "toContactsSegue"
         case feedbacks = "toFeedbackSegue"
         case plan      = "toServicePlan"
+        case bugsPop = "toBugPop"
+        case accountManager = "toAccountManager"
         
         init?(rawValue: String) {
             switch rawValue {
@@ -86,6 +88,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
             case "toContactsSegue": self = .contacts
             case "toFeedbackSegue": self = .feedbacks
             case "toServicePlan": self = .plan
+            case "toBugPop": self = .bugsPop
+            case "toAccountManager": self = .accountManager
             default: return nil
             }
         }
@@ -130,14 +134,19 @@ class MenuCoordinatorNew: DefaultCoordinator {
     private func toInbox(labelID: String, deepLink: DeepLink) {
         //Example of deeplink without segue
         var nextVM : MailboxViewModel?
+        let labelService : LabelsDataService = self.services.get()
+        
+        let users : UsersManager = self.services.get()
+        let user = users.firstUser
+        
         if let mailbox = Message.Location(rawValue: labelID) {
-           nextVM = MailboxViewModelImpl(label: mailbox, service: services.get(), pushService: services.get())
-        } else if let label = sharedLabelsDataService.label(by: labelID) {
+            nextVM = MailboxViewModelImpl(label: mailbox, userManager: user, pushService: services.get())
+        } else if let label = labelService.label(by: labelID) {
             //shared global service need to be changed later
             if label.exclusive {
-                nextVM = FolderboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                nextVM = FolderboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             } else {
-                nextVM = LabelboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                nextVM = LabelboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             }
         }
         
@@ -199,7 +208,9 @@ class MenuCoordinatorNew: DefaultCoordinator {
             if let index = sender as? Message.Location {
                 label = index
             }
-            let viewModel = MailboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            let usersManager : UsersManager = sharedServices.get()
+            let user = usersManager.firstUser
+            let viewModel = MailboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
@@ -212,14 +223,16 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
+            let usersManager : UsersManager = sharedServices.get()
+            let user = usersManager.firstUser
             
-            var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox, service: services.get(), pushService: services.get())
+            var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox, userManager: user, pushService: services.get())
             
             if let label = sender as? Label {
                 if label.exclusive {
-                    viewModel = FolderboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                    viewModel = FolderboxViewModelImpl(label: label, userManager: user, pushService: services.get())
                 } else {
-                    viewModel = LabelboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+                    viewModel = LabelboxViewModelImpl(label: label, userManager: user, pushService: services.get())
                 }
             }
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
@@ -252,7 +265,20 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case .plan:
             /// this handled in go function.
             break
+        case .bugsPop:
+            return true
+        case .accountManager:
+            guard let next = navigation else {
+                return false
+            }
+            let vm = AccountManagerViewModel(usersManager: self.services.get())
+            guard let accoutManager = AccountManagerCoordinator(nav: next, vm: vm, services: self.services, scene: nil) else {
+                return false
+            }
+            accoutManager.start()
+            return true
         }
+        
         return false
     }
 }

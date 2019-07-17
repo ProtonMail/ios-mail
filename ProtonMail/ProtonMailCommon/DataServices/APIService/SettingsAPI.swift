@@ -150,7 +150,7 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -200,7 +200,7 @@ final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -227,7 +227,7 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -255,7 +255,7 @@ final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -287,7 +287,7 @@ final class UpdateShowImages : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -313,7 +313,7 @@ final class UpdateLinkConfirmation : ApiRequest<ApiResponse> {
         return ["ConfirmLink" : NSNumber(value: self.status == .confirmationAlert).intValue]
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -341,7 +341,7 @@ final class UpdateSwiftLeftAction : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -369,7 +369,7 @@ final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -439,7 +439,7 @@ final class UpdateLoginPassword : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     

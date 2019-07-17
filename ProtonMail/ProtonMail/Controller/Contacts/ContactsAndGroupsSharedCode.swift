@@ -130,10 +130,10 @@ class ContactsAndGroupsSharedCode: ProtonMailViewController
     }
     
     @objc private func addContactGroupTapped() {
-        if sharedUserDataService.isPaidUser() {
-            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
-        } else {
-            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-        }
+//        if sharedUserDataService.isPaidUser() {
+//            self.performSegue(withIdentifier: kAddContactGroupSugue, sender: self)
+//        } else {
+//            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+//        }
     }
 }

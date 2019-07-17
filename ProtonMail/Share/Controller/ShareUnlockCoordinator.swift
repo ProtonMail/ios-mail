@@ -61,7 +61,7 @@ class ShareUnlockCoordinator : PushCoordinator {
         guard let navigationController = self.navigationController else { return }
         self.viewController?.bioCodeView?.pinUnlock?.isEnabled = false                // FIXME: do we actually need this?
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
-                                                vm: ShareUnlockPinCodeModelImpl(),
+                                                vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
                                                 services: self.services,
                                                 delegate: self)
         self.nextCoordinator = pinView
@@ -75,11 +75,11 @@ class ShareUnlockCoordinator : PushCoordinator {
             return
         }
         
-        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
-        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
-        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
-        navigationController.setViewControllers([next], animated: true)
+//        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
+//        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+//        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+//        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
+//        navigationController.setViewControllers([next], animated: true)
     }
     
     func go(dest: Destination) {

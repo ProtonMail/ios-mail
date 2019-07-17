@@ -24,27 +24,7 @@
 import Foundation
 
 extension APIService {
-    
-    enum HTTPMethod {
-        case delete
-        case get
-        case post
-        case put
-        
-        func toString() -> String {
-            switch self {
-            case .delete:
-                return "DELETE"
-            case .get:
-                return "GET"
-            case .post:
-                return "POST"
-            case .put:
-                return "PUT"
-            }
-        }
-    }
-    
+
     enum AuthStatus {
         case resCheck
         case ask2FA
@@ -55,7 +35,6 @@ extension APIService {
         static let errorMsg  = "Error"
     }
     
-    internal typealias CompletionBlock = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ error: NSError?) -> Void
     internal typealias CompletionFetchDetail = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ message:Message.ObjectIDContainer?, _ error: NSError?) -> Void
 
     // MARK: - Internal variables
@@ -69,6 +48,10 @@ extension APIService {
 
     
     internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
-    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
+//    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
+
+    
+    
+    internal typealias AuthCompleteBlock = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus,  _ res: AuthResponse?, _ credential: AuthCredential?, _ userinfo: UserInfo?, _ error : NSError?) -> Void
 
 }

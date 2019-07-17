@@ -24,12 +24,14 @@
 import Foundation
 import CoreData
 
-let sharedCoreDataService = CoreDataService(store: CoreDataStore.shared.defaultPersistentStore!)
-
 /// TODO::migrate to NSPersistentContainer in ios 10 or mix when we have time.
 
 /// this class provide the context.
 class CoreDataService {
+    
+    //TODO:: fix this in the future. for now we share all data in same persistent store
+    static let shared = CoreDataService(store: CoreDataStore.shared.defaultPersistentStore!)
+    
     
     ///  store. pass in from outside or use the default
     var persistentStore: NSPersistentStoreCoordinator

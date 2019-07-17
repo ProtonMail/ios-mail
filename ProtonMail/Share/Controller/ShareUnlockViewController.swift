@@ -57,9 +57,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
     
+    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        sharedUserDataService = UserDataService()
+        sharedUserDataService = UserDataService(api: APIService.shared)//TODO:: fix me
         LanguageManager.setupCurrentLanguage()
         configureNavigationBar()
         
@@ -170,14 +172,16 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     }
 
     fileprivate func getViewFlow() -> SignInUIFlow {
-        return UnlockManager.shared.getUnlockFlow()
+        return self.unlockManager.getUnlockFlow()
     }
     
     func signInIfRememberedCredentials() {
-        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
-            self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
-            return
-        }
+        
+        //TODO:: fix me
+//        guard SignInManager.shared.isSignedIn(), self.unlockManager.isUnlocked() else {
+//            self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+//            return
+//        }
         
         self.coordinator?.go(dest: .composer)
     }
@@ -198,7 +202,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     }
     
     func authenticateUser() {
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) })
+        self.unlockManager.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) })
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {

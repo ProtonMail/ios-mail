@@ -24,12 +24,42 @@
 
 import Foundation
 
+class SigninViewModel : NSObject {
+    
+    enum SigninComplete {
+        case ask2fa
+        case error(NSError)
+        case ok
+        case mbpwd
+    }
 
-
-
-
-enum SignInUIFlow : Int {
-    case requirePin = 0
-    case requireTouchID = 1
-    case restore = 2
+    let usersManager: UsersManager
+    
+    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
+    
+    init(usersManager: UsersManager) {
+        self.usersManager = usersManager
+    }
+    
+    func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SigninComplete)->Void) {
+        let signinManager = SignInManager(usersManager: self.usersManager)
+        signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, ask2fa: {
+            complete(.ask2fa)
+        }, onError: { (error) in
+            complete(.error(error))
+        }, afterSignIn: {
+            complete(.ok)
+            self.unlockManager.unlockIfRememberedCredentials {
+                complete(.mbpwd)
+            }
+        }, requestMailboxPassword: {
+            complete(.mbpwd)
+        }) {//require mailbox pwd
+            
+            self.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
+            
+            complete(.ok)
+        }
+    }
 }
+

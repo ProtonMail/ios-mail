@@ -31,12 +31,14 @@ import SWRevealViewController // for state restoration
 fileprivate class PlaceholderVC: UIViewController { }
 
 class WindowsCoordinator: CoordinatorNew {
-    private var deeplink: DeepLink?
     private lazy var snapshot = Snapshot()
+    
+    private var deeplink: DeepLink?
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(), scene: nil)
-    
     private var lockWindow: UIWindow?
+    
+    private var services: ServiceFactory
     
     var currentWindow: UIWindow! {
         didSet {
@@ -59,29 +61,45 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    init() {
+    init(services: ServiceFactory) {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-            
+
             if #available(iOS 13.0, *) {
                 // this is done by UISceneDelegate
             } else {
-                NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-                NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground),
+                                                       name: UIApplication.willEnterForegroundNotification,
+                                                       object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground),
+                                                       name: UIApplication.didEnterBackgroundNotification,
+                                                       object: nil)
             }
         }
+        self.services = services
     }
     
     /// restore some cache after login/authorized
     func loginmigrate() {
-        ///
         //let cacheService : AppCacheService = serviceHolder.get()
         //cacheService.restoreCacheAfterAuthorized()
     }
     func prepare() {
         self.currentWindow = self.appWindow
+        
+        
+        
+        //    ///
+        //        let msgService: MessageDataService = MessageDataService(api: APIService.shared)
+        //        helper.add(MessageDataService.self, for: msgService)
+        //
+        self.services.add(PushNotificationService.self, for: PushNotificationService())
+        //        helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
+        // Temparay
+        self.services.add(UsersManager.self, for: UsersManager(server: Server.live, delegate: self))
+        self.services.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
     }
     
     func start() {
@@ -89,17 +107,28 @@ class WindowsCoordinator: CoordinatorNew {
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
         
+        let cacheService : AppCacheService = self.services.get()
+        cacheService.restoreCacheWhenAppStart()
+        
+        
+        //some cache may need user to unlock first. so this need to move to after windows showup
+        let usersManager : UsersManager = self.services.get()
+        usersManager.launchCleanUpIfNeeded()
+//        usersManager.tryRestore()
+        //sharedUserDataService.delegate = self
+        
         //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
         // clean this up later.
-        let flow = UnlockManager.shared.getUnlockFlow()
+        let unlockManager: UnlockManager = self.services.get()
+        let flow = unlockManager.getUnlockFlow()
         if flow == .requireTouchID || flow == .requirePin {
             self.lock()
         } else {
             DispatchQueue.main.async {
                 // initiate unlock process which will send .didUnlock or .requestMainKey eventually
-                UnlockManager.shared.initiateUnlock(flow: flow,
-                                                    requestPin: self.lock,
-                                                    requestMailboxPassword: self.lock)
+                unlockManager.initiateUnlock(flow: flow,
+                                              requestPin: self.lock,
+                                              requestMailboxPassword: self.lock)
             }
         }
     }
@@ -122,26 +151,45 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func unlock() {
         self.lockWindow = nil
-        
         guard SignInManager.shared.isSignedIn() else {
             self.go(dest: .signInWindow)
             return
         }
+//        if sharedUserDataService.isNewUser {
+//            sharedUserDataService.isNewUser = false
+//            self.appWindow = nil
+//        }
+        let usersManager : UsersManager = self.services.get()
+        usersManager.tryRestore()
         
-        if sharedUserDataService.isNewUser {
-            sharedUserDataService.isNewUser = false
-            self.appWindow = nil
+        if usersManager.count <= 0 {
+            self.cleanAll()
+            self.go(dest: .signInWindow)
+        } else {
+            self.go(dest: .appWindow)
         }
-        self.go(dest: .appWindow)
     }
-    
     
     func go(dest: Destination) {
         DispatchQueue.main.async { // cuz
             switch dest {
             case .signInWindow:
+                
+                if self.appWindow == nil {
+                    return
+                }
+                
                 self.appWindow = nil
-                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn, scene: self.scene))
+                let signin = SigninCoordinator(source: self.currentWindow,
+                                               vm: SigninViewModel(usersManager: self.services.get()),
+                                               services: self.services, scene: self.scene)
+
+                signin.start()
+                
+//                self.currentWindow = signin.window
+                
+//                self.appWindow = nil
+//                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn, scene: self.scene))
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
@@ -307,13 +355,44 @@ extension WindowsCoordinator: ForceUpgradeViewDelegate {
     
     func learnMore() {
         if UIApplication.shared.canOpenURL(.forceUpgrade) {
-            UIApplication.shared.openURL(.forceUpgrade)
+            UIApplication.shared.open(.forceUpgrade) { (ok) in
+                
+            }
         }
     }
     func update() {
         if UIApplication.shared.canOpenURL(.appleStore) {
-            UIApplication.shared.openURL(.appleStore)
+            UIApplication.shared.open(.appleStore) { (ok) in
+                
+            }
         }
     }
 }
 
+
+extension WindowsCoordinator : UsersManagerDelegate {
+
+    func migrating() {
+        
+    }
+    
+    func session() {
+        
+    }
+    
+    
+}
+
+
+extension WindowsCoordinator : UnlockManagerDelegate {
+    func cleanAll() {
+        ///
+        SignInManager.shared.clean()
+    }
+    
+    func unlocked() {
+        self.unlock()
+    }
+    
+    
+}
