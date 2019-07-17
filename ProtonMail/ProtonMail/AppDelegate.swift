@@ -65,19 +65,15 @@ let sharedServices: ServiceFactory = {
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
-<<<<<<< HEAD
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator = WindowsCoordinator()
-=======
     lazy var coordinator: WindowsCoordinator = {
         if #available(iOS 13.0, *) {
             assert(false, "AppDelegate should not use its WindowsCoordinator in multiwindow environment")
         }
         return WindowsCoordinator()
     }()
->>>>>>> better app lifecycle management
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -135,8 +131,12 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
-        self.coordinator.prepare()
+        if #available(iOS 13.0, *) {
+            // UIWindowScene oriented flow with restoration via NSUserActivity
+        } else {
+            // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
+            self.coordinator.prepare()
+        }
         return true
     }
     
@@ -357,7 +357,7 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: State restoration
+    // MARK: - State restoration iOS 9 - 12
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         return true
@@ -367,13 +367,22 @@ extension AppDelegate: UIApplicationDelegate {
         return keymaker.mainKey != nil
     }
     func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-        self.coordinator.saveForRestoration(coder)
+        if #available(iOS 13.0, *) {
+            // UIWindowScene oriented flow with restoration via NSUserActivity
+        } else {
+            self.coordinator.saveForRestoration(coder)
+        }
     }
     func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-        self.coordinator.restoreState(coder)
+        if #available(iOS 13.0, *) {
+            // UIWindowScene oriented flow with restoration via NSUserActivity
+        } else {
+            self.coordinator.restoreState(coder)
+        }
     }
     
-    // MARK: - Multiwindow
+    // MARK: - Multiwindow iOS 13
+    
     @available(iOS 13.0, *)
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration
     {
@@ -393,11 +402,16 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
-        self.coordinator.start()
+        
+        if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
+            self.coordinator.restoreState(userActivity)
+        } else {
+            self.coordinator.start()
+        }
     }
     
-    func configure(window: UIWindow?, with activity: NSUserActivity) -> Bool {
-        return false
+    func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        return scene.userActivity
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
