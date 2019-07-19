@@ -63,7 +63,7 @@ extension MailboxViewModel: Codable {
 }
 
 class MailboxViewModel {
-    private let labelID : String
+    internal let labelID : String
     /// message service
     internal let messageService : MessageDataService
     private let pushService : PushNotificationService

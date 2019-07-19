@@ -213,6 +213,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.stopAutoFetch()
     }
     
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        self.trackDeeplink(enter: true, path: .init(dest: "toBugsSegue"))//String(describing: MailboxViewController.self)))
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         

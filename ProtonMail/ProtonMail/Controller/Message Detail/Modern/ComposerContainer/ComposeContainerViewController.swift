@@ -49,6 +49,13 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         }
     }
     
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        #if !APP_EXTENSION
+        self.trackDeeplink(enter: true, path: .init(dest: String(describing: ComposeContainerViewController.self)))
+        #endif
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

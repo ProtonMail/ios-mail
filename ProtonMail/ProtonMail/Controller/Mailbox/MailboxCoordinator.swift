@@ -93,7 +93,6 @@ class MailboxCoordinator : DefaultCoordinator {
             self.rvc?.pushFrontViewController(self.navigation, animated: true)
         }
         self.navBeforeStart = nil
-        
         //could remove this and use a similar way in coordinator
         //sharedVMService.mailbox(fromMenu: self.viewController)
     }
@@ -102,6 +101,8 @@ class MailboxCoordinator : DefaultCoordinator {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
+        
+        self.viewController?.trackDeeplink(enter: false, path: .init(dest: String(describing: MailboxViewController.self)))
         
         switch dest {
         case .details:
@@ -197,7 +198,7 @@ class MailboxCoordinator : DefaultCoordinator {
     }
     
     func go(to deepLink: DeepLink) {
-        if let path = deepLink.pop, let dest = Destination(rawValue: path.destination) {
+        if let path = deepLink.popFirst, let dest = Destination(rawValue: path.destination) {
             self.go(to: dest, value: path.sender, sender: deepLink)
         }
     }

@@ -404,14 +404,21 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.coordinator.scene = scene
         
         if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity {
-            self.coordinator.restoreState(userActivity)
+            let deeplink = try! JSONDecoder().decode(DeepLink.self, from: userActivity.userInfo!["deeplink"] as! Data)
+            self.coordinator.restoreState(deeplink)
         } else {
             self.coordinator.start()
         }
     }
     
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-        return scene.userActivity
+        let userActivity = NSUserActivity.init(activityType: "RestoreWindow")
+        if let deeplink = scene.session.userInfo?["deeplink"] as? DeepLink {
+            let data = try! JSONEncoder().encode(deeplink)
+            userActivity.userInfo?["deeplink"] = data
+        }
+        scene.userActivity = userActivity
+        return userActivity
     }
     
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -438,6 +445,64 @@ enum Scenes: String {
         switch self {
         case .fullApp:  return WindowSceneDelegate.self
         default:        fatalError("not implemented yet")
+        }
+    }
+}
+
+@available(iOS 13.0, *)
+extension UIWindowScene {
+    var deeplink: DeepLink {
+        get {
+            var saved = self.session.userInfo?["deeplink"] as? DeepLink
+            if saved == nil {
+                saved = DeepLink.init(String(describing: MenuViewController.self))
+                self.deeplink = saved!
+            }
+            return saved!
+        }
+        set {
+            self.session.userInfo?["deeplink"] = newValue
+        }
+    }
+}
+
+
+
+extension CoordinatedNew where Self: UIViewController {
+    func trackDeeplink(enter: Bool, path: DeepLink.Path) {
+        guard #available(iOS 13.0, *),
+            let deeplink = self.view.window?.windowScene?.deeplink else
+        {
+            return
+        }
+        if enter {
+            deeplink.append(path)
+            self.view.window?.windowScene?.deeplink = deeplink
+        } else {
+            while deeplink.last != path && deeplink.head?.next != nil {
+                let _ = deeplink.popLast
+            }
+            
+            self.view.window?.windowScene?.deeplink = deeplink
+        }
+    }
+}
+extension CoordinatedNew where Self: UITableViewController {
+    func trackDeeplink(enter: Bool, path: DeepLink.Path) {
+        guard #available(iOS 13.0, *),
+            let deeplink = self.view.window?.windowScene?.deeplink else
+        {
+            return
+        }
+        if enter {
+            deeplink.append(path)
+            self.view.window?.windowScene?.deeplink = deeplink
+        } else {
+            while deeplink.last != path && deeplink.head?.next != nil {
+                let _ = deeplink.popLast
+            }
+            
+            self.view.window?.windowScene?.deeplink = deeplink
         }
     }
 }

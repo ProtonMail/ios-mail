@@ -42,6 +42,11 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         }
     }
     
+    override func didMove(toParent parent: UIViewController?) {
+        super.didMove(toParent: parent)
+        self.trackDeeplink(enter: true, path: DeepLink.Path.init(dest: String(describing: MessageContainerViewController.self) ))
+    }
+    
     override func viewDidLoad() {
         self.restorationClass = MessageContainerViewController.self
         super.viewDidLoad()

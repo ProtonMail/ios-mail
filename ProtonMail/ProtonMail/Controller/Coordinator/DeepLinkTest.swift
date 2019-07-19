@@ -26,4 +26,39 @@
 //  THE SOFTWARE.
     
 
-import Foundation
+import XCTest
+@testable import ProtonMail
+
+class DeepLinkTests: XCTestCase {
+    func makeDeeplink() -> DeepLink {
+        let head = DeepLink("Head", sender: self)
+        head.append("String")
+        head.append(.init(dest: "Path"))
+        head.append("String+sender", sender: self)
+        head.append(.init(dest: "Path+sender", sender: self))
+        return head
+    }
+    
+    func testDescription() {
+        let deeplink = self.makeDeeplink()
+        XCTAssertFalse(deeplink.debugDescription.isEmpty)
+    }
+    
+    func testPopFirst() {
+        let deeplink = self.makeDeeplink()
+        let oldHead = deeplink.head
+        let oldSecond = deeplink.head?.next
+        
+        XCTAssertEqual(oldHead, deeplink.popFirst)
+        XCTAssertEqual(oldSecond, deeplink.head)
+    }
+    
+    func testPopLast() {
+        let deeplink = self.makeDeeplink()
+        let oldPreLast = deeplink.last?.previous
+        let oldLast = deeplink.last
+        
+        XCTAssertEqual(oldLast, deeplink.popLast)
+        XCTAssertEqual(oldPreLast, deeplink.last)
+    }
+}

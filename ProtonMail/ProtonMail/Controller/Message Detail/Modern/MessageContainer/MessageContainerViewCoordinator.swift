@@ -66,7 +66,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     
     func start(deeplink: DeepLink) {
         self.start()
-        //handle the left deeplink
+        self.controller?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self)))
     }
 
     override func start() {
@@ -74,6 +74,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             return
         }
         viewController.set(coordinator: self)
+        self.viewController?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self)))
         navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -178,6 +179,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let messages = sender as? [Message] else { return }
+        
         switch Destinations(rawValue: segue.identifier!) {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||

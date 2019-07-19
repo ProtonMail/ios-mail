@@ -37,11 +37,16 @@ class DeepLink {
         
         //
         var destination : String
-        var sender: Any?
+        var sender: AnyHashable?
         
-        init(dest: String, sender: Any? = nil) {
+        init(dest: String, sender: AnyHashable? = nil) {
             self.destination = dest
             self.sender = sender
+        }
+        
+        required init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            self.destination = try container.decode(String.self, forKey: .destination)
         }
     }
     
@@ -51,14 +56,29 @@ class DeepLink {
     /// - Parameters:
     ///   - dest: dest description
     ///   - sender: sender descriptio
-    init(_ dest: String, sender: Any? = nil) {
+    init(_ dest: String, sender: AnyHashable? = nil) {
         append(dest, sender: sender)
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let elements = try container.decode(Array<Path>.self, forKey: .elements)
+        
+        self.head = elements.first
+        for (index, element) in elements.enumerated() {
+            if index - 1 >= 0 {
+                element.previous = elements[index - 1]
+            }
+            if index + 1 < elements.count {
+                element.next = elements[index + 1]
+            }
+        }
     }
     
     /// The head of the Linked List
     private(set) var head: Path?
     
-    func append(_ dest: String, sender: Any? = nil) {
+    func append(_ dest: String, sender: AnyHashable? = nil) {
         let newNode = Path(dest: dest, sender: sender)
         append(newNode)
     }
@@ -96,9 +116,17 @@ class DeepLink {
         }
     }
     
-    var pop: Path? {
+    /// Removes one from head and returns it
+    var popFirst: Path? {
         get {
             return removeTop()
+        }
+    }
+    
+    /// Removes one from head and returns it
+    var popLast: Path? {
+        get {
+            return removeBottom()
         }
     }
     
@@ -108,6 +136,16 @@ class DeepLink {
             return head
         }
         return nil
+    }
+    
+    private func removeBottom() -> Path? {
+        var current = self.head
+        while let next = current?.next {
+            current = next
+        }
+        current?.previous?.next = nil
+        current?.previous = nil
+        return current
     }
 
     private func remove(path: Path) {
@@ -126,3 +164,55 @@ class DeepLink {
     }
 }
 
+extension DeepLink.Path: CustomDebugStringConvertible {
+    var debugDescription: String {
+        return "dest: \(self.destination), sender: \(self.sender))"
+    }
+}
+
+extension DeepLink.Path: Equatable {
+    static func == (lhs: DeepLink.Path, rhs: DeepLink.Path) -> Bool {
+        return lhs.destination == rhs.destination
+                && lhs.sender?.hashValue == rhs.sender?.hashValue
+    }
+}
+
+extension DeepLink: CustomDebugStringConvertible {
+    var debugDescription: String {
+        var steps: Array<String> = []
+        
+        var current = head
+        while current != nil {
+            steps.append(current!.debugDescription)
+            current = current!.next
+        }
+
+        return "[HEAD] -> " + steps.joined(separator: "\n      -> ")
+    }
+}
+
+extension DeepLink.Path: Codable {
+    enum CodingKeys: CodingKey { case destination }
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(self.destination, forKey: .destination)
+    }
+}
+
+extension DeepLink: Codable {
+    enum CodingKeys: CodingKey { case elements }
+    enum Errors: Error { case empty }
+    func encode(to encoder: Encoder) throws {
+        var containter = encoder.container(keyedBy: CodingKeys.self)
+        guard let head = self.head else { throw Errors.empty }
+        
+        var elements: Array<Path> = [head]
+        var current = head
+        while let next = current.next {
+            elements.append(next)
+            current = next
+        }
+        
+        try containter.encode(elements, forKey: .elements)
+    }
+}
