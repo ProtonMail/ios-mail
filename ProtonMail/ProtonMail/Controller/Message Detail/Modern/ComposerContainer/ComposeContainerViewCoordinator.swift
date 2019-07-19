@@ -29,14 +29,25 @@
 import Foundation
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
+    typealias VC = ComposeContainerViewController
+    var viewController: ComposeContainerViewController?
+    var configuration: ((ComposeContainerViewCoordinator.VC) -> ())?
+    
+    
     private weak var controller: ComposeContainerViewController!
-    private weak var services: ServiceFactory!
+//    private weak var services: ServiceFactory!
     
     private var header: ComposeHeaderViewController!
     internal var editor: ContainableComposeViewController!
     
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
+    
+    internal weak var navigationController: UINavigationController?
+    
+    
+    
+    var services: ServiceFactory
     
     deinit {
         self.attachmentsObservation = nil

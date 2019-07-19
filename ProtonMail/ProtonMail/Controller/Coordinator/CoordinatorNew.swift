@@ -49,6 +49,8 @@ protocol CoordinatorNew : AnyObject {
     /// set viewmodel and coordinator when call start
     func start()
     
+    func start(deeplink: DeepLink)
+    
     /// Stops corresponding controller and returns back to previous one
     func stop()
     
@@ -64,6 +66,10 @@ extension CoordinatorNew {
     
     func stop() {
         
+    }
+    
+    func start(deeplink: DeepLink) {
+
     }
 }
 
@@ -164,6 +170,11 @@ extension DefaultCoordinator {
     /// - Parameter deepLink: deepLink
     func go(to deepLink: DeepLink) {
         
+    }
+    
+    func start(deeplink: DeepLink) {
+        self.start()
+        self.go(to: deeplink)
     }
     
     /// if add deeplinks could handle here

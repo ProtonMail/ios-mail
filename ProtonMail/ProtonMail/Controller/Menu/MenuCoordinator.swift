@@ -113,29 +113,68 @@ class MenuCoordinatorNew: DefaultCoordinator {
         self.viewController?.set(coordinator: self)
     }
     
+    private func toPlan() {
+        let coordinator = MenuCoordinator()
+        coordinator.controller = self.viewController
+        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
+    }
+    
+    private func toInbox(labelID: String, deepLink: DeepLink) {
+        //Example of deeplink without segue
+        var nextVM : MailboxViewModel?
+        if let mailbox = Message.Location(rawValue: labelID) {
+           nextVM = MailboxViewModelImpl(label: mailbox, service: services.get(), pushService: services.get())
+        } else if let label = sharedLabelsDataService.label(by: labelID) {
+            //shared global service need to be changed later
+            if label.exclusive {
+                nextVM = FolderboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            } else {
+                nextVM = LabelboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            }
+        }
+        
+        if let vm = nextVM {
+            let mailbox = MailboxCoordinator(rvc: self.viewController?.revealViewController(), vm: vm, services: self.services)
+            self.lastestCoordinator = mailbox
+            mailbox.start(deeplink: deepLink)
+        }
+       
+    }
+    
+    func go(to deepLink: DeepLink) {
+        if let path = deepLink.pop, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
+            self.go(to: dest, value: path.sender, sender: deepLink)
+            // resue the exist mailbox // here need to update to suport other Coordinator
+//            if let latest = lastestCoordinator as? MailboxCoordinator,
+//                dest == MenuCoordinatorNew.Destination.mailbox {
+//                latest.go(to: deepLink)
+//            } else {
+//                self.go(to: dest, value: path.sender, sender: deepLink)
+//            }
+        }
+    }
+
+    ///
+    func go(to dest: Destination, value: Any?, sender: DeepLink) {
+        switch dest {
+        case .plan:
+            self.toPlan()
+        case .mailbox:
+            if let inbox = value as? String {
+                self.toInbox(labelID: inbox, deepLink: sender)
+            }
+        default:
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
+    }
+    
+    //old one call from vc
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .plan:
             self.toPlan()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-        }
-    }
-    
-    func toPlan() {
-        let coordinator = MenuCoordinator()
-        coordinator.controller = self.viewController
-        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
-    }
-    
-    func go(to deepLink: DeepLink) {
-        if let path = deepLink.pop, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
-            // resue the exist mailbox
-            if let latest = lastestCoordinator as? MailboxCoordinator {
-                latest.go(to: deepLink)
-            } else {
-                self.go(to: dest, sender: deepLink)
-            }
         }
     }
     

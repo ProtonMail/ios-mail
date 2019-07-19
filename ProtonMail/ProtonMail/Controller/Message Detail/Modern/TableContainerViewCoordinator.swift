@@ -27,8 +27,15 @@
     
 
 import Foundation
+// this is the UI
 
-class TableContainerViewCoordinator: NSObject {
+//can we move this to  view controller -- notes from feng.
+class TableContainerViewCoordinator: NSObject, CoordinatorNew {
+    func start() {
+        // ?
+    }
+    
+    
     internal func embedChild(indexPath: IndexPath, onto cell: UITableViewCell) {
         fatalError()
     }

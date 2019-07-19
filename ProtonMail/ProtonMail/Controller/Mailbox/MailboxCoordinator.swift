@@ -38,6 +38,21 @@ class MailboxCoordinator : DefaultCoordinator {
     internal weak var viewController: MailboxViewController?
     internal weak var navigation: UINavigationController?
     internal weak var rvc: SWRevealViewController?
+    // whole the ref until started
+    internal var navBeforeStart: UINavigationController?
+    
+    init(rvc: SWRevealViewController?, vm: MailboxViewModel, services: ServiceFactory) {
+        self.rvc = rvc
+        self.viewModel = vm
+        self.services = services
+        
+        let inbox : UIStoryboard = UIStoryboard.Storyboard.inbox.storyboard
+        let vc = inbox.make(VC.self)
+        let nav = UINavigationController(rootViewController: vc)
+        self.viewController = vc
+        self.navBeforeStart = nav
+        self.navigation = nav
+    }
     
     init(vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
         self.viewModel = vm
@@ -77,6 +92,10 @@ class MailboxCoordinator : DefaultCoordinator {
         if self.navigation != nil, self.rvc != nil {
             self.rvc?.pushFrontViewController(self.navigation, animated: true)
         }
+        self.navBeforeStart = nil
+        
+        //could remove this and use a similar way in coordinator
+        //sharedVMService.mailbox(fromMenu: self.viewController)
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -173,12 +192,73 @@ class MailboxCoordinator : DefaultCoordinator {
     }   
     
     func go(to dest: Destination, sender: Any? = nil) {
+        
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
     func go(to deepLink: DeepLink) {
         if let path = deepLink.pop, let dest = Destination(rawValue: path.destination) {
+            self.go(to: dest, value: path.sender, sender: deepLink)
+        }
+    }
+    
+    func go(to dest: Destination, value: Any?, sender: DeepLink) {
+        switch dest {
+        case .details:
+            if let messageID = value as? String {
+                self.goMsgDetails(msgID: messageID, deepLink: sender)
+            }
+        default:
             self.go(to: dest)
         }
+    }
+    
+    
+    private func goMsgDetails (msgID: String, deepLink: DeepLink) {
+        
+        let msgService = services.get() as MessageDataService
+        
+        let msgs = msgService.fetchMessages(withIDs: [msgID])
+        if let message = msgs.first, let nav = self.navigation {
+            let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
+            details.start(deeplink: deepLink)
+        }
+        
+        
+//        MessageContainerViewCoordinator(controller: T##MessageContainerViewController)
+//
+//        guard let next = destination as? MessageContainerViewController else {
+//            return false
+//        }
+//        let vmService = services.get() as ViewModelService
+//        vmService.messageDetails(fromPush: next)
+//        guard let message = self.viewModel.notificationMessage else {
+//            return false
+//        }
+//        next.set(viewModel: .init(message: message))
+//        next.set(coordinator: .init(controller: next))
+//        self.viewModel.resetNotificationMessage()
+//
+//        let vmService = services.get() as ViewModelService
+//        guard let message = self.viewModel.notificationMessage else {
+//            return false
+//        }
+//        next.set(viewModel: .init(message: message))
+//        next.set(coordinator: .init(controller: next))
+//
+//        guard let next = destination as? MessageContainerViewController else {
+//            return false
+//        }
+//        let vmService = services.get() as ViewModelService
+//        vmService.messageDetails(fromList: next)
+//        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
+//            let message = self.viewModel.item(index: indexPathForSelectedRow) else {
+//                return false
+//        }
+//        next.set(viewModel: .init(message: message))
+//        next.set(coordinator: .init(controller: next))
+//
+//
+//        vmService.messageDetails(fromPush: next)
     }
 }

@@ -171,4 +171,9 @@ class LabelsDataService {
             }
         }
     }
+    
+    func label(by labelID : String) -> Label? {
+        let context = sharedCoreDataService.backgroundManagedObjectContext
+        return Label.labelForLableID(labelID, inManagedObjectContext: context) 
+    }
 }

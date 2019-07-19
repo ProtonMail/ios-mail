@@ -37,9 +37,9 @@ class DeepLink {
         
         //
         var destination : String
-        var sender: AnyObject?
+        var sender: Any?
         
-        init(dest: String, sender: AnyObject? = nil) {
+        init(dest: String, sender: Any? = nil) {
             self.destination = dest
             self.sender = sender
         }
@@ -51,14 +51,14 @@ class DeepLink {
     /// - Parameters:
     ///   - dest: dest description
     ///   - sender: sender descriptio
-    init(_ dest: String, sender: AnyObject? = nil) {
+    init(_ dest: String, sender: Any? = nil) {
         append(dest, sender: sender)
     }
     
     /// The head of the Linked List
     private(set) var head: Path?
     
-    func append(_ dest: String, sender: AnyObject? = nil) {
+    func append(_ dest: String, sender: Any? = nil) {
         let newNode = Path(dest: dest, sender: sender)
         append(newNode)
     }

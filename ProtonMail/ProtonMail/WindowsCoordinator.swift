@@ -213,6 +213,19 @@ class WindowsCoordinator: CoordinatorNew {
                 return
         }
         self.appWindow?.rootViewController = root
+        
+        ///start test deeplink
+        //here is a example in the real world this could be passed in from parent coordinator
+        //also after start could also notify the vc to update UI from coordinator
+        var menu_inbox_message : DeepLink {
+            let deepLink = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.allmail.rawValue as String)
+            //any message id here
+            deepLink.append(MailboxCoordinator.Destination.details.rawValue, sender: "03Owe3F-6YnLX61VQpTzW6SwCiGMeVVCF1c6w_Mu0y1qxfjt4kI80EmHffGi4kr4bZAR-7Qd8XUYEZNdKNLfeg==")
+            return deepLink
+        }
+        //should move the menu coordintor into this windowsCoordinator
+        NotificationCenter.default.post(name: .switchView,
+                                        object: menu_inbox_message)
     }
 }
 

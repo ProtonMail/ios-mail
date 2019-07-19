@@ -34,6 +34,7 @@ protocol PdfPagePrintable {
 }
 
 class MessageContainerViewCoordinator: TableContainerViewCoordinator {
+
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
         case labels = "toApplyLabelsSegue"
@@ -42,7 +43,39 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case composerForward = "toComposeForward"
     }
     
+    typealias VC = MessageContainerViewController
     internal weak var controller: MessageContainerViewController!
+    internal weak var navigationController: UINavigationController?
+    var viewController: MessageContainerViewController?
+    
+    var configuration: ((MessageContainerViewController) -> ())?
+    
+    
+    var services: ServiceFactory = ServiceFactory.default
+//    let viewModel : MessageContainerViewModel
+    
+    init(nav: UINavigationController, viewModel: MessageContainerViewModel, services: ServiceFactory) {
+        self.navigationController = nav
+        self.services = services
+        let vc = UIStoryboard.Storyboard.message.storyboard.make(VC.self)
+        self.viewController = vc
+        self.controller = vc
+//        self.viewModel = viewModel
+        self.viewController?.set(viewModel: viewModel)
+    }
+    
+    func start(deeplink: DeepLink) {
+        self.start()
+        //handle the left deeplink
+    }
+
+    override func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        viewController.set(coordinator: self)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
     
     init(controller: MessageContainerViewController) {
         self.controller = controller
