@@ -1048,6 +1048,9 @@ class MessageDataService : Service {
                 
                 let completionWrapper: CompletionBlock = { task, response, error in
                     guard let mess = response else {
+                        if let errmsg = error?.localizedDescription {
+                            NSError.alertSavingDraftError(details: errmsg)
+                        }
                         // error: response nil
                         completion?(task, nil, error)
                         return

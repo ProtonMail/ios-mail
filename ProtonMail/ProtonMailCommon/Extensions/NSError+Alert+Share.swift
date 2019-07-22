@@ -69,6 +69,11 @@ extension NSError {
         NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": LocalString._messages_sending_failed_try_again + " " + details])
     }
     
+    public class func alertSavingDraftError(details : String) -> Void {
+        NotificationCenter.default.post(name: NSError.errorOccuredNotification, object: nil, userInfo: ["text": details])
+    }
+    
+    
     public class func alertMessageSendingToast() ->Void {
         
     }

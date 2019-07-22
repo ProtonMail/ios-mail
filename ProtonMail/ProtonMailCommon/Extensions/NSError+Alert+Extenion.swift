@@ -148,4 +148,19 @@ extension NSError {
         hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 2)
     }
+    
+    
+    public class func alertSavingDraftError(details : String) -> Void {
+        guard let window : UIWindow = UIApplication.shared.keyWindow else {
+            return
+        }
+        let hud : MBProgressHUD = MBProgressHUD.showAdded(to: window, animated: true)
+        hud.mode = MBProgressHUDMode.text
+        hud.detailsLabel.text = details
+        hud.removeFromSuperViewOnHide = true
+        hud.margin = 10
+        hud.offset.y = 250.0
+        hud.hide(animated: true, afterDelay: 4)
+    }
+
 }
