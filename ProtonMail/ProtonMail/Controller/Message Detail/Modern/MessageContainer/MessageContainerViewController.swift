@@ -44,7 +44,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        self.trackDeeplink(enter: true, path: DeepLink.Path.init(dest: String(describing: MessageContainerViewController.self) ))
+        self.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewController.self), sender: self.viewModel.thread.first?.messageID))
     }
     
     override func viewDidLoad() {
@@ -69,6 +69,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         // others
         self.bottomView.delegate = self
+        
+        self.subscribeToThread()
+        self.viewModel.downloadThreadDetails()
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
@@ -159,7 +162,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // FIXME: this is good only for labels and folders
-        self.coordinator.prepare(for: segue, sender: self.viewModel.messages)
+        self.coordinator.prepare(for: segue, sender: sender ?? self.viewModel.messages)
     }
 
     // --
@@ -237,8 +240,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         super.set(viewModel: viewModel)
         
         viewModel.thread.forEach(self.subscribeToStandalone)
-        self.subscribeToThread()
-        self.viewModel.downloadThreadDetails()
     }
 }
 

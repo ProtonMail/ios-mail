@@ -41,6 +41,19 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case composerReply = "toComposeReply"
         case composerReplyAll = "toComposeReplyAll"
         case composerForward = "toComposeForward"
+        case composerDraft = "toDraft"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "toMoveToFolderSegue": self = .folders
+            case "toApplyLabelsSegue": self = .labels
+            case "toComposeReply": self = .composerReply
+            case "toComposeReplyAll": self = .composerReplyAll
+            case "toComposeForward": self = .composerForward
+            case "toDraft", String(describing: ComposeContainerViewController.self): self = .composerDraft
+            default: return nil
+            }
+        }
     }
     
     typealias VC = MessageContainerViewController
@@ -52,7 +65,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     
     
     var services: ServiceFactory = ServiceFactory.default
-//    let viewModel : MessageContainerViewModel
     
     init(nav: UINavigationController, viewModel: MessageContainerViewModel, services: ServiceFactory) {
         self.navigationController = nav
@@ -60,13 +72,14 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         let vc = UIStoryboard.Storyboard.message.storyboard.make(VC.self)
         self.viewController = vc
         self.controller = vc
-//        self.viewModel = viewModel
         self.viewController?.set(viewModel: viewModel)
     }
     
     func start(deeplink: DeepLink) {
         self.start()
-        self.controller?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self)))
+        if let path = deeplink.popFirst, let destination = Destinations(rawValue: path.destination) {
+            self.go(to: destination, value: path.sender, sender: deeplink)
+        }
     }
 
     override func start() {
@@ -74,7 +87,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             return
         }
         viewController.set(coordinator: self)
-        self.viewController?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self)))
         navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -83,9 +95,25 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     private var tempClearFileURL: URL?
+
     
-    internal func go(to destination: Destinations) {
-        self.controller.performSegue(withIdentifier: destination.rawValue, sender: nil)
+    func go(to dest: Destinations, value: Any?, sender: DeepLink) {
+        switch dest {
+        case .composerDraft:
+            if let messageID = value as? String,
+                let nav = self.navigationController,
+                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
+            {
+                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+            }
+        default:
+            self.go(to: dest, sender: sender)
+        }
+    }
+    
+    internal func go(to destination: Destinations, sender: Any? = nil) {
+        self.controller.performSegue(withIdentifier: destination.rawValue, sender: sender)
     }
     
     // Create controllers
@@ -178,12 +206,13 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let messages = sender as? [Message] else { return }
-        
+        self.viewController?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self), sender: self.viewController?.viewModel.thread.first?.messageID))
+
         switch Destinations(rawValue: segue.identifier!) {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||
                                             destination == .composerForward:
+            guard let messages = sender as? [Message] else { return }
             guard let tapped = ComposeMessageAction(destination),
                 let navigator = segue.destination as? UINavigationController,
                 let next = navigator.viewControllers.first as? ComposeContainerViewController else
@@ -195,12 +224,14 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
         case .some(.labels):
+            guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.viewModel = LabelApplyViewModelImpl(msg: messages)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
         case .some(.folders):
+            guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: messages)

@@ -46,14 +46,10 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         super.viewDidAppear(animated)
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = "Composer"
+            #if !APP_EXTENSION
+            self.trackDeeplink(enter: true, path: .init(dest: String(describing: ComposeContainerViewController.self), sender: self.viewModel.childViewModel.message?.messageID))
+            #endif
         }
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-        #if !APP_EXTENSION
-        self.trackDeeplink(enter: true, path: .init(dest: String(describing: ComposeContainerViewController.self)))
-        #endif
     }
     
     override func viewDidLoad() {

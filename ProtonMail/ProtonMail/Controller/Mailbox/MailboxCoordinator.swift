@@ -82,6 +82,23 @@ class MailboxCoordinator : DefaultCoordinator {
         case humanCheck        = "toHumanCheckView"
         case folder            = "toMoveToFolderSegue"
         case labels            = "toApplyLabelsSegue"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "toCompose": self = .composer
+            case "toComposeShow", String(describing: ComposeContainerViewController.self): self = .composeShow
+            case "toSearchViewController": self = .search
+            case "toMessageDetailViewController", String(describing: MessageContainerViewController.self): self = .details
+            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
+            case "to_onboarding_segue": self = .onboarding
+            case "to_feedback_segue": self = .feedback
+            case "to_feedback_view_segue": self = .feedbackView
+            case "toHumanCheckView": self = .humanCheck
+            case "toMoveToFolderSegue": self = .folder
+            case "toApplyLabelsSegue": self = .labels
+            default: return nil
+            }
+        }
     }
     
     /// if called from a segue prepare don't call push again
@@ -102,7 +119,7 @@ class MailboxCoordinator : DefaultCoordinator {
             return false //
         }
         
-        self.viewController?.trackDeeplink(enter: false, path: .init(dest: String(describing: MailboxViewController.self)))
+        self.viewController?.trackDeeplink(enter: false, path: .init(dest: String(describing: MailboxViewController.self), sender: self.viewModel.labelID))
         
         switch dest {
         case .details:
@@ -193,12 +210,13 @@ class MailboxCoordinator : DefaultCoordinator {
     }   
     
     func go(to dest: Destination, sender: Any? = nil) {
-        
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
     func go(to deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = Destination(rawValue: path.destination) {
+        if let path = deepLink.popFirst,
+            let dest = Destination(rawValue: path.destination)
+        {
             self.go(to: dest, value: path.sender, sender: deepLink)
         }
     }
@@ -206,60 +224,24 @@ class MailboxCoordinator : DefaultCoordinator {
     func go(to dest: Destination, value: Any?, sender: DeepLink) {
         switch dest {
         case .details:
-            if let messageID = value as? String {
-                self.goMsgDetails(msgID: messageID, deepLink: sender)
+            if let messageID = value as? String,
+                case let msgService = services.get() as MessageDataService,
+                let message = msgService.fetchMessages(withIDs: [messageID]).first,
+                let nav = self.navigation
+            {
+                    let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
+                    details.start(deeplink: sender)
+            }
+        case .composeShow:
+            if let messageID = value as? String,
+                let nav = self.navigation,
+                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
+            {
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
             }
         default:
-            self.go(to: dest)
+            self.go(to: dest, sender: sender)
         }
-    }
-    
-    
-    private func goMsgDetails (msgID: String, deepLink: DeepLink) {
-        
-        let msgService = services.get() as MessageDataService
-        
-        let msgs = msgService.fetchMessages(withIDs: [msgID])
-        if let message = msgs.first, let nav = self.navigation {
-            let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
-            details.start(deeplink: deepLink)
-        }
-        
-        
-//        MessageContainerViewCoordinator(controller: T##MessageContainerViewController)
-//
-//        guard let next = destination as? MessageContainerViewController else {
-//            return false
-//        }
-//        let vmService = services.get() as ViewModelService
-//        vmService.messageDetails(fromPush: next)
-//        guard let message = self.viewModel.notificationMessage else {
-//            return false
-//        }
-//        next.set(viewModel: .init(message: message))
-//        next.set(coordinator: .init(controller: next))
-//        self.viewModel.resetNotificationMessage()
-//
-//        let vmService = services.get() as ViewModelService
-//        guard let message = self.viewModel.notificationMessage else {
-//            return false
-//        }
-//        next.set(viewModel: .init(message: message))
-//        next.set(coordinator: .init(controller: next))
-//
-//        guard let next = destination as? MessageContainerViewController else {
-//            return false
-//        }
-//        let vmService = services.get() as ViewModelService
-//        vmService.messageDetails(fromList: next)
-//        guard let indexPathForSelectedRow = self.viewController?.tableView.indexPathForSelectedRow,
-//            let message = self.viewModel.item(index: indexPathForSelectedRow) else {
-//                return false
-//        }
-//        next.set(viewModel: .init(message: message))
-//        next.set(coordinator: .init(controller: next))
-//
-//
-//        vmService.messageDetails(fromPush: next)
     }
 }

@@ -37,9 +37,9 @@ class DeepLink {
         
         //
         var destination : String
-        var sender: AnyHashable?
+        var sender: String?
         
-        init(dest: String, sender: AnyHashable? = nil) {
+        init(dest: String, sender: String? = nil) {
             self.destination = dest
             self.sender = sender
         }
@@ -47,6 +47,7 @@ class DeepLink {
         required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.destination = try container.decode(String.self, forKey: .destination)
+            self.sender = try? container.decode(String.self, forKey: .sender)
         }
     }
     
@@ -56,7 +57,7 @@ class DeepLink {
     /// - Parameters:
     ///   - dest: dest description
     ///   - sender: sender descriptio
-    init(_ dest: String, sender: AnyHashable? = nil) {
+    init(_ dest: String, sender: String? = nil) {
         append(dest, sender: sender)
     }
     
@@ -78,7 +79,7 @@ class DeepLink {
     /// The head of the Linked List
     private(set) var head: Path?
     
-    func append(_ dest: String, sender: AnyHashable? = nil) {
+    func append(_ dest: String, sender: String? = nil) {
         let newNode = Path(dest: dest, sender: sender)
         append(newNode)
     }
@@ -192,10 +193,13 @@ extension DeepLink: CustomDebugStringConvertible {
 }
 
 extension DeepLink.Path: Codable {
-    enum CodingKeys: CodingKey { case destination }
+    enum CodingKeys: CodingKey { case destination, sender }
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.destination, forKey: .destination)
+        if let sender = self.sender {
+            try container.encode(sender, forKey: .sender)
+        }
     }
 }
 

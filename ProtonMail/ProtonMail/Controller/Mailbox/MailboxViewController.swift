@@ -215,7 +215,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        self.trackDeeplink(enter: true, path: .init(dest: "toBugsSegue"))//String(describing: MailboxViewController.self)))
+        self.trackDeeplink(enter: true, path: .init(dest: String(describing: MailboxViewController.self), sender: self.viewModel.labelID))
     }
     
     override func viewDidAppear(_ animated: Bool) {

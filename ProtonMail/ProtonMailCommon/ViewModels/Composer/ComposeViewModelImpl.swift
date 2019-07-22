@@ -76,7 +76,10 @@ class ComposeViewModelImpl : ComposeViewModel {
         
     }
     
-    
+    convenience init?(msgId: String, action: ComposeMessageAction) {
+        guard let message = sharedMessageDataService.fetchMessages(withIDs: [msgId]).first else { return nil }
+        self.init(msg: message, action: action)
+    }
     
     var attachments : [Attachment] = []
     /// inital composer viewmodel

@@ -81,6 +81,19 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case contacts  = "toContactsSegue"
         case feedbacks = "toFeedbackSegue"
         case plan      = "toServicePlan"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
+            case "toLabelboxSegue": self = .label
+            case "toSettingsSegue": self = .settings
+            case "toBugsSegue": self = .bugs
+            case "toContactsSegue": self = .contacts
+            case "toFeedbackSegue": self = .feedbacks
+            case "toServicePlan": self = .plan
+            default: return nil
+            }
+        }
     }
     
     init(vc: MenuViewController, vm: MenuViewModel, services: ServiceFactory) {

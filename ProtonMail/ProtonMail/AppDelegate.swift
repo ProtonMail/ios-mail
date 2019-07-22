@@ -364,7 +364,11 @@ extension AppDelegate: UIApplicationDelegate {
     }
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
         // without mainKey available we will not be able to load any content in the restored VC model, so no restoration possible
-        return keymaker.mainKey != nil
+        if #available(iOS 13.0, *) {
+            return false
+        } else {
+            return keymaker.mainKey != nil
+        }
     }
     func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
         if #available(iOS 13.0, *) {
