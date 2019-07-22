@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*OPCIONAL";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Suelte aquí para añadir como adjunto";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/usuario";
 
@@ -163,13 +166,6 @@ Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la
 /* Title */
 "All contacts are imported" = "Todos los contactos están importados";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perderán para siempre, pero seguirá siendo capaz de ver los mensajes de correo electrónico sin cifrar.
-
-¡ESTA ACCIÓN NO SE PUEDE DESHACER!";
-
 /* archive when apply label */
 "Also Archive" = "Además archivar";
 
@@ -209,6 +205,12 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Description */
 "Archived" = "Archivado";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "¿Seguro que quiere cerrar la sesión?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Adjunto importado";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Adjuntos";
@@ -277,7 +279,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "By using protonmail, you agree to our" = "Al usar ProtonMail, acepta nuestros";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Al usar protonmail, acepta nuestros %@ y %@.";
+"By using protonmail, you agree to our %@ and %@." = "Al usar protonmail, acepta nuestros %1$@ y %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* None */
 "Cant' decrypt this attachment!" = "No se puede descifrar este archivo adjunto.";
 
-/* Action */
-"Catalan" = "Catalán";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -408,12 +407,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* loading message */
 "Checking ...." = "Verificando...";
-
-/* Action */
-"Chinese Simplified" = "Chino simplificado";
-
-/* Action */
-"Chinese Traditional" = "Chino tradicional";
 
 /* place holder */
 "Choose a Password" = "Elija una contraseña";
@@ -479,6 +472,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Action */
 "Continue" = "Continuar";
 
+/* Action */
+"Continue and Don't ask again" = "Seguir y no volver a preguntar";
+
 /* Title */
 "Copy address" = "Copiar dirección";
 
@@ -512,9 +508,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
 
-/* Action */
-"Croatian" = "Croata";
-
 /* Change language title */
 "Current Language is: " = "El idioma actual es: ";
 
@@ -528,17 +521,11 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
    contacts default label type */
 "Custom" = "Personalizar";
 
-/* Action */
-"Czech" = "Checo";
-
 /* Title */
 "DECRYPT MAILBOX" = "DESCIFRAR BUZÓN";
 
 /* mail location title */
 "DRAFTS" = "BORRADORES";
-
-/* Action */
-"Danish" = "Danés";
 
 /* message Date: text */
 "Date:" = "Fecha:";
@@ -638,9 +625,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "Drafts" = "Borradores";
 
 /* Action */
-"Dutch" = "Holandés";
-
-/* Action */
 "Edit" = "Editar";
 
 /* *
@@ -724,16 +708,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "Encrypted from outside" = "Cifrado desde afuera";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Cifrado desde fuera con PGP/en línea";
+"Encrypted from outside PGP inline" = "Cifrado desde fuera con PGP en línea";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Cifrado desde fuera con PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Cifrado desde fuera y firmado con PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Cifrado de afuera";
 
 /* key setup top title */
 "Encryption Setup" = "Configuración de cifrado";
@@ -755,9 +736,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Cifrado de extremo a extremo a la dirección verificada";
-
-/* Action */
-"English" = "Inglés";
 
 /* Action in 2fa popup view */
 "Enter" = "Ingresar";
@@ -850,9 +828,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* forwarded message title */
 "Forwarded message" = "Mensaje reenviado";
 
-/* Action */
-"French" = "Francés";
-
 /* Title */
 "From" = "De";
 
@@ -867,9 +842,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "General Settings" = "Ajustes generales";
-
-/* Action */
-"German" = "Alemán";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Obtenga %@";
@@ -934,6 +906,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* import contact title */
 "Importing Contacts" = "Importando contactos";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importando adjunto, puede tomar un tiempo";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Para poder utilizar nuestros servicios, debe aceptar las condiciones del servicio de ProtonMail.";
 
@@ -994,9 +969,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "No fue posible hacer coincidir el producto de la App Store comprado con ningún producto de nuestro servidor. Rellene y envíe el reporte de errores y nuestro equipo se contactará con usted.";
-
-/* Action */
-"Italian" = "Italiano";
 
 /* Title */
 "Keep me updated about new features" = "Mantenerme actualizado acerca de nuevas funciones";
@@ -1077,9 +1049,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* error title */
 "Logs" = "Registros";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "¿Desea editar o deshabilitar la firma móvil?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "¿Buscando asegurar sus datos de contacto?";
 
@@ -1159,6 +1128,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modificar o desactivar la firma móvil predeterminada es una función de pago.";
+
+/* More actions button */
+"More" = "Más";
 
 /* Screen header */
 "More Credits" = "Más créditos";
@@ -1276,7 +1248,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "On EE, MMM d, yyyy at %@" = "El EE, d MMM, yyyy a las %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "El EE, d MMM, yyyy a las %1$@, %2$@ escribió:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "El EE, d MMM, yyyy a las %1$@, %2$@ escribió:";
 
 /* None */
 "OpenDraft" = "Abrir borrador";
@@ -1346,9 +1318,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Description */
 "Pin code can't be empty." = "El código PIN no puede estar vacío.";
-
-/* Title */
-"Plain text" = "Texto plano";
 
 /* alert description */
 "Please add a password for the following recipients." = "Por favor añada una contraseña para los siguientes destinatarios.";
@@ -1435,15 +1404,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 "Please, manage it in your phone." = "Por favor, hágalo en su teléfono.";
 
 /* Action */
-"Polish" = "Polaco";
-
-/* Action */
-"Portuguese" = "Portugués";
-
-/* Action */
-"Portuguese Brazil" = "Portugués de Brasil";
-
-/* Action */
 "Print" = "Imprimir";
 
 /* Title */
@@ -1460,9 +1420,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary le permite añadir y editar los datos de contacto más allá del nombre y el correo electrónico. Al usar ProtonMail, estos datos se mantendrán tan seguros con el cifrado de extremo a extremo de su correo electrónico.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "Los planes Plus, Professional y Visionary le permiten personalizar su firma móvil.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail no vende anuncios o abusa su privacidad. Su apoyo es esencial para mantener ProtonMail en ejecución. Puede actualizar a una cuenta de pago o donar para apoyar a ProtonMail.";
@@ -1536,6 +1493,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Al reportar un mensaje como suplantación de identidad, enviará una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Solicitar confirmación de enlace";
+
 /* Title */
 "Resetting message cache ..." = "Restableciendo la caché del mensaje...";
 
@@ -1544,12 +1504,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reintentar después de %d segundos";
-
-/* Action */
-"Romanian" = "Rumano";
-
-/* Action */
-"Russian" = "Ruso";
 
 /* mail location title */
 "SENT" = "ENVIADOS";
@@ -1686,9 +1640,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Description */
 "Spammed" = "Correo no deseado";
-
-/* Action */
-"Spanish" = "Español";
 
 /* Description */
 "Srp single password keyslat invalid!" = "¡Paquete de claves de única contraseña de SRP inválido!";
@@ -1903,9 +1854,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* Title */
 "Trouble shooting guide" = "Guía para resolver problemas";
 
-/* Action */
-"Turkish" = "Turco";
-
 /* action sheet option */
 "Turn Off" = "Desactivar";
 
@@ -1923,9 +1871,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Title */
 "USER LOGIN" = "INICIO DE SESIÓN DE USUARIO";
-
-/* Action */
-"Ukrainian" = "Ucraniano";
 
 /* Description */
 "Unable to connect to the server" = "No se puede conectar con el servidor";
@@ -2027,9 +1972,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 /* alert description */
 "Upgrade to get all paid features." = "Actualizar para obtener todas las características.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "No se puede actualizar en la app.";
-
 /* Action */
 "Upload Contacts" = "Cargar contactos";
 
@@ -2119,6 +2061,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Todos sus correos cifrados existentes se perde
 
 /* Error message */
 "Yes, attach details of payment" = "Sí, adjuntar los datos de pago";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Está a punto de abrir el navegador web y navegar hacia";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puede personalizar gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.";

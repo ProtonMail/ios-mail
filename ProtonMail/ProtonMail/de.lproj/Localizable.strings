@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*Optional";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Hier ablegen, um als Anhang hinzuzufügen";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/user";
 
@@ -72,7 +75,9 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Der Zugriff auf dieses Konto ist aufgrund der Nichtzahlung deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt. Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">unsere Wissensdatenbank</a> für weitere Informationen.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.
+
+Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">unsere Wissensdatenbank</a> für weitere Informationen.";
 
 /* 
  & title */
@@ -201,6 +206,12 @@
 /* Description */
 "Archived" = "Archiviert";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Möchten Sie sich wirklich abmelden?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Anhang importiert";
+
 /* VoiceOver: email has attachments */
 "Attachments" = "Anhänge";
 
@@ -268,7 +279,7 @@
 "By using protonmail, you agree to our" = "Mit der Nutzung von ProtonMail stimmen Sie unserer";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Mit der Nutzung von Protonmail erklären Sie sich mit unseren %@ und %@ einverstanden.";
+"By using protonmail, you agree to our %@ and %@." = "Mit der Nutzung von Protonmail erklären Sie sich mit unseren %1$@ und %2$@ einverstanden.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -355,9 +366,6 @@
 /* None */
 "Cant' decrypt this attachment!" = "Der Anhang konnte nicht entschlüsselt werden.";
 
-/* Action */
-"Catalan" = "Katalanisch";
-
 /* Title */
 "Cc" = "CC";
 
@@ -399,12 +407,6 @@
 
 /* loading message */
 "Checking ...." = "Wird überprüft …";
-
-/* Action */
-"Chinese Simplified" = "Chinesisch (Vereinfacht)";
-
-/* Action */
-"Chinese Traditional" = "Chinesisch (Traditionell)";
 
 /* place holder */
 "Choose a Password" = "Passwort wählen";
@@ -470,6 +472,9 @@
 /* Action */
 "Continue" = "Weiter";
 
+/* Action */
+"Continue and Don't ask again" = "Fortfahren und nicht erneut nachfragen";
+
 /* Title */
 "Copy address" = "Adresse kopieren";
 
@@ -503,9 +508,6 @@
 /* error message title when create new user */
 "Create user failed" = "Erstellung des Nutzers fehlgeschlagen";
 
-/* Action */
-"Croatian" = "Kroatisch";
-
 /* Change language title */
 "Current Language is: " = "Aktuelle Sprache: ";
 
@@ -519,17 +521,11 @@
    contacts default label type */
 "Custom" = "Benutzerdefiniert";
 
-/* Action */
-"Czech" = "Tschechisch";
-
 /* Title */
 "DECRYPT MAILBOX" = "Mailbox entschlüsseln";
 
 /* mail location title */
 "DRAFTS" = "Entwürfe";
-
-/* Action */
-"Danish" = "Dänisch";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -629,9 +625,6 @@
 "Drafts" = "Entwürfe";
 
 /* Action */
-"Dutch" = "Niederländisch";
-
-/* Action */
 "Edit" = "Bearbeiten";
 
 /* *
@@ -715,16 +708,13 @@
 "Encrypted from outside" = "Von extern verschlüsselt";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Außerhalb mit PGP/Inline verschlüsselt";
+"Encrypted from outside PGP inline" = "Außerhalb mit PGP/Inline verschlüsselt";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Außerhalb mit PGP/MIME verschlüsselt";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Außerhalb mit signiertem PGP/MIME verschlüsselt";
-
-/* encryption lock description */
-"Encrypted outside" = "Extern verschlüsselt";
 
 /* key setup top title */
 "Encryption Setup" = "Verschlüsselung einrichten";
@@ -746,9 +736,6 @@
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Ende-zu-Ende verschlüsselt zum verifizierten Empfänger";
-
-/* Action */
-"English" = "Englisch";
 
 /* Action in 2fa popup view */
 "Enter" = "Eingeben";
@@ -841,9 +828,6 @@
 /* forwarded message title */
 "Forwarded message" = "Weitergeleitete Nachricht";
 
-/* Action */
-"French" = "Französisch";
-
 /* Title */
 "From" = "Von";
 
@@ -858,9 +842,6 @@
 
 /* Title */
 "General Settings" = "Allgemeine Einstellungen";
-
-/* Action */
-"German" = "Deutsch";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "%@ abrufen";
@@ -925,6 +906,9 @@
 /* import contact title */
 "Importing Contacts" = "Kontakte werden importiert";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Anhänge werden importiert. Dies kann einige Zeit dauern";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Um unsere Dienste nutzen zu können, müssen Sie den Allgemeinen Geschäftsbedingungen von ProtonMail zustimmen.";
 
@@ -985,9 +969,6 @@
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Es war nicht möglich, Ihr gekauftes App Store Produkt mit anderen Produkten auf unserem Server zu vergleichen. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.";
-
-/* Action */
-"Italian" = "Italienisch";
 
 /* Title */
 "Keep me updated about new features" = "Mich über neue Funktionen Informieren";
@@ -1068,9 +1049,6 @@
 /* error title */
 "Logs" = "Protokolle";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Möchten Sie die Signatur auf Ihrem Mobilgerät bearbeiten oder deaktivieren?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Möchten Sie Ihre Kontaktdaten sichern?";
 
@@ -1150,6 +1128,9 @@
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Das Ändern oder Deaktivieren der standardmäßigen mobilen Signatur ist eine Funktion der kostenpflichtige Version.";
+
+/* More actions button */
+"More" = "Mehr";
 
 /* Screen header */
 "More Credits" = "Weiteres Guthaben";
@@ -1267,7 +1248,7 @@
 "On EE, MMM d, yyyy at %@" = "Am EE, dem d. MMM.yyyy um %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "%2$@ schrieb am EE, dem d.MMM.yyyy um %1$@";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ schrieb am EE, dem d.MMM.yyyy um %1$@:";
 
 /* None */
 "OpenDraft" = "Entwurf öffnen";
@@ -1279,7 +1260,7 @@
 "Other" = "Weitere";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Unser Kundendienstteam wird versuchen, Ihren Serviceplan manuell zu aktivieren, wenn Sie damit einverstanden sind, technische Daten, die der AppStore der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat, anzuhängen. Diese Daten enthalten keinelei Angaben zu Ihrem iTunes-Konto, Ihrer Apple ID, verknüpften Kreditkarten oder anderen Benutzerinformationen. Technische Daten helfen uns nur bei der Überprüfung und Verifizierung, ob die Zahlung auf den Servern des App Store durchgeführt wurde.";
 
 /* mail location desc */
 "Outbox" = "Postausgang";
@@ -1337,9 +1318,6 @@
 
 /* Description */
 "Pin code can't be empty." = "Der PIN-Code darf nicht leer sein.";
-
-/* Title */
-"Plain text" = "Reintext";
 
 /* alert description */
 "Please add a password for the following recipients." = "Bitte Passwort für folgende Empfänger hinzufügen.";
@@ -1426,15 +1404,6 @@
 "Please, manage it in your phone." = "Bitte verwalten Sie es in Ihrem Handy.";
 
 /* Action */
-"Polish" = "Polnisch";
-
-/* Action */
-"Portuguese" = "Portugiesisch";
-
-/* Action */
-"Portuguese Brazil" = "Brasilianisches Portugiesisch";
-
-/* Action */
 "Print" = "Drucken";
 
 /* Title */
@@ -1451,9 +1420,6 @@
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "Mit ProtonMail Plus/Professional/Visionary können Sie Kontaktdaten hinzufügen und bearbeiten, die über den Namen und die E-Mail-Adresse Ihres Kontakts hinausgehen. Durch die Verwendung von ProtonMail sind diese Daten so sicher wie Ihre verschlüsselte E-Mail.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary ermöglicht Ihnen, die Signatur für Ihr Mobilgerät anpassen zu können.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail verkauft keine Werbung oder verletzt Ihre Privatsphäre. Ihre Unterstützung ist essentiell um ProtonMail weiter am Laufen zu erhalten. Sie können zu einem bezahlten Account wechseln oder zur Unterstützung an ProtonMail spenden.";
@@ -1527,6 +1493,9 @@
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Link-Bestätigung anfordern";
+
 /* Title */
 "Resetting message cache ..." = "Nachrichtenspeicher wird zurückgesetzt ...";
 
@@ -1535,12 +1504,6 @@
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Nach %d Sekunden erneut versuchen";
-
-/* Action */
-"Romanian" = "Rumänisch";
-
-/* Action */
-"Russian" = "Russisch";
 
 /* mail location title */
 "SENT" = "Gesendet";
@@ -1615,7 +1578,7 @@
 "Sent Failed" = "Senden fehlgeschlagen";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent by ProtonMail with zero access encryption";
+"Sent by ProtonMail with zero access encryption" = "Gesendet von ProtonMail mit Zero-Access-Verschlüsselung";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Von Ihnen mit Ende-zu-Ende-Verschlüsselung gesandt";
@@ -1677,9 +1640,6 @@
 
 /* Description */
 "Spammed" = "Spam";
-
-/* Action */
-"Spanish" = "Spanisch";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1860,7 +1820,9 @@
 "To" = "An";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,\r\n we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,\r\n müssen wir sicherstellen, dass Sie ein Mensch sind.";
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "Um den Missbrauch von ProtonMail zu verhindern,
+ müssen wir sicherstellen, dass Sie ein Mensch sind.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com";
@@ -1892,9 +1854,6 @@
 /* Title */
 "Trouble shooting guide" = "Anleitung zur Fehlerbehebung";
 
-/* Action */
-"Turkish" = "Türkisch";
-
 /* action sheet option */
 "Turn Off" = "Deaktivieren";
 
@@ -1912,9 +1871,6 @@
 
 /* Title */
 "USER LOGIN" = "Benutzeranmeldung";
-
-/* Action */
-"Ukrainian" = "Ukrainisch";
 
 /* Description */
 "Unable to connect to the server" = "Die Verbindung zum Server ist fehlgeschlagen";
@@ -2016,9 +1972,6 @@
 /* alert description */
 "Upgrade to get all paid features." = "Aktualisieren, um alle kostenpflichtigen Funktionen zu erhalten.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Ein Aktualisieren aus der App heraus ist nicht möglich.";
-
 /* Action */
 "Upload Contacts" = "Kontakte hochladen";
 
@@ -2109,6 +2062,9 @@
 /* Error message */
 "Yes, attach details of payment" = "Ja, Zahlungsdaten anhängen";
 
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Es wird der Internetbrowser gestartet und Sie können zu folgender Adresse navigieren";
+
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Sie können die Wischgesten in den ProtonMail-App-Einstellungen anpassen.";
 
@@ -2149,7 +2105,9 @@
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.";
 
 /* view top title */
-"Your new secure email\r\n account is ready." = "Ihr neues sicheres E-Mail-\r\nKonto ist eingerichtet.";
+"Your new secure email
+ account is ready." = "Ihr neues sicheres E-Mail-
+Konto ist eingerichtet.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Ihr Abo ist derzeit aktiv bis";

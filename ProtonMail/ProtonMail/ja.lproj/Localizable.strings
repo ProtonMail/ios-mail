@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "（任意）";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+添付ファイルとして追加するにはここにドロップしてください";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/ユーザー";
 
@@ -162,13 +165,6 @@
 /* Title */
 "All contacts are imported" = "全ての連絡先がインポートされました。";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失われますが、暗号化されていないメールは引き続き表示されます。
-
-この操作は取り消せません！";
-
 /* archive when apply label */
 "Also Archive" = "アーカイブも実施する";
 
@@ -208,6 +204,12 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Description */
 "Archived" = "アーカイブ済み";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "ログアウトしてよろしいですか？";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "添付ファイルがインポートされました。";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "添付ファイル";
@@ -276,7 +278,7 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 "By using protonmail, you agree to our" = "ProtonMailを利用することにより、以下に同意したものとみなされます。";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "ProtonMailを利用することにより、%@および%@に同意したものとみなされます。";
+"By using protonmail, you agree to our %@ and %@." = "ProtonMailを利用することにより、%1$@および%2$@に同意したものとみなされます。";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -363,9 +365,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* None */
 "Cant' decrypt this attachment!" = "この添付ファイルを復号できません。";
 
-/* Action */
-"Catalan" = "カタロニア語";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -407,12 +406,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* loading message */
 "Checking ...." = "確認中…";
-
-/* Action */
-"Chinese Simplified" = "中国語 (簡体字)";
-
-/* Action */
-"Chinese Traditional" = "中国語 (繁体字)";
 
 /* place holder */
 "Choose a Password" = "パスワードを入力してください";
@@ -478,6 +471,9 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* Action */
 "Continue" = "続行";
 
+/* Action */
+"Continue and Don't ask again" = "続行し、今後表示しない。";
+
 /* Title */
 "Copy address" = "メールアドレスをコピー";
 
@@ -511,9 +507,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* error message title when create new user */
 "Create user failed" = "ユーザーの作成に失敗しました。";
 
-/* Action */
-"Croatian" = "クロアチア語";
-
 /* Change language title */
 "Current Language is: " = "現在の言語： ";
 
@@ -527,17 +520,11 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
    contacts default label type */
 "Custom" = "カスタム";
 
-/* Action */
-"Czech" = "チェコ語";
-
 /* Title */
 "DECRYPT MAILBOX" = "メールボックスの復号";
 
 /* mail location title */
 "DRAFTS" = "下書き";
-
-/* Action */
-"Danish" = "デンマーク語";
 
 /* message Date: text */
 "Date:" = "日付：";
@@ -637,9 +624,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 "Drafts" = "下書き";
 
 /* Action */
-"Dutch" = "オランダ語";
-
-/* Action */
 "Edit" = "編集";
 
 /* *
@@ -723,16 +707,13 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 "Encrypted from outside" = "暗号化された外部からの受信";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "PGP/Inlineで暗号化された外部からのメッセージ";
+"Encrypted from outside PGP inline" = "PGP/Inlineで暗号化された外部からのメッセージ";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "PGP/MIMEで暗号化された外部からのメッセージ";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "PGP/MIMEで署名された外部からのメッセージ";
-
-/* encryption lock description */
-"Encrypted outside" = "外部向けに暗号化済み";
 
 /* key setup top title */
 "Encryption Setup" = "暗号化の設定";
@@ -754,9 +735,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "検証済みアドレスへの端末相互間の暗号化による送信";
-
-/* Action */
-"English" = "英語";
 
 /* Action in 2fa popup view */
 "Enter" = "入力";
@@ -849,9 +827,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* forwarded message title */
 "Forwarded message" = "転送されたメッセージ";
 
-/* Action */
-"French" = "フランス語";
-
 /* Title */
 "From" = "差出人";
 
@@ -866,9 +841,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Title */
 "General Settings" = "一般設定";
-
-/* Action */
-"German" = "ドイツ語";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Get %@";
@@ -933,6 +905,9 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* import contact title */
 "Importing Contacts" = "連絡先をインポートしています";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "添付ファイルのインポートにはしばらく時間がかかります";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "サービスを利用するには、ProtonMailの利用規約に同意する必要があります。";
 
@@ -993,9 +968,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "あなたが購入したApp Storeの商品を、当社のサーバー上の製品に一致させることができませんでした。バグ報告に記入してくだされば、当社の顧客サポートチームからご連絡いたします。";
-
-/* Action */
-"Italian" = "イタリア語";
 
 /* Title */
 "Keep me updated about new features" = "新機能に関する情報を受け取る";
@@ -1076,9 +1048,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* error title */
 "Logs" = "ログ";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "モバイル署名を編集または無効にする方法をお探しですか？";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "連絡先を保護する方法をお探しですか？";
 
@@ -1158,6 +1127,9 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "既定のモバイル署名の無効化や変更は、有料の機能です。";
+
+/* More actions button */
+"More" = "その他";
 
 /* Screen header */
 "More Credits" = "クレジットの追加";
@@ -1269,13 +1241,13 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 "OTHER PLANS" = "その他のプラン";
 
 /* Title */
-"On" = "オン";
+"On" = " ";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "yyyy年MMMd日 (EE) %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "yyyy年MMMd日 (EE)  %1$@に%2$@が送信:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy年MMMd日 (EE)  %1$@に%2$@が送信:";
 
 /* None */
 "OpenDraft" = "下書きを開く";
@@ -1345,9 +1317,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Description */
 "Pin code can't be empty." = "PINコードを空にすることはできません。";
-
-/* Title */
-"Plain text" = "プレーンテキスト";
 
 /* alert description */
 "Please add a password for the following recipients." = "次の宛先には、パスワードを追加して送信してください";
@@ -1434,15 +1403,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Action */
-"Polish" = "ポーランド語";
-
-/* Action */
-"Portuguese" = "ポルトガル語";
-
-/* Action */
-"Portuguese Brazil" = "ブラジルのポルトガル語";
-
-/* Action */
 "Print" = "印刷";
 
 /* Title */
@@ -1459,9 +1419,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary プランでは、名前とメールアドレス以外の情報も連絡先に追加や編集できるようになります。ProtonMailを使用することで、これらのデータは端末相互間で暗号化された電子メールと同等に安全になります。";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary プランでは、モバイル署名をカスタマイズできます。";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMailは広告の販売や個人情報の乱用を行いません。ProtonMailを維持するためには、あなたからのご支援が不可欠です。有料アカウントへのアップグレードや寄付によりProtonMailをご支援いただけます。";
@@ -1535,6 +1492,9 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "フィッシングの報告により、それを分析することでフィルターの改善ができます。これは我々が内容の全てを閲覧できることを意味します。";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "リンク先を開くときに確認する";
+
 /* Title */
 "Resetting message cache ..." = "メッセージキャッシュをリセットしています...";
 
@@ -1543,12 +1503,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "%d 秒後に再試行";
-
-/* Action */
-"Romanian" = "ルーマニア語";
-
-/* Action */
-"Russian" = "ロシア語";
 
 /* mail location title */
 "SENT" = "送信済み";
@@ -1685,9 +1639,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Description */
 "Spammed" = "迷惑メールに設定";
-
-/* Action */
-"Spanish" = "スペイン語";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1902,9 +1853,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* Title */
 "Trouble shooting guide" = "困ったときは";
 
-/* Action */
-"Turkish" = "トルコ語";
-
 /* action sheet option */
 "Turn Off" = "オフにする";
 
@@ -1922,9 +1870,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Title */
 "USER LOGIN" = "ユーザーログイン";
-
-/* Action */
-"Ukrainian" = "ウクライナ語";
 
 /* Description */
 "Unable to connect to the server" = "サーバーに接続できません。";
@@ -2025,9 +1970,6 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 /* alert description */
 "Upgrade to get all paid features." = "有料の機能を使用するにはアップグレードしてください。";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "アプリでアップグレードを行うことはできません。";
-
 /* Action */
 "Upload Contacts" = "連絡先をアップロード";
 
@@ -2117,6 +2059,9 @@ THIS ACTION CANNOT BE UNDONE!" = "既存の暗号メールは全て永久に失�
 
 /* Error message */
 "Yes, attach details of payment" = "はい、支払いの詳細を添付します。";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "ブラウザで次のURLを開こうとしています：";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "ProtonMailアプリの設定から、スワイプ時の動作を変更できます。";

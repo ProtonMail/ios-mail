@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*НЕОБЯЗАТЕЛЬНО";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Перетащите сюда, чтобы добавить как вложение";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/на пользователя";
 
@@ -162,13 +165,6 @@
 /* Title */
 "All contacts are imported" = "Все контакты импортированы";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные письма будут утеряны навсегда, но вы по-прежнему сможете смотреть свои нешифрованные письма.
-
-ЭТО ДЕЙСТВИЕ НЕЛЬЗЯ БУДЕТ ОТМЕНИТЬ!";
-
 /* archive when apply label */
 "Also Archive" = "Перенести в архив";
 
@@ -208,6 +204,12 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Description */
 "Archived" = "Архивные";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Вы уверены, что хотите выйти?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Вложение импортировано";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Вложения";
@@ -273,10 +275,10 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Buy More Credits" = "Пополнить счёт";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Используя ProtonMail, вы согласны с нашими";
+"By using protonmail, you agree to our" = "Используя ProtonMail, вы соглашаетесь с нашими";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Используя ProtonMail, вы соглашаетесь с нашими %@ и %@.";
+"By using protonmail, you agree to our %@ and %@." = "Используя ProtonMail, вы соглашаетесь с нашими %1$@ и %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -363,9 +365,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* None */
 "Cant' decrypt this attachment!" = "Невозможно расшифровать это вложение.";
 
-/* Action */
-"Catalan" = "Каталанский";
-
 /* Title */
 "Cc" = "Копия";
 
@@ -407,12 +406,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* loading message */
 "Checking ...." = "Проверка...";
-
-/* Action */
-"Chinese Simplified" = "Китайский упрощённый";
-
-/* Action */
-"Chinese Traditional" = "Китайский традиционный";
 
 /* place holder */
 "Choose a Password" = "Задайте пароль";
@@ -478,6 +471,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* Action */
 "Continue" = "Продолжить";
 
+/* Action */
+"Continue and Don't ask again" = "Продолжить и больше не спрашивать";
+
 /* Title */
 "Copy address" = "Копировать адрес";
 
@@ -511,9 +507,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* error message title when create new user */
 "Create user failed" = "Создание пользователя не удалось";
 
-/* Action */
-"Croatian" = "Хорватский";
-
 /* Change language title */
 "Current Language is: " = "Текущий язык: ";
 
@@ -527,17 +520,11 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
    contacts default label type */
 "Custom" = "Пользовательский";
 
-/* Action */
-"Czech" = "Чешский";
-
 /* Title */
 "DECRYPT MAILBOX" = "РАСШИФРОВКА ПОЧТОВОГО ЯЩИКА";
 
 /* mail location title */
 "DRAFTS" = "Черновики";
-
-/* Action */
-"Danish" = "Датский";
 
 /* message Date: text */
 "Date:" = "Дата:";
@@ -637,9 +624,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Drafts" = "Черновики";
 
 /* Action */
-"Dutch" = "Голландский";
-
-/* Action */
 "Edit" = "Изменить";
 
 /* *
@@ -723,16 +707,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Encrypted from outside" = "Зашифровано вне ProtonMail";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Зашифровано вне ProtonMail, используя PGP/inline";
+"Encrypted from outside PGP inline" = "Зашифровано вне ProtonMail, используя PGP/Inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Зашифровано вне ProtonMail, используя PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Зашифровано вне ProtonMail; подписано, используя PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Зашифровано вне ProtonMail";
 
 /* key setup top title */
 "Encryption Setup" = "Настройка шифрования";
@@ -754,9 +735,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Зашифровано сквозным методом для проверенного адреса";
-
-/* Action */
-"English" = "Английский";
 
 /* Action in 2fa popup view */
 "Enter" = "Ввести";
@@ -849,9 +827,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* forwarded message title */
 "Forwarded message" = "Пересланное сообщение";
 
-/* Action */
-"French" = "Французский";
-
 /* Title */
 "From" = "От";
 
@@ -866,9 +841,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Title */
 "General Settings" = "Основные настройки";
-
-/* Action */
-"German" = "Немецкий";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Взять %@";
@@ -933,6 +905,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* import contact title */
 "Importing Contacts" = "Импортирование контактов";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Идёт импортирование вложения. Это может занять некоторое время";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Чтобы пользоваться нашими услугами, вам необходимо принять условия и положения ProtonMail.";
 
@@ -993,9 +968,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Нет возможности сопоставить приобретённый вами в App Store продукт с какими-либо продуктами на нашем сервере. Пожалуйста, заполните отчёт об ошибке, и наша команда поддержки клиентов свяжется с вами.";
-
-/* Action */
-"Italian" = "Итальянский";
 
 /* Title */
 "Keep me updated about new features" = "Сообщайте мне о новых возможностях";
@@ -1076,9 +1048,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* error title */
 "Logs" = "Логи";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Ищете способ изменить или отключить свою подпись для мобильного клиента?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Ищете способ защитить данные своих контактов?";
 
@@ -1154,10 +1123,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Mobile Signature" = "Подпись для мобильного клиента";
 
 /* Description */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Мобильная регистрация временно недоступна. Пожалуйста, повторите попытку позднее, либо попробуйте зарегистрироваться на protonmail.com с помощью браузера настольного компьютера или ноутбука.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Регистрация с мобильных устройств временно отключена. Пожалуйста, повторите попытку позднее, либо попробуйте зарегистрироваться на protonmail.com, используя настольный компьютер или ноутбук.";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Изменение или отключение мобильной подписи по умолчанию - это платная функция.";
+
+/* More actions button */
+"More" = "Ещё";
 
 /* Screen header */
 "More Credits" = "Пополнение счёта";
@@ -1275,7 +1247,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "On EE, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "В EE, MMM d, yyyy в %1$@, %2$@ написано:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "В EE, MMM d, yyyy в %1$@, %2$@ написано:";
 
 /* None */
 "OpenDraft" = "Открыть черновик";
@@ -1345,9 +1317,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";
-
-/* Title */
-"Plain text" = "Простой текст";
 
 /* alert description */
 "Please add a password for the following recipients." = "Пожалуйста, добавьте пароль для следующих получателей.";
@@ -1434,15 +1403,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 "Please, manage it in your phone." = "Пожалуйста, управляйте этим с помощью вашего телефона.";
 
 /* Action */
-"Polish" = "Польский";
-
-/* Action */
-"Portuguese" = "Португальский";
-
-/* Action */
-"Portuguese Brazil" = "Португальский (Бразилия)";
-
-/* Action */
 "Print" = "Печать";
 
 /* Title */
@@ -1459,9 +1419,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "Тариф ProtonMail Plus/Professional/Visionary позволит вам добавлять и изменять больше контактных данных, а не только имя и адрес эл. почты. При использовании ProtonMail эти данные будут защищены так же, как и ваши зашифрованные сквозным способом письма.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "Тариф ProtonMail Plus/Professional/Visionary позволит вам настраивать вашу подпись для мобильного клиента.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail не продаёт рекламу и не нарушает вашу приватность. Ваша поддержка крайне важна для продолжения работы ProtonMail. Вы можете перейти на платный тариф или внести пожертвование, чтобы поддержать ProtonMail.";
@@ -1535,6 +1492,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Сообщение о попытке фишинга отправит сообщение нам, чтобы мы смогли проанализировать его и улучшить наши фильтры. Это означает, что мы будем способны увидеть содержимое сообщения полностью.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Запрашивать подтверждение при переходе по ссылкам";
+
 /* Title */
 "Resetting message cache ..." = "Сброс кэша сообщений...";
 
@@ -1543,12 +1503,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Повторить через %d сек.";
-
-/* Action */
-"Romanian" = "Румынский";
-
-/* Action */
-"Russian" = "Русский";
 
 /* mail location title */
 "SENT" = "Отправленные";
@@ -1685,9 +1639,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Description */
 "Spammed" = "Спам";
-
-/* Action */
-"Spanish" = "Испанский";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Неверная соль единого пароля SRP!";
@@ -1869,7 +1820,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* human verification notes */
 "To prevent abuse of ProtonMail,
- we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail,
+ we need to verify that you are human." = "Для предотвращения злоупотребления ProtonMail
  нам необходимо убедиться, что вы - человек.";
 
 /* None */
@@ -1902,9 +1853,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* Title */
 "Trouble shooting guide" = "Руководство по устранению проблем";
 
-/* Action */
-"Turkish" = "Турецкий";
-
 /* action sheet option */
 "Turn Off" = "Отключить";
 
@@ -1922,9 +1870,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Title */
 "USER LOGIN" = "Имя пользователя";
-
-/* Action */
-"Ukrainian" = "Украинский";
 
 /* Description */
 "Unable to connect to the server" = "Невозможно соединиться с сервером";
@@ -2026,9 +1971,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 /* alert description */
 "Upgrade to get all paid features." = "Расширьте тариф, чтобы получить все платные возможности.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Через приложение переход на другой тариф невозможен.";
-
 /* Action */
 "Upload Contacts" = "Загрузить контакты";
 
@@ -2118,6 +2060,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Все ваши зашифрованные п�
 
 /* Error message */
 "Yes, attach details of payment" = "Да, приложить реквизиты платежа";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Вы собираетесь запустить веб-браузер и перейти к";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Вы можете настроить жесты (смахивания и сдвиги) в настройках приложения ProtonMail.";

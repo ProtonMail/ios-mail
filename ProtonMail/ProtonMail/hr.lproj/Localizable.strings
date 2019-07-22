@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*NEOBAVEZNO";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Ispustite ovdje da biste dodali kao privitak";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/korisniku";
 
@@ -163,13 +166,6 @@ Molimo posjetite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "All contacts are imported" = "Svi kontakti su uvezeni";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Sve vaše postojeće šifrirane poruke e-pošte biti će zauvijek izgubljene, ali i dalje ćete moći vidjeti svoje nešifrirane poruke e-pošte.
-
-OVA AKCIJA SE NE MOŽE PONIŠTITI!";
-
 /* archive when apply label */
 "Also Archive" = "Također i arhivu";
 
@@ -209,6 +205,12 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Description */
 "Archived" = "Arhivirano";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Jeste li sigurni da se želite odjaviti?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Privitak je uvezen";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Privitci";
@@ -277,7 +279,7 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "By using protonmail, you agree to our" = "Koristeći ProtonMail, slažete se s našim";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Koristeći ProtonMail, slažete se s našim %@ i %@.";
+"By using protonmail, you agree to our %@ and %@." = "Koristeći ProtonMail, slažete se s našim %1$@ i %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* None */
 "Cant' decrypt this attachment!" = "Neuspješno dešifriranje ovog privitka.";
 
-/* Action */
-"Catalan" = "Katalonski";
-
 /* Title */
 "Cc" = "CC";
 
@@ -408,12 +407,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* loading message */
 "Checking ...." = "Provjera...";
-
-/* Action */
-"Chinese Simplified" = "Kineski (pojednostavljeni)";
-
-/* Action */
-"Chinese Traditional" = "Kineski (tradicionalni)";
 
 /* place holder */
 "Choose a Password" = "Odaberite lozinku";
@@ -479,6 +472,9 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* Action */
 "Continue" = "Nastavi";
 
+/* Action */
+"Continue and Don't ask again" = "Nastavi i ne pitaj ponovno";
+
 /* Title */
 "Copy address" = "Kopiraj adresu";
 
@@ -512,9 +508,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* error message title when create new user */
 "Create user failed" = "Neuspješno stvaranje korisnika";
 
-/* Action */
-"Croatian" = "Hrvatski";
-
 /* Change language title */
 "Current Language is: " = "Trenutni jezik je: ";
 
@@ -528,17 +521,11 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
    contacts default label type */
 "Custom" = "Prilagođeno";
 
-/* Action */
-"Czech" = "Češki";
-
 /* Title */
 "DECRYPT MAILBOX" = "DEŠIFRIRANJE SANDUČIĆA E-POŠTE";
 
 /* mail location title */
 "DRAFTS" = "Skice";
-
-/* Action */
-"Danish" = "Danski";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -638,9 +625,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "Drafts" = "Skice";
 
 /* Action */
-"Dutch" = "Nizozemski";
-
-/* Action */
 "Edit" = "Uredi";
 
 /* *
@@ -724,16 +708,13 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "Encrypted from outside" = "Šifrirano izvana";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Šifrirano vanjskim PGP/inline";
+"Encrypted from outside PGP inline" = "Šifrirano vanjskim PGP inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Šifrirano vanjskim PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Šifrirano vanjskim potpisanim PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Šifrirano izvana";
 
 /* key setup top title */
 "Encryption Setup" = "Postavljanje šifriranja";
@@ -755,9 +736,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end šifiranje za potvrđenu adresu";
-
-/* Action */
-"English" = "Engleski";
 
 /* Action in 2fa popup view */
 "Enter" = "U redu";
@@ -850,9 +828,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* forwarded message title */
 "Forwarded message" = "Proslijeđena poruka";
 
-/* Action */
-"French" = "Francuski";
-
 /* Title */
 "From" = "Od";
 
@@ -867,9 +842,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Title */
 "General Settings" = "Opće postavke";
-
-/* Action */
-"German" = "Njemački";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Nabavite %@";
@@ -934,6 +906,9 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* import contact title */
 "Importing Contacts" = "Uvoz kontakata";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Uvozi se privitak, što može potrajati";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Da biste koristili naše usluge, morate prihvatiti Uvjete pružanja usluge ProtonMaila.";
 
@@ -994,9 +969,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nismo uspjeli pronaći AppStore proizvod koji ste kupili s proizvodima na našem poslužitelju. Ispunite izvještaj o pogreški i naš tim za korisničku podršku će vas kontaktirati.";
-
-/* Action */
-"Italian" = "Talijanski";
 
 /* Title */
 "Keep me updated about new features" = "Informirajte me o novim značajkama";
@@ -1077,9 +1049,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* error title */
 "Logs" = "Zapisnici";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Želite li urediti ili onemogućiti vaš mobilni potpis?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Želite li osigurati svoje detalje o kontaktima?";
 
@@ -1159,6 +1128,9 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Izmjena ili isključivanje zadanog mobilnog potpisa je plaćena značajka.";
+
+/* More actions button */
+"More" = "Više";
 
 /* Screen header */
 "More Credits" = "Više kredita";
@@ -1276,7 +1248,7 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "On EE, MMM d, yyyy at %@" = "Dana EE, d. MMM, yyyy u %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:";
 
 /* None */
 "OpenDraft" = "Otvori skicu";
@@ -1346,9 +1318,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Description */
 "Pin code can't be empty." = "PIN ne može biti prazan.";
-
-/* Title */
-"Plain text" = "Običan tekst";
 
 /* alert description */
 "Please add a password for the following recipients." = "Molimo dodajte lozinku za sljedeće primatelje.";
@@ -1435,15 +1404,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 "Please, manage it in your phone." = "Molimo, upravljajte time na mobilnom uređaju.";
 
 /* Action */
-"Polish" = "Poljski";
-
-/* Action */
-"Portuguese" = "Portugalski";
-
-/* Action */
-"Portuguese Brazil" = "Portugalski Brazil";
-
-/* Action */
 "Print" = "Ispis";
 
 /* Title */
@@ -1460,9 +1420,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary omogućuje vam dodavanje i uređivanje detalja o kontaktima osim imena i e-pošte kontakta. Pomoću ProtonMaila ti će podaci biti sigurni kao i vaša end-to-end šifrirana e-pošte.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary omogućuje vam prilagođavanje mobilnog potpisa.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.";
@@ -1536,6 +1493,9 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Zatražite potvrdu poveznice";
+
 /* Title */
 "Resetting message cache ..." = "Ponovno postavljanje predmemorije poruka...";
 
@@ -1544,12 +1504,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Pokušajte ponovno za %d sekundi";
-
-/* Action */
-"Romanian" = "Rumunjski";
-
-/* Action */
-"Russian" = "Ruski";
 
 /* mail location title */
 "SENT" = "Poslano";
@@ -1686,9 +1640,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Description */
 "Spammed" = "Neželjena pošta";
-
-/* Action */
-"Spanish" = "Španjolski";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1903,9 +1854,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* Title */
 "Trouble shooting guide" = "Vodič za rješavanje problema";
 
-/* Action */
-"Turkish" = "Turski";
-
 /* action sheet option */
 "Turn Off" = "Isključi";
 
@@ -1923,9 +1871,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Title */
 "USER LOGIN" = "Prijava korisnika";
-
-/* Action */
-"Ukrainian" = "Ukrajinski";
 
 /* Description */
 "Unable to connect to the server" = "Nije se moguće povezati na poslužitelj";
@@ -2027,9 +1972,6 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 /* alert description */
 "Upgrade to get all paid features." = "Nadogradite kako biste dobili sve plaćene značajke.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Nadogradnja nije moguća u aplikaciji.";
-
 /* Action */
 "Upload Contacts" = "Učitavanje kontakata";
 
@@ -2119,6 +2061,9 @@ OVA AKCIJA SE NE MOŽE PONIŠTITI!";
 
 /* Error message */
 "Yes, attach details of payment" = "Da, priložite pojedinosti o plaćanju";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Upravo ćete pokrenuti web preglednik i otići na";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Geste pokreta prsta možete prilagoditi u postavkama ProtonMail aplikacije.";

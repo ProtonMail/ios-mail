@@ -2370,7 +2370,7 @@
       </trans-unit>
       <trans-unit id="On EE, MMM d, yyyy at %@, %@, wrote:">
         <source>On EE, MMM d, yyyy at %1$@, %2$@, wrote:</source>
-        <target state="needs-translation">On EE, MMM d, yyyy at %1$@, %2$@, wrote:</target>
+        <target state="translated">yyyy 年 MMM d 日EE %1$@, %2$@ 来信：</target>
         <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
       </trans-unit>
       <trans-unit id="OpenDraft">

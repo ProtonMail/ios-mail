@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*VALFRJÁLST";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Slepptu hér til að bæta við sem viðhengi";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/notanda";
 
@@ -163,13 +166,6 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 /* Title */
 "All contacts are imported" = "Allir tengiliðir fluttir inn";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun tapast endanlega, en þú munt áfram geta skoðað póst sem ekki hefur verið dulritaður.
-
-ÞESSA AÐGERÐ ER EKKI HÆGT AÐ AFTURKALLA!";
-
 /* archive when apply label */
 "Also Archive" = "Einnig safn";
 
@@ -209,6 +205,12 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Description */
 "Archived" = "Geymt";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Ertu viss um að þú viljir skrá þig út?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Viðhengi flutt inn";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Viðhengi";
@@ -277,7 +279,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 "By using protonmail, you agree to our" = "Með því að nota ProtonMail, samþykkir þú";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Með því að nota ProtonMail, samþykkir þú %@ og %@.";
+"By using protonmail, you agree to our %@ and %@." = "Með því að nota ProtonMail, samþykkir þú %1$@ og %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA-mennskupróf";
@@ -364,9 +366,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* None */
 "Cant' decrypt this attachment!" = "Tókst ekki að afkóða þetta viðhengi.";
 
-/* Action */
-"Catalan" = "Katalónska";
-
 /* Title */
 "Cc" = "Afrit";
 
@@ -408,12 +407,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* loading message */
 "Checking ...." = "Athuga ....";
-
-/* Action */
-"Chinese Simplified" = "Einfölduð kínverska";
-
-/* Action */
-"Chinese Traditional" = "Hefðbundin kínverska";
 
 /* place holder */
 "Choose a Password" = "Veldu lykilorð";
@@ -479,6 +472,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* Action */
 "Continue" = "Halda áfram";
 
+/* Action */
+"Continue and Don't ask again" = "Halda áfram og ekki spyrja aftur";
+
 /* Title */
 "Copy address" = "Afrita póstfang";
 
@@ -512,9 +508,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* error message title when create new user */
 "Create user failed" = "Mistókst að búa til notandaaðgang";
 
-/* Action */
-"Croatian" = "Króatíska";
-
 /* Change language title */
 "Current Language is: " = "Núverandi tungumál er: ";
 
@@ -528,17 +521,11 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
    contacts default label type */
 "Custom" = "Sérsniðið";
 
-/* Action */
-"Czech" = "Tékkneska";
-
 /* Title */
 "DECRYPT MAILBOX" = "AFKÓÐA PÓSTHÓLF";
 
 /* mail location title */
 "DRAFTS" = "Drög";
-
-/* Action */
-"Danish" = "Danska";
 
 /* message Date: text */
 "Date:" = "Dagsetning:";
@@ -638,9 +625,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 "Drafts" = "Drög";
 
 /* Action */
-"Dutch" = "Hollenska";
-
-/* Action */
 "Edit" = "Breyta";
 
 /* *
@@ -724,16 +708,13 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 "Encrypted from outside" = "Dulritað fyrir utanaðkomandi";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Dulritað fyrir utanaðkomandi PGP/innfellt";
+"Encrypted from outside PGP inline" = "Dulritað fyrir utanaðkomandi PGP-innfellt";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Dulritað fyrir utanaðkomandi PGP-MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Dulritað fyrir utanaðkomandi PGP-MIME undirritað";
-
-/* encryption lock description */
-"Encrypted outside" = "Dulritað utanaðkomandi";
 
 /* key setup top title */
 "Encryption Setup" = "Uppsetning dulritunar";
@@ -755,9 +736,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Enda-í-enda dulritað til sannvottaðs tölvupóstfangs";
-
-/* Action */
-"English" = "Enska";
 
 /* Action in 2fa popup view */
 "Enter" = "Setja inn";
@@ -850,9 +828,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* forwarded message title */
 "Forwarded message" = "Áframsend skilaboð";
 
-/* Action */
-"French" = "Franska";
-
 /* Title */
 "From" = "Frá";
 
@@ -867,9 +842,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Title */
 "General Settings" = "Almennar stillingar";
-
-/* Action */
-"German" = "Þýska";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Náðu í %@";
@@ -934,6 +906,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* import contact title */
 "Importing Contacts" = "Flyt inn tengiliði";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Flyt inn viðhengi, það getur tekið nokkra stund";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Til þess að geta notað þjónustuna okkar, verðurðu að samþykkja skilmála og kvaðir ProtonMail.";
 
@@ -994,9 +969,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Okkur tókst ekki að tengja vöruna sem þú keyptir í AppStore við neina vöru á þjónum okkar. Vinsamlega fylltu inn í villuskýrsluna og notendaaðstoðarteymið okkar mun hafa samband við þig eins fljótt og auðið er.";
-
-/* Action */
-"Italian" = "Ítalska";
 
 /* Title */
 "Keep me updated about new features" = "Halda mér upplýstum um nýja eiginleika";
@@ -1077,9 +1049,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* error title */
 "Logs" = "Aðgerðaskrár";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Þarftu að breyta farsímaundirskriftinni þinni eða gera hana óvirka?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Ertu að leita að tryggja öryggi upplýsinga um tengiliðinn þinn?";
 
@@ -1159,6 +1128,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Að breyta eða slökkva á sjálfgefnu farsímaundirskriftinni er eiginleiki í greiddum áskriftum.";
+
+/* More actions button */
+"More" = "Meira";
 
 /* Screen header */
 "More Credits" = "Meiri inneign";
@@ -1276,7 +1248,7 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 "On EE, MMM d, yyyy at %@" = "EE, d. MMM, yyyy klukkan %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "%2$@ skrifaði EE, d. MMM, yyyy klukkan %1$@:";
 
 /* None */
 "OpenDraft" = "Opna drög";
@@ -1346,9 +1318,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Description */
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
-
-/* Title */
-"Plain text" = "Hreinn texti";
 
 /* alert description */
 "Please add a password for the following recipients." = "Bættu inn lykilorði fyrir eftirfarandi viðtakendur.";
@@ -1435,15 +1404,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 "Please, manage it in your phone." = "Stjórnaðu því í símanum þínum.";
 
 /* Action */
-"Polish" = "Pólska";
-
-/* Action */
-"Portuguese" = "Portúgalska";
-
-/* Action */
-"Portuguese Brazil" = "Portúgalska (Brasilía)";
-
-/* Action */
 "Print" = "Prenta";
 
 /* Title */
@@ -1460,9 +1420,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary gera þér kleift að bæta við og breyta upplýsingum um tengiliði oðrum en bara nafni þeirra og tölvupóstfangi. Með því að nota ProtonMail eru þessar upplýsingar jafn öruggar og enda-í-enda dulritaðir tölvupóstar.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary gera þér kleift að sérsníða farsímaundirskriftina þína.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail selur ekki auglýsingar eða misnotar gagnaleynd þína. Stuðningur þinn er nauðsynlegur til að halda ProtonMail gangandi. Þú getur uppfært í greidda áskrift eða gefið peninga til að styðja ProtonMail.";
@@ -1536,6 +1493,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Ef skilaboð eru tilkynnt sem tilraun til gagnaveiði (phishing) verða þau send til okkar, svo við getum greint þau og endurbætt síurnar okkar. Það þýðir aftur á móti að við munum geta séð allt efni skilaboðana.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Krefjast staðfestingar á tengli";
+
 /* Title */
 "Resetting message cache ..." = "Endurstilli skyndiminni skilaboða ...";
 
@@ -1544,12 +1504,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reyna aftur eftir %d sekúndur";
-
-/* Action */
-"Romanian" = "Rúmenska";
-
-/* Action */
-"Russian" = "Rússneska";
 
 /* mail location title */
 "SENT" = "SENT";
@@ -1686,9 +1640,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Description */
 "Spammed" = "Ruslpóstur";
-
-/* Action */
-"Spanish" = "Spænska";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1903,9 +1854,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* Title */
 "Trouble shooting guide" = "Leiðarvísir fyrir vandamál";
 
-/* Action */
-"Turkish" = "Tyrkneska";
-
 /* action sheet option */
 "Turn Off" = "Slökkva á";
 
@@ -1923,9 +1871,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Title */
 "USER LOGIN" = "Innskráning notanda";
-
-/* Action */
-"Ukrainian" = "Úkraníska";
 
 /* Description */
 "Unable to connect to the server" = "Get ekki tengst við netþjón";
@@ -2027,9 +1972,6 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 /* alert description */
 "Upgrade to get all paid features." = "Uppfærðu til að nýta þér eiginleika sem greiða þarf fyrir.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Uppfærsla er ekki möguleg í forritinu.";
-
 /* Action */
 "Upload Contacts" = "Senda inn tengiliði";
 
@@ -2119,6 +2061,9 @@ THIS ACTION CANNOT BE UNDONE!" = "Allur fyrirliggjandi dulritaður póstur mun t
 
 /* Error message */
 "Yes, attach details of payment" = "Já, láta fylgja ítarupplýsingar varðandi greiðsluna";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Þú ert í þann mund að ræsa vafra og fara á";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Þú getur sérsniðið aðgerðir við strokur í stillingum ProtonMail-forritsins.";

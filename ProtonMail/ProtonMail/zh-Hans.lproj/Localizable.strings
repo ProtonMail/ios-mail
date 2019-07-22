@@ -708,8 +708,7 @@
 "Encrypted from outside" = "外部的加密邮件";
 
 /* Title */
-"Encrypted from outside
-inline" = "通过外网 PGP/Inline 加密";
+"Encrypted from outside PGP inline" = "通过外网 PGP/Inline 加密";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "通过外网 PGP/MIME 加密";
@@ -1249,7 +1248,7 @@ inline" = "通过外网 PGP/Inline 加密";
 "On EE, MMM d, yyyy at %@" = "yyyy 年 MMM d 日EE %1$@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy 年 MMM d 日EE %1$@, %2$@ 来信：";
 
 /* None */
 "OpenDraft" = "正在编写的草稿";

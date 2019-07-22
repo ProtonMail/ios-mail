@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "* OPCIONÁLIS";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Húzza ide a melléklet csatolásához";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = " felhasználónként";
 
@@ -163,13 +166,6 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 /* Title */
 "All contacts are imported" = "Minden névjegy importálva";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Az összes meglévő titkosított üzenete örökre el fog veszni, de a nem titkosított üzenetekhez továbbra is hozzáférhet.
-
-EZ A MŰVELET NEM VONHATÓ VISSZA!";
-
 /* archive when apply label */
 "Also Archive" = "Archiválás";
 
@@ -209,6 +205,12 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Description */
 "Archived" = "Archivált";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Biztos, hogy ki szeretne jelentkezni?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "A melléklet importálva";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Mellékletek";
@@ -277,7 +279,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "By using protonmail, you agree to our" = "A ProtonMail használatával elfogadja a";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Protonmail használatával elfogadja, a %@ és %@.";
+"By using protonmail, you agree to our %@ and %@." = "ProtonMail használatával elfogadja, a %1$@ és %2$@ dokumentumokat.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* None */
 "Cant' decrypt this attachment!" = "Melléklet visszafejtése sikertelen.";
 
-/* Action */
-"Catalan" = "Katalán";
-
 /* Title */
 "Cc" = "Másolat";
 
@@ -409,12 +408,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* loading message */
 "Checking ...." = "Ellenőrzés...";
 
-/* Action */
-"Chinese Simplified" = "Kínai (egyszerűsített)";
-
-/* Action */
-"Chinese Traditional" = "Kínai (hagyományos)";
-
 /* place holder */
 "Choose a Password" = "Adjon meg egy jelszót";
 
@@ -437,7 +430,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Compose to" = "Levélírás neki";
 
 /* Action */
-"Confirm" = "Megerősítés";
+"Confirm" = "Jóváhagyás";
 
 /* "Login Password" */
 "Confirm Login Password" = "Bejelentkezési jelszó megerősítése";
@@ -479,6 +472,9 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* Action */
 "Continue" = "Tovább";
 
+/* Action */
+"Continue and Don't ask again" = "Folytatás, ne kérdezze újra";
+
 /* Title */
 "Copy address" = "Cím másolása";
 
@@ -512,9 +508,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* error message title when create new user */
 "Create user failed" = "A felhasználó létrehozása nem sikerült";
 
-/* Action */
-"Croatian" = "Horvát";
-
 /* Change language title */
 "Current Language is: " = "Jelenlegi nyelv: ";
 
@@ -528,17 +521,11 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
    contacts default label type */
 "Custom" = "Egyéni";
 
-/* Action */
-"Czech" = "Cseh";
-
 /* Title */
 "DECRYPT MAILBOX" = "LEVELEK VISSZAFEJTÉSE";
 
 /* mail location title */
 "DRAFTS" = "Piszkozatok";
-
-/* Action */
-"Danish" = "Dán";
 
 /* message Date: text */
 "Date:" = "Dátum:";
@@ -638,9 +625,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Drafts" = "Piszkozatok";
 
 /* Action */
-"Dutch" = "Holland";
-
-/* Action */
 "Edit" = "Szerkesztés";
 
 /* *
@@ -672,7 +656,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Email Addresses" = "E-mail cím";
 
 /* Send an email to the current contact (button title text) */
-"Email Contact" = "E-mail üzenet küldése";
+"Email Contact" = "E-mail küldése";
 
 /* human check option button */
 "Email Verification" = "E-mailes ellenőrzés";
@@ -724,16 +708,13 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Encrypted from outside" = "Titkosított, külső feladótól";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "PGP/Inline titkosított, külső feladótól";
+"Encrypted from outside PGP inline" = "PGP/Inline titkosított, külső feladótól";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "PGP/MIME titkosított, külső feladótól";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "PGP/MIME aláírt és titkosított, külső feladótól";
-
-/* encryption lock description */
-"Encrypted outside" = "Titkosított, külső";
 
 /* key setup top title */
 "Encryption Setup" = "Titkosítás beállítása";
@@ -756,9 +737,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Végpontok közt titkosított, ellenőrzött címre";
 
-/* Action */
-"English" = "Angol";
-
 /* Action in 2fa popup view */
 "Enter" = "Belépés";
 
@@ -766,10 +744,10 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Enter Verification Code" = "Írja be az ellenőrző kódot";
 
 /* set pin title */
-"Enter your PIN" = "Írja be az PIN kódot";
+"Enter your PIN" = "Írja be a PIN kódot";
 
 /* Title */
-"Enter your PIN to unlock your inbox." = "Írja be az PIN kódot a levelek feloldásához.";
+"Enter your PIN to unlock your inbox." = "Írja be a PIN kódot a levelek feloldásához.";
 
 /* human verification top title */
 "Enter your cell phone number" = "Írja be a mobiltelefonszámát";
@@ -850,9 +828,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* forwarded message title */
 "Forwarded message" = "Továbbított üzenet";
 
-/* Action */
-"French" = "Francia";
-
 /* Title */
 "From" = "Feladó";
 
@@ -867,9 +842,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Title */
 "General Settings" = "Általános beállítások";
-
-/* Action */
-"German" = "Német";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "%@ beszerzése";
@@ -934,6 +906,9 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* import contact title */
 "Importing Contacts" = "Névjegyek importálása";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Melléklet importálása. Ez eltarthat egy ideig";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "A szolgáltatásink használatához el kell fogadnia a ProtonMail Felhasználási Feltételeket.";
 
@@ -994,9 +969,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
-
-/* Action */
-"Italian" = "Olasz";
 
 /* Title */
 "Keep me updated about new features" = "Tájékoztasson az új funkciókról";
@@ -1077,9 +1049,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* error title */
 "Logs" = "Naplók";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Át szeretné szerkeszteni vagy kapcsolni a mobil aláírást?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Titkosítani szeretné a névjegyek részleteit?";
 
@@ -1159,6 +1128,9 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "A mobil aláírás szerkesztése vagy kikapcsolása csak előfizetéses csomagokban lehetséges.";
+
+/* More actions button */
+"More" = "Továbbiak";
 
 /* Screen header */
 "More Credits" = "Több kredit";
@@ -1270,13 +1242,13 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "OTHER PLANS" = "TOVÁBBI CSOMAGOK";
 
 /* Title */
-"On" = "Be";
+"On" = "Ekkor:";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "yyyy. MMM d., EE, %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "yyyy. MMM d., EE, keltezéssel, %1$@, %2$@ írta:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy. MMM d., EE, keltezéssel, %1$@, %2$@ írta:";
 
 /* None */
 "OpenDraft" = "Piszkozat megnyitása";
@@ -1346,9 +1318,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Description */
 "Pin code can't be empty." = "A PIN kód nem lehet üres.";
-
-/* Title */
-"Plain text" = "Egyszerű szöveg";
 
 /* alert description */
 "Please add a password for the following recipients." = "Kérjük, adjon meg jelszót a következő címzetteknek.";
@@ -1435,15 +1404,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Action */
-"Polish" = "Lengyel";
-
-/* Action */
-"Portuguese" = "Portugál";
-
-/* Action */
-"Portuguese Brazil" = "Portugál (Brazíliai)";
-
-/* Action */
 "Print" = "Nyomtatás";
 
 /* Title */
@@ -1460,9 +1420,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary csomagok lehetővé teszik, hogy a néven és e-mail címen kívül további kapcsolattartási adatokat is tárolhasson a névjegyekben. A ProtonMail használatával ezek az adatok olyan biztonságban lesznek, mint a végpontok közt titkosított üzenetek.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "A ProtonMail Plus/Professional/Visionary csomagok lehetővé teszik mobil aláírásának testreszabását is.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "A ProtonMail nem küld hirdetéseket és nem él vissza magánéletével. Támogatása elengedhetetlen a ProtonMail fenntartásához. Támogathatja munkánkat adományokkal, vagy valamely előfizetői csomag választásával.";
@@ -1536,6 +1493,9 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Link jóváhagyás kérése";
+
 /* Title */
 "Resetting message cache ..." = "Üzenet gyorstár törlése...";
 
@@ -1544,12 +1504,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Újraküldés %d mp után";
-
-/* Action */
-"Romanian" = "Román";
-
-/* Action */
-"Russian" = "Orosz";
 
 /* mail location title */
 "SENT" = "Elküldött";
@@ -1582,7 +1536,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Search" = "Keresés";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
-"Select An Option" = "Válasszon ki egy lehetőséget";
+"Select An Option" = "Válasszon egy lehetőséget";
 
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Szín kiválasztása";
@@ -1663,7 +1617,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Signature Updated" = "Aláírás frissítve";
 
 /* settings general section title */
-"Single Password" = "Egy jelszó";
+"Single Password" = "Jelszó";
 
 /* settings option */
 "Snooze Notifications" = "Értesítések szüneteltetése";
@@ -1686,9 +1640,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Description */
 "Spammed" = "Levélszemét küldés";
-
-/* Action */
-"Spanish" = "Spanyol";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1726,7 +1677,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "Subject:" = "Tárgy:";
 
 /* menu title */
-"Subscription" = "Feliratkozás";
+"Subscription" = "Előfizetés";
 
 /* Action */
 "Support ProtonMail" = "A ProtonMail támogatása";
@@ -1903,9 +1854,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* Title */
 "Trouble shooting guide" = "Problémamegoldó kézikönyv";
 
-/* Action */
-"Turkish" = "Török";
-
 /* action sheet option */
 "Turn Off" = "Kikapcsolás";
 
@@ -1923,9 +1871,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Title */
 "USER LOGIN" = "Bejelentkezés";
-
-/* Action */
-"Ukrainian" = "Ukrán";
 
 /* Description */
 "Unable to connect to the server" = "Nem lehet csatlakozni a kiszolgálóhoz";
@@ -2027,9 +1972,6 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 /* alert description */
 "Upgrade to get all paid features." = "Váltson csomagot, a fizetős funkciókért.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "A csomag váltás nem lehetséges az alkalmazáson belül.";
-
 /* Action */
 "Upload Contacts" = "Névjegyek feltöltése";
 
@@ -2075,7 +2017,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "View Headers" = "Fejlécek megtekintése";
 
 /* Action */
-"View Plans" = "Csomagok megtekintése";
+"View Plans" = "Csomagok";
 
 /* Title */
 "Warning" = "Figyelem";
@@ -2119,6 +2061,9 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 
 /* Error message */
 "Yes, attach details of payment" = "Igen, csatolja a fizetési részleteket";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Webböngészőt fog megnyitni a következő címmel:";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "A csúsztatásos műveleteket a ProtonMail Beállítások menüjében állíthatja be igényeihez.";
@@ -2180,7 +2125,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "and" = "és";
 
 /* like at 10:00pm */
-"at" = "a következő időpontban:";
+"at" = ".";
 
 /* Error */
 "attempt remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
@@ -2213,7 +2158,7 @@ EZ A MŰVELET NEM VONHATÓ VISSZA!";
 "no object" = "no object";
 
 /* Title */
-"normal attachments" = "hagyományos mellékletek";
+"normal attachments" = "csatolt mellékletek";
 
 /* agree check box privacy */
 "privacy policy." = "adatvédelmi irányelvek.";

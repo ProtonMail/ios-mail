@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*OPCIONAL";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "Arraste e solte aqui para adicionar como anexo";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/usuário";
 
@@ -163,13 +166,6 @@ Por favor visite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 /* Title */
 "All contacts are imported" = "Todos os contatos foram importados";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Todos seus e-mails criptografados existentes serão perdidos para sempre, mas você ainda será capaz de ver os seus e-mails não criptografados. 
-
-ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
-
 /* archive when apply label */
 "Also Archive" = "Também arquivar";
 
@@ -209,6 +205,12 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Description */
 "Archived" = "Arquivado";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Você tem certeza que deseja encerrar a sessão?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Anexo importado";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Anexos";
@@ -277,7 +279,7 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "By using protonmail, you agree to our" = "Ao usar o ProtonMail, você concorda com o nosso";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Ao usar o ProtonMail, você concorda com o nossos %@ e %@.";
+"By using protonmail, you agree to our %@ and %@." = "Ao usar o ProtonMail, você concorda com o nossos %1$@ e %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* None */
 "Cant' decrypt this attachment!" = "Não foi possível descriptografar este anexo.";
 
-/* Action */
-"Catalan" = "Catalão";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -408,12 +407,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* loading message */
 "Checking ...." = "Verificando...";
-
-/* Action */
-"Chinese Simplified" = "Chinês Simplificado";
-
-/* Action */
-"Chinese Traditional" = "Chinês Tradicional";
 
 /* place holder */
 "Choose a Password" = "Escolha uma senha";
@@ -479,6 +472,9 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* Action */
 "Continue" = "Continuar";
 
+/* Action */
+"Continue and Don't ask again" = "Continuar e não perguntar novamente";
+
 /* Title */
 "Copy address" = "Copiar endereço";
 
@@ -512,9 +508,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* error message title when create new user */
 "Create user failed" = "Falha ao criar usuário";
 
-/* Action */
-"Croatian" = "Croata";
-
 /* Change language title */
 "Current Language is: " = "Idioma atual: ";
 
@@ -528,17 +521,11 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
    contacts default label type */
 "Custom" = "Personalizado";
 
-/* Action */
-"Czech" = "Tcheco";
-
 /* Title */
 "DECRYPT MAILBOX" = "DESCRIPTOGRAFAR A CAIXA DE CORREIO";
 
 /* mail location title */
 "DRAFTS" = "RASCUNHOS";
-
-/* Action */
-"Danish" = "Dinamarquês";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -638,9 +625,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "Drafts" = "Rascunhos";
 
 /* Action */
-"Dutch" = "Holandês";
-
-/* Action */
 "Edit" = "Editar";
 
 /* *
@@ -724,16 +708,13 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "Encrypted from outside" = "Criptografado externamente";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Criptografado externamente com PGP/inline";
+"Encrypted from outside PGP inline" = "Criptografado externamente com PGP incorporado";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Criptografado externamente com PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Criptografado externamente com PGP/MIME assinado";
-
-/* encryption lock description */
-"Encrypted outside" = "Criptografado externamente";
 
 /* key setup top title */
 "Encryption Setup" = "Configuração de criptografia";
@@ -755,9 +736,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Criptografado de ponta a ponta para o endereço verificado";
-
-/* Action */
-"English" = "Inglês";
 
 /* Action in 2fa popup view */
 "Enter" = "Entrar";
@@ -850,9 +828,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* forwarded message title */
 "Forwarded message" = "Mensagem encaminhada";
 
-/* Action */
-"French" = "Francês";
-
 /* Title */
 "From" = "De";
 
@@ -867,9 +842,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Title */
 "General Settings" = "Configurações gerais";
-
-/* Action */
-"German" = "Alemão";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Obter %@";
@@ -934,6 +906,9 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* import contact title */
 "Importing Contacts" = "Importando contatos";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importando anexo. Isso pode demorar um pouco";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Para utilizar nossos serviços, você deve concordar com os termos de serviço do ProtonMail.";
 
@@ -994,9 +969,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Não foi possível combinar seu produto da App Store com produtos do nosso servidor. Por favor, preencha o relatório de erros e nossa equipe de suporte ao cliente irá entrar contato com você.";
-
-/* Action */
-"Italian" = "Italiano";
 
 /* Title */
 "Keep me updated about new features" = "Mantenha-me atualizado sobre novos recursos";
@@ -1077,9 +1049,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 /* error title */
 "Logs" = "Registros";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Está procurando como editar ou desabilitar sua assinatura móvel?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Procurando proteger os detalhes dos seus contatos?";
 
@@ -1159,6 +1128,9 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "A modificação ou desativação da assinatura móvel padrão é um recurso pago.";
+
+/* More actions button */
+"More" = "Mais";
 
 /* Screen header */
 "More Credits" = "Mais creditos";
@@ -1276,7 +1248,7 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "On EE, MMM d, yyyy at %@" = "Em EE, d, MMM, yyyy às %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "Em EE, d, MMM, yyyy às %1$@, %2$@, escreveu:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "Em EE, d, MMM, yyyy às %1$@, %2$@, escreveu:";
 
 /* None */
 "OpenDraft" = "Abrir rascunho";
@@ -1346,9 +1318,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Description */
 "Pin code can't be empty." = "O código Pin não pode estar vazio.";
-
-/* Title */
-"Plain text" = "Texto sem formatação";
 
 /* alert description */
 "Please add a password for the following recipients." = "Por favor, adicione uma senha para os seguintes destinatários.";
@@ -1435,15 +1404,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "Please, manage it in your phone." = "Por favor, faça o gerenciamento do seu telefone.";
 
 /* Action */
-"Polish" = "Polonês";
-
-/* Action */
-"Portuguese" = "Português";
-
-/* Action */
-"Portuguese Brazil" = "Português do Brasil";
-
-/* Action */
 "Print" = "Imprimir";
 
 /* Title */
@@ -1460,9 +1420,6 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "O ProtonMail Plus/Profissional/Visionário permite adicionar e editar detalhes de contato além do nome e e-mail do contato. Usando o ProtonMail, estes dados ficarão seguros igualmente à seu e-mail criptografado de ponta a ponta.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Profissional/Visionário permite que você personalize sua assinatura móvel.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "O ProtonMail não tem anúncios e não abusa da sua privacidade. Seu apoio é essencial para manter o ProtonMail em funcionamento. Você pode fazer o upgrade para uma conta paga ou fazer uma doação para o ProtonMail.";
@@ -1537,6 +1494,9 @@ ESTA AÇÃO NÃO PODERÁ SER DESFEITA!";
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Reportando uma mensagem como tentativa de phishing, você estará enviando esta mensagem
 para nós, para que possamos analisá-la e melhorar nossos filtros. Isso significa que seremos capazes de ver todo o conteúdo da mensagem.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Aviso de link de redirecionamento";
+
 /* Title */
 "Resetting message cache ..." = "Redefinindo o cache da mensagem...";
 
@@ -1545,12 +1505,6 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Tente novamente após %d segundos";
-
-/* Action */
-"Romanian" = "Romeno";
-
-/* Action */
-"Russian" = "Russo";
 
 /* mail location title */
 "SENT" = "ENVIADO";
@@ -1687,9 +1641,6 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 
 /* Description */
 "Spammed" = "Spam";
-
-/* Action */
-"Spanish" = "Espanhol";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp senha única de keysalt inválida!";
@@ -1904,9 +1855,6 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 /* Title */
 "Trouble shooting guide" = "Guia de solução de problemas";
 
-/* Action */
-"Turkish" = "Turco";
-
 /* action sheet option */
 "Turn Off" = "Desligar";
 
@@ -1924,9 +1872,6 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 
 /* Title */
 "USER LOGIN" = "Login do usuário";
-
-/* Action */
-"Ukrainian" = "Ucraniano";
 
 /* Description */
 "Unable to connect to the server" = "Não foi possível conectar ao servidor";
@@ -2028,9 +1973,6 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 /* alert description */
 "Upgrade to get all paid features." = "Atualize para um plano pago para obter todos os recursos.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Não é possível fazer o upgrade através do aplicativo.";
-
 /* Action */
 "Upload Contacts" = "Enviar contatos";
 
@@ -2120,6 +2062,9 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 
 /* Error message */
 "Yes, attach details of payment" = "Sim, anexe detalhes de pagamento";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Você está prestes a ser redirecionado para";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Você pode personalizar os gestos de deslizar nas configurações do ProtonMail.";
