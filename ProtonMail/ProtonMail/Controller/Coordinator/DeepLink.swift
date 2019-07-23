@@ -175,7 +175,7 @@ class DeepLink {
 
 extension DeepLink.Node: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "dest: \(self.name), sender: \(self.value))"
+        return "dest: \(self.name), sender: \(String(describing: self.value)))"
     }
 }
 

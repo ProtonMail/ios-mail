@@ -44,8 +44,13 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
+        
         let currentPath = DeepLink.Node(name: String(describing: MessageContainerViewController.self), value: self.viewModel.thread.first?.messageID)
-        self.appendDeeplink(path: currentPath)
+        if parent != nil {
+            self.appendDeeplink(path: currentPath)
+        } else {
+            self.cutDeeplink(downToIncluding: currentPath)
+        }
     }
     
     override func viewDidLoad() {

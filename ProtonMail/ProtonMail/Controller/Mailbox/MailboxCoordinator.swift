@@ -110,8 +110,6 @@ class MailboxCoordinator : DefaultCoordinator {
             self.rvc?.pushFrontViewController(self.navigation, animated: true)
         }
         self.navBeforeStart = nil
-        //could remove this and use a similar way in coordinator
-        //sharedVMService.mailbox(fromMenu: self.viewController)
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -215,35 +213,31 @@ class MailboxCoordinator : DefaultCoordinator {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
-    func go(to deepLink: DeepLink) {
-        if let path = deepLink.popFirst,
-            let dest = Destination(rawValue: path.name)
-        {
-            self.go(to: dest, value: path.value, sender: deepLink)
-        }
-    }
-    
-    func go(to dest: Destination, value: Any?, sender: DeepLink) {
+    func follow(_ deeplink: DeepLink) {
+        guard let path = deeplink.popFirst, let dest = Destination(rawValue: path.name) else { return }
+            
         switch dest {
         case .details:
-            if let messageID = value as? String,
+            if let messageID = path.value,
                 case let msgService = services.get() as MessageDataService,
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
             {
                     let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
-                    details.start(deeplink: sender)
+                    details.start()
+                    details.follow(deeplink)
             }
         case .composeShow:
-            if let messageID = value as? String,
+            if let messageID = path.value,
                 let nav = self.navigation,
                 let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
             {
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
+                composer.follow(deeplink)
             }
         default:
-            self.go(to: dest, sender: sender)
+            self.go(to: dest, sender: deeplink)
         }
     }
 }

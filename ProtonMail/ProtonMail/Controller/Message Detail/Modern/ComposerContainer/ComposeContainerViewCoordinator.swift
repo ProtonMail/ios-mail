@@ -65,8 +65,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.controller?.set(viewModel: viewModel)
     }
     
-    func start(deeplink: DeepLink) {
-        self.start()
+    func follow(_ deeplink: DeepLink) {
+        // TODO
     }
     
     override func start() {

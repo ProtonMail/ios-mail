@@ -75,10 +75,21 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         self.viewController?.set(viewModel: viewModel)
     }
     
-    func start(deeplink: DeepLink) {
-        self.start()
-        if let path = deeplink.popFirst, let destination = Destinations(rawValue: path.name) {
-            self.go(to: destination, value: path.value, sender: deeplink)
+    func follow(_ deeplink: DeepLink) {
+        guard let path = deeplink.popFirst, let destination = Destinations(rawValue: path.name) else { return }
+        
+        switch destination {
+        case .composerDraft:
+            if let messageID = path.value,
+                let nav = self.navigationController,
+                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
+            {
+                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
+        default:
+            self.go(to: destination, sender: deeplink)
         }
     }
 
@@ -95,22 +106,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     private var tempClearFileURL: URL?
-
-    
-    func go(to dest: Destinations, value: Any?, sender: DeepLink) {
-        switch dest {
-        case .composerDraft:
-            if let messageID = value as? String,
-                let nav = self.navigationController,
-                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
-            {
-                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
-                composer.start()
-            }
-        default:
-            self.go(to: dest, sender: sender)
-        }
-    }
     
     internal func go(to destination: Destinations, sender: Any? = nil) {
         self.controller.performSegue(withIdentifier: destination.rawValue, sender: sender)

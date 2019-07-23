@@ -55,7 +55,7 @@ extension Deeplinkable where Self: UIViewController {
 extension CoordinatedNew where Self: Deeplinkable {
     func appendDeeplink(path: DeepLink.Node) {
         guard let deeplink = self.deeplinkStorage else {
-            assert(false, "Controller does not have UIWindowScene available")
+//            assert(false, "Controller does not have UIWindowScene available")
             return
         }
         if deeplink.last != path {
@@ -66,10 +66,22 @@ extension CoordinatedNew where Self: Deeplinkable {
     
     func cutDeeplink(downTo path: DeepLink.Node) {
         guard let deeplink = self.deeplinkStorage else {
-            assert(false, "Controller does not have UIWindowScene available")
+//            assert(false, "Controller does not have UIWindowScene available")
             return
         }
         deeplink.cut(until: path)
+        self.deeplinkStorage = deeplink
+    }
+    
+    func cutDeeplink(downToIncluding path: DeepLink.Node) {
+        guard let deeplink = self.deeplinkStorage else {
+//            assert(false, "Controller does not have UIWindowScene available")
+            return
+        }
+        deeplink.cut(until: path)
+        if deeplink.last == path {
+            _ = deeplink.popLast
+        }
         self.deeplinkStorage = deeplink
     }
 }

@@ -167,7 +167,7 @@ extension MenuViewController : OptionsDialogPresenter {
     func toSettings() {
         let deepLink = DeepLink(MenuCoordinatorNew.Destination.settings.rawValue)
         deepLink.append(.init(name: SettingsCoordinator.Destination.snooze.rawValue))
-        self.coordinator?.go(to: deepLink)
+        self.coordinator?.follow(deepLink)
     }
     
     private func setupSnoozeButton(switchedOn: Bool? = nil) {

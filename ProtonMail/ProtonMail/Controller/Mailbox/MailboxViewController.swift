@@ -133,7 +133,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     deinit {
-        self.viewModel.resetFetchedController()
+        self.viewModel?.resetFetchedController()
     }
     
     @objc func doEnterForeground() {
@@ -215,9 +215,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
+        
         let currentPath = DeepLink.Node(name: String(describing: MailboxViewController.self),
                                         value: self.viewModel.labelID)
-        self.appendDeeplink(path: currentPath)
+        if parent != nil {
+            self.appendDeeplink(path: currentPath)
+        } else {
+            self.cutDeeplink(downToIncluding: currentPath)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
