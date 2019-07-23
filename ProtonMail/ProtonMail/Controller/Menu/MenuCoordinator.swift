@@ -155,8 +155,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
     }
     
     func go(to deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
-            self.go(to: dest, value: path.sender, sender: deepLink)
+        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
+            self.go(to: dest, value: path.value, sender: deepLink)
             // resue the exist mailbox // here need to update to suport other Coordinator
 //            if let latest = lastestCoordinator as? MailboxCoordinator,
 //                dest == MenuCoordinatorNew.Destination.mailbox {
@@ -194,7 +194,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         if #available(iOS 13.0, *) {
-            self.viewController?.trackDeeplink(enter: false, path: .init(dest: String(describing: MenuViewController.self)))
+            self.viewController?.cutDeeplink(downTo: .init(name: String(describing: MenuViewController.self)))
         }
         
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {

@@ -30,7 +30,7 @@ import UIKit
 import MBProgressHUD
 
 
-class MessageContainerViewController: TableContainerViewController<MessageContainerViewModel, MessageContainerViewCoordinator> {
+class MessageContainerViewController: TableContainerViewController<MessageContainerViewModel, MessageContainerViewCoordinator>, Deeplinkable {
     @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
@@ -44,7 +44,8 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        self.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewController.self), sender: self.viewModel.thread.first?.messageID))
+        let currentPath = DeepLink.Node(name: String(describing: MessageContainerViewController.self), value: self.viewModel.thread.first?.messageID)
+        self.appendDeeplink(path: currentPath)
     }
     
     override func viewDidLoad() {

@@ -263,7 +263,7 @@ public class PushNotificationService: Service {
                 return
             }
             let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
-            link.append(MailboxCoordinator.Destination.detailsFromNotify.rawValue)
+            link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
             self.messageService.pushNotificationMessageID = messageid
             NotificationCenter.default.post(name: .switchView,
                                             object: link)

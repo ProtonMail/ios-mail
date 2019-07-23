@@ -30,7 +30,7 @@ import UIKit
 import CoreData
 import MCSwipeTableViewCell
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, Deeplinkable {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
@@ -215,7 +215,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func didMove(toParent parent: UIViewController?) {
         super.didMove(toParent: parent)
-        self.trackDeeplink(enter: true, path: .init(dest: String(describing: MailboxViewController.self), sender: self.viewModel.labelID))
+        let currentPath = DeepLink.Node(name: String(describing: MailboxViewController.self),
+                                        value: self.viewModel.labelID)
+        self.appendDeeplink(path: currentPath)
     }
     
     override func viewDidAppear(_ animated: Bool) {

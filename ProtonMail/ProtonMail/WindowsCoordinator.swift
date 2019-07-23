@@ -220,9 +220,9 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @available(iOS 13.0, *)
-    internal func restoreState(_ deeplink: DeepLink) {
+    internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
-        deeplink.popFirst
+        _ = deeplink.popFirst
         self.start()
     }
 }

@@ -30,40 +30,35 @@ import Foundation
 
 class DeepLink {
     
-    class Path {
+    class Node {
         //
-        var next: Path?
-        weak var previous: Path?
+        var next: Node?
+        weak var previous: Node?
         
         //
-        var destination : String
-        var sender: String?
+        var name : String
+        var value: String?
         
-        init(dest: String, sender: String? = nil) {
-            self.destination = dest
-            self.sender = sender
+        init(name: String, value: String? = nil) {
+            self.name = name
+            self.value = value
         }
         
         required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            self.destination = try container.decode(String.self, forKey: .destination)
-            self.sender = try? container.decode(String.self, forKey: .sender)
+            self.name = try container.decode(String.self, forKey: .destination)
+            self.value = try? container.decode(String.self, forKey: .sender)
         }
     }
     
-    
-    /// Description
-    ///
-    /// - Parameters:
-    ///   - dest: dest description
-    ///   - sender: sender descriptio
     init(_ dest: String, sender: String? = nil) {
-        append(dest, sender: sender)
+        let node = Node(name: dest, value: sender)
+        self.append(node)
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let elements = try container.decode(Array<Path>.self, forKey: .elements)
+        let elements = try container.decode(Array<Node>.self, forKey: .elements)
         
         self.head = elements.first
         for (index, element) in elements.enumerated() {
@@ -77,14 +72,9 @@ class DeepLink {
     }
     
     /// The head of the Linked List
-    private(set) var head: Path?
+    private(set) var head: Node?
     
-    func append(_ dest: String, sender: String? = nil) {
-        let newNode = Path(dest: dest, sender: sender)
-        append(newNode)
-    }
-    
-    func append(_ path: Path) {
+    func append(_ path: Node) {
         let newNode = path
         if let lastNode = last {
             newNode.previous = lastNode
@@ -94,7 +84,7 @@ class DeepLink {
         }
     }
     
-    var last: Path? {
+    var last: Node? {
         get {
             guard var node = head else {
                 return nil
@@ -111,27 +101,45 @@ class DeepLink {
         return head == nil
     }
     
-    var first: Path? {
+    var first: Node? {
         get {
             return head
         }
     }
     
     /// Removes one from head and returns it
-    var popFirst: Path? {
+    var popFirst: Node? {
         get {
             return removeTop()
         }
     }
     
     /// Removes one from head and returns it
-    var popLast: Path? {
+    var popLast: Node? {
         get {
             return removeBottom()
         }
     }
     
-    private func removeTop() -> Path? {
+    func cut(until path: Node) {
+        guard self.contains(path) else { return }
+        while self.last != path && self.head?.next != nil {
+            _ = self.removeBottom()
+        }
+    }
+    
+    func contains(_ path: Node) -> Bool {
+        var current = self.head
+        while let next = current?.next {
+            if current == path {
+                return true
+            }
+            current = next
+        }
+        return current == path
+    }
+    
+    private func removeTop() -> Node? {
         if let head = head {
             self.remove(path: head)
             return head
@@ -139,7 +147,7 @@ class DeepLink {
         return nil
     }
     
-    private func removeBottom() -> Path? {
+    private func removeBottom() -> Node? {
         var current = self.head
         while let next = current?.next {
             current = next
@@ -149,7 +157,7 @@ class DeepLink {
         return current
     }
 
-    private func remove(path: Path) {
+    private func remove(path: Node) {
         let prev = path.previous
         let next = path.next
         
@@ -165,16 +173,16 @@ class DeepLink {
     }
 }
 
-extension DeepLink.Path: CustomDebugStringConvertible {
+extension DeepLink.Node: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "dest: \(self.destination), sender: \(self.sender))"
+        return "dest: \(self.name), sender: \(self.value))"
     }
 }
 
-extension DeepLink.Path: Equatable {
-    static func == (lhs: DeepLink.Path, rhs: DeepLink.Path) -> Bool {
-        return lhs.destination == rhs.destination
-                && lhs.sender?.hashValue == rhs.sender?.hashValue
+extension DeepLink.Node: Equatable {
+    static func == (lhs: DeepLink.Node, rhs: DeepLink.Node) -> Bool {
+        return lhs.name == rhs.name
+                && lhs.value?.hashValue == rhs.value?.hashValue
     }
 }
 
@@ -192,12 +200,12 @@ extension DeepLink: CustomDebugStringConvertible {
     }
 }
 
-extension DeepLink.Path: Codable {
+extension DeepLink.Node: Codable {
     enum CodingKeys: CodingKey { case destination, sender }
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.destination, forKey: .destination)
-        if let sender = self.sender {
+        try container.encode(self.name, forKey: .destination)
+        if let sender = self.value {
             try container.encode(sender, forKey: .sender)
         }
     }
@@ -210,7 +218,7 @@ extension DeepLink: Codable {
         var containter = encoder.container(keyedBy: CodingKeys.self)
         guard let head = self.head else { throw Errors.empty }
         
-        var elements: Array<Path> = [head]
+        var elements: Array<Node> = [head]
         var current = head
         while let next = current.next {
             elements.append(next)

@@ -77,8 +77,8 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     
     func start(deeplink: DeepLink) {
         self.start()
-        if let path = deeplink.popFirst, let destination = Destinations(rawValue: path.destination) {
-            self.go(to: destination, value: path.sender, sender: deeplink)
+        if let path = deeplink.popFirst, let destination = Destinations(rawValue: path.name) {
+            self.go(to: destination, value: path.value, sender: deeplink)
         }
     }
 
@@ -206,7 +206,9 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        self.viewController?.trackDeeplink(enter: true, path: .init(dest: String(describing: MessageContainerViewCoordinator.self), sender: self.viewController?.viewModel.thread.first?.messageID))
+        let currentPath = DeepLink.Node(name: String(describing: MessageContainerViewCoordinator.self),
+                                        value: self.viewController?.viewModel.thread.first?.messageID)
+        self.viewController?.cutDeeplink(downTo: currentPath)
 
         switch Destinations(rawValue: segue.identifier!) {
         case .some(let destination) where destination == .composerReply ||

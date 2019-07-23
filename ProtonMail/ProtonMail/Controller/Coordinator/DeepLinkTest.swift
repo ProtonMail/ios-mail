@@ -31,11 +31,11 @@ import XCTest
 
 class DeepLinkTests: XCTestCase {
     func makeDeeplink() -> DeepLink {
-        let head = DeepLink("Head", sender: self)
-        head.append("String")
-        head.append(.init(dest: "Path"))
-        head.append("String+sender", sender: self)
-        head.append(.init(dest: "Path+sender", sender: self))
+        let head = DeepLink("Head", sender: #file)
+        head.append(.init(name:"String"))
+        head.append(.init(name: "Path"))
+        head.append(.init(name:"String+sender", value: #file))
+        head.append(.init(name: "Path+sender", value: #file))
         return head
     }
     
@@ -60,5 +60,45 @@ class DeepLinkTests: XCTestCase {
         
         XCTAssertEqual(oldLast, deeplink.popLast)
         XCTAssertEqual(oldPreLast, deeplink.last)
+    }
+    
+    func testContains() {
+        let deeplink = self.makeDeeplink()
+        let one = DeepLink.Node(name: "String+sender", value: #file)
+        let other = DeepLink.Node(name: "Nonce", value: #file)
+        
+        XCTAssertTrue(deeplink.contains(one))
+        XCTAssertFalse(deeplink.contains(other))
+        
+        deeplink.append(other)
+        
+        XCTAssertTrue(deeplink.contains(one))
+        XCTAssertTrue(deeplink.contains(other))
+    }
+    
+    func testCutUntil() {
+        let one = DeepLink.Node(name: "one", value: #file)
+        let two = DeepLink.Node(name: "two", value: #file)
+        let three = DeepLink.Node(name: "three", value: #file)
+        let four = DeepLink.Node(name: "four", value: #file)
+        let other = DeepLink.Node(name: "Nonce", value: #file)
+        
+        let deeplink = DeepLink("zero")
+        [one, two, three, four].forEach(deeplink.append)
+        
+        //
+        deeplink.cut(until: other)
+        XCTAssertTrue(deeplink.contains(one))
+        XCTAssertTrue(deeplink.contains(two))
+        XCTAssertTrue(deeplink.contains(three))
+        XCTAssertTrue(deeplink.contains(four))
+        
+        //
+        
+        deeplink.cut(until: two)
+        XCTAssertTrue(deeplink.contains(one))
+        XCTAssertTrue(deeplink.contains(two))
+        XCTAssertFalse(deeplink.contains(three))
+        XCTAssertFalse(deeplink.contains(four))
     }
 }

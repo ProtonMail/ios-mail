@@ -119,7 +119,9 @@ class MailboxCoordinator : DefaultCoordinator {
             return false //
         }
         
-        self.viewController?.trackDeeplink(enter: false, path: .init(dest: String(describing: MailboxViewController.self), sender: self.viewModel.labelID))
+        let currentPath = DeepLink.Node(name: String(describing: MailboxViewController.self),
+                                        value: self.viewModel.labelID)
+        self.viewController?.cutDeeplink(downTo: currentPath)
         
         switch dest {
         case .details:
@@ -215,9 +217,9 @@ class MailboxCoordinator : DefaultCoordinator {
     
     func go(to deepLink: DeepLink) {
         if let path = deepLink.popFirst,
-            let dest = Destination(rawValue: path.destination)
+            let dest = Destination(rawValue: path.name)
         {
-            self.go(to: dest, value: path.sender, sender: deepLink)
+            self.go(to: dest, value: path.value, sender: deepLink)
         }
     }
     

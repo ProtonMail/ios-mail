@@ -29,7 +29,7 @@
 import UIKit
 import CoreData
 
-class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
+class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, Deeplinkable {
     /// those two are optional
     typealias viewModelType = MenuViewModel
     typealias coordinatorType = MenuCoordinatorNew
@@ -166,7 +166,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
 extension MenuViewController : OptionsDialogPresenter {
     func toSettings() {
         let deepLink = DeepLink(MenuCoordinatorNew.Destination.settings.rawValue)
-        deepLink.append(SettingsCoordinator.Destination.snooze.rawValue)
+        deepLink.append(.init(name: SettingsCoordinator.Destination.snooze.rawValue))
         self.coordinator?.go(to: deepLink)
     }
     
