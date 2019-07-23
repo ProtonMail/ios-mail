@@ -201,10 +201,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let currentPath = DeepLink.Node(name: String(describing: MessageContainerViewCoordinator.self),
-                                        value: self.viewController?.viewModel.thread.first?.messageID)
-        self.viewController?.cutDeeplink(downTo: currentPath)
-
         switch Destinations(rawValue: segue.identifier!) {
         case .some(let destination) where destination == .composerReply ||
                                             destination == .composerReplyAll ||

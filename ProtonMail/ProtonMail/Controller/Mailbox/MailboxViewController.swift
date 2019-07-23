@@ -30,7 +30,7 @@ import UIKit
 import CoreData
 import MCSwipeTableViewCell
 
-class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew, Deeplinkable {
+class MailboxViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MailboxViewModel
     typealias coordinatorType = MailboxCoordinator
 
@@ -211,18 +211,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.hideTopMessage()
         NotificationCenter.default.removeObserver(self)
         self.stopAutoFetch()
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-        
-        let currentPath = DeepLink.Node(name: String(describing: MailboxViewController.self),
-                                        value: self.viewModel.labelID)
-        if parent != nil {
-            self.appendDeeplink(path: currentPath)
-        } else {
-            self.cutDeeplink(downToIncluding: currentPath)
-        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -1484,5 +1472,11 @@ extension MailboxViewController: UIDataSourceModelAssociation {
     
     func indexPathForElement(withModelIdentifier identifier: String, in view: UIView) -> IndexPath? {
         return self.viewModel.indexPath(by: identifier)
+    }
+}
+
+extension MailboxViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: MailboxViewController.self), value: self.viewModel.labelID)
     }
 }

@@ -48,9 +48,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         #if !APP_EXTENSION
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = LocalString._general_draft_action
-            let currentPath = DeepLink.Node(name: String(describing: ComposeContainerViewController.self),
-                                            value: self.viewModel.childViewModel.message?.messageID)
-            self.appendDeeplink(path: currentPath)
         }
         #endif
     }
@@ -243,7 +240,12 @@ class ExpirationPickerCell: UITableViewCell {
 }
 
 #if !APP_EXTENSION
-extension ComposeContainerViewController: Deeplinkable {}
+extension ComposeContainerViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: ComposeContainerViewController.self),
+                             value: self.viewModel.childViewModel.message?.messageID)
+    }
+}
 
 extension ComposeContainerViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {

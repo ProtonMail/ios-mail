@@ -162,9 +162,17 @@ class WindowsCoordinator: CoordinatorNew {
                 if self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
-                self.navigate(from: self.currentWindow, to: self.appWindow)
-                if let deeplink = self.deeplink {
-                    NotificationCenter.default.post(name: .switchView, object: deeplink)
+                if self.navigate(from: self.currentWindow, to: self.appWindow),
+                    let deeplink = self.deeplink
+                {
+                    self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+                        if let menu = controller as? MenuViewController,
+                            let coordinator = menu.getCoordinator() as? MenuCoordinatorNew
+                        {
+                            coordinator.follow(deeplink)
+                            stop = true
+                        }
+                    }
                 }
             }
         }

@@ -30,6 +30,35 @@ import UIKit
 import SWRevealViewController
 
 extension UIWindow {
+    func enumerateViewControllerHierarchy(_ handler: @escaping (UIViewController, inout Bool)->Void) {
+        var stop: Bool = false
+        var currentController = self.rootViewController
+        
+        while !stop {
+            if let nextViewController = currentController as? SWRevealViewController {
+                handler(nextViewController.rearViewController, &stop)
+                handler(nextViewController.frontViewController, &stop)
+                currentController = nextViewController.frontViewController
+                continue
+            }
+            
+            if let nextViewController = currentController as? UINavigationController {
+                handler(nextViewController, &stop)
+                nextViewController.viewControllers.forEach { handler($0, &stop) }
+                currentController = nextViewController.topViewController
+                continue
+            }
+            
+            if let nextViewController = currentController?.presentedViewController {
+                handler(nextViewController, &stop)
+                currentController = nextViewController
+                continue
+            }
+            
+            stop = true
+        }
+    }
+    
     func topmostViewController() -> UIViewController? {
         var topController = self.rootViewController
         while let presentedViewController = topController?.presentedViewController

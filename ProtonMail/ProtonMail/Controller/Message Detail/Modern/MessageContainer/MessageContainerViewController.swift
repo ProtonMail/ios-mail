@@ -30,7 +30,7 @@ import UIKit
 import MBProgressHUD
 
 
-class MessageContainerViewController: TableContainerViewController<MessageContainerViewModel, MessageContainerViewCoordinator>, Deeplinkable {
+class MessageContainerViewController: TableContainerViewController<MessageContainerViewModel, MessageContainerViewCoordinator> {
     @IBOutlet weak var bottomView: MessageDetailBottomView! // TODO: this can be tableView section footer in conversation mode
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
@@ -39,17 +39,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         super.viewDidAppear(animated)
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.viewModel.thread.first?.header.title
-        }
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
-        
-        let currentPath = DeepLink.Node(name: String(describing: MessageContainerViewController.self), value: self.viewModel.thread.first?.messageID)
-        if parent != nil {
-            self.appendDeeplink(path: currentPath)
-        } else {
-            self.cutDeeplink(downToIncluding: currentPath)
         }
     }
     
@@ -291,5 +280,12 @@ extension MessageContainerViewController: UIViewControllerRestoration {
         }
         
         super.encodeRestorableState(with: coder)
+    }
+}
+
+extension MessageContainerViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: MessageContainerViewController.self),
+                             value: self.viewModel.thread.first?.messageID)
     }
 }

@@ -117,10 +117,6 @@ class MailboxCoordinator : DefaultCoordinator {
             return false //
         }
         
-        let currentPath = DeepLink.Node(name: String(describing: MailboxViewController.self),
-                                        value: self.viewModel.labelID)
-        self.viewController?.cutDeeplink(downTo: currentPath)
-        
         switch dest {
         case .details:
             self.viewController?.cancelButtonTapped()

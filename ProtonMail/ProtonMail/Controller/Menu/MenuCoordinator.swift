@@ -181,11 +181,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     }
     
     ///TODO::fixme. add warning or error when return false except the last one.
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        if #available(iOS 13.0, *) {
-            self.viewController?.cutDeeplink(downTo: .init(name: String(describing: MenuViewController.self)))
-        }
-        
+    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {        
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }

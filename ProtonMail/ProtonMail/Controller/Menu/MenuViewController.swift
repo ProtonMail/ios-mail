@@ -29,7 +29,7 @@
 import UIKit
 import CoreData
 
-class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, Deeplinkable {
+class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     /// those two are optional
     typealias viewModelType = MenuViewModel
     typealias coordinatorType = MenuCoordinatorNew
@@ -349,5 +349,11 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                 }
             }
         }
+    }
+}
+
+extension MenuViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: MenuViewController.self))
     }
 }

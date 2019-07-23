@@ -44,15 +44,26 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             self.coordinator.start()
         }
     }
-    
+
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
-        let userActivity = NSUserActivity(activityType: "RestoreWindow")
-        if let deeplink = scene.session.userInfo?["deeplink"] as? DeepLink,
-            let data = try? JSONEncoder().encode(deeplink)
-        {
-            userActivity.userInfo?["deeplink"] = data
+        return self.currentUserActivity(in: scene)
+    }
+    
+    private func currentUserActivity(in scene: UIScene) -> NSUserActivity? {
+        let deeplink = DeepLink("Root")
+        self.coordinator.currentWindow.enumerateViewControllerHierarchy { controller, _ in
+            guard let deeplinkable = controller as? Deeplinkable else { return }
+            deeplink.append(deeplinkable.deeplinkNode)
         }
-        scene.userActivity = userActivity
+        guard let _ = deeplink.popFirst, let _ = deeplink.head,
+            let data = try? JSONEncoder().encode(deeplink) else
+        {
+            return scene.userActivity
+        }
+        
+        let userActivity = NSUserActivity(activityType: "RestoreWindow")
+        userActivity.userInfo?["deeplink"] = data
+        
         return userActivity
     }
     
