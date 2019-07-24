@@ -30,12 +30,19 @@ import Foundation
 
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
-    lazy var coordinator = WindowsCoordinator()
+    lazy var coordinator: WindowsCoordinator = {
+        if UIDevice.current.stateRestorationPolicy == .coders {
+            return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
+        } else {
+            return WindowsCoordinator()
+        }
+    }()
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
         
-        if let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity,
+        if UIDevice.current.stateRestorationPolicy == .deeplink,
+            let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity,
             let data = userActivity.userInfo!["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {

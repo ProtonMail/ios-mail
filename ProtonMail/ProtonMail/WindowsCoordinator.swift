@@ -162,6 +162,9 @@ class WindowsCoordinator: CoordinatorNew {
                 if self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
+                if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
+                    self.appWindow.windowScene = self.scene as? UIWindowScene
+                }
                 if self.navigate(from: self.currentWindow, to: self.appWindow),
                     let deeplink = self.deeplink
                 {
@@ -221,8 +224,9 @@ class WindowsCoordinator: CoordinatorNew {
     internal func restoreState(_ coder: NSCoder) {
         // SWRevealViewController is restorable, but not all of its children are
         guard let root = coder.decodeObject() as? SWRevealViewController,
-            root.frontViewController != nil else {
-                return
+            root.frontViewController != nil else
+        {
+            return
         }
         self.appWindow?.rootViewController = root
     }

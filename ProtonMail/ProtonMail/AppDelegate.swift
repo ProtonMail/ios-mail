@@ -68,12 +68,7 @@ class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = {
-        if #available(iOS 13.0, *) {
-            assert(false, "AppDelegate should not use its WindowsCoordinator in multiwindow environment")
-        }
-        return WindowsCoordinator()
-    }()
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator()
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -131,9 +126,7 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        if #available(iOS 13.0, *) {
-            // UIWindowScene oriented flow with restoration via NSUserActivity
-        } else {
+        if UIDevice.current.stateRestorationPolicy == .coders {
             // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
             self.coordinator.prepare()
         }
@@ -357,34 +350,21 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: - State restoration iOS 9 - 12
+    // MARK: - State restoration via NSCoders, for iOS 9 - 12 and iOS 13 single window env (iPhone)
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        if #available(iOS 13.0, *) {
-            return false
-        } else {
-            return true
-        }
+        return UIDevice.current.stateRestorationPolicy == .coders
     }
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-        // without mainKey available we will not be able to load any content in the restored VC model, so no restoration possible
-        if #available(iOS 13.0, *) {
-            return false
-        } else {
-            return keymaker.mainKey != nil
-        }
+        return UIDevice.current.stateRestorationPolicy == .coders
     }
     func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-        if #available(iOS 13.0, *) {
-            // UIWindowScene oriented flow with restoration via NSUserActivity
-        } else {
+        if UIDevice.current.stateRestorationPolicy == .coders {
             self.coordinator.saveForRestoration(coder)
         }
     }
     func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-        if #available(iOS 13.0, *) {
-            // UIWindowScene oriented flow with restoration via NSUserActivity
-        } else {
+        if UIDevice.current.stateRestorationPolicy == .coders {
             self.coordinator.restoreState(coder)
         }
     }
@@ -400,5 +380,4 @@ extension AppDelegate: UIApplicationDelegate {
         return config
     }
 }
-
 
