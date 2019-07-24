@@ -159,7 +159,7 @@ class WindowsCoordinator: CoordinatorNew {
                     self.lockWindow = lock
                 }
             case .appWindow:
-                if self.appWindow.rootViewController is PlaceholderVC {
+                if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {

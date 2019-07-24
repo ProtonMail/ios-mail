@@ -160,10 +160,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
             switch dest {
             case .plan:
                 self.toPlan()
-            case .mailbox:
-                if let labelID = path.value {
-                    self.toInbox(labelID: labelID, deepLink: deepLink)
-                }
+            case .mailbox where path.value != nil:
+                self.toInbox(labelID: path.value!, deepLink: deepLink)
             default:
                 self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
             }
