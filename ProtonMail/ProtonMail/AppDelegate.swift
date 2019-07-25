@@ -160,9 +160,9 @@ extension AppDelegate: UIApplicationDelegate {
         AFNetworkActivityLogger.shared().stopLogging()
         //setup language
         LanguageManager.setupCurrentLanguage()
-        
-        ///TODO::fixme we don't need to register remote when start. we only need to register after user logged in
+
         let pushService : PushNotificationService = sharedServices.get()
+        UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
         
@@ -297,21 +297,7 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         Analytics.shared.logCustomEvent(customAttributes:[ "LogTitle": "NotificationError", "error" : "\(error)"])
     }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        PMLog.D("receive \(userInfo)")
-        ///TODO::fixme deep link
-        let pushService: PushNotificationService = sharedServices.get()
-        if UnlockManager.shared.isUnlocked() { // unlocked and foreground
-            pushService.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-        } else if application.applicationState == .inactive { // opened by push
-            pushService.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
-        } else {
-            // app is locked and not opened from push - nothing to do here
-            completionHandler(.failed)
-        }
-    }
-    
+
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         PMLog.D(deviceToken.stringFromToken())
         let pushService: PushNotificationService = sharedServices.get()
