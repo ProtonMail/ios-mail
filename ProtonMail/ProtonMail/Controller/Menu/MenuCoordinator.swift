@@ -203,6 +203,10 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
+            if let deeplink = sender as? DeepLink {
+                mailbox.follow(deeplink)
+            }
+            
         case .label:
             guard let next = navigation?.firstViewController() as? MailboxViewController else {
                 return false
@@ -221,6 +225,9 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
+            if let deeplink = sender as? DeepLink {
+                mailbox.follow(deeplink)
+            }
             
         case .settings:
             guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
@@ -232,6 +239,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services, deeplink: deepLink)
             self.lastestCoordinator = settings
             settings.start()
+
         case .contacts:
             guard let tabBarController = destination as? ContactTabBarViewController else {
                 return false
