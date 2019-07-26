@@ -41,6 +41,10 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
         
+        if let userInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo {
+            sharedServices.get(by: PushNotificationService.self).setNotificationOptions(userInfo, fetchCompletionHandler: {  })
+        }
+        
         if UIDevice.current.stateRestorationPolicy == .deeplink,
             let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity,
             let data = userActivity.userInfo!["deeplink"] as? Data,
