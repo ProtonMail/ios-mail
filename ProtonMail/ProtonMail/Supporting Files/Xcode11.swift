@@ -9,6 +9,7 @@
  */
 
 import Foundation
+import UserNotifications
 
 protocol UIWindowSceneDelegate {}
 
@@ -34,6 +35,11 @@ class UIScene {
     }
     class ConnectionOptions {
         var userActivities: [NSUserActivity] = []
+        
+        @available(iOS 10.0, *)
+        var notificationResponse: UNNotificationResponse? {
+            return nil
+        }
     }
 }
 

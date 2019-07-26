@@ -224,6 +224,11 @@ public class PushNotificationService: Service {
         }
     }
     
+    // needed to be called from WindowSceneDelegate to prevent merge conflict with other branch, can be removed in August 2019
+    public func setNotificationOptions(_ userInfo: [AnyHashable: Any]?) {
+        self.launchOptions = userInfo
+    }
+    
     public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         self.launchOptions = userInfo
         completionHandler(.noData)

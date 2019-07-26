@@ -42,7 +42,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.coordinator.scene = scene
         
         if let userInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo {
-            sharedServices.get(by: PushNotificationService.self).setNotificationOptions(userInfo, fetchCompletionHandler: {  })
+            sharedServices.get(by: PushNotificationService.self).setNotificationOptions(userInfo)
         }
         
         if UIDevice.current.stateRestorationPolicy == .deeplink,
