@@ -126,11 +126,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-//        self.viewModel.resetFetchedController() // this line is removed in multiwindow support branch with elaborate comment
+        /*
+         We've been invalidating FetchedResultsController here, but that does not make sense in multiwindow env on iOS 13
+         Revert if there will be strange bugs with FetchedResultsController
+        */
     }
     
     deinit {
-        self.inactiveViewModel()
+        self.viewModel?.resetFetchedController()
     }
     
     @objc func doEnterForeground() {
@@ -212,6 +215,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        if #available(iOS 13.0, *) {
+            self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
+        }
         
         self.viewModel.processCachedPush()
         
@@ -1465,5 +1472,11 @@ extension MailboxViewController: UIDataSourceModelAssociation {
     
     func indexPathForElement(withModelIdentifier identifier: String, in view: UIView) -> IndexPath? {
         return self.viewModel.indexPath(by: identifier)
+    }
+}
+
+extension MailboxViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: MailboxViewController.self), value: self.viewModel.labelID)
     }
 }

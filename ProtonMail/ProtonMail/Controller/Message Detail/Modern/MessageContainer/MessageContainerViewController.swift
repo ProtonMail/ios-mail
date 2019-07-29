@@ -35,6 +35,13 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     private var threadObservation: NSKeyValueObservation!
     private var standalonesObservation: [NSKeyValueObservation] = []
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if #available(iOS 13.0, *) {
+            self.view.window?.windowScene?.title = self.viewModel.thread.first?.header.title
+        }
+    }
+    
     override func viewDidLoad() {
         self.restorationClass = MessageContainerViewController.self
         super.viewDidLoad()
@@ -57,6 +64,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         // others
         self.bottomView.delegate = self
+        
+        self.subscribeToThread()
+        self.viewModel.downloadThreadDetails()
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 
@@ -147,7 +157,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // FIXME: this is good only for labels and folders
-        self.coordinator.prepare(for: segue, sender: self.viewModel.messages)
+        self.coordinator.prepare(for: segue, sender: sender ?? self.viewModel.messages)
     }
 
     // --
@@ -225,8 +235,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         super.set(viewModel: viewModel)
         
         viewModel.thread.forEach(self.subscribeToStandalone)
-        self.subscribeToThread()
-        self.viewModel.downloadThreadDetails()
     }
 }
 
@@ -272,5 +280,12 @@ extension MessageContainerViewController: UIViewControllerRestoration {
         }
         
         super.encodeRestorableState(with: coder)
+    }
+}
+
+extension MessageContainerViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: MessageContainerViewController.self),
+                             value: self.viewModel.thread.first?.messageID)
     }
 }

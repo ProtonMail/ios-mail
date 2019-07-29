@@ -46,8 +46,8 @@ class SettingsCoordinator: SWRevealCoordinator {
     }
     
     func processDeepLink() {
-        if let path = self.deepLink?.first, let dest = Destination(rawValue: path.destination) {
-            self.go(to: dest, sender: path.sender)
+        if let path = self.deepLink?.first, let dest = Destination(rawValue: path.name) {
+            self.go(to: dest, sender: path.value)
         }
     }
     

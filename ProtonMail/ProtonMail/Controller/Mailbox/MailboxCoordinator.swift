@@ -38,6 +38,21 @@ class MailboxCoordinator : DefaultCoordinator {
     internal weak var viewController: MailboxViewController?
     internal weak var navigation: UINavigationController?
     internal weak var rvc: SWRevealViewController?
+    // whole the ref until started
+    internal var navBeforeStart: UINavigationController?
+    
+    init(rvc: SWRevealViewController?, vm: MailboxViewModel, services: ServiceFactory) {
+        self.rvc = rvc
+        self.viewModel = vm
+        self.services = services
+        
+        let inbox : UIStoryboard = UIStoryboard.Storyboard.inbox.storyboard
+        let vc = inbox.make(VC.self)
+        let nav = UINavigationController(rootViewController: vc)
+        self.viewController = vc
+        self.navBeforeStart = nav
+        self.navigation = nav
+    }
     
     init(vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
         self.viewModel = vm
@@ -67,6 +82,23 @@ class MailboxCoordinator : DefaultCoordinator {
         case humanCheck        = "toHumanCheckView"
         case folder            = "toMoveToFolderSegue"
         case labels            = "toApplyLabelsSegue"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "toCompose": self = .composer
+            case "toComposeShow", String(describing: ComposeContainerViewController.self): self = .composeShow
+            case "toSearchViewController": self = .search
+            case "toMessageDetailViewController", String(describing: MessageContainerViewController.self): self = .details
+            case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
+            case "to_onboarding_segue": self = .onboarding
+            case "to_feedback_segue": self = .feedback
+            case "to_feedback_view_segue": self = .feedbackView
+            case "toHumanCheckView": self = .humanCheck
+            case "toMoveToFolderSegue": self = .folder
+            case "toApplyLabelsSegue": self = .labels
+            default: return nil
+            }
+        }
     }
     
     /// if called from a segue prepare don't call push again
@@ -77,6 +109,7 @@ class MailboxCoordinator : DefaultCoordinator {
         if self.navigation != nil, self.rvc != nil {
             self.rvc?.pushFrontViewController(self.navigation, animated: true)
         }
+        self.navBeforeStart = nil
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -176,9 +209,31 @@ class MailboxCoordinator : DefaultCoordinator {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
-    func go(to deepLink: DeepLink) {
-        if let path = deepLink.pop, let dest = Destination(rawValue: path.destination) {
-            self.go(to: dest)
+    func follow(_ deeplink: DeepLink) {
+        guard let path = deeplink.popFirst, let dest = Destination(rawValue: path.name) else { return }
+            
+        switch dest {
+        case .details:
+            if let messageID = path.value,
+                case let msgService = services.get() as MessageDataService,
+                let message = msgService.fetchMessages(withIDs: [messageID]).first,
+                let nav = self.navigation
+            {
+                    let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message), services: services)
+                    details.start()
+                    details.follow(deeplink)
+            }
+        case .composeShow:
+            if let messageID = path.value,
+                let nav = self.navigation,
+                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
+            {
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
+        default:
+            self.go(to: dest, sender: deeplink)
         }
     }
 }

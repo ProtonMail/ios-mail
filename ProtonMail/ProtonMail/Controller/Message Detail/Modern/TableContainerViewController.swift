@@ -186,8 +186,3 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     }
 }
 
-extension TableContainerViewCoordinator: CoordinatorNew {
-    func start() {
-        // ?
-    }
-}

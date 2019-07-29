@@ -36,6 +36,7 @@ import SWRevealViewController // for state restoration
 fileprivate class PlaceholderVC: UIViewController { }
 
 class WindowsCoordinator: CoordinatorNew {
+    private var deeplink: DeepLink?
     private lazy var snapshot = Snapshot()
     private var upgradeView: ForceUpgradeView?
     private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(), scene: nil)
@@ -52,13 +53,29 @@ class WindowsCoordinator: CoordinatorNew {
         case lockWindow, appWindow, signInWindow
     }
     
+    internal var scene: AnyObject? {
+        didSet {
+            // UIWindowScene class is available on iOS 13 and newer, older platforms should not use this property
+            if #available(iOS 13.0, *) {
+                assert(scene is UIWindowScene, "Scene should be of type UIWindowScene")
+            } else {
+                assert(false, "Scenes are unavailable on iOS 12 and older")
+            }
+        }
+    }
+    
     init() {
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+            
+            if #available(iOS 13.0, *) {
+                // this is done by UISceneDelegate
+            } else {
+                NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+                NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
+            }
         }
     }
     
@@ -74,6 +91,9 @@ class WindowsCoordinator: CoordinatorNew {
     
     func start() {
         let placeholder = UIWindow(frame: UIScreen.main.bounds)
+        if #available(iOS 13.0, *) {
+            placeholder.windowScene = self.scene as? UIWindowScene
+        }
         placeholder.rootViewController = UIViewController()
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
@@ -130,19 +150,33 @@ class WindowsCoordinator: CoordinatorNew {
             switch dest {
             case .signInWindow:
                 self.appWindow = nil
-                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn))
+                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn, scene: self.scene))
             case .lockWindow:
                 if self.lockWindow == nil {
-                    let lock = UIWindow(storyboard: .signIn)
+                    let lock = UIWindow(storyboard: .signIn, scene: self.scene)
                     lock.windowLevel = .alert
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock
                 }
             case .appWindow:
-                if self.appWindow.rootViewController is PlaceholderVC {
-                    self.appWindow = UIWindow(storyboard: .inbox)
+                if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
+                    self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
                 }
-                self.navigate(from: self.currentWindow, to: self.appWindow)
+                if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
+                    self.appWindow.windowScene = self.scene as? UIWindowScene
+                }
+                if self.navigate(from: self.currentWindow, to: self.appWindow),
+                    let deeplink = self.deeplink
+                {
+                    self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+                        if let menu = controller as? MenuViewController,
+                            let coordinator = menu.getCoordinator() as? MenuCoordinatorNew
+                        {
+                            coordinator.follow(deeplink)
+                            stop = true
+                        }
+                    }
+                }
             }
         }
     }
@@ -190,10 +224,18 @@ class WindowsCoordinator: CoordinatorNew {
     internal func restoreState(_ coder: NSCoder) {
         // SWRevealViewController is restorable, but not all of its children are
         guard let root = coder.decodeObject() as? SWRevealViewController,
-            root.frontViewController != nil else {
-                return
+            root.frontViewController != nil else
+        {
+            return
         }
         self.appWindow?.rootViewController = root
+    }
+    
+    @available(iOS 13.0, *)
+    internal func followDeeplink(_ deeplink: DeepLink) {
+        self.deeplink = deeplink
+        _ = deeplink.popFirst
+        self.start()
     }
 }
 

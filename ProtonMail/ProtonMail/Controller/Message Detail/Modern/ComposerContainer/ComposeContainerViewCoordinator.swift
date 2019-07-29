@@ -29,6 +29,11 @@
 import Foundation
 
 class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
+    typealias VC = ComposeContainerViewController
+    var viewController: UINavigationController?
+    var configuration: ((ComposeContainerViewCoordinator.VC) -> ())?
+    
+    
     private weak var controller: ComposeContainerViewController!
     private weak var services: ServiceFactory!
     
@@ -37,6 +42,8 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
     
     private var attachmentsObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
+    
+    internal weak var navigationController: UINavigationController?
     
     deinit {
         self.attachmentsObservation = nil
@@ -47,6 +54,27 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.controller = controller
         self.services = services
         super.init()
+    }
+    
+    init(nav: UINavigationController, viewModel: ComposeContainerViewModel, services: ServiceFactory) {
+        self.navigationController = nav
+        self.services = services
+        let vc = UIStoryboard.Storyboard.composer.storyboard.instantiateInitialViewController() as? UINavigationController
+        self.viewController = vc
+        self.controller = vc?.viewControllers.first as? ComposeContainerViewController
+        self.controller?.set(viewModel: viewModel)
+    }
+    
+    func follow(_ deeplink: DeepLink) {
+        // TODO
+    }
+    
+    override func start() {
+        guard let viewController = viewController else {
+            return
+        }
+        self.controller?.set(coordinator: self)
+        navigationController?.present(viewController, animated: true, completion: nil)
     }
     
     #if !APP_EXTENSION
@@ -86,7 +114,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         self.header = ComposeHeaderViewController(nibName: String(describing: ComposeHeaderViewController.self), bundle: nil)
         
         self.messageObservation = childViewModel.observe(\.message, options: [.initial]) { [weak self] childViewModel, _ in
-            self?.attachmentsObservation = childViewModel.message?.observe(\.numAttachments, options: [.new, .old, .initial]) { [weak self] message, change in
+            self?.attachmentsObservation = childViewModel.message?.observe(\.numAttachments, options: [.new, .old]) { [weak self] message, change in
                 DispatchQueue.main.async {
                     self?.header.updateAttachmentButton(message.numAttachments.intValue != 0)
                     if change.oldValue?.intValue != change.newValue?.intValue, change.newValue?.intValue != 0 {
