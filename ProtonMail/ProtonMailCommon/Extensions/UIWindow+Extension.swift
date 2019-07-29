@@ -30,6 +30,35 @@ import UIKit
 import SWRevealViewController
 
 extension UIWindow {
+    func enumerateViewControllerHierarchy(_ handler: @escaping (UIViewController, inout Bool)->Void) {
+        var stop: Bool = false
+        var currentController = self.rootViewController
+        
+        while !stop {
+            if let nextViewController = currentController as? SWRevealViewController {
+                handler(nextViewController.rearViewController, &stop)
+                handler(nextViewController.frontViewController, &stop)
+                currentController = nextViewController.frontViewController
+                continue
+            }
+            
+            if let nextViewController = currentController as? UINavigationController {
+                handler(nextViewController, &stop)
+                nextViewController.viewControllers.forEach { handler($0, &stop) }
+                currentController = nextViewController.topViewController
+                continue
+            }
+            
+            if let nextViewController = currentController?.presentedViewController {
+                handler(nextViewController, &stop)
+                currentController = nextViewController
+                continue
+            }
+            
+            stop = true
+        }
+    }
+    
     func topmostViewController() -> UIViewController? {
         var topController = self.rootViewController
         while let presentedViewController = topController?.presentedViewController
@@ -41,17 +70,21 @@ extension UIWindow {
         return topController
     }
     
-    convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject? = nil) { // choose multiwindow's branch version of this line when merging
-        self.init(frame: UIScreen.main.bounds)
-        self.rootViewController = UIStoryboard.instantiateInitialViewController(storyboard: storyboard)
+    convenience init(storyboard: UIStoryboard.Storyboard, scene: AnyObject?) {
+        guard let root = UIStoryboard.instantiateInitialViewController(storyboard: storyboard) else {
+            assert(false, "No initial VC in storyboard \(storyboard.restorationIdentifier)")
+            self.init(frame: .zero)
+            return
+        }
+        self.init(root: root, scene: scene)
     }
-    
+
     convenience init(root: UIViewController, scene: AnyObject?) {
-//        if #available(iOS 13.0, *), let scene = scene as? UIWindowScene { // uncomment when adding Xcode 11 support
-//            self.init(windowScene: scene)
-//        } else {
+        if #available(iOS 13.0, *), let scene = scene as? UIWindowScene {
+            self.init(windowScene: scene)
+        } else {
             self.init(frame: UIScreen.main.bounds)
-//        }
+        }
         self.rootViewController = root
     }
 }

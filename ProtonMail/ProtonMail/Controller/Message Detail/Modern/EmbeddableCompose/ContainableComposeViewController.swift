@@ -197,8 +197,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         }
     }
     
-    override func cancelAction(_ sender: UIBarButtonItem) {
-        super.cancelAction(sender)
+    override func cancelAction(_ value: UIBarButtonItem) {
+        super.cancelAction(value)
         self.step = .composingCanceled
         self.step.insert(.resultAcknowledged)
     }

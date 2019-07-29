@@ -98,9 +98,15 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>WipeMainKeyIntent</string>
+		<string>RestoreWindow</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

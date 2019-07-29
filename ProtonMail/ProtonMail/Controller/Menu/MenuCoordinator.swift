@@ -81,6 +81,19 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case contacts  = "toContactsSegue"
         case feedbacks = "toFeedbackSegue"
         case plan      = "toServicePlan"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
+            case "toLabelboxSegue": self = .label
+            case "toSettingsSegue": self = .settings
+            case "toBugsSegue": self = .bugs
+            case "toContactsSegue": self = .contacts
+            case "toFeedbackSegue": self = .feedbacks
+            case "toServicePlan": self = .plan
+            default: return nil
+            }
+        }
     }
     
     init(vc: MenuViewController, vm: MenuViewModel, services: ServiceFactory) {
@@ -102,7 +115,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     
     @objc func performLastSegue(_ notification: Notification) {
         if let link = notification.object as? DeepLink {
-            self.go(to: link)
+            self.follow(link)
         } else {
             self.go(to: .mailbox)
         }
@@ -113,6 +126,49 @@ class MenuCoordinatorNew: DefaultCoordinator {
         self.viewController?.set(coordinator: self)
     }
     
+    private func toPlan() {
+        let coordinator = MenuCoordinator()
+        coordinator.controller = self.viewController
+        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
+    }
+    
+    private func toInbox(labelID: String, deepLink: DeepLink) {
+        //Example of deeplink without segue
+        var nextVM : MailboxViewModel?
+        if let mailbox = Message.Location(rawValue: labelID) {
+           nextVM = MailboxViewModelImpl(label: mailbox, service: services.get(), pushService: services.get())
+        } else if let label = sharedLabelsDataService.label(by: labelID) {
+            //shared global service need to be changed later
+            if label.exclusive {
+                nextVM = FolderboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            } else {
+                nextVM = LabelboxViewModelImpl(label: label, service: services.get(), pushService: services.get())
+            }
+        }
+        
+        if let vm = nextVM {
+            let mailbox = MailboxCoordinator(rvc: self.viewController?.revealViewController(), vm: vm, services: self.services)
+            self.lastestCoordinator = mailbox
+            mailbox.start()
+            mailbox.follow(deepLink)
+        }
+       
+    }
+    
+    func follow(_ deepLink: DeepLink) {
+        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
+            switch dest {
+            case .plan:
+                self.toPlan()
+            case .mailbox where path.value != nil:
+                self.toInbox(labelID: path.value!, deepLink: deepLink)
+            default:
+                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
+            }
+        }
+    }
+
+    //old one call from vc
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         case .plan:
@@ -122,25 +178,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
         }
     }
     
-    func toPlan() {
-        let coordinator = MenuCoordinator()
-        coordinator.controller = self.viewController
-        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
-    }
-    
-    func go(to deepLink: DeepLink) {
-        if let path = deepLink.pop, let dest = MenuCoordinatorNew.Destination(rawValue: path.destination) {
-            // resue the exist mailbox
-            if let latest = lastestCoordinator as? MailboxCoordinator {
-                latest.go(to: deepLink)
-            } else {
-                self.go(to: dest, sender: deepLink)
-            }
-        }
-    }
-    
     ///TODO::fixme. add warning or error when return false except the last one.
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
+    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {        
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
@@ -164,6 +203,10 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
+            if let deeplink = sender as? DeepLink {
+                mailbox.follow(deeplink)
+            }
+            
         case .label:
             guard let next = navigation?.firstViewController() as? MailboxViewController else {
                 return false
@@ -182,6 +225,9 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
+            if let deeplink = sender as? DeepLink {
+                mailbox.follow(deeplink)
+            }
             
         case .settings:
             guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
@@ -193,6 +239,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services, deeplink: deepLink)
             self.lastestCoordinator = settings
             settings.start()
+
         case .contacts:
             guard let tabBarController = destination as? ContactTabBarViewController else {
                 return false

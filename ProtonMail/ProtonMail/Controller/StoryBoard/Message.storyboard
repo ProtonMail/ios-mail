@@ -111,6 +111,7 @@
                         <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toMoveToFolderSegue" id="bvG-si-qmN"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toComposeReplyAll" id="PSA-tt-CEi"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toComposeForward" id="lQf-C0-JMc"/>
+                        <segue destination="W5K-yA-by7" kind="show" identifier="toDraft" id="pf8-3Q-eX5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qpt-VD-rqK" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -78,7 +78,7 @@ protocol DefaultCoordinator: CoordinatorNew {
     
     var services: ServiceFactory {get}
     
-    func go(to deepLink: DeepLink)
+    func follow(_ deepLink: DeepLink)
     func processDeepLink()
 }
 
@@ -162,7 +162,7 @@ extension DefaultCoordinator {
     /// optional go with deeplink
     ///
     /// - Parameter deepLink: deepLink
-    func go(to deepLink: DeepLink) {
+    func follow(_ deepLink: DeepLink) {
         
     }
     

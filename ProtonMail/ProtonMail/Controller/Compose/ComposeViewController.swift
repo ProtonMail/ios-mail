@@ -156,13 +156,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 }
             }
             
-            self.headerView.toContactPicker.reloadData()
-            self.headerView.ccContactPicker.reloadData()
-            self.headerView.bccContactPicker.reloadData()
+            self.headerView?.toContactPicker.reloadData()
+            self.headerView?.ccContactPicker.reloadData()
+            self.headerView?.bccContactPicker.reloadData()
             
-            self.headerView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.headerView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.headerView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView?.toContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView?.bccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView?.ccContactPicker.contactCollectionView!.layoutIfNeeded()
             
             switch self.viewModel.messageAction
             {

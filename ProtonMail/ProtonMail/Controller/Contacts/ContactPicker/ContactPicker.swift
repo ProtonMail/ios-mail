@@ -334,6 +334,9 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         self.searchTableViewController = self.createSearchTableViewController()
         self.searchWindow?.frame = self.frameForContactSearch
         self.searchWindow = self.searchWindow ?? WindowOverlay(frame: self.frameForContactSearch)
+        if #available(iOS 13.0, *) {
+            self.searchWindow?.windowScene = self.window?.windowScene
+        }
         self.searchWindow?.rootViewController = self.searchTableViewController
         self.searchWindow?.isHidden = false
         self.searchWindow?.windowLevel = UIWindow.Level.normal

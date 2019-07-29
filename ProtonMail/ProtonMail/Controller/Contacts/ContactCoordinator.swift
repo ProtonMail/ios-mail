@@ -62,7 +62,7 @@ class ContactCoordinator : DefaultCoordinator {
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
-    func go(to deepLink: DeepLink) {
+    func follow(_ deepLink: DeepLink) {
         
     }
     
