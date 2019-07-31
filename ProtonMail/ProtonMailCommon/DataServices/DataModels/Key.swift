@@ -33,19 +33,21 @@ import Crypto
 final class Key : NSObject {
     let key_id: String
     var private_key : String
-    var fingerprint : String
     var is_updated : Bool = false
     var keyflags : Int = 0
     
-    required init(key_id: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
+    required init(key_id: String?, private_key: String?, isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.private_key = private_key ?? ""
-        self.fingerprint = fingerprint ?? ""
         self.is_updated = isupdated
     }
     
     var publicKey : String {
         return KeyPublicKey(self.private_key, nil)
+    }
+    
+    var fingerprint : String {
+        return KeyGetFingerprint(self.private_key, nil)
     }
 }
 
@@ -62,13 +64,13 @@ extension Key: NSCoding {
         self.init(
             key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
             private_key: aDecoder.decodeStringForKey(CoderKey.privateKey),
-            fingerprint: aDecoder.decodeStringForKey(CoderKey.fingerprintKey),
             isupdated: false)
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(key_id, forKey: CoderKey.keyID)
         aCoder.encode(private_key, forKey: CoderKey.privateKey)
-        aCoder.encode(fingerprint, forKey: CoderKey.fingerprintKey)
+        //TODO:: fingerprintKey is deprecated, need to "remove and clean"
+        aCoder.encode("", forKey: CoderKey.fingerprintKey)
     }
 }

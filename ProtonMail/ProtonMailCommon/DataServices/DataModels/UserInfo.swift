@@ -224,7 +224,6 @@ extension UserInfo {
                 uKeys.append(Key(
                     key_id: key_res["ID"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
-                    fingerprint: key_res["Fingerprint"] as? String,
                     isupdated: false))
             }
         }

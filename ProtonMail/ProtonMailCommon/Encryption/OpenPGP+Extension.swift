@@ -51,13 +51,11 @@ extension CryptoPmCrypto {
                                                                                    newPassphrase: new_pass)
                 let newK = Key(key_id: okey.key_id,
                                private_key: new_private_key,
-                               fingerprint: okey.fingerprint,
                                isupdated: true)
                 outKeys.append(newK)
             } catch {
                 let newK = Key(key_id: okey.key_id,
                                private_key: okey.private_key,
-                               fingerprint: okey.fingerprint,
                                isupdated: false)
                 outKeys.append(newK)
             }
@@ -95,13 +93,11 @@ extension CryptoPmCrypto {
                                                                                        newPassphrase: new_pass)
                     let newK = Key(key_id: okey.key_id,
                                    private_key: new_private_key,
-                                   fingerprint: okey.fingerprint,
                                    isupdated: true)
                     outKeys.append(newK)
                 } catch {
                     let newK = Key(key_id: okey.key_id,
                                    private_key: okey.private_key,
-                                   fingerprint: okey.fingerprint,
                                    isupdated: false)
                     outKeys.append(newK)
                 }
