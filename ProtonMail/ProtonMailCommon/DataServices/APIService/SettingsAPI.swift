@@ -171,11 +171,11 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
 // MARK : update notification email
 final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
 
-    let email : String!
+    let email : String
     
-    let clientEphemeral : String! //base64 encoded
-    let clientProof : String! //base64 encoded
-    let SRPSession : String! //hex encoded session id
+    let clientEphemeral : String //base64 encoded
+    let clientProof : String //base64 encoded
+    let SRPSession : String //hex encoded session id
     let tfaCode : String? // optional
 
     
