@@ -202,25 +202,25 @@ final class PasswordAuth : Package {
 //MARK : update user's private keys
 final class UpdatePrivateKeyRequest : ApiRequest<ApiResponse> {
     
-    let clientEphemeral : String! //base64 encoded
-    let clientProof : String! //base64 encoded
-    let SRPSession : String! //hex encoded session id
+    let clientEphemeral : String //base64 encoded
+    let clientProof : String //base64 encoded
+    let SRPSession : String //hex encoded session id
     let tfaCode : String? // optional
-    let keySalt : String! //base64 encoded need random value
+    let keySalt : String //base64 encoded need random value
     
-    var userLevelKeys: [Key]!
-    var userAddressKeys: [Key]!
+    var userLevelKeys: [Key]
+    var userAddressKeys: [Key]
     let orgKey : String?
     
     let auth : PasswordAuth?
 
     
-    init(clientEphemeral: String!,
-         clientProof: String!,
-         SRPSession: String!,
-         keySalt: String!,
-         userlevelKeys: [Key]!,
-         addressKeys: [Key]!,
+    init(clientEphemeral: String,
+         clientProof: String,
+         SRPSession: String,
+         keySalt: String,
+         userlevelKeys: [Key],
+         addressKeys: [Key],
          tfaCode : String?,
          orgKey: String?,
          

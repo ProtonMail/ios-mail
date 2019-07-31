@@ -65,13 +65,13 @@ final class ReportPhishing : ApiRequest<ApiResponse> {
 
 // MARK : Report a bug
 final class BugReportRequest : ApiRequest<ApiResponse> {
-    let os : String!
-    let osVersion : String!
-    let clientVersion : String!
-    let title : String!
-    let desc : String!
-    let userName : String!
-    let email : String!
+    let os : String
+    let osVersion : String
+    let clientVersion : String
+    let title : String
+    let desc : String
+    let userName : String
+    let email : String
     
     
     init(os : String!, osVersion : String!, clientVersion : String!, title : String!, desc : String!, userName : String!, email : String!) {
