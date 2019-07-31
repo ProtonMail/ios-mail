@@ -835,7 +835,7 @@ extension ContactEditViewController: UITableViewDelegate {
              .email_header, .display_name, .encrypted_header, .notes,
              .type2_warning, .type3_error, .type3_warning, .debuginfo,
              .emails, .delete:
-            break;
+            break
             
         default:
             guard self.viewModel.paidUser() else {

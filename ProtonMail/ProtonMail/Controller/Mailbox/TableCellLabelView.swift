@@ -70,7 +70,7 @@ class TableCellLabelView: UIView {
     }
     
     func updateTextFont (_ font: UIFont){
-        self.textLabel.font = font;
+        self.textLabel.font = font
     }
     
     func setText(_ label: String, color: UIColor) ->CGFloat {
@@ -80,6 +80,6 @@ class TableCellLabelView: UIView {
                 textLabel.textColor = color
         textLabel.layer.borderColor = color.cgColor
         
-        return s.width + self.kCoverImageViewWidth;
+        return s.width + self.kCoverImageViewWidth
     }    
 }

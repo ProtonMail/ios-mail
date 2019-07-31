@@ -79,17 +79,17 @@ class ComposeHeaderViewController: UIViewController {
     var hasOutSideEmails : Bool {
         let toHas = toContactPicker.hasOutsideEmails
         if (toHas) {
-            return true;
+            return true
         }
         
         let ccHas = ccContactPicker.hasOutsideEmails
         if (ccHas) {
-            return true;
+            return true
         }
         
         let bccHas = bccContactPicker.hasOutsideEmails
         if (bccHas) {
-            return true;
+            return true
         }
         
         return false
@@ -98,17 +98,17 @@ class ComposeHeaderViewController: UIViewController {
     var hasNonePMEmails : Bool {
         let toHas = toContactPicker.hasNonePM
         if (toHas) {
-            return true;
+            return true
         }
         
         let ccHas = ccContactPicker.hasNonePM
         if (ccHas) {
-            return true;
+            return true
         }
         
         let bccHas = bccContactPicker.hasNonePM
         if (bccHas) {
-            return true;
+            return true
         }
         
         return false
@@ -118,17 +118,17 @@ class ComposeHeaderViewController: UIViewController {
     var hasPGPPinned : Bool {
         let toHas = toContactPicker.hasPGPPinned
         if (toHas) {
-            return true;
+            return true
         }
         
         let ccHas = ccContactPicker.hasPGPPinned
         if (ccHas) {
-            return true;
+            return true
         }
         
         let bccHas = bccContactPicker.hasPGPPinned
         if (bccHas) {
-            return true;
+            return true
         }
         
         return false
@@ -270,7 +270,7 @@ class ComposeHeaderViewController: UIViewController {
         self.configureErrorMessage()
         
         self.view.bringSubviewToFront(showCcBccButton)
-        self.view.bringSubviewToFront(subject);
+        self.view.bringSubviewToFront(subject)
         self.view.sendSubviewToBack(ccContactPicker)
         self.view.sendSubviewToBack(bccContactPicker)
         
@@ -303,7 +303,7 @@ class ComposeHeaderViewController: UIViewController {
     }
     
     @IBAction func contactPlusButtonTapped(_ sender: UIButton) {
-        self.plusButtonHandle();
+        self.plusButtonHandle()
         self.notifyViewSize(true)
     }
     
@@ -569,7 +569,7 @@ class ComposeHeaderViewController: UIViewController {
                 self.confirmExpirationButton.setImage(UIImage(named: "compose_expiration_cancel"), for: UIControl.State())
             } else {
                 self.expirationDateTextField.text = ""
-                self.expirationTimeInterval  = 0;
+                self.expirationTimeInterval  = 0
                 self.confirmExpirationButton.setImage(UIImage(named: "next"), for: UIControl.State())
                 self.delegate?.composeViewCancelExpirationData(self)
             }
@@ -597,7 +597,7 @@ class ComposeHeaderViewController: UIViewController {
     fileprivate func configureToContactPicker() {
         toContactPicker = ContactPicker()
         toContactPicker.translatesAutoresizingMaskIntoConstraints = true
-        toContactPicker.cellHeight = self.kDefaultRecipientHeight;
+        toContactPicker.cellHeight = self.kDefaultRecipientHeight
         self.view.addSubview(toContactPicker)
         toContactPicker.datasource = self
         toContactPicker.delegate = self
@@ -728,7 +728,7 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
         if (contactPicker.frame.size.height > contactPicker.currentContentHeight) {
             self.updateContactPickerHeight(contactPicker, newHeight: contactPicker.currentContentHeight)
         }
-        self.pickerHeight = 0;
+        self.pickerHeight = 0
         self.notifyViewSize(false)
     }
     

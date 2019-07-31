@@ -206,7 +206,7 @@ class ContactImportViewController: UIViewController {
             do {
                 let contacts = self.contacts
                 let titleCount = contacts.count
-                var index : Float = 0;
+                var index : Float = 0
                 for contact in contacts {
                     if self.cancelled {
                         {

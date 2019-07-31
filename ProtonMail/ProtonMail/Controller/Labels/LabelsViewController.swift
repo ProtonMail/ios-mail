@@ -46,7 +46,7 @@ class LablesViewController : UIViewController {
     
     fileprivate var selected : IndexPath?
     
-    fileprivate var archiveMessage = false;
+    fileprivate var archiveMessage = false
     
     @IBOutlet weak var backgroundImageView: UIImageView!
     @IBOutlet weak var contentView: UIView!
@@ -80,7 +80,7 @@ class LablesViewController : UIViewController {
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.layer.cornerRadius = 4;
+        contentView.layer.cornerRadius = 4
         
         addLabelButton.titleLabel?.numberOfLines = 0
         addLabelButton.titleLabel?.lineBreakMode = .byWordWrapping

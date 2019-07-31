@@ -128,7 +128,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
         navigationController.navigationBar.barStyle = UIBarStyle.black
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background;
+        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
         navigationController.navigationBar.isTranslucent = false
         navigationController.navigationBar.tintColor = UIColor.white
         
@@ -205,7 +205,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         
         if let att = attachment {
             cell.configCell(att.fileName, fileSize: att.fileSize.intValue, showDownload: false)
-            let crossView = UILabel();
+            let crossView = UILabel()
             crossView.text = LocalString._general_remove_button
             crossView.sizeToFit()
             crossView.textColor = UIColor.white
@@ -236,7 +236,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 44;
+        return 44
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -59,43 +59,43 @@ class LabelsView: PMView {
     var imageViews : [UIImageView] = []
     var labelLayoutConstraints : [NSLayoutConstraint] = []
     
-    var sender : String = "";
-    var inited : Bool = false;
+    var sender : String = ""
+    var inited : Bool = false
     
     override func draw(_ rect: CGRect) {
         if  !self.inited {
-            self.inited = true;
-            self.update();
+            self.inited = true
+            self.update()
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        labelView1.numberOfLines = 0;
+        labelView1.numberOfLines = 0
         labelView1.layer.borderWidth = 1
         labelView1.layer.cornerRadius = 2
         labelView1.font = Fonts.h7.light
         labelView1.lineBreakMode = .byTruncatingTail
         
-        labelView2.numberOfLines = 0;
+        labelView2.numberOfLines = 0
         labelView2.layer.borderWidth = 1
         labelView2.layer.cornerRadius = 2
         labelView2.font = Fonts.h7.light
         labelView2.lineBreakMode = .byTruncatingTail
         
-        labelView3.numberOfLines = 0;
+        labelView3.numberOfLines = 0
         labelView3.layer.borderWidth = 1
         labelView3.layer.cornerRadius = 2
         labelView3.font = Fonts.h7.light
         labelView3.lineBreakMode = .byTruncatingTail
         
-        labelView4.numberOfLines = 0;
+        labelView4.numberOfLines = 0
         labelView4.layer.borderWidth = 1
         labelView4.layer.cornerRadius = 2
         labelView4.font = Fonts.h7.light
         labelView4.lineBreakMode = .byTruncatingTail
         
-        labelView5.numberOfLines = 0;
+        labelView5.numberOfLines = 0
         labelView5.layer.borderWidth = 1
         labelView5.layer.cornerRadius = 2
         labelView5.font = Fonts.h7.light
@@ -121,13 +121,13 @@ class LabelsView: PMView {
         
         leftLabelView.textAlignment = .left
         leftLabelView.font = Fonts.h6.light
-        leftLabelView.numberOfLines = 1;
+        leftLabelView.numberOfLines = 1
         leftLabelView.textColor = UIColor(hexColorCode: "#838897")
         leftLabelView.lineBreakMode = .byTruncatingTail
     }
     
     func configLables (_ leftText : String, labels : [Label]?) {
-        self.sender = leftText;
+        self.sender = leftText
         var tmplabels : [Label] = []
         if let alllabels = labels {
             for l in alllabels {
@@ -136,9 +136,9 @@ class LabelsView: PMView {
                 }
             }
         }
-        self.labels = tmplabels;
+        self.labels = tmplabels
         
-        self.update();
+        self.update()
     }
     
     fileprivate func update() {
@@ -148,7 +148,7 @@ class LabelsView: PMView {
         let leftLabelSize = leftLabelView.sizeThatFits(CGSize.zero).width
         let sizeLimit : CGFloat = width - leftLabelSize
         
-        var labelsSize : [CGFloat] = [];
+        var labelsSize : [CGFloat] = []
         
         if let labels = self.labels {
             if labels.count > 0 {
@@ -160,8 +160,8 @@ class LabelsView: PMView {
                         let label = labels[i]
                         
                         if label.managedObjectContext == nil {
-                            self.hideAll();
-                            return ;
+                            self.hideAll()
+                            return
                         }
                         labelView.text = "  \(label.name.trim())  "
                         let color = label.color.isEmpty ? UIColor.white : UIColor(hexString: label.color, alpha: 1.0)
@@ -190,8 +190,8 @@ class LabelsView: PMView {
                     
                     let labelConstraint = labelLayoutConstraints[i]
                     if  labels.count == i + 1 {
-                        labelView.isHidden = false;
-                        imageView.isHidden = true;
+                        labelView.isHidden = false
+                        imageView.isHidden = true
                         labelConstraint.constant = labelsSize[i]
                     } else {
                         if labels.count > i {
@@ -200,13 +200,13 @@ class LabelsView: PMView {
                                     labelView.text = "  " + text[0] + "  "
                                 }
                                 
-                                labelView.isHidden = true;
-                                imageView.isHidden = false;
+                                labelView.isHidden = true
+                                imageView.isHidden = false
                                 labelConstraint.constant = 14.0
                                 labelsSize[i] = 14
                             } else {
-                                labelView.isHidden = false;
-                                imageView.isHidden = true;
+                                labelView.isHidden = false
+                                imageView.isHidden = true
                                 labelConstraint.constant = labelsSize[i]
                             }
                         } else {
@@ -225,15 +225,15 @@ class LabelsView: PMView {
     }
     
     fileprivate func hideAll() {
-        labelConstraint1.constant = 0;
-        labelConstraint2.constant = 0;
-        labelConstraint3.constant = 0;
-        labelConstraint4.constant = 0;
-        labelConstraint5.constant = 0;
+        labelConstraint1.constant = 0
+        labelConstraint2.constant = 0
+        labelConstraint3.constant = 0
+        labelConstraint4.constant = 0
+        labelConstraint5.constant = 0
     }
     
     fileprivate func hideLabelView (_ labeView : LabelDisplayView) {
-        labeView.labelTitle = "";
-        labeView.isHidden = true;
+        labeView.labelTitle = ""
+        labeView.isHidden = true
     }
 }

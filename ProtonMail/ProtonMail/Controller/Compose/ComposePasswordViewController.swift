@@ -71,7 +71,7 @@ class ComposePasswordViewController: UIViewController {
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
         removeButton.setTitle(LocalString._general_remove_button, for: .normal)
         
-        applyButton.titleLabel?.numberOfLines = 1;
+        applyButton.titleLabel?.numberOfLines = 1
         applyButton.titleLabel?.adjustsFontSizeToFitWidth = true
         applyButton.titleLabel?.minimumScaleFactor = 10.0 / 16.0
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)
@@ -172,7 +172,7 @@ extension ComposePasswordViewController: NSNotificationCenterKeyboardObserverPro
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            scrollBottomPaddingConstraint.constant = keyboardSize.height;
+            scrollBottomPaddingConstraint.constant = keyboardSize.height
         }
         //self.configConstraint(true)
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in

@@ -60,8 +60,8 @@ class ContactPicker: UIView, WindowOverlayDelegate {
                                  forCellReuseIdentifier: ContactPickerDefined.ContactsTableViewCellIdentifier)
         controller.tableView.translatesAutoresizingMaskIntoConstraints = false
         controller.tableView.estimatedRowHeight = 60.0
-        controller.tableView.sectionHeaderHeight = 0;
-        controller.tableView.sectionFooterHeight = 0;
+        controller.tableView.sectionHeaderHeight = 0
+        controller.tableView.sectionFooterHeight = 0
         controller.tableView.reloadData()
         if #available(iOS 11.0, *) {
             controller.tableView.contentInsetAdjustmentBehavior = .never

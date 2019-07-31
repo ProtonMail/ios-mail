@@ -191,7 +191,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.attachments = viewModel.getAttachments()
 
         /// change message as read
-        self.viewModel.markAsRead();
+        self.viewModel.markAsRead()
     }
 
     private func retrieveAllContacts() -> Promise<Void> {
