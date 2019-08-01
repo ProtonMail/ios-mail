@@ -36,6 +36,9 @@ final class Key : NSObject {
     var is_updated : Bool = false
     var keyflags : Int = 0
     
+    var token : String = ""
+    var signature : String = ""
+    
     required init(key_id: String?, private_key: String?, isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.private_key = private_key ?? ""

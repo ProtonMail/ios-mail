@@ -145,6 +145,9 @@ final class AddressesResponse : ApiResponse {
         var keys: [Key] = [Key]()
         if let address_keys = res["Keys"] as? [[String : Any]] {
             for key_res in address_keys {
+                var token = key_res["Token"] as? String
+                var signature = key_res["Signature"] as? String
+                
                 keys.append(Key(
                     key_id: key_res["ID"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
