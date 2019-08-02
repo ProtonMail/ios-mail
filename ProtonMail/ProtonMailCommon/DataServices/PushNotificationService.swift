@@ -266,17 +266,25 @@ public class PushNotificationService: NSObject, Service {
                 completionHandler()
                 return
             }
-            let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
-            link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
-            self.messageService.pushNotificationMessageID = messageid
-            NotificationCenter.default.post(name: .switchView, object: link)
+            
+            
+            switch userInfo["category"] as? String {
+            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
+                let link = DeepLink.init(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue)
+                NotificationCenter.default.post(name: .switchView, object: link)
+            default:
+                self.messageService.pushNotificationMessageID = messageid
+                let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
+                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
+                NotificationCenter.default.post(name: .switchView, object: link)
+            }
             completionHandler()
         }
     }
     
     // MARK: - Private methods
     private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        if let encrypted = userInfo["encryptedMessage"] as? String {
+        if let encrypted = userInfo["encryptedMessage"] as? String { // new pushes
             guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
                 return nil
             }
@@ -292,11 +300,10 @@ public class PushNotificationService: NSObject, Service {
                 PMLog.D("Error while opening message via push: \(error)")
                 return nil
             }
-        } else {
-            guard let messageArray = userInfo["message_id"] as? NSArray else {
-                return nil
-            }
+        } else if let messageArray = userInfo["message_id"] as? NSArray { // old pushes
             return messageArray.firstObject as? String
+        } else { // local notifications
+            return userInfo["message_id"] as? String
         }
     }
 }

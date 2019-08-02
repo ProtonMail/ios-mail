@@ -1725,6 +1725,12 @@ class LocalizedString {
     
     lazy var _general_more = NSLocalizedString("More", comment: "More actions button")
     
+    // Local notifications
+    
+    lazy var _message_not_sent_title = NSLocalizedString("Message could not be sent", comment: "Local notification title")
+    
+    lazy var _message_not_sent_message = NSLocalizedString("This could happen due to low network connection. The message was saved to Drafts and will be sent automatically once you open the app next time", comment: "Local notification text")
+    
     /// Logout
     lazy var _logout_confirmation = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
 }
