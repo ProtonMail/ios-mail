@@ -97,13 +97,13 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     internal func reload(message: Message) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.reload(from: message)
+        let standalone = self.thread.first { $0.messageID == message.messageID }
+        standalone?.reload(from: message)
     }
     
     internal func reload(message: Message, with bodyPlaceholder: String) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.body = bodyPlaceholder
+        let standalone = self.thread.first { $0.messageID == message.messageID }
+        standalone?.body = bodyPlaceholder
     }
     
     internal func markThread(read: Bool) {

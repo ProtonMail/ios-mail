@@ -213,7 +213,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         let divisions = standalone.observe(\.divisionsCount, options: [.new, .old]) { [weak self] standalone, change in
             guard let old = change.oldValue, let new = change.newValue, old != new else { return }
-            if let index = self?.viewModel.thread.firstIndex(of: standalone) {
+            if let index = self?.viewModel?.thread.firstIndex(of: standalone) {
                 self?.tableView.reloadSections(IndexSet(integer: index), with: .fade)
             }
         }
