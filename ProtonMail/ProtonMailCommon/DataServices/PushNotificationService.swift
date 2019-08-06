@@ -30,8 +30,9 @@ import Foundation
 import UIKit
 import SWRevealViewController
 import Keymaker
+import UserNotifications
 
-public class PushNotificationService: Service {
+public class PushNotificationService: NSObject, Service {
 
     typealias SubscriptionSettings = PushSubscriptionSettings
     
@@ -74,6 +75,9 @@ public class PushNotificationService: Service {
         self.signInProvider = signInProvider
         self.deviceTokenSaver = deviceTokenSaver
         self.unlockProvider = unlockProvider
+        
+        super.init()
+        
         defer {
             NotificationCenter.default.addObserver(self, selector: #selector(didUnlockAsync), name: NSNotification.Name.didUnlock, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(didSignOut), name: NSNotification.Name.didSignOut, object: nil)
@@ -106,11 +110,12 @@ public class PushNotificationService: Service {
     // MARK: - register for notificaitons
     
     public func registerForRemoteNotifications() {
-        DispatchQueue.main.async {
-            UIApplication.shared.registerForRemoteNotifications()
-            let types: UIUserNotificationType = [.badge , .sound , .alert]
-            let settings = UIUserNotificationSettings(types: types, categories: nil)
-            UIApplication.shared.registerUserNotificationSettings(settings)
+        ///TODO::fixme we don't need to request this remote when start until logged in. we only need to register after user logged in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+            guard granted else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
         }
         
         self.outdatedSettings.forEach(self.unreport)
@@ -224,55 +229,48 @@ public class PushNotificationService: Service {
         }
     }
     
-    // needed to be called from WindowSceneDelegate to prevent merge conflict with other branch, can be removed in August 2019
-    public func setNotificationOptions(_ userInfo: [AnyHashable: Any]?) {
+    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         self.launchOptions = userInfo
-    }
-    
-    public func setNotificationOptions (_ userInfo: [AnyHashable: Any]?, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
-        self.launchOptions = userInfo
-        completionHandler(.noData)
+        completionHandler()
     }
     
     public func processCachedLaunchOptions() {
         if let options = self.launchOptions {
-            self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { (UIBackgroundFetchResult) -> Void in
-            })
+            self.didReceiveRemoteNotification(options, forceProcess: true, fetchCompletionHandler: { })
         }
     }
     
     // MARK: - notifications
     
-    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
         guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
-            completionHandler(.failed)
+            completionHandler()
             return
         }
         
         let application = UIApplication.shared
         guard let messageid = messageIDForUserInfo(userInfo) else {
-            completionHandler(.failed)
+            completionHandler()
             return
         }
         
         // if the app is in the background, then switch to the inbox and load the message detail
         guard application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess else {
-            completionHandler(.failed)
+            completionHandler()
             return
         }
         
         self.launchOptions = nil
         messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
-                completionHandler(.failed)
+                completionHandler()
                 return
             }
             let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
             link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
             self.messageService.pushNotificationMessageID = messageid
-            NotificationCenter.default.post(name: .switchView,
-                                            object: link)
-            completionHandler(.newData)
+            NotificationCenter.default.post(name: .switchView, object: link)
+            completionHandler()
         }
     }
     
@@ -299,6 +297,37 @@ public class PushNotificationService: Service {
                 return nil
             }
             return messageArray.firstObject as? String
+        }
+    }
+}
+
+extension PushNotificationService: UNUserNotificationCenterDelegate {
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       didReceive response: UNNotificationResponse,
+                                       withCompletionHandler completionHandler: @escaping () -> Void)
+    {
+        let userInfo = response.notification.request.content.userInfo
+        if UnlockManager.shared.isUnlocked() { // unlocked
+            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        } else if UIApplication.shared.applicationState == .inactive { // opened by push
+            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+        } else {
+            // app is locked and not opened from push - nothing to do here
+            completionHandler()
+        }
+    }
+    
+    public func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                       willPresent notification: UNNotification,
+                                       withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        let userInfo = notification.request.content.userInfo
+        let options: UNNotificationPresentationOptions = []
+        
+        if UnlockManager.shared.isUnlocked() { // foreground
+            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
+        } else {
+            completionHandler(options)
         }
     }
 }
@@ -339,3 +368,4 @@ protocol DeviceRegistrator {
 }
 
 extension APIService: DeviceRegistrator {}
+
