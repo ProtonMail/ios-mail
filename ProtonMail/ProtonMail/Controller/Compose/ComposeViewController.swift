@@ -126,7 +126,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         firstly { () -> Promise<Void> in
             self.contacts = sharedContactDataService.allContactVOs() // contacts in core data
                 return retrieveAllContacts() // contacts in phone book
-        }.done { () -> Void in
+        }.done { [weak self] in
+            guard let self = self else { return }
             // get contact groups
             
             // TODO: figure where to put this thing
@@ -156,13 +157,13 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 }
             }
             
-            self.headerView.toContactPicker.reloadData()
-            self.headerView.ccContactPicker.reloadData()
-            self.headerView.bccContactPicker.reloadData()
+            self.headerView?.toContactPicker?.reloadData()
+            self.headerView?.ccContactPicker?.reloadData()
+            self.headerView?.bccContactPicker?.reloadData()
             
-            self.headerView.toContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.headerView.bccContactPicker.contactCollectionView!.layoutIfNeeded()
-            self.headerView.ccContactPicker.contactCollectionView!.layoutIfNeeded()
+            self.headerView?.toContactPicker?.contactCollectionView?.layoutIfNeeded()
+            self.headerView?.bccContactPicker?.contactCollectionView?.layoutIfNeeded()
+            self.headerView?.ccContactPicker?.contactCollectionView?.layoutIfNeeded()
             
             switch self.viewModel.messageAction
             {
