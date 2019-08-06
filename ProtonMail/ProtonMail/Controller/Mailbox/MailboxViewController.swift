@@ -1067,7 +1067,8 @@ extension MailboxViewController {
                             buttons: BannerView.ButtonConfiguration? = nil,
                             from: BannerView.Base)
     {
-        let offset: CGFloat = (from == .top) ? (self.navigationController!.navigationBar.frame.size.height + self.navigationController!.navigationBar.frame.origin.y) : 8.0
+        guard let navigationBar = self.navigationController?.navigationBar else { return }
+        let offset: CGFloat = (from == .top) ? (navigationBar.frame.size.height + navigationBar.frame.origin.y) : 8.0
 
         let newMessageView = BannerView(appearance: appearance,
                                             message: message,
@@ -1083,7 +1084,7 @@ extension MailboxViewController {
                 break
             }
             
-            superview.insertSubview(newMessageView, belowSubview: self.navigationController!.navigationBar)
+            superview.insertSubview(newMessageView, belowSubview: navigationBar)
             newMessageView.drop(on: superview, from: from)
         }
     }

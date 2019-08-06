@@ -43,6 +43,7 @@ class MessageDataService : Service {
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])
     private let lastUpdatedMaximumTimeInterval: TimeInterval = 24 /*hours*/ * 3600
     private let maximumCachedMessageCount = 5000
+    private lazy var localNotificationService = LocalNotificationService()
     
     typealias CompletionBlock = APIService.CompletionBlock
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
@@ -474,6 +475,9 @@ class MessageDataService : Service {
     func send(inQueue messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
         let context = sharedCoreDataService.mainManagedObjectContext
+        
+        self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: messageID))
+        
         if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
             //message.location = .outbox
             error = context.saveUpstreamIfNeeded()
@@ -914,6 +918,8 @@ class MessageDataService : Service {
      */
     func cleanUp() {
         self.cleanMessage()
+        
+        self.localNotificationService.unscheduleAllPendingNotifications()
         
         lastUpdatedStore.clear()
         sharedMessageQueue.clear()
@@ -1572,6 +1578,8 @@ class MessageDataService : Service {
                 
                 let error = res.error
                 if error == nil {
+                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                    
                     //TODO::
                     if message.contains(label: .draft) {
                         if isEO {
