@@ -47,7 +47,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         if UIDevice.current.stateRestorationPolicy == .deeplink,
             let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity,
-            let data = userActivity.userInfo!["deeplink"] as? Data,
+            let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
         {
             self.coordinator.followDeeplink(deeplink)

@@ -60,6 +60,8 @@ let sharedServices: ServiceFactory = {
     helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
     helper.add(ViewModelService.self, for: ViewModelServiceImpl())
     
+    helper.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
+    
     return helper
 }()
 
@@ -364,6 +366,20 @@ extension AppDelegate: UIApplicationDelegate {
         let config = UISceneConfiguration(name: scene.rawValue, sessionRole: connectingSceneSession.role)
         config.delegateClass = scene.delegateClass
         return config
+    }
+    
+    // MARK: Shortcuts
+    
+    func application(_ application: UIApplication,
+                     performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void)
+    {
+        if let data = shortcutItem.userInfo?["deeplink"] as? Data,
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        {
+            self.coordinator.followDeeplink(deeplink)
+        }
+        completionHandler(true)
     }
 }
 

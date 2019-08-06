@@ -231,7 +231,6 @@ class WindowsCoordinator: CoordinatorNew {
         self.appWindow?.rootViewController = root
     }
     
-    @available(iOS 13.0, *)
     internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
         _ = deeplink.popFirst
