@@ -111,6 +111,7 @@ class SignInManager: NSObject {
             
             sharedUserDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
             UserTempCachedStatus.restore()
+            NotificationCenter.default.post(name: .didSignIn, object: nil)
             UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
         }.catch(on: .main) { (error) in
             onError(error as NSError)

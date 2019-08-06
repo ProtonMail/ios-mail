@@ -55,6 +55,11 @@ extension Notification.Name {
         return .init(rawValue: "UserDataServiceDidSignOutNotification")
     }
     
+    /// notify did signin
+    static var didSignIn: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidSignInNotification")
+    }
+    
     /// notify did unlock
     static var didUnlock: Notification.Name {
         return .init(rawValue: "UserDataServiceDidSignInNotification")

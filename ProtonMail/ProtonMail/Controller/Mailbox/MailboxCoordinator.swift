@@ -87,7 +87,7 @@ class MailboxCoordinator : DefaultCoordinator {
             switch rawValue {
             case "toCompose": self = .composer
             case "toComposeShow", String(describing: ComposeContainerViewController.self): self = .composeShow
-            case "toSearchViewController": self = .search
+            case "toSearchViewController", String(describing: SearchViewController.self): self = .search
             case "toMessageDetailViewController", String(describing: MessageContainerViewController.self): self = .details
             case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
             case "to_onboarding_segue": self = .onboarding
@@ -223,7 +223,7 @@ class MailboxCoordinator : DefaultCoordinator {
                     details.start()
                     details.follow(deeplink)
             }
-        case .composeShow:
+        case .composeShow where path.value != nil:
             if let messageID = path.value,
                 let nav = self.navigation,
                 let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
@@ -232,6 +232,15 @@ class MailboxCoordinator : DefaultCoordinator {
                 composer.start()
                 composer.follow(deeplink)
             }
+            
+        case .composeShow where path.value == nil:
+            if let nav = self.navigation {
+                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
+            
         default:
             self.go(to: dest, sender: deeplink)
         }

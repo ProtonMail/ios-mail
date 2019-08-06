@@ -44,6 +44,10 @@ class DeepLink {
             self.value = value
         }
         
+        convenience init<T>(name: String, value: T? = nil) where T: RawRepresentable, T.RawValue == String {
+            self.init(name: name, value: value?.rawValue)
+        }
+        
         required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.name = try container.decode(String.self, forKey: .destination)
