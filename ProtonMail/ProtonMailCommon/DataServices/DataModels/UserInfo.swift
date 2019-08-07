@@ -280,6 +280,15 @@ extension UserInfo: NSCoding {
         static let linkConfirmation = "linkConfirmation"
     }
     
+    func archive() -> Data {
+        return NSKeyedArchiver.archivedData(withRootObject: self)
+    }
+    
+    static func unarchive(_ data: Data?) -> UserInfo? {
+        guard let data = data else { return nil }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? UserInfo
+    }
+    
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             displayName: aDecoder.decodeStringForKey(CoderKey.displayName),

@@ -197,7 +197,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                 for att in atts {
                     do {
                         guard let sessionPack = sharedUserDataService.newSchema ?
-                            try att.getSession(userKey: sharedUserDataService.userPrivateKeys, keys: sharedUserDataService.addressKeys) :
+                            try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
+                                               keys: sharedUserDataService.addressKeys) :
                             try att.getSession(keys: sharedUserDataService.addressPrivateKeys) else { //DONE
                             continue
                         }

@@ -281,7 +281,7 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime(pubKey: String, privKey : String, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
+    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 /// decrypt attachments
@@ -325,15 +325,10 @@ class SendBuilder {
                             PMLog.D(error.localizedDescription)
                             break
                         }
-                        
                     }
-                        
                     signbody.append(contentsOf: "--\(boundaryMsg)--")
-                    
-                    //PMLog.D(signbody)
-
-                    let encrypted = try signbody.encrypt(withPubKey: pubKey,
-                                                         privateKey: privKey,
+                    let encrypted = try signbody.encrypt(withKey: senderKey,
+                                                         userKeys: userKeys,
                                                          mailbox_pwd: passphrase)
                     let spilted = try encrypted?.split()
                     let session = newSchema ?
@@ -353,18 +348,16 @@ class SendBuilder {
     }
     
     
-    func buildPlainText(pubKey: String, privKey : String, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
+    func buildPlainText(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 let messageBody = self.clearBody ?? ""
                 //TODO:: need improve replace part
                 let plainText = messageBody.html2String.preg_replace("\n", replaceto: "\r\n")
-                
                 PMLog.D(plainText)
-                
-                let encrypted = try plainText.encrypt(withPubKey: pubKey,
-                                                       privateKey: privKey,
-                                                       mailbox_pwd: passphrase)
+                let encrypted = try plainText.encrypt(withKey: senderKey,
+                                                      userKeys: userKeys,
+                                                      mailbox_pwd: passphrase)
                 let spilted = try encrypted?.split()
                 let session = newSchema ?
                     try spilted?.keyPacket()?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :

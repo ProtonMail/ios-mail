@@ -759,7 +759,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 //TODO:: fix the try! later
                 let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",
-                                                              mailbox_pwd: "")
+                                                              passphrase: "")
                 let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                                         privateKey: userkey.private_key,
                                                                         passphrase: sharedUserDataService.mailboxPassword!,

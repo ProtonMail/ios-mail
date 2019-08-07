@@ -234,15 +234,20 @@ class UserDataService : Service {
         }
         return nil
     }
-    
+
     func getAddressPrivKey(address_id : String) -> String {
         let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
         return addr?.keys.first?.private_key ?? ""
     }
     
+    func getAddressKey(address_id : String) -> Key? {
+        let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
+        return addr?.keys.first
+    }
+    
     var newSchema : Bool {
         for k in addressKeys {
-            if k.signature != nil {
+            if k.newSchema {
                 return true
             }
         }
@@ -264,26 +269,11 @@ class UserDataService : Service {
     }
     
     var addressKeys : [Key] {
-        var out = [Key]()
-        for addr in addresses {
-            for key in addr.keys {
-                out.append(key)
-            }
-        }
-        return out
+        return self.userInfo?.addressKeys ?? [Key]()
     }
     
     var userPrivateKeys : Data {
-        var out = Data()
-        var error : NSError?
-        if let keys = userInfo?.userKeys {
-            for key in keys {
-                if let privK = ArmorUnarmor(key.private_key, &error) {
-                    out.append(privK)
-                }
-            }
-        }
-        return out
+        return self.userInfo?.userPrivateKeys ?? Data()
     }
     
     // MARK: - Public variables
@@ -1049,5 +1039,30 @@ extension AppCache {
     
     static func inject(username: String, into userDataService: UserDataService) {
         userDataService.username = username
+    }
+}
+
+
+
+extension UserInfo {
+    var userPrivateKeys : Data {
+        var out = Data()
+        var error : NSError?
+        for key in userKeys {
+            if let privK = ArmorUnarmor(key.private_key, &error) {
+                out.append(privK)
+            }
+        }
+        return out
+    }
+    
+    var addressKeys : [Key] {
+        var out = [Key]()
+        for addr in userAddresses {
+            for key in addr.keys {
+                out.append(key)
+            }
+        }
+        return out
     }
 }

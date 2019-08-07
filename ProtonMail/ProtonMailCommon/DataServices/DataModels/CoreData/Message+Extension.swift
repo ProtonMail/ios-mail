@@ -369,7 +369,6 @@ extension Message {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
-    
     func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
         var firstError : Error?
         for key in keys {
@@ -402,11 +401,6 @@ extension Message {
         }
         return nil;
     }
-    
-//    func decryptBody(keys: [Key], userKey: Data, passphrase: String) throws -> String? {
-//        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
-//    }
-    
     
     //const (
     //  ok         = 0
@@ -568,8 +562,14 @@ extension Message {
         }
         
         do {
-            let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd, key: key) ?? ""
+            if let key = sharedUserDataService.getAddressKey(address_id: address_id) {
+                self.body = try body.encrypt(withKey: key,
+                                             userKeys: sharedUserDataService.userPrivateKeys,
+                                             mailbox_pwd: mailbox_pwd) ?? ""
+            } else {//fallback
+                let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+                self.body = try body.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
+            }
         } catch let error {//TODO:: error handling
             PMLog.D(any: error.localizedDescription)
             self.body = ""
@@ -722,7 +722,8 @@ extension Message {
                     do {
                         if let k = key,
                             let sessionPack = sharedUserDataService.newSchema ?
-                                try att.getSession(userKey: sharedUserDataService.userPrivateKeys, keys: sharedUserDataService.addressKeys) :
+                                try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
+                                                   keys: sharedUserDataService.addressKeys) :
                                 try att.getSession(keys: sharedUserDataService.addressPrivateKeys),//DONE
                             let session = sessionPack.session(),
                             let algo = sessionPack.algo(),

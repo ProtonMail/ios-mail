@@ -119,12 +119,37 @@ extension String {
         return out
     }
     
-    func encrypt(withAddr address_id: String, mailbox_pwd: String, key: String) throws -> String? {
+    func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
         return try sharedOpenPGP.encryptMessage(self, publicKey: key, privateKey: key, passphrase: mailbox_pwd, trim: true)
     }
     
-    func encrypt(withPubKey publicKey: String, privateKey: String, mailbox_pwd: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(self, publicKey: publicKey, privateKey: privateKey, passphrase: mailbox_pwd, trim: true)
+    func encrypt(withKey key: Key, userKeys: Data, mailbox_pwd: String) throws -> String? {
+        if let token = key.token, let signature = key.signature { //have both means new schema. key is
+            if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
+                PMLog.D(signature)
+                return try sharedOpenPGP.encryptMessage(self,
+                                                        publicKey: key.private_key,
+                                                        privateKey: key.private_key,
+                                                        passphrase: plaitToken,
+                                                        trim: true)
+            }
+        } else if let token = key.token { //old schema with token - subuser. key is embed singed
+            if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
+                //TODO:: try to verify signature here embeded signature
+                return try sharedOpenPGP.encryptMessage(self,
+                                                        publicKey: key.private_key,
+                                                        privateKey: key.private_key,
+                                                        passphrase: plaitToken,
+                                                        trim: true)
+            }
+        }
+        return try sharedOpenPGP.encryptMessage(self, publicKey: key.private_key,
+                                                privateKey: key.private_key,
+                                                passphrase: mailbox_pwd, trim: true)
+    }
+
+    func encrypt(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String? {
+        return try sharedOpenPGP.encryptMessage(self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase, trim: true)
     }
     
     func encrypt(withPwd passphrase: String) throws -> String? {

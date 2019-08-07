@@ -58,6 +58,10 @@ final class Key : NSObject {
     var fingerprint : String {
         return KeyGetFingerprint(self.private_key, nil)
     }
+    
+    var newSchema : Bool {
+        return signature != nil
+    }
 }
 
 

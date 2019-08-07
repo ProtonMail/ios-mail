@@ -44,8 +44,8 @@ extension Message {
         get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
         set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
     }
-    var cachedPrivateKeys: [Key]? {
-        get { return Key.unarchive(self.cachedPrivateKeysRaw as Data?) }
+    var cachedUser: UserInfo? {
+        get { return UserInfo.unarchive(self.cachedPrivateKeysRaw as Data?) }
         set { self.cachedPrivateKeysRaw = newValue?.archive() as NSData? }
     }
     var cachedAddress: Address? {

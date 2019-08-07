@@ -85,7 +85,6 @@ extension CryptoPmCrypto {
         return outKeys
     }
     
-    
     class func updateAddrKeysPassword(_ old_addresses : [Address], old_pass: String, new_pass: String ) throws -> [Address] {
         var out_addresses = [Address]()
         for addr in old_addresses {
@@ -149,7 +148,6 @@ extension CryptoPmCrypto {
         return out_addresses
     }
 }
-
 
 //
 extension PMNOpenPgp {
@@ -228,14 +226,11 @@ extension PMNOpenPgp {
 //}
 
 extension Data {
-    
-    
-    func decryptAttachment(keyPackage:Data!, userKeys: Data, passphrase: String, keys: [Key]) throws -> Data? {
+    func decryptAttachment(keyPackage: Data, userKeys: Data, passphrase: String, keys: [Key]) throws -> Data? {
         var firstError : Error?
         for key in keys {
             do {
                 if let token = key.token, let signature = key.signature { //have both means new schema. key is
-                    
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         PMLog.D(signature)
                         return try sharedOpenPGP.decryptAttachment(keyPackage, dataPacket: self, privateKey: key.private_key, passphrase: plaitToken)
@@ -262,38 +257,27 @@ extension Data {
     }
     
     
-    func decryptAttachment(_ keyPackage:Data!, passphrase: String, privKeys: Data) throws -> Data? {
+    func decryptAttachment(_ keyPackage: Data, passphrase: String, privKeys: Data) throws -> Data? {
         return try sharedOpenPGP.decryptAttachmentBinKey(keyPackage, dataPacket: self, privateKeys: privKeys, passphrase: passphrase)
     }
 
-    func decryptAttachmentWithSingleKey(_ keyPackage:Data!, passphrase: String, publicKey: String, privateKey: String) throws -> Data? {
+    func decryptAttachmentWithSingleKey(_ keyPackage: Data, passphrase: String, publicKey: String, privateKey: String) throws -> Data? {
         return try sharedOpenPGP.decryptAttachment(keyPackage, dataPacket: self, privateKey: privateKey, passphrase: passphrase)
     }
     
-    func encryptAttachment(_ address_id: String, fileName:String, mailbox_pwd: String, key: String) throws -> ModelsEncryptedSplit? {
-        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: key)
+  
+    func signAttachment(byPrivKey: String, passphrase: String) throws -> String? {
+        return try sharedOpenPGP.signBinDetached(self, privateKey: byPrivKey, passphrase: passphrase)
     }
     
-    func signAttachment(_ address_id: String, mailbox_pwd: String, key: String) throws -> String? {
-        return try sharedOpenPGP.signBinDetached(self, privateKey: key, passphrase: mailbox_pwd)
+    func encryptAttachment(fileName:String, pubKey: String) throws -> ModelsEncryptedSplit? {
+        return try sharedOpenPGP.encryptAttachment(self, fileName: fileName, publicKey: pubKey)
     }
-
-    static func makeEncryptAttachmentProcessor(_ address_id: String, fileName:String, totalSize: Int, key: String) throws -> CryptoAttachmentProcessor {
-        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: key)
+    
+    static func makeEncryptAttachmentProcessor(fileName:String, totalSize: Int, pubKey: String) throws -> CryptoAttachmentProcessor {
+        return try sharedOpenPGP.encryptAttachmentLowMemory(totalSize, fileName: fileName, publicKey: pubKey)
     }
-
     
-    
-    //
-//    func encryptAttachmentWithSingleKey(_ publicKey: String, fileName:String, privateKey: String, mailbox_pwd: String) throws -> PMNEncryptPackage? {
-//        var out_enc_data : PMNEncryptPackage?
-//        try ObjC.catchException {
-//            out_enc_data = sharedOpenPGP.encryptAttachmentSingleKey(publicKey, unencryptData: self, fileName: fileName, privateKey: privateKey, passphras: mailbox_pwd)
-//        }
-//        
-//        return out_enc_data
-//    }
-//    
     //key packet part
     func getSessionFromPubKeyPackage(_ passphrase: String, privKeys: Data) throws -> ModelsSessionSplit? {
         let out = try sharedOpenPGP.getSessionFromKeyPacketBinkeys(self, privateKey: privKeys, passphrase: passphrase)
@@ -329,20 +313,7 @@ extension Data {
             throw error
         }
         return nil
-        
-        
-//        let out = try sharedOpenPGP.getSessionFromKeyPacketBinkeys(self, privateKey: privKeys, passphrase: passphrase)
-//        return out
     }
-    
-//    func getSessionKeyFromPubKeyPackageWithSingleKey(_ privateKey: String, passphrase: String, publicKey: String) throws -> Data? {
-//        var key_session_out : Data?
-//        try ObjC.catchException {
-//            key_session_out = sharedOpenPGP.getPublicKeySessionKeySingleKey(self, privateKey: privateKey, passphrase: passphrase)
-//        }
-//        
-//        return key_session_out
-//    }
     
     func getKeyPackage(strKey publicKey: String, algo : String) throws -> Data? {
         let session = ModelsSessionSplit()!
@@ -367,22 +338,4 @@ extension Data {
         let packet : Data? = try sharedOpenPGP.symmetricKeyPacket(withPassword: session, password: pwd)
         return packet
     }
-    
-//    func getPublicSessionKeyPackage(str publicKey: String) throws -> Data? {
-//        var out_new_key : Data?
-//        try ObjC.catchException {
-//            out_new_key = sharedOpenPGP.getNewPublicKeyPackage(self, publicKey: publicKey)
-//        }
-//        
-//        return out_new_key
-//    }
-//    
-//    func getPublicSessionKeyPackage(data publicKey: Data) throws -> Data? {
-//        var out_new_key : Data?
-//        try ObjC.catchException {
-//            out_new_key = sharedOpenPGP.getNewPublicKeyPackageBinary(self, publicKey: publicKey)
-//        }
-//        return out_new_key
-//    }
-
 }
