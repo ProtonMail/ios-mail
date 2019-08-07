@@ -64,6 +64,12 @@ extension ImageProcessor where Self: AttachmentProvider {
         switch asset.mediaType {
         case .video:
             let options = PHVideoRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { progress, error, pointer, info in
+                DispatchQueue.main.async {
+                    (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
+                }
+            }
             PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { asset, audioMix, info in
                 if let error = info?[PHImageErrorKey] as? NSError {
                     self.controller.error(error.debugDescription)
@@ -79,8 +85,14 @@ extension ImageProcessor where Self: AttachmentProvider {
                 self.controller.fileSuccessfullyImported(as: fileData)
             })
             
-        default:
+        case .image:
             let options = PHImageRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.progressHandler = { progress, error, pointer, info in
+                DispatchQueue.main.async {
+                    (LocalString._importing + " \(Int(progress * 100))%").alertToastBottom()
+                }
+            }
             PHImageManager.default().requestImageData(for: asset, options: options) { imagedata, dataUTI, orientation, info in
                 guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
                     self.controller.error(LocalString._cant_open_the_file)
@@ -102,6 +114,9 @@ extension ImageProcessor where Self: AttachmentProvider {
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
                 self.controller.fileSuccessfullyImported(as: fileData)
             }
+            
+        default:
+            self.controller.error(LocalString._cant_open_the_file)
         }
     }
 }

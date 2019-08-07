@@ -173,7 +173,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     func showErrorAlert( _ error: String) {
-        let alert = NSLocalizedString(error, comment: "").alertController()
+        let alert = error.alertController()
         alert.addOKAction()
         DispatchQueue.main.async {
             self.present(alert, animated: true, completion: nil)
