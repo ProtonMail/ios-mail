@@ -150,5 +150,14 @@ class TwoFACodeView : PMView {
         twoFactorCodeField.resignFirstResponder()
         loginPasswordField.resignFirstResponder()
     }
+    
+    func fill2FACodeFromPasteboard() {
+        if let pasteboard = UIPasteboard.general.string,
+            pasteboard.preg_match("^[0-9]{1,6}$"),              // six digits
+            self.twoFactorCodeField.text?.isEmpty == true       // no current input in the field
+        {
+            self.twoFactorCodeField.text = pasteboard
+        }
+    }
 }
 
