@@ -1714,6 +1714,8 @@ class LocalizedString {
     // Drag and drop
     lazy var _drop_here = NSLocalizedString("+ Drop here to add as attachment", comment: "Drag and drop zone for attachments")
     
+    lazy var _importing = NSLocalizedString("Importing", comment: "Downloading attachments from cloud")
+    
     lazy var _importing_drop = NSLocalizedString("Importing attachment, that can take a while", comment: "Drag and drop zone for attachments")
     
     lazy var _drop_finished = NSLocalizedString("Attachment imported", comment: "Drag and drop zone for attachments")
