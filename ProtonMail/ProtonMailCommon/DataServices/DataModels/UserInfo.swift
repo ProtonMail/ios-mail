@@ -221,13 +221,11 @@ extension UserInfo {
         var uKeys: [Key] = [Key]()
         if let user_keys = response["Keys"] as? [[String : Any]] {
             for key_res in user_keys {
-                
-                var token : String = key_res["Token"] as? String ?? ""
-                var signature : String = key_res["Signature"] as? String ?? ""
-                
                 uKeys.append(Key(
                     key_id: key_res["ID"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
+                    token: key_res["Token"] as? String ?? "",
+                    signature: key_res["Signature"] as? String ?? "",
                     isupdated: false))
             }
         }

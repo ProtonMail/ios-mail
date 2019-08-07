@@ -369,6 +369,45 @@ extension Message {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
+    
+    func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
+        var firstError : Error?
+        for key in keys {
+            do {
+                if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here Detached signature
+                        // if failed return a warning
+                        PMLog.D(signature)
+                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
+                    }
+                } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here embeded signature
+                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
+                    }
+                } else {//normal key old schema
+                    return try body.decryptMessage(binKeys: userKeys, passphrase: passphrase)
+                }
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        
+        if let error = firstError {
+            throw error
+        }
+        return nil;
+    }
+    
+//    func decryptBody(keys: [Key], userKey: Data, passphrase: String) throws -> String? {
+//        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
+//    }
+    
+    
     //const (
     //  ok         = 0
     //  notSigned  = 1
@@ -376,15 +415,21 @@ extension Message {
     //  failed     = 3
     //  )
     func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
-        guard let passphrase = sharedUserDataService.mailboxPassword,
-            case let keys = sharedUserDataService.addressPrivateKeys else
-        {
-                return .failed
+        let keys = sharedUserDataService.addressKeys
+        guard let passphrase = sharedUserDataService.mailboxPassword else {
+            return .failed
         }
         
         do {
             let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
-            if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase, time: time) {
+            if let verify = sharedUserDataService.newSchema ?
+                try body.verifyMessage(verifier: verifier,
+                                       userKeys: sharedUserDataService.userPrivateKeys,
+                                       keys: keys, passphrase: passphrase, time: time) :
+                try body.verifyMessage(verifier: verifier,
+                                       binKeys: keys.binPrivKeys,
+                                       passphrase: passphrase,
+                                       time: time) {
                 let status = verify.verify()
                 return SignStatus(rawValue: status) ?? .notSigned
             }
@@ -413,7 +458,12 @@ extension Message {
     func decryptBodyIfNeeded() throws -> String? {
         PMLog.D("Flags: \(self.flag.description)")
         if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
-            var body = try decryptBody(keys: sharedUserDataService.addressPrivateKeys, passphrase: passphrase) {
+            var body = sharedUserDataService.newSchema ?
+                try decryptBody(keys: sharedUserDataService.addressKeys,
+                                userKeys: sharedUserDataService.userPrivateKeys,
+                                passphrase: passphrase) :
+                try decryptBody(keys: sharedUserDataService.addressPrivateKeys,
+                                passphrase: passphrase) { //DONE
             //PMLog.D(body)
             if isPgpMime || isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
@@ -671,7 +721,9 @@ extension Message {
                     attachment.isTemp = true
                     do {
                         if let k = key,
-                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivateKeys),
+                            let sessionPack = sharedUserDataService.newSchema ?
+                                try att.getSession(userKey: sharedUserDataService.userPrivateKeys, keys: sharedUserDataService.addressKeys) :
+                                try att.getSession(keys: sharedUserDataService.addressPrivateKeys),//DONE
                             let session = sessionPack.session(),
                             let algo = sessionPack.algo(),
                             let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {

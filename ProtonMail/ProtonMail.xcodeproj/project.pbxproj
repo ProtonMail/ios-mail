@@ -206,6 +206,7 @@
 		1EB7641F18E90182D192C09DF06E0355 /* UserDefaultsSaverTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD5BAB7C8FFB0A2267AF8CEF4E33985 /* UserDefaultsSaverTests.swift */; };
 		1EBB770BC84B7697CD50C6F5B425DE32 /* Pods_PushService.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7276672B20008AC48F0718FA117FB20 /* Pods_PushService.framework */; };
 		1F0B019E44004D6BB651FC83BA99A742 /* MessageContainerViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F55C55943511B9C45672F5FBE6F1C6F /* MessageContainerViewCoordinator.swift */; };
+		1F2481AA11E7221FAE70E9932DA35F2D /* NSCoder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621515B47F8160001CE952DC3956E8CE /* NSCoder+Extension.swift */; };
 		1F41471EE68B6375498F2AAD5EA910F0 /* ContactSectionHeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60B45E225D395E3FBF26473033706769 /* ContactSectionHeadView.swift */; };
 		1F4BAC01B00915AE36B0160EA6A98296 /* NSMutableAttributedString+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904EF45ADECDB5E125026F6A85A0C571 /* NSMutableAttributedString+Extension.swift */; };
 		1F4CBCDC3BF4CAE8DD9F8CAA2EB18CCB /* ContactGroupSubSelectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB03E85409930EE316CC8D01F495EE28 /* ContactGroupSubSelectionHeaderCell.swift */; };
@@ -662,6 +663,7 @@
 		5D779BFC077F5F9AB7666F2C55E6B045 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
 		5D9FBFFDCA4D8DB4D01DBC097E724939 /* MessageContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D54C938E1AF84C6A06E863889A1BD9B7 /* MessageContainerViewController.swift */; };
 		5DAA91D765514FC5462375D9AD1CF13B /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED0222F585298654890FE8BF6620AC /* SignInViewModelImpl.swift */; };
+		5DC2FADD1235BE606034F241E18CDD38 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		5E03B814A4CED2A3A335AC7387A2398E /* MenuLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DE7858BA56DBC87D4AF3B339EADD91 /* MenuLabelViewCell.swift */; };
 		5E198A1FB696672702E9EE13617F0F79 /* UserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EADB00B07025BF5A9274B0179C16871 /* UserAgent.swift */; };
 		5E5C5AD16467920BA6A0E72718F4613F /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
@@ -1072,6 +1074,7 @@
 		99FEE2949141CB71885C04DA3067FA00 /* CoordinatorNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7046CA77BC2D8D06D47447113DF05132 /* CoordinatorNew.swift */; };
 		9A41C0F9EAC33424C7F709B635A2AD4E /* MessageHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041912DF058CB1143755E65F3FAE61BC /* MessageHeaderViewModel.swift */; };
 		9A616F0DDBC146B598C2E1B989798331 /* LabelDisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5BC79050A8082D5C6CF066210754275 /* LabelDisplayView.swift */; };
+		9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8815DFC41477DB4D20C79538B64D0893 /* Key.swift */; };
 		9A6D30A29F517856961DEFAF4A2DCC5D /* Foundation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68B223C187D4D099D474CBF5E75C09A4 /* Foundation+Extension.swift */; };
 		9A98F44ABC8F88F107A698052D7273AA /* StorefrontCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25F9C5E235DFE3343462EF534F416108 /* StorefrontCollectionViewController.swift */; };
 		9AA29992A0F05CB6AD3521A6AA12450D /* UserCachedStatus+NotificationSnoozerCore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8EFB2E7F66C228E239E6B8C080B2355 /* UserCachedStatus+NotificationSnoozerCore.swift */; };
@@ -1397,6 +1400,7 @@
 		C7925EA49140B87D43801B4CF4576E2E /* SrpClient+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 740706FF89123145777644994BE4C5BB /* SrpClient+Extension.swift */; };
 		C7CFB07D275EFCC8033DD8DB1A37CF88 /* FolderEditingViewModelImpl .swift in Sources */ = {isa = PBXBuildFile; fileRef = CCFA497449313ED051B5B07C37A12D5B /* FolderEditingViewModelImpl .swift */; };
 		C7ECCB6715E5B3C9BA34706363FBF760 /* SharePinUnlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE71D9C4739F715B22EF067D18BD4BD2 /* SharePinUnlockViewController.swift */; };
+		C7F52EAE895E77CF07257C44E671FD32 /* NSCoder+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 621515B47F8160001CE952DC3956E8CE /* NSCoder+Extension.swift */; };
 		C816A99EEF5573493E9FEAD5CF9E3E04 /* FeedbackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBBFBFA33313B8B3C9E7C6EDCD43F89 /* FeedbackTableViewCell.swift */; };
 		C8400F7745B20650B273FDE53FC334A4 /* ContactVO+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56C53C0EE62F034C5DEC86CDDB56EFE /* ContactVO+Extension.swift */; };
 		C882755FA51CDDF837699725D3083617 /* SettingsNotificationsSnooze.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 715458403C778DA3437ED30E431AA4CD /* SettingsNotificationsSnooze.storyboard */; };
@@ -5327,6 +5331,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ ${CONFIGURATION} == \"Debug\" ]; then\nbuildNumber=${CONFIGURATION}\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n\nif [ ${CONFIGURATION} == \"Release\" ]; then\nbuildNumber=$(git rev-list HEAD | wc -l | tr -d ' ')\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"${PROJECT_DIR}/${INFOPLIST_FILE}\"\nfi;\n";
 		};
+		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Proton Sentry script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "if which sentry-cli >/dev/null; then\nsource ~/.bashrc\nERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
+		};
 		0DD55C25AF691272A64605F0C0621E49 /* Setup Version Number */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -5492,24 +5514,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ProtonMailTests/Pods-ProtonMailTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		0C4F83DFBCEE3602444D4B29BCD6E871 /* Run Proton Sentry script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 8;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Run Proton Sentry script";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-			shellPath = /bin/sh;
-			shellScript = "if which sentry-cli >/dev/null; then\nsource ~/.bashrc\nERROR=$(sentry-cli upload-dif \"$DWARF_DSYM_FOLDER_PATH\" 2>&1 >/dev/null)\nif [ ! $? -eq 0 ]; then\necho \"warning: sentry-cli - $ERROR\"\nfi\nelse\necho \"warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases\"\nfi\n";
 		};
 		B15B017DF84D254D641D53281B450644 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5858,9 +5862,11 @@
 			files = (
 				ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */,
 				6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */,
+				9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */,
 				BF7020B65482BDE405ACCAB432FC314B /* KeychainSaver.swift in Sources */,
 				077415E09D78238CB7D8C16C65D9902C /* KeychainWrapper.swift in Sources */,
 				74F6EEE7F424802F48CE8E706685DFC9 /* Logger.swift in Sources */,
+				C7F52EAE895E77CF07257C44E671FD32 /* NSCoder+Extension.swift in Sources */,
 				0C16E84FD6EBA2CEB7C8CAE4C17446C7 /* NotificationService.swift in Sources */,
 				23B84ECBD359121842497B983A9F5525 /* OpenPGP+String+Extension.swift in Sources */,
 				6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */,
@@ -6930,9 +6936,11 @@
 			files = (
 				65049BF1672A1DCC6446D027F7C2BFAE /* App.swift in Sources */,
 				3E82044001396820D1AB44C18F556191 /* EncryptionKit.swift in Sources */,
+				5DC2FADD1235BE606034F241E18CDD38 /* Key.swift in Sources */,
 				7B4A90FB4B06506A99CCB29E07611458 /* KeychainSaver.swift in Sources */,
 				6A0E256F2AD0A8BD02B861A2D114302E /* KeychainWrapper.swift in Sources */,
 				0B2A217947A5A0BB21BBE2D868EA7B95 /* Logger.swift in Sources */,
+				1F2481AA11E7221FAE70E9932DA35F2D /* NSCoder+Extension.swift in Sources */,
 				F999C98F2CB95DC37FEFA511F8BF5F6F /* NotificationService.swift in Sources */,
 				F60BB3DE9DC822202B8A6551BB0EB89A /* OpenPGP+String+Extension.swift in Sources */,
 				79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */,

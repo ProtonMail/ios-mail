@@ -281,7 +281,7 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime(pubKey: String, privKey : String, passphrase: String, privKeys: Data) -> Promise<SendBuilder> {
+    func buildMime(pubKey: String, privKey : String, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 /// decrypt attachments
@@ -336,7 +336,9 @@ class SendBuilder {
                                                          privateKey: privKey,
                                                          mailbox_pwd: passphrase)
                     let spilted = try encrypted?.split()
-                    let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
+                    let session = newSchema ?
+                        try spilted?.keyPacket()?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
+                        try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: userKeys)
                     
                     self.mimeSession = session?.session()
                     self.mimeSessionAlgo = session?.algo()
@@ -351,7 +353,7 @@ class SendBuilder {
     }
     
     
-    func buildPlainText(pubKey: String, privKey : String, passphrase: String, privKeys: Data) -> Promise<SendBuilder> {
+    func buildPlainText(pubKey: String, privKey : String, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 let messageBody = self.clearBody ?? ""
@@ -364,7 +366,9 @@ class SendBuilder {
                                                        privateKey: privKey,
                                                        mailbox_pwd: passphrase)
                 let spilted = try encrypted?.split()
-                let session = try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: privKeys)!
+                let session = newSchema ?
+                    try spilted?.keyPacket()?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
+                    try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: userKeys)
                 
                 self.plainTextSession = session?.session()
                 self.plainTextSessionAlgo = session?.algo()

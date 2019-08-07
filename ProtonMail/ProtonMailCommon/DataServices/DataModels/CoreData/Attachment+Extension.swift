@@ -128,6 +128,18 @@ extension Attachment {
         return sessionKey
     }
     
+    func getSession(userKey: Data, keys: [Key]) throws -> ModelsSessionSplit? {
+        guard let keyPacket = self.keyPacket,
+            let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
+        {
+            return nil
+        }
+        let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        
+        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
+        return sessionKey
+    }
+    
     func fetchAttachment(_ downloadTask: ((URLSessionDownloadTask) -> Void)?, completion:((URLResponse?, URL?, NSError?) -> Void)?) {
         sharedMessageDataService.fetchAttachmentForAttachment(self, downloadTask: downloadTask, completion: completion)
     }
@@ -187,9 +199,8 @@ extension Attachment {
     }
     
     func base64DecryptAttachment() -> String {
-        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
-            case let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivateKeys else
-        {
+        let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressKeys
+        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
             return ""
         }
         
@@ -198,9 +209,15 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata,
-                                                                            passphrase: passphrase,
-                                                                            privKeys: privKeys) {
+                            if let decryptData =
+                                sharedUserDataService.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: sharedUserDataService.userPrivateKeys,
+                                                               passphrase: passphrase,
+                                                               keys: privKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: privKeys.binPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -213,9 +230,15 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata,
-                                                                            passphrase: passphrase,
-                                                                            privKeys: privKeys) {
+                            if let decryptData =
+                                sharedUserDataService.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: sharedUserDataService.userPrivateKeys,
+                                                               passphrase: passphrase,
+                                                               keys: privKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: privKeys.binPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }

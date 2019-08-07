@@ -44,16 +44,14 @@ extension Message {
         get { return AuthCredential.unarchive(data: self.cachedAuthCredentialRaw) }
         set { self.cachedAuthCredentialRaw = newValue?.archive() as NSData? }
     }
-    var cachedPrivateKeys: Data? {
-        get { return self.cachedPrivateKeysRaw as Data? }
-        set { self.cachedPrivateKeysRaw = newValue as NSData? }
+    var cachedPrivateKeys: [Key]? {
+        get { return Key.unarchive(self.cachedPrivateKeysRaw as Data?) }
+        set { self.cachedPrivateKeysRaw = newValue?.archive() as NSData? }
     }
     var cachedAddress: Address? {
         get { return Address.unarchive(self.cachedAddressRaw as Data?) }
         set { self.cachedAddressRaw = newValue?.archive() as NSData? }
     }
-    
-    
     
     /// check if contains exclusive lable
     ///

@@ -57,6 +57,55 @@ extension String {
                                                                        verifyTime: time)
     }
     
+    
+    func verifyMessage(verifier: Data, userKeys: Data, keys: [Key], passphrase: String, time : Int64) throws -> ModelsDecryptSignedVerify? {
+        var firstError : Error?
+        for key in keys {
+            do {
+                if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        PMLog.D(signature)
+                        return try sharedOpenPGP.decryptMessageVerifyBinKey(self,
+                                                                            verifierKey: verifier,
+                                                                            privateKey: key.private_key,
+                                                                            passphrase: plaitToken,
+                                                                            verifyTime: time)
+                    }
+                } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here embeded signature
+                        return try sharedOpenPGP.decryptMessageVerifyBinKey(self,
+                                                                            verifierKey: verifier,
+                                                                            privateKey: key.private_key,
+                                                                            passphrase: plaitToken,
+                                                                            verifyTime: time)
+                    }
+                } else {//normal key old schema
+                    return try sharedOpenPGP.decryptMessageVerifyBinKeyPrivBinKeys(self,
+                                                                                   verifierKey: verifier,
+                                                                                   privateKeys: userKeys,
+                                                                                   passphrase: passphrase,
+                                                                                   verifyTime: time)
+                }
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        if let error = firstError {
+            throw error
+        }
+        return nil
+    }
+    
+//    func verifyMessage(verifier: String, binKeys: Data, passphrase: String, time : Int64) throws -> ModelsDecryptSignedVerify? {
+//
+//        return try sharedOpenPGP.decryptMessageVerifyPrivBinKeys(self, verifierKey: signature,
+//                                                                 privateKeys: binKeys, passphrase: passphrase, verifyTime: time)
+//    }
+    
     func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
         return try sharedOpenPGP.decryptMessage(self, privateKey: privateKey, passphrase: passphrase)
     }

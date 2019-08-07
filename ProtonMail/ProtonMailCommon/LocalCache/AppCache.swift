@@ -74,7 +74,7 @@ class AppCache : Migrate {
     
     
     static func isFirstRun() -> Bool {
-        return SharedCacheBase.getDefault().object(forKey: UserDataService.Key.firstRunKey) == nil
+        return SharedCacheBase.getDefault().object(forKey: UserDataService.CoderKey.firstRunKey) == nil
     }
     
     func rebuild(reason: RebuildReason) {

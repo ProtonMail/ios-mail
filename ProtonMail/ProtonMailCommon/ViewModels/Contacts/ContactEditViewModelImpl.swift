@@ -151,7 +151,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 case .SignAndEncrypt:
                     var pt_contact : String?
                     do {
-                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,
+                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,//contacts encrypted with UserKey
                                                                passphrase: sharedUserDataService.mailboxPassword!)
                     } catch {
                         //TODO::show error
