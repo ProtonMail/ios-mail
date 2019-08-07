@@ -134,10 +134,13 @@ extension Attachment {
         guard let keyPacket = self.keyPacket,
             let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
         {
-            return nil
+            return nil //TODO:: error throw
         }
         
-        let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        guard let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0)) else {
+            return nil //TODO:: error throw
+        }
+        
         let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
         return sessionKey
     }
