@@ -38,6 +38,14 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }()
     
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        if let data = userActivity.userInfo?["deeplink"] as? Data,
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        {
+            self.coordinator.followDeeplink(deeplink)
+        }
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
         

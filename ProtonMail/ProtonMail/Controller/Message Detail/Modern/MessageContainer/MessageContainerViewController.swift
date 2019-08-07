@@ -40,6 +40,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         if #available(iOS 13.0, *) {
             self.view.window?.windowScene?.title = self.viewModel.thread.first?.header.title
         }
+        self.viewModel.userActivity.becomeCurrent()
     }
     
     override func viewDidLoad() {
@@ -151,6 +152,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     }
     
     deinit {
+        self.viewModel?.userActivity.invalidate()
         self.standalonesObservation = []
         self.threadObservation = nil
     }
