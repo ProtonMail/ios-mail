@@ -287,6 +287,19 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("Enter Background")
     }
     
+    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, deprecated in favor of similar method in WindowSceneDelegate" )
+    func application(_ application: UIApplication,
+                     continue userActivity: NSUserActivity,
+                     restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
+    {
+        if let data = userActivity.userInfo?["deeplink"] as? Data,
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        {
+            self.coordinator.followDeeplink(deeplink)
+        }
+        return true
+    }
+    
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
         let mainContext = sharedCoreDataService.mainManagedObjectContext

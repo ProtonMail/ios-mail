@@ -97,6 +97,7 @@
 	<string>Required for attaching photos to the email.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>Handoff.Message</string>
 		<string>WipeMainKeyIntent</string>
 		<string>RestoreWindow</string>
 	</array>
