@@ -100,12 +100,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         }
     }
     @objc func printButtonTapped(_ sender: Any) {
-        let children = self.coordinator.printableChildren()
-        // here we can add printable cells data if needed
-        let childrenData = children.map { $0.printPageRenderer() }
-        let url = self.viewModel.print(childrenData)
-        self.coordinator.previewQuickLook(for: url)
+        self.coordinator.presentPrintController()
     }
+    
     @objc func viewHeadersButtonTapped(_ sender: Any) {
         let url = self.viewModel.headersTemporaryUrl()
         self.coordinator.previewQuickLook(for: url)

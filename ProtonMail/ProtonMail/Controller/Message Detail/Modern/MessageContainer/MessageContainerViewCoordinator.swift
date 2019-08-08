@@ -102,7 +102,15 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         return childController
     }
 
-    internal func printableChildren() -> [PdfPagePrintable] {
+    internal func presentPrintController() {
+        // TODO: this will not work good with multiple printable children, will need to make a unified renderer
+        let childrenRenderers = self.printableChildren().map { $0.printPageRenderer() }
+        let printController = UIPrintInteractionController.shared
+        printController.printPageRenderer = childrenRenderers.first
+        printController.present(animated: true, completionHandler: nil)
+    }
+    
+    private func printableChildren() -> [PdfPagePrintable] {
         var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
         children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
         children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
