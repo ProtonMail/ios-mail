@@ -671,7 +671,6 @@ extension Message {
         
         newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
-        newMessage.numAttachments = message.numAttachments
         newMessage.mimeType = message.mimeType
         newMessage.setAsDraft()
 
@@ -693,6 +692,7 @@ extension Message {
             //ignore it
         }
         
+        var newAttachmentCount : Int = 0
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
@@ -738,11 +738,15 @@ extension Message {
                     
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
+                    } else {
+                        newAttachmentCount += 1
                     }
                 }
                 
             }
         }
+        newMessage.numAttachments = NSNumber(value: newAttachmentCount)
+        
         return newMessage
     }
     
