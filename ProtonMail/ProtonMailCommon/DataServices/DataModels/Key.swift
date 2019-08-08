@@ -120,5 +120,14 @@ extension Array where Element : Key {
         return out
     }
     
+    
+    var newSchema : Bool {
+        for key in self {
+            if key.newSchema {
+                return true
+            }
+        }
+        return false
+    }
 
 }

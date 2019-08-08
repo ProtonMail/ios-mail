@@ -333,7 +333,7 @@ class SendBuilder {
                     let spilted = try encrypted?.split()
                     let session = newSchema ?
                         try spilted?.keyPacket()?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
-                        try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: userKeys)
+                        try spilted?.keyPacket()?.getSessionFromPubKeyPackage(addrPrivKey: senderKey.private_key, passphrase: passphrase)
                     
                     self.mimeSession = session?.session()
                     self.mimeSessionAlgo = session?.algo()
@@ -361,7 +361,7 @@ class SendBuilder {
                 let spilted = try encrypted?.split()
                 let session = newSchema ?
                     try spilted?.keyPacket()?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
-                    try spilted?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: userKeys)
+                    try spilted?.keyPacket().getSessionFromPubKeyPackage(addrPrivKey: senderKey.private_key, passphrase: passphrase)
                 
                 self.plainTextSession = session?.session()
                 self.plainTextSessionAlgo = session?.algo()

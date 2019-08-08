@@ -1420,6 +1420,7 @@ class MessageDataService : Service {
             let userInfo = message.cachedUser ?? sharedUserDataService.userInfo
             let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
             let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
+            let newSchema = addrPrivKeys.newSchema
             
             guard let authCredential = message.cachedAuthCredential ?? AuthCredential.fetchFromKeychain(),
                 let passphrase = message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
@@ -1461,7 +1462,7 @@ class MessageDataService : Service {
                 guard let splited = try message.split(),
                     let bodyData = splited.dataPacket(),
                     let keyData = splited.keyPacket(),
-                    let session = sharedUserDataService.newSchema ?
+                    let session = newSchema ?
                         try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
                                                                 passphrase: passphrase,
                                                                 keys: addrPrivKeys) :
@@ -1500,7 +1501,7 @@ class MessageDataService : Service {
                 //Debug info
                 status.insert(SendStatus.checkMimeAndPlainText)
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = sharedUserDataService.newSchema ?
+                    guard let clearbody = newSchema ?
                         try message.decryptBody(keys: addrPrivKeys,
                                                 userKeys: userPrivKeys,
                                                 passphrase: passphrase) :
@@ -1515,7 +1516,7 @@ class MessageDataService : Service {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionPack = sharedUserDataService.newSchema ?
+                        if let sessionPack = newSchema ?
                             try att.getSession(userKey: userPrivKeys,
                                                keys: addrPrivKeys) :
                             try att.getSession(keys: addrPrivKeys.binPrivKeys) {
@@ -1545,7 +1546,7 @@ class MessageDataService : Service {
                                              passphrase: passphrase,
                                              userKeys: userPrivKeys,
                                              keys: addrPrivKeys,
-                                             newSchema: sharedUserDataService.newSchema)
+                                             newSchema: newSchema)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1561,7 +1562,7 @@ class MessageDataService : Service {
                                                   passphrase: passphrase,
                                                   userKeys: userPrivKeys,
                                                   keys: addrPrivKeys,
-                                                  newSchema: sharedUserDataService.newSchema)
+                                                  newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //Debug info
                 status.insert(SendStatus.initBuilders)

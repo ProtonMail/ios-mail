@@ -285,6 +285,11 @@ extension Data {
     }
     
     //key packet part
+    func getSessionFromPubKeyPackage(addrPrivKey: String, passphrase: String) throws -> ModelsSessionSplit? {
+        return try sharedOpenPGP.getSessionFromKeyPacket(self, privateKey: addrPrivKey, passphrase: passphrase)
+    }
+    
+    //key packet part
     func getSessionFromPubKeyPackage(userKeys: Data, passphrase: String, keys: [Key]) throws -> ModelsSessionSplit? {
         var firstError : Error?
         for key in keys {
