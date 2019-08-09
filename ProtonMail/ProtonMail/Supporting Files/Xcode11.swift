@@ -46,6 +46,7 @@ class UIScene {
 class UIWindowScene: UIScene {
     static let willEnterForegroundNotification = NSNotification.Name.init("")
     static let didActivateNotification = NSNotification.Name.init("")
+    static let didEnterBackgroundNotification = NSNotification.Name.init("")
     
     var title: String?
 }
