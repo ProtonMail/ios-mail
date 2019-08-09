@@ -48,12 +48,10 @@ class PinCodeViewController : UIViewController {
         self.pinCodeView.delegate = self
         
         self.setUpView(true)
-        
-        if self.viewModel.checkTouchID() {
-            if userCachedStatus.isTouchIDEnabled {
-                pinCodeView.showTouchID()
-                authenticateUser()
-            }
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIWindowScene.willEnterForegroundNotification, object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
         }
     }
     
@@ -77,16 +75,13 @@ class PinCodeViewController : UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         self.view.layoutIfNeeded()
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIWindowScene.willEnterForegroundNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
+        
+        if self.viewModel.checkTouchID() {
+            if userCachedStatus.isTouchIDEnabled {
+                pinCodeView.showTouchID()
+                authenticateUser()
+            }
         }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {

@@ -88,34 +88,26 @@ class SignInViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        hideTouchID(false)
+        hideButtonTouchID(false)
 
         setupTextFields()
         setupButtons()
         setupVersionLabel()
-
-        let signinFlow = UnlockManager.shared.getUnlockFlow()
-        signinFlow == .requireTouchID ? self.showTouchID(false) : self.hideTouchID(true)
         
-        if signinFlow == .requirePin {
-            self.showingTouchID = false
-            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
+                                                   name:  UIWindowScene.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
+                                                   name:  UIWindowScene.didEnterBackgroundNotification,
+                                                   object: nil)
         } else {
-            //workaround, when lock the app by clicking power button this will be called in background and it breaks the touch id popup
-            //this could be controlled by window coordinator.
-            let state = UIApplication.shared.applicationState
-            if state != UIApplication.State.background {
-                showingTouchID = true
-                UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                    requestPin: {
-                                                        self.showingTouchID = false
-                                                        self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                                    requestMailboxPassword: {
-                                                        self.showingTouchID = false
-                                                        self.isRemembered = true
-                                                        self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-                })
-            }
+            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
+                                                   name:  UIApplication.willEnterForegroundNotification,
+                                                   object: nil)
+            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
+                                                   name:  UIApplication.didEnterBackgroundNotification,
+                                                   object: nil)
         }
     }
     
@@ -162,9 +154,9 @@ class SignInViewController: ProtonMailViewController {
     
     func setupView() {
         if isRemembered {
-            HideLoginViews()
+            hideLoginViews()
         } else {
-            ShowLoginViews()
+            showLoginViews()
             if !userCachedStatus.isSplashOk() {
                 self.performSegue(withIdentifier: kSegueToSignUpWithNoAnimation, sender: self)
             }
@@ -175,7 +167,7 @@ class SignInViewController: ProtonMailViewController {
         return false
     }
     
-    internal func showTouchID(_ animated : Bool = true) {
+    internal func showButtonTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = false
         signUpTopConstraint.priority = UILayoutPriority(rawValue: 1)
@@ -184,7 +176,7 @@ class SignInViewController: ProtonMailViewController {
             }, completion: nil)
     }
     
-    internal func hideTouchID(_ animated : Bool = true) {
+    internal func hideButtonTouchID(_ animated : Bool = true) {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = true
         signUpTopConstraint.priority = UILayoutPriority(rawValue: 750)
@@ -222,7 +214,7 @@ class SignInViewController: ProtonMailViewController {
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             })
         } else {
-            hideTouchID()
+            hideButtonTouchID()
         }
     }
     
@@ -231,7 +223,7 @@ class SignInViewController: ProtonMailViewController {
         }
         
         if SignInViewController.isComeBackFromMailbox {
-            ShowLoginViews()
+            showLoginViews()
             SignInManager.shared.clean()
         }
     }
@@ -268,12 +260,6 @@ class SignInViewController: ProtonMailViewController {
         self.showingTouchID = false
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
-        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
-                                               name:  UIApplication.willEnterForegroundNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
-                                               name:  UIApplication.didEnterBackgroundNotification,
-                                               object: nil)
         
         let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
@@ -292,14 +278,7 @@ class SignInViewController: ProtonMailViewController {
     }
     
     @objc func doEnterForeground() {
-        if userCachedStatus.isTouchIDEnabled && !showingTouchID {
-            showingTouchID = true
-            //TODO::fixme. need to add a callback event when touch id/face id canceled or dismissed. `workaround is func doEnterBackground()`
-            UnlockManager.shared.biometricAuthentication(requestMailboxPassword: {
-                self.showingTouchID = false
-                self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
-        }
+        self.viewDidAppear(true)
     }
     
     @objc func doEnterBackground() {
@@ -320,15 +299,15 @@ class SignInViewController: ProtonMailViewController {
                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
                 })
                 if isRemembered {
-                    HideLoginViews()
+                    hideLoginViews()
                 } else {
-                    ShowLoginViews()
+                    showLoginViews()
                 }
             }
         }
         
         if SignInViewController.isComeBackFromMailbox {
-            ShowLoginViews()
+            showLoginViews()
             SignInManager.shared.clean()
         }
         
@@ -338,12 +317,32 @@ class SignInViewController: ProtonMailViewController {
                 usernameTextField.becomeFirstResponder()
             }
         }
+        
+        // unlock when locked
+        
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
+        
+        if signinFlow == .requirePin {
+            self.showingTouchID = false
+            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        } else {
+            self.showingTouchID = true
+            UnlockManager.shared.initiateUnlock(flow: signinFlow,
+                                                requestPin: {
+                                                    self.showingTouchID = false
+                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                requestMailboxPassword: {
+                                                    self.showingTouchID = false
+                                                    self.isRemembered = true
+                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+            })
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-        NotificationCenter.default.removeObserver(self)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -368,14 +367,14 @@ class SignInViewController: ProtonMailViewController {
     
     // MARK: - Private methods
     
-    internal func HideLoginViews() {
+    internal func hideLoginViews() {
         self.usernameView.alpha      = 0.0
         self.passwordView.alpha      = 0.0
         self.signInButton.alpha      = 0.0
         self.onePasswordButton.alpha = 0.0
     }
     
-    func ShowLoginViews() {
+    func showLoginViews() {
         UIView.animate(withDuration: 1.0, animations: { () -> Void in
             self.usernameView.alpha      = 1.0
             self.passwordView.alpha      = 1.0
@@ -479,7 +478,7 @@ class SignInViewController: ProtonMailViewController {
                         onError: { error in
                             PMLog.D("error: \(error)")
                             MBProgressHUD.hide(for: self.view, animated: true)
-                            self.ShowLoginViews()
+                            self.showLoginViews()
                             if !error.code.forceUpgrade {
                                 let alertController = error.alertController()
                                 alertController.addOKAction()
