@@ -72,18 +72,37 @@ class UnlockManager: NSObject {
         return true
     }
     
+    
     internal func biometricAuthentication(requestMailboxPassword: @escaping ()->Void) {
-        keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard self.validate(mainKey: key) else { return }
-            self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword)
-        }
+        self.biometricAuthentication(afterBioAuthPassed: { self.unlockIfRememberedCredentials(requestMailboxPassword: requestMailboxPassword) })
     }
     
+    var isRequestingBiometricAuthentication: Bool = false
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
-        keymaker.obtainMainKey(with: BioProtection()) { key in
-            guard self.validate(mainKey: key) else { return }
-            afterBioAuthPassed()
+        let logic: ()->Void = {
+            guard !self.isRequestingBiometricAuthentication else { return }
+            self.isRequestingBiometricAuthentication = true
+            keymaker.obtainMainKey(with: BioProtection()) { key in
+                defer {
+                    self.isRequestingBiometricAuthentication = false
+                }
+                guard self.validate(mainKey: key) else { return }
+                afterBioAuthPassed()
+            }
         }
+        
+        // iOS 13 will not give us mainKey from SecureEnclave if request is made while app is .inactive or .background
+        #if !APP_EXTENSION
+        if UIApplication.shared.applicationState == .active {
+            logic()
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                logic()
+            }
+        }
+        #else
+            logic()
+        #endif
     }
     
     internal func initiateUnlock(flow signinFlow: SignInUIFlow,
