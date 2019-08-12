@@ -29,10 +29,6 @@
 import Foundation
 import QuickLook
 
-protocol PdfPagePrintable {
-    func printPageRenderer() -> UIPrintPageRenderer
-}
-
 class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     internal enum Destinations: String {
         case folders = "toMoveToFolderSegue"
@@ -103,18 +99,20 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
 
     internal func presentPrintController() {
-        // TODO: this will not work good with multiple printable children, will need to make a unified renderer
-        let childrenRenderers = self.printableChildren().map { $0.printPageRenderer() }
+        let pairs = zip(self.headerControllers, self.bodyControllers).compactMap { header, body -> (HeaderedPrintRenderer.CustomViewPrintRenderer, HeaderedPrintRenderer)? in
+            guard let headerPrinter = (header as? Printable)?.printPageRenderer() as? HeaderedPrintRenderer.CustomViewPrintRenderer,
+                let bodyPrinter = (body as? Printable)?.printPageRenderer() as? HeaderedPrintRenderer else
+            {
+                    return nil
+            }
+            bodyPrinter.header = headerPrinter
+            return (headerPrinter, bodyPrinter)
+        }
+        
+        // TODO: this will not work good with multiple printable children, will need to make a unified one-by-one renderer
         let printController = UIPrintInteractionController.shared
-        printController.printPageRenderer = childrenRenderers.first
+        printController.printPageRenderer = pairs.first(where: { _,_ in true })?.1
         printController.present(animated: true, completionHandler: nil)
-    }
-    
-    private func printableChildren() -> [PdfPagePrintable] {
-        var children: [PdfPagePrintable] = self.headerControllers.compactMap { $0 as? PdfPagePrintable }
-        children.append(contentsOf: self.attachmentsControllers.compactMap { $0 as? PdfPagePrintable })
-        children.append(contentsOf: self.bodyControllers.compactMap { $0 as? PdfPagePrintable })
-        return children
     }
     
     // Embed subviews

@@ -1209,6 +1209,8 @@
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
+		ABEB89BD23017AA40052EA7D /* HeaderedPrintRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEB89BC23017AA40052EA7D /* HeaderedPrintRenderer.swift */; };
+		ABEB89BE23017AA40052EA7D /* HeaderedPrintRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEB89BC23017AA40052EA7D /* HeaderedPrintRenderer.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
 		AC1F531805973E8279B06947E230FE05 /* ContactGroupSubSelectionEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */; };
 		AC2169ABF9A6B206FDE98C3FE1A3F589 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
@@ -2535,6 +2537,7 @@
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		ABEB89BC23017AA40052EA7D /* HeaderedPrintRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderedPrintRenderer.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD582027DF251AB61A346296CBA10FC4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AD7220290273672515A9A96C1732ACF7 /* FolderApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderApplyViewModelImpl.swift; sourceTree = "<group>"; };
@@ -3949,6 +3952,7 @@
 				8352D10F153F2325FDBC3A60A8808418 /* TableContainerViewController.swift */,
 				8B49EF55B4989A33AAB95077A4184B66 /* TableContainerViewCoordinator.swift */,
 				401B24240A3F8B1215E3159DD0627D1B /* TableContainerViewModel.swift */,
+				ABEB89BC23017AA40052EA7D /* HeaderedPrintRenderer.swift */,
 			);
 			path = Modern;
 			sourceTree = "<group>";
@@ -6296,6 +6300,7 @@
 				B2848E4B35EC6E482D5A2F2AF2D5B827 /* SettingsWeekdaysTableViewController.swift in Sources */,
 				810300B49AE300E0B72623AAB9E71F59 /* SharedCacheBase.swift in Sources */,
 				5025825144E3BCC0EC929ED977814404 /* ShowImageView.swift in Sources */,
+				ABEB89BD23017AA40052EA7D /* HeaderedPrintRenderer.swift in Sources */,
 				FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */,
 				E15B8CAA9C004624E502D64C98C4F273 /* SignInViewController.swift in Sources */,
 				E20408F50EA4F9E209C894391753FF19 /* SignInViewModel.swift in Sources */,
@@ -6599,6 +6604,7 @@
 				87F13D8A8311798BCB374E4424B559D5 /* EmailAttachmentView.swift in Sources */,
 				2CA987A99BA548163C52A18096ED8802 /* EmailHeaderView.swift in Sources */,
 				06F8E4CE09002AE1CC623A254CCDB438 /* EmailVerifyViewController.swift in Sources */,
+				ABEB89BE23017AA40052EA7D /* HeaderedPrintRenderer.swift in Sources */,
 				486CBCF4AC39A214D999D5F34A2F0600 /* EncryptionKit.swift in Sources */,
 				15F548FC8107D722C2C7717C61C66AE4 /* EncryptionSetupViewController.swift in Sources */,
 				F6AA17DB27CCECEA32E099B870D5E884 /* Error+Extension.swift in Sources */,
