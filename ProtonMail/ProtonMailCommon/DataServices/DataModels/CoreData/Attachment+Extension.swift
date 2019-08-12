@@ -65,10 +65,10 @@ extension Attachment {
     }
     
     // Mark : public functions
-    func encrypt(byAddrID sender_address_id: String, mailbox_pwd: String, key: String) -> ModelsEncryptedSplit? {
+    func encrypt(byKey key: Key, mailbox_pwd: String) -> ModelsEncryptedSplit? {
         do {
             if let clearData = self.fileData {
-                return try clearData.encryptAttachment(sender_address_id, fileName: self.fileName, mailbox_pwd: mailbox_pwd, key: key)
+                return try clearData.encryptAttachment(fileName: self.fileName, pubKey: key.publicKey)
             }
             
             guard let localURL = self.localURL,
@@ -77,7 +77,7 @@ extension Attachment {
                 return nil
             }
             
-            let encryptor = try Data.makeEncryptAttachmentProcessor(sender_address_id, fileName: self.fileName, totalSize: totalSize, key: key)
+            let encryptor = try Data.makeEncryptAttachmentProcessor(fileName: self.fileName, totalSize: totalSize, pubKey: key.publicKey)
             let fileHandle = try FileHandle(forReadingFrom: localURL)
             
             let chunkSize = 1000000 // 1 mb
@@ -99,9 +99,23 @@ extension Attachment {
         }
     }
     
-    func sign(byAddrID sender_address_id : String, mailbox_pwd: String, key: String) -> Data? {
+    func sign(byKey key: Key, userKeys: Data?, passphrase: String) -> Data? {
         do {
-            guard let out = try fileData?.signAttachment(sender_address_id, mailbox_pwd: mailbox_pwd, key: key) else {
+            var pwd : String = passphrase
+            if let token = key.token, let signature = key.signature, let userKey = userKeys { //have both means new schema. key is
+                if let plainToken = try token.decryptMessage(binKeys: userKey, passphrase: passphrase) {
+                    PMLog.D(signature)
+                    pwd = plainToken
+                    
+                }
+            } else if let token = key.token, let userKey = userKeys { //old schema with token - subuser. key is embed singed
+                if let plainToken = try token.decryptMessage(binKeys: userKey, passphrase: passphrase) {
+                    //TODO:: try to verify signature here embeded signature
+                    pwd = plainToken
+                }
+            }
+            
+            guard let out = try fileData?.signAttachment(byPrivKey: key.private_key, passphrase: pwd) else {
                 return nil
             }
             var error : NSError?
@@ -120,11 +134,26 @@ extension Attachment {
         guard let keyPacket = self.keyPacket,
             let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
         {
-            return nil
+            return nil //TODO:: error throw
         }
         
-        let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        guard let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0)) else {
+            return nil //TODO:: error throw
+        }
+        
         let sessionKey = try data.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
+        return sessionKey
+    }
+    
+    func getSession(userKey: Data, keys: [Key]) throws -> ModelsSessionSplit? {
+        guard let keyPacket = self.keyPacket,
+            let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
+        {
+            return nil
+        }
+        let data: Data = Data(base64Encoded: keyPacket, options: NSData.Base64DecodingOptions(rawValue: 0))!
+        
+        let sessionKey = try data.getSessionFromPubKeyPackage(userKeys: userKey, passphrase: passphrase, keys: keys)
         return sessionKey
     }
     
@@ -136,7 +165,6 @@ extension Attachment {
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     
     func base64AttachmentData(_ complete : @escaping base64AttachmentDataComplete) {
-        
         if let localURL = self.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
             complete( self.base64DecryptAttachment() )
             return
@@ -187,9 +215,10 @@ extension Attachment {
     }
     
     func base64DecryptAttachment() -> String {
-        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
-            case let privKeys = self.message.cachedPrivateKeys ?? sharedUserDataService.addressPrivateKeys else
-        {
+        let userInfo = self.message.cachedUser ?? sharedUserDataService.userInfo
+        let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
+        let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
+        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
             return ""
         }
         
@@ -198,9 +227,15 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata,
-                                                                            passphrase: passphrase,
-                                                                            privKeys: privKeys) {
+                            if let decryptData =
+                                sharedUserDataService.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: userPrivKeys,
+                                                               passphrase: passphrase,
+                                                               keys: addrPrivKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: addrPrivKeys.binPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }
@@ -213,9 +248,15 @@ extension Attachment {
                 do {
                     if let key_packet = self.keyPacket {
                         if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-                            if let decryptData = try data.decryptAttachment(keydata,
-                                                                            passphrase: passphrase,
-                                                                            privKeys: privKeys) {
+                            if let decryptData =
+                                sharedUserDataService.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: userPrivKeys,
+                                                               passphrase: passphrase,
+                                                               keys: addrPrivKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: addrPrivKeys.binPrivKeys) {
                                 let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
                                 return strBase64
                             }

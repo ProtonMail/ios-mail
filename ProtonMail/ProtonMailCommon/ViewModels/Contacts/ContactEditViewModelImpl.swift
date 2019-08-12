@@ -151,7 +151,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 case .SignAndEncrypt:
                     var pt_contact : String?
                     do {
-                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,
+                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,//contacts encrypted with UserKey
                                                                passphrase: sharedUserDataService.mailboxPassword!)
                     } catch {
                         //TODO::show error
@@ -759,7 +759,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 //TODO:: fix the try! later
                 let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",
-                                                              mailbox_pwd: "")
+                                                              passphrase: "")
                 let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
                                                                         privateKey: userkey.private_key,
                                                                         passphrase: sharedUserDataService.mailboxPassword!,
