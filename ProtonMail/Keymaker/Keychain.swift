@@ -119,7 +119,7 @@ open class Keychain {
         }
         
         guard code == noErr, let data = result as? Data else {
-            print("Error loading from Keychain: \(code)")
+            print("Error loading item \(key) from Keychain: \(code)")
             return nil
         }
         
@@ -139,7 +139,7 @@ open class Keychain {
         let code = SecItemDelete(query as CFDictionary)
         
         guard code == noErr else {
-            print("Error deleting from Keychain: \(code)")
+            print("Error deleting item \(key) from Keychain: \(code)")
             return false
         }
         

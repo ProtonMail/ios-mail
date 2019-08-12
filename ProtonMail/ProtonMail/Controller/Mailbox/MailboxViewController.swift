@@ -134,6 +134,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     deinit {
         self.viewModel?.resetFetchedController()
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func doEnterForeground() {
@@ -190,14 +191,22 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.hideTopMessage()
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(reachabilityChanged(_:)),
                                                name: NSNotification.Name.reachabilityChanged,
                                                object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector:#selector(doEnterForeground),
-                                               name:  UIApplication.willEnterForegroundNotification,
-                                               object: nil)
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self,
+                                                   selector:#selector(doEnterForeground),
+                                                   name:  UIWindowScene.willEnterForegroundNotification,
+                                                   object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self,
+                                                    selector:#selector(doEnterForeground),
+                                                    name: UIApplication.willEnterForegroundNotification,
+                                                    object: nil)
+        }
         self.refreshControl.endRefreshing()
     }
     

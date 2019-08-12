@@ -156,8 +156,14 @@ public class Keymaker: NSObject {
                 return
             }
 
-            let mainKeyBytes = try? protector.unlock(cypherBits: cypherBits)
-            self._mainKey = mainKeyBytes
+            do {
+                let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
+                self._mainKey = mainKeyBytes
+            } catch let error {
+                print(error)
+                self._mainKey = nil
+            }
+            
             isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
         }
     }
