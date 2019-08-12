@@ -116,9 +116,9 @@ extension MessageBodyViewController {
     }
 }
 
-extension MessageBodyViewController: PdfPagePrintable {
+extension MessageBodyViewController: Printable {
     func printPageRenderer() -> UIPrintPageRenderer {
-        let render = UIPrintPageRenderer()
+        let render = HeaderedPrintRenderer()
         let printFormatter = self.webView.viewPrintFormatter()
         render.addPrintFormatter(printFormatter, startingAtPageAt: 0)
         return render
