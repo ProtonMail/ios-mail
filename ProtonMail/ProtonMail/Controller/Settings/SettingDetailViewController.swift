@@ -272,7 +272,7 @@ extension SettingDetailViewController : UpgradeAlertVCDelegate {
         ///TODO::fixme consider to remove the pop
         self.navigationController?.popViewController(animated: true)
         NotificationCenter.default.post(name: .switchView,
-                                        object: MenuItem.servicePlan)
+                                        object: DeepLink(MenuCoordinatorNew.Destination.plan.rawValue))
     }
     
     func learnMore() {
