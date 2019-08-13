@@ -111,26 +111,28 @@ class ComposeViewModel: NSObject {
     var bodyChanged : Bool = false;
     
     func isValidNumberOfRecipients() -> Bool {
-        let allRecipients = [toSelectedContacts,
-                             ccSelectedContacts,
-                             bccSelectedContacts]
         
-        var emailList = Set<String>() // distinctive email addresses
-        for recipients in allRecipients {
-            for recipient in recipients {
-                switch recipient.modelType {
-                case .contact:
-                    emailList.insert((recipient as! ContactVO).email)
-                case .contactGroup:
-                    let contactGroup = recipient as! ContactGroupVO
-                    for email in contactGroup.getSelectedEmailAddresses() {
-                        emailList.insert(email)
-                    }
-                }
-            }
-        }
-        
-        return emailList.count <= Constants.App.MaxNumberOfRecipients
+        return true
+//        let allRecipients = [toSelectedContacts,
+//                             ccSelectedContacts,
+//                             bccSelectedContacts]
+//        
+//        var emailList = Set<String>() // distinctive email addresses
+//        for recipients in allRecipients {
+//            for recipient in recipients {
+//                switch recipient.modelType {
+//                case .contact:
+//                    emailList.insert((recipient as! ContactVO).email)
+//                case .contactGroup:
+//                    let contactGroup = recipient as! ContactGroupVO
+//                    for email in contactGroup.getSelectedEmailAddresses() {
+//                        emailList.insert(email)
+//                    }
+//                }
+//            }
+//        }
+//        
+//        return emailList.count <= Constants.App.MaxNumberOfRecipients
     }
     
     func getSubject() -> String {

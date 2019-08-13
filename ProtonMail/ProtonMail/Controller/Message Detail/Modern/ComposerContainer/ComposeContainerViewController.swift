@@ -77,6 +77,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         let header = self.coordinator.createHeader(childViewModel)
         self.coordinator.createEditor(childViewModel)
         
+        // fix ios 10 have a seperator at bottom
+        self.tableView.separatorColor = .clear
+        
         self.childrenHeightObservations = [
             childViewModel.observe(\.contentHeight) { [weak self] _, _ in
                 UIView.animate(withDuration: 0.001, animations: {

@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*OPȚIONAL";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Plasează aici pentru atașare";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/utilizator";
 
@@ -163,13 +166,6 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 /* Title */
 "All contacts are imported" = "S-au importat toate contactele";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Toate mesajele criptate se vor pierde pentru totdeauna, dar se vor putea vizualiza mesajele necriptate. 
-
-ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
-
 /* archive when apply label */
 "Also Archive" = "Și arhivează";
 
@@ -209,6 +205,12 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Description */
 "Archived" = "Arhivat";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Sigur doriți să vă deconectați?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Atașament importat";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Atașamente";
@@ -277,7 +279,7 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "By using protonmail, you agree to our" = "Folosind ProtonMail, sunteți de acord cu";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %@ și %@.";
+"By using protonmail, you agree to our %@ and %@." = "Folosind ProtonMail, sunteți de acord cu %1$@ și %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* None */
 "Cant' decrypt this attachment!" = "Atașamentul nu poate fi decriptat.";
 
-/* Action */
-"Catalan" = "Catalană";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -408,12 +407,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* loading message */
 "Checking ...." = "Se verifică ...";
-
-/* Action */
-"Chinese Simplified" = "Chineză simplificată";
-
-/* Action */
-"Chinese Traditional" = "Chineză tradițională";
 
 /* place holder */
 "Choose a Password" = "Alegeți o parolă";
@@ -479,6 +472,9 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* Action */
 "Continue" = "Continuare";
 
+/* Action */
+"Continue and Don't ask again" = "Continuă și nu mă mai întreba";
+
 /* Title */
 "Copy address" = "Copiere adresă";
 
@@ -512,9 +508,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* error message title when create new user */
 "Create user failed" = "Creare utilizator eșuată";
 
-/* Action */
-"Croatian" = "Croată";
-
 /* Change language title */
 "Current Language is: " = "Limba curentă este: ";
 
@@ -528,17 +521,11 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
    contacts default label type */
 "Custom" = "Personalizat";
 
-/* Action */
-"Czech" = "Cehă";
-
 /* Title */
 "DECRYPT MAILBOX" = "DECRIPTARE MESAJE";
 
 /* mail location title */
 "DRAFTS" = "CIORNE";
-
-/* Action */
-"Danish" = "Daneză";
 
 /* message Date: text */
 "Date:" = "Data:";
@@ -638,9 +625,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "Drafts" = "Ciorne";
 
 /* Action */
-"Dutch" = "Olandeză";
-
-/* Action */
 "Edit" = "Editare";
 
 /* *
@@ -724,16 +708,13 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "Encrypted from outside" = "Criptat din exterior";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Criptat din exterior cu PGP integrat";
+"Encrypted from outside PGP inline" = "Criptat din exterior cu PGP integrat";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Criptat din exterior cu PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Criptat din exterior semnat cu PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Criptat din exterior";
 
 /* key setup top title */
 "Encryption Setup" = "Configurare criptare";
@@ -755,9 +736,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Criptat în ambele părți spre adresă verificată";
-
-/* Action */
-"English" = "Engleză";
 
 /* Action in 2fa popup view */
 "Enter" = "Introducere";
@@ -850,9 +828,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* forwarded message title */
 "Forwarded message" = "Mesaj redirecționat";
 
-/* Action */
-"French" = "Franceză";
-
 /* Title */
 "From" = "De la";
 
@@ -867,9 +842,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Title */
 "General Settings" = "Setări generale";
-
-/* Action */
-"German" = "Germană";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Obțineți %@";
@@ -934,6 +906,9 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* import contact title */
 "Importing Contacts" = "Importare contacte";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importare atașament, ar putea dura un timp.";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Pentru a folosi serviciile noastre, trebuie să acceptați 'Termenii serviciului' ProtonMail.";
 
@@ -994,9 +969,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nu am putut corela produsul din AppStore cumpărat cu vreunul din produsele de pe serverul nostru. Completați un raport de erori și echipa noastră de suport vă va contacta.";
-
-/* Action */
-"Italian" = "Italiană";
 
 /* Title */
 "Keep me updated about new features" = "Țineți-mă la curent cu noile caracteristici";
@@ -1077,9 +1049,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* error title */
 "Logs" = "Jurnale";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Doriți să modificați sau să dezactivați semnătura mobilă?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Doriți securizarea detaliilor contactelor?";
 
@@ -1159,6 +1128,9 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modificarea sau dezactivarea semnăturii mobilului este o funcție plătită.";
+
+/* More actions button */
+"More" = "Mai multe";
 
 /* Screen header */
 "More Credits" = "Cumpărare credite";
@@ -1276,7 +1248,7 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "On EE, MMM d, yyyy at %@" = "EE, d MMM yyyy la %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "EE, d MMM yyyy la %1$@, %2$@ a scris:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE, d MMM yyyy la %1$@, %2$@, a scris:";
 
 /* None */
 "OpenDraft" = "Deschidere ciornă";
@@ -1346,9 +1318,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Description */
 "Pin code can't be empty." = "Codul PIN nu poate fi gol.";
-
-/* Title */
-"Plain text" = "Text simplu";
 
 /* alert description */
 "Please add a password for the following recipients." = "Adăugați o parolă pentru pentru următorii destinatari.";
@@ -1435,15 +1404,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 "Please, manage it in your phone." = "Gestionarea se face în telefon.";
 
 /* Action */
-"Polish" = "Poloneză";
-
-/* Action */
-"Portuguese" = "Portugheză";
-
-/* Action */
-"Portuguese Brazil" = "Portugheză (Brazilia)";
-
-/* Action */
 "Print" = "Imprimare";
 
 /* Title */
@@ -1460,9 +1420,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional Visionary vă permite să adăugați și să editați mai multe detalii pentru contacte, pe lângă numele și adresa de e-mail a acestora. Folosind ProtonMail, aceste date vor fi la fel de sigure ca și e-mailul criptat în ambele părți.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary vă permit să vă particularizați semnătura mobilă.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail nu vinde reclame și nu vă abuzează intimitatea. Suportul dvs. este esențial pentru funcționarea ProtonMail. Puteți trece la un cont cu plată sau dona pentru a ajuta ProtonMail.";
@@ -1536,6 +1493,9 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Raportarea unui mesaj ca fiind o încercare de înșelăciune ne va trimite și nouă mesajul pentru a-l analiza și îmbunătăți filtrele noastre. Aceasta înseamnă că vom putea vedea conținutul complet al mesajului.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Solicitare de confirmare";
+
 /* Title */
 "Resetting message cache ..." = "Resetare buffer mesaje...";
 
@@ -1544,12 +1504,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Reîncercați după %d secunde";
-
-/* Action */
-"Romanian" = "Română";
-
-/* Action */
-"Russian" = "Rusă";
 
 /* mail location title */
 "SENT" = "TRIMIS";
@@ -1686,9 +1640,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Description */
 "Spammed" = "Nesolicitat";
-
-/* Action */
-"Spanish" = "Spaniolă";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Șirul unic al parolei unice SRP nevalid!";
@@ -1903,9 +1854,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* Title */
 "Trouble shooting guide" = "Ghid de depanare";
 
-/* Action */
-"Turkish" = "Turcă";
-
 /* action sheet option */
 "Turn Off" = "Oprire";
 
@@ -1923,9 +1871,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Title */
 "USER LOGIN" = "AUTENTIFICARE";
-
-/* Action */
-"Ukrainian" = "Ucraineană";
 
 /* Description */
 "Unable to connect to the server" = "Imposibil de conectat la server";
@@ -2027,9 +1972,6 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 /* alert description */
 "Upgrade to get all paid features." = "Faceți upgrade pentru a avea toate funcțiile cu plată.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Trecerea la o versiune plătită nu se poate face din aplicație.";
-
 /* Action */
 "Upload Contacts" = "Încărcare contacte";
 
@@ -2119,6 +2061,9 @@ ACEASTĂ ACȚIUNE NU POATE FI ANULATĂ!";
 
 /* Error message */
 "Yes, attach details of payment" = "Da, atașez detaliile plății";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Urmează să lansezi navigatorul și să accesezi";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Puteți personaliza gesturile de glisare în setările aplicației ProtonMail.";

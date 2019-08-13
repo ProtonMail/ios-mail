@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "* 可选";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ 拖至此处作为附件导入";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/用户";
 
@@ -163,13 +166,6 @@
 /* Title */
 "All contacts are imported" = "所有联系人已经被导入";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件，但未加密的邮件不受影响。
-
-此操作无法撤销！";
-
 /* archive when apply label */
 "Also Archive" = "同时存档";
 
@@ -209,6 +205,12 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Description */
 "Archived" = "已归档";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "确定要退出账户吗？";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "附件已导入";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "附件";
@@ -277,7 +279,7 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 "By using protonmail, you agree to our" = "使用 ProtonMail 即表示您同意我们的";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我们的%@和%@。";
+"By using protonmail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我们的%1$@和%2$@。";
 
 /* human check option button */
 "CAPTCHA" = "验证码";
@@ -364,9 +366,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* None */
 "Cant' decrypt this attachment!" = "此附件无法解密。";
 
-/* Action */
-"Catalan" = "加泰罗尼亚语";
-
 /* Title */
 "Cc" = "抄送";
 
@@ -408,12 +407,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* loading message */
 "Checking ...." = "正在检查 ....";
-
-/* Action */
-"Chinese Simplified" = "简体中文";
-
-/* Action */
-"Chinese Traditional" = "繁体中文";
 
 /* place holder */
 "Choose a Password" = "请设置一个密码";
@@ -479,6 +472,9 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* Action */
 "Continue" = "继续";
 
+/* Action */
+"Continue and Don't ask again" = "继续且不再询问";
+
 /* Title */
 "Copy address" = "复制邮箱地址";
 
@@ -512,9 +508,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* error message title when create new user */
 "Create user failed" = "创建用户失败";
 
-/* Action */
-"Croatian" = "克罗地亚语";
-
 /* Change language title */
 "Current Language is: " = "当前语言： ";
 
@@ -528,17 +521,11 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
    contacts default label type */
 "Custom" = "自定义";
 
-/* Action */
-"Czech" = "捷克语";
-
 /* Title */
 "DECRYPT MAILBOX" = "解密邮箱";
 
 /* mail location title */
 "DRAFTS" = "草稿箱";
-
-/* Action */
-"Danish" = "丹麦语";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -638,9 +625,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 "Drafts" = "草稿箱";
 
 /* Action */
-"Dutch" = "荷兰语";
-
-/* Action */
 "Edit" = "编辑";
 
 /* *
@@ -724,16 +708,13 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 "Encrypted from outside" = "外部的加密邮件";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "通过外网 PGP/Inline 加密";
+"Encrypted from outside PGP inline" = "通过外网 PGP/Inline 加密";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "通过外网 PGP/MIME 加密";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "通过外网已签名的 PGP/MIME 加密";
-
-/* encryption lock description */
-"Encrypted outside" = "外部邮件加密";
 
 /* key setup top title */
 "Encryption Setup" = "加密设置";
@@ -755,9 +736,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "与已验证的地址经过端到端加密";
-
-/* Action */
-"English" = "英语";
 
 /* Action in 2fa popup view */
 "Enter" = "进入";
@@ -850,9 +828,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* forwarded message title */
 "Forwarded message" = "已转发的邮件";
 
-/* Action */
-"French" = "法语";
-
 /* Title */
 "From" = "发件人";
 
@@ -867,9 +842,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Title */
 "General Settings" = "常规设置";
-
-/* Action */
-"German" = "德语";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "升级至%@";
@@ -934,6 +906,9 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* import contact title */
 "Importing Contacts" = "导入联系人";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "正在导入附件，可能需要一段时间";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用我们的服务，您必须同意 ProtonMail 的服务条款。";
 
@@ -994,9 +969,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们无法将您在 App Store 上购买的项目对应到我们的服务器上。请提交一份问题反馈，我们的客户援助团队将联系您。";
-
-/* Action */
-"Italian" = "意大利语";
 
 /* Title */
 "Keep me updated about new features" = "在有更新时通知我";
@@ -1077,9 +1049,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* error title */
 "Logs" = "日志";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "想修改或关闭移动设备落款吗？";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "想要加密联系人详细信息？";
 
@@ -1159,6 +1128,9 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "修改或关闭预置的移动设备落款需要付费。";
+
+/* More actions button */
+"More" = "展开";
 
 /* Screen header */
 "More Credits" = "充值";
@@ -1276,7 +1248,7 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 "On EE, MMM d, yyyy at %@" = "yyyy 年 MMM d 日EE %1$@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "yyyy 年 MMM d 日EE %1$@，%2$@ 来信：";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy 年 MMM d 日EE %1$@, %2$@ 来信：";
 
 /* None */
 "OpenDraft" = "正在编写的草稿";
@@ -1346,9 +1318,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Description */
 "Pin code can't be empty." = "口令不能为空。";
-
-/* Title */
-"Plain text" = "纯文本";
 
 /* alert description */
 "Please add a password for the following recipients." = "请为下列收件人添加密码。";
@@ -1435,15 +1404,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 "Please, manage it in your phone." = "请在移动设备中设置。";
 
 /* Action */
-"Polish" = "波兰语";
-
-/* Action */
-"Portuguese" = "葡萄牙语";
-
-/* Action */
-"Portuguese Brazil" = "巴西葡萄牙语";
-
-/* Action */
 "Print" = "打印";
 
 /* Title */
@@ -1460,9 +1420,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "升级到 ProtonMail 增强版、专业版或尊享版方可填写除姓名和邮箱外的其他信息。在 ProtonMail 中存储这些信息和端到端加密的邮件一样安全。";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "升级到 ProtonMail 增强版、专业版或尊享版即可编辑移动设备落款。";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不经营广告业务，也不侵犯用户隐私。您的支持对 ProtonMail 至关重要。您可以升级付费账户或捐款来支持 ProtonMail。";
@@ -1536,6 +1493,9 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "举报的邮件会被上传给我们，以便改进筛选系统。这意味着我们将得知此邮件的所有内容。";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "打开链接前提示";
+
 /* Title */
 "Resetting message cache ..." = "正在清除缓存...";
 
@@ -1544,12 +1504,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "在 %d 秒后重试";
-
-/* Action */
-"Romanian" = "罗马尼亚语";
-
-/* Action */
-"Russian" = "俄语";
 
 /* mail location title */
 "SENT" = "已发送";
@@ -1686,9 +1640,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Description */
 "Spammed" = "垃圾邮件";
-
-/* Action */
-"Spanish" = "西班牙语";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1903,9 +1854,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* Title */
 "Trouble shooting guide" = "疑难解答";
 
-/* Action */
-"Turkish" = "土耳其语";
-
 /* action sheet option */
 "Turn Off" = "关闭";
 
@@ -1923,9 +1871,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Title */
 "USER LOGIN" = "用户登录";
-
-/* Action */
-"Ukrainian" = "乌克兰语";
 
 /* Description */
 "Unable to connect to the server" = "无法连接服务器";
@@ -2027,9 +1972,6 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 /* alert description */
 "Upgrade to get all paid features." = "升级以获取所有付费功能。";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "不能使用客户端升级账户。";
-
 /* Action */
 "Upload Contacts" = "上传联系人";
 
@@ -2119,6 +2061,9 @@ THIS ACTION CANNOT BE UNDONE!" = "您将永远无法查看现有的加密邮件�
 
 /* Error message */
 "Yes, attach details of payment" = "是的，附上付款数据";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "您即将在浏览器中打开";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "您可以在 ProtonMail 应用设置中定制滑动操作。";

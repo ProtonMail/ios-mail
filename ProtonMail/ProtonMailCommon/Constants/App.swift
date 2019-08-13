@@ -54,7 +54,6 @@ struct Constants {
         static let URL_HOST : String = "api.protonmail.ch"
         static let API_PATH : String = ""
         
-        
         ///
         static let rediectURL = "https://protonmail.ch"
         
@@ -110,9 +109,9 @@ struct Constants {
             }
         }
         
+        
+        @available(*, deprecated, message: "unlimited soon")
         static let MaxNumberOfRecipients: Int = 100
     }
-    
-
 }
 

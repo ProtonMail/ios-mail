@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "* VALGFRIT";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Drop hér for at tilføje som vedhæftning";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/bruger";
 
@@ -163,13 +166,6 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 /* Title */
 "All contacts are imported" = "Alle kontakter er importeret";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Alle dine eksisterende krypterede e-mails vil gå tabt for evigt, men du vil stadig kunne se dine ukrypterede e-mails.
-
-DENNE HANDLING ER IRREVERSIBEL!";
-
 /* archive when apply label */
 "Also Archive" = "Arkivér også";
 
@@ -209,6 +205,12 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Description */
 "Archived" = "Arkiveret";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Sikker på, at du vil logge ud?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Vedhæftning importeret";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Vedhæftninger";
@@ -277,7 +279,7 @@ DENNE HANDLING ER IRREVERSIBEL!";
 "By using protonmail, you agree to our" = "Ved at benytte ProtonMail, accepterer du vores";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %@ og %@.";
+"By using protonmail, you agree to our %@ and %@." = "Ved at benytte ProtonMail accepterer du vores %1$@ og %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* None */
 "Cant' decrypt this attachment!" = "Kan ikke dekryptere denne vedhæftning.";
 
-/* Action */
-"Catalan" = "Katalansk";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -408,12 +407,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* loading message */
 "Checking ...." = "Tjekker....";
-
-/* Action */
-"Chinese Simplified" = "Kinesisk, forenklet";
-
-/* Action */
-"Chinese Traditional" = "Kinesisk, traditionelt";
 
 /* place holder */
 "Choose a Password" = "Vælg en adgangskode";
@@ -479,6 +472,9 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* Action */
 "Continue" = "Fortsæt";
 
+/* Action */
+"Continue and Don't ask again" = "Fortsæt, og spørg ikke igen";
+
 /* Title */
 "Copy address" = "Kopiér addresse";
 
@@ -512,9 +508,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* error message title when create new user */
 "Create user failed" = "Brugeroprettelse mislykkedes";
 
-/* Action */
-"Croatian" = "Kroatisk";
-
 /* Change language title */
 "Current Language is: " = "Nuværende sprog er: ";
 
@@ -528,17 +521,11 @@ DENNE HANDLING ER IRREVERSIBEL!";
    contacts default label type */
 "Custom" = "Tilpasset";
 
-/* Action */
-"Czech" = "Tjekkisk";
-
 /* Title */
 "DECRYPT MAILBOX" = "DEKRYPTERE POSTKASSE";
 
 /* mail location title */
 "DRAFTS" = "KLADDER";
-
-/* Action */
-"Danish" = "Dansk";
 
 /* message Date: text */
 "Date:" = "Dato:";
@@ -638,9 +625,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 "Drafts" = "Udkast";
 
 /* Action */
-"Dutch" = "Hollandsk";
-
-/* Action */
 "Edit" = "Redigér";
 
 /* *
@@ -724,16 +708,13 @@ DENNE HANDLING ER IRREVERSIBEL!";
 "Encrypted from outside" = "Eksternt krypteret";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Eksternt PGP-inline krypteret";
+"Encrypted from outside PGP inline" = "Krypteret fra ekstern PGP-inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Krypteret fra ekstern PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Krypteret fra eksternt signeret PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Krypteret eksternt";
 
 /* key setup top title */
 "Encryption Setup" = "Krypteringsopsætning";
@@ -755,9 +736,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Ende-til-ende krypteret for at bekræfte adresse";
-
-/* Action */
-"English" = "Dansk";
 
 /* Action in 2fa popup view */
 "Enter" = "Angiv";
@@ -850,9 +828,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* forwarded message title */
 "Forwarded message" = "Videresendt besked";
 
-/* Action */
-"French" = "Fransk";
-
 /* Title */
 "From" = "Fra";
 
@@ -867,9 +842,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Title */
 "General Settings" = "Generelle Indstillinger";
-
-/* Action */
-"German" = "Tysk";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Bliv %@";
@@ -934,6 +906,9 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* import contact title */
 "Importing Contacts" = "Importerer kontakter";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importerer vedhæftning, dette kan tage et stykke tid";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "For at benytte vores tjenester skal du acceptere ProtonMail's Tjenestevilkår.";
 
@@ -994,9 +969,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Det var ikke muligt at matche dit købte App Store-produkt til noget produkt på vores server. Udfyld venligst fejlrapporten, så kontakter kundesupportteamet dig.";
-
-/* Action */
-"Italian" = "Italiensk";
 
 /* Title */
 "Keep me updated about new features" = "Hold mig unnderrettet om nye funktioner";
@@ -1077,9 +1049,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* error title */
 "Logs" = "Logger";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Vil du redigere eller deaktivere din mobilsignatur?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Vil du sikre dine kontakters oplysninger?";
 
@@ -1159,6 +1128,9 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Ændring/deaktiveing af standard mobilsignaturen er en betalingsfunktion.";
+
+/* More actions button */
+"More" = "Flere";
 
 /* Screen header */
 "More Credits" = "Yderligere kredit";
@@ -1276,7 +1248,7 @@ DENNE HANDLING ER IRREVERSIBEL!";
 "On EE, MMM d, yyyy at %@" = "EE d. MMM yyyy %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "EE d. MMM yyyy %1$@ skrev %2$@:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "EE d MMM yyyy %1$@ skrev %2$@:";
 
 /* None */
 "OpenDraft" = " ";
@@ -1346,9 +1318,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Description */
 "Pin code can't be empty." = "PIN-kode er obligatorisk.";
-
-/* Title */
-"Plain text" = "Almindelig tekst";
 
 /* alert description */
 "Please add a password for the following recipients." = "Tilføj en adgangskode til flg. modtagere.";
@@ -1435,15 +1404,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 "Please, manage it in your phone." = "Håndtér det på din mobil.";
 
 /* Action */
-"Polish" = "Polsk";
-
-/* Action */
-"Portuguese" = "Portugisisk";
-
-/* Action */
-"Portuguese Brazil" = "Portugisisk, Brasilien";
-
-/* Action */
 "Print" = "Udskriv";
 
 /* Title */
@@ -1460,9 +1420,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary muliggør at tilføje og redigere kontaktoplysninger udover blot din kontaktpersons navn og e-mail. Vha. ProtonMail vil disse data være så sikre som din ende-til-ende krypteret e-mail.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary muliggær tilpasning af din mobilsignatur.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail sælger ikke annoncer eller misbruger dit privatliv. Din støtte er afgørende for at holde ProtonMail kørende. Du kan opgradere til en betalt konto eller donere for at støtte ProtonMail.";
@@ -1536,6 +1493,9 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Anmeldelse af en besked som phishing-forsøg videresender beskeden til os, så vi kan analysere den og forbedre vores filtre. Det betyder, at vi vil kunne se indholdet af beskeden fuldt ud.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Anmod om linkbekræftelse";
+
 /* Title */
 "Resetting message cache ..." = "Nulstiller besked-cache...";
 
@@ -1544,12 +1504,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Forsøg igen efter %d sek";
-
-/* Action */
-"Romanian" = "Romænsk";
-
-/* Action */
-"Russian" = "Russisk";
 
 /* mail location title */
 "SENT" = "AFSENDT";
@@ -1686,9 +1640,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Description */
 "Spammed" = "Spammet";
-
-/* Action */
-"Spanish" = "Spansk";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1903,9 +1854,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* Title */
 "Trouble shooting guide" = "Fejlfindingsguide";
 
-/* Action */
-"Turkish" = "Tyrkisk";
-
 /* action sheet option */
 "Turn Off" = "Slå Fra";
 
@@ -1923,9 +1871,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Title */
 "USER LOGIN" = "BRUGERLOGIN";
-
-/* Action */
-"Ukrainian" = "Ukrainsk";
 
 /* Description */
 "Unable to connect to the server" = "Kan ikke oprette forbindelse til serveren";
@@ -2027,9 +1972,6 @@ DENNE HANDLING ER IRREVERSIBEL!";
 /* alert description */
 "Upgrade to get all paid features." = "Opgradér for at få alle betalte funktioner.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Opgradering er ikke mulig i app'en.";
-
 /* Action */
 "Upload Contacts" = "Upload kontakter";
 
@@ -2119,6 +2061,9 @@ DENNE HANDLING ER IRREVERSIBEL!";
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, vedhæft betalingsoplysninger";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Du er ved at starte webbrowseren og navigere til";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan tilpasse stryge-gestusser i ProtonMail App-indstillinger.";
