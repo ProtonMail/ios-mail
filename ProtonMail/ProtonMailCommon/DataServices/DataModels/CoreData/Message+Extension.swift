@@ -369,6 +369,39 @@ extension Message {
         return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
     }
     
+    func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
+        var firstError : Error?
+        for key in keys {
+            do {
+                if let token = key.token, let signature = key.signature { //have both means new schema. key is
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here Detached signature
+                        // if failed return a warning
+                        PMLog.D(signature)
+                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
+                    }
+                } else if let token = key.token { //old schema with token - subuser. key is embed singed
+                    if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
+                        //TODO:: try to verify signature here embeded signature
+                        return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
+                    }
+                } else {//normal key old schema
+                    return try body.decryptMessage(binKeys: userKeys, passphrase: passphrase)
+                }
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        
+        if let error = firstError {
+            throw error
+        }
+        return nil;
+    }
+    
     //const (
     //  ok         = 0
     //  notSigned  = 1
@@ -376,15 +409,21 @@ extension Message {
     //  failed     = 3
     //  )
     func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
-        guard let passphrase = sharedUserDataService.mailboxPassword,
-            case let keys = sharedUserDataService.addressPrivateKeys else
-        {
-                return .failed
+        let keys = sharedUserDataService.addressKeys
+        guard let passphrase = sharedUserDataService.mailboxPassword else {
+            return .failed
         }
         
         do {
             let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
-            if let verify = try body.verifyMessage(verifier: verifier, binKeys: keys, passphrase: passphrase, time: time) {
+            if let verify = sharedUserDataService.newSchema ?
+                try body.verifyMessage(verifier: verifier,
+                                       userKeys: sharedUserDataService.userPrivateKeys,
+                                       keys: keys, passphrase: passphrase, time: time) :
+                try body.verifyMessage(verifier: verifier,
+                                       binKeys: keys.binPrivKeys,
+                                       passphrase: passphrase,
+                                       time: time) {
                 let status = verify.verify()
                 return SignStatus(rawValue: status) ?? .notSigned
             }
@@ -413,7 +452,12 @@ extension Message {
     func decryptBodyIfNeeded() throws -> String? {
         PMLog.D("Flags: \(self.flag.description)")
         if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
-            var body = try decryptBody(keys: sharedUserDataService.addressPrivateKeys, passphrase: passphrase) {
+            var body = sharedUserDataService.newSchema ?
+                try decryptBody(keys: sharedUserDataService.addressKeys,
+                                userKeys: sharedUserDataService.userPrivateKeys,
+                                passphrase: passphrase) :
+                try decryptBody(keys: sharedUserDataService.addressPrivateKeys,
+                                passphrase: passphrase) { //DONE
             //PMLog.D(body)
             if isPgpMime || isSignedMime {
                 if let mimeMsg = MIMEMessage(string: body) {
@@ -518,8 +562,14 @@ extension Message {
         }
         
         do {
-            let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-            self.body = try body.encrypt(withAddr: address_id, mailbox_pwd: mailbox_pwd, key: key) ?? ""
+            if let key = sharedUserDataService.getAddressKey(address_id: address_id) {
+                self.body = try body.encrypt(withKey: key,
+                                             userKeys: sharedUserDataService.userPrivateKeys,
+                                             mailbox_pwd: mailbox_pwd) ?? ""
+            } else {//fallback
+                let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
+                self.body = try body.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
+            }
         } catch let error {//TODO:: error handling
             PMLog.D(any: error.localizedDescription)
             self.body = ""
@@ -621,7 +671,6 @@ extension Message {
         
         newMessage.addressID = message.addressID
         newMessage.messageStatus = message.messageStatus
-        newMessage.numAttachments = message.numAttachments
         newMessage.mimeType = message.mimeType
         newMessage.setAsDraft()
 
@@ -643,6 +692,7 @@ extension Message {
             //ignore it
         }
         
+        var newAttachmentCount : Int = 0
         for (index, attachment) in message.attachments.enumerated() {
             PMLog.D("index: \(index)")
             if let att = attachment as? Attachment {
@@ -671,7 +721,10 @@ extension Message {
                     attachment.isTemp = true
                     do {
                         if let k = key,
-                            let sessionPack = try att.getSession(keys: sharedUserDataService.addressPrivateKeys),
+                            let sessionPack = sharedUserDataService.newSchema ?
+                                try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
+                                                   keys: sharedUserDataService.addressKeys) :
+                                try att.getSession(keys: sharedUserDataService.addressPrivateKeys),//DONE
                             let session = sessionPack.session(),
                             let algo = sessionPack.algo(),
                             let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {
@@ -685,11 +738,15 @@ extension Message {
                     
                     if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
                         PMLog.D("error: \(error)")
+                    } else {
+                        newAttachmentCount += 1
                     }
                 }
                 
             }
         }
+        newMessage.numAttachments = NSNumber(value: newAttachmentCount)
+        
         return newMessage
     }
     

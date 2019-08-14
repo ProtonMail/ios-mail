@@ -54,7 +54,7 @@ extension ContactGroupSelectColorViewController: UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0);
+        return UIEdgeInsets(top: 0,left: 0,bottom: 0,right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -81,7 +81,7 @@ extension ContactGroupSelectColorViewController: UICollectionViewDataSource
         
         let color = viewModel.getColor(at: indexPath)
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
-        cell.layer.cornerRadius = 17;
+        cell.layer.cornerRadius = 17
         
         if viewModel.isSelectedColor(at: indexPath) {
             cell.layer.borderWidth = 4

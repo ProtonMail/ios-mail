@@ -37,7 +37,6 @@ struct AuthKey {
     static let hashedPassword = "HashedPassword"
     static let grantType = "GrantType"
     static let redirectUrl = "RedirectURI"
-    static let state = "State"
     static let scope = "Scope"
     
     static let ephemeral = "ClientEphemeral"
@@ -50,7 +49,7 @@ struct AuthKey {
 /// Description
 final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     
-    var username : String!
+    var username : String
     
     /// inital
     ///
@@ -58,8 +57,10 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
     ///   - username: user name
     ///   - authCredential: auto credential
     init(username : String, authCredential: AuthCredential?) {
+        self.username = username
+        
         super.init()
-        self.username = username;
+        
         self.authCredential = authCredential
     }
     
@@ -126,10 +127,10 @@ final class AuthModulusResponse : ApiResponse {
 // MARK : Get messages part
 final class AuthRequest : ApiRequest<AuthResponse> {
     
-    var username : String!
-    var clientEphemeral : String! //base64
-    var clientProof : String!  //base64
-    var srpSession : String!  //hex
+    var username : String
+    var clientEphemeral : String //base64
+    var clientProof : String  //base64
+    var srpSession : String  //hex
     var twoFactorCode : String?
     
     //local verify only
@@ -181,12 +182,16 @@ final class AuthRequest : ApiRequest<AuthResponse> {
 // MARK : refresh token
 final class AuthRefreshRequest : ApiRequest<AuthResponse> {
     
-    var resfreshToken : String!
-    var Uid : String!
+    var resfreshToken : String
+    var Uid : String
     
     init(resfresh : String, uid: String) {
-        self.resfreshToken = resfresh;
+        self.resfreshToken = resfresh
         self.Uid = uid
+    }
+    
+    override func getHeaders() -> [String : Any] {
+        return ["x-pm-uid" :  self.Uid] //TODO:: fixme this shouldn't be here
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -195,8 +200,6 @@ final class AuthRefreshRequest : ApiRequest<AuthResponse> {
             "RefreshToken": resfreshToken,
             "GrantType": "refresh_token",
             "RedirectURI" : "http://www.protonmail.ch",
-            AuthKey.state : "\(UUID().uuidString)",
-            "UID" : self.Uid
         ]
         return out
     }

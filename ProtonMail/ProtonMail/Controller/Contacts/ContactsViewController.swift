@@ -41,7 +41,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     }
     
     private let kProtonMailImage: UIImage      = UIImage(named: "encrypted_main")!
-    private let kContactDetailsSugue : String  = "toContactDetailsSegue";
+    private let kContactDetailsSugue : String  = "toContactDetailsSegue"
     private var searchString : String = ""
     
     // MARK: - View Outlets
@@ -233,7 +233,7 @@ extension ContactsViewController: UpgradeAlertVCDelegate {
 extension ContactsViewController: UISearchBarDelegate, UISearchResultsUpdating {
     
     func updateSearchResults(for searchController: UISearchController) {
-        self.searchString = searchController.searchBar.text ?? "";
+        self.searchString = searchController.searchBar.text ?? ""
         self.viewModel.search(text: self.searchString)
         self.tableView.reloadData()
     }

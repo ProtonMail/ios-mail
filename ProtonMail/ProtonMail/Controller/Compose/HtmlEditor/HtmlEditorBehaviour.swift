@@ -258,7 +258,7 @@ class HtmlEditorBehaviour: NSObject {
     /// - Parameter html: the raw html signatue, don't run escape before here.
     func update(signature html : String) {
         self.run(with: "html_editor.updateSignature('\(html.escaped)', \(HTMLStringSecureLoader.domPurifyConfiguration));").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)");
+            PMLog.D("Error is \(error.localizedDescription)")
         }
     }
     
@@ -270,7 +270,7 @@ class HtmlEditorBehaviour: NSObject {
     func update(embedImage cid : String, encoded blob : String) {
         let escapedBlob: String = blob.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? ""
         self.run(with: "html_editor.updateEncodedEmbedImage(\"\(cid)\", \"\(escapedBlob)\");").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)");
+            PMLog.D("Error is \(error.localizedDescription)")
         }
     }
     
@@ -280,7 +280,7 @@ class HtmlEditorBehaviour: NSObject {
     /// - Parameter cid: the embed image content id
     func remove(embedImage cid : String) {
         self.run(with: "html_editor.removeEmbedImage('\(cid)');").catch { (error) in
-            PMLog.D("Error is \(error.localizedDescription)");
+            PMLog.D("Error is \(error.localizedDescription)")
         }
     }
     

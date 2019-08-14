@@ -47,7 +47,7 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.layer.cornerRadius = 4;
+        contentView.layer.cornerRadius = 4
         self.webVIew.delegate = self
         // show loading
         MBProgressHUD.showAdded(to: view, animated: true)

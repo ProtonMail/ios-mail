@@ -171,11 +171,11 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
 // MARK : update notification email
 final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
 
-    let email : String!
+    let email : String
     
-    let clientEphemeral : String! //base64 encoded
-    let clientProof : String! //base64 encoded
-    let SRPSession : String! //hex encoded session id
+    let clientEphemeral : String //base64 encoded
+    let clientProof : String //base64 encoded
+    let SRPSession : String //hex encoded session id
     let tfaCode : String? // optional
 
     
@@ -247,7 +247,7 @@ final class UpdateNewsRequest : ApiRequest<ApiResponse> {
 
 //MARK : update display name 
 final class UpdateDisplayNameRequest : ApiRequest<ApiResponse> {
-    let displayName : String!
+    let displayName : String
     
     init(displayName: String, authCredential: AuthCredential?) {
         self.displayName = displayName
@@ -389,22 +389,22 @@ final class UpdateSwiftRightAction : ApiRequest<ApiResponse> {
 
 // update login password this is only in two password mode
 final class UpdateLoginPassword : ApiRequest<ApiResponse> {
-    let clientEphemeral : String! //base64_encoded_ephemeral
-    let clientProof : String! //base64_encoded_proof
-    let SRPSession : String! //hex_encoded_session_id
+    let clientEphemeral : String //base64_encoded_ephemeral
+    let clientProof : String //base64_encoded_proof
+    let SRPSession : String //hex_encoded_session_id
     let tfaCode : String?
     
-    let modulusID : String! //encrypted_id
-    let salt : String! //base64_encoded_salt
-    let verifer : String! //base64_encoded_verifier
+    let modulusID : String //encrypted_id
+    let salt : String //base64_encoded_salt
+    let verifer : String //base64_encoded_verifier
 
     
-    init(clientEphemeral : String!,
-         clientProof : String!,
-         SRPSession : String!,
-         modulusID : String!,
-         salt : String!,
-         verifer : String!,
+    init(clientEphemeral : String,
+         clientProof : String,
+         SRPSession : String,
+         modulusID : String,
+         salt : String,
+         verifer : String,
          tfaCode : String?,
          authCredential: AuthCredential?) {
         

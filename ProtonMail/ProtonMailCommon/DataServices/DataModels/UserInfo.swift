@@ -224,7 +224,8 @@ extension UserInfo {
                 uKeys.append(Key(
                     key_id: key_res["ID"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
-                    fingerprint: key_res["Fingerprint"] as? String,
+                    token: key_res["Token"] as? String ?? "",
+                    signature: key_res["Signature"] as? String ?? "",
                     isupdated: false))
             }
         }
@@ -277,6 +278,15 @@ extension UserInfo: NSCoding {
         static let sign = "sign"
         
         static let linkConfirmation = "linkConfirmation"
+    }
+    
+    func archive() -> Data {
+        return NSKeyedArchiver.archivedData(withRootObject: self)
+    }
+    
+    static func unarchive(_ data: Data?) -> UserInfo? {
+        guard let data = data else { return nil }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? UserInfo
     }
     
     convenience init(coder aDecoder: NSCoder) {

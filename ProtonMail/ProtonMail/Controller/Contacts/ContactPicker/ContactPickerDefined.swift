@@ -30,7 +30,7 @@ import Foundation
 
 
 class ContactPickerDefined {
-    static let kMaxVisibleRows : CGFloat                = 100;
+    static let kMaxVisibleRows : CGFloat                = 100
     static let kAnimationSpeed : CGFloat                = 0.25
     static let ROW_HEIGHT : Int                         = 64
     static let kCellHeight : Int                        = 44

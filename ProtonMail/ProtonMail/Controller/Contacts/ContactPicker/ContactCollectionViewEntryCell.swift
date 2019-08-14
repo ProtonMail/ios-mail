@@ -72,8 +72,8 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
     
     func setup() {
         let textField = UITextField(frame: self.bounds)
-        textField.delegate = self._delegate;
-        textField.text = " ";
+        textField.delegate = self._delegate
+        textField.text = " "
         textField.autocapitalizationType = .none
         textField.autocorrectionType = .no
         textField.spellCheckingType = .no
@@ -81,9 +81,9 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
         
 #if DEBUG_BORDERS
         self.layer.borderColor = UIColor.orange.cgColor
-        self.layer.borderWidth = 1.0;
+        self.layer.borderWidth = 1.0
         textField.layer.borderColor = UIColor.green.cgColor
-        textField.layer.borderWidth = 2.0;
+        textField.layer.borderWidth = 2.0
 #endif
 
         self.addSubview(textField)
@@ -119,11 +119,11 @@ class ContactCollectionViewEntryCell: UICollectionViewCell {
                                        for: .editingChanged)
             }
             
-            _delegate = newValue;
+            _delegate = newValue
             textField.addTarget(_delegate,
                                 action: #selector(UITextFieldDelegateImproved.textFieldDidChange(textField:)),
                                 for: .editingChanged)
-            textField.delegate = _delegate;
+            textField.delegate = _delegate
         }
     }
 

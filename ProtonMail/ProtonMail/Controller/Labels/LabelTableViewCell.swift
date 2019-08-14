@@ -72,7 +72,7 @@ class LabelTableViewCell: UITableViewCell {
             break
         case 1:
             selectStatusButton.setImage(UIImage(named:"mail_check-neutral"), for: UIControl.State())
-            break;
+            break
         case 2:
             selectStatusButton.setImage(UIImage(named:"mail_check-active"), for: UIControl.State())
             break
@@ -84,7 +84,7 @@ class LabelTableViewCell: UITableViewCell {
     
     func ConfigCell(model : LabelMessageModel!, showIcon : Bool, showEdit : Bool, editAction : EditAction?) {
         self.editLabelAction = editAction
-        self.model = model;
+        self.model = model
         if model.label.managedObjectContext != nil {
             var offset : CGFloat = 30
             if showIcon {

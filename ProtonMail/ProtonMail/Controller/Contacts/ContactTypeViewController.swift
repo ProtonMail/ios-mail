@@ -71,13 +71,13 @@ class ContactTypeViewController: ProtonMailViewController, ViewModelProtocol {
         if let index = types.firstIndex(where: { ( left ) -> Bool in return left.rawString == type.rawString }) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-            tableView(self.tableView, didSelectRowAt: indexPath);
+            tableView(self.tableView, didSelectRowAt: indexPath)
         } else {
             let custom = viewModel.getCustomType()
             if !custom.isEmpty {
                 let indexPath = IndexPath(row: 0, section: 1)
                 self.tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-                tableView(self.tableView, didSelectRowAt: indexPath);
+                tableView(self.tableView, didSelectRowAt: indexPath)
             }
         }
     }
@@ -148,7 +148,7 @@ extension ContactTypeViewController: NSNotificationCenterKeyboardObserverProtoco
         let keyboardInfo = notification.keyboardInfo
         let info: NSDictionary = notification.userInfo! as NSDictionary
         if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            tableViewBottomOffset.constant = keyboardSize.height;
+            tableViewBottomOffset.constant = keyboardSize.height
         }
         UIView.animate(withDuration: keyboardInfo.duration, delay: 0, options: keyboardInfo.animationOption, animations: { () -> Void in
             self.view.layoutIfNeeded()
