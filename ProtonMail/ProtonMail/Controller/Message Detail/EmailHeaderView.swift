@@ -58,6 +58,15 @@ extension EmailHeaderView {
     override func prepareForInterfaceBuilder() {
         self.backgroundColor = .orange
     }
+    
+    func prepareForPrinting(_ beforePrinting: Bool) {
+        self.emailFavoriteButton.isHidden = beforePrinting
+        
+        self.separatorHeader.isHidden = beforePrinting
+        self.separatorShowImage.isHidden = beforePrinting
+        self.separatorAttachment.isHidden = beforePrinting
+        self.separatorExpiration.isHidden = beforePrinting
+    }
 }
 
 class EmailHeaderView: UIView {

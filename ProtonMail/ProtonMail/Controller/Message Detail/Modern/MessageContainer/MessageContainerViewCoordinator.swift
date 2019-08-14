@@ -106,13 +106,20 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
                     return nil
             }
             bodyPrinter.header = headerPrinter
+            
+            (header as? Printable)?.printingWillStart?()
+            (body as? Printable)?.printingWillStart?()
+            
             return (headerPrinter, bodyPrinter)
         }
         
         // TODO: this will not work good with multiple printable children, will need to make a unified one-by-one renderer
         let printController = UIPrintInteractionController.shared
         printController.printPageRenderer = pairs.first(where: { _,_ in true })?.1
-        printController.present(animated: true, completionHandler: nil)
+        printController.present(animated: true, completionHandler: { _, _, _ in
+            self.headerControllers.forEach { ($0 as? Printable)?.printingDidFinish?() }
+            self.bodyControllers.forEach { ($0 as? Printable)?.printingDidFinish?() }
+        })
     }
     
     // Embed subviews

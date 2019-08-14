@@ -72,6 +72,8 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     }
 }
 
-protocol Printable {
+@objc protocol Printable {
     func printPageRenderer() -> UIPrintPageRenderer
+    @objc optional func printingWillStart()
+    @objc optional func printingDidFinish()
 }

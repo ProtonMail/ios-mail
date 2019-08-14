@@ -147,4 +147,12 @@ extension MessageHeaderViewController: Printable {
     func printPageRenderer() -> UIPrintPageRenderer {
         return HeaderedPrintRenderer.CustomViewPrintRenderer(self.view)
     }
+    
+    func printingWillStart() {
+        self.emailHeaderView.prepareForPrinting(true)
+    }
+    
+    func printingDidFinish() {
+        self.emailHeaderView.prepareForPrinting(false)
+    }
 }
