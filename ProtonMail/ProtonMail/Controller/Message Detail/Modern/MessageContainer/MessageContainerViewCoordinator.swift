@@ -107,8 +107,8 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             }
             bodyPrinter.header = headerPrinter
             
-            (header as? Printable)?.printingWillStart?()
-            (body as? Printable)?.printingWillStart?()
+            (header as? Printable)?.printingWillStart?(renderer: headerPrinter)
+            (body as? Printable)?.printingWillStart?(renderer: bodyPrinter)
             
             return (headerPrinter, bodyPrinter)
         }

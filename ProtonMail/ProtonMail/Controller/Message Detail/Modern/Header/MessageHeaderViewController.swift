@@ -44,12 +44,7 @@ class MessageHeaderViewController: UIViewController {
     override func viewDidLoad() {
         self.accessibilityElements = self.emailHeaderView.accessibilityElements
         
-        self.emailHeaderView.makeConstraints()
-        self.emailHeaderView.isShowingDetail = false
-        self.emailHeaderView.backgroundColor = .white
-        self.emailHeaderView.viewDelegate = self
-        self.emailHeaderView.inject(recepientDelegate: self)
-        self.emailHeaderView.inject(delegate: self)
+        self.setupHeaderView(self.emailHeaderView)
         
         self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
         self.height.priority = .init(999.0) // for correct UITableViewCell autosizing
@@ -63,19 +58,28 @@ class MessageHeaderViewController: UIViewController {
             self?.viewModel.contentsHeight = headerView.frame.size.height - 8
         }
         
-        self.viewModelObservation = self.viewModel.observe(\.headerData) { [weak self] viewModel, _ in
-            self?.updateHeaderData(viewModel.headerData)
+        self.viewModelObservation = self.viewModel.observe(\.headerData, options: [.initial]) { [weak self] viewModel, _ in
+            guard let self = self else { return }
+            self.updateHeaderData(viewModel.headerData, on: self.emailHeaderView)
         }
-        self.updateHeaderData(viewModel.headerData)
     }
     
-    func updateHeaderData(_ headerData: HeaderData) {
-        self.emailHeaderView.updateHeaderData(headerData)
-        self.emailHeaderView.updateHeaderLayout()
-        self.emailHeaderView.updateShowImageConstraints()
-        self.emailHeaderView.updateSpamScoreConstraints()
+    fileprivate func setupHeaderView(_ emailHeaderView: EmailHeaderView) {
+        emailHeaderView.makeConstraints()
+        emailHeaderView.isShowingDetail = false
+        emailHeaderView.backgroundColor = .white
+        emailHeaderView.viewDelegate = self
+        emailHeaderView.inject(recepientDelegate: self)
+        emailHeaderView.inject(delegate: self)
     }
     
+    fileprivate func updateHeaderData(_ headerData: HeaderData, on emailHeaderView: EmailHeaderView) {
+        emailHeaderView.updateHeaderData(headerData)
+        emailHeaderView.updateHeaderLayout()
+        emailHeaderView.updateShowImageConstraints()
+        emailHeaderView.updateSpamScoreConstraints()
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.coordinator.prepare(for: segue, sender: sender)
     }
@@ -144,15 +148,22 @@ extension MessageHeaderViewController: EmailHeaderActionsProtocol {
 }
 
 extension MessageHeaderViewController: Printable {
+    typealias Renderer = HeaderedPrintRenderer.CustomViewPrintRenderer
+    
     func printPageRenderer() -> UIPrintPageRenderer {
-        return HeaderedPrintRenderer.CustomViewPrintRenderer(self.view)
+        let newHeader = EmailHeaderView(frame: self.emailHeaderView.frame)
+        self.setupHeaderView(newHeader)
+        self.updateHeaderData(self.viewModel.headerData, on: newHeader)
+        if self.emailHeaderView.isShowingDetail {
+            newHeader.detailsButtonTapped()
+        }
+        
+        return Renderer(newHeader)
     }
     
-    func printingWillStart() {
-        self.emailHeaderView.prepareForPrinting(true)
-    }
-    
-    func printingDidFinish() {
-        self.emailHeaderView.prepareForPrinting(false)
+    func printingWillStart(renderer: UIPrintPageRenderer) {
+        if let newHeader = (renderer as? Renderer)?.view as? EmailHeaderView {
+            newHeader.prepareForPrinting(true)
+        }
     }
 }

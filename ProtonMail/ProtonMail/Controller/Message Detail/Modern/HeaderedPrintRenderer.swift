@@ -32,12 +32,12 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     var header: CustomViewPrintRenderer?
     
     class CustomViewPrintRenderer: UIPrintPageRenderer {
-        private var view: UIView
+        private(set) var view: UIView
         private(set) var contentSize: CGSize
         
         init(_ view: UIView) {
             self.view = view
-            self.contentSize = self.view.frame.size
+            self.contentSize = view.frame.size
         }
         
         override func drawContentForPage(at pageIndex: Int, in contentRect: CGRect) {
@@ -45,7 +45,12 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
             guard pageIndex == 0 else { return }
             if let context = UIGraphicsGetCurrentContext() {
                 DispatchQueue.main.async {
+                    self.view.frame = contentRect
+                    self.view.layoutIfNeeded()
+                    
+                    context.translateBy(x: contentRect.origin.x, y: contentRect.origin.y)
                     self.view.layer.render(in: context)
+                    context.translateBy(x: -contentRect.origin.x, y: -contentRect.origin.y)
                 }
             }
         }
@@ -74,6 +79,6 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
 
 @objc protocol Printable {
     func printPageRenderer() -> UIPrintPageRenderer
-    @objc optional func printingWillStart()
+    @objc optional func printingWillStart(renderer: UIPrintPageRenderer)
     @objc optional func printingDidFinish()
 }

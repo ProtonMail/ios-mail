@@ -60,12 +60,21 @@ extension EmailHeaderView {
     }
     
     func prepareForPrinting(_ beforePrinting: Bool) {
-        self.emailFavoriteButton.isHidden = beforePrinting
+        self.emailDetailButton.clipsToBounds = beforePrinting
         
-        self.separatorHeader.isHidden = beforePrinting
-        self.separatorShowImage.isHidden = beforePrinting
-        self.separatorAttachment.isHidden = beforePrinting
-        self.separatorExpiration.isHidden = beforePrinting
+        // zero height constraints, first four copied from makeHeaderConstraints()
+        self.emailDetailButton.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
+            let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
+            let _ = make?.bottom.equalTo()(self.emailShortTime)
+            let _ = make?.top.equalTo()(self.emailShortTime)
+            let _ = make?.width.equalTo()(self.emailDetailButton)
+            if beforePrinting {
+                let _ = make?.height.equalTo()(0)
+            }
+        }
+        
+        self.emailFavoriteButton.isHidden = beforePrinting
     }
 }
 
