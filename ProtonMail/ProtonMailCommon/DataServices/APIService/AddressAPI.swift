@@ -42,9 +42,9 @@ final class GetAddressesRequest : ApiRequestNew<AddressesResponse> {
 
 // MARK : update addresses order
 final class UpdateAddressOrder : ApiRequest<ApiResponse> {
-    let newOrder : [String]!
+    let newOrder : [String]
     
-    init(adds : [String]!, authCredential: AuthCredential?) {
+    init(adds : [String], authCredential: AuthCredential?) {
         self.newOrder = adds
         super.init()
         self.authCredential = authCredential
@@ -70,9 +70,9 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
 
 //MARK : update display name
 final class UpdateAddressRequest : ApiRequest<ApiResponse> {
-    let addressid : String!
-    let displayName : String!
-    let signature : String!
+    let addressid : String
+    let displayName : String
+    let signature : String
     init(id : String, displayName: String, signature: String, authCredential: AuthCredential?) {
         self.addressid = id
         self.displayName = displayName
@@ -103,7 +103,7 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
 
 //Mark setup address when signup after create the user
 final class SetupAddressRequest : ApiRequest<AddressesResponse> {
-    let domain: String!
+    let domain: String
     init(domain_name: String) {
         self.domain = domain_name
     }
@@ -148,7 +148,8 @@ final class AddressesResponse : ApiResponse {
                 keys.append(Key(
                     key_id: key_res["ID"] as? String,
                     private_key: key_res["PrivateKey"] as? String,
-                    fingerprint: key_res["Fingerprint"] as? String,
+                    token: key_res["Token"] as? String,
+                    signature: key_res["Signature"] as? String,
                     isupdated: false))
             }
         }

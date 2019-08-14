@@ -62,6 +62,10 @@ class ApiRequest<T : ApiResponse> : Package {
     }
     
     
+    func getHeaders() -> [String : Any] {
+        return [String : Any]()
+    }
+    
     /**
      get is current function need auth check
      
@@ -113,10 +117,13 @@ class ApiRequest<T : ApiResponse> : Package {
             complete?(task, apiRes, hasError)
         }
         
+        var header = self.getHeaders()
+        header["x-pm-apiversion"] = self.apiVersion()
+        
         sharedAPIService.request(method: self.method(),
                                  path: self.path(),
                                  parameters: self.toDictionary(),
-                                 headers: ["x-pm-apiversion": self.apiVersion()],
+                                 headers: header,
                                  authenticated: self.getIsAuthFunction(),
                                  customAuthCredential: self.authCredential,
                                  completion: completionWrapper)

@@ -37,7 +37,7 @@ class LableEditViewController : UIViewController {
     fileprivate var selected : IndexPath?
     fileprivate var selectedFirstLoad : IndexPath?
     
-    fileprivate var archiveMessage = false;
+    fileprivate var archiveMessage = false
     
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -55,7 +55,7 @@ class LableEditViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        contentView.layer.cornerRadius = 4;
+        contentView.layer.cornerRadius = 4
         newLabelInput.delegate = self
         
         titleLabel.text = viewModel.title()
@@ -141,7 +141,7 @@ extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "labelColorCell", for: indexPath)
         let color = viewModel.color(at: indexPath.row)
         cell.backgroundColor = UIColor(hexString: color, alpha: 1.0)
-        cell.layer.cornerRadius = 17;
+        cell.layer.cornerRadius = 17
         
         if selected == nil {
             if indexPath.row == selectedFirstLoad?.row {
@@ -168,7 +168,7 @@ extension LableEditViewController: UICollectionViewDelegateFlowLayout, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets.init(top: 0,left: 0,bottom: 0,right: 0);
+        return UIEdgeInsets.init(top: 0,left: 0,bottom: 0,right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize

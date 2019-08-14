@@ -124,13 +124,13 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     internal func reload(message: Message) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.reload(from: message)
+        let standalone = self.thread.first { $0.messageID == message.messageID }
+        standalone?.reload(from: message)
     }
     
     internal func reload(message: Message, with bodyPlaceholder: String) {
-        let standalone = self.thread.first { $0.messageID == message.messageID }!
-        standalone.body = bodyPlaceholder
+        let standalone = self.thread.first { $0.messageID == message.messageID }
+        standalone?.body = bodyPlaceholder
     }
     
     internal func markThread(read: Bool) {
@@ -153,35 +153,6 @@ class MessageContainerViewModel: TableContainerViewModel {
                 }
             }
         }
-    }
-    
-    internal func print(_ parts: [UIPrintPageRenderer]) -> URL { // TODO: this one will not work for threads
-        guard let message = self.messages.first else {
-            assert(false, "No messages in thread")
-            return URL(fileURLWithPath: "")
-        }
-        
-        var filename = message.subject
-        filename = filename.preg_replace("[^a-zA-Z0-9_]+", replaceto: "-")
-        let documentsPath = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("\(filename).pdf")
-        PMLog.D(documentsPath.absoluteString)
-        
-        let pdfData = NSMutableData()
-        UIGraphicsBeginPDFContextToData(pdfData, CGRect.zero, nil)
-        
-        let bounds = UIGraphicsGetPDFContextBounds()
-        let numberOfPages = parts.reduce(0, { maximum, renderer -> Int in
-            return max(maximum, renderer.numberOfPages)
-        })
-        for i in 0..<numberOfPages {
-            UIGraphicsBeginPDFPage();
-            PMLog.D("\(bounds)")
-            parts.forEach { $0.drawPage(at: i, in: bounds) }
-        }
-        UIGraphicsEndPDFContext()
-
-        try? pdfData.write(to: documentsPath, options: [.atomic])
-        return documentsPath
     }
     
     internal func headersTemporaryUrl() -> URL { // TODO: this one will not work for threads

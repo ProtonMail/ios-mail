@@ -71,7 +71,7 @@ class UserDataService : Service {
     
     var delegate : UserDataServiceDelegate?
     
-    struct Key {
+    struct CoderKey {//Conflict with Key object
         static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKeyProtectedWithMainKey"
         
@@ -89,7 +89,7 @@ class UserDataService : Service {
     fileprivate(set) var userInfo: UserInfo? {
         get {
             guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.userInfo) else
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
             {
                 return nil
             }
@@ -103,7 +103,7 @@ class UserDataService : Service {
     }
     private func saveUserInfo(_ newValue: UserInfo?, protectedBy cachedKey: Keymaker.Key? = nil) {
         guard let newValue = newValue else {
-            SharedCacheBase.getDefault()?.removeObject(forKey: Key.userInfo)
+            SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.userInfo)
             return
         }
         guard let mainKey = cachedKey ?? keymaker.mainKey,
@@ -111,7 +111,7 @@ class UserDataService : Service {
         {
             return
         }
-        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.userInfo)
+        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.userInfo)
         SharedCacheBase.getDefault().synchronize()
     }
     
@@ -119,7 +119,7 @@ class UserDataService : Service {
     fileprivate(set) var username: String? {
         get {
             guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.username) else
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
             {
                 return nil
             }
@@ -129,7 +129,7 @@ class UserDataService : Service {
         }
         set {
             guard let newValue = newValue else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: Key.username)
+                SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.username)
                 return
             }
             guard let mainKey = keymaker.mainKey,
@@ -137,35 +137,35 @@ class UserDataService : Service {
             {
                 return
             }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: Key.username)
+            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.username)
             SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: Key.roleSwitchCache) {
+    var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
         didSet {
-            SharedCacheBase.getDefault().setValue(switchCacheOff, forKey: Key.roleSwitchCache)
+            SharedCacheBase.getDefault().setValue(switchCacheOff, forKey: CoderKey.roleSwitchCache)
             SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: Key.defaultSignatureStatus) {
+    var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {
         didSet {
-            SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: Key.defaultSignatureStatus)
+            SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: CoderKey.defaultSignatureStatus)
             SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: Key.twoFAStatus)  {
+    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)  {
         didSet {
-            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: Key.twoFAStatus)
+            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: CoderKey.twoFAStatus)
             SharedCacheBase.getDefault().synchronize()
         }
     }
     
-    var passwordMode: Int = SharedCacheBase.getDefault().integer(forKey: Key.userPasswordMode)  {
+    var passwordMode: Int = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode)  {
         didSet {
-            SharedCacheBase.getDefault().setValue(passwordMode, forKey: Key.userPasswordMode)
+            SharedCacheBase.getDefault().setValue(passwordMode, forKey: CoderKey.userPasswordMode)
             SharedCacheBase.getDefault().synchronize()
         }
     }
@@ -234,12 +234,27 @@ class UserDataService : Service {
         }
         return nil
     }
-    
+
     func getAddressPrivKey(address_id : String) -> String {
         let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
         return addr?.keys.first?.private_key ?? ""
     }
     
+    func getAddressKey(address_id : String) -> Key? {
+        let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
+        return addr?.keys.first
+    }
+    
+    var newSchema : Bool {
+        for k in addressKeys {
+            if k.newSchema {
+                return true
+            }
+        }
+        return false
+    }
+    
+    @available(iOS, message: "migrate to new key schema")
     var addressPrivateKeys : Data {
         var out = Data()
         var error : NSError?
@@ -253,17 +268,12 @@ class UserDataService : Service {
         return out
     }
     
+    var addressKeys : [Key] {
+        return self.userInfo?.addressKeys ?? [Key]()
+    }
+    
     var userPrivateKeys : Data {
-        var out = Data()
-        var error : NSError?
-        if let keys = userInfo?.userKeys {
-            for key in keys {
-                if let privK = ArmorUnarmor(key.private_key, &error) {
-                    out.append(privK)
-                }
-            }
-        }
-        return out
+        return self.userInfo?.userPrivateKeys ?? Data()
     }
     
     // MARK: - Public variables
@@ -303,19 +313,19 @@ class UserDataService : Service {
     }
     
     var isMailboxPasswordStored: Bool {
-        return KeychainWrapper.keychain.data(forKey: Key.mailboxPassword) != nil
+        return KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
     }
     
     var isNewUser : Bool = false
     
     var isUserCredentialStored: Bool {
-        return SharedCacheBase.getDefault()?.data(forKey: Key.username) != nil
+        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
     }
     
     /// Value is only stored in the keychain
     var mailboxPassword: String? {
         get {
-            guard let cypherBits = KeychainWrapper.keychain.data(forKey: Key.mailboxPassword),
+            guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
                 let key = keymaker.mainKey else
             {
                 return nil
@@ -329,17 +339,17 @@ class UserDataService : Service {
     }
     private func saveMailboxPassword(_ newValue: String?, protectedBy cachedKey: Keymaker.Key? = nil) {
         guard let newValue = newValue else {
-            KeychainWrapper.keychain.remove(forKey: Key.mailboxPassword)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
             return
         }
         guard let key = cachedKey ?? keymaker.mainKey,
             let locked = try? Locked<String>(clearValue: newValue, with: key) else
         {
-            KeychainWrapper.keychain.remove(forKey: Key.mailboxPassword)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
             return
         }
         
-        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: Key.mailboxPassword)
+        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
     }
     
     var maxSpace: Int64 {
@@ -967,7 +977,7 @@ class UserDataService : Service {
         #if !APP_EXTENSION
         if AppCache.isFirstRun() {
             clearAll()
-            SharedCacheBase.getDefault().set(Date(), forKey: Key.firstRunKey)
+            SharedCacheBase.getDefault().set(Date(), forKey: CoderKey.firstRunKey)
             SharedCacheBase.getDefault().synchronize()
         }
         #endif
@@ -1029,5 +1039,30 @@ extension AppCache {
     
     static func inject(username: String, into userDataService: UserDataService) {
         userDataService.username = username
+    }
+}
+
+
+
+extension UserInfo {
+    var userPrivateKeys : Data {
+        var out = Data()
+        var error : NSError?
+        for key in userKeys {
+            if let privK = ArmorUnarmor(key.private_key, &error) {
+                out.append(privK)
+            }
+        }
+        return out
+    }
+    
+    var addressKeys : [Key] {
+        var out = [Key]()
+        for addr in userAddresses {
+            for key in addr.keys {
+                out.append(key)
+            }
+        }
+        return out
     }
 }

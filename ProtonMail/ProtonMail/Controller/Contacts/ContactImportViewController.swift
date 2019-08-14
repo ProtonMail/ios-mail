@@ -171,7 +171,7 @@ class ContactImportViewController: UIViewController {
             do {
                 let contacts = self.contacts
                 let titleCount = contacts.count
-                var index : Float = 0;
+                var index : Float = 0
                 for contact in contacts {
                     if self.cancelled {
                         {
@@ -272,7 +272,7 @@ class ContactImportViewController: UIViewController {
                                 guard let vcard3Str = try vcard3.write() else {
                                     continue
                                 }
-                                let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", mailbox_pwd: "")
+                                let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
                                 let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
                                                                                        privateKey: userkey.private_key,
                                                                                        passphrase: mailboxPassword,

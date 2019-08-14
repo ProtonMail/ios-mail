@@ -116,20 +116,11 @@ extension MessageBodyViewController {
     }
 }
 
-extension MessageBodyViewController: PdfPagePrintable {
-    class CustomRenderer: UIPrintPageRenderer {
-        override var numberOfPages: Int {
-            return self.printFormatters?.first?.pageCount ?? 0
-        }
-    }
-    
+extension MessageBodyViewController: Printable {
     func printPageRenderer() -> UIPrintPageRenderer {
-        let render = CustomRenderer()
-        let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
-        render.setValue(page, forKey: "paperRect")
-        render.setValue(page, forKey: "printableRect")
-        
-        render.addPrintFormatter(self.webView.viewPrintFormatter(), startingAtPageAt: 0)
+        let render = HeaderedPrintRenderer()
+        let printFormatter = self.webView.viewPrintFormatter()
+        render.addPrintFormatter(printFormatter, startingAtPageAt: 0)
         return render
     }
 }

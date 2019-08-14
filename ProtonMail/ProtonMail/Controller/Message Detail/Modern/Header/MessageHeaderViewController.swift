@@ -142,3 +142,9 @@ extension MessageHeaderViewController: EmailHeaderActionsProtocol {
         fatalError("Stub until emailHeaderView rewrite")
     }
 }
+
+extension MessageHeaderViewController: Printable {
+    func printPageRenderer() -> UIPrintPageRenderer {
+        return HeaderedPrintRenderer.CustomViewPrintRenderer(self.view)
+    }
+}

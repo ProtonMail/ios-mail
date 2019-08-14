@@ -33,42 +33,101 @@ import Crypto
 final class Key : NSObject {
     let key_id: String
     var private_key : String
-    var fingerprint : String
     var is_updated : Bool = false
     var keyflags : Int = 0
     
-    required init(key_id: String?, private_key: String?, fingerprint : String?, isupdated: Bool) {
+     //key migration step 1 08/01/2019
+    var token : String?
+    var signature : String?
+    
+    required init(key_id: String?, private_key: String?,
+                  token: String?, signature: String?,
+                  isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.private_key = private_key ?? ""
-        self.fingerprint = fingerprint ?? ""
         self.is_updated = isupdated
+        
+        self.token = token
+        self.signature = signature
     }
     
     var publicKey : String {
         return KeyPublicKey(self.private_key, nil)
+    }
+    
+    var fingerprint : String {
+        return KeyGetFingerprint(self.private_key, nil)
+    }
+    
+    var newSchema : Bool {
+        return signature != nil
     }
 }
 
 
 extension Key: NSCoding {
     
-    fileprivate struct CoderKey {
+    private struct CoderKey {
         static let keyID          = "keyID"
         static let privateKey     = "privateKey"
         static let fingerprintKey = "fingerprintKey"
+        
+        static let Token     = "Key.Token"
+        static let Signature = "Key.Signature"
     }
+    
+    static func unarchive(_ data: Data?) -> [Key]? {
+        guard let data = data else { return nil }
+        return NSKeyedUnarchiver.unarchiveObject(with: data) as? [Key]
+    }
+    
     
     convenience init(coder aDecoder: NSCoder) {
         self.init(
             key_id: aDecoder.decodeStringForKey(CoderKey.keyID),
             private_key: aDecoder.decodeStringForKey(CoderKey.privateKey),
-            fingerprint: aDecoder.decodeStringForKey(CoderKey.fingerprintKey),
+            token: aDecoder.decodeStringForKey(CoderKey.Token),
+            signature: aDecoder.decodeStringForKey(CoderKey.Signature),
             isupdated: false)
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(key_id, forKey: CoderKey.keyID)
         aCoder.encode(private_key, forKey: CoderKey.privateKey)
-        aCoder.encode(fingerprint, forKey: CoderKey.fingerprintKey)
+        
+        //new added
+        aCoder.encode(token, forKey: CoderKey.Token)
+        aCoder.encode(signature, forKey: CoderKey.Signature)
+        
+        //TODO:: fingerprintKey is deprecated, need to "remove and clean"
+        aCoder.encode("", forKey: CoderKey.fingerprintKey)
     }
+}
+
+extension Array where Element : Key {
+    func archive() -> Data {
+        return NSKeyedArchiver.archivedData(withRootObject: self)
+    }
+    
+    var binPrivKeys : Data {
+        var out = Data()
+        var error : NSError?
+        for key in self {
+            if let privK = ArmorUnarmor(key.private_key, &error) {
+                out.append(privK)
+            }
+        }
+        return out
+    }
+    
+    
+    var newSchema : Bool {
+        for key in self {
+            if key.newSchema {
+                return true
+            }
+        }
+        return false
+    }
+
 }

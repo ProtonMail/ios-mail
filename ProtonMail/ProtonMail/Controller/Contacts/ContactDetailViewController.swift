@@ -382,7 +382,7 @@ extension ContactDetailViewController: UITableViewDataSource {
         default:
             cell?.ConfigHeader(title: "", signed: false)
         }
-        return cell;
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -515,7 +515,7 @@ extension ContactDetailViewController: UITableViewDelegate {
             let s = viewModel.sections()[section]
             switch s {
             case .display_name:
-                let profile = viewModel.getProfile();
+                let profile = viewModel.getProfile()
                 copyString = profile.newDisplayName
             case .emails:
                 let emails = viewModel.getEmails()

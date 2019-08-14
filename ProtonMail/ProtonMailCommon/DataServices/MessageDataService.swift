@@ -544,7 +544,7 @@ class MessageDataService : Service {
         // they are transient and will not be persisted in the db, only in managed object context
         message.cachedPassphrase = sharedUserDataService.mailboxPassword
         message.cachedAuthCredential = AuthCredential.fetchFromKeychain()
-        message.cachedPrivateKeys = sharedUserDataService.addressPrivateKeys
+        message.cachedUser = sharedUserDataService.userInfo
         message.cachedAddress = message.defaultAddress // computed property depending on current user settings
     }
     
@@ -1221,26 +1221,33 @@ class MessageDataService : Service {
             "MIMEType": attachment.mimeType,
             "MessageID": attachment.message.messageID
         ]
+        
         if attachment.inline() {
             params["ContentID"] = attachment.contentID()
         }
         
-        let address = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
-        let pubkey = attachment.message.cachedAddress?.keys.first?.private_key ?? sharedUserDataService.getAddressPrivKey(address_id: address)
+        let addressID = attachment.message.cachedAddress?.address_id ?? attachment.message.getAddressID
+        guard let key = attachment.message.cachedAddress?.keys.first ?? sharedUserDataService.getAddressKey(address_id: addressID) else {
+            completion?(nil, nil, NSError.encryptionError())
+            return
+        }
+        
         guard let passphrase = attachment.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
             completion?(nil, nil, NSError.lockError())
             return
         }
         
-        guard let encryptedData = attachment.encrypt(byAddrID: address, mailbox_pwd: passphrase, key: pubkey),
+        guard let encryptedData = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
             let keyPacket = encryptedData.keyPacket(),
             let dataPacket = encryptedData.dataPacket() else
         {
             completion?(nil, nil, NSError.encryptionError())
             return
         }
-        let signed = attachment.sign(byAddrID: address, mailbox_pwd: passphrase, key: pubkey)
         
+        let signed = attachment.sign(byKey: key,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys,
+                                     passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
             if error == nil,
@@ -1416,10 +1423,14 @@ class MessageDataService : Service {
             //start track status here :
             var status = SendStatus.justStart
             
-            let privKeys = message.cachedPrivateKeys ?? sharedUserDataService.addressPrivateKeys
+            let userInfo = message.cachedUser ?? sharedUserDataService.userInfo
+            let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
+            let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
+            let newSchema = addrPrivKeys.newSchema
+            
             guard let authCredential = message.cachedAuthCredential ?? AuthCredential.fetchFromKeychain(),
                 let passphrase = message.cachedPassphrase ?? sharedUserDataService.mailboxPassword,
-                let addr = (message.cachedAddress ?? message.defaultAddress)?.keys.first else
+                let addressKey = (message.cachedAddress ?? message.defaultAddress)?.keys.first else
             {
                 errorBlock(nil, nil, NSError.lockError())
                 return
@@ -1454,9 +1465,16 @@ class MessageDataService : Service {
                 //Debug info
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
-                guard let bodyData = try message.split()?.dataPacket(),
-                    let session = try message.getSessionKey(keys: privKeys, passphrase: passphrase) else {
-                    throw RuntimeError.cant_decrypt.error
+                guard let splited = try message.split(),
+                    let bodyData = splited.dataPacket(),
+                    let keyData = splited.keyPacket(),
+                    let session = newSchema ?
+                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
+                                                                passphrase: passphrase,
+                                                                keys: addrPrivKeys) :
+                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeys,
+                                                  passphrase: passphrase) else {
+                            throw RuntimeError.cant_decrypt.error
                 }
                 //Debug info
                 status.insert(SendStatus.updateBuilder)
@@ -1488,9 +1506,13 @@ class MessageDataService : Service {
                 }
                 //Debug info
                 status.insert(SendStatus.checkMimeAndPlainText)
-
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
-                    guard let clearbody = try message.decryptBody(keys: privKeys, passphrase: passphrase) else {
+                    guard let clearbody = newSchema ?
+                        try message.decryptBody(keys: addrPrivKeys,
+                                                userKeys: userPrivKeys,
+                                                passphrase: passphrase) :
+                        try message.decryptBody(keys: addrPrivKeys.binPrivKeys,
+                                                passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
                     sendBuilder.set(clear: clearbody)
@@ -1500,7 +1522,10 @@ class MessageDataService : Service {
                 
                 for att in attachments {
                     if att.managedObjectContext != nil {
-                        if let sessionPack = try att.getSession(keys: privKeys) {
+                        if let sessionPack = newSchema ?
+                            try att.getSession(userKey: userPrivKeys,
+                                               keys: addrPrivKeys) :
+                            try att.getSession(keys: addrPrivKeys.binPrivKeys) {
                             sendBuilder.add(att: PreAttachment(id: att.attachmentID,
                                                                session: sessionPack.session(),
                                                                algo: sessionPack.algo(),
@@ -1523,9 +1548,11 @@ class MessageDataService : Service {
                 status.insert(SendStatus.buildMime)
                 
                 //build pgp sending mime body
-                let privateKey = addr.private_key
-                let pubKey = addr.publicKey
-                return sendBuilder.buildMime(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
+                return sendBuilder.buildMime(senderKey: addressKey,
+                                             passphrase: passphrase,
+                                             userKeys: userPrivKeys,
+                                             keys: addrPrivKeys,
+                                             newSchema: newSchema)
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
@@ -1537,9 +1564,11 @@ class MessageDataService : Service {
                 status.insert(SendStatus.buildPlainText)
                 
                 //build pgp sending mime body
-                let privateKey = addr.private_key
-                let pubKey = addr.publicKey
-                return sendBuilder.buildPlainText(pubKey: pubKey, privKey: privateKey, passphrase: passphrase, privKeys: privKeys)
+                return sendBuilder.buildPlainText(senderKey: addressKey,
+                                                  passphrase: passphrase,
+                                                  userKeys: userPrivKeys,
+                                                  keys: addrPrivKeys,
+                                                  newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
                 //Debug info
                 status.insert(SendStatus.initBuilders)

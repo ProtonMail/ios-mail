@@ -112,12 +112,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         }
     }
     @objc func printButtonTapped(_ sender: Any) {
-        let children = self.coordinator.printableChildren()
-        // here we can add printable cells data if needed
-        let childrenData = children.map { $0.printPageRenderer() }
-        let url = self.viewModel.print(childrenData)
-        self.coordinator.previewQuickLook(for: url)
+        self.coordinator.presentPrintController()
     }
+    
     @objc func viewHeadersButtonTapped(_ sender: Any) {
         let url = self.viewModel.headersTemporaryUrl()
         self.coordinator.previewQuickLook(for: url)
@@ -226,7 +223,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         let divisions = standalone.observe(\.divisionsCount, options: [.new, .old]) { [weak self] standalone, change in
             guard let old = change.oldValue, let new = change.newValue, old != new else { return }
-            if let index = self?.viewModel.thread.firstIndex(of: standalone) {
+            if let index = self?.viewModel?.thread.firstIndex(of: standalone), self?.tableView.numberOfSections > index {
                 self?.tableView.reloadSections(IndexSet(integer: index), with: .fade)
             }
         }
