@@ -58,6 +58,24 @@ extension EmailHeaderView {
     override func prepareForInterfaceBuilder() {
         self.backgroundColor = .orange
     }
+    
+    func prepareForPrinting(_ beforePrinting: Bool) {
+        self.emailDetailButton.clipsToBounds = beforePrinting
+        
+        // zero height constraints, first four copied from makeHeaderConstraints()
+        self.emailDetailButton.mas_makeConstraints { (make) -> Void in
+            make?.removeExisting = true
+            let _ = make?.left.equalTo()(self.emailShortTime.mas_right)?.with().offset()(self.kEmailDetailButtonMarginLeft)
+            let _ = make?.bottom.equalTo()(self.emailShortTime)
+            let _ = make?.top.equalTo()(self.emailShortTime)
+            let _ = make?.width.equalTo()(self.emailDetailButton)
+            if beforePrinting {
+                let _ = make?.height.equalTo()(0)
+            }
+        }
+        
+        self.emailFavoriteButton.isHidden = beforePrinting
+    }
 }
 
 class EmailHeaderView: UIView {
