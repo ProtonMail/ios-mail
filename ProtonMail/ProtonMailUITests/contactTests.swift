@@ -117,13 +117,11 @@ class contactTests: XCTestCase {
         Thread.sleep(forTimeInterval: 3)
         
         sidebarButton.tap()
-        
         contactsButton.tap()
         
-        app.tables.staticTexts[sampleContact].tap()
-        
+        let cells = app.tables.staticTexts.containing(label: sampleContact)
+        cells.allElementsBoundByIndex.first?.tap()
         tablesQuery.cells.staticTexts[shareContactLabel].tap()
-        
         Thread.sleep(forTimeInterval: 0.5)
         
         if #available(iOS 13.0, *) {
@@ -138,11 +136,8 @@ class contactTests: XCTestCase {
         Thread.sleep(forTimeInterval: 1.5)
         
         if #available(iOS 13.0, *) {
-            
             // 'From' action sheet fails on iOS 13
-            
         } else {
-            
             tablesQuery.staticTexts[mainTestEmail].tap()
             app.sheets["Change sender address to..."].buttons[mainTestEmail].tap()
             
