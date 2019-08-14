@@ -34,9 +34,8 @@ class StorefrontViewModel: NSObject {
     private var canPurchaseObserver: NSKeyValueObservation!
     private var storefrontSubscriptionObserver: NSKeyValueObservation!
     
-    internal enum Sections: Int {
-        case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, disclaimer
-        static let count = 9 // TODO: update this on swift4.3  with allCases.count
+    internal enum Sections: Int, CaseIterable {
+        case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, credits, disclaimer
         
         var indexSet: IndexSet {
             return .init(integer: self.rawValue)
@@ -53,6 +52,7 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var othersItems: [AnyStorefrontItem] = []
     @objc dynamic var buyLinkItem: AnyStorefrontItem?
     @objc dynamic var buyButtonItem: AnyStorefrontItem?
+    @objc dynamic var creditsItem: AnyStorefrontItem?
     @objc dynamic var disclaimerItem: AnyStorefrontItem?
     
     init(storefront: Storefront) {
@@ -70,6 +70,7 @@ class StorefrontViewModel: NSObject {
             self.buyLinkItem = self.extractBuyLink(from: storefront)
             self.buyLinkHeaderItem = self.buyLinkItem == nil ? nil : SubsectionHeaderStorefrontItem(text: " ")
             self.buyButtonItem = self.extractBuyButton(from: storefront)
+            self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
             self.disclaimerItem = self.extractDisclaimer(from: storefront)
         }
         
@@ -88,7 +89,7 @@ class StorefrontViewModel: NSObject {
     }
     
     func numberOfSections() -> Int {
-        return Sections.count
+        return Sections.allCases.count
     }
     
     func numberOfItems(in section: Int) -> Int {
@@ -105,6 +106,7 @@ class StorefrontViewModel: NSObject {
         case .buyLinkHeader:     return NSNumber(value: self.buyLinkHeaderItem != nil).intValue
         case .buyLink:           return NSNumber(value: self.buyLinkItem != nil).intValue
         case .buyButton:         return NSNumber(value: self.buyButtonItem != nil).intValue
+        case .credits:           return NSNumber(value: self.creditsItem != nil).intValue
         case .disclaimer:        return NSNumber(value: self.disclaimerItem != nil).intValue
         }
     }
@@ -123,6 +125,7 @@ class StorefrontViewModel: NSObject {
         case .buyLinkHeader where self.buyLinkHeaderItem != nil:    return self.buyLinkHeaderItem!
         case .buyLink where self.buyLinkItem != nil:                return self.buyLinkItem!
         case .buyButton where self.buyButtonItem != nil:            return self.buyButtonItem!
+        case .credits where self.creditsItem != nil:                return self.creditsItem!
         case .disclaimer where self.disclaimerItem != nil:          return self.disclaimerItem!
         default:
             assert(false, "Attempt to get incorrect section")
@@ -236,7 +239,7 @@ extension StorefrontViewModel {
                 formatter.dateStyle = .short
                 
                 if let end = subscription.end {
-                    let title0 = subscription.hadOnlinePayments ? LocalString._will_renew : LocalString._active_until
+                    let title0 = (subscription.hadOnlinePayments || self.storefront.credits > 0) ? LocalString._will_renew : LocalString._active_until
                     let title1 = NSMutableAttributedString(string: title0 + " ", attributes: regularAttributes)
                     let title2 = NSAttributedString(string: formatter.string(from: end), attributes: coloredAttributes)
                     title1.append(title2)
@@ -273,7 +276,7 @@ extension StorefrontViewModel {
     
     private func extractBuyButton(from storefront: Storefront) -> AnyStorefrontItem? {
         guard storefront.isProductPurchasable,
-            let productId = storefront.plan.storeKitProductId,
+            let productId = ServicePlan.plus.storeKitProductId, //storefront.plan.storeKitProductId, FIXME: TEST ONLY
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
             return nil
@@ -308,6 +311,11 @@ extension StorefrontViewModel {
         title.append(caption)
         
         return BuyButtonStorefrontItem(subtitle: nil, buttonTitle: title, buttonEnabled: true)
+    }
+    
+    private func extractCredits(from storefront: Storefront) -> AnyStorefrontItem? {
+        let string = NSAttributedString(string: "Current Credits balance: \(storefront.credits)")
+        return AnnotationStorefrontItem(text: string)
     }
     
     private func extractDisclaimer(from storefront: Storefront) -> AnyStorefrontItem? {

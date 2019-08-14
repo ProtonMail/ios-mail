@@ -51,6 +51,10 @@ final class UserInfo : NSObject {
     var userId: String
     
     var userKeys: [Key] //user key
+    
+    // 1.11.12 user object
+    var credit: Int
+    var currency: String
 
     //1.9.1 mail settings
     var displayName: String = ""
@@ -97,7 +101,9 @@ final class UserInfo : NSObject {
         userId: String?,
         sign: Int?,
         attachPublicKey: Int?,
-        linkConfirmation: String?)
+        linkConfirmation: String?,
+        credit: Int?,
+        currency: String?)
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
@@ -129,6 +135,9 @@ final class UserInfo : NSObject {
         if let linkConfirmation = linkConfirmation {
             self.linkConfirmation = LinkOpeningMode(rawValue: linkConfirmation) ?? .confirmationAlert
         }
+        
+        self.credit = credit ?? 0
+        self.currency = currency ?? "USD"
     }
 
     // init from api
@@ -138,7 +147,9 @@ final class UserInfo : NSObject {
                   delinquent : Int?,
                   keys : [Key]?,
                   userId: String?,
-                  linkConfirmation : Int?) {
+                  linkConfirmation : Int?,
+                  credit: Int?,
+                  currency: String?) {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
         self.language = language ?? "en_US"
@@ -148,6 +159,8 @@ final class UserInfo : NSObject {
         self.userId = userId ?? ""
         self.userKeys = keys ?? [Key]()
         self.linkConfirmation = linkConfirmation == 0 ? .openAtWill : .confirmationAlert
+        self.credit = credit ?? 0
+        self.currency = currency ?? "USD"
     }
     
     /// Update user addresses
@@ -232,6 +245,8 @@ extension UserInfo {
         let userId = response["ID"] as? String
         let usedS = response["UsedSpace"] as? NSNumber
         let maxS = response["MaxSpace"] as? NSNumber
+        let credit = response["Credit"] as? NSNumber
+        let currency = response["Currency"] as? String
         self.init(
             maxSpace: maxS?.int64Value,
             usedSpace: usedS?.int64Value,
@@ -241,7 +256,9 @@ extension UserInfo {
             delinquent : response["Delinquent"] as? Int,
             keys : uKeys,
             userId: userId,
-            linkConfirmation: response["ConfirmLink"] as? Int
+            linkConfirmation: response["ConfirmLink"] as? Int,
+            credit: credit?.intValue,
+            currency: currency
         )
     }
 }
@@ -278,6 +295,9 @@ extension UserInfo: NSCoding {
         static let sign = "sign"
         
         static let linkConfirmation = "linkConfirmation"
+        
+        static let credit = "credit"
+        static let currency = "currency"
     }
     
     func archive() -> Data {
@@ -316,7 +336,10 @@ extension UserInfo: NSCoding {
             sign: aDecoder.decodeInteger(forKey: CoderKey.sign),
             attachPublicKey: aDecoder.decodeInteger(forKey: CoderKey.attachPublicKey),
             
-            linkConfirmation: aDecoder.decodeStringForKey(CoderKey.linkConfirmation)
+            linkConfirmation: aDecoder.decodeStringForKey(CoderKey.linkConfirmation),
+            
+            credit: aDecoder.decodeInteger(forKey: CoderKey.credit),
+            currency: aDecoder.decodeStringForKey(CoderKey.currency)
         )
     }
     
@@ -348,6 +371,9 @@ extension UserInfo: NSCoding {
         aCoder.encode(attachPublicKey, forKey: CoderKey.attachPublicKey)
         
         aCoder.encode(linkConfirmation.rawValue, forKey: CoderKey.linkConfirmation)
+        
+        aCoder.encode(credit, forKey: CoderKey.credit)
+        aCoder.encode(currency, forKey: CoderKey.currency)
     }
 }
 
