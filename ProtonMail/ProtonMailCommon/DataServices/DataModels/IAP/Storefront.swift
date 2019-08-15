@@ -101,7 +101,6 @@ class Storefront: NSObject {
         
         let successWrapper: ()->Void = {
             DispatchQueue.main.async {
-                // TODO: nice animation
                 successHandler()
             }
         }

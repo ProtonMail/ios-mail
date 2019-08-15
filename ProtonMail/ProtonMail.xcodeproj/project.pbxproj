@@ -1228,6 +1228,8 @@
 		AAEB4A1B60869ACE84798F14FAEF3072 /* UnlockPinCodeModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7C6E2D20B275A72C9CABA3AD759418E /* UnlockPinCodeModelImpl.swift */; };
 		AAF8D279B28A78DDCED30DE38D1D5518 /* APIService+DeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 334452152689851E51C6CDFFF44EFE36 /* APIService+DeviceExtension.swift */; };
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
+		AB05E63823057414000C2632 /* ConfettiLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB05E63723057414000C2632 /* ConfettiLayer.swift */; };
+		AB05E63923057414000C2632 /* ConfettiLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB05E63723057414000C2632 /* ConfettiLayer.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
@@ -2570,6 +2572,7 @@
 		AAA72760EAA3C44E6CBDF96D02D86D24 /* TwoFACodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwoFACodeView.swift; sourceTree = "<group>"; };
 		AAC9023AEA96C3924949D01DCE78637B /* Pods-Siri.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Siri.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Siri/Pods-Siri.debug.xcconfig"; sourceTree = "<group>"; };
 		AAD05BB8416067244824CCFC22BA4288 /* LabelManagerViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabelManagerViewModelImpl.swift; sourceTree = "<group>"; };
+		AB05E63723057414000C2632 /* ConfettiLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiLayer.swift; sourceTree = "<group>"; };
 		AB1B727A907EF920049437670F1ECC53 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 		AB275A21CF390F559BC01F46A9D5B244 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
@@ -3198,6 +3201,7 @@
 				44B02B56A82E33F93B3D79E072A10329 /* StorefrontCells.swift */,
 				25F9C5E235DFE3343462EF534F416108 /* StorefrontCollectionViewController.swift */,
 				D178E493BBEB544A82EE79D5FC1AFDFD /* StorefrontCoordinator.swift */,
+				AB05E63723057414000C2632 /* ConfettiLayer.swift */,
 			);
 			path = IAP;
 			sourceTree = "<group>";
@@ -6208,6 +6212,7 @@
 				5BAF3150C3B43E4EEC0BF1D715958108 /* LabelManagerViewModelImpl.swift in Sources */,
 				83556A1D826B6AE2D30D71115B1F1083 /* LabelTableViewCell.swift in Sources */,
 				79F8C671E737174FD00BFC55BDDDC156 /* LabelViewModel.swift in Sources */,
+				AB05E63823057414000C2632 /* ConfettiLayer.swift in Sources */,
 				7D81F14C4054D7FC71BE89D610AAE36B /* LabelboxViewModelImpl.swift in Sources */,
 				EE8EE5492479605317FEFA435C8220F8 /* LabelsCollectionView.swift in Sources */,
 				6995C7723A12AC3995F911D37D4714D8 /* LabelsDataService.swift in Sources */,
@@ -6645,6 +6650,7 @@
 				270C5CE050A2B4BE21757902232B36DB /* ContactsDetailsWarningCell.swift in Sources */,
 				2688AF39DAC93913336234E7BD6EDEE2 /* ContactsTableViewCell.swift in Sources */,
 				C33DEFFB8D89C9DC382058C38FC4F0E1 /* ContactsViewController.swift in Sources */,
+				AB05E63923057414000C2632 /* ConfettiLayer.swift in Sources */,
 				802DF89A8E0947671F0885794AEC265D /* ContactsViewModel.swift in Sources */,
 				A90550F71DB25CC3C44267C0BE964D18 /* ContactsViewModelImpl.swift in Sources */,
 				8740631437736915509F669790555659 /* ContainableComposeViewController.swift in Sources */,

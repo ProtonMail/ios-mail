@@ -33,6 +33,7 @@ class StorefrontViewModel: NSObject {
     private var storefrontObserver: NSKeyValueObservation!
     private var canPurchaseObserver: NSKeyValueObservation!
     private var storefrontSubscriptionObserver: NSKeyValueObservation!
+    private var storefrontCreditsObserver: NSKeyValueObservation!
     
     internal enum Sections: Int, CaseIterable {
         case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, credits, disclaimer
@@ -84,6 +85,9 @@ class StorefrontViewModel: NSObject {
             self.buyButtonItem = self.extractBuyButton(from: storefront)
         }
         self.storefrontSubscriptionObserver = self.storefront.observe(\.subscription, options: [.new]) { [unowned self] storefront, change in
+            self.storefront = storefront
+        }
+        self.storefrontCreditsObserver = self.storefront.observe(\.credits, options: [.new]) { [unowned self] storefront, change in
             self.storefront = storefront
         }
     }
