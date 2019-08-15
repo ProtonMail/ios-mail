@@ -34,7 +34,7 @@ class Storefront: NSObject {
     var others: [ServicePlan]
     var title: String
     var canBuyMoreCredits: Bool
-    var credits: Int
+    @objc dynamic var credits: Int
     @objc dynamic var subscription: ServicePlanSubscription?
     @objc dynamic var isProductPurchasable: Bool
     
@@ -70,10 +70,13 @@ class Storefront: NSObject {
 
         self.subscriptionObserver = ServicePlanDataService.shared.observe(\.currentSubscription) { [unowned self] shared, change in
             guard let newSubscription = shared.currentSubscription else { return }
-            self.plan = newSubscription.plan
-            self.details = newSubscription.details
-            self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
-            self.subscription = shared.currentSubscription
+            DispatchQueue.main.async {
+                self.plan = newSubscription.plan
+                self.details = newSubscription.details
+                self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
+                self.credits = sharedUserDataService.userInfo?.credit ?? 0
+                self.subscription = shared.currentSubscription
+            }
         }
     }
     

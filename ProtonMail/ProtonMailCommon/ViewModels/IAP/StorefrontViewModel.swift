@@ -88,7 +88,8 @@ class StorefrontViewModel: NSObject {
             self.storefront = storefront
         }
         self.storefrontCreditsObserver = self.storefront.observe(\.credits, options: [.new]) { [unowned self] storefront, change in
-            self.storefront = storefront
+            self.annotationItem = self.extractAnnotation(from: storefront)
+            self.creditsItem = self.buyButtonItem == nil ? nil : self.extractCredits(from: storefront)
         }
     }
     
@@ -243,7 +244,7 @@ extension StorefrontViewModel {
                 formatter.dateStyle = .short
                 
                 if let end = subscription.end {
-                    let title0 = (subscription.hadOnlinePayments || self.storefront.credits > 0) ? LocalString._will_renew : LocalString._active_until
+                    let title0 = (subscription.hadOnlinePayments || storefront.credits > 0) ? LocalString._will_renew : LocalString._active_until
                     let title1 = NSMutableAttributedString(string: title0 + " ", attributes: regularAttributes)
                     let title2 = NSAttributedString(string: formatter.string(from: end), attributes: coloredAttributes)
                     title1.append(title2)
@@ -318,7 +319,8 @@ extension StorefrontViewModel {
     }
     
     private func extractCredits(from storefront: Storefront) -> AnyStorefrontItem? {
-        let string = NSAttributedString(string: "Current Credits balance: \(storefront.credits)")
+        guard let _ = storefront.subscription else { return nil }
+        let string = NSAttributedString(string: "Current Credits balance: \(Int(storefront.credits / 100))")
         return AnnotationStorefrontItem(text: string)
     }
     

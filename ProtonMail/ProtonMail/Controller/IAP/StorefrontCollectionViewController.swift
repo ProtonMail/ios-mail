@@ -66,6 +66,9 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             }),
             self.viewModel.observe(\.buyButtonItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
                 self.collectionView.reloadSections(Sections.buyButton.indexSet)
+            }),
+            self.viewModel.observe(\.creditsItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.credits.indexSet)
             })
         ]
     }

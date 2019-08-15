@@ -332,8 +332,14 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             do {  // payments/credits
                 let serverUpdateApi = PostCreditRequest(reciept: receipt)
                 let _ = try await(serverUpdateApi.run())
-                self.successCompletion?()
                 SKPaymentQueue.default().finishTransaction(transaction)
+                
+                _ = sharedUserDataService.fetchUserInfo().done(on: .main) { _ in
+                    ServicePlanDataService.shared.currentSubscription = ServicePlanDataService.shared.currentSubscription
+                }
+                
+                self.successCompletion?()
+                
             } catch let error as NSError where error.code == 22916 {
                 // Apple payment already registered
                 SKPaymentQueue.default().finishTransaction(transaction)
