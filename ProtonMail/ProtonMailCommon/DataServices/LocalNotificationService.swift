@@ -35,18 +35,28 @@ class LocalNotificationService: Service {
     }
     struct MessageSendingDetails {
         var messageID: String
+        var error: String = "⚠️" + LocalString._message_not_sent_message
+        var timeInterval: TimeInterval = 3 * 60
+        
+        init(messageID: String) {
+            self.messageID = messageID
+        }
+        init(messageID: String, error: String, timeInterval: TimeInterval) {
+            self.messageID = messageID
+            self.error = error
+            self.timeInterval = timeInterval
+        }
     }
     
     func scheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
         let content = UNMutableNotificationContent()
         content.title = LocalString._message_not_sent_title
-        
-        content.body = "⚠️" + LocalString._message_not_sent_message
+        content.body = details.error
         content.categoryIdentifier = Categories.failedToSend.rawValue
         content.userInfo = ["message_id": details.messageID,
                             "category": Categories.failedToSend.rawValue]
         
-        let timeout = UNTimeIntervalNotificationTrigger(timeInterval: 3 * 60, repeats: false) // FIXME: 5 minutes
+        let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false) // FIXME: 5 minutes
         let request = UNNotificationRequest(identifier: details.messageID, content: content, trigger: timeout)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)
