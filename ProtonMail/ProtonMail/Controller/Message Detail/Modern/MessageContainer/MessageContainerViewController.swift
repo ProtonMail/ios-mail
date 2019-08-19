@@ -185,15 +185,15 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     
     private func subscribeToStandalone(_ standalone: MessageViewModel) {
         let head = standalone.observe(\.heightOfHeader) { [weak self] _, _ in
-            self?.tableView.beginUpdates()
-            self?.tableView.endUpdates()
+            self?.tableView?.beginUpdates()
+            self?.tableView?.endUpdates()
         }
         self.standalonesObservation.append(head)
         
         let attachments = standalone.observe(\.heightOfAttachments) { [weak self] standalone, _ in
-            guard let section = self?.viewModel.thread.firstIndex(of: standalone) else { return}
+            guard let section = self?.viewModel?.thread.firstIndex(of: standalone) else { return}
             let indexPath = IndexPath(row: MessageViewModel.Divisions.attachments.rawValue, section: section)
-            self?.tableView.reloadRows(at: [indexPath], with: .fade)
+            self?.tableView?.reloadRows(at: [indexPath], with: .fade)
         }
         self.standalonesObservation.append(attachments)
         
@@ -201,8 +201,8 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
             // this super-short animation duration will make animation invisible, otherwise it looks like cell is unfolding from top to bottom with a default 0.3s duration and resizing afrer zoom looks jumpy
             UIView.animate(withDuration: 0.001, animations: {
                 self?.saveOffset()
-                self?.tableView.beginUpdates()
-                self?.tableView.endUpdates()
+                self?.tableView?.beginUpdates()
+                self?.tableView?.endUpdates()
                 self?.restoreOffset()
             })
         }
@@ -210,8 +210,8 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         let divisions = standalone.observe(\.divisionsCount, options: [.new, .old]) { [weak self] standalone, change in
             guard let old = change.oldValue, let new = change.newValue, old != new else { return }
-            if let index = self?.viewModel?.thread.firstIndex(of: standalone), self?.tableView.numberOfSections > index {
-                self?.tableView.reloadSections(IndexSet(integer: index), with: .fade)
+            if let index = self?.viewModel?.thread.firstIndex(of: standalone), self?.tableView?.numberOfSections > index {
+                self?.tableView?.reloadSections(IndexSet(integer: index), with: .fade)
             }
         }
         self.standalonesObservation.append(divisions)
