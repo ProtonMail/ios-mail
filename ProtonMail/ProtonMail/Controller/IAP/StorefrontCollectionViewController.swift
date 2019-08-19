@@ -66,6 +66,9 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             }),
             self.viewModel.observe(\.buyButtonItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
                 self.collectionView.reloadSections(Sections.buyButton.indexSet)
+            }),
+            self.viewModel.observe(\.creditsItem, options: [.new], changeHandler: { [unowned self] viewModel, change in
+                self.collectionView.reloadSections(Sections.credits.indexSet)
             })
         ]
     }
@@ -128,7 +131,12 @@ final class StorefrontCollectionViewController: UICollectionViewController {
 
 extension StorefrontCollectionViewController: StorefrontBuyButtonCellDelegate {
     func buyButtonTapped() {
+        let window = self.view.window
         self.viewModel.buy(successHandler: { [weak self] in
+            if let window = window {
+                ConfettiLayer.fire(on: window, delegate: self)
+                UINotificationFeedbackGenerator.init().notificationOccurred(.success)
+            }
             self?.coordinator.stop()
         }, errorHandler: { error in
             let alert = UIAlertController(title: LocalString._error_occured, message: error.localizedDescription, preferredStyle: .alert)
@@ -154,3 +162,13 @@ extension StorefrontCollectionViewController: CoordinatedNew {
 extension StorefrontCollectionViewController: Coordinated {
     typealias CoordinatorType = ServiceLevelCoordinator
 }
+
+extension StorefrontCollectionViewController: CAAnimationDelegate {
+    func animationDidStop(_ animation: CAAnimation, finished flag: Bool) {
+        if let layer = animation.value(forKey: String(describing: ConfettiLayer.self)) as? CALayer {
+            layer.removeAllAnimations()
+            layer.removeFromSuperlayer()
+        }
+    }
+}
+
