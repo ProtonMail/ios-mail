@@ -1729,7 +1729,7 @@ class LocalizedString {
     
     // Local notifications
     
-    lazy var _message_not_sent_title = NSLocalizedString("Message could not be sent", comment: "Local notification title")
+    lazy var _message_not_sent_title = NSLocalizedString("Problem sending message", comment: "Local notification title")
     
     lazy var _message_not_sent_message = NSLocalizedString("This could happen due to low network connection. The message was saved to Drafts and will be sent automatically once you open the app next time", comment: "Local notification text")
     
