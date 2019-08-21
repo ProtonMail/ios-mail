@@ -69,12 +69,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func currentUserActivity(in scene: UIScene) -> NSUserActivity? {
-        let deeplink = DeepLink("Root")
-        self.coordinator.currentWindow.enumerateViewControllerHierarchy { controller, _ in
-            guard let deeplinkable = controller as? Deeplinkable else { return }
-            deeplink.append(deeplinkable.deeplinkNode)
-        }
-        guard let _ = deeplink.popFirst, let _ = deeplink.head,
+        guard let deeplink = self.coordinator.currentDeepLink() ,
             let data = try? JSONEncoder().encode(deeplink) else
         {
             return scene.userActivity

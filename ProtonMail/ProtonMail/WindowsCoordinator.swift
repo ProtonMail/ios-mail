@@ -214,21 +214,53 @@ class WindowsCoordinator: CoordinatorNew {
     
     // Preserving and Restoring State
     
-    internal func saveForRestoration(_ coder: NSCoder) {
-        guard let root = self.appWindow?.rootViewController else {
-            return
+    func currentDeepLink() -> DeepLink? {
+        let deeplink = DeepLink("Root")
+        self.currentWindow?.enumerateViewControllerHierarchy { controller, _ in
+            guard let deeplinkable = controller as? Deeplinkable else { return }
+            deeplink.append(deeplinkable.deeplinkNode)
         }
-        coder.encodeRootObject(root)
+        guard let _ = deeplink.popFirst, let _ = deeplink.head else {
+            return nil
+        }
+        return deeplink
+    }
+    
+    internal func saveForRestoration(_ coder: NSCoder) {
+        switch UIDevice.current.stateRestorationPolicy {
+        case .deeplink:
+            if let deeplink = self.currentDeepLink(),
+                let data = try? JSONEncoder().encode(deeplink)
+            {
+                coder.encode(data, forKey: "deeplink")
+            }
+            
+        case .coders:
+            guard let root = self.appWindow?.rootViewController else {
+                return
+            }
+            coder.encodeRootObject(root)
+        }
     }
     
     internal func restoreState(_ coder: NSCoder) {
-        // SWRevealViewController is restorable, but not all of its children are
-        guard let root = coder.decodeObject() as? SWRevealViewController,
-            root.frontViewController != nil else
-        {
-            return
+        switch UIDevice.current.stateRestorationPolicy {
+        case .deeplink:
+            if let data = coder.decodeObject(forKey: "deeplink") as? Data,
+                let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+            {
+                self.followDeeplink(deeplink)
+            }
+            
+        case .coders:
+            // SWRevealViewController is restorable, but not all of its children are
+            guard let root = coder.decodeObject() as? SWRevealViewController,
+                root.frontViewController != nil else
+            {
+                return
+            }
+            self.appWindow?.rootViewController = root
         }
-        self.appWindow?.rootViewController = root
     }
     
     internal func followDeeplink(_ deeplink: DeepLink) {
