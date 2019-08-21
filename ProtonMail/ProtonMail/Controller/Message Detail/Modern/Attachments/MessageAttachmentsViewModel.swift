@@ -78,8 +78,8 @@ extension MessageAttachmentsViewModel {
             return
         }
 
-        let decryptor: (Attachment, URL)->Void = {
-            try? self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
+        let decryptor: (Attachment, URL) throws -> Void = {
+            try self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
         }
         
         guard attachmentInfo.isDownloaded, let localURL = attachmentInfo.localUrl else {
@@ -99,12 +99,16 @@ extension MessageAttachmentsViewModel {
             return
         }
         
-        decryptor(attachment, localURL)
+        do {
+            try decryptor(attachment, localURL)
+        } catch let error {
+            fail(error as NSError)
+        }
     }
     
     private func downloadAttachment(_ attachment: Attachment,
                                     progressUpdate setProgress: @escaping (Float)->Void,
-                                    success: @escaping ((Attachment, URL) ->Void ),
+                                    success: @escaping ((Attachment, URL) throws ->Void),
                                     fail: @escaping (NSError)->Void)
     {
         let totalValue = attachment.fileSize.floatValue
@@ -121,7 +125,11 @@ extension MessageAttachmentsViewModel {
                 fail(networkingError!)
                 return
             }
-            success(attachment, url)
+            do {
+                try success(attachment, url)
+            } catch let error {
+                fail(error as NSError)
+            }
         })
     }
     
