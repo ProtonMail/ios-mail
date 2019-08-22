@@ -313,12 +313,13 @@ protocol AttachmentConvertible {
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment?
 }
 
+// THIS IS CALLED FOR CAMERA
 extension UIImage: AttachmentConvertible {
     var dataSize: Int {
         return self.toData().count
     }
     private func toData() -> Data! {
-        return self.jpegData(compressionQuality: 0)
+        return self.jpegData(compressionQuality: 0)?.strippingExif()
     }
     func toAttachment (_ message:Message, fileName : String, type:String) -> Attachment? {
         if let fileData = self.toData() {
@@ -352,6 +353,7 @@ extension UIImage: AttachmentConvertible {
     }
 }
 
+// THIS IS CALLED FOR INLINE AND PHOTO_LIBRARY AND DOCUMENT
 extension Data: AttachmentConvertible {
     var dataSize: Int {
         return self.count
@@ -369,7 +371,7 @@ extension Data: AttachmentConvertible {
         attachment.attachmentID = "0"
         attachment.fileName = fileName
         attachment.mimeType = type
-        attachment.fileData = self
+        attachment.fileData = self.strippingExif()
         attachment.fileSize = self.count as NSNumber
         attachment.isTemp = false
         attachment.keyPacket = ""
@@ -391,6 +393,7 @@ extension Data: AttachmentConvertible {
     }
 }
 
+// THIS IS CALLED FROM SHARE EXTENSION
 extension URL: AttachmentConvertible {
     func toAttachment(_ message: Message, fileName: String, type: String) -> Attachment? {
         guard let context = message.managedObjectContext else {
@@ -405,7 +408,7 @@ extension URL: AttachmentConvertible {
         attachment.fileSize = NSNumber(value: self.dataSize)
         attachment.isTemp = false
         attachment.keyPacket = ""
-        attachment.localURL = self
+        attachment.localURL = self.strippingExif()
         
         attachment.message = message
         
@@ -429,7 +432,4 @@ extension URL: AttachmentConvertible {
         }
         return size.intValue
     }
-    
-    
 }
-
