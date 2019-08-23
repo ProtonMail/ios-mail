@@ -285,6 +285,7 @@ public enum SGItems: Int, CustomStringConvertible {
     case singlePWD = 10
     case notificationsSnooze = 11
     case linkOpeningMode = 12
+    case metadataStripping = 13
     
     public var description : String {
         switch(self){
@@ -304,6 +305,8 @@ public enum SGItems: Int, CustomStringConvertible {
             return LocalString._snooze_notifications
         case .linkOpeningMode:
             return LocalString._request_link_confirmation
+        case .metadataStripping:
+            return LocalString._strip_metadata
         }
     }
 }

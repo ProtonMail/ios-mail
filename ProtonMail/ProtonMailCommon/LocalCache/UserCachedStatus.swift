@@ -75,6 +75,8 @@ final class UserCachedStatus : SharedCacheBase {
         static let currentSubscription = "currentSubscription"
         static let defaultPlanDetails = "defaultPlanDetails"
         static let isIAPAvailableOnBE = "isIAPAvailable"
+        
+        static let metadataStripping = "metadataStripping"
     }
 
     var isForcedLogout : Bool = false
@@ -213,6 +215,8 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.currentSubscription)
         getShared().removeObject(forKey: Key.defaultPlanDetails)
         getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
+        
+        KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
                         
         getShared().synchronize()
     }
@@ -281,9 +285,23 @@ extension UserCachedStatus {
     }
 }
 
+extension UserCachedStatus {
+    var metadataStripping: AttachmentMetadataStripping {
+        get {
+            guard let string = KeychainWrapper.keychain.string(forKey: Key.metadataStripping),
+                let mode = AttachmentMetadataStripping(rawValue: string) else
+            {
+                return .sendAsIs
+            }
+            return mode
+        }
+        set {
+            KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.metadataStripping)
+        }
+    }
+}
 
 #if !APP_EXTENSION
-
 extension UserCachedStatus: ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? {
         get {

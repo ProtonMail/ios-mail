@@ -52,7 +52,7 @@ class LocalizedString {
     // Mark Link Opening Confirmaiton
     lazy var _about_to_open_link = NSLocalizedString("You are about to launch the web browser and navigate to", comment: "link opeining confirmation")
     lazy var _request_link_confirmation = NSLocalizedString("Request Link Confirmation", comment: "link opeining confirmation")
-
+    
     // Mark Settings
 
     /// "%d Minute"
@@ -97,7 +97,8 @@ class LocalizedString {
     lazy var _settings_new_password = NSLocalizedString("New password", comment: "Placeholder")
     /// "Confirm new password"
     lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
-
+    /// "Remove image meta-data"
+    lazy var _strip_metadata = NSLocalizedString("Remove image meta-data", comment: "Settings row")
 
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
