@@ -70,8 +70,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                           pwdHit: "")
         self.updateDraft()
         
+        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         for f in files {
-            self.uploadAtt(f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext))
+            self.uploadAtt(f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata))
         }
         
     }
@@ -116,8 +117,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                     
                     /// add mime attachments if forward
                     if let mimeAtts = msg?.tempAtts {
+                        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                         for mimeAtt in mimeAtts {
-                            if let att = mimeAtt.toAttachment(message: self.message) {
+                            if let att = mimeAtt.toAttachment(message: self.message, stripMetadata: stripMetadata) {
                                 attachments.append(att)
                             }
                         }
@@ -477,7 +479,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             
             // attach key
             if attached == false, let context = msg.managedObjectContext {
-                let attachment = data.toAttachment(msg, fileName: filename, type: "text/plain")
+                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                let attachment = data.toAttachment(msg, fileName: filename, type: "text/plain", stripMetadata: stripMetadata)
                 var error: NSError? = nil
                 error = context.saveUpstreamIfNeeded()
                 if error != nil {

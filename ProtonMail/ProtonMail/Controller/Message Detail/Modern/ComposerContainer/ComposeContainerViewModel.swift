@@ -117,7 +117,8 @@ extension ComposeContainerViewModel: FileImporter, AttachmentController {
             self.showErrorBanner(LocalString._the_total_attachment_size_cant_be_bigger_than_25mb)
             return
         }
-        let attachment = fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext)
+        let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+        let attachment = fileData.contents.toAttachment(self.childViewModel.message!, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata)
         self.childViewModel.uploadAtt(attachment)
     }
 }

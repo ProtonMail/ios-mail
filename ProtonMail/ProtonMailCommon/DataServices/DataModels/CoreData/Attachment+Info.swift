@@ -64,11 +64,11 @@ class AttachmentInline : AttachmentInfo {
         self.localUrl = path
     }
     
-    func toAttachment(message: Message?) -> Attachment? {
+    func toAttachment(message: Message?, stripMetadata: Bool) -> Attachment? {
         if let msg = message, let url = localUrl, let data = try? Data(contentsOf: url) {
             let ext = url.mimeType()
             let fileData = ConcreteFileData<Data>(name: fileName, ext: ext, contents: data)
-            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext)
+            return fileData.contents.toAttachment(msg, fileName: fileData.name, type: fileData.ext, stripMetadata: stripMetadata)
         }
         return nil
     }
