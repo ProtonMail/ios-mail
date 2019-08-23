@@ -354,9 +354,21 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: - State restoration via NSCoders, for iOS 9 - 12 and iOS 13 single window env (iPhone)
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        return UIDevice.current.stateRestorationPolicy == .coders
+        if #available(iOS 13.0, *) {
+            return UIDevice.current.stateRestorationPolicy == .coders
+        } else {
+            // iOS 9-12 with protection still needs coder to support deeplink restoration
+            self.coordinator.saveForRestoration(coder)
+            return true
+        }
     }
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+        if #available(iOS 13.0, *) {
+            // everything is handled by a window scene delegate
+        } else if UIDevice.current.stateRestorationPolicy == .deeplink {
+            self.coordinator.restoreState(coder)
+        }
+        
         return UIDevice.current.stateRestorationPolicy == .coders
     }
     func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
