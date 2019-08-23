@@ -150,7 +150,12 @@ class MenuCoordinatorNew: DefaultCoordinator {
             let mailbox = MailboxCoordinator(rvc: self.viewController?.revealViewController(), vm: vm, services: self.services)
             self.lastestCoordinator = mailbox
             mailbox.start()
-            mailbox.follow(deepLink)
+            
+            // SWRevealViewController needs about 1/2 second to finish its pushFrontViewController(_:animated:) async work
+            // and we can not present modal VCs like composer or search until then
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) {
+                mailbox.follow(deepLink)
+            }
         }
        
     }
