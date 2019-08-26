@@ -176,6 +176,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
 fi
@@ -195,6 +196,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
 fi
@@ -214,6 +216,7 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework"
+  install_framework "${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework"
 fi
