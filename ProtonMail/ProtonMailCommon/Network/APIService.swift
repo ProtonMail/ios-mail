@@ -30,6 +30,7 @@ import CoreData
 import Foundation
 import AFNetworking
 import AFNetworkActivityLogger
+import TrustKit
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
@@ -74,6 +75,14 @@ class APIService {
         #if DEBUG
         sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
+
+        sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
+            var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
+            TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: { (disposition, credential) in
+                dispositionToReturn = disposition
+            })
+            return dispositionToReturn
+        }
         
         setupValueTransforms()
     }

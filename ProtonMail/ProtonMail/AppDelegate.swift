@@ -142,7 +142,7 @@ extension AppDelegate: UIApplicationDelegate {
         #if Enterprise
         Fabric.with([Crashlytics.self])
         #endif
-        
+        TrustKitConfiguration.start()
         Analytics.shared.setup()
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
