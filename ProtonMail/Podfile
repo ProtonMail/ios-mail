@@ -3,7 +3,7 @@
 
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '9.0'
+platform :ios, '10.0'
 
 inhibit_all_warnings!
 use_frameworks!
@@ -38,6 +38,8 @@ def common_pods
     
     pod 'Sentry', '4.1.0'
     pod 'MBProgressHUD' , '1.1.0'
+    
+    pod 'TrustKit', '1.6.2'
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'

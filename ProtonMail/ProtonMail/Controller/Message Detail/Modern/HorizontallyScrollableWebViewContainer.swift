@@ -27,6 +27,7 @@
     
 
 import UIKit
+import TrustKit
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
     internal var webView: WKWebView!
@@ -202,6 +203,10 @@ extension HorizontallyScrollableWebViewContainer: UIGestureRecognizerDelegate {
 extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         self.initialZoom = webView.scrollView.subviews.first?.transform ?? .identity
+    }
+    
+    func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+        TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: completionHandler)
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

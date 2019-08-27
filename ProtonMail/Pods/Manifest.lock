@@ -90,6 +90,7 @@ PODS:
     - Sentry/Core (= 4.1.0)
   - Sentry/Core (4.1.0)
   - SWRevealViewController (2.3.0)
+  - TrustKit (1.6.2)
   - "UIColor+Hex (1.0.1)":
     - "UIColor+Hex/NSColor (= 1.0.1)"
     - "UIColor+Hex/UIColor (= 1.0.1)"
@@ -114,6 +115,7 @@ DEPENDENCIES:
   - PromiseKit (~> 6.0)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
+  - TrustKit (= 1.6.2)
   - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
@@ -137,6 +139,7 @@ SPEC REPOS:
     - SDWebImage
     - Sentry
     - SWRevealViewController
+    - TrustKit
     - "UIColor+Hex"
 
 EXTERNAL SOURCES:
@@ -180,8 +183,9 @@ SPEC CHECKSUMS:
   SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
+  TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 8e1b9e0583d17dc74bd6a5adaa69e1cfb11935cd
+PODFILE CHECKSUM: 9f4e552c1227be53c98c0736d09241dd6fa7e881
 
 COCOAPODS: 1.7.2
