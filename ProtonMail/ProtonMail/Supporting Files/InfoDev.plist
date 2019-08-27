@@ -109,10 +109,17 @@
 	<string>Required for attaching photos to the email.</string>
 	<key>NSUserActivityTypes</key>
 	<array>
+		<string>Handoff.Message</string>
+		<string>RestoreWindow</string>
 		<string>WipeMainKeyIntent</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array/>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<true/>
+	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-peripheral</string>
