@@ -199,10 +199,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         }
     }
     
-    override func cancelAction(_ sender: UIBarButtonItem) {
-        super.cancelAction(sender)
-        self.step = .composingCanceled
-        self.step.insert(.resultAcknowledged)
+    override func cancel() {
+        self.step = [.composingCanceled, .resultAcknowledged]
     }
     
     override func sendMessageStepThree() {
@@ -215,7 +213,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
          self.headerView.ccContactPicker,
          self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
         
-        self.queueObservation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
+        self.queueObservation = sharedMessageQueue.observe(\.queue, options: [.initial]) { [weak self] _, change in
             if sharedMessageQueue.queue.isEmpty {
                 self?.step.insert(.queueIsEmpty)
             }
