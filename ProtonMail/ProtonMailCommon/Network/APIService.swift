@@ -324,6 +324,7 @@ class APIService {
                  path: String, parameters: Any?,
                  headers: [String : Any]?,
                  authenticated: Bool = true,
+                 authRetry: Bool = true,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthCredentialBlock = { auth, error in
@@ -343,7 +344,7 @@ class APIService {
                             httpCode = error.code
                         }
                         
-                        if authenticated && httpCode == 401 {
+                        if authenticated && httpCode == 401 && authRetry {
                             AuthCredential.expireOrClear(auth?.token)
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)

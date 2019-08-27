@@ -179,6 +179,38 @@ final class AuthRequest : ApiRequest<AuthResponse> {
 }
 
 
+final class TwoFARequest : ApiRequestNew<ApiResponse> {
+    
+    var tfacode : String
+    init(code : String) {
+        self.tfacode = code
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = [
+            "TwoFactorCode": tfacode
+        ]
+        return out
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .post
+    }
+    
+    override func authRetry() -> Bool {
+        return false
+    }
+    
+    override func path() -> String {
+        return AuthAPI.path + "/2fa" + Constants.App.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return AuthAPI.v_auth_2fa
+    }
+}
+
+
 // MARK : refresh token
 final class AuthRefreshRequest : ApiRequest<AuthResponse> {
     
@@ -265,6 +297,8 @@ final class AuthResponse : ApiResponse {
     var privateKey : String?
     var keySalt : String?
     
+    var twoFactor : Int = 0
+    
     var isEncryptedToken : Bool {
         return accessToken?.armored ?? false
     }
@@ -285,6 +319,11 @@ final class AuthResponse : ApiResponse {
         self.privateKey = response["PrivateKey"] as? String
         self.keySalt = response["KeySalt"] as? String
         self.refreshToken = response["RefreshToken"] as? String
+        
+        if let twoFA = response["2FA"]  as? [String : Any] {
+            self.twoFactor = twoFA["Enabled"] as? Int ?? 0
+        }
+        
         return true
     }
 }
@@ -296,7 +335,6 @@ final class AuthInfoResponse : ApiResponse {
     var Version : Int = 0
     var Salt : String?
     var SRPSession : String?
-    var TwoFactor : Int = 0   //0 is off
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
         
@@ -305,7 +343,6 @@ final class AuthInfoResponse : ApiResponse {
         self.Version         = response["Version"] as? Int ?? 0
         self.Salt            = response["Salt"] as? String
         self.SRPSession      = response["SRPSession"] as? String
-        self.TwoFactor       = response["TwoFactor"] as? Int ?? 0
         
         return true
     }
