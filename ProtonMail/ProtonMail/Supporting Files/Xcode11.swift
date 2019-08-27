@@ -35,6 +35,8 @@ class UIScene {
     }
     class ConnectionOptions {
         var userActivities: [NSUserActivity] = []
+        var shortcutItem: UIApplicationShortcutItem?
+        var handoffUserActivityType: String?
         
         @available(iOS 10.0, *)
         var notificationResponse: UNNotificationResponse? {
