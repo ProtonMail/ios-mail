@@ -394,7 +394,7 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     // MARK: Shortcuts
-    
+    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void)

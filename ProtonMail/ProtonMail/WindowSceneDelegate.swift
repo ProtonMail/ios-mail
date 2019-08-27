@@ -38,6 +38,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }()
     
+    // in case of Handoff will be called AFTER scene(_:willConnectTo:options:)
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
             let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
@@ -46,22 +47,42 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }
     
+    // will be called by system if app is foreground, otherwise shortcut is passed via scene(_:willConnectTo:options:)
+    func windowScene(_ windowScene: UIWindowScene,
+                     performActionFor shortcutItem: UIApplicationShortcutItem,
+                     completionHandler: @escaping (Bool) -> Void) {
+        if let data = shortcutItem.userInfo?["deeplink"] as? Data,
+            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        {
+            self.coordinator.followDeeplink(deeplink)
+        }
+        completionHandler(true)
+    }
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         self.coordinator.scene = scene
         
         if let userInfo = connectionOptions.notificationResponse?.notification.request.content.userInfo {
-            sharedServices.get(by: PushNotificationService.self).setNotificationOptions(userInfo, fetchCompletionHandler: { /* nothing */ })
+            sharedServices.get(by: PushNotificationService.self)
+                            .setNotificationOptions(userInfo, fetchCompletionHandler: { /* nothing */ })
         }
         
-        if UIDevice.current.stateRestorationPolicy == .deeplink,
-            let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity,
-            let data = userActivity.userInfo?["deeplink"] as? Data,
-            let deeplink = try? JSONDecoder().decode(DeepLink.self, from: data)
+        if let shortcutItem = connectionOptions.shortcutItem,
+            let scene = scene as? UIWindowScene
         {
-            self.coordinator.followDeeplink(deeplink)
-        } else {
-            self.coordinator.start()
+            self.windowScene(scene, performActionFor: shortcutItem, completionHandler: { _ in })
+            return
+        } else if UIDevice.current.stateRestorationPolicy == .deeplink,
+            let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity
+        {
+            self.scene(scene, continue: userActivity)
+            return
+        } else if connectionOptions.handoffUserActivityType == nil {
+            // coordinator will be started by windowScene(_:performActionFor:completionHandler:)
+            return
         }
+        
+        self.coordinator.start()
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
