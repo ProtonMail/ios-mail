@@ -77,7 +77,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         {
             self.scene(scene, continue: userActivity)
             return
-        } else if connectionOptions.handoffUserActivityType == nil {
+        } else if connectionOptions.handoffUserActivityType != nil {
             // coordinator will be started by windowScene(_:performActionFor:completionHandler:)
             return
         }
