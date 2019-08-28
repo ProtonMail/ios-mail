@@ -1232,6 +1232,7 @@
 		AB05E63923057414000C2632 /* ConfettiLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB05E63723057414000C2632 /* ConfettiLayer.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
+		AB8C65912316A528002AAA5E /* Deeplinkable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34198E539CEA034BEB0FDCCE8CAF0FD1 /* Deeplinkable.swift */; };
 		ABAFCED6230EFC1300057FBE /* Attachment+StrippingExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFCED5230EFC1300057FBE /* Attachment+StrippingExif.swift */; };
 		ABAFCED7230EFC1300057FBE /* Attachment+StrippingExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFCED5230EFC1300057FBE /* Attachment+StrippingExif.swift */; };
 		ABAFCED8230EFC1300057FBE /* Attachment+StrippingExif.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABAFCED5230EFC1300057FBE /* Attachment+StrippingExif.swift */; };
@@ -6567,6 +6568,7 @@
 				FD872491C873D8984F81792074ADCD86 /* Blocks.swift in Sources */,
 				B0731B55D2F4ED66AC4B0BA1466499CE /* BugDataService.swift in Sources */,
 				EDB1EC9148B94A061143545276A4B35F /* BugReportCache.swift in Sources */,
+				AB8C65912316A528002AAA5E /* Deeplinkable.swift in Sources */,
 				35B7338B40EDB3BDF20536EDD3772AB3 /* Bundle+Extension.swift in Sources */,
 				A7D4EF076B21C0F2FBD8DD1398A8582E /* CalendarIntervalRule.swift in Sources */,
 				DA7319F2CFC62D1AB70EAF183DBAF47B /* CameraAttachmentProvider.swift in Sources */,
