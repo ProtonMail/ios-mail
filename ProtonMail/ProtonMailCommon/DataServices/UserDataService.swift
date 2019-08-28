@@ -526,7 +526,9 @@ class UserDataService : Service {
     func signOutAfterSignUp() {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            AuthDeleteRequest().call { (task, response, hasError) in
+            let api = AuthDeleteRequest()
+            api.authCredential = authCredential
+            api.call { (task, response, hasError) in
                 
             }
         }
