@@ -110,6 +110,9 @@ struct AuthAPI {
     
     /// revoke other tokens
     static let v_revoke_others : Int = 3
+
+    /// submit 2fa code
+    static let v_auth_2fa : Int = 3
 }
 
 //Contact API

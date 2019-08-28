@@ -74,6 +74,6 @@ extension APIService {
 
     
     internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void
-    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ error : NSError?) -> Void
+    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
 
 }
