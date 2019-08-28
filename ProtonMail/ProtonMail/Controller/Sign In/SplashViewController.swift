@@ -27,6 +27,8 @@
 
 
 import UIKit
+import DeviceCheck
+import PromiseKit
 
 class SplashViewController: UIViewController {
     
@@ -53,8 +55,42 @@ class SplashViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
+    enum TokenError : Error {
+        case unsupport
+        case empty
+        case error
+    }
+    
+    func generateToken() -> Promise<String> {
+        if #available(iOS 11.0, *) {
+            let currentDevice = DCDevice.current
+            if currentDevice.isSupported {
+                let deferred = Promise<String>.pending()
+                currentDevice.generateToken(completionHandler: { (data, error) in
+                    if let tokenData = data {
+                        deferred.resolver.fulfill(tokenData.base64EncodedString())
+                    } else if let error = error {
+                        deferred.resolver.reject(error)
+                    } else {
+                        deferred.resolver.reject(TokenError.empty)
+                    }
+                })
+                return deferred.promise
+            }
+        }
+        return Promise<String>.init(error: TokenError.unsupport)
+    }
+    
     @IBAction func signUpAction(_ sender: UIButton) {
-        self.performSegue(withIdentifier: kSegueToSignUp, sender: self)
+        firstly {
+            generateToken()
+        }.done { (token) in
+            self.performSegue(withIdentifier: self.kSegueToSignUp, sender: token)
+        }.catch { (error) in
+            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func signInAction(_ sender: UIButton) {
@@ -63,8 +99,10 @@ class SplashViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToSignUp {
+            
             let viewController = segue.destination as! SignUpUserNameViewController
-            viewController.viewModel = SignupViewModelImpl()
+             let deviceCheckToken = sender as? String ?? ""
+            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
         }
     }
     

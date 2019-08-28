@@ -33,7 +33,6 @@ import AFNetworkActivityLogger
 import Keymaker
 import UserNotifications
 import Intents
-import DeviceCheck
 
 #if Enterprise
 import Fabric
@@ -174,20 +173,7 @@ extension AppDelegate: UIApplicationDelegate {
         self.coordinator.start()
         return true
     }
-    
-    @available(iOS 11.0, *)
-    func generateToken(){
-        let currentDevice = DCDevice.current
-        if currentDevice.isSupported {
-            currentDevice.generateToken(completionHandler: { (data, error) in
-                DispatchQueue.main.async {
-                    if let tokenData = data {
-                        PMLog.D(tokenData.base64EncodedString())
-                    }
-                }
-            })
-        }
-    }
+
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(window?.rootViewController)

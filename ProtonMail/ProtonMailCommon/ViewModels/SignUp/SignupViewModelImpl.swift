@@ -54,11 +54,15 @@ final class SignupViewModelImpl : SignupViewModel {
     
     fileprivate var direct : [String] = []
     
+    let deviceCheckToken: String
+    
     override func getDirect() -> [String] {
         return direct
     }
     
-    override init() {
+    init(token: String) {
+        self.deviceCheckToken = token
+        
         super.init()
         //register observer
         NotificationCenter.default.addObserver(self,
@@ -192,7 +196,7 @@ final class SignupViewModelImpl : SignupViewModel {
                                             email: self.recoverEmail,
                                             modulusID: moduls_id,
                                             salt: new_salt.encodeBase64(),
-                                            verifer: verifier.encodeBase64())
+                                            verifer: verifier.encodeBase64(), deviceToken: self.deviceCheckToken)
                     api.call({ (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user

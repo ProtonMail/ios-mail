@@ -28,6 +28,8 @@
 
 import UIKit
 import MBProgressHUD
+import DeviceCheck
+import PromiseKit
 
 class SignInViewController: ProtonMailViewController {
     static var isComeBackFromMailbox = false
@@ -349,7 +351,8 @@ class SignInViewController: ProtonMailViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSignUpKeySegue {
             let viewController = segue.destination as! SignUpUserNameViewController
-            viewController.viewModel = SignupViewModelImpl()
+            let deviceCheckToken = sender as? String ?? ""
+            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
         } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
             let viewController = segue.destination as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
@@ -447,9 +450,43 @@ class SignInViewController: ProtonMailViewController {
         self.present(alertController, animated: true, completion: nil)
     }
     
+    enum TokenError : Error {
+        case unsupport
+        case empty
+        case error
+    }
+    
+    func generateToken() -> Promise<String> {
+        if #available(iOS 11.0, *) {
+            let currentDevice = DCDevice.current
+            if currentDevice.isSupported {
+                let deferred = Promise<String>.pending()
+                currentDevice.generateToken(completionHandler: { (data, error) in
+                    if let tokenData = data {
+                        deferred.resolver.fulfill(tokenData.base64EncodedString())
+                    } else if let error = error {
+                        deferred.resolver.reject(error)
+                    } else {
+                        deferred.resolver.reject(TokenError.empty)
+                    }
+                })
+                return deferred.promise
+            }
+        }
+        return Promise<String>.init(error: TokenError.unsupport)
+    }
+    
     @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
-        self.performSegue(withIdentifier: kSignUpKeySegue, sender: self)
+        firstly {
+            generateToken()
+        }.done { (token) in
+            self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
+        }.catch { (error) in
+            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
+            alert.addOKAction()
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
