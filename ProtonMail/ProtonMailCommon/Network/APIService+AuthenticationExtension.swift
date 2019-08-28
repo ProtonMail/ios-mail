@@ -110,7 +110,7 @@ extension APIService {
                 if error.isInternetError() {
                     return completion(nil, nil, .resCheck, nil, NSError.internetError())
                 } else {
-                    return completion(nil, nil, .resCheck, nil, error)
+                    return completion(nil, nil, .resCheck, nil, NSError.authInvalidGrant())
                 }
             }
         } else {

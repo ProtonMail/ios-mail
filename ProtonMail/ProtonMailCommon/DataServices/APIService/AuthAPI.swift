@@ -270,6 +270,10 @@ final class AuthDeleteRequest : ApiRequest<ApiResponse> {
         return true
     }
     
+    override func authRetry() -> Bool {
+        return false
+    }
+    
     override func apiVersion() -> Int {
         return AuthAPI.v_delete_auth
     }
