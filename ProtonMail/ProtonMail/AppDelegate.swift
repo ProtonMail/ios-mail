@@ -101,10 +101,12 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     func onLogout(animated: Bool) {
         if #available(iOS 13.0, *) {
             let sessions = Array(UIApplication.shared.openSessions)
-            (sessions.last?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow)
-            for session in sessions.dropLast() {
+            let oneToStay = sessions.first(where: { $0.scene?.delegate as? WindowSceneDelegate != nil })
+            (oneToStay?.scene?.delegate as? WindowSceneDelegate)?.coordinator.go(dest: .signInWindow)
+            
+            for session in sessions where session != oneToStay {
                 UIApplication.shared.requestSceneSessionDestruction(session, options: nil) { error in
-                    print(error)
+                    PMLog.D(error.localizedDescription)
                 }
             }
         } else {
