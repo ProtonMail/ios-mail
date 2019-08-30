@@ -50,6 +50,7 @@ class ShareExtensionEntry : UINavigationController {
     }
     
     private func setup() {
+        TrustKitConfiguration.start()
         appCoordinator = ShareAppCoordinator(navigation: self)
         sharedAPIService.delegate = self
     }
