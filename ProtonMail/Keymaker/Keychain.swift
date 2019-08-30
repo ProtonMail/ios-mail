@@ -37,7 +37,7 @@ open class Keychain {
         
         var cfString: CFString {
             switch self {
-            case .afterFirstUnlockThisDeviceOnly: return kSecAttrAccessibleAfterFirstUnlock
+                case .afterFirstUnlockThisDeviceOnly: return kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
             }
         }
     }
