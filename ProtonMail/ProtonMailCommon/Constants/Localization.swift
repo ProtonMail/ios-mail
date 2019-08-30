@@ -316,7 +316,8 @@ class LocalizedString {
     lazy var _too_many_recipients_title = NSLocalizedString("Too many recipients", comment: "Alert title")
     /// "The maximum number of Recipients is 25."
     lazy var _max_number_of_recipients_is_number = NSLocalizedString("The maximum number of distinct recipients is %d", comment: "Alert message")
-    
+    /// "Clear Style"
+    lazy var _clear_style = NSLocalizedString("Clear Style", comment: "Menu action to remove text formatting")
     
     // Mark Contacts
 
