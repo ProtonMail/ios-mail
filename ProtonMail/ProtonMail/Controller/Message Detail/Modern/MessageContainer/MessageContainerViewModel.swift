@@ -27,7 +27,7 @@
     
 
 import Foundation
-
+import CoreData
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageContainerViewModel: TableContainerViewModel {
@@ -49,7 +49,11 @@ class MessageContainerViewModel: TableContainerViewModel {
         return activity
     }()
     
-    private(set) var messages: [Message]
+    private(set) var messages: [Message] {
+        didSet {
+            self.thread = messages.map(MessageViewModel.init)
+        }
+    }
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
     private var attachmentsObservation: [NSKeyValueObservation] = []
@@ -73,6 +77,15 @@ class MessageContainerViewModel: TableContainerViewModel {
         self.thread = messages.map(MessageViewModel.init)
         
         super.init()
+        
+        NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: nil, queue: nil) { [weak self] notification in
+            guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet,
+                case let deleted = deletedObjects.compactMap({ $0 as? Message }) else
+            {
+                return
+            }
+            self?.messages.removeAll(where: deleted.contains)
+        }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name.reachabilityChanged, object: nil, queue: nil) { [weak self] notification in
             guard let manager = notification.object as? Reachability,
@@ -232,17 +245,23 @@ class MessageContainerViewModel: TableContainerViewModel {
         
         children.enumerated().forEach { index, child in
             let headObservation = child.head.observe(\.contentsHeight) { [weak self] head, _ in
-                self?.thread[index].heightOfHeader = head.contentsHeight
+                if let singleton = self?.thread.first(where: { $0.messageID == head.parentViewModel.messageID }) {
+                    singleton.heightOfHeader = head.contentsHeight
+                }
             }
             self.observationsHeader.append(headObservation)
             
             let attachmentsObservation = child.attachments.observe(\.contentsHeight) { [weak self] attachments, _ in
-                self?.thread[index].heightOfAttachments = attachments.contentsHeight
+                if let singleton = self?.thread.first(where: { $0.messageID == attachments.parentViewModel.messageID }) {
+                    singleton.heightOfAttachments = attachments.contentsHeight
+                }
             }
             self.observationsHeader.append(attachmentsObservation)
             
             let bodyObservation = child.body.observe(\.contentHeight) { [weak self] body, _ in
-                self?.thread[index].heightOfBody = body.contentHeight
+                if let singleton = self?.thread.first(where: { $0.messageID == body.parentViewModel.messageID }) {
+                    singleton.heightOfBody = body.contentHeight
+                }
             }
             self.observationsHeader.append(bodyObservation)
         }

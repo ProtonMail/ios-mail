@@ -33,7 +33,7 @@ class MessageHeaderViewModel: NSObject {
     @objc dynamic var headerData: HeaderData
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
     private var message: Message
-    private var parentViewModel: MessageViewModel // to keep it alive while observation is valid (otherwise iOS 10 crashes)
+    private(set) var parentViewModel: MessageViewModel 
     private var parentObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
     
