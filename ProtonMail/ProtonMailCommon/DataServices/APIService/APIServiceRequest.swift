@@ -75,6 +75,10 @@ class ApiRequest<T : ApiResponse> : Package {
         return true
     }
     
+    func authRetry() -> Bool {
+        return true
+    }
+    
     var authCredential: AuthCredential?
     
     /**
@@ -125,6 +129,7 @@ class ApiRequest<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: header,
                                  authenticated: self.getIsAuthFunction(),
+                                 authRetry: self.authRetry(),
                                  customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
     }
@@ -171,6 +176,7 @@ class ApiRequest<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
+                                 authRetry: self.authRetry(),
                                  customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
 
@@ -211,6 +217,10 @@ class ApiRequestNew<T : ApiResponse> : Package {
      :returns: default is true
      */
     func getIsAuthFunction() -> Bool {
+        return true
+    }
+    
+    func authRetry() -> Bool {
         return true
     }
     
@@ -268,6 +278,7 @@ class ApiRequestNew<T : ApiResponse> : Package {
                                  parameters: self.toDictionary(),
                                  headers: ["x-pm-apiversion": self.apiVersion()],
                                  authenticated: self.getIsAuthFunction(),
+                                 authRetry: self.authRetry(),
                                  customAuthCredential: self.authCredential,
                                  completion: completionWrapper)
         

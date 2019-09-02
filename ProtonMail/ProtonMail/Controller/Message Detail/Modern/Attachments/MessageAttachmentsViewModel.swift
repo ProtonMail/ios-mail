@@ -78,8 +78,8 @@ extension MessageAttachmentsViewModel {
             return
         }
 
-        let decryptor: (Attachment, URL) throws -> Void = {
-            try self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
+        let decryptor: (Attachment, URL)->Void = {
+            try? self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
         }
         
         guard attachmentInfo.isDownloaded, let localURL = attachmentInfo.localUrl else {

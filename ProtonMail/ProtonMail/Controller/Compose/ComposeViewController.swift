@@ -381,11 +381,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         self.dismiss()
     }
     
+    func cancel() {
+        // overriden in Share
+    }
+    
     func cancelAction(_ sender: UIBarButtonItem) {
         let dismiss: (() -> Void) = {
             self.isShowingConfirm = false
             self.dismissKeyboard()
-            
+            self.cancel()
             self.dismiss()
         }
         

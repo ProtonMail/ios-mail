@@ -463,22 +463,24 @@ class UserDataService : Service {
         mailboxPassword = password
     }
     
-    
+    var authResponse: AuthResponse? = nil
     func signIn(_ username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
                 ask2fa: @escaping LoginAsk2FABlock,
                 onError:@escaping LoginErrorBlock,
                 onSuccess: @escaping LoginSuccessBlock) {
-        // will use standard authCredential
-        sharedAPIService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt) { task, mpwd, status, error in
+        
+        
+        let completionWrapper: APIService.AuthCompleteBlock = { task, mpwd, status, res, error in
             if status == .ask2FA {
                 self.twoFactorStatus = 1
+                self.authResponse = res
                 ask2fa()
             } else {
+                self.authResponse = nil
                 if error == nil {
                     self.username = username
                     self.passwordMode = mpwd != nil ? 1 : 2
                     self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
-                    
                     onSuccess(mpwd)
                 } else {
                     self.twoFactorStatus = 0
@@ -487,7 +489,15 @@ class UserDataService : Service {
                 }
             }
         }
+        
+        if let authRes = authResponse {
+            sharedAPIService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
+        } else {
+            // will use standard authCredential
+            sharedAPIService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
+        }
     }
+
     
     func clean() {
         clearAll()
@@ -501,7 +511,9 @@ class UserDataService : Service {
     func signOut(_ animated: Bool) {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            AuthDeleteRequest().call { (task, response, hasError) in
+            let api = AuthDeleteRequest()
+            api.authCredential = authCredential
+            api.call { (task, response, hasError) in
                 
             }
         }
@@ -514,7 +526,9 @@ class UserDataService : Service {
     func signOutAfterSignUp() {
         sharedVMService.signOut()
         if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            AuthDeleteRequest().call { (task, response, hasError) in
+            let api = AuthDeleteRequest()
+            api.authCredential = authCredential
+            api.call { (task, response, hasError) in
                 
             }
         }

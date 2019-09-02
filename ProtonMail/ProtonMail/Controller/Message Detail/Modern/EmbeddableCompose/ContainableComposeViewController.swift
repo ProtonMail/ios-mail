@@ -159,48 +159,48 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             }
 
             if step.contains(.sendingFinishedSuccessfully) {
-                let alert = UIAlertController(title: "✅", message: LocalString._message_sent_ok_desc, preferredStyle: .alert)
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) {
-                    self.step.insert(.resultAcknowledged)
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
+                    self?.step.insert(.resultAcknowledged)
                 }
+                
+                let alert = UIAlertController(title: "✅", message: LocalString._message_sent_ok_desc, preferredStyle: .alert)
                 self.stepAlert = alert
                 return
             }
             if step.contains(.sendingFinishedWithError) {
                 let alert = UIAlertController(title: "⚠️", message: self.latestError, preferredStyle: .alert)
-                alert.addAction(.init(title: "Ok", style: .default, handler: { _ in self.step = .composing }))
+                alert.addAction(.init(title: "Ok", style: .default, handler: { [weak self] _ in self?.step = .composing }))
                 self.stepAlert = alert
                 return
             }
             if step.contains(.composingCanceled) {
-                self.stepAlert = UIAlertController(title: LocalString._closing_draft,
+                let alert = UIAlertController(title: LocalString._closing_draft,
                                                    message: LocalString._please_wait_in_foreground,
                                                    preferredStyle: .alert)
+                self.stepAlert = alert
                 return
             }
             if step.contains(.sendingStarted) {
-                self.stepAlert = UIAlertController(title: LocalString._sending_message,
-                                                   message: LocalString._please_wait_in_foreground,
-                                                   preferredStyle: .alert)
+                let alert = UIAlertController(title: LocalString._sending_message,
+                                               message: LocalString._please_wait_in_foreground,
+                                               preferredStyle: .alert)
+                
+                self.stepAlert = alert
                 return
             }
         }
     }
     private var stepAlert: UIAlertController? {
-        willSet {
-            self.stepAlert?.dismiss(animated: false)
-        }
         didSet {
+            self.presentedViewController?.dismiss(animated: false)
             if let alert = self.stepAlert {
                 self.present(alert, animated: false, completion: nil)
             }
         }
     }
     
-    override func cancelAction(_ value: UIBarButtonItem) {
-        super.cancelAction(value)
-        self.step = .composingCanceled
-        self.step.insert(.resultAcknowledged)
+    override func cancel() {
+        self.step = [.composingCanceled, .resultAcknowledged]
     }
     
     override func sendMessageStepThree() {
@@ -213,7 +213,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
          self.headerView.ccContactPicker,
          self.headerView.bccContactPicker].forEach{ $0.prepareForDesctruction() }
         
-        self.queueObservation = sharedMessageQueue.observe(\.queue) { [weak self] _, change in
+        self.queueObservation = sharedMessageQueue.observe(\.queue, options: [.initial]) { [weak self] _, change in
             if sharedMessageQueue.queue.isEmpty {
                 self?.step.insert(.queueIsEmpty)
             }
@@ -226,6 +226,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
                 view.transform = CGAffineTransform(translationX: 0, y: view.frame.size.height)
             }
         }
+        self.stepAlert = nil
         keymaker.lockTheApp()
         UIView.animate(withDuration: 0.25, animations: animationBlock) { _ in
             self.extensionContext?.completeRequest(returningItems: nil, completionHandler: nil)
