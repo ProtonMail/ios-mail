@@ -381,6 +381,15 @@ extension AppDelegate: UIApplicationDelegate {
         return config
     }
     
+    @available(iOS 13.0, *)
+    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
+        sceneSessions.forEach { session in
+            // TODO: check that this discards state restoration for scenes explicitely closed by user
+            session.stateRestorationActivity = nil
+            session.scene?.userActivity = nil
+        }
+    }
+    
     // MARK: Shortcuts
     @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
