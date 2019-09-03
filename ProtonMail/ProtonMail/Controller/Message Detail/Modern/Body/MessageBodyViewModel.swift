@@ -30,7 +30,7 @@ import Foundation
 
 class MessageBodyViewModel: NSObject {
     @objc internal dynamic var contents: WebContents?
-    private var parentViewModel: MessageViewModel // to keep it alive while observation is valid (otherwise iOS 10 crashes)
+    private(set) var parentViewModel: MessageViewModel
     private var bodyObservation: NSKeyValueObservation!
     private var remoteContentModeObservation: NSKeyValueObservation!
     @objc internal dynamic var contentHeight: CGFloat = 0.0

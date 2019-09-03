@@ -101,6 +101,10 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         self.controller = controller
     }
     
+    deinit {
+        self.observationThread = nil
+    }
+    
     private var tempClearFileURL: URL?
     
     internal func go(to destination: Destinations, sender: Any? = nil) {
@@ -112,9 +116,16 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     private var headerControllers: [UIViewController] = []
     private var bodyControllers: [UIViewController] = []
     private var attachmentsControllers: [UIViewController] = []
+    private var observationThread: NSKeyValueObservation?
 
     internal func createChildControllers(with viewModel: MessageContainerViewModel) {
         let children = viewModel.children()
+        
+        self.observationThread = viewModel.observe(\.thread) { [weak self] viewModel, change in
+            // TODO: remove children one by one for threads mode support
+            guard viewModel.thread.isEmpty else { return }
+            (self?.viewController ?? self?.controller)?.navigationController?.popViewController(animated: true)
+        }
         
         // TODO: good place for generics
         self.bodyControllers = []

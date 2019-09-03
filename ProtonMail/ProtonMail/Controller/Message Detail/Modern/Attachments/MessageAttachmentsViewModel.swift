@@ -32,7 +32,7 @@ class MessageAttachmentsViewModel: NSObject {
     @objc internal dynamic var attachments: [AttachmentInfo] = []
     @objc internal dynamic var contentsHeight: CGFloat = 0.0
     private var observation: NSKeyValueObservation!
-    private var parentViewModel: MessageViewModel // to keep it alive while observation is valid (otherwise iOS 10 crashes)
+    private(set) var parentViewModel: MessageViewModel
     
     init(parentViewModel: MessageViewModel) {
         self.parentViewModel = parentViewModel
