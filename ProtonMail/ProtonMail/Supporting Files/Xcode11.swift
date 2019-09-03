@@ -13,7 +13,7 @@ import UserNotifications
 
 protocol UIWindowSceneDelegate {}
 
-class UISceneSession: Equatable {
+class UISceneSession: Equatable, Hashable {
     static func == (lhs: UISceneSession, rhs: UISceneSession) -> Bool {
         return true
     }
@@ -22,6 +22,9 @@ class UISceneSession: Equatable {
     var stateRestorationActivity: NSUserActivity?
     var scene: UIScene?
     var role: Any?
+    func hash(into hasher: inout Hasher) {
+        // nothing
+    }
 }
 
 class UISceneConfiguration {
