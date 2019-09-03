@@ -110,7 +110,9 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.coordinator.didEnterBackground()
         
         // app gone background if all of scenes are background
-        if nil == UIApplication.shared.openSessions.first(where: { $0.scene?.activationState != .background }) {
+        if UIApplication.shared.applicationState == .background ||
+            nil == UIApplication.shared.openSessions.compactMap({ $0.scene }).first(where: { $0.activationState != .background })
+        {
             UIApplication.shared.delegate?.applicationDidEnterBackground?(UIApplication.shared)
         }
     }
