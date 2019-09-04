@@ -125,7 +125,6 @@
 		11AE97BE6898744D1DCB05522E091E22 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A4A5F1C9B9B429AB005131084CC1554 /* KeychainWrapper.swift */; };
 		11BEB9D5DE45AA1D834BE054C6C46B81 /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
 		11CD2AA862685F9B1925B05E2DBBE2FC /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3EA17FDE88C464B5F52A70C225CF21 /* SplashViewController.swift */; };
-		12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
 		1271DC63F29907F20E0886920C06E9B5 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
 		127EAD5DA05AB2EF41D0AD4B67288794 /* TrustKitConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */; };
 		128160C6FF148EBB77A4E415CAA291FD /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
@@ -339,7 +338,6 @@
 		2F1983B849F7F6830ADAF76EA259D7AE /* APIService+DefinedExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA0DEAAB391C18DAF3910013F144972 /* APIService+DefinedExtension.swift */; };
 		2F211EF4B1DA4084D00E2876EA24ED52 /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B47C3DCD77DFACE40B083CBEB41E9C /* ViewModelBase.swift */; };
 		2F237A02D8C011B5EB238A04F4DEE1AD /* PinCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE94FE1BA9AF24B47D7D08A72823DA5 /* PinCodeViewController.swift */; };
-		2F3C7B8F4D939F36A4DCDF721D3F80C4 /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
 		2F502E26FF1CB0F6178CA27F2FF94E92 /* HtmlEditor.css in Resources */ = {isa = PBXBuildFile; fileRef = 2578888155BF3E4AF87B99D68D9528F7 /* HtmlEditor.css */; };
 		2F618045DBE921A12C76C5F56D4A846C /* UserNotificationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C1C49FACBAAF24D0FEE27BBB85179CA /* UserNotificationsUI.framework */; };
 		2F7D50043538AEA6F099AD68936A45B5 /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */; };
@@ -924,7 +922,6 @@
 		7EAD6E217711F97035777A0ADCA49746 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
 		7EAECA11D556F2E77BCBA829E0385696 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ADC95EBCE3934AB4F7E4DFB4B0E00AF /* NotificationViewController.swift */; };
 		7EB06624D8E9D302234817347D6CABBE /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A720409B6462B993801F2D1E8AA88D /* UIImageView+Extension.swift */; };
-		7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
 		7F50760C2B01B539E1D1F0F6AA11F14C /* ServicePlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */; };
 		7F8A712DEBBDFA0860FDA29AFE58BA41 /* Contact.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F998300BF1488833A537930F5E9187A4 /* Contact.storyboard */; };
 		7FB275FD11B3B51AD8ED3725509FFFB7 /* TimePickerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E77368B93333AC4EFB38D113EE990299 /* TimePickerViewController.xib */; };
@@ -977,7 +974,6 @@
 		85A9AB89CD1730B38A8D623AB0FB6990 /* NotificationName.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A790589C2185C0BBD7B5BDC105E151 /* NotificationName.swift */; };
 		85B46969E0A0B414E1A357DB80B4482C /* Attachment.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */; };
 		85EF0EAC287F2007DD442A3AD0FF6027 /* PushNotificationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEA5CC47D17DE50456969093A92E02FD /* PushNotificationServiceTests.swift */; };
-		8651FE846584F084635142A3048A4FBD /* flags.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */; };
 		867A6015D967A842B339E58C7CAE1BFF /* HtmlEditor.js in Resources */ = {isa = PBXBuildFile; fileRef = A6C04767BA1CE507C0BA14CCD593576F /* HtmlEditor.js */; };
 		86D2AC337551D1DA0F9C9DF4B4AA5F87 /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DF425774FBF5566AC74C2E3EBE83 /* ContactCollectionViewEntryCell.swift */; };
 		86D4BCE044FF8D29FC0B242850B7023E /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0742E240B9FDE75FE62CBCAA2789AF /* Address.swift */; };
@@ -5148,7 +5144,6 @@
 				976A39293A310ABEC19194E79D3C376D /* SignIn.storyboard in Resources */,
 				7CE6047A859D926F1ABCFA0A3B7592DC /* backup.css in Resources */,
 				20BDE0BE0904FEE3B3C4A92E9173A06A /* editor.css in Resources */,
-				2F3C7B8F4D939F36A4DCDF721D3F80C4 /* flags.bundle in Resources */,
 				118DCF6124767E388997EED96B6261CF /* phone_country_code.geojson in Resources */,
 				353C76548EFD3FD29DA2D1CC87DF9EE2 /* purify.min.js in Resources */,
 				DFA6F56AE07D7985C94AB6D44E4DA7B3 /* test_html.html in Resources */,
@@ -5246,7 +5241,6 @@
 				9FB2B7F49425717BB9D6166C5CCA7EDA /* TwoFACodeView.xib in Resources */,
 				AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */,
 				D52C6389F6A71C017C60A4D6CB086CB2 /* editor.css in Resources */,
-				7F4DB1E710BF83F55E5E42F9272D22D2 /* flags.bundle in Resources */,
 				CAD2F312EE677EFF26ACDB2B9F0C9615 /* phone_country_code.geojson in Resources */,
 				746EA1028C65A1D811A05787C3E51CB2 /* purify.min.js in Resources */,
 				FE30BBCE5BD74EAA31C07030F8D2C5CA /* test_html.html in Resources */,
@@ -5318,7 +5312,6 @@
 				6F1E3C588B0AD6D7319DF83EF8237C4C /* TwoFACodeView.xib in Resources */,
 				BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */,
 				CCB1C5AFBD562C8C633860687936ED5C /* editor.css in Resources */,
-				12275B665E2028C1E94B54C064EFB51C /* flags.bundle in Resources */,
 				38FBA82B3B38DC4B7262C39122E45CE9 /* phone_country_code.geojson in Resources */,
 				23F67E7389A9F29D8B488D2A2C658DFD /* purify.min.js in Resources */,
 				2E89DBD8BBFFEA0DFB17E3F2E9E51311 /* test_html.html in Resources */,
@@ -5393,7 +5386,6 @@
 				5A6855663102EC324474A755DC034B9D /* SignIn.storyboard in Resources */,
 				20E4123A31CCA836BAEF69FC775BCB2F /* backup.css in Resources */,
 				13994C5C41A68EF791656462769BFFF4 /* editor.css in Resources */,
-				8651FE846584F084635142A3048A4FBD /* flags.bundle in Resources */,
 				8C4EBC5FF98D963986D59A071BD2176E /* phone_country_code.geojson in Resources */,
 				BC699662711B5D42383578C99E311A25 /* purify.min.js in Resources */,
 				FCFC1724C3A150EA4F36764A519795DB /* test_html.html in Resources */,
