@@ -276,6 +276,7 @@ fileprivate class ViewBlowingAfterTouch: UIView {
         let target = super.hitTest(point, with: event)
         if target == self {
             self.blow()
+            return nil
         }
         return target
     }
