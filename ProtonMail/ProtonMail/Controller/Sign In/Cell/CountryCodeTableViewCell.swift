@@ -30,7 +30,7 @@ import UIKit
 
 class CountryCodeTableViewCell : UITableViewCell {
     
-    @IBOutlet weak var flagImage: UIImageView!
+    @IBOutlet weak var flagImage: UIImageView! // no longer used, replaced by flag emoji in v1.11.12
     @IBOutlet weak var countryLabel: UILabel!
     @IBOutlet weak var codeLabel: UILabel!
     
@@ -50,17 +50,21 @@ class CountryCodeTableViewCell : UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        if var frame = imageView?.frame {
-            frame.origin.x = 0
-            frame.size.width = 24
-            imageView?.frame = frame
-        }
     }
     
     func ConfigCell(_ countryCode : CountryCode, vc : UIViewController) {
-        let image = UIImage(named: "flags.bundle/\(countryCode.country_code)" )
-        imageView?.image = image
-        countryLabel.text = countryCode.country_en
+        countryLabel.text = self.flag(countryCode.country_code) + " " + countryCode.country_en
         codeLabel.text = "+ \(countryCode.phone_code)"
+    }
+    
+    private func flag(_ country:String) -> String {
+        let base : UInt32 = 127397 // start of Unicode range of flags https://en.wikipedia.org/wiki/Regional_Indicator_Symbol
+        var s = ""
+        for v in country.uppercased().unicodeScalars {
+            if let scalar = UnicodeScalar(base + v.value) {
+                s.unicodeScalars.append(scalar)
+            }
+        }
+        return s
     }
 }
