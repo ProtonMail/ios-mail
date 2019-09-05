@@ -295,3 +295,36 @@ html_editor.createUUID = function() {
     var uuid = s.join("");
     return uuid;
 }
+
+html_editor.formattingTags = ['b', 'strong', 'i', 'em', 'mark', 'u', 'sub', 'sup', 'del', 'ins', 'big', 'small'];
+html_editor.clearNodeStyling = function(node) {
+    if (node.removeAttribute) {
+        node.removeAttribute("style");
+    }
+
+    if (html_editor.formattingTags.indexOf(node.nodeName.toLowerCase()) != -1) { 
+        // replace parent with its inner value
+        var span = document.createElement('span');
+        span.innerHTML = node.innerHTML;
+        node.parentElement.replaceChild(span, node);
+    }
+}
+
+html_editor.removeStyleFromSelection = function() {
+    var selection = window.getSelection().getRangeAt(0).commonAncestorContainer;
+
+    // clear all parents
+    var current = selection;
+    while (current != null && current != undefined) {
+        var parent = current.parentElement;
+        html_editor.clearNodeStyling(current);
+        current = parent;
+    }
+
+    // clear all children of first ancestor
+    var siblings = selection.querySelectorAll("*");
+    for (var i = siblings.length - 1; i >= 0 ; i--) {
+        html_editor.clearNodeStyling(siblings[i]);
+    }
+}
+

@@ -49,6 +49,12 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             (self.viewModel as! ContainableComposeViewModel).contentHeight = totalHeight
         }
         
+        NotificationCenter.default.addObserver(forName: UIMenuController.willShowMenuNotification, object: nil, queue: nil) { [weak self] notification in
+            guard let self = self else { return }
+            let saveMenuItem = UIMenuItem(title: LocalString._clear_style, action: #selector(self.removeStyleFromSelection))
+            UIMenuController.shared.menuItems = [saveMenuItem]
+        }
+        
         // notifications
         #if APP_EXTENSION
         NotificationCenter.default.addObserver(forName: NSError.errorOccuredNotification, object: nil, queue: nil) { [weak self] notification in
@@ -61,6 +67,10 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
         #endif
     }
     
+    @objc func removeStyleFromSelection() {
+        self.htmlEditor.removeStyleFromSelection()
+    }
+    
     override func shouldDefaultObserveContentSizeChanges() -> Bool {
         return false
     }
@@ -68,6 +78,8 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     deinit {
         self.heightObservation = nil
         self.queueObservation = nil
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func caretMovedTo(_ offset: CGPoint) {

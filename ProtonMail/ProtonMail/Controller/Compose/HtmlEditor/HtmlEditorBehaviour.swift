@@ -292,6 +292,17 @@ class HtmlEditorBehaviour: NSObject {
         return self.run(with: "html_editor.removeEmbedImage('');")
     }
     
+    func removeStyleFromSelection() {
+        firstly { () -> Promise<Void> in
+            return self.run(with: "html_editor.removeStyleFromSelection();")
+        }.then {
+            self.run(with: "html_editor.getCaretYPosition();")
+        }.done {
+            // nothing
+        }.catch { _ in
+            // nothing
+        }
+    }
 }
 
 extension HtmlEditorBehaviour {
