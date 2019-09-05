@@ -438,11 +438,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     internal func beginRefreshingManually(animated: Bool) {
         if animated {
             self.refreshControl.beginRefreshing()
-            if (self.tableView.contentOffset.y == 0) {
-                UIView.animate(withDuration: 0.25, animations: {
-                    self.tableView.contentOffset = CGPoint(x: 0, y: -self.refreshControl.frame.size.height)
-                })
-            }
         }
     }
     
@@ -792,19 +787,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 if loadMore > 0 {
                      self.retry()
                 } else {
-                    let state = self.refreshControl.isRefreshing
-                    self.refreshControl.endRefreshing()
+                    // artificial delay to make refreshControl animation roll longer when Internet is too fast
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) { [weak self] in
+                        self?.refreshControl?.endRefreshing()
+                    }
+                    
                     if self.fetchingStopped! == true {
                         return
                     }
                     self.showNoResultLabel()
                     let _ = self.checkHuman()
-                    
-                    UIView.animate(withDuration: 0.25, animations: {
-                        if state {
-                            self.tableView.contentOffset = CGPoint(x: 0, y: 0)
-                        }
-                    })
                     
                     //temperay to check message status and fetch metadata
                     sharedMessageDataService.purgeOldMessages()

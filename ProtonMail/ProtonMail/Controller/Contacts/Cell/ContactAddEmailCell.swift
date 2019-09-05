@@ -79,6 +79,7 @@ extension ContactAddEmailCell: UITextFieldDelegate {
     }
     
     func textFieldDidEndEditing(_ textField: UITextField)  {
+        textField.text = textField.text?.trim()
         email.newEmail = valueField.text!
     }
 }
