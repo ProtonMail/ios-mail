@@ -310,7 +310,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     @objc internal func willResignActiveNotification (_ notify: Notification) {
         self.autoSaveTimer()
-        dismissKeyboard()
     }
 
     @IBAction func sendAction(_ sender: AnyObject) {

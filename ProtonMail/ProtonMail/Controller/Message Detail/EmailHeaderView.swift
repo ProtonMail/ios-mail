@@ -434,12 +434,14 @@ class EmailHeaderView: UIView {
         self.emailBcc.attributedText = bccShortAttr
         
         self.emailFavoriteButton.isSelected = self.starred
-        self.emailFavoriteButton.accessibilityLabel = self.starred ? "Starred" : "Add Star"
+        self.emailFavoriteButton.accessibilityLabel = self.starred ? LocalString._starred : LocalString._locations_add_star_action
         
         let timeformat = using12hClockFormat() ? k12HourMinuteFormat : k24HourMinuteFormat
+        let isToday = Calendar.current.isDateInToday(self.date)
         let at = LocalString._general_at_label
-        self.emailShortTime.text = "\(at) \(self.date.string(format:timeformat))".lowercased()
-        let tm = self.date.formattedWith("'\(LocalString._composer_on)' EE, MMM d, yyyy '\(at)' \(timeformat)")
+        let on = LocalString._composer_on
+        self.emailShortTime.text = "\(isToday ? at : on) \(self.date.string(format: isToday ? timeformat : "MMM d"))"
+        let tm = self.date.formattedWith("'\(on)' EE, MMM d, yyyy '\(at)' \(timeformat)")
         self.emailDetailDateLabel.text = String(format: LocalString._date, "\(tm)")
 
         var tmplabels : [Label] = []
