@@ -49,10 +49,10 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func finishLockCheck()
 }
 
-class ContactPicker: UIView, WindowOverlayDelegate {
+class ContactPicker: UIView {
     private var keyboardFrame: CGRect = .zero
-    private var searchWindow: WindowOverlay?
     private var searchTableViewController: ContactSearchTableViewController?
+    
     private func createSearchTableViewController() -> ContactSearchTableViewController {
         let controller = ContactSearchTableViewController()
         controller.tableView.register(UINib.init(nibName: ContactPickerDefined.ContactsTableViewCellName,
@@ -85,7 +85,6 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         
         if notification.name == UIResponder.keyboardWillHideNotification {
             self.keyboardFrame = .zero
-            self.searchWindow?.frame = self.frameForContactSearch
         }
     }
     
@@ -139,8 +138,7 @@ class ContactPicker: UIView, WindowOverlayDelegate {
     
     // this can not be done in deinit cuz Share Extension freaks out when subwindow is deinitialized after host window
     func prepareForDesctruction() {
-        self.searchWindow?.removeFromSuperview()
-        self.searchWindow = nil
+        // nothing
     }
     
     private func setup() {
@@ -177,10 +175,6 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardShown(_:)),
                                                name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(hideSearchTableView),
-                                               name: UIDevice.orientationDidChangeNotification,
                                                object: nil)
     }
     
@@ -332,48 +326,20 @@ class ContactPicker: UIView, WindowOverlayDelegate {
         }
         guard self.searchTableViewController == nil else { return }
         self.searchTableViewController = self.createSearchTableViewController()
-        self.searchWindow?.frame = self.frameForContactSearch
-        self.searchWindow = self.searchWindow ?? WindowOverlay(frame: self.frameForContactSearch)
-        if #available(iOS 13.0, *) {
-            self.searchWindow?.windowScene = self.window?.windowScene
-        }
-        self.searchWindow?.rootViewController = self.searchTableViewController
-        self.searchWindow?.isHidden = false
-        self.searchWindow?.windowLevel = UIWindow.Level.normal
-        self.searchWindow?.delegate = self
+        self.searchTableViewController?.modalPresentationStyle = .popover
+        self.searchTableViewController?.popoverPresentationController?.delegate = self
+        self.searchTableViewController?.preferredContentSize = CGSize(width: Double.infinity, height: Double.infinity)
 
-        if #available(iOS 10.0, *) { // iOS 10-12, extension
-        #if APP_EXTENSION
-            // this line is needed for Share Extension only: extension's UI is presented in private _UIHostedWindow and we should add new window to it's hierarchy explicitly
-            self.window?.addSubview(searchWindow!)
-            self.searchWindow?.frame = self.frameForContactSearch
-        #endif
-        } else { // iOS 9, app and extension
-            self.window?.addSubview(searchWindow!)
-        }
-        
+        self.delegate?.present(self.searchTableViewController!, animated: true, completion: nil)
         self.delegate?.didShowFilteredContactsForContactPicker(contactPicker: self)
     }
-
-    @objc internal func hideSearchTableView() {
+    
+    internal func hideSearchTableView() {
         guard let _ = self.searchTableViewController else { return }
-        self.searchTableViewController = nil
-        self.searchWindow?.rootViewController = nil
-        
-        if #available(iOS 13.0, *) { // iOS 13
-            // iOS 13 freaks out when hiding window, so we're just removing rootViewController and make window transparent for touches
-        } else if #available(iOS 10.0, *) { // iOS 10-12, app
-        #if APP_EXTENSION
-            // in extenison window is strongly held by _UIHostedWindow and we can not change that since removeFromSuperview() does not work properly, so we'll just reuse same window all over again
-            self.searchWindow?.isHidden = true
-        #else
-            // in the app we can re-create new windows many times
-            self.searchWindow = nil
-        #endif
-        } else { // iOS 9, app and extension
-            self.searchWindow = nil
+        self.searchTableViewController?.dismiss(animated: true) {
+            self.searchTableViewController = nil
         }
-        
+
         self.delegate?.didHideFilteredContactsForContactPicker(contactPicker: self)
     }
     
@@ -390,6 +356,58 @@ class ContactPicker: UIView, WindowOverlayDelegate {
     }
 }
 
+extension ContactPicker : UIPopoverPresentationControllerDelegate {
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        popoverPresentationController.sourceView = self
+        popoverPresentationController.sourceRect = self.bounds
+        popoverPresentationController.canOverlapSourceViewRect = false
+        popoverPresentationController.popoverBackgroundViewClass = NoMarginsPopoverBackgroundView.self
+    }
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        self.searchTableViewController = nil
+    }
+    
+    final class NoMarginsPopoverBackgroundView: UIPopoverBackgroundView {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            self.layer.shadowColor = UIColor.clear.cgColor
+        }
+        
+        required init?(coder aDecoder: NSCoder) {
+            super.init(coder: aDecoder)
+        }
+        
+        override var arrowOffset: CGFloat {
+            get { return 0.0 }
+            set { }
+        }
+        
+        override var arrowDirection: UIPopoverArrowDirection {
+            get { return [] }
+            set { }
+        }
+        
+        override class func contentViewInsets() -> UIEdgeInsets {
+            return .init(top: 0, left: -10, bottom: -10, right: -10)
+        }
+        
+        override class func arrowBase() -> CGFloat {
+            return 0.0
+        }
+        
+        override class func arrowHeight() -> CGFloat {
+            return 0.0
+        }
+    }
+}
 
 //
 //#pragma mark - ContactCollectionViewDelegate
@@ -472,30 +490,5 @@ extension ContactPicker : ContactCollectionViewDelegate {
     
     internal func collectionView(at: ContactCollectionView, pasted text: String, needFocus focus: Bool) {
         self.delegate?.contactPicker(picker: self, pasted: text, needFocus: focus)
-    }
-}
-
-protocol WindowOverlayDelegate: class {
-    func hideSearchTableView()
-    func resignFirstResponder() -> Bool
-}
-
-@available(iOS, deprecated: 13.0, message: "iPadOS 13 does not treat UIWindow.isHidden toggling gracefully")
-class WindowOverlay: UIWindow {
-    weak var delegate: WindowOverlayDelegate?
-    
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        // iOS 13 can not hide the window, so we're removing its rootViewController in hideSearchTableView() and make it transparent for touches here
-        guard self.rootViewController != nil else {
-            return nil
-        }
-        
-        // point is given in window's coordinates, we're closing it if tapped in area above window (because below window is a keyboard and ios 11 freaks out)
-        if !self.isHidden, point.y < 0 {
-            let _ = self.delegate?.resignFirstResponder()
-            self.delegate?.hideSearchTableView()
-        }
-        
-        return super.hitTest(point, with: event)
     }
 }
