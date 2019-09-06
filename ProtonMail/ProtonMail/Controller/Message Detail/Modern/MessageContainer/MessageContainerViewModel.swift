@@ -242,6 +242,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     private func subscribe(toUpdatesOf children: [ChildViewModelPack]) {
         self.observationsHeader = []
         self.observationsBody = []
+        self.attachmentsObservation = []
         
         children.enumerated().forEach { index, child in
             let headObservation = child.head.observe(\.contentsHeight) { [weak self] head, _ in
@@ -256,14 +257,14 @@ class MessageContainerViewModel: TableContainerViewModel {
                     singleton.heightOfAttachments = attachments.contentsHeight
                 }
             }
-            self.observationsHeader.append(attachmentsObservation)
+            self.attachmentsObservation.append(attachmentsObservation)
             
             let bodyObservation = child.body.observe(\.contentHeight) { [weak self] body, _ in
                 if let singleton = self?.thread.first(where: { $0.messageID == body.parentViewModel.messageID }) {
                     singleton.heightOfBody = body.contentHeight
                 }
             }
-            self.observationsHeader.append(bodyObservation)
+            self.observationsBody.append(bodyObservation)
         }
     }
     

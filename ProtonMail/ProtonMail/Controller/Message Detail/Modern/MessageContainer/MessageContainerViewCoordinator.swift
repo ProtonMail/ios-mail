@@ -102,6 +102,11 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     }
     
     deinit {
+        self.stop()
+    }
+    
+    func stop() {
+        // break ViewModel observations before it is destroyed to prevent crash on iOS 9-10
         self.observationThread = nil
     }
     

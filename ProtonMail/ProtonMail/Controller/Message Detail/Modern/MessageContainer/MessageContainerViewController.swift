@@ -149,9 +149,10 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     }
     
     deinit {
-        self.viewModel?.userActivity.invalidate()
-        self.standalonesObservation = []
         self.threadObservation = nil
+        self.standalonesObservation = []
+        self.coordinator.stop()
+        self.viewModel?.userActivity.invalidate()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
