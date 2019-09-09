@@ -44,14 +44,12 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
             super.drawContentForPage(at: pageIndex, in: contentRect)
             guard pageIndex == 0 else { return }
             if let context = UIGraphicsGetCurrentContext() {
-                DispatchQueue.main.async {
-                    self.view.frame = contentRect
-                    self.view.layoutIfNeeded()
-                    
-                    context.translateBy(x: contentRect.origin.x, y: contentRect.origin.y)
-                    self.view.layer.render(in: context)
-                    context.translateBy(x: -contentRect.origin.x, y: -contentRect.origin.y)
-                }
+                self.view.frame = contentRect
+                self.view.layoutIfNeeded()
+                
+                context.translateBy(x: contentRect.origin.x, y: contentRect.origin.y)
+                self.view.layer.render(in: context)
+                context.translateBy(x: -contentRect.origin.x, y: -contentRect.origin.y)
             }
         }
     }
@@ -68,9 +66,9 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     
     override func drawPrintFormatter(_ printFormatter: UIPrintFormatter, forPageAt pageIndex: Int) {
         if pageIndex == 0 {
-            printFormatter.contentInsets = UIEdgeInsets.init(top: self.header?.contentSize.height ?? 0, left: 0, bottom: 0, right: 0)
+            printFormatter.perPageContentInsets = UIEdgeInsets(top: self.header?.contentSize.height ?? 0, left: 0, bottom: 0, right: 0)
             super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
-            printFormatter.contentInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
+            printFormatter.perPageContentInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         } else {
             super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
         }
