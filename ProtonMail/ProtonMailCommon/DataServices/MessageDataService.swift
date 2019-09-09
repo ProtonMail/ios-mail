@@ -2276,6 +2276,7 @@ class MessageDataService : Service {
                         break
                     }
                     sharedUserDataService.setFromEvents(address: parsedAddr)
+                    let _ = sharedUserDataService.activeUserKeys().result
                 default:
                     PMLog.D(" unknown type in message: \(address)")
                 }

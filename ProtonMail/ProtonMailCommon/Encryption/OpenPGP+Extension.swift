@@ -53,6 +53,7 @@ extension CryptoPmCrypto {
                                private_key: new_private_key,
                                token: nil,
                                signature: nil,
+                               activation: nil,
                                isupdated: true)
                 outKeys.append(newK)
             } catch {
@@ -60,6 +61,7 @@ extension CryptoPmCrypto {
                                private_key: okey.private_key,
                                token: nil,
                                signature: nil,
+                               activation: nil,
                                isupdated: false)
                 outKeys.append(newK)
             }
@@ -98,6 +100,7 @@ extension CryptoPmCrypto {
                                    private_key: new_private_key,
                                    token: nil,
                                    signature: nil,
+                                   activation: nil,
                                    isupdated: true)
                     outKeys.append(newK)
                 } catch {
@@ -105,6 +108,7 @@ extension CryptoPmCrypto {
                                    private_key: okey.private_key,
                                    token: nil,
                                    signature: nil,
+                                   activation: nil,
                                    isupdated: false)
                     outKeys.append(newK)
                 }

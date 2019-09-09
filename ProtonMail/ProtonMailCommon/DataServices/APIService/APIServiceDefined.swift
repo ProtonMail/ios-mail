@@ -209,6 +209,9 @@ struct KeysAPI {
     
     /// Get public keys [GET]
     static let v_get_emails_pub_key : Int = 3
+    
+    /// Activate newly-provisioned member key [PUT]
+    static let v_activate_key : Int = 3
 }
 
 //Labels API

@@ -345,3 +345,44 @@ final class SetupKeyRequest : ApiRequest<ApiResponse> {
         return KeysAPI.v_setup_key
     }
 }
+
+
+
+
+//MARK : active a key when Activation is not null
+final class ActivateKey : ApiRequestNew<ApiResponse> {
+    
+    let addressID : String
+    let privateKey : String
+    let signedKeyList: [String: Any]
+    
+    init(addrID: String, privKey : String, signedKL : [String: Any]) {
+        self.addressID = addrID
+        self.privateKey = privKey
+        self.signedKeyList = signedKL
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String: Any] = [
+            "PrivateKey" : self.privateKey,
+            "SignedKeyList" : self.signedKeyList
+        ]
+        PMLog.D(out.json(prettyPrinted: true))
+        return out
+    }
+    
+    override func method() -> APIService.HTTPMethod {
+        return .put
+    }
+    
+    override func path() -> String {
+        return KeysAPI.path + "/address/" + addressID + Constants.App.DEBUG_OPTION
+    }
+    
+    override func apiVersion() -> Int {
+        return KeysAPI.v_activate_key
+    }
+}
+
+
+
