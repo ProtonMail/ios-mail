@@ -50,15 +50,6 @@ extension Message {
     }
     
     // MARK: - variables
-    var allEmailAddresses: String {
-        let lists: [String] = self.allEmails
-        if lists.isEmpty {
-            return ""
-        }
-        return lists.joined(separator: ",")
-    }
-    
-    // MARK: - variables
     var allEmails: [String] {
         var lists: [String] = []
         
@@ -284,14 +275,6 @@ extension Message {
 
     var subject : String {
         return title
-    }
-    
-    var displaySender : String {
-        get {
-            let sc = senderContactVO
-            return sc!.name.isEmpty ?  sc!.email : sc!.name
-        }
-        
     }
     
     // MARK: - methods

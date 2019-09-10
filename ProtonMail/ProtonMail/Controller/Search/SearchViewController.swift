@@ -38,7 +38,7 @@ class SearchViewController: ProtonMailViewController {
     @IBOutlet weak var cancelButton: UIButton!
     
     // MARK: - Private Constants
-    
+    private lazy var replacingEmails = sharedContactDataService.allEmails()
     fileprivate let kAnimationDuration: TimeInterval = 0.3
     fileprivate let kSearchCellHeight: CGFloat = 64.0
     fileprivate let kCellIdentifier: String = "SearchedCell"
@@ -355,7 +355,7 @@ extension SearchViewController: UITableViewDataSource {
         }
         
         let message = self.searchResult[indexPath.row]
-        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "")
+        mailboxCell.configureCell(message, showLocation: true, ignoredTitle: "", replacingEmails: replacingEmails)
         return mailboxCell
     }
     
