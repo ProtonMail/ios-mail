@@ -398,10 +398,57 @@ class UserDataService : Service {
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
             
             self.userInfo = userRes.userInfo
+            
+            try await(self.activeUserKeys() )
+            
             return self.userInfo
         }
     }
-
+    
+    func activeUserKeys() -> Promise<Void> {
+        return async {
+            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
+                return
+            }
+            let addresses = user.userAddresses
+            for addr in addresses {
+                for index in 0 ..< addr.keys.count {
+                    let key = addr.keys[index]
+                    if let activtion = key.activation {
+                        let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd)
+                        let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(key.private_key,
+                        oldPassphrase: token,
+                        newPassphrase: pwd)
+                        let keylist : [[String: Any]] = [[
+                            "Fingerprint" :  key.fingerprint,
+                            "Primary" : 1,
+                            "Flags" : 3
+                            ]]
+                        let jsonKeylist = keylist.json()
+                        let signed = try! sharedOpenPGP.signTextDetached(jsonKeylist,
+                                                                         privateKey: new_private_key,
+                                                                         passphrase: pwd,
+                                                                         trim: true)
+                        let signedKeyList : [String: Any] = [
+                            "Data" : jsonKeylist,
+                            "Signature" : signed
+                        ]
+                        let api = ActivateKey(addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
+                        let userSettingsRes = try await(api.run())
+                        if userSettingsRes.code == 1000 {
+                            addr.keys[index].activation = nil
+                            addr.keys[index].private_key = new_private_key
+                            self.userInfo = user
+                        }
+                    }
+                }
+            }
+            return 
+        }
+    }
+    enum MyErrorType : Error {
+        case SomeError
+    }
     //
     func updateFromEvents(userInfo: [String : Any]?) {
         if let userData = userInfo {

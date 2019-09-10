@@ -36,12 +36,15 @@ final class Key : NSObject {
     var is_updated : Bool = false
     var keyflags : Int = 0
     
-     //key migration step 1 08/01/2019
+    //key migration step 1 08/01/2019
     var token : String?
     var signature : String?
     
+    //old activetion flow
+    var activation : String? // armed pgp msg, token encrypted by user's public key and
+    
     required init(key_id: String?, private_key: String?,
-                  token: String?, signature: String?,
+                  token: String?, signature: String?, activation: String?,
                   isupdated: Bool) {
         self.key_id = key_id ?? ""
         self.private_key = private_key ?? ""
@@ -49,6 +52,8 @@ final class Key : NSObject {
         
         self.token = token
         self.signature = signature
+        
+        self.activation = activation
     }
     
     var publicKey : String {
@@ -74,6 +79,8 @@ extension Key: NSCoding {
         
         static let Token     = "Key.Token"
         static let Signature = "Key.Signature"
+        //
+        static let Activation = "Key.Activation"
     }
     
     static func unarchive(_ data: Data?) -> [Key]? {
@@ -88,6 +95,7 @@ extension Key: NSCoding {
             private_key: aDecoder.decodeStringForKey(CoderKey.privateKey),
             token: aDecoder.decodeStringForKey(CoderKey.Token),
             signature: aDecoder.decodeStringForKey(CoderKey.Signature),
+            activation: aDecoder.decodeStringForKey(CoderKey.Activation),
             isupdated: false)
     }
     
@@ -98,6 +106,9 @@ extension Key: NSCoding {
         //new added
         aCoder.encode(token, forKey: CoderKey.Token)
         aCoder.encode(signature, forKey: CoderKey.Signature)
+        
+        //
+        aCoder.encode(activation, forKey: CoderKey.Activation)
         
         //TODO:: fingerprintKey is deprecated, need to "remove and clean"
         aCoder.encode("", forKey: CoderKey.fingerprintKey)

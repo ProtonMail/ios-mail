@@ -150,6 +150,7 @@ final class AddressesResponse : ApiResponse {
                     private_key: key_res["PrivateKey"] as? String,
                     token: key_res["Token"] as? String,
                     signature: key_res["Signature"] as? String,
+                    activation: key_res["Activation"] as? String,
                     isupdated: false))
             }
         }
