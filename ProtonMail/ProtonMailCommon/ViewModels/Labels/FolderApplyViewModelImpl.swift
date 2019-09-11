@@ -151,7 +151,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        return sharedLabelsDataService.fetchedResultsController(.folder)
+        return sharedLabelsDataService.fetchedResultsController(.folderWithDefaults)
     }
     
     

@@ -38,6 +38,7 @@ enum LabelFetchType : Int {
     case label = 1
     case folder = 2
     case contactGroup = 3
+    case folderWithDefaults = 4
 }
 
 class LabelsDataService {
@@ -106,6 +107,13 @@ class LabelsDataService {
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
         case .folder:
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .folderWithDefaults:
+            let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
+            // custom folders like in previous (LabelFetchType.folder) case
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            
+            fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
+            
         case .label:
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
         case .contactGroup:
@@ -138,6 +146,14 @@ class LabelsDataService {
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
         case .folder:
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .folderWithDefaults:
+            // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
+            let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
+            // custom folders like in previous (LabelFetchType.folder) case
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            
+            fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
+            
         case .label:
             fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
         case .contactGroup:
