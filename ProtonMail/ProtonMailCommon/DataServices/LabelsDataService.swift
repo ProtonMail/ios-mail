@@ -38,7 +38,8 @@ enum LabelFetchType : Int {
     case label = 1
     case folder = 2
     case contactGroup = 3
-    case folderWithDefaults = 4
+    case folderWithInbox = 4
+    case folderWithOutbox = 5
 }
 
 class LabelsDataService {
@@ -102,24 +103,7 @@ class LabelsDataService {
     
     func getAllLabels(of type : LabelFetchType) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-        switch type {
-        case .all:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
-        case .folder:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-        case .folderWithDefaults:
-            let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
-            // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-            
-            fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
-            
-        case .label:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-        case .contactGroup:
-            // in contact group searching, predicate must be consistent with this one
-            fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
-        }
+        fetchRequest.predicate = self.fetchRequestPrecidate(type)
         
         let context = sharedCoreDataService.mainManagedObjectContext
         do {
@@ -140,26 +124,7 @@ class LabelsDataService {
     func fetchedResultsController(_ type : LabelFetchType) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = sharedCoreDataService.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-        
-        switch type {
-        case .all:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
-        case .folder:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-        case .folderWithDefaults:
-            // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
-            let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
-            // custom folders like in previous (LabelFetchType.folder) case
-            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-            
-            fetchRequest.predicate = NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
-            
-        case .label:
-            fetchRequest.predicate = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
-        case .contactGroup:
-            // in contact group searching, predicate must be consistent with this one
-            fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
-        }
+        fetchRequest.predicate = self.fetchRequestPrecidate(type)
         
         if type != .contactGroup {
             fetchRequest.sortDescriptors = [NSSortDescriptor(key: Label.Attributes.order, ascending: true)]
@@ -170,6 +135,34 @@ class LabelsDataService {
             fetchRequest.sortDescriptors = [strComp]
         }
         return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: moc, sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
+    private func fetchRequestPrecidate(_ type: LabelFetchType) -> NSPredicate {
+        switch type {
+        case .all:
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1)", "(?!^\\d+$)^.+$", Label.Attributes.type)
+        case .folder:
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .folderWithInbox:
+            // 0 - inbox, 6 - archive, 3 - trash, 4 - spam
+            let defaults = NSPredicate(format: "labelID IN %@", [0, 6, 3, 4])
+            // custom folders like in previous (LabelFetchType.folder) case
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            
+            return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
+        case .folderWithOutbox:
+            // 7 - sent, 6 - archive, 3 - trash
+            let defaults = NSPredicate(format: "labelID IN %@", [6, 7, 3])
+            // custom folders like in previous (LabelFetchType.folder) case
+            let folder = NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == true) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+            
+            return NSCompoundPredicate(orPredicateWithSubpredicates: [defaults, folder])
+        case .label:
+            return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) ", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive)
+        case .contactGroup:
+            // in contact group searching, predicate must be consistent with this one
+            return NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+        }
     }
     
     func addNewLabel(_ response : [String : Any]?) {

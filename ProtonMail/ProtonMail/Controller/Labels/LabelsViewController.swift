@@ -116,7 +116,7 @@ class LablesViewController : UIViewController {
             addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
             addLabelButton.isHidden = false
             addFolderButton.isHidden = true
-        case .folder, .folderWithDefaults:
+        case .folder, .folderWithInbox, .folderWithOutbox:
             middleLineConstraint.priority = UILayoutPriority(rawValue: 750)
             addFolderCenterConstraint.priority = UILayoutPriority(rawValue: 1000)
             addLabelCenterConstraint.priority = UILayoutPriority(rawValue: 750)
@@ -258,7 +258,7 @@ extension LablesViewController: UITableViewDelegate {
             {
             case .all, .label:
                 tableView.reloadRows(at: [indexPath], with: .automatic)
-            case .folder, .folderWithDefaults:
+            case .folder, .folderWithInbox, .folderWithOutbox:
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)) { () -> Void in
                     tableView.reloadData()
                 }
