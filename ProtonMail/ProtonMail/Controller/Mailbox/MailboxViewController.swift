@@ -75,6 +75,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
+    private lazy var replacingEmails = sharedContactDataService.allEmails()
     private var messageID: String? // this is for when user click the notification email
     private var listEditing: Bool = false
     private var timer : Timer!
@@ -507,8 +508,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard let message = self.viewModel.item(index: indexPath) else {
             return
         }
-        
-        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
+        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle(), replacingEmails: replacingEmails)
         mailboxCell.setCellIsChecked(self.selectedIDs.contains(message.messageID))
         if (self.listEditing) {
             mailboxCell.showCheckboxOnLeftSide()
