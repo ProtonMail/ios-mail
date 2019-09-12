@@ -123,7 +123,14 @@ class LabelTableViewCell: UITableViewCell {
                 editButton.isEnabled = false
             }
             
-            let w = labelView.setText(model.label.name, color: UIColor(hexString: model.label.color, alpha: 1.0))
+            var name = model.label.name
+            var color =  UIColor(hexString: model.label.color, alpha: 1.0)
+            if let location = Message.Location.init(rawValue: model.label.labelID) {
+                name = location.title
+                color = .black
+            }
+            
+            let w = labelView.setText(name, color: color)
             let check = self.frame.width - offset
             
             labelWidth.constant = w > check ? check : w
