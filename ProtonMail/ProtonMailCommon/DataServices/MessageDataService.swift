@@ -550,14 +550,13 @@ class MessageDataService : Service {
     
     
     //
-    func emptyTrash() {
-        if Message.delete(location: .trash) {
-            queue(.emptyTrash)
-        }
+    func empty(location: Message.Location) {
+        self.empty(labelID: location.rawValue)
     }
-    func emptySpam() {
-        if Message.delete(location: .spam) {
-            queue(.emptySpam)
+    
+    func empty(labelID: String) {
+        if Message.delete(labelID: labelID) {
+            queue(.empty, data1: labelID)
         }
     }
     
@@ -1345,7 +1344,11 @@ class MessageDataService : Service {
             completion?(nil, nil, nil)
             return
         }
-        let api = EmptyMessage(labelID: location.rawValue)
+        self.empty(labelID: location.rawValue, completion: completion)
+    }
+    
+    private func empty(labelID: String, completion: CompletionBlock?) {
+        let api = EmptyMessage(labelID: labelID)
         api.call({ (task, response, hasError) -> Void in
             completion?(task, nil, nil)
         })
@@ -1871,10 +1874,12 @@ class MessageDataService : Service {
                     self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: completeHandler)
                 case .send:
                     self.send(byID: messageID, writeQueueUUID: uuid, completion: completeHandler)
-                case .emptyTrash:
+                case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
                     self.empty(at: .trash, completion: completeHandler)
-                case .emptySpam:
+                case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
                     self.empty(at: .spam, completion: completeHandler)
+                case .empty:
+                    self.empty(labelID: data1, completion: completeHandler)
                 case .read, .unread:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
                 case .delete:
