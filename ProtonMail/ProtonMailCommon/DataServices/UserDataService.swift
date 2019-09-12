@@ -1051,6 +1051,7 @@ class UserDataService : Service {
         twoFactorStatus = 0
         passwordMode = 2
         keymaker.wipeMainKey()
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectoryUrl)
     }
     
     func clearAuthToken() {

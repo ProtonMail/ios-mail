@@ -61,6 +61,7 @@ class MessageAttachmentsCoordinator: NSObject {
         
         let previewQL = QuickViewViewController()
         previewQL.dataSource = self
+        previewQL.delegate = self
         self.controller?.present(previewQL, animated: true, completion: nil)
     }
 }
@@ -76,7 +77,6 @@ extension MessageAttachmentsCoordinator: QLPreviewControllerDataSource, QLPrevie
     }
     
     func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        /* Should we remove the clearfile here? */
         try? FileManager.default.removeItem(at: self.tempClearFileURL!)
         self.tempClearFileURL = nil
     }
