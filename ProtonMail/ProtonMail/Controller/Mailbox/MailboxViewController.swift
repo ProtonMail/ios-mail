@@ -359,7 +359,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if viewModel.isShowEmptyFolder() {
             let locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default]
             for (location, style) in locations {
-                if !viewModel.isCurrentLocation(location) {
+                if !viewModel.isCurrentLocation(location), !self.selectedIDs.isEmpty {
                     alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
                         self.moveMessages(to: location)
                         self.cancelButtonTapped()
