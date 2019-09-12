@@ -415,20 +415,17 @@ class UserDataService : Service {
                 for index in 0 ..< addr.keys.count {
                     let key = addr.keys[index]
                     if let activtion = key.activation {
-                        let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd)
-                        let new_private_key = try sharedOpenPGP.updatePrivateKeyPassphrase(key.private_key,
-                        oldPassphrase: token,
-                        newPassphrase: pwd)
+                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
+                            continue
+                        }
+                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
                         let keylist : [[String: Any]] = [[
                             "Fingerprint" :  key.fingerprint,
                             "Primary" : 1,
                             "Flags" : 3
                             ]]
                         let jsonKeylist = keylist.json()
-                        let signed = try! sharedOpenPGP.signTextDetached(jsonKeylist,
-                                                                         privateKey: new_private_key,
-                                                                         passphrase: pwd,
-                                                                         trim: true)
+                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
                         let signedKeyList : [String: Any] = [
                             "Data" : jsonKeylist,
                             "Signature" : signed
@@ -732,10 +729,13 @@ class UserDataService : Service {
                     }
                     
                     let srpClient = try auth.generateProofs(2048)
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
                     
                     do {
-                        let updatePwd = try UpdateLoginPassword(clientEphemeral: srpClient.clientEphemeral().encodeBase64(),
-                                                                clientProof: srpClient.clientProof().encodeBase64(),
+                        let updatePwd = try UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                clientProof: clientProof.encodeBase64(),
                                                                 SRPSession: session,
                                                                 modulusID: moduls_id,
                                                                 salt: new_salt.encodeBase64(),
@@ -782,15 +782,15 @@ class UserDataService : Service {
         {//asyn
             do {
                 //generat keysalt
-                let new_mpwd_salt : Data = try sharedOpenPGP.randomToken(with: 16)
+                let new_mpwd_salt : Data = try Crypto.random(byte: 16)
                 //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
                 let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password,
                                                                        salt: new_mpwd_salt)
                 
-                let updated_address_keys = try CryptoPmCrypto.updateAddrKeysPassword(user_info.userAddresses,
-                                                                                     old_pass: old_password,
-                                                                                     new_pass: new_hashed_mpwd)
-                let updated_userlevel_keys = try CryptoPmCrypto.updateKeysPassword(user_info.userKeys,
+                let updated_address_keys = try Crypto.updateAddrKeysPassword(user_info.userAddresses,
+                                                                             old_pass: old_password,
+                                                                             new_pass: new_hashed_mpwd)
+                let updated_userlevel_keys = try Crypto.updateKeysPassword(user_info.userKeys,
                                                                                    old_pass: old_password,
                                                                                    new_pass: new_hashed_mpwd)
                 var new_org_key : String?
@@ -800,9 +800,9 @@ class UserDataService : Service {
                     let cur_org_key = try GetOrgKeys().syncCall()
                     if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
                         do {
-                            new_org_key = try sharedOpenPGP.updatePrivateKeyPassphrase(org_priv_key,
-                                                                                       oldPassphrase: old_password,
-                                                                                       newPassphrase: new_hashed_mpwd)
+                            new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
+                                                                      oldPassphrase: old_password,
+                                                                      newPassphrase: new_hashed_mpwd)
                         } catch {
                             //ignore it for now.
                         }
@@ -852,10 +852,13 @@ class UserDataService : Service {
                         throw UpdatePasswordError.cantHashPassword.error
                     }
                     let srpClient = try auth.generateProofs(2048)
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
                     
                     do {
-                        let update_res = try UpdatePrivateKeyRequest(clientEphemeral: srpClient.clientEphemeral().encodeBase64(),
-                                                                     clientProof:srpClient.clientProof().encodeBase64(),
+                        let update_res = try UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                     clientProof:clientProof.encodeBase64(),
                                                                      SRPSession: session,
                                                                      keySalt: new_mpwd_salt.encodeBase64(),
                                                                      userlevelKeys: updated_userlevel_keys,
@@ -971,10 +974,13 @@ class UserDataService : Service {
                     }
                     
                     let srpClient = try auth.generateProofs(2048)
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
                     
                     do {
-                        let updatetNotifyEmailRes = try UpdateNotificationEmail(clientEphemeral: srpClient.clientEphemeral().encodeBase64(),
-                                                                                clientProof: srpClient.clientProof().encodeBase64(),
+                        let updatetNotifyEmailRes = try UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                                clientProof: clientProof.encodeBase64(),
                                                                                 sRPSession: session,
                                                                                 notificationEmail: new_notification_email,
                                                                                 tfaCode: twoFACode,

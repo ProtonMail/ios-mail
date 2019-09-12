@@ -7,6 +7,7 @@
 #define __Srp_H__
 
 @import Foundation;
+#include "ref.h"
 #include "Universe.objc.h"
 
 
@@ -20,9 +21,9 @@
  */
 @interface SrpAuth : NSObject <goSeqRefInterface> {
 }
-@property(strong, readonly) id _ref;
+@property(strong, readonly) _Nonnull id _ref;
 
-- (instancetype)initWithRef:(id)ref;
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
 /**
  * NewAuth Creates new Auth from strings input. Salt and server ephemeral are in
 base64 format. Modulus is base64 with signature attached. The signature is
@@ -41,7 +42,7 @@ Usage:
 Warnings:
 	 - Be carefull! Poos can hurt.
  */
-- (instancetype)init:(long)version username:(NSString*)username password:(NSString*)password salt:(NSString*)salt signedModulus:(NSString*)signedModulus serverEphemeral:(NSString*)serverEphemeral;
+- (nullable instancetype)init:(long)version username:(NSString* _Nullable)username password:(NSString* _Nullable)password salt:(NSString* _Nullable)salt signedModulus:(NSString* _Nullable)signedModulus serverEphemeral:(NSString* _Nullable)serverEphemeral;
 /**
  * NewAuthForVerifier Creates new Auth from strings input. Salt and server ephemeral are in
 base64 format. Modulus is base64 with signature attached. The signature is
@@ -60,21 +61,18 @@ Usage:
 Warnings:
 	 - none.
  */
-- (instancetype)initForVerifier:(NSString*)password signedModulus:(NSString*)signedModulus rawSalt:(NSData*)rawSalt;
-- (NSData*)modulus;
-- (void)setModulus:(NSData*)v;
-- (NSData*)serverEphemeral;
-- (void)setServerEphemeral:(NSData*)v;
-- (NSData*)hashedPassword;
-- (void)setHashedPassword:(NSData*)v;
+- (nullable instancetype)initForVerifier:(NSString* _Nullable)password signedModulus:(NSString* _Nullable)signedModulus rawSalt:(NSData* _Nullable)rawSalt;
+@property (nonatomic) NSData* _Nullable modulus;
+@property (nonatomic) NSData* _Nullable serverEphemeral;
+@property (nonatomic) NSData* _Nullable hashedPassword;
 /**
  * GenerateProofs calculates SPR proofs.
  */
-- (SrpProofs*)generateProofs:(long)bitLength error:(NSError**)error;
+- (SrpProofs* _Nullable)generateProofs:(long)bitLength error:(NSError* _Nullable* _Nullable)error;
 /**
  * GenerateVerifier verifier for update pwds and create accounts
  */
-- (NSData*)generateVerifier:(long)bitLength error:(NSError**)error;
+- (NSData* _Nullable)generateVerifier:(long)bitLength error:(NSError* _Nullable* _Nullable)error;
 @end
 
 /**
@@ -85,34 +83,33 @@ ExpectedServerProof []byte
  */
 @interface SrpProofs : NSObject <goSeqRefInterface> {
 }
-@property(strong, readonly) id _ref;
+@property(strong, readonly) _Nonnull id _ref;
 
-- (instancetype)initWithRef:(id)ref;
-- (instancetype)init;
-- (NSData*)clientProof;
-- (void)setClientProof:(NSData*)v;
-- (NSData*)clientEphemeral;
-- (void)setClientEphemeral:(NSData*)v;
-- (NSData*)expectedServerProof;
-- (void)setExpectedServerProof:(NSData*)v;
+- (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nonnull instancetype)init;
+@property (nonatomic) NSData* _Nullable clientProof;
+@property (nonatomic) NSData* _Nullable clientEphemeral;
+@property (nonatomic) NSData* _Nullable expectedServerProof;
 @end
 
 @interface Srp : NSObject
 /**
  * ErrDataAfterModulus found extra data after decode the modulus
  */
-+ (NSError*) errDataAfterModulus;
-+ (void) setErrDataAfterModulus:(NSError*)v;
++ (NSError* _Nullable) errDataAfterModulus;
++ (void) setErrDataAfterModulus:(NSError* _Nullable)v;
 
 /**
  * ErrInvalidSignature invalid modulus signature
  */
-+ (NSError*) errInvalidSignature;
-+ (void) setErrInvalidSignature:(NSError*)v;
++ (NSError* _Nullable) errInvalidSignature;
++ (void) setErrInvalidSignature:(NSError* _Nullable)v;
+
+// skipped variable RandReader with unsupported type: io.Reader
 
 @end
 
-FOUNDATION_EXPORT NSString* SrpGetModulusKey(void);
+FOUNDATION_EXPORT NSString* _Nonnull SrpGetModulusKey(void);
 
 /**
  * HashPassword returns the hash of password argument. Based on version number
@@ -120,7 +117,7 @@ following arguments are used in addition to password:
 * 0, 1, 2: userName and modulus
 * 3, 4: salt and modulus
  */
-FOUNDATION_EXPORT NSData* SrpHashPassword(long authVersion, NSString* password, NSString* userName, NSData* salt, NSData* modulus, NSError** error);
+FOUNDATION_EXPORT NSData* _Nullable SrpHashPassword(long authVersion, NSString* _Nullable password, NSString* _Nullable userName, NSData* _Nullable salt, NSData* _Nullable modulus, NSError* _Nullable* _Nullable error);
 
 /**
  * MailboxPassword get mailbox password hash
@@ -132,7 +129,7 @@ Returns:
   - hashed string: a hashed password
   - err error: throw error
  */
-FOUNDATION_EXPORT NSString* SrpMailboxPassword(NSString* password, NSData* salt, NSError** error);
+FOUNDATION_EXPORT NSString* _Nonnull SrpMailboxPassword(NSString* _Nullable password, NSData* _Nullable salt, NSError* _Nullable* _Nullable error);
 
 /**
  * NewAuth Creates new Auth from strings input. Salt and server ephemeral are in
@@ -152,7 +149,7 @@ Usage:
 Warnings:
 	 - Be carefull! Poos can hurt.
  */
-FOUNDATION_EXPORT SrpAuth* SrpNewAuth(long version, NSString* username, NSString* password, NSString* salt, NSString* signedModulus, NSString* serverEphemeral, NSError** error);
+FOUNDATION_EXPORT SrpAuth* _Nullable SrpNewAuth(long version, NSString* _Nullable username, NSString* _Nullable password, NSString* _Nullable salt, NSString* _Nullable signedModulus, NSString* _Nullable serverEphemeral, NSError* _Nullable* _Nullable error);
 
 /**
  * NewAuthForVerifier Creates new Auth from strings input. Salt and server ephemeral are in
@@ -172,12 +169,12 @@ Usage:
 Warnings:
 	 - none.
  */
-FOUNDATION_EXPORT SrpAuth* SrpNewAuthForVerifier(NSString* password, NSString* signedModulus, NSData* rawSalt, NSError** error);
+FOUNDATION_EXPORT SrpAuth* _Nullable SrpNewAuthForVerifier(NSString* _Nullable password, NSString* _Nullable signedModulus, NSData* _Nullable rawSalt, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT NSData* SrpRandomBits(long bits, NSError** error);
+FOUNDATION_EXPORT NSData* _Nullable SrpRandomBits(long bits, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT NSData* SrpRandomBytes(long byes, NSError** error);
+FOUNDATION_EXPORT NSData* _Nullable SrpRandomBytes(long byes, NSError* _Nullable* _Nullable error);
 
-FOUNDATION_EXPORT NSString* SrpVersionNumber(void);
+FOUNDATION_EXPORT NSString* _Nonnull SrpVersionNumber(void);
 
 #endif

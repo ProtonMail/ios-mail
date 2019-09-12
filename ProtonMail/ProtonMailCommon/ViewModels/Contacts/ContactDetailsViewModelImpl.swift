@@ -198,14 +198,13 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     if let userkeys = sharedUserDataService.userInfo?.userKeys {
                         for key in userkeys {
                             do {
-                                var ok = ObjCBool(false)
-                                let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
-                                                                                 plainText: c.data,
-                                                                                 publicKey: key.publicKey,
-                                                                                 verifyTime: 0, ret0_: &ok)
-                                self.verifyType2 = ok.boolValue
+                                let verifyStatus = try Crypto().verifyDetached(signature: c.sign,
+                                                                               plainText: c.data,
+                                                                               publicKey: key.publicKey,
+                                                                               verifyTime: 0)
+                                self.verifyType2 = verifyStatus
                                 if self.verifyType2 {
-                                    if !KeyCheckPassphrase(key.private_key, sharedUserDataService.mailboxPassword!) {
+                                    if !key.private_key.check(passphrase: sharedUserDataService.mailboxPassword!) {
                                         self.verifyType2 = false
                                     }
                                     break
@@ -265,13 +264,11 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     }
                     
                     do {
-                        var ok = ObjCBool(false)
-                        let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
-                                                                         plainText: pt_contact_vcard,
-                                                                         publicKey: key.publicKey,
-                                                                         verifyTime: 0,
-                                                                         ret0_: &ok)
-                        self.verifyType3 = ok.boolValue
+                        let verifyStatus = try Crypto().verifyDetached(signature: c.sign,
+                                                                       plainText: pt_contact_vcard,
+                                                                       publicKey: key.publicKey,
+                                                                       verifyTime: 0)
+                        self.verifyType3 = verifyStatus
                     } catch {
                         self.verifyType3 = false
                     }

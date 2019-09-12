@@ -253,11 +253,9 @@ class ContactImportViewController: UIViewController {
                                 guard let vcard2Str = try vcard2.write() else {
                                     continue
                                 }
-                                
-                                let signed_vcard2 = try sharedOpenPGP.signTextDetached(vcard2Str,
-                                                                                       privateKey: userkey.private_key,
-                                                                                       passphrase: mailboxPassword,
-                                                                                       trim: true)
+                                let signed_vcard2 = try Crypto().signDetached(plainData: vcard2Str,
+                                                                              privateKey: userkey.private_key,
+                                                                              passphrase: mailboxPassword)
                                 
                                 //card 2 object
                                 let card2 = CardData(t: .SignedOnly, d: vcard2Str, s: signed_vcard2)
@@ -273,10 +271,9 @@ class ContactImportViewController: UIViewController {
                                     continue
                                 }
                                 let encrypted_vcard3 = try vcard3Str.encrypt(withPubKey: userkey.publicKey, privateKey: "", passphrase: "")
-                                let signed_vcard3 = try sharedOpenPGP.signTextDetached(vcard3Str,
-                                                                                       privateKey: userkey.private_key,
-                                                                                       passphrase: mailboxPassword,
-                                                                                       trim: true)
+                                let signed_vcard3 = try Crypto().signDetached(plainData: vcard3Str,
+                                                                              privateKey: userkey.private_key,
+                                                                              passphrase: mailboxPassword)
                                 //card 3 object
                                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3 ?? "", s: signed_vcard3)
                                 

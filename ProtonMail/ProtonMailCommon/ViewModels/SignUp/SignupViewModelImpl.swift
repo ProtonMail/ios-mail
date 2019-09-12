@@ -244,21 +244,20 @@ final class SignupViewModelImpl : SignupViewModel {
                                                                         verifer: verifier_for_key.encodeBase64())
                                             
                                             
-                                            guard let fingerprint = KeyGetFingerprint(key, nil) else {
+                                            guard !key.fingerprint.isEmpty else {
                                                 //TODO:: change to a key error
                                                 throw SignUpCreateUserError.cantHashPassword.error
                                             }
                                             let keylist : [[String: Any]] = [[
-                                                "Fingerprint" :  fingerprint,
+                                                "Fingerprint" :  key.fingerprint,
                                                 "Primary" : 1,
                                                 "Flags" : 3
                                             ]]
                                             
                                             let jsonKeylist = keylist.json()
-                                            let signed = try! sharedOpenPGP.signTextDetached(jsonKeylist,
-                                                                                                    privateKey: key,
-                                                                                                    passphrase: self.keypwd_with_keysalt,
-                                                                                                    trim: true)
+                                            let signed = try! Crypto().signDetached(plainData: jsonKeylist,
+                                                                                    privateKey: key,
+                                                                                    passphrase: self.keypwd_with_keysalt)
                                             let signedKeyList : [String: Any] = [
                                                 "Data" : jsonKeylist,
                                                 "Signature" : signed

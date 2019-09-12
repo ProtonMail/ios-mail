@@ -1238,8 +1238,8 @@ class MessageDataService : Service {
         }
         
         guard let encryptedData = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
-            let keyPacket = encryptedData.keyPacket(),
-            let dataPacket = encryptedData.dataPacket() else
+            let keyPacket = encryptedData.keyPacket,
+            let dataPacket = encryptedData.dataPacket else
         {
             completion?(nil, nil, NSError.encryptionError())
             return
@@ -1466,8 +1466,8 @@ class MessageDataService : Service {
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let splited = try message.split(),
-                    let bodyData = splited.dataPacket(),
-                    let keyData = splited.keyPacket(),
+                    let bodyData = splited.dataPacket,
+                    let keyData = splited.keyPacket,
                     let session = newSchema ?
                         try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
                                                                 passphrase: passphrase,
@@ -1478,7 +1478,10 @@ class MessageDataService : Service {
                 }
                 //Debug info
                 status.insert(SendStatus.updateBuilder)
-                sendBuilder.update(bodyData: bodyData, bodySession: session.session(), algo: session.algo())
+                guard let key = session.key else {
+                    throw RuntimeError.cant_decrypt.error
+                }
+                sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
                 //Debug info
                 status.insert(SendStatus.processKeyResponse)
@@ -1526,9 +1529,12 @@ class MessageDataService : Service {
                             try att.getSession(userKey: userPrivKeys,
                                                keys: addrPrivKeys) :
                             try att.getSession(keys: addrPrivKeys.binPrivKeys) {
+                            guard let key = sessionPack.key else {
+                                continue
+                            }
                             sendBuilder.add(att: PreAttachment(id: att.attachmentID,
-                                                               session: sessionPack.session(),
-                                                               algo: sessionPack.algo(),
+                                                               session: key,
+                                                               algo: sessionPack.algo,
                                                                att: att))
                         }
                     }

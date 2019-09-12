@@ -471,7 +471,7 @@ class APIService {
                             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
                             if let date = dateFormatter.date(from: strData) {
                                 let timeInterval = date.timeIntervalSince1970
-                                sharedOpenPGP.updateTime(Int64(timeInterval))
+                                Crypto.updateTime(Int64(timeInterval))
                             }
                         }
                     }
