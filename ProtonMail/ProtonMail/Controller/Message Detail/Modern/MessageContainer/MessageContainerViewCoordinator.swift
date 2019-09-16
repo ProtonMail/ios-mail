@@ -267,6 +267,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         self.tempClearFileURL = url
         let previewQL = QuickViewViewController()
         previewQL.dataSource = self
+        previewQL.delegate = self
         self.controller.present(previewQL, animated: true, completion: nil)
     }
 }
