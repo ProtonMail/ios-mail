@@ -1233,6 +1233,8 @@
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
+		ABFFF37A232FA7E400FFB37C /* LinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFFF379232FA7E400FFB37C /* LinkOpener.swift */; };
+		ABFFF37B232FA7E400FFB37C /* LinkOpener.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFFF379232FA7E400FFB37C /* LinkOpener.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
 		AC1F531805973E8279B06947E230FE05 /* ContactGroupSubSelectionEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */; };
 		AC2169ABF9A6B206FDE98C3FE1A3F589 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD961DC114743EC95EAE9E6B7F90274C /* UserAPI.swift */; };
@@ -2582,6 +2584,7 @@
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		ABFFF375232BA1E000FFB37C /* config.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = config.yml; path = ../../../.circleci/config.yml; sourceTree = "<group>"; };
+		ABFFF379232FA7E400FFB37C /* LinkOpener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkOpener.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD582027DF251AB61A346296CBA10FC4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AD7220290273672515A9A96C1732ACF7 /* FolderApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderApplyViewModelImpl.swift; sourceTree = "<group>"; };
@@ -4340,6 +4343,7 @@
 				07B8E3EA450851EFE7DFD2819933CEDB /* LabelsCollectionView.swift */,
 				6886224A11D93BE6583A5EA1A3D2185A /* LabelsCollectionView.xib */,
 				CBE88D4B8D79B270A7AF1D1EA965933D /* LinkOpeningValidator.swift */,
+				ABFFF379232FA7E400FFB37C /* LinkOpener.swift */,
 				9DFE6E6DFA3A62BB937E31929EDC1EAE /* MessageDetailBottomView.swift */,
 				C8467A3031510A103A6E92A47B946526 /* MessageDetailBottomView.xib */,
 				5BD0F8A615A7C9D8815F8453CFF9874D /* QuickViewViewController.swift */,
@@ -6477,6 +6481,7 @@
 				626BC3C873B121016E6D88A241313897 /* ViewModelService.swift in Sources */,
 				37E6341675484BA5AB76775412FBF750 /* ViewModelServiceImpl.swift in Sources */,
 				B84D9207A81981608B7DCCFC5B2E1955 /* ViewModelTimer.swift in Sources */,
+				ABFFF37A232FA7E400FFB37C /* LinkOpener.swift in Sources */,
 				F0404492CAC46D616A26D096AC5CC266 /* WebContents.swift in Sources */,
 				617C0EC60482C13260B63D69E12B9DD5 /* WebContentsSecureLoader.swift in Sources */,
 				BC8C341890EB568A59E3E8104C4725B4 /* WebViewController.swift in Sources */,
@@ -6606,6 +6611,7 @@
 				51DE4F9B6A42F5613DF6132D950CD58A /* ContactEditUrlCell.swift in Sources */,
 				D8ACC09FC57A718E19A4FEB88D7FB8D7 /* ContactEditVIewModel.swift in Sources */,
 				FCCBB57BA76B5E8053A2B4457069D5B5 /* ContactEditViewController.swift in Sources */,
+				ABFFF37B232FA7E400FFB37C /* LinkOpener.swift in Sources */,
 				99A5A6A5E882FA0F9BF02460545B5722 /* ContactEditViewModelImpl.swift in Sources */,
 				B791AD6661A8B7C3578B92187AD7A5AB /* ContactFieldType.swift in Sources */,
 				064213991900E11E3BD314117A605B90 /* ContactGroupCoordinator.swift in Sources */,
