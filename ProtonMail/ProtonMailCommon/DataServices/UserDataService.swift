@@ -187,8 +187,9 @@ class UserDataService : Service {
                 let isEnterprise = false
             #endif
             
-            if userInfo?.role > 0 || isEnterprise {
-                return switchCacheOff == false //TODO:: need test this part
+            let role = userInfo?.role ?? 0
+            if role > 0 || isEnterprise {
+                return switchCacheOff == false
             } else {
                 switchCacheOff = false
                 return true
@@ -205,8 +206,8 @@ class UserDataService : Service {
             #else
                 let isEnterprise = false
             #endif
-            
-            if userInfo?.role > 0 || isEnterprise {
+            let role = userInfo?.role ?? 0
+            if role > 0 || isEnterprise {
                 return userCachedStatus.mobileSignature
             } else {
                 userCachedStatus.resetMobileSignature()

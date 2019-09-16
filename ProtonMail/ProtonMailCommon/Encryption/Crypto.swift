@@ -29,7 +29,7 @@
 import Foundation
 import Crypto
 
-
+typealias KeyRing             = CryptoKeyRing
 typealias SplitMessage        = CryptoPGPSplitMessage
 typealias PlainMessage        = CryptoPlainMessage
 typealias PGPMessage          = CryptoPGPMessage
@@ -39,6 +39,18 @@ typealias SymmetricKey        = CryptoSymmetricKey
 
 typealias ExplicitVerifyMessage = MobileExplicitVerifyMessage
 typealias SignatureVerification = CryptoSignatureVerificationError
+
+extension Data { ///need follow the gomobile fixes
+    /// This computed value is only needed because of [this](https://github.com/golang/go/issues/33745) issue in the
+    /// golang/go repository. It is a workaround until the problem is solved upstream.
+    ///
+    /// The data object is converted into an array of bytes and than returned wrapped in an `NSMutableData` object. In
+    /// thas way Gomobile takes it as it is without copying. The Swift side remains responsible for garbage collection.
+    var mutable: NSMutableData {
+        var array = [UInt8](self)
+        return NSMutableData(bytes: &array, length: count)
+    }
+}
 
 //Helper
 class Crypto {
@@ -80,7 +92,7 @@ class Crypto {
     
     public func decrypt(encrytped message: String, privateKey binKeys: Data, passphrase: String) throws -> String {
         let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys)
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
         try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
@@ -96,14 +108,14 @@ class Crypto {
                         privateKey binKeys: Data,
                         passphrase: String, verifyTime: Int64) throws -> CryptoPlainMessage? {
         let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys)
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
         try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey)
+        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
         let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: verifier, verifyTime: verifyTime)
         return plainMessage
     }
@@ -121,7 +133,7 @@ class Crypto {
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey)
+        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
         let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: verifier, verifyTime: verifyTime)
         return plainMessage
     }
@@ -138,7 +150,7 @@ class Crypto {
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey)
+        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
         let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
@@ -151,14 +163,14 @@ class Crypto {
                         privateKey binKeys: Data,
                         passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
         let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys)
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
         try keyRing.unlock(withPassphrase: passphrase)
         var error: NSError?
         let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
         if let err = error {
             throw err
         }
-        let verifier = try pgp.buildKeyRing(verifierBinKey)
+        let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
         let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
@@ -167,9 +179,69 @@ class Crypto {
     }
     
     
-    public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+    public func decryptVerify(encrytped message: String,
+                        publicKey: String,
+                        privateKey armorKey: String,
+                        passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
+        let pgp = CryptoGetGopenPGP()!
+        let keyRing = try pgp.buildKeyRingArmored(armorKey)
+        try keyRing.unlock(withPassphrase: passphrase)
+        var error: NSError?
+        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        if let err = error {
+            throw err
+        }
+        let verifier = try pgp.buildKeyRingArmored(publicKey)
+        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        if let err = error {
+            throw err
+        }
+        return verified
+    }
+    
+    public func decryptVerify(encrytped message: String,
+                        publicKey: String,
+                        privateKey binKeys: Data,
+                        passphrase: String, verifyTime: Int64) throws -> ExplicitVerifyMessage? {
+        let pgp = CryptoGetGopenPGP()!
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
+        try keyRing.unlock(withPassphrase: passphrase)
+        var error: NSError?
+        let pgpMsg = CryptoNewPGPMessageFromArmored(message, &error)
+        if let err = error {
+            throw err
+        }
+        let verifier = try pgp.buildKeyRingArmored(publicKey)
+        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        if let err = error {
+            throw err
+        }
+        return verified
+    }
+    
+    
+    public func encrypt(plainText: String, publicKey: String, privateKey signerPrivateKey: String = "", passphrase: String = "") throws -> String? {
         let pgp = CryptoGetGopenPGP()!
         let publicKeyRing = try pgp.buildKeyRingArmored(publicKey)
+        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
+        var signerKeyRing : KeyRing?
+        if !signerPrivateKey.isEmpty {
+            signerKeyRing = try pgp.buildKeyRingArmored(signerPrivateKey)
+            try signerKeyRing?.unlock(withPassphrase: passphrase)
+        }
+        let cryptedMessage : PGPMessage = try publicKeyRing.encrypt(plainTextMessage, privateKey: signerKeyRing)
+        var error: NSError?
+        let armoredMessage = cryptedMessage.getArmored(&error)
+        
+        if let err = error {
+            throw err
+        }
+        return armoredMessage
+    }
+    
+    public func encrypt(plainText: String, publicKey binKey: Data, privateKey signerPrivateKey: String, passphrase: String) throws -> String? {
+        let pgp = CryptoGetGopenPGP()!
+        let publicKeyRing = try pgp.buildKeyRing(binKey.mutable as Data)
         let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
         let signerKeyRain = try pgp.buildKeyRingArmored(signerPrivateKey)
         
@@ -184,9 +256,21 @@ class Crypto {
         return armoredMessage
     }
     
+    public func encrypt(plainText: String, publicKey binKey: Data) throws -> String? {
+        let pgp = CryptoGetGopenPGP()!
+        let publicKeyRing = try pgp.buildKeyRing(binKey.mutable as Data)
+        let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
+        let cryptedMessage : PGPMessage = try publicKeyRing.encrypt(plainTextMessage, privateKey: nil)
+        var error: NSError?
+        let armoredMessage = cryptedMessage.getArmored(&error)
+        
+        if let err = error {
+            throw err
+        }
+        return armoredMessage
+    }
     
     /// Mark -- encrypt with password
-    
     public func encrypt(plainText: String, token: String) throws -> String? {
         let plainTextMessage = CryptoNewPlainMessageFromString(plainText)
         let key = CryptoNewSymmetricKeyFromToken(token, Algo.AES256.value)
@@ -217,8 +301,16 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(privateKey)
         try keyRing.unlock(withPassphrase: passphrase)
-        let spitMessage = CryptoNewPGPSplitMessage(keyPacket, dataPacket)
-        let plainMessage = try keyRing.decryptAttachment(spitMessage)
+        let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
+        let plainMessage = try keyRing.decryptAttachment(splitMessage)
+        return plainMessage.getBinary()
+    }
+    
+    public func decryptAttachment1(splitMessage: SplitMessage, privateKey: String, passphrase: String) throws -> Data? {
+       let pgp = CryptoGetGopenPGP()!
+        let keyRing = try pgp.buildKeyRingArmored(privateKey)
+        try keyRing.unlock(withPassphrase: passphrase)
+        let plainMessage = try keyRing.decryptAttachment(splitMessage)
         return plainMessage.getBinary()
     }
     
@@ -226,16 +318,19 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRing(binKeys)
         try keyRing.unlock(withPassphrase: passphrase)
-        let spitMessage = CryptoNewPGPSplitMessage(keyPacket, dataPacket)
-        let plainMessage = try keyRing.decryptAttachment(spitMessage)
+        let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
+        let plainMessage = try keyRing.decryptAttachment(splitMessage)
         return plainMessage.getBinary()
     }
 
     public func encryptAttachment(plainData: Data, fileName: String, publicKey: String) throws -> SplitMessage? {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(publicKey)
-        let plainMessage = CryptoNewPlainMessage(plainData)
-        let splitMessage = try keyRing.encryptAttachment(plainMessage, fileName: fileName)
+        var error: NSError?
+        let splitMessage = MobileEncryptAttachment(plainData, fileName, keyRing, &error)
+        if let err = error {
+            throw err
+        }
         return splitMessage
     }
 
@@ -253,7 +348,7 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(privateKey)
         try keyRing.unlock(withPassphrase: passphrase)
-        let plainMessage = CryptoNewPlainMessage(plainData)
+        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         let pgpSignature = try keyRing.signDetached(plainMessage)
         var error: NSError?
         let signaure = pgpSignature.getArmored(&error)
@@ -280,7 +375,7 @@ class Crypto {
     public func verifyDetached(signature: String, plainData: Data, publicKey: String, verifyTime: Int64) throws -> Bool {
         let pgp = CryptoGetGopenPGP()!
         let pubKeyRing = try pgp.buildKeyRingArmored(publicKey)
-        let plainMessage = CryptoNewPlainMessage(plainData)
+        let plainMessage = CryptoNewPlainMessage(plainData.mutable as Data)
         var error: NSError?
         let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
         if let err = error {
@@ -329,9 +424,9 @@ class Crypto {
     //key packet part
     public func getSession(keyPacket: Data, privateKeys binKeys: Data, passphrase: String) throws -> SymmetricKey? {
         let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys)
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
         try keyRing.unlock(withPassphrase: passphrase)
-        let key = try keyRing.decryptSessionKey(keyPacket)
+        let key = try keyRing.decryptSessionKey(keyPacket.mutable as Data)
         return key
     }
     
@@ -339,7 +434,7 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(privateKey)
         try keyRing.unlock(withPassphrase: passphrase)
-        let key = try keyRing.decryptSessionKey(keyPacket)
+        let key = try keyRing.decryptSessionKey(keyPacket.mutable as Data)
         return key
     }
     
@@ -392,6 +487,9 @@ extension String {
         }
     }
     
+    var unArmor : Data? {
+        return ArmorUnarmor(self, nil)
+    }
     
     func getSignature() throws -> String? {
         var error : NSError?

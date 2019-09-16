@@ -29,8 +29,9 @@
 import XCTest
 import Crypto
 
+@testable import ProtonMail
+
 class GoOpenPGPTests: XCTestCase {
-    let openpgp = CryptoPmCrypto()!
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -41,7 +42,7 @@ class GoOpenPGPTests: XCTestCase {
         super.tearDown()
     }
     
-    func test() {
+    func testEccDecrypt() {
         
         let ecdh_msg_bad_2 = """
 -----BEGIN PGP MESSAGE-----
@@ -86,14 +87,12 @@ EQr2Mx42THr260IFYp5E/rIA
 -----END PGP PRIVATE KEY BLOCK-----
 """
         
-        
-        let openpgp = CryptoPmCrypto()!
+        let pgp = Crypto()
         do {
-            let clear = try openpgp.decryptMessage(ecdh_msg_bad_2, privateKey: ecdh_dec_key_2, passphrase: "12345")
+            let clear = try pgp.decrypt(encrytped: ecdh_msg_bad_2, privateKey: ecdh_dec_key_2, passphrase: "12345")
             XCTAssertEqual(clear, "Tesssst<br><br><br>Sent from ProtonMail mobile<br><br><br>", "ecdh pgp message decrypt failed")
         } catch let error {
             XCTAssertNil(error)
-            print(error.localizedDescription)
             XCTFail("should not have exception")
         }
     }
@@ -102,7 +101,7 @@ EQr2Mx42THr260IFYp5E/rIA
         // This is an example of a performance test case.
         self.measure {
             for _ in 0 ... 100 {
-                let result = KeyCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
+                let result = OpenPGPDefines.privateKey.check(passphrase: OpenPGPDefines.passphrase)
                 XCTAssertTrue(result, "checkPassphrase failed")
             }
         }
@@ -110,7 +109,7 @@ EQr2Mx42THr260IFYp5E/rIA
     
     //MARK: - Test methods
     func testCheckPassphrase() {
-        let result = KeyCheckPassphrase(OpenPGPDefines.privateKey, OpenPGPDefines.passphrase)
+        let result = OpenPGPDefines.privateKey.check(passphrase: OpenPGPDefines.passphrase)
         XCTAssertTrue(result, "checkPassphrase failed")
     }
     
@@ -118,10 +117,11 @@ EQr2Mx42THr260IFYp5E/rIA
         self.measure {
             for _ in 0 ... 100 {
                 do {
-                    let out = try openpgp.encryptMessage("test", publicKey: OpenPGPDefines.publicKey, privateKey: "", passphrase: "", trim: true)
+                    let pgp = Crypto()
+                    let out = try pgp.encrypt(plainText: "test", publicKey: OpenPGPDefines.publicKey)
                     XCTAssertNotEqual(out, "")
-                } catch _ {
-                    XCTFail("should not have exception")
+                } catch let error {
+                    XCTFail(error.localizedDescription)
                 }
             }
         }
@@ -133,7 +133,8 @@ EQr2Mx42THr260IFYp5E/rIA
         XCTAssertNil(error)
         
         do {
-            let encrypted = try openpgp.encryptMessageBinKey("test", publicKey: unArmorKey!, privateKey: "", passphrase: "", trim: true)
+            let pgp = Crypto()
+            let encrypted = try pgp.encrypt(plainText: "test", publicKey: unArmorKey!)
             XCTAssertNotEqual(encrypted, "")
         } catch _ {
             XCTFail("should not have exception")
@@ -143,22 +144,25 @@ EQr2Mx42THr260IFYp5E/rIA
     
     
     func testCryptoAttachmentProcessor() {
-        let data = """
+        let testData = """
         This file, its contents, concepts, methods, behavior, and operation
         (collectively the "Software") are protected by trade secret, patent,
         and copyright laws. The use of the Software is governed by a license
         agreement. Disclosure of the Software to third parties, in any form,
         in whole or in part, is expressly prohibited except as authorized by
         the license agreement.
-        """.data(using: .utf8)!
-        let totalSize = data.count
-        
-        do {
-            // encrypt
-            let processor = try openpgp.encryptAttachmentLowMemory(totalSize, fileName: "testData", publicKey: OpenPGPDefines.publicKey)
+        """
             
-            let chunkSize = 10
-            var offset = 0
+        let data = testData.data(using: .utf8)!
+        let totalSize : Int = data.count
+        do {
+            let pgp = Crypto()
+            // encrypt
+            let processor = try pgp.encryptAttachmentLowMemory(fileName: "testData",
+                                                               totalSize: totalSize,
+                                                               publicKey: OpenPGPDefines.publicKey)
+            let chunkSize : Int = 10
+            var offset : Int = 0
             while offset < totalSize {
                 let currentChunkSize = offset + chunkSize > totalSize ? totalSize - offset : chunkSize
                 let currentChunk = data.subdata(in: Range(uncheckedBounds: (lower: offset, upper: offset + currentChunkSize)))
@@ -167,185 +171,281 @@ EQr2Mx42THr260IFYp5E/rIA
             }
             
             let result = try processor.finish()
-            
+            guard let keyPacket = result.keyPacket,
+                let dataPacket = result.dataPacket else {
+                    XCTFail("can't be null")
+                    return
+            }
+    
             // decrypt
-            let decrypted = try openpgp.decryptAttachment(result.keyPacket(), dataPacket: result.dataPacket(), privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
-            
-            // match
-            XCTAssertEqual(data, decrypted)
-        } catch {
-            XCTFail("thrown")
+            let decrypted = try pgp.decryptAttachment(keyPacket: keyPacket,
+                                                      dataPacket: dataPacket,
+                                                      privateKey: OpenPGPDefines.privateKey,
+                                                      passphrase: OpenPGPDefines.passphrase)
+            guard let clearData = decrypted else {
+                 XCTFail("can't be null")
+                 return
+             }
+            //match
+            XCTAssertEqual(data, clearData)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
         }
     }
     
+    
+    func testNewLib() {
+//        let data = Data(repeating: 0, count: 8)
+//        print("Data: \([UInt8](data))")
+//        let bytes = MobileNewBytes(data)!
+//        print("Elements: \([UInt8](bytes.getElements()!))")
+//        print("Data: \([UInt8](data))")
 //
-//    func testInGeneral() {
-//        let feng100_fingerprint = "F62F2E37580F4DFAD46200936DC999B146234F40".lowercased()
-//        
-//        // test feng 100 pub key fingerprint
-//        var error : NSError? = nil
-//        let out1 = PmGetFingerprint(OpenPGPDefines.public_key_feng100, &error)
-//    
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(out1)
-//        XCTAssert(out1! == feng100_fingerprint)
-//        error = nil
-//        
-//        // test unarmor key
-//        let unArmorKey = PmUnArmor(OpenPGPDefines.public_key_feng100, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(unArmorKey)
-//        error = nil
-//        
-//        // test get fingerprint use unarmored key
-//        let out2 = PmGetFingerprintBinKey(unArmorKey!, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(out2)
-//        XCTAssert(out2! == feng100_fingerprint)
-//        error = nil
-//        
-//        // test encrypt use unarmored key
-//        let encrypted = PmEncryptMessageBinKey("test", unArmorKey!,  "", "", true, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(encrypted)
-//        error = nil
-//        
-//        // test decrypt
-//        let encrypted1 = PmEncryptMessage( "test", OpenPGPDefines.publicKey, "", "", true, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(encrypted1)
-//        error = nil
-//        
-//        // decrypt encrypted message
-//        let clearText = PmDecryptMessage(encrypted1!, OpenPGPDefines.privateKey, OpenPGPDefines.passphrase, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(clearText)
-//        XCTAssertEqual(clearText!, "test")
-//        error = nil
-//        
-//        // test bad key
-//        let encrypted2 = PmEncryptMessage("test", OpenPGPDefines.publicKey, OpenPGPDefines.privateKey, "222", true, &error)
-//        XCTAssertNotNil(error)
-//        XCTAssertNil(encrypted2)
-//        error = nil
-//        
-//        // test signe
-//        let encrypted3 = PmEncryptMessage("test", OpenPGPDefines.publicKey,  OpenPGPDefines.privateKey, OpenPGPDefines.passphrase, true, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(encrypted3)
-//        error = nil
-//        
-//        let verifyOut = PmDecryptMessageVerify(encrypted3!, "", OpenPGPDefines.privateKey, OpenPGPDefines.passphrase, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(verifyOut)
-//        XCTAssertEqual("test", verifyOut?.plaintext()!)
-//        XCTAssertEqual(true, verifyOut?.verify())
-//        
-//        // test armor fucntion
-//        let outArmored = PmArmorKey(unArmorKey!, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(outArmored)
-//        XCTAssertEqual(outArmored!, OpenPGPDefines.public_key_feng100)
-//        error = nil
-//
-//        
-//        let modulus = PMNOpenPgp.createInstance()?.readClearsignedMessage(OpenPGPDefines.modulus)
-//        let modulus1 = PmReadClearSignedMessage(OpenPGPDefines.modulus, &error)
-//        
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(modulus)
-//        XCTAssertNotNil(modulus1)
-//        error = nil
-//       
-//        XCTAssertEqual(modulus!, modulus1!)
-//        
-//    }
-//    
-//    func testPrintoutKey() {
-//        var error : NSError? = nil
-//        PmCheckKey(OpenPGPDefines.public_key_feng100, &error)
-//    }
-//    
+        
+        var data = Data(repeating: 0, count: 8)
+        let mutableData = NSMutableData(bytes: &data, length: 8)
+        print("Data: \(Array(UnsafeBufferPointer(start: mutableData.bytes.assumingMemoryBound(to: UInt8.self), count: 8)))")
+        let bytes = MobileNewBytes(mutableData as Data)!
+        print("Elements: \([UInt8](bytes.getElements()!))")
+        print("Data: \([UInt8](data))")
+    }
+    
+    
+    func testAttachnentEncryptDecrypt() {
+        let testAttachmentCleartext = "cc,\ndille."
+        let privateKey =
+"""
+-----BEGIN PGP PRIVATE KEY BLOCK-----
+Version: OpenPGP.js v0.7.1
+Comment: http://openpgpjs.org
+
+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
+qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
+=2wIY
+-----END PGP PRIVATE KEY BLOCK-----
+
+"""
+        let testMailboxPassword = "apple"
+        do {
+            let pgp = Crypto()
+            let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
+            // encrypt
+            let encrypted = try pgp.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: privateKey)
+            XCTAssertNotNil(encrypted)
+            guard let key = encrypted?.keyPacket,
+                let data = encrypted?.dataPacket else {
+                    XCTFail("can't be null")
+                    return
+            }
+            // decrypt
+            let decrypted = try pgp.decryptAttachment(keyPacket: key,
+                                                      dataPacket: data,
+                                                      privateKey: privateKey,
+                                                      passphrase: testMailboxPassword)
+            guard let clearData = decrypted else {
+                XCTFail("can't be null")
+                return
+            }
+           let clearText = NSString(data: clearData, encoding: String.Encoding.utf8.rawValue)! as String
+            //match
+            XCTAssertEqual(testAttachmentCleartext, clearText)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
+
+    
+    
+    func testInGeneral() {
+        let feng100_fingerprint = "F62F2E37580F4DFAD46200936DC999B146234F40".lowercased()
+
+        // test feng 100 pub key fingerprint
+        let out1 = OpenPGPDefines.public_key_feng100.fingerprint
+        XCTAssertNotNil(out1)
+        XCTAssert(out1 == feng100_fingerprint)
+        
+        // test unarmor key
+        let unArmorKey = OpenPGPDefines.public_key_feng100.unArmor
+        XCTAssertNotNil(unArmorKey)
+        do {
+            let encrypted = try Crypto().encrypt(plainText: "test", publicKey: unArmorKey!)
+            XCTAssertNotNil(encrypted)
+            // test decrypt
+            let encrypted1 = try Crypto().encrypt(plainText: "test", publicKey: OpenPGPDefines.publicKey)
+            XCTAssertNotNil(encrypted1)
+            
+            // decrypt encrypted message
+            let clearText = try Crypto().decrypt(encrytped: encrypted1!, privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
+            XCTAssertNotNil(clearText)
+            XCTAssertEqual(clearText, "test")
+            
+            // test bad key
+            do {
+                let _ = try Crypto().encrypt(plainText: "test",
+                                                      publicKey: OpenPGPDefines.publicKey,
+                                                      privateKey: OpenPGPDefines.privateKey, passphrase: "222")
+                XCTFail("should have exception")
+            } catch {
+                
+            }
+            
+            // test signe
+            let encrypted3 = try Crypto().encrypt(plainText: "test",
+                                                  publicKey: OpenPGPDefines.publicKey,
+                                                  privateKey: OpenPGPDefines.privateKey, passphrase: OpenPGPDefines.passphrase)
+            XCTAssertNotNil(encrypted3)
+
+            
+            let verifyOut = try Crypto().decryptVerify(encrytped: encrypted3!,
+                                                       publicKey: OpenPGPDefines.privateKey.unArmor!,
+                                                       privateKey: OpenPGPDefines.privateKey,
+                                                       passphrase: OpenPGPDefines.passphrase, verifyTime: 0)
+            XCTAssertNotNil(verifyOut)
+            XCTAssertEqual("test", verifyOut!.message?.getString())
+            //            print(verifyOut!.signatureVerificationError)
+            //            XCTAssertEqual(0, verifyOut!.signatureVerificationError?.status)
+            
+            var error : NSError? = nil
+            let modulus = PMNOpenPgp.createInstance()?.readClearsignedMessage(OpenPGPDefines.modulus)
+            let modulus1 = CryptoNewClearTextMessageFromArmored(OpenPGPDefines.modulus, &error)
+            XCTAssertNil(error)
+            XCTAssertNotNil(modulus)
+            XCTAssertNotNil(modulus1)
+            error = nil
+            XCTAssertEqual(modulus!, modulus1!.getString())
+            
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+        
+    }
 //    
 //    func testSign() {
-//        var error : NSError? = nil
-//        let encrypted = PmEncryptMessage( "test",
-//                                          OpenPGPDefines.publicKey,
-//                                          OpenPGPDefines.feng100_private_key_1,
-//                                          OpenPGPDefines.feng100_passphrase_1, true, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(encrypted)
-//        error = nil
+//        do {
+//            let pgp = CryptoGetGopenPGP()!
+//            let encrypted = try Crypto().encrypt(plainText: "test", publicKey: OpenPGPDefines.publicKey,
+//                                                 privateKey: OpenPGPDefines.feng100_private_key_1,
+//                                                 passphrase: OpenPGPDefines.feng100_passphrase_1)
+//            XCTAssertNotNil(encrypted)
+//            let tempPubKey = OpenPGPDefines.feng100_private_key_1.publicKey
+//            XCTAssertNotNil(tempPubKey)
+//            
+//            let verifyOut = try Crypto().decryptVerify(encrytped: encrypted!,
+//                                                   publicKey: tempPubKey,
+//                                                   privateKey: OpenPGPDefines.privateKey,
+//                                                   passphrase: "123", verifyTime: pgp.getUnixTime())
+////            let verifyOut = PmDecryptMessageVerify(encrypted!, tempPubKey!, OpenPGPDefines.privateKey, "123", &error)
+//            XCTAssertNotNil(verifyOut)
+//            XCTAssertNotNil(verifyOut!.message)
+//            XCTAssertNotNil(verifyOut!.signatureVerificationError)
+//            XCTAssertEqual("test", verifyOut!.message!.getString())
+//            XCTAssertEqual(0, verifyOut!.signatureVerificationError!.status)
+//            
+//            
+////            let verifyOut1 = PmDecryptMessageVerify(encrypted!, "", OpenPGPDefines.privateKey, "123", &error)
+////            XCTAssertNil(error)
+////            XCTAssertNotNil(verifyOut1)
+////            XCTAssertEqual("test", verifyOut1?.plaintext()!)
+////            XCTAssertEqual(false, verifyOut1?.verify())
+////            error = nil
+////
+////            let verifyOut2 = PmDecryptMessageVerify(encrypted!, OpenPGPDefines.publicKey, OpenPGPDefines.privateKey, "123", &error)
+////            XCTAssertNil(error)
+////            XCTAssertNotNil(verifyOut2)
+////            XCTAssertEqual("test", verifyOut1?.plaintext()!)
+////            XCTAssertEqual(false, verifyOut1?.verify())
+////            error = nil
+//        } catch let error {
+//            XCTFail("thrown" + "\(error.localizedDescription)")
+//        }
 //        
-//        let tempPubKey = PmPublicKey(OpenPGPDefines.feng100_private_key_1, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(tempPubKey)
-//        
-//        let verifyOut = PmDecryptMessageVerify(encrypted!, tempPubKey!, OpenPGPDefines.privateKey, "123", &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(verifyOut)
-//        XCTAssertEqual("test", verifyOut?.plaintext()!)
-//        XCTAssertEqual(true, verifyOut?.verify())
-//        error = nil
-//        
-//        let verifyOut1 = PmDecryptMessageVerify(encrypted!, "", OpenPGPDefines.privateKey, "123", &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(verifyOut1)
-//        XCTAssertEqual("test", verifyOut1?.plaintext()!)
-//        XCTAssertEqual(false, verifyOut1?.verify())
-//        error = nil
-//        
-//        let verifyOut2 = PmDecryptMessageVerify(encrypted!, OpenPGPDefines.publicKey, OpenPGPDefines.privateKey, "123", &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(verifyOut2)
-//        XCTAssertEqual("test", verifyOut1?.plaintext()!)
-//        XCTAssertEqual(false, verifyOut1?.verify())
-//        error = nil
-//    }
-//    
-//    func testPrivatekey2Publickey () {
-//        var error : NSError? = nil
-//        let pubkey = PmPublicKey(OpenPGPDefines.feng100_private_key_1, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(pubkey)
-//        
-//        let encrypted = PmEncryptMessage("test", pubkey!, "", "", true, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(encrypted)
-//        
-//        let clear = PmDecryptMessage(encrypted!, OpenPGPDefines.feng100_private_key_1, OpenPGPDefines.feng100_passphrase_1, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(clear)
-//        
-//        XCTAssertEqual(clear!, "test")
 //        
 //    }
 //    
-//    
-//    func testEncryptAttachment() {
-//        var error : NSError? = nil
-//        let indata = "Testlaksdjfklsadf".data(using: .ascii)
-//        
-//        let spiled = PmEncryptAttachment(indata, "",OpenPGPDefines.publicKey, &error)
-//        XCTAssertNil(error)
-//        XCTAssertNotNil(spiled)
-//    }
-//    
-//    func testTimeCache () {
-//
-//        let openPgp = PmOpenPGP()
-//
-//        let time1 = openPgp?.getTime()
-//        
-//        XCTAssertEqual(time1, 0)
-//        
-//        openPgp?.updateTime(100)
-//        
-//        let time2 = openPgp?.getTime()
-//        
-//        openPgp.verifybin
-//        
-//        XCTAssertEqual(time2, 100)
-//    }
-//    
+    func testPrivatekey2Publickey () {
+        do {
+            let pubkey = OpenPGPDefines.feng100_private_key_1.publicKey
+            XCTAssertNotNil(pubkey)
+            
+            let encrypted = try Crypto().encrypt(plainText: "test", publicKey: pubkey)
+            XCTAssertNotNil(encrypted)
+
+            let clear = try Crypto().decrypt(encrytped: encrypted!,
+                                         privateKey: OpenPGPDefines.feng100_private_key_1,
+                                         passphrase: OpenPGPDefines.feng100_passphrase_1)
+            XCTAssertNotNil(clear)
+            
+            XCTAssertEqual(clear, "test")
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
+
+    func testTimeCache () {
+        let openPgp = CryptoGetGopenPGP()!
+        let time = Date().timeIntervalSince1970
+        let time1 = openPgp.getUnixTime()
+        XCTAssertEqual(time1 , Int64(time))
+        let openPgp1 = CryptoGetGopenPGP()!
+        openPgp1.updateTime(100)
+        let openPgp2 = CryptoGetGopenPGP()!
+        let time2 = openPgp2.getUnixTime()
+        XCTAssertEqual(100 , time2)
+    }
+    
 }

@@ -264,7 +264,8 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     }
     
     func removeFromSelectedContacts(index: Int, withCompletion completion: ContactPickerComplete?) {
-        if self.selectedContacts.count + 1 > self.indexPathsForSelectedItems?.count {
+        let count = self.indexPathsForSelectedItems?.count ?? 0
+        if self.selectedContacts.count + 1 > count {
             let model = self.selectedContacts[index]
             self.performBatchUpdates({
                 self.selectedContacts.remove(at: index)
@@ -310,7 +311,8 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
     
     var indexPathOfSelectedCell: IndexPath? {
         get {
-            if self.indexPathsForSelectedItems?.count > 0  {
+            let count = self.indexPathsForSelectedItems?.count ?? 0
+            if count > 0  {
                 return self.indexPathsForSelectedItems?[0]
             } else {
                 return nil
@@ -448,7 +450,8 @@ extension ContactCollectionView : UIKeyInput {
     }
     
     func deleteBackward() {
-        if self.indexPathsForSelectedItems?.count > 0, let row = self.indexPathOfSelectedCell?.row {
+        let count = self.indexPathsForSelectedItems?.count ?? 0
+        if count > 0, let row = self.indexPathOfSelectedCell?.row {
             self.removeFromSelectedContacts(index: self.selectedContactIndexFromRow(row: row), withCompletion: nil)
         }
     }

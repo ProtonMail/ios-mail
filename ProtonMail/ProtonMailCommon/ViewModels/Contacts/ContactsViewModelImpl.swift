@@ -119,7 +119,10 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     override func item(index: IndexPath) -> Contact? {
-        guard self.fetchedResultsController?.numberOfRows(in: index.section) > index.row else {
+        guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
+            return nil
+        }
+        guard rows > index.row else {
             return nil
         }
         return fetchedResultsController?.object(at: index) as? Contact

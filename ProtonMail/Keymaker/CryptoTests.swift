@@ -58,12 +58,12 @@ class CryptoTests: XCTestCase {
                 // encrypt
                 let aesLock = try AES(key: key, blockMode: ECB())
                 let cypherBytes = try aesLock.encrypt(clearValue.bytes)
-                XCTAssertNotEqual(clearValue, Data(bytes: cypherBytes))
+                XCTAssertNotEqual(clearValue, Data(cypherBytes))
                 
                 //decrypt
                 let aesUnlock = try AES(key: key, blockMode: ECB())
                 let clearBytes = try aesUnlock.decrypt(cypherBytes)
-                let unlockedValue = Data(bytes: clearBytes)
+                let unlockedValue = Data(clearBytes)
                 
                 XCTAssertEqual(clearValue, unlockedValue)
             } catch let error {
@@ -74,7 +74,7 @@ class CryptoTests: XCTestCase {
     
     func testCryptoSwiftDerive() {
         let secret = "Z1ON0101"
-        let salt = Data(bytes: self.makeKey(8)).bytes
+        let salt = Data(self.makeKey(8)).bytes
 
         self.measure() {
             do {
@@ -89,20 +89,20 @@ class CryptoTests: XCTestCase {
 
 #if canImport(Crypto)
     func testCryptoEncrypt() {
-        let key = Data(bytes: self.makeKey(32))
-        let iv = Data(bytes: self.makeKey(16))
+        let key = Data(self.makeKey(32))
+        let iv = Data(self.makeKey(16))
         let clearValue = self.longMessage.data(using: .utf8)!
         
         self.measure() {
             var error: NSError?
             
             // encrypt
-            let cypherData = CryptoEncryptWithoutIntegrity(key, clearValue, iv, &error)
+            let cypherData = SubtleEncryptWithoutIntegrity(key, clearValue, iv, &error)
             XCTAssertNil(error, "Failed to encrypt the data: \(error!.localizedDescription)")
             XCTAssertNotEqual(clearValue, cypherData)
             
             //decrypt
-            let unlockedValue = CryptoDecryptWithoutIntegrity(key, cypherData, iv, &error)
+            let unlockedValue = SubtleDecryptWithoutIntegrity(key, cypherData, iv, &error)
             XCTAssertNil(error, "Failed to decrypt the data: \(error!.localizedDescription)")
             XCTAssertEqual(clearValue, unlockedValue)
         }
@@ -110,12 +110,12 @@ class CryptoTests: XCTestCase {
     
     func testCryptoDerive() {
         let secret = "Z1ON0101"
-        let salt = Data(bytes: self.makeKey(8))
+        let salt = Data(self.makeKey(8))
             
         self.measure() {
             var error: NSError?
             // 32768 is PinProtection.numberOfIterations
-            let derivedKey = CryptoDeriveKey(secret, salt, 32768, &error)
+            let derivedKey = SubtleDeriveKey(secret, salt, 32768, &error)
             XCTAssertNil(error, "Failed to derive key: \(error!.localizedDescription)")
             XCTAssertNotNil(derivedKey)
         }
