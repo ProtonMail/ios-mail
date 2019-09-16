@@ -75,6 +75,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
+    private lazy var replacingEmails = sharedContactDataService.allEmails()
     private var messageID: String? // this is for when user click the notification email
     private var listEditing: Bool = false
     private var timer : Timer!
@@ -353,26 +354,28 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     @objc internal func moreButtonTapped() {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        let cancelAction = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
         
-        if viewModel.isShowEmptyFolder() {
-            let locations: [Message.Location : UIAlertAction.Style] = [.inbox : .default]
-            for (location, style) in locations {
-                if !viewModel.isCurrentLocation(location) {
-                    alertController.addAction(UIAlertAction(title: location.actionTitle, style: style, handler: { (action) -> Void in
-                        self.moveMessages(to: location)
-                        self.cancelButtonTapped()
-                    }))
-                }
+        if self.selectedIDs.isEmpty {
+            if viewModel.isShowEmptyFolder() {
+                let title = viewModel is LabelboxViewModelImpl ? LocalString._empty_label : LocalString._empty_folder
+                let confirmationAlert = UIAlertController(title: LocalString._delete_all,
+                                                          message: LocalString._are_you_sure_this_cant_be_undone,
+                                                          preferredStyle: .alert)
+                let emptyAction = UIAlertAction(title: title,
+                                                style: .destructive, handler: { (action) -> Void in
+                    self.viewModel.emptyFolder()
+                    self.showNoResultLabel()
+                })
+                confirmationAlert.addAction(cancelAction)
+                confirmationAlert.addAction(emptyAction)
+                
+                alertController.addAction(UIAlertAction.init(title: title, style: .destructive, handler: { _ in
+                    self.present(confirmationAlert, animated: true, completion: nil)
+                }))
             }
-            
-            alertController.addAction(UIAlertAction(title: LocalString._empty_folder,
-                                                    style: .destructive, handler: { (action) -> Void in
-                self.viewModel.emptyFolder()
-                self.showNoResultLabel()
-            }))
         } else {
-            
             alertController.addAction(UIAlertAction(title: LocalString._mark_read,
                                                     style: .default, handler: { (action) -> Void in
                 self.viewModel.mark(IDs: self.selectedIDs, unread: false)
@@ -507,8 +510,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard let message = self.viewModel.item(index: indexPath) else {
             return
         }
-        
-        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle())
+        mailboxCell.configureCell(message, showLocation: viewModel.showLocation(), ignoredTitle: viewModel.ignoredLocationTitle(), replacingEmails: replacingEmails)
         mailboxCell.setCellIsChecked(self.selectedIDs.contains(message.messageID))
         if (self.listEditing) {
             mailboxCell.showCheckboxOnLeftSide()

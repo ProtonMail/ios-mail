@@ -55,6 +55,7 @@ enum MessageAction: String {
     // Empty
     case emptyTrash = "emptyTrash"
     case emptySpam = "emptySpam"
+    case empty = "empty"
     
     case label = "applyLabel"
     case unlabel = "unapplyLabel"

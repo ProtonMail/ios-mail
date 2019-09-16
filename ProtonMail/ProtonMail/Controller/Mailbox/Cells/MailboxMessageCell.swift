@@ -163,7 +163,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     
     // MARK: - Cell configuration
-    func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String) {
+    func configureCell(_ message: Message, showLocation : Bool, ignoredTitle: String, replacingEmails: [Email]) {
         self.accessibilityActionBoxes = []
         self.title.text = message.subject
     
@@ -216,11 +216,11 @@ class MailboxMessageCell: MCSwipeTableViewCell {
         }
         
         if message.contains(label: Message.Location.sent) {
-            labelsView.configLables( message.allEmailAddresses, labels: labels)
+            labelsView.configLables( message.allEmailAddresses(replacingEmails), labels: labels)
         } else if message.draft {
-            labelsView.configLables( message.allEmailAddresses, labels: labels)
+            labelsView.configLables( message.allEmailAddresses(replacingEmails), labels: labels)
         } else {
-            labelsView.configLables( message.displaySender, labels: labels)
+            labelsView.configLables( message.displaySender(replacingEmails), labels: labels)
         }
         
         if message.unRead {
@@ -291,5 +291,32 @@ class MailboxMessageCell: MCSwipeTableViewCell {
     
     func hideForward() {
         self.forwardWidth.constant = 0.0
+    }
+}
+
+extension Message {
+    func displaySender(_ replacingEmails: [Email]) -> String {
+        guard let sender = senderContactVO else {
+            assert(false, "Sender with no name or address")
+            return ""
+        }
+        
+        // will this be deadly slow?
+        let email = replacingEmails.first { $0.email == sender.email }
+        if let contact = email?.contact {
+            return contact.name
+        }
+        
+        return sender.name.isEmpty ? sender.email : sender.name
+    }
+    
+    func allEmailAddresses(_ replacingEmails: [Email]) -> String {
+        let lists: [String] = self.allEmails.map { address in
+            replacingEmails.first(where: { $0.email == address })?.name ?? address
+        }
+        if lists.isEmpty {
+            return ""
+        }
+        return lists.joined(separator: ",")
     }
 }

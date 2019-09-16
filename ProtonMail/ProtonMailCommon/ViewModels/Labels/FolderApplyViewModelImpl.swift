@@ -151,7 +151,8 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        return sharedLabelsDataService.fetchedResultsController(.folder)
+        let hasSent = self.messages.first { $0.contains(label: "2") } != nil // hidden sent, unremovable
+        return sharedLabelsDataService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
     }
     
     

@@ -193,13 +193,17 @@ class LocalizedString {
     /// "Move to AllMail"
     lazy var _locations_move_allmail_action = NSLocalizedString("Move to AllMail", comment: "move action")
     /// "Empty Folder"
-    lazy var _empty_folder = NSLocalizedString("Empty Folder", comment: "empty folder, for spam and trash")
+    lazy var _empty_folder = NSLocalizedString("Empty Folder", comment: "empty folder, for spam and trash and drafts")
+    /// "Empty label"
+    lazy var _empty_label = NSLocalizedString("Empty Label", comment: "empty label")
     /// "Mark Read"
     lazy var _mark_read = NSLocalizedString("Mark Read", comment: "mark message as read action")
     /// "Remove Star"
     lazy var _remove_star = NSLocalizedString("Remove Star", comment: "un star message")
-
-
+    /// "Delete All"
+    lazy var _delete_all = NSLocalizedString("Delete All", comment: "emptify folder/label confirmation alert")
+    /// "Are you sure? This can not be undone"
+    lazy var _are_you_sure_this_cant_be_undone = NSLocalizedString("Are you sure? This can not be undone", comment: "emptify folder/label confirmation alert")
     
     
     // Mark Messages
@@ -1127,6 +1131,9 @@ class LocalizedString {
 
     /// "View headers"
     lazy var _view_message_headers = NSLocalizedString("View Headers", comment: "message details-> more action-> view headers")
+    
+    /// "View raw body"
+    lazy var _view_message_html_body = NSLocalizedString("View Raw Body", comment: "message details-> more action-> view raw html body code")
 
     /// "Confirm phishing report"
     lazy var _confirm_phishing_report = NSLocalizedString("Confirm phishing report", comment: "alert title")

@@ -1058,6 +1058,13 @@ class UserDataService : Service {
         twoFactorStatus = 0
         passwordMode = 2
         keymaker.wipeMainKey()
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectoryUrl)
+        
+        // some tests are messed up without tmp folder, so let's keep it for consistency
+        #if targetEnvironment(simulator)
+        try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
+                nil)
+        #endif
     }
     
     func clearAuthToken() {

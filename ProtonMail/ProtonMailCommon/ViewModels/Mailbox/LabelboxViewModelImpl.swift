@@ -110,4 +110,11 @@ class LabelboxViewModelImpl : MailboxViewModel {
         return (.nothing, nil)
     }
   
+    override func isShowEmptyFolder() -> Bool {
+        return true
+    }
+    
+    override func emptyFolder() {
+        sharedMessageDataService.empty(labelID: self.label.labelID)
+    }
 }

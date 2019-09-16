@@ -81,8 +81,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
             }
         }.forEach(alertController.addAction)
         
-        alertController.addAction(UIAlertAction(title: LocalString._print, style: .default, handler: self.printButtonTapped))
-        alertController.addAction(UIAlertAction.init(title: LocalString._view_message_headers, style: .default, handler: self.viewHeadersButtonTapped))
+        alertController.addAction(.init(title: LocalString._print, style: .default, handler: self.printButtonTapped))
+        alertController.addAction(.init(title: LocalString._view_message_headers, style: .default, handler: self.viewHeadersButtonTapped))
+        alertController.addAction(.init(title: LocalString._view_message_html_body, style: .default, handler: self.viewRawBodyButtonTapped))
         alertController.addAction(.init(title: LocalString._report_phishing, style: .destructive, handler: { _ in
             let alert = UIAlertController(title: LocalString._confirm_phishing_report,
                                           message: LocalString._reporting_a_message_as_a_phishing_,
@@ -116,8 +117,14 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     }
     
     @objc func viewHeadersButtonTapped(_ sender: Any) {
-        let url = self.viewModel.headersTemporaryUrl()
-        self.coordinator.previewQuickLook(for: url)
+        if let url = self.viewModel.headersTemporaryUrl() {
+            self.coordinator.previewQuickLook(for: url)
+        }
+    }
+    @objc func viewRawBodyButtonTapped(_ sender: Any) {
+        if let url = self.viewModel.bodyTemporaryUrl() {
+            self.coordinator.previewQuickLook(for: url)
+        }
     }
     @objc func topTrashButtonTapped(_ sender: UIBarButtonItem) {
         func remove() {

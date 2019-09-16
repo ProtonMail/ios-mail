@@ -168,20 +168,43 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
     }
     
-    internal func headersTemporaryUrl() -> URL { // TODO: this one will not work for threads
+    internal func headersTemporaryUrl() -> URL? { // TODO: this one will not work for threads
         guard let message = self.messages.first else {
             assert(false, "No messages in thread")
             return URL(fileURLWithPath: "")
         }
-        let headers = message.header
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.timeZone = TimeZone(secondsFromGMT: 0)
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        let filename = formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+        let filename = "headers-" + formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+        guard let header = message.header else {
+            assert(false, "No header in message")
+            return nil
+        }
+        return try? self.writeToTemporaryUrl(header, filename: filename)
+    }
+    
+    internal func bodyTemporaryUrl() -> URL? { // TODO: this one will not work for threads
+        guard let message = self.messages.first else {
+            assert(false, "No messages in thread")
+            return nil
+        }
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let filename = "body-" + formatter.string(from: message.time!) + "-" + message.title.components(separatedBy: CharacterSet.alphanumerics.inverted).joined(separator: "-")
+        guard let body = try? message.decryptBodyIfNeeded() else {
+            return nil
+        }
+        return try? self.writeToTemporaryUrl(body, filename: filename)
+    }
+    
+    private func writeToTemporaryUrl(_ content: String, filename: String) throws -> URL {
         let tempFileUri = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(filename, isDirectory: false).appendingPathExtension("txt")
         try? FileManager.default.removeItem(at: tempFileUri)
-        ((try? headers?.write(to: tempFileUri, atomically: true, encoding: .utf8)) as ()??)
+        try content.write(to: tempFileUri, atomically: true, encoding: .utf8)
         return tempFileUri
     }
     
