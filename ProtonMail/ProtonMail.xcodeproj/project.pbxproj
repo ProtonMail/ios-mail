@@ -268,7 +268,6 @@
 		25C3CB595E9A8922D8367F2A2D0B5550 /* OnboardingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C29317A6BB406175EC4E38250EE69C77 /* OnboardingView.xib */; };
 		25CD1EDB272821857C8E72C2200E654A /* ContactGroupSelectEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B63E7B9480C2FA7A9C24089237C538FF /* ContactGroupSelectEmailViewController.swift */; };
 		25ED77CA36C79A4FC909093974ED8C30 /* EmailVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FAB9C7FB68E73B3DBE86E1C6308AC56 /* EmailVerifyViewController.swift */; };
-		25F10BBBCA4ADB1C96EB880A3EDA2D10 /* Xcode11.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */; };
 		2688AF39DAC93913336234E7BD6EDEE2 /* ContactsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3837129A19F297C0079CE5AF3176490A /* ContactsTableViewCell.swift */; };
 		26B3B1F85EA4FBE6174072736E13F0F0 /* CoreDataCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFE806529A0A9DD9C13466174BE1C9E4 /* CoreDataCache.swift */; };
 		26C1E6F805726E21ABB936A49C3AEB66 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */; };
@@ -568,7 +567,6 @@
 		4F6D0AE51755D2062999910127767F99 /* WebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C05C331E3651D8B62311F133631FA6 /* WebViewModel.swift */; };
 		4F850210EC8A98C0BA5EDB95183220F7 /* Int+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EC9AF0A74A77653AD47949D28EACEC7 /* Int+Extension.swift */; };
 		4FACC8BFBA1C00E27B70F3CB3923C1C0 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8CFA13A53B9FD4D4305DD4B86DF8193 /* FeedbackViewController.swift */; };
-		4FB470B3AE58144D4F5A3717B65F2337 /* Xcode11.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */; };
 		4FFB318A7F47E5EC94367D2D8FD43FD6 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */; };
 		500CDEF98158211428DCDF9A6EF23EE7 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
 		501DE38C36B1AFE793C7E33EECCC7591 /* SiriDev.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C95D6EAFC49AFE0FB5F840BC864D8630 /* SiriDev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -885,7 +883,6 @@
 		77E772C942F911D73376408B0656851D /* ContactTypeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6C64FE049CCAB116A41B87B7BC1195 /* ContactTypeViewModelImpl.swift */; };
 		77FA61E5A274F02A98876EA49975CB57 /* MailboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46F72AFDE901F2582A2569BFBC7E6EC /* MailboxViewController.swift */; };
 		780C99C4C808DB76F9928C7E9AB3816D /* Saver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 481C1156C63FF770665F22A72C0E6462 /* Saver.swift */; };
-		78680156F48E931995CFD633046513D3 /* Xcode11.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */; };
 		7874925F0078947F7B3E10AA0FCDD6E4 /* MBProgressHUD+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6B83584F0CD5F2C0B216F53174C444 /* MBProgressHUD+Helper.swift */; };
 		78F555E5782DFD3E2007362A8B762A23 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		793564A009AD368AD157AE73A329DBEE /* NoneProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7A43CE3B4499275CE7A53C4DAA523D9 /* NoneProtection.swift */; };
@@ -1057,7 +1054,6 @@
 		924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 499999580B77BFB0F2290C522EBB8A46 /* Data+Extension.swift */; };
 		92A2AEBA632841C5879FE1449630D5C9 /* HeaderedPrintRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CFC7115F2CF1EC411626F1AD87514E9 /* HeaderedPrintRenderer.swift */; };
 		93123C9F7B3C3538E2EE527352A105F3 /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F6534536F0C3BB4E2D2782B5F8674 /* Hash.swift */; };
-		9364336E3155ED1FB13D51D7DB254A19 /* Xcode11.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */; };
 		93A186F506F0F283A0396DB220230902 /* APIService+MessagesExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A9D3A4B83ACC4D934A2E630B505AF5 /* APIService+MessagesExtension.swift */; };
 		93A4792B8D0AFB6929EB721D35DDF560 /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64B6ABEC2E603996347C40E51E0189F /* Data+Mime.swift */; };
 		9414AC451DC3832A7CC960CE3086EC7D /* SwiftTryCatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 58FA54B507F5B492266760AAACC658A6 /* SwiftTryCatch.m */; };
@@ -1413,7 +1409,6 @@
 		C3D0F75EF0E316DBD18EAA98EA5DBE27 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
 		C419004F4F7E4D18B149C8517D337260 /* SignUpPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBA071210F74AE37131F94504B5A0384 /* SignUpPasswordViewController.swift */; };
 		C42888E34AB2F5F0830226505F79BA93 /* ComposeErrorView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 14E8987404D76EC598FCBC542711A09A /* ComposeErrorView.xib */; };
-		C447D80F2B820DDC3962E1E06BD7D4F6 /* Xcode11.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */; };
 		C44AC2CBF1F5737BBB4C35FC06B1B70B /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C995A5395A5FEBA384F6A27BB2C2A2C /* UIStoryboard+Extension.swift */; };
 		C45CBD1F2A54E7C00165CC2BC0FB1C11 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
 		C46D3753789881DB6A31028E43A9102E /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */; };
@@ -2586,6 +2581,7 @@
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
+		ABFFF375232BA1E000FFB37C /* config.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; name = config.yml; path = ../../../.circleci/config.yml; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		AD582027DF251AB61A346296CBA10FC4 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		AD7220290273672515A9A96C1732ACF7 /* FolderApplyViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FolderApplyViewModelImpl.swift; sourceTree = "<group>"; };
@@ -2857,7 +2853,6 @@
 		FEA3E41B5579813DE986A79BCF54BDE2 /* MessageBodyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBodyViewController.swift; sourceTree = "<group>"; };
 		FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiLabelDisplayView.swift; sourceTree = "<group>"; };
 		FEDDA628A0CBF1A40EB99BA815D85481 /* ContactGroupsViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactGroupsViewCell.swift; sourceTree = "<group>"; };
-		FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Xcode11.swift; sourceTree = "<group>"; };
 		FF8BBCDD4B03C38833E9D72352FED8E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -4076,10 +4071,10 @@
 				78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */,
 				5DCE1A915445A08E86CB35521431F753 /* PasswordExtension.strings */,
 				E20C729B58B3E8CDD72CE5DCB2AD4CFF /* ProtonMail-Bridging-Header.cpp */,
+				ABFFF375232BA1E000FFB37C /* config.yml */,
 				8505C937DDDAA8247647EF72CB03D9B7 /* ProtonMail-Bridging-Header.h */,
 				16B6569366FDC394D6615172DC14A7EB /* ProtonMail.entitlements */,
 				D5DC00E9140DB71FF9B9BEA827021B87 /* Settings.bundle */,
-				FF828715FBDEA042BBD88831DCF059F0 /* Xcode11.swift */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
@@ -6488,7 +6483,6 @@
 				E6501C97FE6E5D690873063C65157B3B /* WebViewModel.swift in Sources */,
 				2FA3C4C34385B8548E1DAD9722BA3204 /* WindowSceneDelegate.swift in Sources */,
 				F71A9E243FCB15ADCFDB56C1B00D84DE /* WindowsCoordinator.swift in Sources */,
-				78680156F48E931995CFD633046513D3 /* Xcode11.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -6507,7 +6501,6 @@
 				E15B6D1F2656AF445A6FA81F85A99F8F /* PinProtection.swift in Sources */,
 				D74DACAD510DA151F9214932CF43FD9C /* ProtectionStrategy.swift in Sources */,
 				1A95CDEC93C93559493DDBC88007A3A6 /* SystemTime.swift in Sources */,
-				4FB470B3AE58144D4F5A3717B65F2337 /* Xcode11.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7026,7 +7019,6 @@
 				BC98A05C235CFD45E40F281F9B9DCF07 /* WebViewModel.swift in Sources */,
 				188EDA5549E2F26BA653A34DD97260B3 /* WindowSceneDelegate.swift in Sources */,
 				C18E2005641D107221656BA12A9F448E /* WindowsCoordinator.swift in Sources */,
-				C447D80F2B820DDC3962E1E06BD7D4F6 /* Xcode11.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7321,7 +7313,6 @@
 				F78CA68DD1989B3F0DD6294E24B23D10 /* WebContentsSecureLoader.swift in Sources */,
 				BFF897D55D8E47D04FF9F6C28537D631 /* WebViewController.swift in Sources */,
 				4F6D0AE51755D2062999910127767F99 /* WebViewModel.swift in Sources */,
-				25F10BBBCA4ADB1C96EB880A3EDA2D10 /* Xcode11.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7594,7 +7585,6 @@
 				F292801D946FAD4757D61FFB17C64904 /* WebContentsSecureLoader.swift in Sources */,
 				5042F3D3D3E45FF72E0406D630951BA3 /* WebViewController.swift in Sources */,
 				F53FC0B0FDD74245E5D948E63268C229 /* WebViewModel.swift in Sources */,
-				9364336E3155ED1FB13D51D7DB254A19 /* Xcode11.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
