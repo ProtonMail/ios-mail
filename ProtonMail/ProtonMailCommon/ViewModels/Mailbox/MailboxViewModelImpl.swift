@@ -120,7 +120,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     
     override func isShowEmptyFolder() -> Bool {
         switch(self.label) {
-        case .trash, .spam:
+        case .trash, .spam, .draft:
             return true
         default:
             return false
@@ -129,10 +129,8 @@ final class MailboxViewModelImpl : MailboxViewModel {
     
     override func emptyFolder() {
         switch(self.label) {
-        case .trash:
-            sharedMessageDataService.emptyTrash()
-        case .spam:
-            sharedMessageDataService.emptySpam()
+        case .trash, .spam, .draft:
+            sharedMessageDataService.empty(location: self.label)
         default:
             break
         }
