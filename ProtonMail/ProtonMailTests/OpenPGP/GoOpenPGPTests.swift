@@ -136,8 +136,8 @@ EQr2Mx42THr260IFYp5E/rIA
             let pgp = Crypto()
             let encrypted = try pgp.encrypt(plainText: "test", publicKey: unArmorKey!)
             XCTAssertNotEqual(encrypted, "")
-        } catch _ {
-            XCTFail("should not have exception")
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
         }
         
     }
@@ -436,16 +436,16 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
         }
     }
 
-    func testTimeCache () {
-        let openPgp = CryptoGetGopenPGP()!
-        let time = Date().timeIntervalSince1970
-        let time1 = openPgp.getUnixTime()
-        XCTAssertEqual(time1 , Int64(time))
-        let openPgp1 = CryptoGetGopenPGP()!
-        openPgp1.updateTime(100)
-        let openPgp2 = CryptoGetGopenPGP()!
-        let time2 = openPgp2.getUnixTime()
-        XCTAssertEqual(100 , time2)
-    }
+//    func testTimeCache () {
+//        let openPgp = CryptoGetGopenPGP()!
+//        let time = Date().timeIntervalSince1970
+//        let time1 = openPgp.getUnixTime()
+//        XCTAssertEqual(time1 , Int64(time))
+//        let openPgp1 = CryptoGetGopenPGP()!
+//        openPgp1.updateTime(100)
+//        let openPgp2 = CryptoGetGopenPGP()!
+//        let time2 = openPgp2.getUnixTime()
+//        XCTAssertEqual(100 , time2)
+//    }
     
 }
