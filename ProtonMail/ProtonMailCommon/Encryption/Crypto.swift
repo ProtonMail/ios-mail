@@ -530,20 +530,20 @@ extension Data {
     
     func getKeyPackage(publicKey: String,  algo : String) throws -> Data? {
         let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoNewSymmetricKey(self, algo)
+        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
         let keyRing = try crypto.buildKeyRingArmored(publicKey)
         return try keyRing.encryptSessionKey(symKey)
     }
     
     func getKeyPackage(publicKey binKey: Data, algo : String) throws -> Data? {
         let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoNewSymmetricKey(self, algo)
-        let keyRing = try crypto.buildKeyRing(binKey)
+        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
+        let keyRing = try crypto.buildKeyRing(binKey.mutable as Data)
         return try keyRing.encryptSessionKey(symKey)
     }
     
     func getSymmetricPacket(withPwd pwd: String, algo : String) throws -> Data? {
-        let symKey = CryptoNewSymmetricKey(self, algo)
-        return try symKey.encrypt(toKeyPacket: pwd)
+        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
+        return try symKey?.encrypt(toKeyPacket: pwd)
     }
 }
