@@ -31,7 +31,7 @@ import Foundation
 enum LinkOpener: String, CaseIterable {
     case safari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo
     
-    var scheme: String {
+    private var scheme: String {
         switch self {
         case .safari: return "https" // default case
         case .chrome: return "googlechrome"
@@ -59,6 +59,13 @@ enum LinkOpener: String, CaseIterable {
         case .yandex: return "Yandex"
         case .duckDuckGo: return "DuckDuckGo"
         }
+    }
+    
+    var isInstalled: Bool {
+        guard let scheme = URL(string: "\(self.scheme)://") else {
+            return false
+        }
+        return UIApplication.shared.canOpenURL(scheme)
     }
     
     func deeplink(to url: URL) -> URL? {

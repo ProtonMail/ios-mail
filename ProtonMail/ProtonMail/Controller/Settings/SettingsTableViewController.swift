@@ -57,7 +57,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .version] //.Debug,
     
     var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .linkOpeningMode, .metadataStripping, .cleanCache, .notificationsSnooze]
+                                                            .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -123,9 +123,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .metadataStripping, .cleanCache]
+            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
         } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .metadataStripping, .cleanCache]
+            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
         }
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             setting_general_items.append(.notificationsSnooze)
@@ -248,6 +248,14 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                             })
                         }
                         cellout = cell
+                    case .browser:
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
+                        cell.domainText.text = itme.description
+                        let browser = userCachedStatus.browser
+                        cell.defaultMark.text = browser.isInstalled ? browser.title : LinkOpener.safari.title
+                        cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
+                        cellout = cell
+                        
                     case .linkOpeningMode:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
@@ -534,6 +542,20 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         }
                     case .notificationsSnooze:
                         self.coordinator?.go(to: .snooze)
+                    case .browser:
+                        let browsers = LinkOpener.allCases.filter {
+                            $0.isInstalled
+                        }.compactMap { app in
+                            return UIAlertAction(title: app.title, style: .default) { [weak self] _ in
+                                userCachedStatus.browser = app
+                                self?.tableView?.reloadRows(at: [indexPath], with: .fade)
+                            }
+                        }
+                        let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
+                        browsers.forEach(alert.addAction)
+                        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                        self.present(alert, animated: true, completion: nil)
+                        
                     case .autoLoadImage, .linkOpeningMode, .metadataStripping:
                         break
                     }

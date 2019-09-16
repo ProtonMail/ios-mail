@@ -40,9 +40,7 @@ class MessageBodyCoordinator {
     }
     
     internal func open(url originalURL: URL) {
-        let opener = LinkOpener.brave // FIXME: take from settings
-
-        if let url = opener.deeplink(to: originalURL),
+        if let url = userCachedStatus.browser.deeplink(to: originalURL),
             UIApplication.shared.canOpenURL(url)
         {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)

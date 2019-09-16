@@ -99,7 +99,8 @@ class LocalizedString {
     lazy var _settings_confirm_new_password = NSLocalizedString("Confirm new password", comment: "Placeholder")
     /// "Remove image meta-data"
     lazy var _strip_metadata = NSLocalizedString("Remove image meta-data", comment: "Settings row")
-
+    /// "Default browser"
+    lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
     /// "Report Bugs"
@@ -665,6 +666,9 @@ class LocalizedString {
     /// "Resetting message cache ..."
     lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache ...", comment: "Title")
 
+    /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
+    lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
+    
     /// "Auto Lock Time"
     lazy var _settings_auto_lock_time = NSLocalizedString("Auto Lock Time", comment: "Title")
 
