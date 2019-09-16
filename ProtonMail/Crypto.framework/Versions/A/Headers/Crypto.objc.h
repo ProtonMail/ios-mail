@@ -481,6 +481,7 @@ ready for encryption, signature, or verification from an unencrypted string.
 @property(strong, readonly) _Nonnull id _ref;
 
 - (nonnull instancetype)initWithRef:(_Nonnull id)ref;
+- (nullable instancetype)init:(NSData* _Nullable)key algo:(NSString* _Nullable)algo;
 /**
  * NewSymmetricKeyFromKeyPacket decrypts the binary symmetrically encrypted
 session key packet and returns the session key.
@@ -581,6 +582,8 @@ FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessage(NSData* _N
 ready for encryption, signature, or verification from an unencrypted string.
  */
 FOUNDATION_EXPORT CryptoPlainMessage* _Nullable CryptoNewPlainMessageFromString(NSString* _Nullable text);
+
+FOUNDATION_EXPORT CryptoSymmetricKey* _Nullable CryptoNewSymmetricKey(NSData* _Nullable key, NSString* _Nullable algo);
 
 /**
  * NewSymmetricKeyFromKeyPacket decrypts the binary symmetrically encrypted
