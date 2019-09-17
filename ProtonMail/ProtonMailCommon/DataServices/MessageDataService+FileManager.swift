@@ -31,7 +31,7 @@ import Foundation
 // MARK: - NSFileManager extension
 extension FileManager {
     var attachmentDirectory: URL {
-        let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
+        let attachmentDirectory = temporaryDirectoryUrl.appendingPathComponent("attachments", isDirectory: true)
         if !self.fileExists(atPath: attachmentDirectory.absoluteString) {
             do {
                 try self.createDirectory(at: attachmentDirectory, withIntermediateDirectories: true, attributes: nil)
@@ -43,7 +43,13 @@ extension FileManager {
         return attachmentDirectory
     }
     
-    func cleanCachedAtts() {
+    func cleanTemporaryDirectory() {
+        try? FileManager.default.removeItem(at: FileManager.default.temporaryDirectoryUrl)
+        try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
+    }
+    
+    // this directory is no longer in use, but keep clearing it for old users
+    func cleanCachedAttsLegacy() {
         let attachmentDirectory = applicationSupportDirectoryURL.appendingPathComponent("attachments", isDirectory: true)
         let path = attachmentDirectory.path
         do {
