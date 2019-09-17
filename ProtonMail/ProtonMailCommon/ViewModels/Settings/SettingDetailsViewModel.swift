@@ -383,7 +383,8 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
         #else
             let isEnterprise = false
         #endif
-        return sharedUserDataService.userInfo?.role > 0 || isEnterprise
+        let role = sharedUserDataService.userInfo?.role ?? 0
+        return role > 0 || isEnterprise
     }
     
     func needAsk2FA() -> Bool {

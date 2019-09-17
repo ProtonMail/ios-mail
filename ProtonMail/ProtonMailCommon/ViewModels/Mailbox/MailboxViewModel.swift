@@ -154,12 +154,21 @@ class MailboxViewModel {
     /// - Parameter index: table cell indexpath
     /// - Returns: message (nil)
     func item(index: IndexPath) -> Message? {
-        guard self.fetchedResultsController?.numberOfSections() > index.section else {
+        guard let sections = self.fetchedResultsController?.numberOfSections() else {
             return nil
         }
-        guard self.fetchedResultsController?.numberOfRows(in: index.section) > index.row else {
+        guard sections > index.section else {
             return nil
         }
+        
+        guard let rows = self.fetchedResultsController?.numberOfRows(in: index.section) else {
+            return nil
+        }
+        
+        guard rows > index.row else {
+            return nil
+        }
+        
         return fetchedResultsController?.object(at: index) as? Message
     }
     
@@ -196,7 +205,10 @@ class MailboxViewModel {
     /// - Parameter index: the current table index
     /// - Returns: yes or no
     func loadMore(index: IndexPath) -> Bool {
-        guard self.fetchedResultsController?.numberOfSections() > index.section else {
+        guard let number = self.fetchedResultsController?.numberOfSections() else {
+            return false
+        }
+        guard number > index.section else {
             return false
         }
         guard let total = self.fetchedResultsController?.numberOfRows(in: index.section) else {

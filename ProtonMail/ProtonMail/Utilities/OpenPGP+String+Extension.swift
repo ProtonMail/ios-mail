@@ -29,63 +29,43 @@
 import Foundation
 import Crypto
 
-let sharedOpenPGP = CryptoPmCrypto()!
-
-
 // MARK: - OpenPGP String extension
 
 extension String {
-    
-    func getSignature() throws -> String? {
-        var error : NSError?
-        let dec_out_att : String = ArmorReadClearSignedMessage(self, &error)
-        if let err = error {
-            throw err
-        }
-        return dec_out_att
-    }
-    
+
     func decryptMessage(binKeys: Data, passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessageBinKey(self, privateKey: binKeys, passphrase: passphrase)
+        return try Crypto().decrypt(encrytped: self, privateKey: binKeys, passphrase: passphrase)
     }
     
-    func verifyMessage(verifier: Data, binKeys: Data, passphrase: String, time : Int64) throws -> ModelsDecryptSignedVerify? {
-        return try sharedOpenPGP.decryptMessageVerifyBinKeyPrivBinKeys(self,
-                                                                       verifierKey: verifier,
-                                                                       privateKeys: binKeys,
-                                                                       passphrase: passphrase,
-                                                                       verifyTime: time)
+    func verifyMessage(verifier: Data, binKeys: Data, passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
+        return try Crypto().decryptVerify(encrytped: self, publicKey: verifier, privateKey: binKeys, passphrase: passphrase, verifyTime: time)
     }
     
-    
-    func verifyMessage(verifier: Data, userKeys: Data, keys: [Key], passphrase: String, time : Int64) throws -> ModelsDecryptSignedVerify? {
+    func verifyMessage(verifier: Data, userKeys: Data, keys: [Key], passphrase: String, time : Int64) throws -> ExplicitVerifyMessage? {
         var firstError : Error?
         for key in keys {
             do {
                 if let token = key.token, let signature = key.signature { //have both means new schema. key is
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         PMLog.D(signature)
-                        return try sharedOpenPGP.decryptMessageVerifyBinKey(self,
-                                                                            verifierKey: verifier,
-                                                                            privateKey: key.private_key,
-                                                                            passphrase: plaitToken,
-                                                                            verifyTime: time)
+                        return try Crypto().decryptVerify(encrytped: self,
+                                                          publicKey: verifier,
+                                                          privateKey: key.private_key,
+                                                          passphrase: plaitToken, verifyTime: time)
                     }
                 } else if let token = key.token { //old schema with token - subuser. key is embed singed
                     if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: passphrase) {
                         //TODO:: try to verify signature here embeded signature
-                        return try sharedOpenPGP.decryptMessageVerifyBinKey(self,
-                                                                            verifierKey: verifier,
-                                                                            privateKey: key.private_key,
-                                                                            passphrase: plaitToken,
-                                                                            verifyTime: time)
+                        return try Crypto().decryptVerify(encrytped: self,
+                                                          publicKey: verifier,
+                                                          privateKey: key.private_key,
+                                                          passphrase: plaitToken, verifyTime: time)
                     }
                 } else {//normal key old schema
-                    return try sharedOpenPGP.decryptMessageVerifyBinKeyPrivBinKeys(self,
-                                                                                   verifierKey: verifier,
-                                                                                   privateKeys: userKeys,
-                                                                                   passphrase: passphrase,
-                                                                                   verifyTime: time)
+                    return try Crypto().decryptVerify(encrytped: self,
+                                                      publicKey: verifier,
+                                                      privateKey: userKeys,
+                                                      passphrase: passphrase, verifyTime: time)
                 }
             } catch let error {
                 if firstError == nil {
@@ -100,69 +80,48 @@ extension String {
         return nil
     }
     
-//    func verifyMessage(verifier: String, binKeys: Data, passphrase: String, time : Int64) throws -> ModelsDecryptSignedVerify? {
-//
-//        return try sharedOpenPGP.decryptMessageVerifyPrivBinKeys(self, verifierKey: signature,
-//                                                                 privateKeys: binKeys, passphrase: passphrase, verifyTime: time)
-//    }
-    
     func decryptMessageWithSinglKey(_ privateKey: String, passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessage(self, privateKey: privateKey, passphrase: passphrase)
-    }
-    
-    func split() throws -> ModelsEncryptedSplit? {
-        var error : NSError?
-        let out = ArmorSplitArmor(self, &error)
-        if let err = error {
-            throw err
-        }
-        return out
+        return try Crypto().decrypt(encrytped: self, privateKey: privateKey, passphrase: passphrase)
     }
     
     func encrypt(withPrivKey key: String, mailbox_pwd: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(self, publicKey: key, privateKey: key, passphrase: mailbox_pwd, trim: true)
+        return try Crypto().encrypt(plainText: self, publicKey: key, privateKey: key, passphrase: mailbox_pwd)
     }
     
     func encrypt(withKey key: Key, userKeys: Data, mailbox_pwd: String) throws -> String? {
         if let token = key.token, let signature = key.signature { //have both means new schema. key is
             if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
                 PMLog.D(signature)
-                return try sharedOpenPGP.encryptMessage(self,
-                                                        publicKey: key.private_key,
-                                                        privateKey: key.private_key,
-                                                        passphrase: plaitToken,
-                                                        trim: true)
+                return try Crypto().encrypt(plainText: self,
+                                            publicKey: key.private_key,
+                                            privateKey: key.private_key,
+                                            passphrase: plaitToken)
             }
         } else if let token = key.token { //old schema with token - subuser. key is embed singed
             if let plaitToken = try token.decryptMessage(binKeys: userKeys, passphrase: mailbox_pwd) {
                 //TODO:: try to verify signature here embeded signature
-                return try sharedOpenPGP.encryptMessage(self,
-                                                        publicKey: key.private_key,
-                                                        privateKey: key.private_key,
-                                                        passphrase: plaitToken,
-                                                        trim: true)
+                return try Crypto().encrypt(plainText: self,
+                                            publicKey: key.private_key,
+                                            privateKey: key.private_key,
+                                            passphrase: plaitToken)
             }
         }
-        return try sharedOpenPGP.encryptMessage(self, publicKey: key.private_key,
-                                                privateKey: key.private_key,
-                                                passphrase: mailbox_pwd, trim: true)
+        return try Crypto().encrypt(plainText: self,
+                                    publicKey:  key.private_key,
+                                    privateKey: key.private_key,
+                                    passphrase: mailbox_pwd)
     }
 
     func encrypt(withPubKey publicKey: String, privateKey: String, passphrase: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase, trim: true)
+        return try Crypto().encrypt(plainText: self, publicKey: publicKey, privateKey: privateKey, passphrase: passphrase)
     }
     
     func encrypt(withPwd passphrase: String) throws -> String? {
-        return try sharedOpenPGP.encryptMessage(withPassword: self, password: passphrase)
+        return try Crypto().encrypt(plainText: self, token: passphrase)
     }
     
     func decrypt(withPwd passphrase: String) throws -> String? {
-        return try sharedOpenPGP.decryptMessage(withPassword: self, password: passphrase)
-    }
-    
-    //self is private key
-    func check(passphrase: String) -> Bool {
-        return KeyCheckPassphrase(self, passphrase)
+        return try Crypto().decrypt(encrypted: self, token: passphrase)
     }
 }
 

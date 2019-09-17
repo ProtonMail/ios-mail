@@ -187,7 +187,6 @@ class CoreDataStoreTest: XCTestCase {
                                               destinationType: NSSQLiteStoreType,
                                               destinationOptions: nil)
         } catch {
-            print("Error: \(error)")
             XCTAssertNil(error)
         }
         

@@ -157,12 +157,18 @@ extension APIService {
                         guard let auth = try SrpAuth(hashVersion, username, password, salt, modulus, ephemeral) else {
                             return completion(task, nil, .resCheck, nil, NSError.authUnableToGeneratePwd())
                         }
+                        
                         let srpClient = try auth.generateProofs(2048)
+                        guard let clientEphemeral = srpClient.clientEphemeral,
+                            let clientProof = srpClient.clientProof, let expectedServerProof = srpClient.expectedServerProof else {
+                            return completion(task, nil, .resCheck, nil, NSError.authUnableToGenerateSRP())
+                        }
+                        
                         let api = AuthRequest(username: username,
-                                              ephemeral: srpClient.clientEphemeral(),
-                                              proof: srpClient.clientProof(),
+                                              ephemeral: clientEphemeral,
+                                              proof: clientProof,
                                               session: session,
-                                              serverProof: srpClient.expectedServerProof(),
+                                              serverProof: expectedServerProof,
                                               code: twoFACode);
                         let completionWrapper: (_ task: URLSessionDataTask?, _ res: AuthResponse?, _ hasError : Bool) -> Void = { (task, res, hasError) in
                             if hasError {

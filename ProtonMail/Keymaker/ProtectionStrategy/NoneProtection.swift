@@ -36,7 +36,7 @@ public struct NoneProtection: ProtectionStrategy {
     }
     
     public func lock(value: Keymaker.Key) throws {
-        NoneProtection.saveCyphertext(Data(bytes: value), in: self.keychain)
+        NoneProtection.saveCyphertext(Data(value), in: self.keychain)
     }
     
     public func unlock(cypherBits: Data) throws -> Keymaker.Key {

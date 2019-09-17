@@ -82,9 +82,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     func setupToken (_ password:String) throws {
         if encryptToken.armored, let key = self.privateKey  {
-            self.plainToken = try sharedOpenPGP.decryptMessage(encryptToken,
-                                                               privateKey: key,
-                                                               passphrase: password)
+            self.plainToken = try Crypto().decrypt(encrytped: encryptToken, privateKey: key, passphrase: password)
         } else {
             self.plainToken = encryptToken
         }

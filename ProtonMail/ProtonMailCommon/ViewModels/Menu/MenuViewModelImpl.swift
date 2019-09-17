@@ -107,7 +107,10 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func label(at: Int) -> Label? {
-        if at < self.fetchedLabels?.fetchedObjects?.count {
+        guard let count = self.fetchedLabels?.fetchedObjects?.count else {
+            return nil
+        }
+        if at < count {
             return self.fetchedLabels?.object(at: IndexPath(row: at, section: 0)) as? Label
         }
         return nil

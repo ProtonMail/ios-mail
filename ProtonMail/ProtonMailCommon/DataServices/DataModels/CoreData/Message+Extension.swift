@@ -413,20 +413,22 @@ extension Message {
                                        binKeys: keys.binPrivKeys,
                                        passphrase: passphrase,
                                        time: time) {
-                let status = verify.verify()
-                return SignStatus(rawValue: status) ?? .notSigned
+                guard let verification = verify.signatureVerificationError else {
+                    return .failed
+                }
+                return SignStatus(rawValue: verification.status) ?? .notSigned
             }
         } catch {
         }
         return .failed
     }
     
-    func split() throws -> ModelsEncryptedSplit? {
+    func split() throws -> SplitMessage? {
         return try body.split()
     }
     
-    func getSessionKey(keys: Data, passphrase: String) throws -> ModelsSessionSplit? {
-        return try split()?.keyPacket().getSessionFromPubKeyPackage(passphrase, privKeys: keys)
+    func getSessionKey(keys: Data, passphrase: String) throws -> SymmetricKey? {
+        return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     
     func bodyToHtml() -> String {
@@ -714,9 +716,8 @@ extension Message {
                                 try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
                                                    keys: sharedUserDataService.addressKeys) :
                                 try att.getSession(keys: sharedUserDataService.addressPrivateKeys),//DONE
-                            let session = sessionPack.session(),
-                            let algo = sessionPack.algo(),
-                            let newkp = try session.getKeyPackage(strKey: k.publicKey, algo: algo) {
+                            let session = sessionPack.key,
+                            let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo:  sessionPack.algo) {
                                 let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
                                 attachment.keyPacket = encodedkp
                                 attachment.keyChanged = true

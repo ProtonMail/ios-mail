@@ -65,7 +65,7 @@ public struct BioProtection: ProtectionStrategy {
             keychain.switchAccessibilitySettings(.afterFirstUnlockThisDeviceOnly, authenticationPolicy: .userPresence)
             
             let ethemeralKey = BioProtection.generateRandomValue(length: 32)
-            keychain.set(Data(bytes: ethemeralKey), forKey: self.legacyLabelKey)
+            keychain.set(Data(ethemeralKey), forKey: self.legacyLabelKey)
 
             keychain.switchAccessibilitySettings(oldAccessibility, authenticationPolicy: oldAuthPolicy)
             return ethemeralKey
@@ -77,7 +77,7 @@ public struct BioProtection: ProtectionStrategy {
         let locked = try Locked<Keymaker.Key>(clearValue: value) { cleartext -> Data in
             if #available(iOS 10.3, *) {
                 let encryptor = BioProtection.makeAsymmetricEncryptor(in: self.keychain)
-                return try encryptor.encrypt(Data(bytes: cleartext))
+                return try encryptor.encrypt(Data(cleartext))
             } else {
                 let ethemeral = BioProtection.makeSymmetricEncryptor(in: self.keychain)
                 let locked = try Locked(clearValue: cleartext, with: ethemeral)

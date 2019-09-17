@@ -81,7 +81,7 @@ extension Locked where T: Codable {
     public init(clearValue: T, with key: Keymaker.Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
-        let cypherData = CryptoEncryptWithoutIntegrity(Data(bytes: key), data, Data(bytes: key.prefix(16)), &error)
+        let cypherData = SubtleEncryptWithoutIntegrity(Data(key), data, Data(key.prefix(16)), &error)
         
         if let error = error {
             throw error
@@ -95,7 +95,7 @@ extension Locked where T: Codable {
     
     public func unlock(with key: Keymaker.Key) throws -> T {
         var error: NSError?
-        let clearData = CryptoDecryptWithoutIntegrity(Data(bytes: key), self.encryptedValue, Data(bytes: key.prefix(16)), &error)
+        let clearData = SubtleDecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(16)), &error)
             
         if let error = error {
             throw error

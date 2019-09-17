@@ -207,7 +207,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                             try att.getSession(keys: sharedUserDataService.addressPrivateKeys) else { //DONE
                             continue
                         }
-                        guard let newKeyPack = try sessionPack.session().getKeyPackage(strKey: key.publicKey, algo: sessionPack.algo())?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
+                        guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
                         att.keyPacket = newKeyPack
