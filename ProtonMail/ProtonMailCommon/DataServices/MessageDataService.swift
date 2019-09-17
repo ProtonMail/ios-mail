@@ -616,7 +616,7 @@ class MessageDataService : Service {
                                       downloadTask: ((URLSessionDownloadTask) -> Void)?,
                                       completion:((URLResponse?, URL?, NSError?) -> Void)?)
     {
-        if let localURL = attachment.localURL {
+        if attachment.downloaded, let localURL = attachment.localURL {
             completion?(nil, localURL as URL, nil)
             return
         }

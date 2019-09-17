@@ -61,7 +61,7 @@ extension Attachment {
     
     
     var downloaded: Bool {
-        return localURL != nil
+        return (localURL != nil) && (FileManager.default.fileExists(atPath: localURL!.path))
     }
     
     // Mark : public functions

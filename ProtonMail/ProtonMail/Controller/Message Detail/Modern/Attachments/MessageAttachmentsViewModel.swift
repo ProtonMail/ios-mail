@@ -78,7 +78,9 @@ extension MessageAttachmentsViewModel {
             return
         }
 
-        let decryptor: (Attachment, URL)->Void = {
+        let decryptor: (Attachment, URL)->Void = { [weak self] in
+            guard let self = self else { return }
+            self.attachments = self.parentViewModel.attachments // this will reload tableView and therefore update download icons
             try? self.decrypt($0, encryptedFileURL: $1, clearfile: opener)
         }
         
@@ -99,11 +101,7 @@ extension MessageAttachmentsViewModel {
             return
         }
         
-        do {
-            try decryptor(attachment, localURL)
-        } catch let error {
-            fail(error as NSError)
-        }
+        decryptor(attachment, localURL)
     }
     
     private func downloadAttachment(_ attachment: Attachment,

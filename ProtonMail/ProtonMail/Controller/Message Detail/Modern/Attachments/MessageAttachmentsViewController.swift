@@ -88,7 +88,7 @@ extension MessageAttachmentsViewController: UITableViewDelegate, UITableViewData
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AttachmentTableViewCell.self), for: indexPath)
         if let cell = cell as? AttachmentTableViewCell {
             let attachment = self.viewModel.attachments[indexPath.row]
-            cell.setFilename(attachment.fileName, fileSize: attachment.size)
+            cell.configCell(attachment.fileName, fileSize: attachment.size, showDownload: !attachment.isDownloaded)
             cell.configAttachmentIcon(attachment.mimeType)
         }
         return cell
