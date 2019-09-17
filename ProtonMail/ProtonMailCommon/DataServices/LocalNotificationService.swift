@@ -56,7 +56,7 @@ class LocalNotificationService: Service {
         content.userInfo = ["message_id": details.messageID,
                             "category": Categories.failedToSend.rawValue]
         
-        let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false) // FIXME: 5 minutes
+        let timeout = UNTimeIntervalNotificationTrigger(timeInterval: details.timeInterval, repeats: false)
         let request = UNNotificationRequest(identifier: details.messageID, content: content, trigger: timeout)
         
         UNUserNotificationCenter.current().add(request, withCompletionHandler: nil)

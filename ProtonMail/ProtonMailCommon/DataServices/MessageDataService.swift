@@ -1676,7 +1676,7 @@ class MessageDataService : Service {
                                                 attCount: attachments.count)
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                                 error: "\(LocalString._message_sent_failed_desc)\n\(error!.localizedDescription)",
+                                                                                                 error: "⚠️ \(LocalString._message_sent_failed_desc)\n\(error!.localizedDescription)",
                                                                                                  timeInterval: 1))
                 }
                 completion?(nil, nil, error)
@@ -1697,7 +1697,7 @@ class MessageDataService : Service {
                 
                 // show message now
                 self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                             error: "\(LocalString._messages_sending_failed_try_again)\n\(err.localizedDescription)",
+                                                                                             error: "⚠️ \(LocalString._messages_sending_failed_try_again)\n\(err.localizedDescription)",
                                                                                              timeInterval: 1))
                 BugDataService.sendingIssue(title: SendingErrorTitle,
                                             bug: err.localizedDescription,
