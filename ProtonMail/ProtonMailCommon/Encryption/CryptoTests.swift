@@ -32,21 +32,44 @@ import Crypto
 @testable import ProtonMail
 
 class CryptoTests: XCTestCase {
+    
+    let testMailboxPassword = "apple"
+    let testPublicKey =
+"""
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+Version: OpenPGP.js v0.7.1
+Comment: http://openpgpjs.org
 
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    
-    func TestAttachmentGetKey() {
-        
-        let privateKey =
+xsBNBFRJbc0BCAC0mMLZPDBbtSCWvxwmOfXfJkE2+ssM3ux21LhD/bPiWefE
+WSHlCjJ8PqPHy7snSiUuxuj3f9AvXPvg+mjGLBwu1/QsnSP24sl3qD2onl39
+vPiLJXUqZs20ZRgnvX70gjkgEzMFBxINiy2MTIG+4RU8QA7y8KzWev0btqKi
+MeVa+GLEHhgZ2KPOn4Jv1q4bI9hV0C9NUe2tTXS6/Vv3vbCY7lRR0kbJ65T5
+c8CmpqJuASIJNrSXM/Q3NnnsY4kBYH0s5d2FgbASQvzrjuC2rngUg0EoPsrb
+DEVRA2/BCJonw7aASiNCrSP92lkZdtYlax/pcoE/mQ4WSwySFmcFT7yFABEB
+AAHNBlVzZXJJRMLAcgQQAQgAJgUCVEltzwYLCQgHAwIJED62JZ7fId8kBBUI
+AgoDFgIBAhsDAh4BAAD0nQf9EtH9TC0JqSs8q194Zo244jjlJFM3EzxOSULq
+0zbywlLORfyoo/O8jU/HIuGz+LT98JDtnltTqfjWgu6pS3ZL2/L4AGUKEoB7
+OI6oIdRwzMc61sqI+Qpbzxo7rzufH4CiXZc6cxORUgL550xSCcqnq0q1mds7
+h5roKDzxMW6WLiEsc1dN8IQKzC7Ec5wA7U4oNGsJ3TyI8jkIs0IhXrRCd26K
+0TW8Xp6GCsfblWXosR13y89WVNgC+xrrJKTZEisc0tRlneIgjcwEUvwfIg2n
+9cDUFA/5BsfzTW5IurxqDEziIVP0L44PXjtJrBQaGMPlEbtP5i2oi3OADVX2
+XbvsRc7ATQRUSW3PAQgAkPnu5fps5zhOB/e618v/iF3KiogxUeRhA68TbvA+
+xnFfTxCx2Vo14aOL0CnaJ8gO5yRSqfomL2O1kMq07N1MGbqucbmc+aSfoElc
++Gd5xBE/w3RcEhKcAaYTi35vG22zlZup4x3ElioyIarOssFEkQgNNyDf5AXZ
+jdHLA6qVxeqAb/Ff74+y9HUmLPSsRU9NwFzvK3Jv8C/ubHVLzTYdFgYkc4W1
+Uug9Ou08K+/4NEMrwnPFBbZdJAuUjQz2zW2ZiEKiBggiorH2o5N3mYUnWEmU
+vqL3EOS8TbWo8UBIW3DDm2JiZR8VrEgvBtc9mVDUj/x+5pR07Fy1D6DjRmAc
+9wARAQABwsBfBBgBCAATBQJUSW3SCRA+tiWe3yHfJAIbDAAA/iwH/ik9RKZM
+B9Ir0x5mGpKPuqhugwrc3d04m1sOdXJm2NtD4ddzSEvzHwaPNvEvUl5v7FVM
+zf6+6mYGWHyNP4+e7RtwYLlRpud6smuGyDSsotUYyumiqP6680ZIeWVQ+a1T
+ThNs878mAJy1FhvQFdTmA8XIC616hDFpamQKPlpoO1a0wZnQhrPwT77HDYEE
+a+hqY4Jr/a7ui40S+7xYRHKL/7ZAS4/grWllhU3dbNrwSzrOKwrA/U0/9t73
+8Ap6JL71YymDeaL4sutcoaahda1pTrMWePtrCltz6uySwbZs7GXoEzjX3EAH
++6qhkUJtzMaE3YEFEoQMGzcDTUEfXCJ3zJw=
+=yT9U
+-----END PGP PUBLIC KEY BLOCK-----
+"""
+    let testPrivateKey =
 """
 -----BEGIN PGP PRIVATE KEY BLOCK-----
 Version: OpenPGP.js v0.7.1
@@ -113,142 +136,133 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 -----END PGP PRIVATE KEY BLOCK-----
 
 """
-        var keyPacket = "wcBMA0fcZ7XLgmf2AQgAiRsOlnm1kSB4/lr7tYe6pBsRGn10GqwUhrwU5PMKOHdCgnO12jO3y3CzP0Yl/jGhAYja9wLDqH8X0sk3tY32u4Sb1Qe5IuzggAiCa4dwOJj5gEFMTHMzjIMPHR7A70XqUxMhmILye8V4KRm/j4c1sxbzA1rM3lYBumQuB5l/ck0Kgt4ZqxHVXHK5Q1l65FHhSXRj8qnunasHa30TYNzP8nmBA8BinnJxpiQ7FGc2umnUhgkFtjm5ixu9vyjr9ukwDTbwAXXfmY+o7tK7kqIXJcmTL6k2UeC6Mz1AagQtRCRtU+bv/3zGojq/trZo9lom3naIeQYa36Ketmcpj2Qwjg=="
-         
-        let pgp = CryptoGetGopenPGP()!
-        let keyPacketData: Data = keyPacket.decodeBase64()
-        
-        
-        
-        
-//
-//        symmetricKey, err := testPrivateKeyRing.DecryptSessionKey(testKeyPacketsDecoded)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting KeyPacket, got:", err)
-//        }
-//
-//        assert.Exactly(t, testSymmetricKey, symmetricKey)
+    
+    let testEncodedSessionKey = "ExXmnSiQ2QCey20YLH6qlLhkY3xnIBC1AwlIXwK/HvY="
+    override func setUp() {
+        super.setUp()
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        super.tearDown()
+    }
+    
+    func testAttachmentGetKey() {
+        let keyPacket = "wcBMA0fcZ7XLgmf2AQgAiRsOlnm1kSB4/lr7tYe6pBsRGn10GqwUhrwU5PMKOHdCgnO12jO3y3CzP0Yl/jGhAYja9wLDqH8X0sk3tY32u4Sb1Qe5IuzggAiCa4dwOJj5gEFMTHMzjIMPHR7A70XqUxMhmILye8V4KRm/j4c1sxbzA1rM3lYBumQuB5l/ck0Kgt4ZqxHVXHK5Q1l65FHhSXRj8qnunasHa30TYNzP8nmBA8BinnJxpiQ7FGc2umnUhgkFtjm5ixu9vyjr9ukwDTbwAXXfmY+o7tK7kqIXJcmTL6k2UeC6Mz1AagQtRCRtU+bv/3zGojq/trZo9lom3naIeQYa36Ketmcpj2Qwjg=="
+        do {
+            let pgp = Crypto()
+            let keyPacketData: Data = keyPacket.decodeBase64()
+            
+            guard let symetricKey = try pgp.getSession(keyPacket: keyPacketData, privateKey: self.testPrivateKey, passphrase: testMailboxPassword) else {
+                XCTFail("symetricKey can't be nil")
+                return
+            }
+            XCTAssertEqual(symetricKey.algo, "aes256")
+            XCTAssertEqual(symetricKey.key?.base64EncodedString(), self.testEncodedSessionKey)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
     }
 
+    func testAttachmentSetKey() {
+        do {
+            let key: Data = self.testEncodedSessionKey.decodeBase64()
+            guard let keyPacket = try key.getKeyPackage(publicKey: self.testPublicKey, algo: "aes256") else {
+                XCTFail("keyPacket can't be nil")
+                return
+            }
+            
+            guard let symetricKey = try Crypto().getSession(keyPacket: keyPacket,
+                                                            privateKey: self.testPrivateKey,
+                                                            passphrase: self.testMailboxPassword) else {
+                XCTFail("symetricKey can't be nil")
+                return
+            }
+            
+            XCTAssertEqual(symetricKey.algo, "aes256")
+            XCTAssertEqual(symetricKey.key?.base64EncodedString(), self.testEncodedSessionKey)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
     
-//    ///Mark -- attachment part
-//    func TestAttachmentDecrypt(t *testing.T) {
-//        var testAttachmentCleartext = "cc,\ndille."
-//        var message = NewPlainMessage([]byte(testAttachmentCleartext))
-//
-//        encrypted, err := testPrivateKeyRing.Encrypt(message, nil)
-//        if err != nil {
-//            t.Fatal("Expected no error while encrypting attachment, got:", err)
-//        }
-//
-//        armored, err := encrypted.GetArmored()
-//        if err != nil {
-//            t.Fatal("Expected no error while armoring, got:", err)
-//        }
-//
-//        pgpSplitMessage, err := NewPGPSplitMessageFromArmored(armored)
-//        if err != nil {
-//            t.Fatal("Expected no error while unarmoring, got:", err)
-//        }
-//
-//        redecData, err := testPrivateKeyRing.DecryptAttachment(pgpSplitMessage)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting attachment, got:", err)
-//        }
-//
-//        assert.Exactly(t, message, redecData)
-//    }
+    func testAttachmentEncryptDecrypt() {
+        let testAttachmentCleartext = "cc,\ndille."
+        do {
+            let pgp = Crypto()
+            let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
+            // encrypt
+            let encrypted = try pgp.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPrivateKey)
+            XCTAssertNotNil(encrypted)
+            guard let key = encrypted?.keyPacket,
+                let data = encrypted?.dataPacket else {
+                    XCTFail("can't be null")
+                    return
+            }
+            // decrypt
+            let decrypted = try pgp.decryptAttachment(keyPacket: key,
+                                                      dataPacket: data,
+                                                      privateKey: self.testPrivateKey,
+                                                      passphrase: self.testMailboxPassword)
+            guard let clearData = decrypted else {
+                XCTFail("can't be null")
+                return
+            }
+            let clearText = NSString(data: clearData, encoding: String.Encoding.utf8.rawValue)! as String
+            //match
+            XCTAssertEqual(testAttachmentCleartext, clearText)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
     
-//    func TestAttachmentGetKey() {
-//        testKeyPacketsDecoded, err := base64.StdEncoding.DecodeString(readTestFile("attachment_keypacket", false))
-//        if err != nil {
-//            t.Fatal("Expected no error while decoding base64 KeyPacket, got:", err)
-//        }
-//
-//        symmetricKey, err := testPrivateKeyRing.DecryptSessionKey(testKeyPacketsDecoded)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting KeyPacket, got:", err)
-//        }
-//
-//        assert.Exactly(t, testSymmetricKey, symmetricKey)
-//    }
+    func testAttachmentEncrypt() {
+        let testAttachmentCleartext = "cc,\ndille."
+        do {
+            let pgp = Crypto()
+            let plainData = testAttachmentCleartext.data(using: String.Encoding.utf8)!
+            // encrypt
+            guard let encrypted = try pgp.encryptAttachment(plainData: plainData, fileName: "s.txt", publicKey: self.testPrivateKey) else {
+                return XCTFail("can't be null")
+            }
+            guard let _ = encrypted.keyPacket, let _ = encrypted.dataPacket else {
+                return XCTFail("can't be null")
+            }
+            guard let encryptedData = encrypted.getBinary() else {
+                return XCTFail("can't be null")
+            }
+            // decrypt
+            let decrypted = try pgp.decrypt(encrytped: encryptedData, privateKey: self.testPrivateKey, passphrase: self.testMailboxPassword)
+            //match
+            XCTAssertEqual(testAttachmentCleartext, decrypted)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
 
-//    func TestAttachmentSetKey(t *testing.T) {
-//        keyPackets, err := testPublicKeyRing.EncryptSessionKey(testSymmetricKey)
-//        if err != nil {
-//            t.Fatal("Expected no error while encrypting attachment key, got:", err)
-//        }
-//
-//        symmetricKey, err := testPrivateKeyRing.DecryptSessionKey(keyPackets)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting attachment key, got:", err)
-//        }
-//
-//        assert.Exactly(t, testSymmetricKey, symmetricKey)
-//    }
-//
-//    func TestAttachmentEncryptDecrypt(t *testing.T) {
-//        var testAttachmentCleartext = "cc,\ndille."
-//        var message = NewPlainMessage([]byte(testAttachmentCleartext))
-//
-//        encSplit, err := testPrivateKeyRing.EncryptAttachment(message, "s.txt")
-//        if err != nil {
-//            t.Fatal("Expected no error while encrypting attachment, got:", err)
-//        }
-//
-//        redecData, err := testPrivateKeyRing.DecryptAttachment(encSplit)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting attachment, got:", err)
-//        }
-//
-//        assert.Exactly(t, message, redecData)
-//    }
-//
-//    func TestAttachmentEncrypt(t *testing.T) {
-//        var testAttachmentCleartext = "cc,\ndille."
-//        var message = NewPlainMessage([]byte(testAttachmentCleartext))
-//
-//        encSplit, err := testPrivateKeyRing.EncryptAttachment(message, "s.txt")
-//        if err != nil {
-//            t.Fatal("Expected no error while encrypting attachment, got:", err)
-//        }
-//
-//        pgpMessage := NewPGPMessage(encSplit.GetBinary())
-//
-//        redecData, err := testPrivateKeyRing.Decrypt(pgpMessage, nil, 0)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting attachment, got:", err)
-//        }
-//
-//        assert.Exactly(t, message, redecData)
-//    }
-//
-//    func TestAttachmentDecrypt(t *testing.T) {
-//        var testAttachmentCleartext = "cc,\ndille."
-//        var message = NewPlainMessage([]byte(testAttachmentCleartext))
-//
-//        encrypted, err := testPrivateKeyRing.Encrypt(message, nil)
-//        if err != nil {
-//            t.Fatal("Expected no error while encrypting attachment, got:", err)
-//        }
-//
-//        armored, err := encrypted.GetArmored()
-//        if err != nil {
-//            t.Fatal("Expected no error while armoring, got:", err)
-//        }
-//
-//        pgpSplitMessage, err := NewPGPSplitMessageFromArmored(armored)
-//        if err != nil {
-//            t.Fatal("Expected no error while unarmoring, got:", err)
-//        }
-//
-//        redecData, err := testPrivateKeyRing.DecryptAttachment(pgpSplitMessage)
-//        if err != nil {
-//            t.Fatal("Expected no error while decrypting attachment, got:", err)
-//        }
-//
-//        assert.Exactly(t, message, redecData)
-//    }
+    func testAttachmentDecrypt() {
+        let testAttachmentCleartext = "cc,\ndille."
+        do {
+            let pgp = Crypto()
+            // encrypt
+            guard let encrypted = try pgp.encrypt(plainText: testAttachmentCleartext, publicKey: self.testPublicKey) else {
+                return XCTFail("can't be null")
+            }
+
+            // decrypt
+            let decrypted = try pgp.decryptAttachment(encrypted: encrypted, privateKey:  self.testPrivateKey, passphrase: self.testMailboxPassword)
+            guard let clearData = decrypted else {
+                XCTFail("can't be null")
+                return
+            }
+            let clearText = NSString(data: clearData, encoding: String.Encoding.utf8.rawValue)! as String
+            //match
+            XCTAssertEqual(testAttachmentCleartext, clearText)
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
+    }
 
 
     func testExample() {
@@ -279,12 +293,12 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
         XCTAssert(true, "Pass")
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure() {
-            // Put the code you want to measure the time of here.
-        }
-    }
+//    func testPerformanceExample() {
+//        // This is an example of a performance test case.
+//        self.measure() {
+//            // Put the code you want to measure the time of here.
+//        }
+//    }
     
     func testAuth() {
 //        apiService.authAuth(username: "zhj4478", password: "31Feng31"){ auth, error in

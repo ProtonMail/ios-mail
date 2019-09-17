@@ -103,6 +103,15 @@ class Crypto {
         return plainMessage.getString()
     }
     
+    public func decrypt(encrytped binMessage: Data, privateKey: String, passphrase: String) throws -> String {
+        let pgp = CryptoGetGopenPGP()!
+        let keyRing = try pgp.buildKeyRingArmored(privateKey)
+        try keyRing.unlock(withPassphrase: passphrase)
+        let pgpMsg = CryptoNewPGPMessage(binMessage.mutable as Data)
+        let plainMessage = try keyRing.decrypt(pgpMsg, verifyKey: nil, verifyTime: 0)
+        return plainMessage.getString()
+    }
+    
     public func decrypt(encrytped message: String,
                         publicKey verifierBinKey: Data,
                         privateKey binKeys: Data,
@@ -319,6 +328,19 @@ class Crypto {
         let keyRing = try pgp.buildKeyRing(binKeys)
         try keyRing.unlock(withPassphrase: passphrase)
         let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
+        let plainMessage = try keyRing.decryptAttachment(splitMessage)
+        return plainMessage.getBinary()
+    }
+    
+    public func decryptAttachment(encrypted: String, privateKey: String, passphrase: String) throws -> Data? {
+        let pgp = CryptoGetGopenPGP()!
+        let keyRing = try pgp.buildKeyRingArmored(privateKey)
+        try keyRing.unlock(withPassphrase: passphrase)
+        var error: NSError?
+        let splitMessage = CryptoNewPGPSplitMessageFromArmored(encrypted, &error)
+        if let err = error {
+            throw err
+        }
         let plainMessage = try keyRing.decryptAttachment(splitMessage)
         return plainMessage.getBinary()
     }
