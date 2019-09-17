@@ -84,6 +84,8 @@
 		<string>opera-https</string>
 		<string>firefox-focus</string>
 		<string>ddgQuickLink</string>
+		<string>onionhttp</string>
+		<string>onionhttps</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

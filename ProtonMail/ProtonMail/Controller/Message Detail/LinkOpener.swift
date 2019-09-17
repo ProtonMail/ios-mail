@@ -29,7 +29,7 @@
 import Foundation
 
 enum LinkOpener: String, CaseIterable {
-    case safari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo
+    case safari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion
     
     private var scheme: String {
         switch self {
@@ -43,6 +43,7 @@ enum LinkOpener: String, CaseIterable {
         case .edge: return "microsoft-edge-http"
         case .yandex: return "yandexbrowser-open-url"
         case .duckDuckGo: return "ddgQuickLink"
+        case .onion: return "onionhttp"
         }
     }
     
@@ -58,6 +59,7 @@ enum LinkOpener: String, CaseIterable {
         case .edge: return "Edge"
         case .yandex: return "Yandex"
         case .duckDuckGo: return "DuckDuckGo"
+        case .onion: return "Onion Browser"
         }
     }
     
@@ -88,6 +90,11 @@ enum LinkOpener: String, CaseIterable {
         case .edge:
             if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
                 components.scheme = components.scheme == "https" ? "microsoft-edge-https" : "microsoft-edge-http"
+                return components.url
+            }
+        case .onion:
+            if var components = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+                components.scheme = components.scheme == "https" ? "onionhttps" : "onionhttp"
                 return components.url
             }
         case .firefox:
