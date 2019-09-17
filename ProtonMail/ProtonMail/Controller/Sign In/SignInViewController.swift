@@ -279,6 +279,7 @@ class SignInViewController: ProtonMailViewController {
         }
         
         // unlock when locked
+        guard !SignInViewController.isComeBackFromMailbox else { return }
         
         let signinFlow = UnlockManager.shared.getUnlockFlow()
         signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
