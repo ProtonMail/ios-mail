@@ -77,6 +77,7 @@ final class UserCachedStatus : SharedCacheBase {
         static let isIAPAvailableOnBE = "isIAPAvailable"
         
         static let metadataStripping = "metadataStripping"
+        static let browser = "browser"
     }
 
     var isForcedLogout : Bool = false
@@ -217,6 +218,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.isIAPAvailableOnBE)
         
         KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
+        KeychainWrapper.keychain.remove(forKey: Key.browser)
                         
         getShared().synchronize()
     }
@@ -302,6 +304,21 @@ extension UserCachedStatus {
 }
 
 #if !APP_EXTENSION
+extension UserCachedStatus {
+    var browser: LinkOpener {
+        get {
+            guard let string = KeychainWrapper.keychain.string(forKey: Key.browser),
+                let mode = LinkOpener(rawValue: string) else
+            {
+                return .safari
+            }
+            return mode
+        }
+        set {
+            KeychainWrapper.keychain.set(newValue.rawValue, forKey: Key.browser)
+        }
+    }
+}
 extension UserCachedStatus: ServicePlanDataStorage {
     var servicePlansDetails: [ServicePlanDetails]? {
         get {

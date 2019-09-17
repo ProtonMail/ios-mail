@@ -39,8 +39,16 @@ class MessageBodyCoordinator {
         self.controller.enclosingScroller = enclosingScroller
     }
     
-    internal func open(url: URL) {
-        UIApplication.shared.openURL(url)
+    internal func open(url originalURL: URL) {
+        if let url = userCachedStatus.browser.deeplink(to: originalURL),
+            UIApplication.shared.canOpenURL(url)
+        {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            return
+        }
+        
+        // fallback to Safari if there are any problems
+        UIApplication.shared.open(originalURL, options: [:], completionHandler: nil)
     }
     
     internal func mail(to url: URL) {
