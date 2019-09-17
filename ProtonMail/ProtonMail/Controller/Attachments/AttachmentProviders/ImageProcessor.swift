@@ -72,17 +72,17 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
             PHImageManager.default().requestAVAsset(forVideo: asset, options: options, resultHandler: { asset, audioMix, info in
                 if let error = info?[PHImageErrorKey] as? NSError {
-                    self.controller.error(error.debugDescription)
+                    self.controller?.error(error.debugDescription)
                     return
                 }
                 guard let asset = asset as? AVURLAsset, let image_data = try? Data(contentsOf: asset.url) else {
-                    self.controller.error(LocalString._cant_open_the_file)
+                    self.controller?.error(LocalString._cant_open_the_file)
                     return
                 }
                 
                 let fileName = asset.url.lastPathComponent
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
-                self.controller.fileSuccessfullyImported(as: fileData)
+                self.controller?.fileSuccessfullyImported(as: fileData)
             })
             
         case .image:
@@ -95,7 +95,7 @@ extension ImageProcessor where Self: AttachmentProvider {
             }
             PHImageManager.default().requestImageData(for: asset, options: options) { imagedata, dataUTI, orientation, info in
                 guard var image_data = imagedata, /* let _ = dataUTI,*/ let info = info, image_data.count > 0 else {
-                    self.controller.error(LocalString._cant_open_the_file)
+                    self.controller?.error(LocalString._cant_open_the_file)
                     return
                 }
                 var fileName = "\(NSUUID().uuidString).jpg"
@@ -112,7 +112,7 @@ extension ImageProcessor where Self: AttachmentProvider {
                     }
                 }
                 let fileData = ConcreteFileData<Data>(name: fileName, ext: fileName.mimeType(), contents: image_data)
-                self.controller.fileSuccessfullyImported(as: fileData)
+                self.controller?.fileSuccessfullyImported(as: fileData)
             }
             
         default:
