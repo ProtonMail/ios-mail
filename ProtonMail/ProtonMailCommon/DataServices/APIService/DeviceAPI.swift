@@ -100,7 +100,6 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
             "AppVersion" : "iOS_\(ver)",
             "Environment" : env
         ]
-        print(parameters)
         return parameters
     }
     

@@ -512,7 +512,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     private func updateAttachmentButton () {
-        if attachments?.count > 0 {
+        let count = attachments?.count ?? 0
+        if count > 0 {
             self.headerView.updateAttachmentButton(true)
         } else {
             self.headerView.updateAttachmentButton(false)

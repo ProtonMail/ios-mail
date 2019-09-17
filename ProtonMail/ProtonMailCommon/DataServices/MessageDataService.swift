@@ -1237,8 +1237,8 @@ class MessageDataService : Service {
         }
         
         guard let encryptedData = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
-            let keyPacket = encryptedData.keyPacket(),
-            let dataPacket = encryptedData.dataPacket() else
+            let keyPacket = encryptedData.keyPacket,
+            let dataPacket = encryptedData.dataPacket else
         {
             completion?(nil, nil, NSError.encryptionError())
             return
@@ -1469,8 +1469,8 @@ class MessageDataService : Service {
                 status.insert(SendStatus.getBody)
                 //all prebuild errors need pop up from here
                 guard let splited = try message.split(),
-                    let bodyData = splited.dataPacket(),
-                    let keyData = splited.keyPacket(),
+                    let bodyData = splited.dataPacket,
+                    let keyData = splited.keyPacket,
                     let session = newSchema ?
                         try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
                                                                 passphrase: passphrase,
@@ -1481,7 +1481,10 @@ class MessageDataService : Service {
                 }
                 //Debug info
                 status.insert(SendStatus.updateBuilder)
-                sendBuilder.update(bodyData: bodyData, bodySession: session.session(), algo: session.algo())
+                guard let key = session.key else {
+                    throw RuntimeError.cant_decrypt.error
+                }
+                sendBuilder.update(bodyData: bodyData, bodySession: key, algo: session.algo)
                 sendBuilder.set(pwd: message.password, hit: message.passwordHint)
                 //Debug info
                 status.insert(SendStatus.processKeyResponse)
@@ -1529,9 +1532,12 @@ class MessageDataService : Service {
                             try att.getSession(userKey: userPrivKeys,
                                                keys: addrPrivKeys) :
                             try att.getSession(keys: addrPrivKeys.binPrivKeys) {
+                            guard let key = sessionPack.key else {
+                                continue
+                            }
                             sendBuilder.add(att: PreAttachment(id: att.attachmentID,
-                                                               session: sessionPack.session(),
-                                                               algo: sessionPack.algo(),
+                                                               session: key,
+                                                               algo: sessionPack.algo,
                                                                att: att))
                         }
                     }
@@ -1772,14 +1778,15 @@ class MessageDataService : Service {
             } else {
                 PMLog.D(" error: \(String(describing: error))")
                 var statusCode = 200
+                var errorCode = error?.code ?? 200
                 var isInternetIssue = false
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {
                         statusCode = detail.statusCode
                     }
                     else {
-                        if error?.code == -1009 || error?.code == -1004 || error?.code == -1001 { //internet issue
-                            if error?.code == -1001 {
+                        if errorCode == -1009 || errorCode == -1004 || errorCode == -1001 { //internet issue
+                            if errorCode == -1001 {
                                 NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 0, userInfo: nil))
                             } else {
                                 NotificationCenter.default.post(Notification(name: NSNotification.Name.reachabilityChanged, object: 1, userInfo: nil))
@@ -1812,11 +1819,13 @@ class MessageDataService : Service {
                     }
                 }
                 
-                if statusCode == 200 && error?.code == 9001 {
+                
+                
+                if statusCode == 200 && errorCode == 9001 {
                     
-                } else if statusCode == 200 && error?.code > 1000 {
+                } else if statusCode == 200 && errorCode > 1000 {
                     let _ = sharedMessageQueue.remove(elementID)
-                } else if statusCode == 200 && error?.code < 200 && !isInternetIssue {
+                } else if statusCode == 200 && errorCode < 200 && !isInternetIssue {
                     let _ = sharedMessageQueue.remove(elementID)
                 }
                 
@@ -1826,7 +1835,7 @@ class MessageDataService : Service {
                     error?.upload(toAnalytics: QueueErrorTitle)
                 }
                 
-                if !isInternetIssue && (error?.code != NSError.authCacheLocked().code) {
+                if !isInternetIssue && (errorCode != NSError.authCacheLocked().code) {
                     self.dequeueIfNeeded()
                 } else {
                     if !sharedMessageQueue.isBlocked && self.readQueue.count > 0 {

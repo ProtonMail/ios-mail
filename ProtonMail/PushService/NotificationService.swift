@@ -27,7 +27,6 @@
 
 
 import UserNotifications
-import Crypto
 
 @available(iOSApplicationExtension 10.0, *)
 class NotificationService: UNNotificationServiceExtension {
@@ -73,9 +72,10 @@ class NotificationService: UNNotificationServiceExtension {
         }
         
         do {
-            let plaintext = try sharedOpenPGP.decryptMessage(encrypted,
-                                                             privateKey: encryptionKit.privateKey,
-                                                             passphrase: encryptionKit.passphrase)
+            
+            let plaintext = try Crypto().decrypt(encrytped: encrypted,
+                                                 privateKey: encryptionKit.privateKey,
+                                                 passphrase: encryptionKit.passphrase)
             
             guard let push = PushData.parse(with: plaintext) else {
                 #if Enterprise

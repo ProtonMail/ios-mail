@@ -48,13 +48,13 @@ public struct PinProtection: ProtectionStrategy {
     public func lock(value: Keymaker.Key) throws {
         let salt = PinProtection.generateRandomValue(length: 8)
         var error: NSError?
-        guard let ethemeralKey = CryptoDeriveKey(pin, Data(bytes: salt), PinProtection.numberOfIterations, &error) else {
+        guard let ethemeralKey = SubtleDeriveKey(pin, Data(salt), PinProtection.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey.bytes)
         
         PinProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
-        self.keychain.set(Data(bytes: salt), forKey: PinProtection.saltKeychainKey)
+        self.keychain.set(Data(salt), forKey: PinProtection.saltKeychainKey)
     }
     
     public func unlock(cypherBits: Data) throws -> Keymaker.Key {
@@ -62,7 +62,7 @@ public struct PinProtection: ProtectionStrategy {
             throw Errors.saltNotFound
         }
         var error: NSError?
-        guard let ethemeralKey = CryptoDeriveKey(pin, salt, PinProtection.numberOfIterations, &error) else {
+        guard let ethemeralKey = SubtleDeriveKey(pin, salt, PinProtection.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         do {

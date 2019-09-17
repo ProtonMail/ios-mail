@@ -65,7 +65,7 @@ extension Attachment {
     }
     
     // Mark : public functions
-    func encrypt(byKey key: Key, mailbox_pwd: String) -> ModelsEncryptedSplit? {
+    func encrypt(byKey key: Key, mailbox_pwd: String) -> SplitMessage? {
         do {
             if let clearData = self.fileData {
                 return try clearData.encryptAttachment(fileName: self.fileName, pubKey: key.publicKey)
@@ -130,7 +130,7 @@ extension Attachment {
         }
     }
     
-    func getSession(keys: Data) throws -> ModelsSessionSplit? {
+    func getSession(keys: Data) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket,
             let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
         {
@@ -145,7 +145,7 @@ extension Attachment {
         return sessionKey
     }
     
-    func getSession(userKey: Data, keys: [Key]) throws -> ModelsSessionSplit? {
+    func getSession(userKey: Data, keys: [Key]) throws -> SymmetricKey? {
         guard let keyPacket = self.keyPacket,
             let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else
         {

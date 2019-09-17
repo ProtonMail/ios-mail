@@ -57,11 +57,11 @@ final class Key : NSObject {
     }
     
     var publicKey : String {
-        return KeyPublicKey(self.private_key, nil)
+        return self.private_key.publicKey
     }
     
     var fingerprint : String {
-        return KeyGetFingerprint(self.private_key, nil)
+        return self.private_key.fingerprint
     }
     
     var newSchema : Bool {

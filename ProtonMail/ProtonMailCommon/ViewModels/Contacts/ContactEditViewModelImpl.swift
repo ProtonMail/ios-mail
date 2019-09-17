@@ -613,10 +613,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 let vcard2Str = PMNIEzvcard.write(vcard2)
                 PMLog.D(vcard2Str);
                 //TODO:: fix try later
-                let signed_vcard2 = try? sharedOpenPGP.signTextDetached(vcard2Str,
-                                                                        privateKey: userkey.private_key,
-                                                                        passphrase: sharedUserDataService.mailboxPassword!,
-                                                                        trim: true)
+                let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
+                                                              privateKey: userkey.private_key,
+                                                              passphrase: sharedUserDataService.mailboxPassword!)
                 
                 //card 2 object
                 let card2 = CardData(t: .SignedOnly,
@@ -760,10 +759,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 let encrypted_vcard3 = try! vcard3Str.encrypt(withPubKey: userkey.publicKey,
                                                               privateKey: "",
                                                               passphrase: "")
-                let signed_vcard3 = try! sharedOpenPGP.signTextDetached(vcard3Str,
-                                                                        privateKey: userkey.private_key,
-                                                                        passphrase: sharedUserDataService.mailboxPassword!,
-                                                                        trim: true)
+                let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
+                                                               privateKey: userkey.private_key,
+                                                               passphrase: sharedUserDataService.mailboxPassword!)
                 //card 3 object
                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3!, s: signed_vcard3)
                 if isCard3Set {

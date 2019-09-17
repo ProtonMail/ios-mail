@@ -48,11 +48,11 @@ class ShareUnlockCoordinator : PushCoordinator {
     }
     
     deinit {
-        print("deinit ShareUnlockCoordinator")
+        PMLog.D("deinit ShareUnlockCoordinator")
     }
     
     init(navigation : UINavigationController?, services: ServiceFactory) {
-        print("init ShareUnlockCoordinator")
+        PMLog.D("init ShareUnlockCoordinator")
         //parent navigation
         self.navigationController = navigation
         self.services = services
