@@ -616,7 +616,7 @@ class MessageDataService : Service {
                                       downloadTask: ((URLSessionDownloadTask) -> Void)?,
                                       completion:((URLResponse?, URL?, NSError?) -> Void)?)
     {
-        if let localURL = attachment.localURL {
+        if attachment.downloaded, let localURL = attachment.localURL {
             completion?(nil, localURL as URL, nil)
             return
         }
@@ -937,7 +937,7 @@ class MessageDataService : Service {
         Message.deleteAll(inContext: sharedCoreDataService.mainManagedObjectContext) // will cascadely remove appropriate Attacments also
         UIApplication.setBadge(badge: 0)
         // good opportunity to remove all temp folders (they should be empty by this moment)
-        try? FileManager.default.removeItem(at: FileManager.default.appGroupsTempDirectoryURL)
+        FileManager.default.cleanTemporaryDirectory()
     }
     
     func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {

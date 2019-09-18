@@ -137,6 +137,12 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        #if DEBUG
+        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
+        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
+        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        #endif
+        
         let cacheService : AppCacheService = sharedServices.get()
         cacheService.restoreCacheWhenAppStart()
         

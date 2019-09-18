@@ -251,7 +251,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         self.startAutoFetch()
         
-        FileManager.default.cleanCachedAtts()
+        FileManager.default.cleanCachedAttsLegacy()
         
         if self.viewModel.notificationMessageID != nil {
             self.coordinator?.go(to: .detailsFromNotify)
