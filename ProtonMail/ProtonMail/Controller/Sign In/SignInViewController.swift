@@ -277,6 +277,28 @@ class SignInViewController: ProtonMailViewController {
             loginWidthConstraint.constant = 200
             loginMidlineConstraint.constant = 0
         }
+        
+        // unlock when locked
+        guard !SignInViewController.isComeBackFromMailbox else { return }
+        
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
+        
+        if signinFlow == .requirePin {
+            self.showingTouchID = false
+            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        } else {
+            self.showingTouchID = true
+            UnlockManager.shared.initiateUnlock(flow: signinFlow,
+                                                requestPin: {
+                                                    self.showingTouchID = false
+                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                requestMailboxPassword: {
+                                                    self.showingTouchID = false
+                                                    self.isRemembered = true
+                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+            })
+        }
     }
     
     @objc func doEnterForeground() {
@@ -318,27 +340,6 @@ class SignInViewController: ProtonMailViewController {
             if signinFlow != .requireTouchID {
                 usernameTextField.becomeFirstResponder()
             }
-        }
-        
-        // unlock when locked
-        
-        let signinFlow = UnlockManager.shared.getUnlockFlow()
-        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
-        
-        if signinFlow == .requirePin {
-            self.showingTouchID = false
-            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
-        } else {
-            self.showingTouchID = true
-            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {
-                                                    self.showingTouchID = false
-                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                                requestMailboxPassword: {
-                                                    self.showingTouchID = false
-                                                    self.isRemembered = true
-                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
         }
     }
     
