@@ -34,22 +34,32 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     class CustomViewPrintRenderer: UIPrintPageRenderer {
         private(set) var view: UIView
         private(set) var contentSize: CGSize
+        private var image: UIImage?
+        
+        func updateImage(in rect: CGRect) {
+            self.contentSize = rect.size
+            
+            UIGraphicsBeginImageContextWithOptions(rect.size, true, 0.0)
+            defer { UIGraphicsEndImageContext() }
+            
+            guard let context = UIGraphicsGetCurrentContext() else {
+                self.image = nil
+                return
+            }
+            self.view.layer.render(in: context)
+            self.image = UIGraphicsGetImageFromCurrentImageContext()
+        }
         
         init(_ view: UIView) {
             self.view = view
-            self.contentSize = view.frame.size
+            self.contentSize = view.bounds.size
         }
         
         override func drawContentForPage(at pageIndex: Int, in contentRect: CGRect) {
             super.drawContentForPage(at: pageIndex, in: contentRect)
             guard pageIndex == 0 else { return }
-            if let context = UIGraphicsGetCurrentContext() {
-                self.view.frame = contentRect
-                self.view.layoutIfNeeded()
-                
-                context.translateBy(x: contentRect.origin.x, y: contentRect.origin.y)
-                self.view.layer.render(in: context)
-                context.translateBy(x: -contentRect.origin.x, y: -contentRect.origin.y)
+            if let _ = UIGraphicsGetCurrentContext() {
+                self.image?.draw(in: contentRect)
             }
         }
     }

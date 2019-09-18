@@ -162,8 +162,15 @@ extension MessageHeaderViewController: Printable {
     }
     
     func printingWillStart(renderer: UIPrintPageRenderer) {
-        if let newHeader = (renderer as? Renderer)?.view as? EmailHeaderView {
+        if let renderer = renderer as? Renderer,
+            let newHeader = renderer.view as? EmailHeaderView
+        {
             newHeader.prepareForPrinting(true)
+            let minimalSize = newHeader.sizeThatFits(.init(width: 560, height: 300))
+            newHeader.frame = .init(x: 18, y: 39, width: 560, height: minimalSize.height)
+            newHeader.layoutIfNeeded()
+            
+            renderer.updateImage(in: newHeader.frame)
         }
     }
 }
