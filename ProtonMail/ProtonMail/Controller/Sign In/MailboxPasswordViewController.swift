@@ -106,11 +106,16 @@ class MailboxPasswordViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        SignInViewController.isComeBackFromMailbox = true
         
         if(UIDevice.current.isLargeScreen())
         {
             passwordTextField.becomeFirstResponder()
+        }
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        if (parent == nil) {
+            SignInViewController.isComeBackFromMailbox = true
         }
     }
     
