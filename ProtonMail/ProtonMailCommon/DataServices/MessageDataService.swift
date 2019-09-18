@@ -475,10 +475,10 @@ class MessageDataService : Service {
     func send(inQueue messageID : String!, completion: CompletionBlock?) {
         var error: NSError?
         let context = sharedCoreDataService.mainManagedObjectContext
-        
-        self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: messageID))
-        
+
         if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+            self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: messageID, subtitle: message.title))
+            
             //message.location = .outbox
             error = context.saveUpstreamIfNeeded()
             if error != nil {
@@ -1676,8 +1676,9 @@ class MessageDataService : Service {
                                                 attCount: attachments.count)
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                                 error: "⚠️ \(LocalString._message_sent_failed_desc)\n\(error!.localizedDescription)",
-                                                                                                 timeInterval: 1))
+                                                                                                 error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
+                                                                                                 timeInterval: 1,
+                                                                                                 subtitle: message.title))
                 }
                 completion?(nil, nil, error)
             }.catch { (error) in
@@ -1697,8 +1698,9 @@ class MessageDataService : Service {
                 
                 // show message now
                 self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
-                                                                                             error: "⚠️ \(LocalString._messages_sending_failed_try_again)\n\(err.localizedDescription)",
-                                                                                             timeInterval: 1))
+                                                                                             error: "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)",
+                                                                                             timeInterval: 1,
+                                                                                             subtitle: message.title))
                 BugDataService.sendingIssue(title: SendingErrorTitle,
                                             bug: err.localizedDescription,
                                             status: status.rawValue,

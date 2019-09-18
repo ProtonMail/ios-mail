@@ -35,22 +35,26 @@ class LocalNotificationService: Service {
     }
     struct MessageSendingDetails {
         var messageID: String
-        var error: String = "⚠️" + LocalString._message_not_sent_message
+        var error: String = LocalString._message_not_sent_message
         var timeInterval: TimeInterval = 3 * 60
+        var subtitle: String
         
-        init(messageID: String) {
+        init(messageID: String, subtitle: String = "") {
             self.messageID = messageID
+            self.subtitle = subtitle
         }
-        init(messageID: String, error: String, timeInterval: TimeInterval) {
+        init(messageID: String, error: String, timeInterval: TimeInterval, subtitle: String) {
             self.messageID = messageID
             self.error = error
             self.timeInterval = timeInterval
+            self.subtitle = subtitle
         }
     }
     
     func scheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
         let content = UNMutableNotificationContent()
-        content.title = LocalString._message_not_sent_title
+        content.title = "⚠️ " + LocalString._message_not_sent_title
+        content.subtitle = details.subtitle
         content.body = details.error
         content.categoryIdentifier = Categories.failedToSend.rawValue
         content.userInfo = ["message_id": details.messageID,
