@@ -1,5 +1,5 @@
 //
-//  AuthAPITests.swift
+//  CryptoTests.swift
 //  ProtonMail - Created on 09/12/19.
 //
 //
@@ -136,7 +136,6 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 -----END PGP PRIVATE KEY BLOCK-----
 
 """
-    
     let testEncodedSessionKey = "ExXmnSiQ2QCey20YLH6qlLhkY3xnIBC1AwlIXwK/HvY="
     override func setUp() {
         super.setUp()
