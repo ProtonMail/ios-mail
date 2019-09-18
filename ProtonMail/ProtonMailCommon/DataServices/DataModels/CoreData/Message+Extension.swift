@@ -414,7 +414,7 @@ extension Message {
                                        passphrase: passphrase,
                                        time: time) {
                 guard let verification = verify.signatureVerificationError else {
-                    return .failed
+                    return .ok
                 }
                 return SignStatus(rawValue: verification.status) ?? .notSigned
             }

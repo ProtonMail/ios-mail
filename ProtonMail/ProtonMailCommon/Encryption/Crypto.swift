@@ -40,6 +40,7 @@ typealias SymmetricKey        = CryptoSymmetricKey
 typealias ExplicitVerifyMessage = MobileExplicitVerifyMessage
 typealias SignatureVerification = CryptoSignatureVerificationError
 
+
 extension Data { ///need follow the gomobile fixes
     /// This computed value is only needed because of [this](https://github.com/golang/go/issues/33745) issue in the
     /// golang/go repository. It is a workaround until the problem is solved upstream.
@@ -325,7 +326,7 @@ class Crypto {
     
     public func decryptAttachment(keyPacket: Data, dataPacket: Data, privateKey binKeys: Data, passphrase: String) throws -> Data? {
         let pgp = CryptoGetGopenPGP()!
-        let keyRing = try pgp.buildKeyRing(binKeys)
+        let keyRing = try pgp.buildKeyRing(binKeys.mutable as Data)
         try keyRing.unlock(withPassphrase: passphrase)
         let splitMessage = CryptoNewPGPSplitMessage(keyPacket.mutable as Data, dataPacket.mutable as Data)
         let plainMessage = try keyRing.decryptAttachment(splitMessage)
@@ -349,7 +350,7 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(publicKey)
         var error: NSError?
-        let splitMessage = MobileEncryptAttachment(plainData, fileName, keyRing, &error)
+        let splitMessage = MobileEncryptAttachment(plainData, fileName, keyRing, &error)//without mutable
         if let err = error {
             throw err
         }
@@ -403,34 +404,46 @@ class Crypto {
         if let err = error {
             throw err
         }
-        let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, 0, &error)
-        if let err = error {
-            throw err
-        }
-        guard let v = verified, v.status == 0 else {
+        do {
+            try pubKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            return true
+        } catch {
             return false
         }
-        return true
+//        let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, verifyTime, &error)
+//        if let err = error {
+//            throw err
+//        }
+//        guard let v = verified, v.status == 0 else {
+//            return false
+//        }
     }
     
     public func verifyDetached(signature: String, plainText: String, publicKey: String, verifyTime: Int64) throws -> Bool {
-         let pgp = CryptoGetGopenPGP()!
-         let pubKeyRing = try pgp.buildKeyRingArmored(publicKey)
-         let plainMessage = CryptoNewPlainMessageFromString(plainText)
-         var error: NSError?
-         let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
-         if let err = error {
-             throw err
-         }
-         let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, 0, &error)
-         if let err = error {
-             throw err
-         }
-         guard let v = verified, v.status == 0 else {
-             return false
-         }
-         return true
-     }
+        let pgp = CryptoGetGopenPGP()!
+        let pubKeyRing = try pgp.buildKeyRingArmored(publicKey)
+        let plainMessage = CryptoNewPlainMessageFromString(plainText)
+        var error: NSError?
+        let signature = CryptoNewPGPSignatureFromArmored(signature, &error)
+        if let err = error {
+            throw err
+        }
+        do {
+            try pubKeyRing.verifyDetached(plainMessage, signature: signature, verifyTime: verifyTime)
+            return true
+        } catch {
+            return false
+        }
+        
+        
+        //        let verified = MobileVerifyDetached(pubKeyRing, plainMessage, signature, verifyTime, &error)
+        //        if let err = error {
+        //            throw err
+        //        }
+        //        guard let v = verified, v.status == 0 else {
+        //            return false
+        //        }
+    }
     
 //    let _ = try sharedOpenPGP.verifyTextSignDetached(c.sign,
 //                                                                                    plainText: c.data,
