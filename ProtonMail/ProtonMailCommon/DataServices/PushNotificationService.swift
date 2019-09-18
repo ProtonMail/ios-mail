@@ -329,7 +329,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
         let userInfo = notification.request.content.userInfo
-        let options: UNNotificationPresentationOptions = []
+        let options: UNNotificationPresentationOptions = [.alert, .sound]
         
         if UnlockManager.shared.isUnlocked() { // foreground
             self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
