@@ -31,7 +31,7 @@ import MBProgressHUD
 
 var sharedUserDataService : UserDataService!
 
-class ShareUnlockViewController: UIViewController, CoordinatedNew {
+class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDelegate {
     typealias coordinatorType = ShareUnlockCoordinator
     private weak var coordinator: ShareUnlockCoordinator?
     
@@ -43,8 +43,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         return coordinator
     }
     
-    @IBOutlet weak var pinUnlock: UIButton!
-    @IBOutlet weak var touchID: UIButton!
+    @IBOutlet weak var bioCodeView: BioCodeView!
     
     //
     var inputSubject : String! = ""
@@ -69,12 +68,8 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         LanguageManager.setupCurrentLanguage()
         configureNavigationBar()
         
-        pinUnlock.alpha = 0.0
-        touchID.alpha = 0.0
-        
-        pinUnlock.isEnabled = false
-        touchID.isEnabled = false
-        touchID.layer.cornerRadius = 25
+        self.bioCodeView.delegate = self
+        self.bioCodeView.setup()
         
         // Do any additional setup after loading the view.
         self.navigationItem.title = ""
@@ -154,16 +149,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     internal func loginCheck() {
         switch getViewFlow() {
         case .requirePin:
-            pinUnlock.alpha = 1.0
-            pinUnlock.isEnabled = true
-            if userCachedStatus.isTouchIDEnabled {
-                touchID.alpha = 1.0
-                touchID.isEnabled = true
-            }
+            self.bioCodeView.loginCheck(.requirePin)
 
         case .requireTouchID:
-            touchID.alpha = 1.0
-            touchID.isEnabled = true
+            self.bioCodeView.loginCheck(.requireTouchID)
             self.authenticateUser()
 
         case .restore:
@@ -172,8 +161,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
     }
     
     private func showErrorAndQuit(errorMsg : String) {
-        self.touchID.alpha = 0.0
-        self.pinUnlock.alpha = 0.0
+        self.bioCodeView.showErrorAndQuit(errorMsg: errorMsg)
         
         let alertController = UIAlertController(title: LocalString._share_alert, message: errorMsg, preferredStyle: .alert)
         let action = UIAlertAction(title: LocalString._general_close_action, style: .default) { action in
@@ -206,11 +194,11 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew {
         }
     }
     
-    @IBAction func touch_id_action(_ sender: Any) {
+    func touch_id_action(_ sender: Any) {
         self.authenticateUser()
     }
     
-    @IBAction func pin_unlock_action(_ sender: Any) {
+    func pin_unlock_action(_ sender: Any) {
         self.coordinator?.go(dest: .pin)
     }
     

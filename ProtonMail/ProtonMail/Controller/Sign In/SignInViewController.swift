@@ -42,6 +42,7 @@ class SignInViewController: ProtonMailViewController {
     private let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
     private let kSegueToSignUpWithNoAnimation   = "sign_in_to_splash_no_segue"
     private let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
+    private let kSegueToBioViewNoAnimation      = "bio_code_segue"
     private let kSegueTo2FACodeSegue            = "2fa_code_segue"
     
     private var isShowpwd      = false
@@ -277,18 +278,8 @@ class SignInViewController: ProtonMailViewController {
             loginWidthConstraint.constant = 200
             loginMidlineConstraint.constant = 0
         }
-    }
-    
-    @objc func doEnterForeground() {
-        self.viewDidAppear(true)
-    }
-    
-    @objc func doEnterBackground() {
-        self.showingTouchID = false
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        
+        // choose flow
         
         if sharedUserDataService.isNewUser {
             sharedUserDataService.isNewUser = false
@@ -308,6 +299,40 @@ class SignInViewController: ProtonMailViewController {
             }
         }
         
+        // unlock when locked
+        
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
+        
+        switch signinFlow {
+        case .requirePin:
+            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        case .requireTouchID:
+            self.performSegue(withIdentifier: self.kSegueToBioViewNoAnimation, sender: self)
+        case .restore:
+            UnlockManager.shared.initiateUnlock(flow: signinFlow,
+                                                requestPin: {
+                                                    self.showingTouchID = false
+                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                requestMailboxPassword: {
+                                                    self.showingTouchID = false
+                                                    self.isRemembered = true
+                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+            })
+        }
+    }
+    
+    @objc func doEnterForeground() {
+
+    }
+    
+    @objc func doEnterBackground() {
+        self.showingTouchID = false
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         if SignInViewController.isComeBackFromMailbox {
             showLoginViews()
             SignInManager.shared.clean()
@@ -318,27 +343,6 @@ class SignInViewController: ProtonMailViewController {
             if signinFlow != .requireTouchID {
                 usernameTextField.becomeFirstResponder()
             }
-        }
-        
-        // unlock when locked
-        
-        let signinFlow = UnlockManager.shared.getUnlockFlow()
-        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
-        
-        if signinFlow == .requirePin {
-            self.showingTouchID = false
-            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
-        } else {
-            self.showingTouchID = true
-            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {
-                                                    self.showingTouchID = false
-                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-                                                requestMailboxPassword: {
-                                                    self.showingTouchID = false
-                                                    self.isRemembered = true
-                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
         }
     }
     
