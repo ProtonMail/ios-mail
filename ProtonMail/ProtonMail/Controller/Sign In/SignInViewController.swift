@@ -258,12 +258,8 @@ class SignInViewController: ProtonMailViewController {
         case .requireTouchID:
             self.performSegue(withIdentifier: self.kSegueToBioViewNoAnimation, sender: self)
         case .restore:
-            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {  },
-                                                requestMailboxPassword: {
-                                                    self.isRemembered = true
-                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
+            /* nothing here, let the user login from the beginning */
+            break
         }
     }
 
@@ -276,10 +272,7 @@ class SignInViewController: ProtonMailViewController {
         }
         
         if UIDevice.current.isLargeScreen() && !isRemembered {
-            let signinFlow = UnlockManager.shared.getUnlockFlow()
-            if signinFlow != .requireTouchID {
-                usernameTextField.becomeFirstResponder()
-            }
+            usernameTextField.becomeFirstResponder()
         }
     }
     
