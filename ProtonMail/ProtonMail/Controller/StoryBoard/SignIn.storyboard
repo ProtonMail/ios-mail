@@ -157,7 +157,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ve5-Rb-bXf" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="565"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bb6-Ns-GPi">
                                                 <rect key="frame" x="138.5" y="45" width="98" height="16"/>
@@ -280,7 +280,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlP-nl-XPC">
-                                                <rect key="frame" x="47.5" y="520" width="280" height="20"/>
+                                                <rect key="frame" x="47.5" y="458" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="Jw1-ag-Xg1"/>
@@ -311,7 +311,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qu-T6-Tyc">
-                                                <rect key="frame" x="47.5" y="482" width="280" height="20"/>
+                                                <rect key="frame" x="47.5" y="420" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="signUpButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="8hr-sB-xmf"/>
@@ -326,22 +326,8 @@
                                                     <action selector="signUpAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="Dk6-xQ-IAi"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="liV-Dc-2Hc">
-                                                <rect key="frame" x="162.5" y="414" width="50" height="50"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="touchIDButton"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="2q1-wW-BJT"/>
-                                                    <constraint firstAttribute="width" constant="50" id="rvB-9i-2Rk"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <state key="normal" title="Button" image="touch_id_icon"/>
-                                                <connections>
-                                                    <action selector="touchIDAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="imf-lD-7k3"/>
-                                                </connections>
-                                            </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPr-ye-PCJ">
-                                                <rect key="frame" x="151" y="544" width="73" height="27"/>
+                                                <rect key="frame" x="151" y="482" width="73" height="27"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
                                                         <rect key="frame" x="0.0" y="0.0" width="28.5" height="27"/>
@@ -391,8 +377,6 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Os0-Xv-V8f" secondAttribute="trailing" constant="28" id="6EM-Dx-kvl"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="1" constant="10" id="BsO-XF-yEB"/>
                                             <constraint firstItem="BlP-nl-XPC" firstAttribute="top" secondItem="1qu-T6-Tyc" secondAttribute="bottom" priority="500" constant="18" id="GfE-Wi-NrI"/>
-                                            <constraint firstItem="liV-Dc-2Hc" firstAttribute="top" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="500" constant="18" id="H4A-2C-9dx"/>
-                                            <constraint firstItem="liV-Dc-2Hc" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="Kf6-2R-hIA"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="500" constant="24" id="Kzl-fP-upe"/>
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="top" secondItem="Os0-Xv-V8f" secondAttribute="bottom" priority="500" constant="85" id="LNI-4U-wBn"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="leading" secondItem="B6O-Zu-zTa" secondAttribute="trailing" constant="24" id="M9r-wM-uZg"/>
@@ -407,7 +391,6 @@
                                             <constraint firstAttribute="centerX" secondItem="1qu-T6-Tyc" secondAttribute="centerX" id="ewr-np-AK9"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="height" secondItem="B6O-Zu-zTa" secondAttribute="height" id="fLM-xv-Xe4"/>
                                             <constraint firstAttribute="centerX" secondItem="BlP-nl-XPC" secondAttribute="centerX" id="ftc-dV-hsp"/>
-                                            <constraint firstItem="1qu-T6-Tyc" firstAttribute="top" secondItem="liV-Dc-2Hc" secondAttribute="bottom" priority="500" constant="18" id="giC-us-Gej"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="i9Z-2s-4GQ"/>
                                             <constraint firstAttribute="bottom" secondItem="BlP-nl-XPC" secondAttribute="bottom" priority="500" constant="25" id="lee-3A-hmT"/>
                                             <constraint firstAttribute="trailing" secondItem="bOD-D6-5za" secondAttribute="trailing" constant="28" id="m23-RT-mCf"/>
@@ -464,7 +447,6 @@
                         <outlet property="signInTitle" destination="Os0-Xv-V8f" id="0TQ-Bm-jIk"/>
                         <outlet property="signUpButton" destination="1qu-T6-Tyc" id="ffa-xY-gtj"/>
                         <outlet property="signUpTopConstraint" destination="tPr-d6-uFP" id="qbi-WE-zO2"/>
-                        <outlet property="touchIDButton" destination="liV-Dc-2Hc" id="9Qn-Ja-jXi"/>
                         <outlet property="userLeftPaddingConstraint" destination="i9Z-2s-4GQ" id="6h5-WQ-M7m"/>
                         <outlet property="userNameTopPaddingConstraint" destination="1ag-zt-4JX" id="10y-1d-egn"/>
                         <outlet property="userTopPaddingConstraint" destination="BsO-XF-yEB" id="axa-HW-qNt"/>
@@ -3156,12 +3138,12 @@ we need to verify that you are human.</string>
         <scene sceneID="Ky2-6m-anC">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tNb-4t-lud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <viewController id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PAl-y7-ck9"/>
                         <viewControllerLayoutGuide type="bottom" id="8El-oc-ZLC"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="PmS-pS-0B5">
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="PmS-pS-0B5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -3170,12 +3152,12 @@ we need to verify that you are human.</string>
                                 <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="jMA-bg-wGS" secondAttribute="trailing" id="QHl-Zi-R81"/>
                             <constraint firstItem="jMA-bg-wGS" firstAttribute="leading" secondItem="PmS-pS-0B5" secondAttribute="leading" id="Rfd-tD-eeB"/>
-                            <constraint firstItem="jMA-bg-wGS" firstAttribute="top" secondItem="PAl-y7-ck9" secondAttribute="bottom" id="T0z-Se-ukg"/>
-                            <constraint firstItem="8El-oc-ZLC" firstAttribute="top" secondItem="jMA-bg-wGS" secondAttribute="bottom" id="cRv-BM-6lC"/>
+                            <constraint firstItem="jMA-bg-wGS" firstAttribute="top" secondItem="PmS-pS-0B5" secondAttribute="top" id="T0z-Se-ukg"/>
+                            <constraint firstAttribute="bottom" secondItem="jMA-bg-wGS" secondAttribute="bottom" id="cRv-BM-6lC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="G3g-ti-Laa"/>
@@ -3201,7 +3183,6 @@ we need to verify that you are human.</string>
         <image name="signup_back" width="13" height="21.5"/>
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_back" width="24" height="24"/>
-        <image name="touch_id_icon" width="50" height="50"/>
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>

@@ -29,14 +29,17 @@
 import Foundation
 
 class BioCodeViewController: UIViewController, BioCodeViewDelegate {
+    weak var delegate : PinCodeViewControllerDelegate?
+    
+    func authenticateUser() {
+        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
+            self.delegate?.Next()
+            //self.navigationController?.popViewController(animated: true)
+        })
+    }
+    
     func touch_id_action(_ sender: Any) {
-        UnlockManager.shared.initiateUnlock(flow: .requireTouchID,
-                                            requestPin: {
-                                                fatalError()
-                                            },
-                                            requestMailboxPassword: {
-                                                fatalError()
-                                            })
+        self.authenticateUser()
     }
     
     func pin_unlock_action(_ sender: Any) {
@@ -45,11 +48,55 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     
     @IBOutlet weak var bioCodeView: BioCodeView!
     
+    func configureNavigationBar() {
+        let original = UIImage(named: "menu_logout-active")!
+        let flipped = UIImage(cgImage: original.cgImage!, scale: 0.7 * original.scale, orientation: .up) // scale coefficient is a magic number
+        
+        self.navigationItem.title = ""
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: flipped,
+                                                style: .plain,
+                                                target: self,
+                                                action: #selector(self.logoutButtonTapped))
+        
+        if let bar = self.navigationController?.navigationBar {
+            // this will make bar transparent
+            navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+            navigationController?.navigationBar.shadowImage = UIImage()
+            navigationController?.navigationBar.isTranslucent = true
+            
+            // buttons
+            navigationController?.navigationBar.tintColor = .white
+            
+            // text
+            bar.titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor.white,
+                NSAttributedString.Key.font: Fonts.h2.regular
+            ]
+        }
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.authenticateUser()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.configureNavigationBar()
         
         self.bioCodeView.delegate = self
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)
+    }
+
+    
+    @objc func logoutButtonTapped() {
+        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
+        alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: { _ in
+            self.delegate?.Cancel()
+            self.navigationController?.popViewController(animated: true)
+        }))
+        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
 }

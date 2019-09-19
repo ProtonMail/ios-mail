@@ -30,7 +30,7 @@ import Foundation
 
 import UIKit
 
-protocol PinCodeViewControllerDelegate {
+protocol PinCodeViewControllerDelegate: class {
     func Cancel()
     func Next()
 }
@@ -39,7 +39,7 @@ protocol PinCodeViewControllerDelegate {
 class PinCodeViewController : UIViewController {
     
     var viewModel : PinCodeViewModel!
-    var delegate : PinCodeViewControllerDelegate?
+    weak var delegate : PinCodeViewControllerDelegate?
     
     @IBOutlet weak var pinCodeView: PinCodeView!
     override func viewDidLoad() {

@@ -47,7 +47,6 @@ class SignInViewController: ProtonMailViewController {
     
     private var isShowpwd      = false
     private var isRemembered   = false
-    private var showingTouchID = false
     
     //define
     private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
@@ -78,7 +77,6 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var loginMidlineConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var signUpTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var touchIDButton: UIButton!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -90,28 +88,10 @@ class SignInViewController: ProtonMailViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        hideButtonTouchID(false)
 
         setupTextFields()
         setupButtons()
         setupVersionLabel()
-        
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
-                                                   name:  UIWindowScene.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
-                                                   name:  UIWindowScene.didEnterBackgroundNotification,
-                                                   object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterForeground),
-                                                   name:  UIApplication.willEnterForegroundNotification,
-                                                   object: nil)
-            NotificationCenter.default.addObserver(self, selector:#selector(SignInViewController.doEnterBackground),
-                                                   name:  UIApplication.didEnterBackgroundNotification,
-                                                   object: nil)
-        }
     }
     
     @IBAction func changeLanguagesAction(_ sender: UIButton) {
@@ -170,24 +150,6 @@ class SignInViewController: ProtonMailViewController {
         return false
     }
     
-    internal func showButtonTouchID(_ animated : Bool = true) {
-        touchIDButton.layer.cornerRadius = 25
-        touchIDButton.isHidden = false
-        signUpTopConstraint.priority = UILayoutPriority(rawValue: 1)
-        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIView.AnimationOptions(), animations: { () -> Void in
-            self.view.layoutIfNeeded()
-            }, completion: nil)
-    }
-    
-    internal func hideButtonTouchID(_ animated : Bool = true) {
-        touchIDButton.layer.cornerRadius = 25
-        touchIDButton.isHidden = true
-        signUpTopConstraint.priority = UILayoutPriority(rawValue: 750)
-        UIView.animate(withDuration: animated ? 0.25 : 0, delay: 0, options: UIView.AnimationOptions(), animations: { () -> Void in
-            self.view.layoutIfNeeded()
-        }, completion: nil)
-    }
-    
     func configConstraint(_ show : Bool) -> Void {
         let level = show ? showPriority : hidePriority
         
@@ -209,18 +171,7 @@ class SignInViewController: ProtonMailViewController {
             self.passwordTextField.isSecureTextEntry = true
         }
     }
-    
-    @IBAction func touchIDAction(_ sender: UIButton) {
-        if userCachedStatus.isTouchIDEnabled {
-            UnlockManager.shared.biometricAuthentication(requestMailboxPassword: {
-                self.isRemembered = true
-                self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            })
-        } else {
-            hideButtonTouchID()
-        }
-    }
-    
+        
     override func didMove(toParent parent: UIViewController?) {
         if (!(parent?.isEqual(self.parent) ?? false)) {
         }
@@ -260,7 +211,6 @@ class SignInViewController: ProtonMailViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.showingTouchID = false
         navigationController?.setNavigationBarHidden(true, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         
@@ -302,8 +252,6 @@ class SignInViewController: ProtonMailViewController {
         // unlock when locked
         
         let signinFlow = UnlockManager.shared.getUnlockFlow()
-        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
-        
         switch signinFlow {
         case .requirePin:
             self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
@@ -311,23 +259,12 @@ class SignInViewController: ProtonMailViewController {
             self.performSegue(withIdentifier: self.kSegueToBioViewNoAnimation, sender: self)
         case .restore:
             UnlockManager.shared.initiateUnlock(flow: signinFlow,
-                                                requestPin: {
-                                                    self.showingTouchID = false
-                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
+                                                requestPin: {  },
                                                 requestMailboxPassword: {
-                                                    self.showingTouchID = false
                                                     self.isRemembered = true
                                                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             })
         }
-    }
-    
-    @objc func doEnterForeground() {
-
-    }
-    
-    @objc func doEnterBackground() {
-        self.showingTouchID = false
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -363,6 +300,9 @@ class SignInViewController: ProtonMailViewController {
         } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
             let viewController = segue.destination as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
+            viewController.delegate = self
+        } else if segue.identifier == kSegueToBioViewNoAnimation {
+            let viewController = segue.destination as! BioCodeViewController
             viewController.delegate = self
         } else if segue.identifier == kSegueTo2FACodeSegue {
             let popup = segue.destination as! TwoFACodeViewController
@@ -416,13 +356,7 @@ class SignInViewController: ProtonMailViewController {
         signInButton.setTitle(LocalString._general_login, for: .normal)
         
         signUpButton.setTitle(LocalString._need_an_account_sign_up, for: .normal)
-        forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)
-        
-        
-        if biometricType == .faceID {
-            self.touchIDButton.setImage(UIImage(named: "face_id_icon"), for: .normal)
-        }
-        
+        forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)        
     }
     
     func updateSignInButton(usernameText: String, passwordText: String) {

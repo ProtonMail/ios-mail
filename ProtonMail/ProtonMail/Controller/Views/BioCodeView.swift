@@ -60,6 +60,10 @@ class BioCodeView: PMView {
         pinUnlock.isEnabled = false
         touchID.isEnabled = false
         touchID.layer.cornerRadius = 25
+        
+        if UIDevice.current.biometricType == .faceID {
+            self.touchID.setImage(UIImage(named: "face_id_icon"), for: .normal)
+        }
     }
     
     func loginCheck(_ flow: SignInUIFlow) {
