@@ -787,3 +787,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
 //    }
     
 }
+
+extension SettingsTableViewController: Deeplinkable {
+    var deeplinkNode: DeepLink.Node {
+        return DeepLink.Node(name: String(describing: SettingsTableViewController.self), value: nil)
+    }
+}

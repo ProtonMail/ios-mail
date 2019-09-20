@@ -86,7 +86,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             switch rawValue {
             case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
             case "toLabelboxSegue": self = .label
-            case "toSettingsSegue": self = .settings
+            case "toSettingsSegue", String(describing: SettingsTableViewController.self): self = .settings
             case "toBugsSegue": self = .bugs
             case "toContactsSegue": self = .contacts
             case "toFeedbackSegue": self = .feedbacks
