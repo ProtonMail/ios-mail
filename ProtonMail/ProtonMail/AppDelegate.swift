@@ -179,7 +179,14 @@ extension AppDelegate: UIApplicationDelegate {
             AFNetworkActivityLogger.shared().stopLogging()
         }
         AFNetworkActivityLogger.shared().stopLogging()
-        //setup language
+        
+        // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
+        // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
+        if #available(iOS 13.0, *),
+            let code = Bundle.main.preferredLocalizations.first
+        {
+            LanguageManager.saveLanguage(byCode: code)
+        }
         LanguageManager.setupCurrentLanguage()
 
         let pushService : PushNotificationService = sharedServices.get()

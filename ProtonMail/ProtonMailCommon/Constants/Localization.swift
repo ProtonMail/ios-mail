@@ -101,6 +101,9 @@ class LocalizedString {
     lazy var _strip_metadata = NSLocalizedString("Remove image meta-data", comment: "Settings row")
     /// "Default browser"
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
+    /// "Manage in device Settings"
+    lazy var _manage_language_in_device_settings = NSLocalizedString("Manage in device Settings", comment: "Settings row")
+    
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
     /// "Report Bugs"
