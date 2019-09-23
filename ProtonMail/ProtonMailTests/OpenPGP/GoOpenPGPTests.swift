@@ -193,23 +193,6 @@ EQr2Mx42THr260IFYp5E/rIA
         }
     }
     
-    
-    func testNewLib() {
-//        let data = Data(repeating: 0, count: 8)
-//        print("Data: \([UInt8](data))")
-//        let bytes = MobileNewBytes(data)!
-//        print("Elements: \([UInt8](bytes.getElements()!))")
-//        print("Data: \([UInt8](data))")
-//
-        
-        var data = Data(repeating: 0, count: 8)
-        let mutableData = NSMutableData(bytes: &data, length: 8)
-        print("Data: \(Array(UnsafeBufferPointer(start: mutableData.bytes.assumingMemoryBound(to: UInt8.self), count: 8)))")
-        let bytes = MobileNewBytes(mutableData as Data)!
-        print("Elements: \([UInt8](bytes.getElements()!))")
-        print("Data: \([UInt8](data))")
-    }
-    
     func testInGeneral() {
         let feng100_fingerprint = "F62F2E37580F4DFAD46200936DC999B146234F40".lowercased()
 

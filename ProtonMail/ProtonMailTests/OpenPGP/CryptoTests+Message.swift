@@ -94,7 +94,7 @@ extension CryptoTests {
     func testTextMessageEncryptionWithSymmetricKey() {
         let encodedKey: String = "ExXmnSiQ2QCey20YLH6qlLhkY3xnIBC1AwlIXwK/HvY="
         let decodedSymmetricKey : Data = encodedKey.decodeBase64()
-        let testSymmetricKey = CryptoNewSymmetricKey(decodedSymmetricKey.mutable as Data, "aes256")
+        let testSymmetricKey = CryptoCreateSymmetricKey(decodedSymmetricKey.mutable as Data, "aes256")
         let testWrongSymmetricKey = CryptoNewSymmetricKeyFromToken("WrongPass", "aes256")
         let message = CryptoNewPlainMessageFromString("The secret code is... 1, 2, 3, 4, 5")
         XCTAssertNotNil(testSymmetricKey)
