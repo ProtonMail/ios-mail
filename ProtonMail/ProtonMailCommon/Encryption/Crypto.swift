@@ -37,7 +37,7 @@ typealias PGPSignature        = CryptoPGPSignature
 typealias AttachmentProcessor = CryptoAttachmentProcessor
 typealias SymmetricKey        = CryptoSymmetricKey
 
-typealias ExplicitVerifyMessage = MobileExplicitVerifyMessage
+typealias ExplicitVerifyMessage = HelperExplicitVerifyMessage
 typealias SignatureVerification = CryptoSignatureVerificationError
 
 
@@ -161,7 +161,7 @@ class Crypto {
             throw err
         }
         let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
         }
@@ -181,7 +181,7 @@ class Crypto {
             throw err
         }
         let verifier = try pgp.buildKeyRing(verifierBinKey.mutable as Data)
-        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
         }
@@ -202,7 +202,7 @@ class Crypto {
             throw err
         }
         let verifier = try pgp.buildKeyRingArmored(publicKey)
-        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
         }
@@ -222,7 +222,7 @@ class Crypto {
             throw err
         }
         let verifier = try pgp.buildKeyRingArmored(publicKey)
-        let verified = MobileDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
+        let verified = HelperDecryptExplicitVerify(pgpMsg, keyRing, verifier, verifyTime, &error)
         if let err = error {
             throw err
         }
@@ -350,7 +350,7 @@ class Crypto {
         let pgp = CryptoGetGopenPGP()!
         let keyRing = try pgp.buildKeyRingArmored(publicKey)
         var error: NSError?
-        let splitMessage = MobileEncryptAttachment(plainData, fileName, keyRing, &error)//without mutable
+        let splitMessage = HelperEncryptAttachment(plainData, fileName, keyRing, &error)//without mutable
         if let err = error {
             throw err
         }
@@ -565,20 +565,20 @@ extension Data {
     
     func getKeyPackage(publicKey: String,  algo : String) throws -> Data? {
         let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
+        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
         let keyRing = try crypto.buildKeyRingArmored(publicKey)
         return try keyRing.encryptSessionKey(symKey)
     }
     
     func getKeyPackage(publicKey binKey: Data, algo : String) throws -> Data? {
         let crypto = CryptoGetGopenPGP()!
-        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
+        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
         let keyRing = try crypto.buildKeyRing(binKey.mutable as Data)
         return try keyRing.encryptSessionKey(symKey)
     }
     
     func getSymmetricPacket(withPwd pwd: String, algo : String) throws -> Data? {
-        let symKey = CryptoNewSymmetricKey(self.mutable as Data, algo)
+        let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
         return try symKey?.encrypt(toKeyPacket: pwd)
     }
 }
