@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -159,7 +157,7 @@
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ve5-Rb-bXf" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="565"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="503"/>
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="bb6-Ns-GPi">
                                                 <rect key="frame" x="138.5" y="45" width="98" height="16"/>
@@ -282,7 +280,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BlP-nl-XPC">
-                                                <rect key="frame" x="47.5" y="520" width="280" height="20"/>
+                                                <rect key="frame" x="47.5" y="458" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="Jw1-ag-Xg1"/>
@@ -313,7 +311,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qu-T6-Tyc">
-                                                <rect key="frame" x="47.5" y="482" width="280" height="20"/>
+                                                <rect key="frame" x="47.5" y="420" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="signUpButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="8hr-sB-xmf"/>
@@ -328,38 +326,24 @@
                                                     <action selector="signUpAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="Dk6-xQ-IAi"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="liV-Dc-2Hc">
-                                                <rect key="frame" x="162.5" y="414" width="50" height="50"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="touchIDButton"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="50" id="2q1-wW-BJT"/>
-                                                    <constraint firstAttribute="width" constant="50" id="rvB-9i-2Rk"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <state key="normal" title="Button" image="touch_id_icon"/>
-                                                <connections>
-                                                    <action selector="touchIDAction:" destination="rb7-9h-TvB" eventType="touchUpInside" id="imf-lD-7k3"/>
-                                                </connections>
-                                            </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VPr-ye-PCJ">
-                                                <rect key="frame" x="150" y="544" width="75" height="27"/>
+                                                <rect key="frame" x="151" y="482" width="73" height="27"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="v1.0.0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kb0-7s-rZ2">
-                                                        <rect key="frame" x="0.0" y="0.0" width="29.5" height="27"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="28.5" height="27"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="versionLabel"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="English" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rG-LS-ZyB">
-                                                        <rect key="frame" x="37.5" y="0.0" width="37.5" height="27"/>
+                                                        <rect key="frame" x="36.5" y="0.0" width="36.5" height="27"/>
                                                         <fontDescription key="fontDescription" type="system" weight="thin" pointSize="11"/>
                                                         <color key="textColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="fill" contentVerticalAlignment="fill" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="luG-we-EEM">
-                                                        <rect key="frame" x="37.5" y="0.0" width="37.5" height="27"/>
+                                                        <rect key="frame" x="36.5" y="0.0" width="36.5" height="27"/>
                                                         <accessibility key="accessibilityConfiguration" identifier="languageButton"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <state key="normal">
@@ -393,8 +377,6 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Os0-Xv-V8f" secondAttribute="trailing" constant="28" id="6EM-Dx-kvl"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="1" constant="10" id="BsO-XF-yEB"/>
                                             <constraint firstItem="BlP-nl-XPC" firstAttribute="top" secondItem="1qu-T6-Tyc" secondAttribute="bottom" priority="500" constant="18" id="GfE-Wi-NrI"/>
-                                            <constraint firstItem="liV-Dc-2Hc" firstAttribute="top" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="500" constant="18" id="H4A-2C-9dx"/>
-                                            <constraint firstItem="liV-Dc-2Hc" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="Kf6-2R-hIA"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="500" constant="24" id="Kzl-fP-upe"/>
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="top" secondItem="Os0-Xv-V8f" secondAttribute="bottom" priority="500" constant="85" id="LNI-4U-wBn"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="leading" secondItem="B6O-Zu-zTa" secondAttribute="trailing" constant="24" id="M9r-wM-uZg"/>
@@ -409,7 +391,6 @@
                                             <constraint firstAttribute="centerX" secondItem="1qu-T6-Tyc" secondAttribute="centerX" id="ewr-np-AK9"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="height" secondItem="B6O-Zu-zTa" secondAttribute="height" id="fLM-xv-Xe4"/>
                                             <constraint firstAttribute="centerX" secondItem="BlP-nl-XPC" secondAttribute="centerX" id="ftc-dV-hsp"/>
-                                            <constraint firstItem="1qu-T6-Tyc" firstAttribute="top" secondItem="liV-Dc-2Hc" secondAttribute="bottom" priority="500" constant="18" id="giC-us-Gej"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="i9Z-2s-4GQ"/>
                                             <constraint firstAttribute="bottom" secondItem="BlP-nl-XPC" secondAttribute="bottom" priority="500" constant="25" id="lee-3A-hmT"/>
                                             <constraint firstAttribute="trailing" secondItem="bOD-D6-5za" secondAttribute="trailing" constant="28" id="m23-RT-mCf"/>
@@ -466,7 +447,6 @@
                         <outlet property="signInTitle" destination="Os0-Xv-V8f" id="0TQ-Bm-jIk"/>
                         <outlet property="signUpButton" destination="1qu-T6-Tyc" id="ffa-xY-gtj"/>
                         <outlet property="signUpTopConstraint" destination="tPr-d6-uFP" id="qbi-WE-zO2"/>
-                        <outlet property="touchIDButton" destination="liV-Dc-2Hc" id="9Qn-Ja-jXi"/>
                         <outlet property="userLeftPaddingConstraint" destination="i9Z-2s-4GQ" id="6h5-WQ-M7m"/>
                         <outlet property="userNameTopPaddingConstraint" destination="1ag-zt-4JX" id="10y-1d-egn"/>
                         <outlet property="userTopPaddingConstraint" destination="BsO-XF-yEB" id="axa-HW-qNt"/>
@@ -478,6 +458,7 @@
                         <segue destination="5Bg-GM-4IG" kind="show" identifier="sign_in_to_sign_up_segue" id="lvd-zK-Trc"/>
                         <segue destination="sjf-fW-VP9" kind="custom" identifier="pin_code_segue" customClass="SplashSignInSegue" customModule="ProtonMail" id="laj-lg-cvV"/>
                         <segue destination="Mic-HC-PqK" kind="presentation" identifier="2fa_code_segue" id="G8p-li-b0M"/>
+                        <segue destination="dsK-H2-wqM" kind="custom" identifier="bio_code_segue" customClass="SplashSignInSegue" customModule="ProtonMail" customModuleProvider="target" id="Jpb-A4-jEa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GLw-RM-bn5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -506,7 +487,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UaR-Wn-XvY">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x5O-eb-fcJ" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
@@ -662,7 +643,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sVE-ee-c1O">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MIv-ms-CXP" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="457.5"/>
@@ -1013,7 +994,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t2A-D7-bGy">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tHO-sZ-3CD" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="509.5"/>
@@ -1247,7 +1228,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <webView contentMode="scaleToFill" scalesPageToFit="YES" allowsInlineMediaPlayback="NO" mediaPlaybackRequiresUserAction="NO" mediaPlaybackAllowsAirPlay="NO" keyboardDisplayRequiresUserAction="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HeJ-Jt-XDY">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </webView>
                         </subviews>
@@ -1283,7 +1264,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TG1-Ko-NlW">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qxc-bG-bH0" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="577"/>
@@ -1559,14 +1540,14 @@
                         <viewControllerLayoutGuide type="bottom" id="Cba-Lg-q4u"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="06e-Hc-CTu">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="Xfa-go-UrT">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rON-4z-Gty" customClass="TwoFACodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="20" y="283.5" width="335" height="100"/>
+                                <rect key="frame" x="20" y="273.5" width="335" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="width" priority="500" constant="335" id="7e1-iS-Ctt"/>
@@ -1574,7 +1555,7 @@
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hm5-jh-Tds">
-                                <rect key="frame" x="18" y="67" width="339" height="128"/>
+                                <rect key="frame" x="18" y="47" width="339" height="128"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="JNT-nZ-kqj"/>
@@ -1604,7 +1585,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3KV-cb-mgo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1538.4000000000001" y="-174.06296851574214"/>
+            <point key="canvasLocation" x="-1407" y="0.0"/>
         </scene>
         <!--Share View Controller-->
         <scene sceneID="hR0-U9-ljN">
@@ -1637,7 +1618,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2O-1l-TS8" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.24604520199999999" green="0.2438791692" blue="0.3070739508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1674,7 +1655,7 @@
                                 <color key="backgroundColor" red="0.24313725490196078" green="0.23921568627450981" blue="0.30588235294117649" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d1j-AP-yLn">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DVG-Fm-agp" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="422"/>
@@ -1909,7 +1890,7 @@
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QmZ-Pi-Lzb">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SLB-rw-zME" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="310"/>
@@ -2149,7 +2130,7 @@ we need to verify that you are human.</string>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="32w-b6-Cud">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pe0-rH-dCh" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="568.5"/>
@@ -2447,7 +2428,7 @@ we need to verify that you are human.</string>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDN-fK-XPK">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1P4-co-P8M" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="568.5"/>
@@ -2764,7 +2745,7 @@ we need to verify that you are human.</string>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HEM-NZ-bqh">
-                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BDM-iR-nBU" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="430"/>
@@ -2998,14 +2979,14 @@ we need to verify that you are human.</string>
                         <viewControllerLayoutGuide type="bottom" id="6A6-R9-4S3"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="eN8-3I-evI">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="CNJ-lB-lRs">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="647"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gkN-Cf-t1a">
-                                <rect key="frame" x="16" y="28" width="343" height="619"/>
+                                <rect key="frame" x="16" y="8" width="343" height="619"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Country Code" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Rg-mL-nYy">
                                         <rect key="frame" x="16" y="16" width="311" height="20"/>
@@ -3021,10 +3002,10 @@ we need to verify that you are human.</string>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="country_code_table_cell" rowHeight="106" id="KK0-qX-D2O" customClass="CountryCodeTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="22" width="327" height="106"/>
+                                                <rect key="frame" x="0.0" y="28" width="327" height="106"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KK0-qX-D2O" id="znd-i8-G90">
-                                                    <rect key="frame" x="0.0" y="0.0" width="327" height="105.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="327" height="106"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Country name" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jWm-Zt-clR">
@@ -3040,7 +3021,7 @@ we need to verify that you are human.</string>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="i4U-hZ-YeW">
-                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="105.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="24" height="106"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="atm-hV-Sh6"/>
                                                             </constraints>
@@ -3153,12 +3134,46 @@ we need to verify that you are human.</string>
             </objects>
             <point key="canvasLocation" x="1012" y="3027"/>
         </scene>
+        <!--Bio Code View Controller-->
+        <scene sceneID="Ky2-6m-anC">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tNb-4t-lud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="PAl-y7-ck9"/>
+                        <viewControllerLayoutGuide type="bottom" id="8El-oc-ZLC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="PmS-pS-0B5">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jMA-bg-wGS" customClass="BioCodeView" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="jMA-bg-wGS" secondAttribute="trailing" id="QHl-Zi-R81"/>
+                            <constraint firstItem="jMA-bg-wGS" firstAttribute="leading" secondItem="PmS-pS-0B5" secondAttribute="leading" id="Rfd-tD-eeB"/>
+                            <constraint firstItem="jMA-bg-wGS" firstAttribute="top" secondItem="PmS-pS-0B5" secondAttribute="top" id="T0z-Se-ukg"/>
+                            <constraint firstAttribute="bottom" secondItem="jMA-bg-wGS" secondAttribute="bottom" id="cRv-BM-6lC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="G3g-ti-Laa"/>
+                    <connections>
+                        <outlet property="bioCodeView" destination="jMA-bg-wGS" id="k1i-TA-g8N"/>
+                    </connections>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="-1407" y="-685"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
         <image name="mail_attachment-closed" width="14" height="14"/>
-        <image name="popup_behind_image" width="320" height="460"/>
+        <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
         <image name="sign_background_new" width="375" height="667"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
         <image name="sign_up_check_user_icon" width="16" height="16"/>
@@ -3168,7 +3183,6 @@ we need to verify that you are human.</string>
         <image name="signup_back" width="13" height="21.5"/>
         <image name="signup_logo" width="98" height="16"/>
         <image name="top_back" width="24" height="24"/>
-        <image name="touch_id_icon" width="50" height="50"/>
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
     <inferredMetricsTieBreakers>

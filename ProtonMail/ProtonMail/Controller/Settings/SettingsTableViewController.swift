@@ -138,7 +138,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     
     internal func updateProtectionItems() {
         setting_protection_items = []
-        switch biometricType {
+        switch UIDevice.current.biometricType {
         case .none:
             break
         case .touchID:
