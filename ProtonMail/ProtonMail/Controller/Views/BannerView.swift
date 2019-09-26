@@ -192,7 +192,7 @@ extension BannerView: UIGestureRecognizerDelegate {
     }
     
     @objc func onPan(gesture: UIPanGestureRecognizer) {
-        guard let referenceView = self.animator.referenceView else { return }
+        guard let referenceView = self.animator?.referenceView else { return }
         
         switch gesture.state {
         case .began:

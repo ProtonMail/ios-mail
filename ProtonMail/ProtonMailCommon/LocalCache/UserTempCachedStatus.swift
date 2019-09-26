@@ -130,6 +130,13 @@ class UserTempCachedStatus: NSObject, NSCoding {
     }
     
     class func fetchFromKeychain() -> UserTempCachedStatus? {
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserTempCachedStatus")
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserTempCachedStatus")
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "Share.UserTempCachedStatus")
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "ShareDev.UserTempCachedStatus")
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushService.UserTempCachedStatus")
+        NSKeyedUnarchiver.setClass(UserTempCachedStatus.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UserTempCachedStatus")
+        
         if let data = KeychainWrapper.keychain.data(forKey: Key.keychainStore) {
             if let authCredential = NSKeyedUnarchiver.unarchiveObject(with: data) as? UserTempCachedStatus {
                 return authCredential
