@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "* 選擇性的";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ 拖放到這裡來新增附件";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/使用者";
 
@@ -203,6 +206,12 @@
 /* Description */
 "Archived" = "已封存";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "您確定要登出嗎？";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "附件已匯入";
+
 /* VoiceOver: email has attachments */
 "Attachments" = "附件";
 
@@ -270,7 +279,7 @@
 "By using protonmail, you agree to our" = "使用 ProtonMail，您將同意我們的";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我們的 %@ 和 %@。";
+"By using protonmail, you agree to our %@ and %@." = "使用 ProtonMail 即表示您同意我們的 %1$@ 和 %2$@。";
 
 /* human check option button */
 "CAPTCHA" = "驗證碼";
@@ -357,9 +366,6 @@
 /* None */
 "Cant' decrypt this attachment!" = "無法解密這個附件。";
 
-/* Action */
-"Catalan" = "加泰罗尼亚语";
-
 /* Title */
 "Cc" = "副本";
 
@@ -401,12 +407,6 @@
 
 /* loading message */
 "Checking ...." = "正在檢查 ‧‧‧‧";
-
-/* Action */
-"Chinese Simplified" = "簡體中文";
-
-/* Action */
-"Chinese Traditional" = "繁體中文";
 
 /* place holder */
 "Choose a Password" = "設置一個密碼";
@@ -472,6 +472,9 @@
 /* Action */
 "Continue" = "繼續";
 
+/* Action */
+"Continue and Don't ask again" = "繼續並且不要再詢問";
+
 /* Title */
 "Copy address" = "複製郵箱地址";
 
@@ -505,9 +508,6 @@
 /* error message title when create new user */
 "Create user failed" = "使用者建立失敗";
 
-/* Action */
-"Croatian" = "克羅埃西亞文";
-
 /* Change language title */
 "Current Language is: " = "當前語言為： ";
 
@@ -521,17 +521,11 @@
    contacts default label type */
 "Custom" = "自訂";
 
-/* Action */
-"Czech" = "捷克語";
-
 /* Title */
 "DECRYPT MAILBOX" = "解密郵箱";
 
 /* mail location title */
 "DRAFTS" = "草稿";
-
-/* Action */
-"Danish" = "丹麥語";
 
 /* message Date: text */
 "Date:" = "日期：";
@@ -631,9 +625,6 @@
 "Drafts" = "草稿";
 
 /* Action */
-"Dutch" = "荷蘭文";
-
-/* Action */
 "Edit" = "編輯";
 
 /* *
@@ -717,16 +708,13 @@
 "Encrypted from outside" = "為外部寄來的郵件加密";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Encrypted from outside PGP/inline";
+"Encrypted from outside PGP inline" = "以外部的 PGP inline 加密";
 
 /* Title */
-"Encrypted from outside PGP/MIME" = "Encrypted from outside PGP/MIME";
+"Encrypted from outside PGP/MIME" = "以外部的 PGP/MIME 加密";
 
 /* Title */
-"Encrypted from outside signed PGP/MIME" = "Encrypted from outside signed PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "為外部郵件加密";
+"Encrypted from outside signed PGP/MIME" = "以外部簽證過的 PGP/MIME 加密";
 
 /* key setup top title */
 "Encryption Setup" = "加密設定";
@@ -748,9 +736,6 @@
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "對已驗證的郵件地址進行端對端加密";
-
-/* Action */
-"English" = "英文";
 
 /* Action in 2fa popup view */
 "Enter" = "鍵入";
@@ -843,9 +828,6 @@
 /* forwarded message title */
 "Forwarded message" = "已轉發的訊息";
 
-/* Action */
-"French" = "法文";
-
 /* Title */
 "From" = "從";
 
@@ -860,9 +842,6 @@
 
 /* Title */
 "General Settings" = "一般設定";
-
-/* Action */
-"German" = "德文";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "取得 %@";
@@ -927,6 +906,9 @@
 /* import contact title */
 "Importing Contacts" = "正在匯入聯絡人";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "正在匯入附件中，那需要一點時間";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用ProtonMail，您必須同意ProtonMail的服務條款。";
 
@@ -983,13 +965,10 @@
 "Is this bug report about an in-app purchase?" = "這是關於應用內購買的錯誤回報嗎？";
 
 /* It is not possible to switch to `plan` within our iOS app. */
-"It is not possible to switch to %@ within our iOS app." = "It is not possible to switch to %@ within our iOS app.";
+"It is not possible to switch to %@ within our iOS app." = "在我們的 iOS 程式中是不可能去切換成 %@ 的。";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
-
-/* Action */
-"Italian" = "義大利文";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。";
 
 /* Title */
 "Keep me updated about new features" = "讓我收到有關新功能的通知";
@@ -1070,9 +1049,6 @@
 /* error title */
 "Logs" = "日誌";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "查看或取消手機簽名檔？";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "想保護您連絡人的詳細資訊嗎？";
 
@@ -1151,7 +1127,10 @@
 "Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "目前暫時無法透過 ProtonMail App 註冊帳號，請稍後再嘗試或透過 ProtonMail 網頁（https://protonmail.com） 註冊帳號。";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
+"Modifying or turning off the default mobile signature is a paid feature." = "修改或關閉預設的行動裝置簽名是付費功能。";
+
+/* More actions button */
+"More" = "更多";
 
 /* Screen header */
 "More Credits" = "更多點數";
@@ -1269,7 +1248,7 @@
 "On EE, MMM d, yyyy at %@" = "在 EE, MMM d, yyyy 在 %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@ wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "在 EE, MMM d, yyyy 的 %1$@, %2$@, 寫下:";
 
 /* None */
 "OpenDraft" = "正在編寫的草稿";
@@ -1281,7 +1260,7 @@
 "Other" = "其他";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "如果您同意將 AppStore 在購買時提供的技術資料附加到應用程式上, 我們的客戶支援小組將嘗試手動啟用您的服務方案。此資料不包括有關您的 iTunes 帳戶、Apple ID、連結的信用卡或任何其他使用者資訊的詳細資料。它只能協助我們驗證購買交易是否已在 AppStore 的伺服器上完成。";
 
 /* mail location desc */
 "Outbox" = "寄件匣";
@@ -1339,9 +1318,6 @@
 
 /* Description */
 "Pin code can't be empty." = "Pin 碼欄位不能為空。";
-
-/* Title */
-"Plain text" = "純文字";
 
 /* alert description */
 "Please add a password for the following recipients." = "請為以下收件者設定密碼";
@@ -1428,15 +1404,6 @@
 "Please, manage it in your phone." = "請在手機裡管理。";
 
 /* Action */
-"Polish" = "波蘭文";
-
-/* Action */
-"Portuguese" = "葡萄牙文";
-
-/* Action */
-"Portuguese Brazil" = "巴西葡文";
-
-/* Action */
 "Print" = "列印";
 
 /* Title */
@@ -1453,9 +1420,6 @@
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary 可以讓您不單單只有聯絡人姓名與郵件地址，還可編輯更詳盡的聯絡人資訊。透過使用 ProtonMail，這些資訊如同您的端對端加密郵件一樣保有隱私與安全性。";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visonary 方案能讓您自訂行動設備簽名。";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail 不透過廣告盈利，更不靠販賣使用者的隱私獲利。升級您的帳戶或贊助 ProtonMail 是我們唯二的收入來源，您可以讓 ProtonMail 更好。";
@@ -1529,6 +1493,9 @@
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "檢舉詐騙電子郵件會轉寄該訊息給我們，讓我們可以分析和改進篩選器。這意味我們可以完整閱覽訊息內容。";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "請求連結確認";
+
 /* Title */
 "Resetting message cache ..." = "正在重置訊息緩存 ...";
 
@@ -1537,12 +1504,6 @@
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "在 %d 秒後重試";
-
-/* Action */
-"Romanian" = "羅馬尼亞語";
-
-/* Action */
-"Russian" = "俄文";
 
 /* mail location title */
 "SENT" = "已傳送";
@@ -1617,7 +1578,7 @@
 "Sent Failed" = "傳送失敗";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent by ProtonMail with zero access encryption";
+"Sent by ProtonMail with zero access encryption" = "以零訪問加密方式由 ProtonMail 寄出";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "由您寄出的端對端加密訊息";
@@ -1679,9 +1640,6 @@
 
 /* Description */
 "Spammed" = "設定為垃圾郵件";
-
-/* Action */
-"Spanish" = "西班牙文";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1834,7 +1792,7 @@
 "The verification failed!" = "驗證失敗！";
 
 /* Description */
-"There was an error creating or loading the app's saved data." = "There was an error creating or loading the app's saved data.";
+"There was an error creating or loading the app's saved data." = "建立或載入程式的儲存資料過程中發生錯誤。";
 
 /* 
  & local error */
@@ -1896,9 +1854,6 @@
 /* Title */
 "Trouble shooting guide" = "疑難解答";
 
-/* Action */
-"Turkish" = "土耳其文";
-
 /* action sheet option */
 "Turn Off" = "關閉";
 
@@ -1917,9 +1872,6 @@
 /* Title */
 "USER LOGIN" = "使用者登入";
 
-/* Action */
-"Ukrainian" = "烏克蘭文";
-
 /* Description */
 "Unable to connect to the server" = "伺服器無法連接";
 
@@ -1937,7 +1889,7 @@
 "Unable to edit this message offline" = "無法離線編輯此消息";
 
 /* Description */
-"Unable to generate hashed password!" = "Unable to generate hashed password!";
+"Unable to generate hashed password!" = "無法產生雜湊密碼！";
 
 /* Error */
 "Unable to get contacts" = "無法取得聯絡人";
@@ -1949,7 +1901,7 @@
 "Unable to parse authentication token!" = "無法解析身份驗證 token！";
 
 /* Description */
-"Unable to parse cached authentication token!" = "Unable to parse cached authentication token!";
+"Unable to parse cached authentication token!" = "無法解析身份驗證資訊！";
 
 /* Description */
 "Unable to parse response" = "無法解析回覆訊息";
@@ -2019,9 +1971,6 @@
 
 /* alert description */
 "Upgrade to get all paid features." = "升級以取得所有付費功能。";
-
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "無法在 App 中升級您的方案。";
 
 /* Action */
 "Upload Contacts" = "上傳聯絡人";
@@ -2112,6 +2061,9 @@
 
 /* Error message */
 "Yes, attach details of payment" = "是, 附上付款詳情";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "您將開啟網頁瀏覽器並導覽到";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "您可以在 ProtonMail 應用程式設定中自訂滑動手勢。";

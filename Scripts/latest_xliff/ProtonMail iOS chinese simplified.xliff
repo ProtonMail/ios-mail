@@ -132,8 +132,11 @@
       </trans-unit>
       <trans-unit id="*OPTIONAL">
         <source>*OPTIONAL</source>
-        <target state="translated">* 可选</target>
+        <target state="translated">* 非必填</target>
         <note>optional text field</note>
+        <alt-trans>
+          <target>* 可选</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="+ Drop here to add as attachment">
         <source>+ Drop here to add as attachment</source>
@@ -321,8 +324,11 @@
       </trans-unit>
       <trans-unit id="Add new custom field">
         <source>Add new custom field</source>
-        <target state="translated">添加新自定义字段</target>
+        <target state="translated">添加自定义内容</target>
         <note>new custom field action</note>
+        <alt-trans>
+          <target>添加新自定义字段</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Add new email">
         <source>Add new email</source>
@@ -334,8 +340,11 @@
       </trans-unit>
       <trans-unit id="Add new field">
         <source>Add new field</source>
-        <target state="translated">添加新字段</target>
+        <target state="translated">添加条目</target>
         <note>new field action</note>
+        <alt-trans>
+          <target>添加新字段</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Add new phone number">
         <source>Add new phone number</source>
@@ -395,8 +404,11 @@
       </trans-unit>
       <trans-unit id="Anniversary">
         <source>Anniversary</source>
-        <target state="translated">周年纪念日</target>
+        <target state="translated">纪念日</target>
         <note>contacts talbe cell Anniversary title</note>
+        <alt-trans>
+          <target>周年纪念日</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="App is locked">
         <source>App is locked</source>
@@ -676,8 +688,11 @@
       </trans-unit>
       <trans-unit id="Can't find the clicked message please try again!">
         <source>Can't find the clicked message please try again!</source>
-        <target state="translated">无法打到选择的邮件请重试 ！</target>
+        <target state="translated">找不到所选邮件，请重试！</target>
         <note/>
+        <alt-trans>
+          <target>无法打到选择的邮件请重试 ！</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Can't find the selected message. Please try again.">
         <source>Can't find the selected message. Please try again.</source>
@@ -686,8 +701,11 @@
       </trans-unit>
       <trans-unit id="Can't find this attachment!">
         <source>Can't find this attachment!</source>
-        <target state="translated">找不到这个附件 ！</target>
+        <target state="translated">找不到此附件！</target>
         <note>when quick look attachment but can't find the data</note>
+        <alt-trans>
+          <target>找不到这个附件 ！</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Can't get a Moduls ID!">
         <source>Can't get a Modulus ID!</source>
@@ -799,23 +817,35 @@
       </trans-unit>
       <trans-unit id="Change default address to ..">
         <source>Change default address to...</source>
-        <target state="translated">修改默认邮件地址为...</target>
+        <target state="translated">将首选邮箱地址改为...</target>
         <note>Title</note>
+        <alt-trans>
+          <target>修改默认邮件地址为...</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Change left swipe action">
         <source>Change left swipe action</source>
-        <target state="translated">更改左滑动操作</target>
+        <target state="translated">更改向右滑动操作</target>
         <note>settings swipe actions section action description</note>
+        <alt-trans>
+          <target>更改左滑动操作</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Change right swipe action">
         <source>Change right swipe action</source>
-        <target state="translated">更改右滑动操作</target>
+        <target state="translated">更改向左滑动操作</target>
         <note>settings swipe actions section action description</note>
+        <alt-trans>
+          <target>更改右滑动操作</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Change sender address to ..">
         <source>Change sender address to...</source>
-        <target state="translated">更改发件人地址为...</target>
+        <target state="translated">将发件人地址改为...</target>
         <note>Title</note>
+        <alt-trans>
+          <target>更改发件人地址为...</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Check Again">
         <source>Check Again</source>
@@ -839,8 +869,11 @@
       </trans-unit>
       <trans-unit id="Clear Local Message Cache">
         <source>Clear local message cache</source>
-        <target state="translated">清除本地信息缓存</target>
+        <target state="translated">清除本机邮件缓存</target>
         <note>settings general section title</note>
+        <alt-trans>
+          <target>清除本地信息缓存</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Close">
         <source>Close</source>
@@ -1088,7 +1121,7 @@
       </trans-unit>
       <trans-unit id="Define Hint (Optional)">
         <source>Define hint (Optional)</source>
-        <target state="translated">提示（可选）</target>
+        <target state="translated">密码提示（非必填）</target>
         <note>Placeholder</note>
       </trans-unit>
       <trans-unit id="Define Password">
@@ -1228,12 +1261,12 @@
       </trans-unit>
       <trans-unit id="Edit Photo">
         <source>Edit Photo</source>
-        <target state="translated">编辑照片</target>
+        <target state="translated">更改照片</target>
         <note>The button text for edit profile picture</note>
       </trans-unit>
       <trans-unit id="Edit mobile signature">
         <source>Edit mobile signature</source>
-        <target state="translated">编辑移动设备落款</target>
+        <target state="translated">修改移动设备落款</target>
         <note>title</note>
         <alt-trans>
           <target>编辑移动设备签名</target>
@@ -1241,7 +1274,7 @@
       </trans-unit>
       <trans-unit id="Edit signature">
         <source>Edit signature</source>
-        <target state="translated">编辑落款</target>
+        <target state="translated">修改落款</target>
         <note>title</note>
         <alt-trans>
           <target>编辑签名</target>
@@ -1249,8 +1282,11 @@
       </trans-unit>
       <trans-unit id="Email">
         <source>Email</source>
-        <target state="translated">电子邮件</target>
+        <target state="translated">邮箱</target>
         <note>default vcard types</note>
+        <alt-trans>
+          <target>电子邮件</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Email Addresses">
         <source>Email Addresses</source>
@@ -1357,18 +1393,27 @@
       </trans-unit>
       <trans-unit id="Encrypted for outside">
         <source>Encrypted for outside</source>
-        <target state="translated">为外部邮件加密</target>
+        <target state="translated">对外加密</target>
         <note>Title</note>
+        <alt-trans>
+          <target>为外部邮件加密</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Encrypted for outside reply">
         <source>Encrypted for outside reply</source>
-        <target state="translated">为外部回复加密</target>
+        <target state="translated">对外加密回复</target>
         <note>Title</note>
+        <alt-trans>
+          <target>为外部回复加密</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Encrypted from outside">
         <source>Encrypted from outside</source>
-        <target state="translated">外部的加密邮件</target>
+        <target state="translated">通过外网加密</target>
         <note>Title</note>
+        <alt-trans>
+          <target>外部的加密邮件</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Encrypted from outside PGP inline">
         <source>Encrypted from outside PGP inline</source>
@@ -1773,8 +1818,11 @@
       </trans-unit>
       <trans-unit id="Incorrect PIN,">
         <source>Incorrect PIN,</source>
-        <target state="translated">口令错误。</target>
+        <target state="translated">口令错误，还可尝试</target>
         <note>Error</note>
+        <alt-trans>
+          <target>口令错误。</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Incorrect password">
         <source>Incorrect password</source>
@@ -1864,7 +1912,7 @@
       </trans-unit>
       <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.">
         <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
-        <target state="translated">我们无法将您在 App Store 上购买的项目对应到我们的服务器上。请提交一份问题反馈，我们的客户援助团队将联系您。</target>
+        <target state="translated">我们的系统中查不到您在 App Store 上购买的项目。请提交一份问题反馈，我们的客户援助团队将联系您。</target>
         <note>Error message</note>
       </trans-unit>
       <trans-unit id="Keep me updated about new features">
@@ -1919,7 +1967,7 @@
       </trans-unit>
       <trans-unit id="Labels, Folders, Filters &amp; More">
         <source>Labels, Folders, Filters &amp; More</source>
-        <target state="translated">标签、文件夹、筛选……</target>
+        <target state="translated">标签、文件夹、筛选等功能</target>
         <note>Service plan capability</note>
       </trans-unit>
       <trans-unit id="Labels/Folders">
@@ -1944,8 +1992,11 @@
       </trans-unit>
       <trans-unit id="Limited to 150 messages sent/day">
         <source>Limited to 150 messages sent/day</source>
-        <target state="translated">每天仅限发送150条消息</target>
+        <target state="translated">每天最多发送 150 封邮件</target>
         <note>Service plan capability</note>
+        <alt-trans>
+          <target>每天仅限发送150条消息</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Load remote content">
         <source>Load remote content</source>
@@ -2437,8 +2488,11 @@
       </trans-unit>
       <trans-unit id="PREMIUM FEATURE">
         <source>PREMIUM FEATURE</source>
-        <target state="translated">高级功能</target>
+        <target state="translated">付费功能</target>
         <note>Upgrade warning title</note>
+        <alt-trans>
+          <target>高级功能</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Password">
         <source>Password</source>
@@ -2467,8 +2521,11 @@
       </trans-unit>
       <trans-unit id="Personal">
         <source>Personal</source>
-        <target state="translated">个人资料</target>
+        <target state="translated">私人</target>
         <note>default vcard types</note>
+        <alt-trans>
+          <target>个人资料</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Phone">
         <source>Phone</source>
@@ -2512,8 +2569,11 @@
       </trans-unit>
       <trans-unit id="Please check your email for the verification code.">
         <source>Please check your email for the verification code.</source>
-        <target state="translated">检查您的邮箱获取验证码</target>
+        <target state="translated">请查收邮件获取验证码。</target>
         <note>error message</note>
+        <alt-trans>
+          <target>检查您的邮箱获取验证码</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Please disable PGP Sending for following addresses.">
         <source>Please disable PGP Sending for following addresses.</source>
@@ -2707,8 +2767,11 @@
       </trans-unit>
       <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail">
         <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
-        <target state="translated">ProtonMail目前处于离线状态，查看我们的 twitter 以获取当前服务可用状态：https://twitter.com/protonmail</target>
+        <target state="translated">ProtonMail 目前不可用，可前往我们的 Twitter 了解当前状况：https://twitter.com/protonmail</target>
         <note>Description</note>
+        <alt-trans>
+          <target>ProtonMail目前处于离线状态，查看我们的 twitter 以获取当前服务可用状态：https://twitter.com/protonmail</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="ProtonVPN included">
         <source>ProtonVPN included</source>
@@ -3408,8 +3471,11 @@
       </trans-unit>
       <trans-unit id="Title">
         <source>Title</source>
-        <target state="translated">头衔／职称</target>
+        <target state="translated">头衔</target>
         <note>contacts talbe cell Title title</note>
+        <alt-trans>
+          <target>头衔／职称</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="To">
         <source>To</source>
@@ -3676,8 +3742,11 @@
       </trans-unit>
       <trans-unit id="Upgrade to get all paid features.">
         <source>Upgrade to get all paid features.</source>
-        <target state="translated">升级以获取所有付费功能。</target>
+        <target state="translated">升级后方可使用所有功能。</target>
         <note>alert description</note>
+        <alt-trans>
+          <target>升级以获取所有付费功能。</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Upload Contacts">
         <source>Upload Contacts</source>
@@ -3826,8 +3895,11 @@
       </trans-unit>
       <trans-unit id="Work">
         <source>Work</source>
-        <target state="translated">单位</target>
+        <target state="translated">工作</target>
         <note>default vcard types</note>
+        <alt-trans>
+          <target>单位</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="Wrong verification code">
         <source>Wrong verification code</source>
@@ -3935,7 +4007,7 @@
       </trans-unit>
       <trans-unit id="Your plan is currently active until" approved="yes">
         <source>Your plan is currently active until</source>
-        <target state="translated">您的订阅有效期至</target>
+        <target state="final">您的订阅有效期至</target>
         <note>Service plan description footer</note>
         <alt-trans>
           <target>您的等级有效期至</target>
@@ -3976,8 +4048,11 @@
       </trans-unit>
       <trans-unit id="attempts remaining">
         <source>attempts remaining</source>
-        <target state="translated">剩余的尝试机会</target>
+        <target state="translated">次</target>
         <note>Description</note>
+        <alt-trans>
+          <target>剩余的尝试机会</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="attempts remaining until secure data wipe!">
         <source>attempts remaining until secure data wipe!</source>

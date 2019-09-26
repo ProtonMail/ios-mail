@@ -894,7 +894,7 @@
 "IMAP/SMTP Support via ProtonMail Bridge" = "Support IMAP/SMTP via ProtonMail Bridge";
 
 /* mail location title */
-"INBOX" = "BOÎTE DE RÉCEPTION";
+"INBOX" = "Boîte de réception";
 
 /* Action */
 "Import Error" = "Erreur d'importation";
@@ -1505,7 +1505,7 @@
 "Retry after %d seconds" = "Réessayer dans %d secondes";
 
 /* mail location title */
-"SENT" = "ENVOYÉS";
+"SENT" = "Envoyés";
 
 /* mail location title */
 "SPAM" = "SPAM";

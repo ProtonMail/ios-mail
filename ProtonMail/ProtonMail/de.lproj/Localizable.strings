@@ -1242,7 +1242,7 @@ Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delin
 "OTHER PLANS" = "Weitere Abonnements";
 
 /* Title */
-"On" = "Ein";
+"On" = "Am";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Am EE, dem d. MMM.yyyy um %@";

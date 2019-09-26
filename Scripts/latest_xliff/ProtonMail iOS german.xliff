@@ -2124,10 +2124,13 @@ Bitte besuchen Sie &lt;a href="https://protonmail.com/support/knowledge-base/del
         <target state="translated">Weitere Abonnements</target>
         <note>Section header</note>
       </trans-unit>
-      <trans-unit id="On">
+      <trans-unit id="On" approved="yes">
         <source>On</source>
-        <target state="translated">Ein</target>
+        <target state="final">Am</target>
         <note>Title</note>
+        <alt-trans>
+          <target>Ein</target>
+        </alt-trans>
       </trans-unit>
       <trans-unit id="On EE, MMM d, yyyy at %@">
         <source>On EE, MMM d, yyyy at %@</source>

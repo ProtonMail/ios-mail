@@ -246,7 +246,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Bad auth cache" = "Błąd pamięci podręcznej uwierzytelniania";
 
 /* Error title */
-"Bad parameter" = "Błędny parametr";
+"Bad parameter" = "Nieprawidłowy parametr";
 
 /* Error Description */
 "Bad parameter: %@" = "Nieprawidłowy parametr: %@";
@@ -615,7 +615,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Done" = "Gotowe";
 
 /* VoiceOver action description */
-"Double tap to setup" = "Dotknij dwukrotnie, aby ustawić";
+"Double tap to setup" = "Kliknij dwukrotnie, aby ustawić";
 
 /* Action
    mail location desc */
@@ -844,7 +844,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "General Settings" = "Ustawienia ogólne";
 
 /* Screen header, like 'Get VISIONARY' */
-"Get %@" = "Uzyskaj %@";
+"Get %@" = "Wybierz %@";
 
 /* Action */
 "Get more information" = "Więcej informacji";
@@ -1961,7 +1961,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Update Now" = "Aktualizuj";
 
 /* title */
-"Update Required" = "Wymagana aktualizacja";
+"Update Required" = "Aktualizacja jest wymagana";
 
 /* Service plan description footer */
 "Upgrade to a paid plan to benefit from more features" = "Ulepsz do płatnego planu, aby korzystać z większej liczby funkcji";

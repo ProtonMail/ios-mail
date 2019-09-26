@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "*VALFRITT";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Drop here to add as attachment";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/user";
 
@@ -203,6 +206,12 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* Description */
 "Archived" = "Arkiverad";
 
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Are you sure you want to logout?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Attachment imported";
+
 /* VoiceOver: email has attachments */
 "Attachments" = "Bilagor";
 
@@ -270,7 +279,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "By using protonmail, you agree to our" = "Genom att använda protonmail, samtycker du till vår";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Genom att använda ProtonMail, samtycker du till vår %@ och %@.";
+"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %1$@ and %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -357,9 +366,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* None */
 "Cant' decrypt this attachment!" = "Kunde inte avkryptera bilagan.";
 
-/* Action */
-"Catalan" = "Katalanska";
-
 /* Title */
 "Cc" = "Cc";
 
@@ -401,12 +407,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* loading message */
 "Checking ...." = "Kontrollerar....";
-
-/* Action */
-"Chinese Simplified" = "Förenklad kinesiska";
-
-/* Action */
-"Chinese Traditional" = "Traditionell kinesiska";
 
 /* place holder */
 "Choose a Password" = "Välj ett lösenord";
@@ -472,6 +472,9 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* Action */
 "Continue" = "Fortsätt";
 
+/* Action */
+"Continue and Don't ask again" = "Continue and Don't ask again";
+
 /* Title */
 "Copy address" = "Kopiera adress";
 
@@ -505,9 +508,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* error message title when create new user */
 "Create user failed" = "Skapa användare misslyckades";
 
-/* Action */
-"Croatian" = "Kroatiska";
-
 /* Change language title */
 "Current Language is: " = "Nuvarande Språk är: ";
 
@@ -521,17 +521,11 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
    contacts default label type */
 "Custom" = "Anpassad";
 
-/* Action */
-"Czech" = "Tjeckiska";
-
 /* Title */
 "DECRYPT MAILBOX" = "DEKRYPTERA BREVLÅDA";
 
 /* mail location title */
 "DRAFTS" = "UTKAST";
-
-/* Action */
-"Danish" = "Danska";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -631,9 +625,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Drafts" = "Utkast";
 
 /* Action */
-"Dutch" = "Nederländska";
-
-/* Action */
 "Edit" = "Redigera";
 
 /* *
@@ -684,7 +675,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Email domain invalid" = "Ogiltig e-postdomän";
 
 /* empty folder, for spam and trash */
-"Empty Folder" = "Tom mapp";
+"Empty Folder" = "Töm mapp";
 
 /* Title */
 "Enable Default Signature" = "Aktivera standardsignatur";
@@ -717,16 +708,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Encrypted from outside" = "Externt krypterat";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Externt krypterat med PGP/MIME";
+"Encrypted from outside PGP inline" = "Encrypted from outside PGP inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Externt krypterat med PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Externt krypterat med PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Externt krypterat";
 
 /* key setup top title */
 "Encryption Setup" = "Konfigurera kryptering";
@@ -748,9 +736,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "End-to-end krypterad till verifierad adress";
-
-/* Action */
-"English" = "Engelska";
 
 /* Action in 2fa popup view */
 "Enter" = "Mata in";
@@ -843,9 +828,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* forwarded message title */
 "Forwarded message" = "Vidarebefordrat meddelande";
 
-/* Action */
-"French" = "Franska";
-
 /* Title */
 "From" = "Från";
 
@@ -860,9 +842,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Title */
 "General Settings" = "Allmänna Inställningar";
-
-/* Action */
-"German" = "Tysk";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Hämta";
@@ -927,6 +906,9 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* import contact title */
 "Importing Contacts" = "Importerar Kontakter";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importing attachment, that can take a while";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att använda våra tjänster måste du godkänna ProtonMail's användarvillkor.";
 
@@ -987,9 +969,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Fyll i buggrapporten så kommer vår kundtjänst att kontakta dig.";
-
-/* Action */
-"Italian" = "Kursivt";
 
 /* Title */
 "Keep me updated about new features" = "Håll mig uppdaterad om nya funktioner";
@@ -1070,9 +1049,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* error title */
 "Logs" = "Loggar";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Vill du redigera eller inaktivera din mobila signatur?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Behöver du säkra dina kontakters information?";
 
@@ -1152,6 +1128,9 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Ändra eller stänga av standardmobilsignaturen är en betalfunktion.";
+
+/* More actions button */
+"More" = "More";
 
 /* Screen header */
 "More Credits" = "Köp mer Credits";
@@ -1269,7 +1248,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "On EE, MMM d, yyyy at %@" = "På EE, MMM d, åååå på %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@ wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
 
 /* None */
 "OpenDraft" = "Öppna utkast";
@@ -1339,9 +1318,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Description */
 "Pin code can't be empty." = "PIN-kod kan inte vara tomt.";
-
-/* Title */
-"Plain text" = "Klartext";
 
 /* alert description */
 "Please add a password for the following recipients." = "Lägg till ett lösenord för följande mottagare.";
@@ -1428,15 +1404,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Please, manage it in your phone." = "Please, manage it in your phone.";
 
 /* Action */
-"Polish" = "Polska";
-
-/* Action */
-"Portuguese" = "Portugisiska";
-
-/* Action */
-"Portuguese Brazil" = "Portugisiska (Brasilien)";
-
-/* Action */
 "Print" = "Skriv ut";
 
 /* Title */
@@ -1453,9 +1420,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary kan du anpassa din mobila signatur.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail säljer inte annonser och missbrukar inte din integritet. Ditt stöd är livsviktigt för fortsatt drift av ProtonMail. Du kan uppgradera till ett betalt konto eller donera för att stödja ProtonMail.";
@@ -1529,6 +1493,9 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Ett meddelande rapporterat för nätfiskeförsök kommer skickas till oss, så att vi kan analysera det och förbättre våra filter. Det betyder att vi kommer kunna se hela meddelandets innehåll.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Request Link Confirmation";
+
 /* Title */
 "Resetting message cache ..." = "Återställer meddelande-cache...";
 
@@ -1537,12 +1504,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Försök igen efter %d sekunder";
-
-/* Action */
-"Romanian" = "Rumänska";
-
-/* Action */
-"Russian" = "Ryska";
 
 /* mail location title */
 "SENT" = "SKICKAT";
@@ -1679,9 +1640,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Description */
 "Spammed" = "Spammad";
-
-/* Action */
-"Spanish" = "Spanska";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
@@ -1896,9 +1854,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* Title */
 "Trouble shooting guide" = "Felsökningsguide";
 
-/* Action */
-"Turkish" = "Turkiska";
-
 /* action sheet option */
 "Turn Off" = "Stäng Av";
 
@@ -1916,9 +1871,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Title */
 "USER LOGIN" = "Användarinloggning";
-
-/* Action */
-"Ukrainian" = "Ukrainska";
 
 /* Description */
 "Unable to connect to the server" = "Kunde inte ansluta till servern";
@@ -2019,9 +1971,6 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 /* alert description */
 "Upgrade to get all paid features." = "Uppgradera för att få tillgång till alla funktioner.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Uppgradering är inte möjligt i appen.";
-
 /* Action */
 "Upload Contacts" = "Ladda upp kontakter";
 
@@ -2111,6 +2060,9 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* Error message */
 "Yes, attach details of payment" = "Ja, bifoga uppgifter om betalning";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan anpassa svepgester i ProtonMail-appens inställningar.";

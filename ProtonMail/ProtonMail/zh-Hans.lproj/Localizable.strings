@@ -35,7 +35,7 @@
 "**********" = "**********";
 
 /* optional text field */
-"*OPTIONAL" = "* 可选";
+"*OPTIONAL" = "* 非必填";
 
 /* Drag and drop zone for attachments */
 "+ Drop here to add as attachment" = "+ 拖至此处作为附件导入";
@@ -135,13 +135,13 @@
 "Add new address" = "添加地址";
 
 /* new custom field action */
-"Add new custom field" = "添加新自定义字段";
+"Add new custom field" = "添加自定义内容";
 
 /* new email action */
 "Add new email" = "添加电子邮箱";
 
 /* new field action */
-"Add new field" = "添加新字段";
+"Add new field" = "添加条目";
 
 /* new phone action */
 "Add new phone number" = "添加电话号码";
@@ -173,7 +173,7 @@
 "Also used to reset a forgotten password." = "也会用来重置忘记的密码。";
 
 /* contacts talbe cell Anniversary title */
-"Anniversary" = "周年纪念日";
+"Anniversary" = "纪念日";
 
 /* Error */
 "App is locked" = "程序已锁定";
@@ -319,13 +319,13 @@
 "Can't fetch contact groups" = "无法获取联系人群组信息";
 
 /* None */
-"Can't find the clicked message please try again!" = "无法打到选择的邮件请重试 ！";
+"Can't find the clicked message please try again!" = "找不到所选邮件，请重试！";
 
 /* Description */
 "Can't find the selected message. Please try again." = "找不到所选的邮件，请重试。";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "找不到这个附件 ！";
+"Can't find this attachment!" = "找不到此附件！";
 
 /* update password error = typo:Modulus */
 "Can't get a Moduls ID!" = "无法获取模块ID！";
@@ -391,16 +391,16 @@
 "Change Single Password" = "修改密码";
 
 /* Title */
-"Change default address to .." = "修改默认邮件地址为...";
+"Change default address to .." = "将首选邮箱地址改为...";
 
 /* settings swipe actions section action description */
-"Change left swipe action" = "更改左滑动操作";
+"Change left swipe action" = "更改向右滑动操作";
 
 /* settings swipe actions section action description */
-"Change right swipe action" = "更改右滑动操作";
+"Change right swipe action" = "更改向左滑动操作";
 
 /* Title */
-"Change sender address to .." = "更改发件人地址为...";
+"Change sender address to .." = "将发件人地址改为...";
 
 /* Action */
 "Check Again" = "再次检查";
@@ -415,7 +415,7 @@
 "City" = "城市";
 
 /* settings general section title */
-"Clear Local Message Cache" = "清除本地信息缓存";
+"Clear Local Message Cache" = "清除本机邮件缓存";
 
 /* general close action */
 "Close" = "关闭";
@@ -558,7 +558,7 @@
 "Define Expiration Date" = "设置有效期";
 
 /* Placeholder */
-"Define Hint (Optional)" = "提示（可选）";
+"Define Hint (Optional)" = "密码提示（非必填）";
 
 /* place holder */
 "Define Password" = "设置密码";
@@ -641,16 +641,16 @@
 "Edit Label" = "编辑标签";
 
 /* The button text for edit profile picture */
-"Edit Photo" = "编辑照片";
+"Edit Photo" = "更改照片";
 
 /* title */
-"Edit mobile signature" = "编辑移动设备落款";
+"Edit mobile signature" = "修改移动设备落款";
 
 /* title */
-"Edit signature" = "编辑落款";
+"Edit signature" = "修改落款";
 
 /* default vcard types */
-"Email" = "电子邮件";
+"Email" = "邮箱";
 
 /* contact detail view, email addresses section title */
 "Email Addresses" = "邮箱地址";
@@ -699,13 +699,13 @@
 "Encrypted Contact Details" = "已加密的联系人详情";
 
 /* Title */
-"Encrypted for outside" = "为外部邮件加密";
+"Encrypted for outside" = "对外加密";
 
 /* Title */
-"Encrypted for outside reply" = "为外部回复加密";
+"Encrypted for outside reply" = "对外加密回复";
 
 /* Title */
-"Encrypted from outside" = "外部的加密邮件";
+"Encrypted from outside" = "通过外网加密";
 
 /* Title */
 "Encrypted from outside PGP inline" = "通过外网 PGP/Inline 加密";
@@ -917,7 +917,7 @@
 "Inbox" = "收件箱";
 
 /* Error */
-"Incorrect PIN," = "口令错误。";
+"Incorrect PIN," = "口令错误，还可尝试";
 
 /* Title */
 "Incorrect password" = "密码错误";
@@ -968,7 +968,7 @@
 "It is not possible to switch to %@ within our iOS app." = "不支持在 iOS 程序中升级到 %@。";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们无法将您在 App Store 上购买的项目对应到我们的服务器上。请提交一份问题反馈，我们的客户援助团队将联系您。";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "我们的系统中查不到您在 App Store 上购买的项目。请提交一份问题反馈，我们的客户援助团队将联系您。";
 
 /* Title */
 "Keep me updated about new features" = "在有更新时通知我";
@@ -1001,7 +1001,7 @@
 "Labels have been applied." = "已应用标签。";
 
 /* Service plan capability */
-"Labels, Folders, Filters & More" = "标签、文件夹、筛选……";
+"Labels, Folders, Filters & More" = "标签、文件夹、筛选等功能";
 
 /* Title */
 "Labels/Folders" = "标签/文件夹";
@@ -1016,7 +1016,7 @@
 "Learn more here" = "在此处了解更多";
 
 /* Service plan capability */
-"Limited to 150 messages sent/day" = "每天仅限发送150条消息";
+"Limited to 150 messages sent/day" = "每天最多发送 150 封邮件";
 
 /* Action */
 "Load remote content" = "加载外部内容";
@@ -1281,7 +1281,7 @@
 "PGP-signed message from verified address" = "来自已验证地址的 PGP 签名邮件";
 
 /* Upgrade warning title */
-"PREMIUM FEATURE" = "高级功能";
+"PREMIUM FEATURE" = "付费功能";
 
 /* title */
 "Password" = "密码";
@@ -1299,7 +1299,7 @@
 "Password update failed" = "密码更新失败";
 
 /* default vcard types */
-"Personal" = "个人资料";
+"Personal" = "私人";
 
 /* default vcard types */
 "Phone" = "电话";
@@ -1326,7 +1326,7 @@
 "Please check your cell phone for the verification code." = "请查看您的手机收取验证码。";
 
 /* error message */
-"Please check your email for the verification code." = "检查您的邮箱获取验证码";
+"Please check your email for the verification code." = "请查收邮件获取验证码。";
 
 /* alert description */
 "Please disable PGP Sending for following addresses." = "请对以下地址关闭 PGP 发送功能。";
@@ -1428,7 +1428,7 @@
 "ProtonMail encrypted emails" = "ProtonMail 加密电子邮件";
 
 /* Description */
-"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail目前处于离线状态，查看我们的 twitter 以获取当前服务可用状态：https://twitter.com/protonmail";
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail 目前不可用，可前往我们的 Twitter 了解当前状况：https://twitter.com/protonmail";
 
 /* Service plan capability */
 "ProtonVPN included" = "包含 ProtonVPN";
@@ -1814,7 +1814,7 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "此邮件可能具有欺诈性质，请检查发件人身份和邮件内容，确认信息真实性。";
 
 /* contacts talbe cell Title title */
-"Title" = "头衔／职称";
+"Title" = "头衔";
 
 /* Title */
 "To" = "收件人";
@@ -1970,7 +1970,7 @@
 "Upgrade to a paid plan to send from your %@ address" = "升级到付费账户请发送你的地址 %@";
 
 /* alert description */
-"Upgrade to get all paid features." = "升级以获取所有付费功能。";
+"Upgrade to get all paid features." = "升级后方可使用所有功能。";
 
 /* Action */
 "Upload Contacts" = "上传联系人";
@@ -2050,7 +2050,7 @@
 "When you send an email, this is the name that appears in the sender field." = "当你发送邮件时，这个名称将作为发件人的名称。";
 
 /* default vcard types */
-"Work" = "单位";
+"Work" = "工作";
 
 /* 
  & title */
@@ -2131,7 +2131,7 @@
 "attempt remaining until secure data wipe!" = "尝试保留, 直到安全数据擦除!";
 
 /* Description */
-"attempts remaining" = "剩余的尝试机会";
+"attempts remaining" = "次";
 
 /* Error */
 "attempts remaining until secure data wipe!" = "尝试保留, 直到安全数据擦除!";

@@ -37,11 +37,14 @@
 /* optional text field */
 "*OPTIONAL" = "*AFRAYAN";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Drop here to add as attachment";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/aseqdac";
 
 /* 2fa verification failed */
-"2FA failed. Please try to login again." = "2FA failed. Please try to login again.";
+"2FA failed. Please try to login again." = "Yecceḍ usesteb uslig. Ɛreḍ ad teqqneḍ tikelt nniḍen.";
 
 /* default empty object */
 "<no object>" = "<no object>";
@@ -54,7 +57,7 @@
 "A new version of ProtonMail app is available, please update to latest version." = "Lqem amaynut n ProtonMail yella. Ma ulac aɣilif, awi lqem amaynut.";
 
 /* Description */
-"A new version of ProtonMail app is available. Please update to the latest version." = "A new version of ProtonMail app is available. Please update to the latest version.";
+"A new version of ProtonMail app is available. Please update to the latest version." = "Yeffeɣ-d ulqem amaynut n usnas ProtonMail. Ma ulac aɣilif, ssali ar ulqem aneggaru.";
 
 /* alert description */
 "A paid ProtonMail plan is required to use this feature" = "Ilaq uɣawas ProtonMail s uxelleṣ i useqdec n tmahilt-a";
@@ -163,13 +166,6 @@ Ma ulac aɣilif, rzu ar <a href=\"https://protonmail.com/support/knowledge-base/
 /* Title */
 "All contacts are imported" = "Akk inermisen ttwaketren";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Ad ṛuḥen akk imaylen-ik iwgelhanen i lebda, acu kan, ad tizmireḍ yal tikelt ad twaliḍ imaylen-ik ariwgelhanen.
-
-ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
-
 /* archive when apply label */
 "Also Archive" = "Ɣber daɣen";
 
@@ -209,6 +205,12 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Description */
 "Archived" = "Aɣbar";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Are you sure you want to logout?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Attachment imported";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Ticeqqufin";
@@ -271,13 +273,13 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Bug Report Received" = "Tuzna n ubug tettwarmes";
 
 /* Link to More Credits screen */
-"Buy More Credits" = "Buy More Credits";
+"Buy More Credits" = "Aɣ ugar n ismaden";
 
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "S useqdec n ptotonmail, ad tqebled";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %@ and %@.";
+"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %1$@ and %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -304,7 +306,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Can't delete contact group" = "D awezɣi tukksa n ugraw n unermes";
 
 /* The error message will be shown when the deletionn of the contact group through API failed */
-"Can't delete contact group through API" = "Can't delete contact group through API";
+"Can't delete contact group through API" = "Ur yezmir ara ad yekkes agraw n unermes s API";
 
 /* *
  *  MessageViewController */
@@ -320,7 +322,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Can't find the clicked message please try again!" = "Ur izmir ara ad yaf izen fiɣef i tsiteḍ. Ɛreḍ tikelt nniḍen!";
 
 /* Description */
-"Can't find the selected message. Please try again." = "Can't find the selected message. Please try again.";
+"Can't find the selected message. Please try again." = "Ur yezmir ara ad yaf izen yettwafernen. Ɛreḍ tikelt nniḍen.";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "Ur izmir ara ad yaf afaylu-agi yeddan!";
@@ -350,7 +352,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Can't save contact group" = "Ur yezmir ara ad isekles agraw n unermes";
 
 /* The error message will be shown when the update of the contact group through API failed */
-"Can't update contact group through the API" = "Can't update contact group through the API";
+"Can't update contact group through the API" = "Ur yezmir ara ad ileqqem agraw n unermes s API";
 
 /* Cancel action */
 "Cancel" = "Sefsex";
@@ -363,9 +365,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* None */
 "Cant' decrypt this attachment!" = "Ur yezmir ara ad yezmek afaylu-a icudden.";
-
-/* Action */
-"Catalan" = "Takaṭalant";
 
 /* Title */
 "Cc" = "Anɣ. I";
@@ -408,12 +407,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* loading message */
 "Checking ...." = "Asenqed....";
-
-/* Action */
-"Chinese Simplified" = "Tacinwat taḥerfit";
-
-/* Action */
-"Chinese Traditional" = "Tacinwat tamensayt";
 
 /* place holder */
 "Choose a Password" = "Fren awal uffir";
@@ -479,6 +472,9 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* Action */
 "Continue" = "Kemmel";
 
+/* Action */
+"Continue and Don't ask again" = "Continue and Don't ask again";
+
 /* Title */
 "Copy address" = "Nɣel tansa";
 
@@ -486,7 +482,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Copy name" = "Isem tmurt";
 
 /* Error message */
-"Could not connect to Store. Please try again later." = "Could not connect to Store. Please try again later.";
+"Could not connect to Store. Please try again later." = "Ur yezmir ara ad yeqqen ar tḥanut. Ɛreḍ tikelt nniḍen.";
 
 /* contact placeholder */
 "Country" = "Tamurt";
@@ -512,9 +508,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* error message title when create new user */
 "Create user failed" = "Timerna n useqdac tecceḍ";
 
-/* Action */
-"Croatian" = "Croatian";
-
 /* Change language title */
 "Current Language is: " = "Tutlayt tamirant d: ";
 
@@ -528,17 +521,11 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
    contacts default label type */
 "Custom" = "Udmawan";
 
-/* Action */
-"Czech" = "Tačikit";
-
 /* Title */
 "DECRYPT MAILBOX" = "WGELHEN TANAKA N YIMAYLEN";
 
 /* mail location title */
 "DRAFTS" = "IREWWAYEN";
-
-/* Action */
-"Danish" = "Tadanit";
 
 /* message Date: text */
 "Date:" = "Azemz:";
@@ -604,10 +591,10 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Display Name Updated" = "Isem n uskan yettwalqem";
 
 /* None */
-"Display name" = "Display name";
+"Display name" = "Isem n uskan";
 
 /* Title in display name settings */
-"DisplayName" = "Display name";
+"DisplayName" = "Isem n uskan";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
 "Do you want to activate the purchased service plan for " = "Tebɣiḍ ad tremdeḍ imeẓla n uɣawas i tuɣeḍ i ";
@@ -636,9 +623,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* menu title */
 "Drafts" = "Irewwayen";
-
-/* Action */
-"Dutch" = "Tahulandit";
 
 /* Action */
 "Edit" = "Ẓreg";
@@ -724,16 +708,13 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Encrypted from outside" = "Iwegelhen seg beṛṛa";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Encrypted from outside PGP/inline";
+"Encrypted from outside PGP inline" = "Encrypted from outside PGP inline";
 
 /* Title */
-"Encrypted from outside PGP/MIME" = "Encrypted from outside PGP/MIME";
+"Encrypted from outside PGP/MIME" = "Iwgelhen beṛṛa n PGP/MIME";
 
 /* Title */
-"Encrypted from outside signed PGP/MIME" = "Encrypted from outside signed PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Awegelhen beṛṛa";
+"Encrypted from outside signed PGP/MIME" = "Iwegelhen seg beṛṛa n PGP/MIME ittuzmlen";
 
 /* key setup top title */
 "Encryption Setup" = "Tawila n uweglhen";
@@ -755,9 +736,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Ittwawegelhen seg tazwara ar tagara ar tansa yettusneqden";
-
-/* Action */
-"English" = "Taglizit";
 
 /* Action in 2fa popup view */
 "Enter" = "Sekcem";
@@ -850,9 +828,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* forwarded message title */
 "Forwarded message" = "Izen yettwassekki";
 
-/* Action */
-"French" = "Tafṛansist";
-
 /* Title */
 "From" = "Seg";
 
@@ -867,9 +842,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Title */
 "General Settings" = "Iɣewwaṛen Imuta";
-
-/* Action */
-"German" = "Talmanit";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Awi-d %@";
@@ -934,6 +906,9 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* import contact title */
 "Importing Contacts" = "Akter n inermisen";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importing attachment, that can take a while";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Akken ad tesqedceḍ imezla-nneq, yessefk ad tqebleḍ tiwtilin timatutin n useqdec n ProtonMail.";
 
@@ -966,7 +941,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Invalid Password" = "Yir awal uffir";
 
 /* Invalid URL error when click a url in contact */
-"Invalid URL" = "Invalid URL";
+"Invalid URL" = "Yir URL";
 
 /* title */
 "Invalid UserName" = "Isem n useqdac armrɣtu";
@@ -994,9 +969,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.";
-
-/* Action */
-"Italian" = "Taṭelyanit";
 
 /* Title */
 "Keep me updated about new features" = "Lɣu-yi-d ɣef timahilin timaynutin";
@@ -1077,15 +1049,12 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* error title */
 "Logs" = "Inekcam";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "ProtonTabɣiḍ ad tẓergeḍ neɣ ad tessenseḍ azmul-ik aziraz?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Tettnadiḍ ad tɣellseḍ talqayt n unermes?";
 
 /* *
  *  MailboxPasswordViewController */
-"MAILBOX PASSWORD" = "Mailbox password";
+"MAILBOX PASSWORD" = "Awal uffir n tnaka n yimayl";
 
 /* Default Prompt text shown in the prompt cell */
 "MBContactPickerPrompt" = "MBContactPickerPrompt";
@@ -1094,7 +1063,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Mailbox Password" = "Awal uffir n Tnaka n yimayl";
 
 /* None */
-"Mailbox password doesn't match" = "Mailbox password doesn't match";
+"Mailbox password doesn't match" = "Awalen uffiren n tnaka n urmas ur menṭaḍen ara";
 
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sefrek Tansiwin";
@@ -1159,6 +1128,9 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modifying or turning off the default mobile signature is a paid feature.";
+
+/* More actions button */
+"More" = "Ugar";
 
 /* Screen header */
 "More Credits" = "More Credits";
@@ -1276,7 +1248,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "On EE, MMM d, yyyy at %@" = "On EE, MMM d, yyyy at %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@ wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
 
 /* None */
 "OpenDraft" = "LdiTamerkast";
@@ -1347,11 +1319,8 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* Description */
 "Pin code can't be empty." = "Tangalt Pin ur tezmir ara ad tili d tilemt.";
 
-/* Title */
-"Plain text" = "Aḍris aččuran";
-
 /* alert description */
-"Please add a password for the following recipients." = "Please add a password for the following recipients.";
+"Please add a password for the following recipients." = "Ttxil-k rnu awal n uɛeddi i iɣerwaḍen-agi.";
 
 /* Description */
 "Please check your cell phone for the verification code." = "Senqed tiliɣri-ik tazirazt ma tremseḍ-d tangalt n usenqed.";
@@ -1360,7 +1329,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Please check your email for the verification code." = "Ttxil-k senqed imayl-ik i tangalt n usenqed.";
 
 /* alert description */
-"Please disable PGP Sending for following addresses." = "Please disable PGP Sending for following addresses.";
+"Please disable PGP Sending for following addresses." = "Ttxil-k sexsi tauzzna PGP i tansiwin-agi.";
 
 /* Description */
 "Please input a valid cell phone number." = "Sekcem uṭṭun n tiliɣri ameɣtu.";
@@ -1378,10 +1347,10 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Please pick a user name first!" = "Sefkcem di tazwara isem n useqdac!";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
-"Please provide a group name" = "Please provide a group name";
+"Please provide a group name" = "Efk-d isem i ugraw ma ulac aɣilif";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Please remove all attachments before changing the sender";
+"Please remove all attachments before changing sender!" = "Kkes akk ifuyla send ad beddleḍ amazan";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Please select at least one email for the contact group";
@@ -1393,13 +1362,13 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Please set a password." = "Ma ulac aɣilif, fren awal uffir.";
 
 /* None */
-"Please try a different domain." = "Please try a different domain.";
+"Please try a different domain." = "Ma ulac aɣilif, ɛreḍ taɣult-nniḍen.";
 
 /* None */
-"Please try a different email address." = "Please try a different email address.";
+"Please try a different email address." = "Ma ulac aɣilif, ɛreḍ tansa-nniḍen n yimayl.";
 
 /* None */
-"Please try a different password." = "Please try a different password.";
+"Please try a different password." = "Ma ulac aɣilif ɛreḍ awal-nniḍen uffir.";
 
 /* None */
 "Please try a different user name." = "Ma ulac aɣilif, ɛreḍ isem-nniḍen n useqdac.";
@@ -1419,7 +1388,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Please use the web application to reset your password." = "Ttxil-k seqdec asnas web iwakken ad talseḍ awennez n wawal n uɛeddi.";
 
 /* None */
-"Please use the web version of ProtonMail to change your mailbox password!" = "Please use the web version of ProtonMail to change your mailbox password!";
+"Please use the web version of ProtonMail to change your mailbox password!" = "Seqdec lqem Web n ProtonMail akken ad tbeddleḍ awal uffir n tnaka-ik n yimayl!";
 
 /* Alert */
 "Please use the web version of ProtonMail to change your passwords!" = "Seqdec lqem Web n ProtonMail akken ad tbeddleḍ awalen-ik uffiren!";
@@ -1433,15 +1402,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* 
  & alert title */
 "Please, manage it in your phone." = "Please, manage it in your phone.";
-
-/* Action */
-"Polish" = "Tapulandit";
-
-/* Action */
-"Portuguese" = "Portuguese";
-
-/* Action */
-"Portuguese Brazil" = "Tapurtugit n Brizil";
 
 /* Action */
 "Print" = "Siggez";
@@ -1461,9 +1421,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary ad k-yeǧǧ ad ternuḍ yerna ad tẓergeḍ ifatusen n inermisen mačči kan d isem akked imayl. S ttawli n ProtonMail, isefka-agi ad ttusɣellesen am imayl-inek ittuwglehnen si ṭṭerf ɣer ṭṭerf.";
 
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Visionary ad k-yeǧǧ ad tsagneḍ azmul-inek n uziraz.";
-
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail ur isawal ara i udellel udiɣ ur yettṛuzu ara izerfan n tudert tusligt. Afus-ik d ayen ilaqen akken ad nkemmel ad nseddu ProtonMail. Tzemreḍ ad tsaliḍ aswir n umiḍan-ik ar umiḍan s lexlaṣ neɣ ad tmuddeḍ tawsa i ProtonMail.";
 
@@ -1474,7 +1431,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail ur yeqqin ara akka tura, ddu ar twitter akken ad twaliḍ addad n tura: https://twitter.com/protonmail";
 
 /* Service plan capability */
-"ProtonVPN included" = "ProtonVPN included";
+"ProtonVPN included" = "Yedda ProtonVPN";
 
 /* Title */
 "Quick swipe actions" = "Tigawin n uḍummu tiriraḍin";
@@ -1522,10 +1479,10 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Reply All" = "Aerr i meṛṛa";
 
 /* composer view model impl */
-"Reply message" = "Reply message";
+"Reply message" = "Izen n tririt";
 
 /* None */
-"ReplyAll" = "Reply all";
+"ReplyAll" = "Err i meṛṛa";
 
 /* menu title */
 "Report Bugs" = "Azen ibugen";
@@ -1534,7 +1491,10 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Report Phishing" = "Report Phishing";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Ma temmeleḍ izen d aneɛruḍ n ukellex ad yettwazen	yizen-nni ɣur-nneɣ, swakka ad nizmir ad t-nesleḍ yerna ad nwenneɛ tistayin-nneɣ. Ayag yebɣa ad d-yinin belli ad nizmir ad nwali akk agbur n yizen.";
+
+/* link opeining confirmation */
+"Request Link Confirmation" = "Request Link Confirmation";
 
 /* Title */
 "Resetting message cache ..." = "Tulsa n wennez n tuffirt n yizen...";
@@ -1544,12 +1504,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Ales mbaɛd %d n tasinin";
-
-/* Action */
-"Romanian" = "Romanian";
-
-/* Action */
-"Russian" = "Tarusit";
 
 /* mail location title */
 "SENT" = "YETTWAZEN";
@@ -1624,7 +1578,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Sent Failed" = "Tuzna ur teddi ara";
 
 /* encryption lock description for auto reply */
-"Sent by ProtonMail with zero access encryption" = "Sent by ProtonMail with zero access encryption";
+"Sent by ProtonMail with zero access encryption" = "Yettwazen s ProtonMail s uwgelhen ilem n wadduf";
 
 /* encryption lock description */
 "Sent by you with end-to-end encryption" = "Tuzneḍ-t s yiman-ik s uwgelhen si ṭerf ar ṭerf";
@@ -1687,9 +1641,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* Description */
 "Spammed" = "Ttwaznen-as ispamen";
 
-/* Action */
-"Spanish" = "Taspanit";
-
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
 
@@ -1726,7 +1677,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Subject:" = "Asentel:";
 
 /* menu title */
-"Subscription" = "Subscription";
+"Subscription" = "Ajerred";
 
 /* Action */
 "Support ProtonMail" = "Mudd afus i ProntonMail";
@@ -1763,14 +1714,14 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* 
  */
-"The UserName have been taken." = "The username have been taken.";
+"The UserName have been taken." = "Isem n useqdac yettwaṭṭef yakan.";
 
 /* Description */
 "The authentication credentials are invalid." = "Talɣut n usesteb n yizen awgelhan d tarmeɣtut.";
 
 /* 
  */
-"The authentication token has expired." = "The authentication token has expired.";
+"The authentication token has expired." = "Ajuṭun n usesteb yemmut.";
 
 /* key size notes */
 "The current standard" = "Tizeɣt tamirant";
@@ -1788,7 +1739,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "The highest level of encryption available." = "Aswir meqqren n uwgelhen mačči d ameɣtu.";
 
 /* None */
-"The label name is duplicate" = "The label name is duplicate";
+"The label name is duplicate" = "Tabzimt agi tella yakan";
 
 /* Error */
 "The mailbox password is incorrect." = "Awal uffir n tnaka n yimayl mačči d ameɣtu.";
@@ -1798,16 +1749,16 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* *
  *  LabelsViewController */
-"The maximum number of labels is %d." = "The maximum number of labels is %d.";
+"The maximum number of labels is %d." = "Amḍan afellay n tibzimin d %d.";
 
 /* None */
-"The new password can't empty" = "The new password can't be empty";
+"The new password can't empty" = "Awal uffir amaynut ur izmir ara ad yili d ilem";
 
 /* update password error */
 "The new password can't empty." = "Awal uffir amaynut ur izmir ara ad yili d ilem.";
 
 /* None */
-"The new password not match" = "Passwords do not match";
+"The new password not match" = "Awalen uffiren ur menṭaḍen ara";
 
 /* update password error */
 "The new password not match." = "Awal uffir amaynut ur imenṭaḍ ara.";
@@ -1835,7 +1786,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* 
  & title */
-"The verification email invalid" = "Invalid verification email";
+"The verification email invalid" = "Imayl n usenqed mačči d ameɣtu";
 
 /* Error */
 "The verification failed!" = "Icceḍ usenqed!";
@@ -1851,7 +1802,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "This can take a while. Please do not dismiss the app." = "This can take a while. Please do not dismiss the app.";
 
 /* alert desc */
-"This contact belongs to your Address Book." = "This contact belongs to your address book.";
+"This contact belongs to your Address Book." = "Anermis-agi ittekka ar imedlis-ik n tansiwin.";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Imayl-agi yecceḍ deg usekyed n usesteb n taɣult-is. Ahat beddlen-t neɣ wwin-t s tuccḍa aniɣer nniḍen!";
@@ -1874,7 +1825,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
  we need to verify that you are human.";
 
 /* None */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Akken ad talseḍ awennez n wawal-ik uffi, seqdec lqem web n ProtonMail di protonmail.com";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Akken ad talseḍ awennez n wawal-ik uffir, seqdec lqem web n ProtonMail di protonmail.com";
@@ -1884,7 +1835,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* *
  *  API Error & alert title */
-"Token expired" = "Token expired";
+"Token expired" = "Ajiṭun yemmut";
 
 /* Alert title */
 "Too many recipients" = "Too many recipients";
@@ -1902,9 +1853,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Title */
 "Trouble shooting guide" = "Amnir n useggem";
-
-/* Action */
-"Turkish" = "Taṭurkit";
 
 /* action sheet option */
 "Turn Off" = "Sens";
@@ -1924,15 +1872,12 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 /* Title */
 "USER LOGIN" = "TUQQNA N USEQDAC";
 
-/* Action */
-"Ukrainian" = "Tukrinit";
-
 /* Description */
 "Unable to connect to the server" = "Ur izmir ara ad yeqqen ɣer uqeddac";
 
 /* 
  */
-"Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
+"Unable to construct a valid URL with the following path: %@" = "UR izmir ara ad yebnu URL tameɣtut s ubrid-agi: %@";
 
 /* Description */
 "Unable to create SRP Client!" = "Ur yezmir ara ad yernu amsaɣ SRP!";
@@ -1963,7 +1908,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* Description */
 "Unable to parse the response object:
-%@" = "Unable to parse the response object:
+%@" = "Ur izmir ara ad yesleḍ asentel n tririt:
 %@";
 
 /* Error */
@@ -1979,7 +1924,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Unknow Error" = "Tuccḍa tarussint";
 
 /* None */
-"Unknow file" = "Unknown file";
+"Unknow file" = "Afaylu arussin";
 
 /* title, default display name */
 "Unknown" = "Arussin";
@@ -1988,7 +1933,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Unknown Error" = "Tuccḍa tarussint";
 
 /* None */
-"Unkonw Version" = "Unknown version";
+"Unkonw Version" = "Lqem arussin";
 
 /* Service plan capability; */
 "Unlimited messages sent/day" = "Unlimited messages sent/day";
@@ -2013,7 +1958,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Update Notification Email" = "Leqqem ilɣa s yimayl";
 
 /* title */
-"Update Now" = "Update Now";
+"Update Now" = "Leqqem Tura";
 
 /* title */
 "Update Required" = "Update Required";
@@ -2026,9 +1971,6 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* alert description */
 "Upgrade to get all paid features." = "Upgrade to get all paid features.";
-
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Asali n uswir ulamek ara d-yili deg usnas.";
 
 /* Action */
 "Upload Contacts" = "Sali inermisen";
@@ -2047,11 +1989,11 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* 
  & title */
-"User name exist" = "Username exist";
+"User name exist" = "Isem n useqdac yella";
 
 /* 
  & alert title */
-"User name invalid" = "Invalid username";
+"User name invalid" = "Yir aseqdac";
 
 /* Title */
 "Username" = "Isem n useqdac";
@@ -2069,16 +2011,16 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Verification of this content’s signature failed" = "Asenqed n uzmul n ugbur-agi yecceḍ";
 
 /* None */
-"Version %@ %@" = "Version %@ %@";
+"Version %@ %@" = "Lqem %@%@";
 
 /* message details-> more action-> view headers */
-"View Headers" = "View Headers";
+"View Headers" = "Sken iqeṛṛa";
 
 /* Action */
 "View Plans" = "View Plans";
 
 /* Title */
-"Warning" = "Warning";
+"Warning" = "Γur-k";
 
 /* human check warning description */
 "Warning: Before you pass the human check you can't sent email!!!" = "Ɣur-k: Ur tezmireḍ ara ad tazneḍ imayl send ad teggeḍ asenqed n umdan!!!";
@@ -2102,7 +2044,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "Welcome to ProtonMail!" = "Anṣuf yiswen ɣer ProntonMail!";
 
 /* Description */
-"What people see in the \"From\" field." = "What people see in the \"From\" field.";
+"What people see in the \"From\" field." = "Ayen ttwalin yimdanen deg urti \"From\".";
 
 /* display name notes */
 "When you send an email, this is the name that appears in the sender field." = "Ticki tuzneḍ imayl, d isem ara d-ibanen deg urti n umazan.";
@@ -2112,13 +2054,16 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 
 /* 
  & title */
-"Wrong verification code" = "Wrong verification code";
+"Wrong verification code" = "Yir tangalt n usenqed";
 
 /* Warning message option to bypass validation and activate plan for current username */
 "Yes, activate it for " = "Yes, activate it for ";
 
 /* Error message */
 "Yes, attach details of payment" = "Yes, attach details of payment";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Tzemreḍ ad terreɣ imussuten n uḍummu d idmawanen, deg uɣewwaṛen n usnas ProtonMail.";
@@ -2204,7 +2149,7 @@ ULAC TUƔALIN AR DEFFIR I TIGAWT-A!";
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
 
 /* None */
-"hours" = "Hours";
+"hours" = "Isragen";
 
 /* Title */
 "inline attachments" = "ifuyla yeddan";

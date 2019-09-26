@@ -438,7 +438,7 @@
 "Confirm Mailbox Password" = "メールボックスのパスワードの確認";
 
 /* Placeholder */
-"Confirm Password" = "確認用のパスワードを入力してください";
+"Confirm Password" = "パスワードの確認";
 
 /* Title */
 "Confirm new login password" = "新しいログインパスワードの確認";
@@ -925,7 +925,7 @@
 "Input Display Name ..." = "表示名を入力してください";
 
 /* place holder */
-"Input Notification Email ..." = "通知先メールアドレスを入力してください";
+"Input Notification Email ..." = "通知先メールアドレス";
 
 /* Error */
 "Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "ProtonMailアカウントのインスタント作成が一時的に無効になっています。 ご招待のリクエストはhttps://protonmail.com/inviteにアクセスしてください。";
@@ -1165,7 +1165,7 @@
 "Multiple Addresses" = "アドレスの管理";
 
 /* Action */
-"NEED AN ACCOUNT? SIGN UP." = "無料登録";
+"NEED AN ACCOUNT? SIGN UP." = "無料登録\nr190811";
 
 /* title */
 "Name" = "名前";
@@ -1628,7 +1628,8 @@
 "Snoozed till" = "次の時刻まで休止：";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。 パブリックベータにご参加頂きありがとうございます。";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "申し訳ございませんがベータ版のiOSアプリからは課金ができません。
+ パブリックベータにご参加頂きありがとうございます。";
 
 /* None */
 "Space Warning" = "容量不足";
@@ -1676,7 +1677,7 @@
 "Subject:" = "件名：";
 
 /* menu title */
-"Subscription" = "購読";
+"Subscription" = "サブスクリプション";
 
 /* Action */
 "Support ProtonMail" = "ProtonMailを支援する";
@@ -1697,7 +1698,7 @@
 "TRASH" = "ごみ箱";
 
 /* Title */
-"Take a Photo" = "写真を撮影";
+"Take a Photo" = "写真を撮影する";
 
 /* alert description */
 "Tap send anyway to send without expiration to these recipients" = "これらの宛先に有効期限なしで送信するにはタップしてください。";
@@ -2048,7 +2049,7 @@
 "When you send an email, this is the name that appears in the sender field." = "メールを送信した際に、差出人欄に表示される名前です。";
 
 /* default vcard types */
-"Work" = "仕事";
+"Work" = "勤務先";
 
 /* 
  & title */
