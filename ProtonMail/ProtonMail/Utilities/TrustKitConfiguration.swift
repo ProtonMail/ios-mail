@@ -64,6 +64,10 @@ final class TrustKitConfiguration {
     ] as [String : Any]
     
     static func start() {
+        #if !APP_EXTENSION
         TrustKit.initSharedInstance(withConfiguration: self.trustKitConfig)
+        #else
+        TrustKit.initSharedInstance(withConfiguration: self.trustKitConfig, sharedContainerIdentifier: Constants.App.APP_GROUP)
+        #endif
     }
 }
