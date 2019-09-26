@@ -124,7 +124,18 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
 
 extension AppDelegate: TrustKitUIDelegate {
     func onTrustKitValidationError(_ alert: UIAlertController) {
-        guard let top = self.window?.topmostViewController(), !(top is UIAlertController) else { return }
+        let currentWindow: UIWindow? = {
+            if #available(iOS 13.0, *) {
+                let session = UIApplication.shared.openSessions.first { $0.scene?.activationState == UIScene.ActivationState.foregroundActive }
+                let scene = session?.scene as? UIWindowScene
+                let window = scene?.windows.first
+                return window
+            } else {
+                return self.window
+            }
+        }()
+        
+        guard let top = currentWindow?.topmostViewController(), !(top is UIAlertController) else { return }
         top.present(alert, animated: true, completion: nil)
     }
 }
