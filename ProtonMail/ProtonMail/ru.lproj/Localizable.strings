@@ -95,7 +95,7 @@
 "Add Contact" = "Добавить контакт";
 
 /* add custom label type action */
-"Add Custom Label" = "Добавить пользовательский ярлык";
+"Add Custom Label" = "Добавить свой ярлык";
 
 /* Action */
 "Add Folder" = "Добавить папку";
@@ -1168,7 +1168,7 @@
 "NEED AN ACCOUNT? SIGN UP." = "Зарегистрироваться бесплатно";
 
 /* title */
-"Name" = "Имя / Название";
+"Name" = "Имя";
 
 /* Title */
 "New login password" = "Новый пароль учётной записи";
@@ -1241,7 +1241,7 @@
 "OTHER PLANS" = "ДРУГИЕ ТАРИФЫ";
 
 /* Title */
-"On" = "Вкл";
+"On" = "В";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "В EE, MMM d, yyyy в %@";
@@ -1280,7 +1280,7 @@
 "PGP-signed message from verified address" = "Сообщение, подписанное PGP; с проверенного адреса";
 
 /* Upgrade warning title */
-"PREMIUM FEATURE" = "ПРЕМИАЛЬНАЯ ВОЗМОЖНОСТЬ";
+"PREMIUM FEATURE" = "ОСОБАЯ ФУНКЦИЯ";
 
 /* title */
 "Password" = "Пароль";
@@ -1343,13 +1343,13 @@
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Пожалуйста, войдите в учётную запись ProtonMail, тариф которой вы расширяете, чтобы мы могли завершить активацию тарифа.";
 
 /* Error */
-"Please pick a user name first!" = "Пожалуйста, сначала выберите имя пользователя!";
+"Please pick a user name first!" = "Пожалуйста, сначала задайте имя пользователя!";
 
 /* The message will show up when the user attempts to create a contact group without any name specified */
 "Please provide a group name" = "Пожалуйста, укажите название группы";
 
 /* when switch sender but email has attachments */
-"Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед сменой отправителя";
+"Please remove all attachments before changing sender!" = "Пожалуйста, удалите все вложения перед изменением отправителя";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "Пожалуйста, выберите по крайней мере один адрес электронной почты для группы контактов";
@@ -1439,7 +1439,7 @@
 "RESET MAILBOX PASSWORD" = "СБРОСИТЬ ПАРОЛЬ ПОЧТОВОГО ЯЩИКА";
 
 /* Title */
-"Rate & Review" = "Оцените и напишите отзыв";
+"Rate & Review" = "Оценить и написать отзыв";
 
 /* set pin title */
 "Re-Enter your PIN" = "Повторно введите ваш PIN-код";
@@ -1478,7 +1478,7 @@
 "Reply All" = "Ответить всем";
 
 /* composer view model impl */
-"Reply message" = "Ответное сообщение";
+"Reply message" = "Ответить на сообщение";
 
 /* None */
 "ReplyAll" = "Ответить всем";
@@ -1529,7 +1529,7 @@
 "Save draft" = "Сохранить черновик";
 
 /* action sheet option */
-"Scheduled" = "Запланировано";
+"Scheduled" = "Расписание";
 
 /* Title */
 "Search" = "Поиск";
@@ -1556,7 +1556,7 @@
 "Send message without subject?" = "Отправить сообщение без указания темы?";
 
 /* Title */
-"Send plain but stored enc" = "Отправить простым, но сохранить зашифрованным";
+"Send plain but stored enc" = "Отправить открытым, но сохранить зашифрованным";
 
 /* encryption lock description */
 "Sender Verification Failed" = "Проверка отправителя не удалась";
@@ -1598,7 +1598,7 @@
 "Settings" = "Настройки";
 
 /* Title */
-"Share Alert" = "Предупреждение о \"поделиться\"";
+"Share Alert" = "Предупреждение об отправке";
 
 /* action */
 "Share Contact" = "Поделиться контактом";
@@ -1607,7 +1607,7 @@
 "Share it with your friends" = "Поделиться с друзьями";
 
 /* Action */
-"Sign Out" = "Выйти";
+"Sign Out" = "Выход";
 
 /* Title in signature settings */
 "Signature" = "Подпись";
@@ -1638,7 +1638,7 @@
 "Spam" = "Спам";
 
 /* Description */
-"Spammed" = "Спам";
+"Spammed" = "Это спам";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Неверная соль единого пароля SRP!";
@@ -1655,7 +1655,7 @@
 "Start Time" = "Время начала";
 
 /* contact placeholder */
-"State" = "Штат (регион)";
+"State" = "Область (регион)";
 
 /* Title */
 "Storage" = "Хранилище";
@@ -1735,7 +1735,7 @@
 "The draft format incorrectly sending failed!" = "Отправка не удалась. Ошибка в формате черновика.";
 
 /* key size note part 1 */
-"The highest level of encryption available." = "Максимально возможный из доступных уровень шифрования.";
+"The highest level of encryption available." = "Наивысший из доступных уровень шифрования.";
 
 /* None */
 "The label name is duplicate" = "Название ярлыка дублируется";
@@ -1788,7 +1788,7 @@
 "The verification email invalid" = "Неправильный адрес эл. почты для проверки";
 
 /* Error */
-"The verification failed!" = "Проверка не прошла!";
+"The verification failed!" = "Проверка не удалась!";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "Произошла ошибка при создании или загрузке сохранённых данных приложения.";
@@ -2007,7 +2007,7 @@
 "Verification error" = "Ошибка подтверждения";
 
 /* error details */
-"Verification of this content’s signature failed" = "Ошибка проверки подписи содержимого";
+"Verification of this content’s signature failed" = "Проверка подписи этого контакта не удалась";
 
 /* None */
 "Version %@ %@" = "Версия %@ %@";

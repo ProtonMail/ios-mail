@@ -17,5 +17,5 @@
 "NSPhotoLibraryAddUsageDescription" = "Required for saving image attachments to photo library.";
 
 /* Privacy - Photo Library Usage Description */
-"NSPhotoLibraryUsageDescription" = "Required for attaching photos to the email.";
+"NSPhotoLibraryUsageDescription" = "Ilaq i ucuddu n tewlafin ar yimayl.";
 

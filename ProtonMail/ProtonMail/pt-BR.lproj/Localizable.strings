@@ -1072,7 +1072,7 @@ Por favor visite <a href=\"https://protonmail.com/support/knowledge-base/delinqu
 "Manage Labels/Folders" = "Gerenciar Marcadores/Pastas";
 
 /* mark message as read action */
-"Mark Read" = "Marcar como lido";
+"Mark Read" = "Marcar como lida";
 
 /* Action */
 "Mark as unread" = "Marcar como não lida";
@@ -1941,7 +1941,7 @@ para nós, para que possamos analisá-la e melhorar nossos filtros. Isso signifi
 
 /* The verb for describing the unread action
    VoiceOver: email is not read yet */
-"Unread" = "Não lido";
+"Unread" = "Não lida";
 
 /* Error message */
 "Unsupported file type" = "Tipo de arquivo não suportado";

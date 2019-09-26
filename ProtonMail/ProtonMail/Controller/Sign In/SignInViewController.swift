@@ -411,7 +411,12 @@ class SignInViewController: ProtonMailViewController {
                 return deferred.promise
             }
         }
+        
+        #if Enterprise
+        return Promise<String>.value("EnterpriseBuildInternalTestOnly".encodeBase64())
+        #else
         return Promise<String>.init(error: TokenError.unsupport)
+        #endif
     }
     
     @IBAction func signUpAction(_ sender: UIButton) {

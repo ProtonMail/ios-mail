@@ -675,7 +675,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Email domain invalid" = "Domini de correu electrònic no vàlid";
 
 /* empty folder, for spam and trash */
-"Empty Folder" = "Carpeta buida";
+"Empty Folder" = "Buidar carpeta";
 
 /* Title */
 "Enable Default Signature" = "Activa la signatura predeterminada";

@@ -37,6 +37,9 @@
 /* optional text field */
 "*OPTIONAL" = "* VOLITELNÉ";
 
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Drop here to add as attachment";
+
 /* Service plan capability detail; like in '5 email addresses/user' */
 "/user" = "/uživatel";
 
@@ -163,13 +166,6 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 /* Title */
 "All contacts are imported" = "Všechny kontakty byly naimportovány";
 
-/* Description */
-"All of your existing encrypted emails will be lost forever, but you will still be able to view your unencrypted emails.
-
-THIS ACTION CANNOT BE UNDONE!" = "Všechny vaše stávající šifrované e-maily budou navždy ztraceny, ale stále si budete moci zobrazit nešifrované e-maily.
-
-TUTO AKCI NELZE VRÁTIT ZPĚT!";
-
 /* archive when apply label */
 "Also Archive" = "Také archivovat";
 
@@ -209,6 +205,12 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Description */
 "Archived" = "Archivováno";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Are you sure you want to logout?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "Attachment imported";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Přílohy";
@@ -277,7 +279,7 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 "By using protonmail, you agree to our" = "Užíváním protonmailu souhlasíte s našimi";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "Užíváním ProtonMailu souhlasíte s našimi %@ a %@.";
+"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %1$@ and %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -364,9 +366,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* None */
 "Cant' decrypt this attachment!" = "Tuto přílohu nelze dešifrovat.";
 
-/* Action */
-"Catalan" = "Katalánština";
-
 /* Title */
 "Cc" = "Kopie";
 
@@ -408,12 +407,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* loading message */
 "Checking ...." = "Kontrola ....";
-
-/* Action */
-"Chinese Simplified" = "Čínština (zjednodušená)";
-
-/* Action */
-"Chinese Traditional" = "Čínština (tradiční)";
 
 /* place holder */
 "Choose a Password" = "Zvolte heslo";
@@ -479,6 +472,9 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* Action */
 "Continue" = "Pokračovat";
 
+/* Action */
+"Continue and Don't ask again" = "Continue and Don't ask again";
+
 /* Title */
 "Copy address" = "Kopírovat adresu";
 
@@ -512,9 +508,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* error message title when create new user */
 "Create user failed" = "Vytváření uživatele selhalo";
 
-/* Action */
-"Croatian" = "Chorvatština";
-
 /* Change language title */
 "Current Language is: " = "Aktuální jazyk je: ";
 
@@ -528,17 +521,11 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
    contacts default label type */
 "Custom" = "Vlastní";
 
-/* Action */
-"Czech" = "Čeština";
-
 /* Title */
 "DECRYPT MAILBOX" = "DEŠIFROVAT SCHRÁNKU";
 
 /* mail location title */
 "DRAFTS" = "KONCEPTY";
-
-/* Action */
-"Danish" = "Dánština";
 
 /* message Date: text */
 "Date:" = "Datum:";
@@ -638,9 +625,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 "Drafts" = "Koncepty";
 
 /* Action */
-"Dutch" = "Holandsky";
-
-/* Action */
 "Edit" = "Upravit";
 
 /* *
@@ -724,16 +708,13 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 "Encrypted from outside" = "Šifrováno zvenku";
 
 /* Title */
-"Encrypted from outside PGP/inline" = "Šifrováno zvenku PGP/inline";
+"Encrypted from outside PGP inline" = "Encrypted from outside PGP inline";
 
 /* Title */
 "Encrypted from outside PGP/MIME" = "Šifrováno zvenku PGP/MIME";
 
 /* Title */
 "Encrypted from outside signed PGP/MIME" = "Šifrováno zvenku s podpisem PGP/MIME";
-
-/* encryption lock description */
-"Encrypted outside" = "Šifrováno venku";
 
 /* key setup top title */
 "Encryption Setup" = "Nastavení šifrování";
@@ -755,9 +736,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* encryption lock description */
 "End-to-end encrypted to verified address" = "Zašifrováno End-to-end k ověřenému příjemci";
-
-/* Action */
-"English" = "Anglicky";
 
 /* Action in 2fa popup view */
 "Enter" = "Zadejte";
@@ -850,9 +828,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* forwarded message title */
 "Forwarded message" = "Přeposlaná zpráva";
 
-/* Action */
-"French" = "Francouzsky";
-
 /* Title */
 "From" = "Od";
 
@@ -867,9 +842,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Title */
 "General Settings" = "Obecná nastavení";
-
-/* Action */
-"German" = "Německy";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Získejte %@";
@@ -934,6 +906,9 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* import contact title */
 "Importing Contacts" = "Importování kontaktů";
 
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Importing attachment, that can take a while";
+
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "Chcete-li využívat našich služeb, musíte souhlasit s podmínkami užívání služby ProtonMail.";
 
@@ -994,9 +969,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Error message */
 "It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nepodařilo se nám spojit produkt z AppStore, který jste si zakoupili s produkty na našem serveru. Prosím vyplňte zprávu o chybě a náš tým podpory Vás bude kontaktovat.";
-
-/* Action */
-"Italian" = "Italsky";
 
 /* Title */
 "Keep me updated about new features" = "Informujte mě o nových funkcích";
@@ -1077,9 +1049,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* error title */
 "Logs" = "Logy";
 
-/* alert description */
-"Looking to edit or disable your mobile signature?" = "Chcete upravit nebo zakázat váš podpis v mobilu?";
-
 /* Upgrade warning title */
 "Looking to secure your contact's details?" = "Chcete zabezpečit Vaše kontaktní údaje?";
 
@@ -1159,6 +1128,9 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Description */
 "Modifying or turning off the default mobile signature is a paid feature." = "Modifikace nebo vypnutí výchozího mobilního podpisu je placenou vlastností.";
+
+/* More actions button */
+"More" = "Více";
 
 /* Screen header */
 "More Credits" = "Víc kreditů";
@@ -1276,7 +1248,7 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 "On EE, MMM d, yyyy at %@" = "V EE, d. MMM. yyyy ve %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@ wrote:" = "V EE, d. MMM. yyyy ve %1$@, %2$@ napsal/a:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
 
 /* None */
 "OpenDraft" = "Otevřít rozepsaný";
@@ -1346,9 +1318,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Description */
 "Pin code can't be empty." = "PIN kód nemůže být prázdný.";
-
-/* Title */
-"Plain text" = "Prostý text";
 
 /* alert description */
 "Please add a password for the following recipients." = "Prosím, přidejte heslo pro následující příjemce.";
@@ -1435,15 +1404,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 "Please, manage it in your phone." = "Prosím, upravte to ve vašem telefonu.";
 
 /* Action */
-"Polish" = "Polsky";
-
-/* Action */
-"Portuguese" = "Portugalština";
-
-/* Action */
-"Portuguese Brazil" = "Portugalsko-Brazilsky";
-
-/* Action */
 "Print" = "Tisk";
 
 /* Title */
@@ -1460,9 +1420,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Upgrade warning message */
 "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary Vám umožní přidávat a upravovat detaily kontaktů víc než jejich jméno a e-mail. Použitím ProtonMailu budou tyto údaje stejně zabezpečené jako Vaše end-to-end šifrované e-maily.";
-
-/* alert description */
-"ProtonMail Plus/Professional/Visionary enables you to customize your mobile signature." = "ProtonMail Plus/Professional/Vizionář Vám umožňuje přizpůsobit Váš mobilní podpis.";
 
 /* Description */
 "ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail neprodává reklamy a nezneužívá Vaše soukromí. Vaše podpora je nezbytná pro udržení chodu ProtonMail. Můžete upgradovat na placený účet nebo přispět na podporu ProtonMail.";
@@ -1536,6 +1493,9 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* alert message */
 "Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Nahlášení zprávy jako pokus o phishing odešle zprávu k nám, aby jsme jí mohli analyzovat a zlepšit naše filtry. To znamená, že budeme mít možnost zobrazit celý obsah zprávy.";
 
+/* link opeining confirmation */
+"Request Link Confirmation" = "Požadovat potvrzení odkazu";
+
 /* Title */
 "Resetting message cache ..." = "Resetování mezipaměti zprávy...";
 
@@ -1544,12 +1504,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* email verify code resend count down */
 "Retry after %d seconds" = "Zkusit znovu po %d sekundách";
-
-/* Action */
-"Romanian" = "Rumunština";
-
-/* Action */
-"Russian" = "Rusky";
 
 /* mail location title */
 "SENT" = "ODESLANÉ";
@@ -1686,9 +1640,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Description */
 "Spammed" = "Spam";
-
-/* Action */
-"Spanish" = "Španělsky";
 
 /* Description */
 "Srp single password keyslat invalid!" = "SRP jednotné heslo klíče je neplatné!";
@@ -1903,9 +1854,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* Title */
 "Trouble shooting guide" = "Průvodce odstraňováním problémů";
 
-/* Action */
-"Turkish" = "Turecky";
-
 /* action sheet option */
 "Turn Off" = "Vypnout";
 
@@ -1923,9 +1871,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Title */
 "USER LOGIN" = "PŘIHLÁŠENÍ UŽIVATELE";
-
-/* Action */
-"Ukrainian" = "Ukrajinsky";
 
 /* Description */
 "Unable to connect to the server" = "Nelze se připojit k serveru";
@@ -2027,9 +1972,6 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 /* alert description */
 "Upgrade to get all paid features." = "Navyšte a získejte všechny placené funkce.";
 
-/* Upgrade warning message */
-"Upgrading is not possible in the app." = "Není možné upgradovat v aplikaci.";
-
 /* Action */
 "Upload Contacts" = "Nahrát kontakty";
 
@@ -2119,6 +2061,9 @@ TUTO AKCI NELZE VRÁTIT ZPĚT!";
 
 /* Error message */
 "Yes, attach details of payment" = "Ano, přiložit detail platby";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Gesta přejíždění můžete upravit v nastavení aplikace ProtonMail.";

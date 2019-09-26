@@ -537,7 +537,7 @@ Visite <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">la
 "Debug" = "Depurar";
 
 /* Action */
-"Decrypt" = "Descrifrar";
+"Decrypt" = "Descifrar";
 
 /* Description */
 "Decrypt token failed. Please try again." = "Falló el token de descifrado, inténtelo nuevamente.";
