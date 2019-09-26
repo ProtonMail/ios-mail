@@ -129,7 +129,7 @@
 		11BEB9D5DE45AA1D834BE054C6C46B81 /* BannerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0FC925A5BE5E2B0E0AB375BC7FACEC57 /* BannerView.xib */; };
 		11CD2AA862685F9B1925B05E2DBBE2FC /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD3EA17FDE88C464B5F52A70C225CF21 /* SplashViewController.swift */; };
 		1271DC63F29907F20E0886920C06E9B5 /* ContactSectionHeadView.xib in Resources */ = {isa = PBXBuildFile; fileRef = EA310AD75EF147FEF5E2C05CA8916FD9 /* ContactSectionHeadView.xib */; };
-		127EAD5DA05AB2EF41D0AD4B67288794 /* TrustKitConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */; };
+		127EAD5DA05AB2EF41D0AD4B67288794 /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */; };
 		128160C6FF148EBB77A4E415CAA291FD /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
 		128CDBCC93FC51813B9D07FC78DAE31B /* ContainableComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C748A99C98F2532BE06DEEA4BFDE2CA /* ContainableComposeViewModel.swift */; };
 		12A7ED0C1170A82BBE7D1703E5C3F18F /* FeedbackHeadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC90A48609F6E2D4A4E1E648A5DF2382 /* FeedbackHeadCell.swift */; };
@@ -564,7 +564,7 @@
 		4D79CF0BE231295089BE727CA0384008 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17F9333B1575E40465998DC664CE55B0 /* String+Extension.swift */; };
 		4D973CD5E70D3EE7EC387F5B4E0BA09A /* ShowImageView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 304EB5D67CD0DF808BAD447D812C0CCF /* ShowImageView.xib */; };
 		4DBFFF58172DE9015F7AF24CE60E1B6D /* ContactFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F1904E81CADB25323AA62B5C0D4F3F /* ContactFieldType.swift */; };
-		4E02029E663E6CE5991C7BCD15B2E559 /* TrustKitConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */; };
+		4E02029E663E6CE5991C7BCD15B2E559 /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */; };
 		4E12BBDF7134F9B981506F49E70A7349 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1683E88F2B7F1FCE35BA6AD99BCA5B9 /* SettingsCell.swift */; };
 		4E1CCBDCF9F890CF0D017BCFBFB3F439 /* Pods_ShareDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E337FAA25F7ED4AC0D90F477BEC94697 /* Pods_ShareDev.framework */; };
 		4E27A35B5BF3630815085781AF62DB3B /* ContactGroupSubSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0996E54E773489188D6F13B994F5A66F /* ContactGroupSubSelectionViewController.swift */; };
@@ -743,7 +743,7 @@
 		6417B7F49C96B749B89E14642C685B53 /* RecipientCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6956D627BFECFC9A37C5F99BE26217BB /* RecipientCell.xib */; };
 		641CE7729654E4EA95CAC12A67FC573C /* ServicePlanDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2054DF907C94718EB30D6C37DB13A5A9 /* ServicePlanDetails.swift */; };
 		6442DA0B915A7D2DDE72E1BE18E43494 /* PasswordUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2DA10D85CE79610C05969E8D8B788B1C /* PasswordUtils.swift */; };
-		64513B8FADB6062D399AFE09E7260679 /* TrustKitConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */; };
+		64513B8FADB6062D399AFE09E7260679 /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */; };
 		6469AABF23606C1009DADF06EF41E62C /* ExternalURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EFC10F4C4155F6A047011CE0654648 /* ExternalURL.swift */; };
 		647DBC8CA02C88C60B4D571EE52DC940 /* TimeInterval+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0209C6CD5DA523EFB7789D59AA08104E /* TimeInterval+Extension.swift */; };
 		64AF52E9DAFC3EEE894A815B2022947F /* StorageLimit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15DF350EE3CB54D27FD0E93BE458A8F5 /* StorageLimit.swift */; };
@@ -1755,7 +1755,7 @@
 		ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
 		ED1066357FF807C1ACB0E3926F01D9EA /* ViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */; };
 		ED2F8582FE389C523E7CC4C4A98FE4A1 /* Keymaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D7B237413C9BDC548261C22C8EDEF /* Keymaker.swift */; };
-		ED5B23B4114DE187072165E24186F85C /* TrustKitConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */; };
+		ED5B23B4114DE187072165E24186F85C /* TrustKitWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */; };
 		ED60AEB5FD05E7E198673CAE72E72481 /* DomainsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5C3C45196C742337934AB7387537109A /* DomainsTableViewCell.xib */; };
 		ED6153906F1885F5A266D7942E534369 /* ShowImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 24BF04E5E6E9EC3C69828955C8742A7A /* ShowImageView.swift */; };
 		EDA34469508C3DCC374989DA1E621103 /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283624B6469818966374EF6D3D48C809 /* PMWebView.swift */; };
@@ -2640,7 +2640,7 @@
 		B75EBFD70984828D2EE13F30B6946825 /* ViewModelProtocalT.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocalT.swift; sourceTree = "<group>"; };
 		B7B58EA1AD6B80AE3B0F8182EFF649C0 /* PMView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PMView.swift; sourceTree = "<group>"; };
 		B7BC7241A7A681822E37FB267ABB31D2 /* Message+Flag+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Message+Flag+Extension.swift"; sourceTree = "<group>"; };
-		B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustKitConfiguration.swift; sourceTree = "<group>"; };
+		B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrustKitWrapper.swift; sourceTree = "<group>"; };
 		B802CFC07A6A34A5D00DFB1F7B580798 /* Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Localization.swift; sourceTree = "<group>"; };
 		B88E2413886FE850E623F218CD4530D6 /* CoreDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		B8CAC2BAC552807B0088012620BC1E99 /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3932,7 +3932,7 @@
 				8ED74BB5412B24D36973513E2112C7A4 /* Snapshot.swift */,
 				15DF350EE3CB54D27FD0E93BE458A8F5 /* StorageLimit.swift */,
 				EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */,
-				B7EF52AC4C67A431891851FB0742FF3E /* TrustKitConfiguration.swift */,
+				B7EF52AC4C67A431891851FB0742FF3E /* TrustKitWrapper.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -6480,7 +6480,7 @@
 				36E35A37054A6EF2FBAD7128B8C30129 /* TimeInterval+Extension.swift in Sources */,
 				507D815E93D7203E26DD69BBCE948D8D /* TimePickerViewController.swift in Sources */,
 				737373550739D495B9B4DAEE9D45FA79 /* TouchID+Helper.swift in Sources */,
-				4E02029E663E6CE5991C7BCD15B2E559 /* TrustKitConfiguration.swift in Sources */,
+				4E02029E663E6CE5991C7BCD15B2E559 /* TrustKitWrapper.swift in Sources */,
 				2A2694C1FF72FCD2E97F186917FAD911 /* TwoFACodeView.swift in Sources */,
 				F24CCD0CDAC79EA33C3BB27381CEE7CD /* TwoFACodeViewController.swift in Sources */,
 				BEEA05B8AEE78727C04DAB427C63B07D /* TwoFAViewModel.swift in Sources */,
@@ -7020,7 +7020,7 @@
 				647DBC8CA02C88C60B4D571EE52DC940 /* TimeInterval+Extension.swift in Sources */,
 				FD9C2DA7E003B841BDF17328F7FEB8EA /* TimePickerViewController.swift in Sources */,
 				906B9E8FD660D2312ADAF7C18ACD0248 /* TouchID+Helper.swift in Sources */,
-				127EAD5DA05AB2EF41D0AD4B67288794 /* TrustKitConfiguration.swift in Sources */,
+				127EAD5DA05AB2EF41D0AD4B67288794 /* TrustKitWrapper.swift in Sources */,
 				6F8CD847738C7080FA6492559908750D /* TwoFACodeView.swift in Sources */,
 				1893B1330F8436A5A38076EB834037BD /* TwoFACodeViewController.swift in Sources */,
 				618E4286F2CC46EDCECC5D09133EB672 /* TwoFAViewModel.swift in Sources */,
@@ -7340,7 +7340,7 @@
 				09F780646B51A97138C2B511683B066C /* Threading.swift in Sources */,
 				9BABADC79684C07E334346B9CA37F132 /* TimeInterval+Extension.swift in Sources */,
 				0330415DE44B1BB17541F7ECFCF50B05 /* TouchID+Helper.swift in Sources */,
-				64513B8FADB6062D399AFE09E7260679 /* TrustKitConfiguration.swift in Sources */,
+				64513B8FADB6062D399AFE09E7260679 /* TrustKitWrapper.swift in Sources */,
 				F912FBC6BCE984E553A0F3595E507ACE /* UIAlertAction+Extension.swift in Sources */,
 				C1C16A3A376D817EBC890C1C0814FF0B /* UIAlertController+Extension.swift in Sources */,
 				CE67BCB3CBD87B39AE947DC49B71AC28 /* UIApplication+BadgeNumber+Share.swift in Sources */,
@@ -7614,7 +7614,7 @@
 				079820C378B20013072796A9BAC58158 /* Threading.swift in Sources */,
 				B6D0F31B6521BE408244AEE60EC86DCA /* TimeInterval+Extension.swift in Sources */,
 				E6DAA61857553BAFC7513E039A05A207 /* TouchID+Helper.swift in Sources */,
-				ED5B23B4114DE187072165E24186F85C /* TrustKitConfiguration.swift in Sources */,
+				ED5B23B4114DE187072165E24186F85C /* TrustKitWrapper.swift in Sources */,
 				D780355919F7D2D35D8C7EA870A917E9 /* UIAlertAction+Extension.swift in Sources */,
 				AE553D5CADF1774588FD0726AA46902B /* UIAlertController+Extension.swift in Sources */,
 				4A8A40382CB914A5D192DE1A09265324 /* UIApplication+BadgeNumber+Share.swift in Sources */,

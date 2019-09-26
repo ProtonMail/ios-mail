@@ -122,6 +122,13 @@ extension AppDelegate: APIServiceDelegate, UserDataServiceDelegate {
     }
 }
 
+extension AppDelegate: TrustKitUIDelegate {
+    func onTrustKitValidationError(_ alert: UIAlertController) {
+        guard let top = self.window?.topmostViewController(), !(top is UIAlertController) else { return }
+        top.present(alert, animated: true, completion: nil)
+    }
+}
+
 //move to a manager class later
 let sharedInternetReachability : Reachability = Reachability.forInternetConnection()
 //let sharedRemoteReachability : Reachability = Reachability(hostName: AppConstants.API_HOST_URL)
@@ -149,7 +156,7 @@ extension AppDelegate: UIApplicationDelegate {
         #if Enterprise
         Fabric.with([Crashlytics.self])
         #endif
-        TrustKitConfiguration.start()
+        TrustKitWrapper.start(delegate: self)
         Analytics.shared.setup()
         
         UIApplication.shared.setMinimumBackgroundFetchInterval(300)
