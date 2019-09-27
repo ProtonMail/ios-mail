@@ -64,14 +64,41 @@ class sendMailTests: XCTestCase {
         XCTAssert(app.staticTexts[sampleMessageBody].exists)
         XCTAssert(app.images[sampleMessageInlineImage].exists)
         
-        // Check headers and print preview
+        
+        if #available(iOS 10.0, *) {
+        
+        app.navigationBars["ProtonMail.MessageContainerView"].buttons["More"].tap()
+            
+        } else {
+            
         app.navigationBars[inbox].buttons[moreButton].tap()
+        
+        }
+        
+        // Check headers and print preview
+        
         app.sheets.buttons[viewHeadersButton].tap()
         
         Thread.sleep(forTimeInterval: 2)
-    app.navigationBars[sampleMessageHeaderSubject].buttons["QLOverlayDoneButtonAccessibilityIdentifier"].tap()
         
+        if #available(iOS 10.0, *) {
+            
+            app.navigationBars[sampleMessageHeaderSubject].buttons["Done"].tap()
+              
+        } else {
+        app.navigationBars[sampleMessageHeaderSubject].buttons["QLOverlayDoneButtonAccessibilityIdentifier"].tap()
+            
+        }
+
+       if #available(iOS 10.0, *) {
+        
+        app.navigationBars["ProtonMail.MessageContainerView"].buttons["More"].tap()
+            
+        } else {
+            
         app.navigationBars[inbox].buttons[moreButton].tap()
+        
+        }
         
         app.sheets.buttons[printButton].tap()
         
@@ -116,14 +143,25 @@ class sendMailTests: XCTestCase {
         
         // Inbox management
         Thread.sleep(forTimeInterval: 5)
-        
+  
         if #available(iOS 11.0, *) {
-            inboxNavigationBar.buttons[inbox].tap()
             
-        } else {
-            inboxNavigationBar.buttons[backButton].tap()
+        app.navigationBars["ProtonMail.MessageContainerView"].buttons[inbox].tap()
+            
         }
+            
+        else if #available(iOS 10.0, *) {
+            
+        app.navigationBars["ProtonMail.MessageContainerView"].buttons["Back"].tap()
+            
+        }
+            
+        else {
+            
+            inboxNavigationBar.buttons[backButton].tap()
         
+        }
+
         tablesQuery.staticTexts[sampleMessageSubjectReply].press(forDuration: 1.5);
         app.navigationBars.buttons[trashButton].tap()
         
