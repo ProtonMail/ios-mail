@@ -69,13 +69,7 @@ class sendMailTests: XCTestCase {
         app.sheets.buttons[viewHeadersButton].tap()
         
         Thread.sleep(forTimeInterval: 2)
-        
-        if #available(iOS 13.0, *) {
-            app.navigationBars[sampleMessageHeaderSubject].buttons["QLOverlayDoneButtonAccessibilityIdentifier"].tap()
-        } else {
-            let navigationBar = app.navigationBars[sampleMessageHeaderSubject]
-            navigationBar.buttons[doneLabel].tap()
-        }
+    app.navigationBars[sampleMessageHeaderSubject].buttons["QLOverlayDoneButtonAccessibilityIdentifier"].tap()
         
         app.navigationBars[inbox].buttons[moreButton].tap()
         
@@ -92,7 +86,8 @@ class sendMailTests: XCTestCase {
         }
         
         Thread.sleep(forTimeInterval: 5)
-        app.navigationBars[sampleMessagePrintSubject].buttons[doneLabel].tap()
+        
+        app.navigationBars["Printer Options"].buttons["Cancel"].tap()
         
         // Prepare composer
         app.buttons[replyButton].tap()
