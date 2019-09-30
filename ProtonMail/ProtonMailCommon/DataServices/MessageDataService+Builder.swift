@@ -288,7 +288,16 @@ class SendBuilder {
                 var messageBody = self.clearBody ?? ""
                 messageBody = QuotedPrintable.encode(string: messageBody)
                 var signbody = ""
-                let boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //TODO::this need to change
+                var boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //default
+                do {
+                    let random = try Crypto.random(byte: 20)
+                    if random.count > 0 {
+                        boundaryMsg = HMAC.hexStringFromData(random)
+                    }
+                } catch {
+                    //ignore
+                }
+                
                 let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\""
                 signbody.append(contentsOf: typeMessage + "\r\n")
                 signbody.append(contentsOf: "\r\n")
