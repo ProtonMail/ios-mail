@@ -361,7 +361,6 @@ class SendBuilder {
     func buildPlainText(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
-                
                 //TODO:: fix all ?
                 let messageBody = self.clearBody ?? ""
                 //TODO:: need improve replace part

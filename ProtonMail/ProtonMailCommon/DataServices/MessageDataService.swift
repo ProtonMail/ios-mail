@@ -1517,7 +1517,7 @@ class MessageDataService : Service {
                         try message.decryptBody(keys: addrPrivKeys,
                                                 userKeys: userPrivKeys,
                                                 passphrase: passphrase) :
-                        try message.decryptBody(keys: addrPrivKeys.binPrivKeys,
+                        try message.decryptBody(keys: addrPrivKeys,
                                                 passphrase: passphrase) else {
                         throw RuntimeError.cant_decrypt.error
                     }
