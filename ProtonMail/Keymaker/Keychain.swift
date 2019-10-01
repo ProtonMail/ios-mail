@@ -195,10 +195,8 @@ open class Keychain {
         }
     }
     
-    // Debug
-    
     @discardableResult
-    internal func removeEverything() -> Bool { // currently used for unit tests only
+    public func removeEverything() -> Bool { 
         let query: [String: AnyObject] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,

@@ -32,6 +32,7 @@ class AppCacheService: Service {
     
     enum Constants {
         enum SettingsBundleKeys {
+            static var clearAll = "clear_all_preference"
             static var appVersion = "version_preference"
             static var libVersion = "lib_version_preference"
         }
@@ -52,6 +53,20 @@ class AppCacheService: Service {
     }
     
     func checkSettingsBundle() {
+        if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
+            // core data
+            self.coreDataCache.rebuild(reason: .inital)
+            
+            // user defaults
+            if let domain = Bundle.main.bundleIdentifier {
+                UserDefaults.standard.removePersistentDomain(forName: domain)
+                self.userDefault.getShared().removePersistentDomain(forName: domain)
+            }
+            
+            // keychain
+            KeychainWrapper.keychain.removeEverything()
+        }
+        
         UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
         UserDefaults.standard.setValue(PMNLibVersion.getLibVersion(), forKey: Constants.SettingsBundleKeys.libVersion)
     }

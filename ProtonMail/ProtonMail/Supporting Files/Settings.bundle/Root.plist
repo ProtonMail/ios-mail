@@ -36,6 +36,24 @@
 			<key>Key</key>
 			<string>acknowledgements</string>
 		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+			<key>FooterText</key>
+			<string>All ProtonMail data will be removed from this device on next app launch. You will be logged out, altho the session will seem active on our website.</string>
+			<key>Title</key>
+			<string>Troubleshooting</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>Full reset on next launch</string>
+			<key>Key</key>
+			<string>clear_all_preference</string>
+			<key>DefaultValue</key>
+			<false/>
+		</dict>
 	</array>
 </dict>
 </plist>
