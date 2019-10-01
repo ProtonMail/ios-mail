@@ -31,7 +31,10 @@ import Foundation
 class AppCacheService: Service {
     
     enum Constants {
-
+        enum SettingsBundleKeys {
+            static var appVersion = "version_preference"
+            static var libVersion = "lib_version_preference"
+        }
     }
     private let userDefault = SharedCacheBase()
     private let coreDataCache: CoreDataCache
@@ -43,8 +46,14 @@ class AppCacheService: Service {
     }
     
     func restoreCacheWhenAppStart() {
+        self.checkSettingsBundle()
         self.coreDataCache.run()
         self.appCache.run()
+    }
+    
+    func checkSettingsBundle() {
+        UserDefaults.standard.setValue(Bundle.main.appVersion, forKey: Constants.SettingsBundleKeys.appVersion)
+        UserDefaults.standard.setValue(PMNLibVersion.getLibVersion(), forKey: Constants.SettingsBundleKeys.libVersion)
     }
     
     func restoreCacheAfterAuthorized() {
