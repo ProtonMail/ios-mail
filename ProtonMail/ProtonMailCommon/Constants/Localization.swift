@@ -1751,4 +1751,9 @@ class LocalizedString {
     
     /// Logout
     lazy var _logout_confirmation = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
+    
+    
+    
+    lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
+                                                                   comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
 }
