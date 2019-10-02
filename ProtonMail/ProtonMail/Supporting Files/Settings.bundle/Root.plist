@@ -40,7 +40,7 @@
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
 			<key>FooterText</key>
-			<string>All ProtonMail data will be removed from this device on next app launch. You will be logged out, altho the session will seem active on our website.</string>
+			<string>You will be logged out, and all ProtonMail data will be removed from this device the next time you launch this app. However, the session will appear as active in the Security tab (under Settings) on ProtonMail&apos;s web version.</string>
 			<key>Title</key>
 			<string>Troubleshooting</string>
 		</dict>
