@@ -34,7 +34,6 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
     func authenticateUser() {
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             self.delegate?.Next()
-            //self.navigationController?.popViewController(animated: true)
         })
     }
     
@@ -74,9 +73,28 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
             ]
         }
     }
+
+    private func decideOnAuthentication() {
+        if #available(iOS 13.0, *), UIDevice.current.biometricType == .touchID,
+            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive)
+        {
+            // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                self.authenticateUser()
+            }
+        } else {
+            self.authenticateUser()
+        }
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.authenticateUser()
+        
+        #if !APP_EXTENSION
+            self.decideOnAuthentication()
+        #else
+            self.authenticateUser()
+        #endif
     }
     
     override func viewDidLoad() {
@@ -87,8 +105,15 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
         self.bioCodeView.delegate = self
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)
+        
+        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.decideOnAuthentication()
+        }
     }
 
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
     @objc func logoutButtonTapped() {
         let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
