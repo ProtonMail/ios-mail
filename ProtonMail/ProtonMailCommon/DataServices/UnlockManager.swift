@@ -96,8 +96,12 @@ class UnlockManager: NSObject {
         if UIApplication.shared.applicationState == .active {
             logic()
         } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            if UIDevice.current.biometricType == .faceID {
                 logic()
+            } else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+                    logic()
+                }
             }
         }
         #else
