@@ -90,11 +90,7 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     func start() {
-        let placeholder = UIWindow(frame: UIScreen.main.bounds)
-        if #available(iOS 13.0, *) {
-            placeholder.windowScene = self.scene as? UIWindowScene
-        }
-        placeholder.rootViewController = UIViewController()
+        let placeholder = UIWindow(root: UIViewController(), scene: self.scene)
         self.snapshot.show(at: placeholder)
         self.currentWindow = placeholder
         
@@ -154,7 +150,7 @@ class WindowsCoordinator: CoordinatorNew {
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
-                    lock.windowLevel = .alert
+                    lock.windowLevel = .statusBar
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock
                 }
@@ -181,13 +177,13 @@ class WindowsCoordinator: CoordinatorNew {
         }
     }
     
-    @discardableResult func navigate(from source: UIWindow, to destination: UIWindow) -> Bool {
-        guard source != destination, source.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
+    @discardableResult func navigate(from source: UIWindow?, to destination: UIWindow) -> Bool {
+        guard source != destination, source?.rootViewController?.restorationIdentifier != destination.rootViewController?.restorationIdentifier else {
             return false
         }
         
         let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
-        source.addSubview(effectView)
+        source?.addSubview(effectView)
         destination.alpha = 0.0
         
         UIView.animate(withDuration: 0.5, animations: {
@@ -200,7 +196,7 @@ class WindowsCoordinator: CoordinatorNew {
         })
         
         // notify source's views they are disappearing
-        source.topmostViewController()?.viewWillDisappear(false)
+        source?.topmostViewController()?.viewWillDisappear(false)
         
         self.currentWindow = destination
         

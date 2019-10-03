@@ -28,6 +28,7 @@
 
 import Foundation
 import Keymaker
+import LocalAuthentication
 
 class UnlockManager: NSObject {
     static var shared = UnlockManager()
@@ -79,30 +80,21 @@ class UnlockManager: NSObject {
     
     var isRequestingBiometricAuthentication: Bool = false
     internal func biometricAuthentication(afterBioAuthPassed: @escaping ()->Void) {
-        let logic: ()->Void = {
-            guard !self.isRequestingBiometricAuthentication else { return }
-            self.isRequestingBiometricAuthentication = true
-            keymaker.obtainMainKey(with: BioProtection()) { key in
-                defer {
-                    self.isRequestingBiometricAuthentication = false
-                }
-                guard self.validate(mainKey: key) else { return }
-                afterBioAuthPassed()
-            }
+        var error: NSError?
+        guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) else {
+            PMLog.D("LAContext canEvaluatePolicy is false, error: " + String(describing: error?.localizedDescription))
+            assert(false, "LAContext canEvaluatePolicy is false")
+            return
         }
-        
-        // iOS 13 will not give us mainKey from SecureEnclave if request is made while app is .inactive or .background
-        #if !APP_EXTENSION
-        if UIApplication.shared.applicationState == .active {
-            logic()
-        } else {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                logic()
+        guard !self.isRequestingBiometricAuthentication else { return }
+        self.isRequestingBiometricAuthentication = true
+        keymaker.obtainMainKey(with: BioProtection()) { key in
+            defer {
+                self.isRequestingBiometricAuthentication = false
             }
+            guard self.validate(mainKey: key) else { return }
+            afterBioAuthPassed()
         }
-        #else
-            logic()
-        #endif
     }
     
     internal func initiateUnlock(flow signinFlow: SignInUIFlow,

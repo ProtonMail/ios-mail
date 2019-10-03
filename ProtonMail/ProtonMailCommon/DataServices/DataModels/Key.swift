@@ -64,6 +64,14 @@ final class Key : NSObject {
         return self.private_key.fingerprint
     }
     
+    var shortFingerpritn : String {
+        let fignerprint = self.fingerprint
+        if fignerprint.count > 8 {
+            return String(fignerprint.prefix(8))
+        }
+        return fignerprint
+    }
+    
     var newSchema : Bool {
         return signature != nil
     }

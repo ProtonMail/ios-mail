@@ -307,6 +307,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
     }
     
+    func showNoEmailSelected(title: String) {
+        let alert = UIAlertController(title: title, message: LocalString._message_list_no_email_selected, preferredStyle: .alert)
+        alert.addOKAction()
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     // MARK: - Button Targets
     @objc internal func composeButtonTapped() {
         if checkHuman() {
@@ -317,10 +323,18 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .search)
     }
     @objc internal func labelButtonTapped() {
+        guard !self.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._apply_labels)
+            return
+        }
         self.coordinator?.go(to: .labels, sender: self.viewModel.selectedMessages(selected: self.selectedIDs))
     }
     
     @objc internal func folderButtonTapped() {
+        guard !self.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._labels_move_to_folder)
+            return
+        }
         self.coordinator?.go(to: .folder, sender: self.viewModel.selectedMessages(selected: self.selectedIDs))
     }
     
@@ -332,6 +346,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     /// remove button tapped. in the navigation bar
     @objc internal func removeButtonTapped() {
+        guard !self.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._warning)
+            return
+        }
         if viewModel.isDelete() {
             let alert = UIAlertController(title: LocalString._warning, message: LocalString._messages_will_be_removed_irreversibly, preferredStyle: .alert)
             let yes = UIAlertAction(title: LocalString._general_delete_action, style: .destructive) { [unowned self] _ in
@@ -835,6 +853,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
 
     internal func moveMessages(to location: Message.Location) {
+        guard !self.selectedIDs.isEmpty else {
+            showNoEmailSelected(title: LocalString._warning)
+            return
+        }
         self.viewModel.move(IDs: self.selectedIDs, to: location.rawValue)
     }
     

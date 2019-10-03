@@ -119,7 +119,7 @@ extension Message {
             self.setValue(labelObjs, forKey: Attributes.labels)
             
         }
-        return outLabel;
+        return outLabel
     }
     
     /// in rush , clean up later
@@ -354,8 +354,27 @@ extension Message {
     }
     
     // MARK: methods
-    func decryptBody(keys: Data, passphrase: String) throws -> String? {
-        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
+//    func decryptBody(keys: Data, passphrase: String) throws -> String? {
+//        return try body.decryptMessage(binKeys: keys, passphrase: passphrase)
+//    }
+    
+    func decryptBody(keys: [Key], passphrase: String) throws -> String? {
+        var firstError : Error?
+        for key in keys {
+            do {
+                return try body.decryptMessageWithSinglKey(key.private_key, passphrase: passphrase)
+            } catch let error {
+                if firstError == nil {
+                    firstError = error
+                }
+                PMLog.D(error.localizedDescription)
+            }
+        }
+        
+        if let error = firstError {
+            throw error
+        }
+        return nil
     }
     
     func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
@@ -375,7 +394,7 @@ extension Message {
                         return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
                     }
                 } else {//normal key old schema
-                    return try body.decryptMessage(binKeys: userKeys, passphrase: passphrase)
+                    return try body.decryptMessage(binKeys: keys.binPrivKeys, passphrase: passphrase)
                 }
             } catch let error {
                 if firstError == nil {
@@ -388,8 +407,9 @@ extension Message {
         if let error = firstError {
             throw error
         }
-        return nil;
+        return nil
     }
+    
     
     //const (
     //  ok         = 0
@@ -447,7 +467,7 @@ extension Message {
                 try decryptBody(keys: sharedUserDataService.addressKeys,
                                 userKeys: sharedUserDataService.userPrivateKeys,
                                 passphrase: passphrase) :
-                try decryptBody(keys: sharedUserDataService.addressPrivateKeys,
+                try decryptBody(keys: sharedUserDataService.addressKeys,
                                 passphrase: passphrase) { //DONE
             //PMLog.D(body)
             if isPgpMime || isSignedMime {
@@ -547,7 +567,7 @@ extension Message {
     }
     
     func encryptBody(_ body: String, mailbox_pwd: String, error: NSErrorPointer?) {
-        let address_id = self.getAddressID;
+        let address_id = self.getAddressID
         if address_id.isEmpty {
             return
         }
@@ -602,10 +622,10 @@ extension Message {
         get {
             if let addressID = addressID, !addressID.isEmpty {
                 if let add = sharedUserDataService.addresses.indexOfAddress(addressID), add.send == 1 {
-                    return add;
+                    return add
                 } else {
                     if let add = sharedUserDataService.addresses.defaultSendAddress() {
-                        return add;
+                        return add
                     }
                 }
             } else {
@@ -622,7 +642,7 @@ extension Message {
         get {
             if let addressID = addressID, !addressID.isEmpty {
                 if let add = sharedUserDataService.addresses.indexOfAddress(addressID) {
-                    return add;
+                    return add
                 }
             }
             return nil

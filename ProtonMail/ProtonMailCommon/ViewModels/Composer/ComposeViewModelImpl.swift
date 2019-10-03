@@ -465,7 +465,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             let key = addr.keys.first,
             let data = key.publicKey.data(using: String.Encoding.utf8) {
             
-            let filename = "publicKey - " + addr.email + " - " + key.fingerprint + ".asc"
+            let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
             var attached: Bool = false
             // check if key already attahced
             if let atts = self.getAttachments() {
@@ -480,7 +480,7 @@ class ComposeViewModelImpl : ComposeViewModel {
             // attach key
             if attached == false, let context = msg.managedObjectContext {
                 let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                let attachment = data.toAttachment(msg, fileName: filename, type: "text/plain", stripMetadata: stripMetadata)
+                let attachment = data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata)
                 var error: NSError? = nil
                 error = context.saveUpstreamIfNeeded()
                 if error != nil {

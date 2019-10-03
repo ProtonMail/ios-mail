@@ -57,9 +57,11 @@ extension APIService {
             #endif
         
         #endif
+        
+        let deviceName = UIDevice.current.name
         let parameters = [
             "DeviceToken" : settings.token,
-            "DeviceName" : UIDevice.current.name,
+            "DeviceName" : deviceName.isEmpty ? "defaultName" : deviceName,
             "DeviceModel" : UIDevice.current.model,
             "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
