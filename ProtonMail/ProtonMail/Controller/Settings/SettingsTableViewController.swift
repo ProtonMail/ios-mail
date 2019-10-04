@@ -556,6 +556,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                             }
                         }
                         let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
+                        if let cell = tableView.cellForRow(at: indexPath) as? DomainsTableViewCell {
+                            alert.popoverPresentationController?.sourceView = cell.contentView
+                            alert.popoverPresentationController?.sourceRect = cell.defaultMark.frame
+                        }
                         browsers.forEach(alert.addAction)
                         alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
