@@ -78,9 +78,13 @@ class APIService {
 
         sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
             var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
-            TrustKit.sharedInstance().pinningValidator.handle(challenge, completionHandler: { (disposition, credential) in
-                dispositionToReturn = disposition
-            })
+            if let validator = TrustKitWrapper.current?.pinningValidator {
+                validator.handle(challenge, completionHandler: { (disposition, credential) in
+                    dispositionToReturn = disposition
+                })
+            } else {
+                assert(false, "TrustKit not initialized correctly")
+            }
             return dispositionToReturn
         }
         

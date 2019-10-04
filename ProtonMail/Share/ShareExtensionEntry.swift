@@ -50,7 +50,7 @@ class ShareExtensionEntry : UINavigationController {
     }
     
     private func setup() {
-        TrustKitConfiguration.start()
+        TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
         sharedAPIService.delegate = self
     }
@@ -70,5 +70,11 @@ extension ShareExtensionEntry: APIServiceDelegate {
     
     func isReachable() -> Bool {
         return self.reachabilityManager.isReachable
+    }
+}
+
+extension ShareExtensionEntry: TrustKitUIDelegate {
+    func onTrustKitValidationError(_ alert: UIAlertController) {
+        self.appCoordinator?.navigationController?.present(alert, animated: true, completion: nil)
     }
 }
