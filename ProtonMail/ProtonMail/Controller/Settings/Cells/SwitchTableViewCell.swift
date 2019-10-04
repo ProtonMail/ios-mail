@@ -60,7 +60,8 @@ typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, 
         switchView.isOn = status
         callback = complete
         
-        self.accessibilityElements = [switchView]
+        self.accessibilityLabel = topline
+        self.accessibilityElements = [switchView as Any]
         self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
         
         if bottomLine.isEmpty {

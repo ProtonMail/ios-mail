@@ -35,6 +35,7 @@ class StorageViewCell: UITableViewCell {
     @IBOutlet weak var storageUsageDescriptionLable: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.accessibilityLabel = "storageCell"
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
