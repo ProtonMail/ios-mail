@@ -113,8 +113,8 @@
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>Handoff.Message</string>
-		<string>WipeMainKeyIntent</string>
 		<string>RestoreWindow</string>
+		<string>WipeMainKeyIntent</string>
 	</array>
 	<key>UIAppFonts</key>
 	<array/>
