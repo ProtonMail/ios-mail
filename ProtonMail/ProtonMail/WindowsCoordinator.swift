@@ -212,7 +212,7 @@ class WindowsCoordinator: CoordinatorNew {
     
     func currentDeepLink() -> DeepLink? {
         let deeplink = DeepLink("Root")
-        self.currentWindow?.enumerateViewControllerHierarchy { controller, _ in
+        self.appWindow?.enumerateViewControllerHierarchy { controller, _ in
             guard let deeplinkable = controller as? Deeplinkable else { return }
             deeplink.append(deeplinkable.deeplinkNode)
         }
