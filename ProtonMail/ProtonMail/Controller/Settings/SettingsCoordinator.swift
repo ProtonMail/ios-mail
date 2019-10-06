@@ -65,6 +65,12 @@ class SettingsCoordinator: SWRevealCoordinator {
         case snooze          = "setting_notifications_snooze_segue"
     }
     
+    init(vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory) {
+        self.viewModel = vm
+        self.viewController = vc
+        self.services = services
+    }
+    
     init(rvc: SWRevealViewController?, nav: UIViewController?, vc: SettingsTableViewController, vm: SettingsViewModel, services: ServiceFactory, deeplink: DeepLink?) {
         self.navigation = nav
         self.swRevealVC = rvc

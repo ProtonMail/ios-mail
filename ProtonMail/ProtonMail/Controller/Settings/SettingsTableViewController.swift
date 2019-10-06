@@ -106,6 +106,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     //
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
     }
@@ -790,6 +791,36 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
 
 //    }
     
+}
+
+extension SettingsTableViewController: UIViewControllerRestoration {
+    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
+        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
+            let viewModel = (try? JSONDecoder().decode(SettingsViewModelImpl.self, from: data)) else
+        {
+            return nil
+        }
+
+        let next = UIStoryboard(name: "Settings", bundle: .main).make(SettingsTableViewController.self)
+        next.set(viewModel: viewModel)
+        next.set(coordinator: .init(vc: next, vm: viewModel, services: sharedServices))
+
+        return next
+    }
+    
+    override func encodeRestorableState(with coder: NSCoder) {
+        if let viewModel = self.viewModel as? SettingsViewModelImpl,
+            let data = try? JSONEncoder().encode(viewModel)
+        {
+            coder.encode(data, forKey: "viewModel")
+        }
+        super.encodeRestorableState(with: coder)
+    }
+    
+    override func applicationFinishedRestoringState() {
+        super.applicationFinishedRestoringState()
+        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+    }
 }
 
 extension SettingsTableViewController: Deeplinkable {
