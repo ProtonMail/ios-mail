@@ -76,15 +76,20 @@ class AddressBookService: Service {
             CNContactImageDataKey as CNKeyDescriptor,
             CNContactThumbnailImageDataKey as CNKeyDescriptor,
             CNContactIdentifierKey as CNKeyDescriptor,
-            CNContactNoteKey as CNKeyDescriptor,
+            /*
+             this key needs special entitlement since iOS 13 SDK, which should be approved by Apple stuff
+             more info: https://developer.apple.com/documentation/bundleresources/entitlements/com_apple_developer_contacts_notes
+             commented out until beaurocracy resolved
+            */
+            // CNContactNoteKey as CNKeyDescriptor,
             CNContactVCardSerialization.descriptorForRequiredKeys()]
         
         // Get all the containers
         var allContainers: [CNContainer] = []
         do {
             allContainers = try store.containers(matching: nil)
-        } catch {
-            PMLog.D("Error fetching containers")
+        } catch let error {
+            PMLog.D("Error fetching containers: " + error.localizedDescription)
         }
         
         var results: [CNContact] = []
@@ -95,8 +100,8 @@ class AddressBookService: Service {
             do {
                 let containerResults = try store.unifiedContacts(matching: fetchPredicate, keysToFetch: keysToFetch)
                 results.append(contentsOf: containerResults)
-            } catch {
-                PMLog.D("Error fetching results for container")
+            } catch let error {
+                PMLog.D("Error fetching results for container: " + error.localizedDescription)
             }
         }
         
