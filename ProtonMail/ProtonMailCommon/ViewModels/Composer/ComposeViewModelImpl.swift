@@ -78,7 +78,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     convenience init?(msgId: String, action: ComposeMessageAction) {
-        guard let message = sharedMessageDataService.fetchMessages(withIDs: [msgId]).first else { return nil }
+        guard let message = sharedMessageDataService.fetchMessages(withIDs: [msgId]).first, message.contains(label: .draft) else { return nil }
         self.init(msg: message, action: action)
     }
     
