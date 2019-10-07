@@ -28,7 +28,12 @@
 
 import UIKit
 
-class ComposerNavigationController: UINavigationController, UIViewControllerRestoration {
+class ComposerNavigationController: UINavigationController {
+    
+}
+
+@available(iOS, deprecated: 13.0, message: "Multiwindow environment restores state via Deeplinkable conformance")
+extension ComposerNavigationController: UIViewControllerRestoration {
     override func applicationFinishedRestoringState() {
         super.applicationFinishedRestoringState()
     }

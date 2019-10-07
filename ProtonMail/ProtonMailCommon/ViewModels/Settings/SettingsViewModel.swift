@@ -29,7 +29,7 @@
 import Foundation
 
 
-protocol SettingsViewModel : AnyObject {
+protocol SettingsViewModel : AnyObject, Codable {
 
 
 }
