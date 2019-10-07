@@ -44,6 +44,13 @@ class MenuTableViewCell: UITableViewCell {
         selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
         
         self.selectedBackgroundView = selectedBackgroundView
+        
+        if #available(iOS 13.0, *) {
+            // iOS 13 does not change contentView's color according to selectedBackgroundView
+            // Third-Party Apps > UIKit > New Features > first point
+            // https://developer.apple.com/documentation/ios_ipados_release_notes/ios_13_release_notes
+            self.contentView.backgroundColor = .clear
+        }
     }
     
     func configCell (_ item : MenuItem!) {
