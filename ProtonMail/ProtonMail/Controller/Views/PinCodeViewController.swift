@@ -166,7 +166,7 @@ extension PinCodeViewController : PinCodeViewDelegate {
                             self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
-                                self.Cancel()
+                                self.proceedCancel()
                             } else {
                                 self.pinCodeView.resetPin()
                                 self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: count < 4)
