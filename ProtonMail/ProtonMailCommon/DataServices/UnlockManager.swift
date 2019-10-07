@@ -87,12 +87,6 @@ class UnlockManager: NSObject {
             return
         }
         
-        #if !APP_EXTENSION
-        // TouchID prompt can appear unlock the app if this method was called from background, which can spoil logic of autolocker
-        // in our app only unlocking from foreground makes sense
-        guard UIApplication.shared.applicationState == .active else { return }
-        #endif
-        
         guard !self.isRequestingBiometricAuthentication else { return }
         self.isRequestingBiometricAuthentication = true
         keymaker.obtainMainKey(with: BioProtection()) { key in

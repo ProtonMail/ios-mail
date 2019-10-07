@@ -69,6 +69,10 @@ class PinCodeView : PMView {
     override func setup() {
         touchIDButton.layer.cornerRadius = 25
         touchIDButton.isHidden = true
+        
+        if UIDevice.current.biometricType == .faceID {
+            touchIDButton.setImage(UIImage(named: "face_id_icon"), for: .normal)
+        }
     }
     
     func updateBackButton(_ icon: UIImage) {
