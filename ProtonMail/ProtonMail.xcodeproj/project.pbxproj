@@ -1250,6 +1250,10 @@
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
+		AB7EFF26234B420B00A5FE19 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */; };
+		AB7EFF27234B420B00A5FE19 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */; };
+		AB7EFF28234B420B00A5FE19 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */; };
+		AB7EFF29234B420B00A5FE19 /* BioAuthenticating.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
@@ -2602,6 +2606,7 @@
 		AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		AB4A207B966135395353A3E6DC5E907E /* ProtectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStrategy.swift; sourceTree = "<group>"; };
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthenticating.swift; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
@@ -4501,6 +4506,7 @@
 			children = (
 				60C0985666AB11377722B0B76ABA3C2E /* Cell */,
 				897F6E1DD28FD624DB79BDB41C398B7F /* BioCodeViewController.swift */,
+				AB7EFF25234B420B00A5FE19 /* BioAuthenticating.swift */,
 				E881FED17DB3A7856062CCB053EBDBD3 /* CountryPickerViewController.swift */,
 				8FAB9C7FB68E73B3DBE86E1C6308AC56 /* EmailVerifyViewController.swift */,
 				2B1EEA115E42E413F8FDB45264AED3AB /* EncryptionSetupViewController.swift */,
@@ -6022,6 +6028,7 @@
 				1B98DFBB616F9839B860DDBAF3E5C1AD /* APIErrors.swift in Sources */,
 				F92B6BB93229C245E70BD829071C69D9 /* APIService+AttachmentExtension.swift in Sources */,
 				CDEA01F537AA6A5D45243E598DF002F7 /* APIService+AuthenticationExtension.swift in Sources */,
+				AB7EFF26234B420B00A5FE19 /* BioAuthenticating.swift in Sources */,
 				B517D94B02F7887984B173943373D24E /* APIService+ContactExtension.swift in Sources */,
 				2F1983B849F7F6830ADAF76EA259D7AE /* APIService+DefinedExtension.swift in Sources */,
 				92434AE3FD282B5F49C85B841C43DA41 /* APIService+DeviceExtension.swift in Sources */,
@@ -6562,6 +6569,7 @@
 				567D0322CE3C59E82E44203ABCC5E4E5 /* APIErrors.swift in Sources */,
 				BD8DA9C95FED514EBF7BA67F2B2B0C69 /* APIService+AttachmentExtension.swift in Sources */,
 				5F7C85F9C67F7BC1F94D69BA25449BCF /* APIService+AuthenticationExtension.swift in Sources */,
+				AB7EFF28234B420B00A5FE19 /* BioAuthenticating.swift in Sources */,
 				8F48D718F35B62127232C1FE3A312BC2 /* APIService+ContactExtension.swift in Sources */,
 				EFF0048F1BE0900BE2002F2C4FB277B7 /* APIService+DefinedExtension.swift in Sources */,
 				AAF8D279B28A78DDCED30DE38D1D5518 /* APIService+DeviceExtension.swift in Sources */,
@@ -7333,6 +7341,7 @@
 				20EE5BF5BE3044D77AEEDD068AAEA198 /* TableContainerViewCoordinator.swift in Sources */,
 				ECBA88E2E47B1A04648E80A32D2A5D6A /* TableContainerViewModel.swift in Sources */,
 				6E86DCFDB68700018C27F02F04F02E4B /* Themes.swift in Sources */,
+				AB7EFF27234B420B00A5FE19 /* BioAuthenticating.swift in Sources */,
 				09F780646B51A97138C2B511683B066C /* Threading.swift in Sources */,
 				9BABADC79684C07E334346B9CA37F132 /* TimeInterval+Extension.swift in Sources */,
 				0330415DE44B1BB17541F7ECFCF50B05 /* TouchID+Helper.swift in Sources */,
@@ -7390,6 +7399,7 @@
 				8D7185CAA9DB1E42B6B9812ED237C96C /* APIErrors.swift in Sources */,
 				23B01BCD127B81D43C6BC057634BC926 /* APIService+AttachmentExtension.swift in Sources */,
 				D41813CD24AF3CB64799B2D49BB7353F /* APIService+AuthenticationExtension.swift in Sources */,
+				AB7EFF29234B420B00A5FE19 /* BioAuthenticating.swift in Sources */,
 				DA67E7CB367233596A58810E0E4D0282 /* APIService+ContactExtension.swift in Sources */,
 				1124D6F3746E12808C29E83AE078D3C6 /* APIService+DefinedExtension.swift in Sources */,
 				3ED21A9491F877F002BB7E252E046899 /* APIService+ErrorExtension.swift in Sources */,

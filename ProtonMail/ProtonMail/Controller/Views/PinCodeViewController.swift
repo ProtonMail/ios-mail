@@ -27,7 +27,6 @@
 
 
 import Foundation
-
 import UIKit
 
 protocol PinCodeViewControllerDelegate: class {
@@ -35,9 +34,7 @@ protocol PinCodeViewControllerDelegate: class {
     func Next()
 }
 
-
-class PinCodeViewController : UIViewController {
-    
+class PinCodeViewController : UIViewController, BioAuthenticating {
     var viewModel : PinCodeViewModel!
     weak var delegate : PinCodeViewControllerDelegate?
     
@@ -48,11 +45,7 @@ class PinCodeViewController : UIViewController {
         self.pinCodeView.delegate = self
         
         self.setUpView(true)
-        if #available(iOS 13.0, *) {
-            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIWindowScene.willEnterForegroundNotification, object: nil)
-        } else {
-            NotificationCenter.default.addObserver(self, selector:#selector(PinCodeViewController.doEnterForeground), name:  UIApplication.willEnterForegroundNotification, object: nil)
-        }
+        self.subscribeToWillEnterForegroundMessage()
     }
     
     deinit {
@@ -79,23 +72,13 @@ class PinCodeViewController : UIViewController {
         if self.viewModel.checkTouchID() {
             if userCachedStatus.isTouchIDEnabled {
                 pinCodeView.showTouchID()
-                authenticateUser()
+                self.decideOnBioAuthentication()
             }
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent;
-    }
-    
-    @objc func doEnterForeground() {
-        if userCachedStatus.isTouchIDEnabled {
-            authenticateUser()
-        }
     }
     
     func authenticateUser() {

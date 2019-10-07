@@ -28,7 +28,7 @@
 
 import Foundation
 
-class BioCodeViewController: UIViewController, BioCodeViewDelegate {
+class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthenticating {
     weak var delegate : PinCodeViewControllerDelegate?
     
     func authenticateUser() {
@@ -73,28 +73,10 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
             ]
         }
     }
-
-    private func decideOnAuthentication() {
-        if #available(iOS 13.0, *), UIDevice.current.biometricType == .touchID,
-            (UIApplication.shared.applicationState != .active || self.view?.window?.windowScene?.activationState != .foregroundActive)
-        {
-            // mystery that makes TouchID prompt a little bit more stable on iOS 13.0 - 13.1.2
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-                self.authenticateUser()
-            }
-        } else {
-            self.authenticateUser()
-        }
-    }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
-        #if !APP_EXTENSION
-            self.decideOnAuthentication()
-        #else
-            self.authenticateUser()
-        #endif
+        self.decideOnBioAuthentication()
     }
     
     override func viewDidLoad() {
@@ -106,9 +88,7 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate {
         self.bioCodeView.setup()
         self.bioCodeView.loginCheck(.requireTouchID)
         
-        NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] notification in
-            self?.decideOnAuthentication()
-        }
+        self.subscribeToWillEnterForegroundMessage()
     }
 
     deinit {
