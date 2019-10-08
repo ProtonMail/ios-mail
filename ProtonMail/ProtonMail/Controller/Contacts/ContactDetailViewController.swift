@@ -314,6 +314,10 @@ extension ContactDetailViewController: ContactEditViewControllerDelegate {
         self.navigationController?.popViewController(animated: true)
     }
     func updated() {
+        // nono full screen persent vc in ios 13. viewWillAppear will not be called. hack here
+        if #available(iOS 13.0, *) {
+            self.viewModel.rebuild()
+        }
         self.configHeader()
         self.tableView.reloadData()
     }

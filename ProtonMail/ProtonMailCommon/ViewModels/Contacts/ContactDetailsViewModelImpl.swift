@@ -141,6 +141,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return false
     }
     
+    @discardableResult
     override func rebuild() -> Bool {
         if self.contact.needsRebuild {
             origEmails = []

@@ -42,6 +42,7 @@ class ContactDetailsViewModel : ViewModelBase {
         return false
     }
     
+    @discardableResult
     func rebuild() -> Bool {
         fatalError("This method must be overridden")
     }

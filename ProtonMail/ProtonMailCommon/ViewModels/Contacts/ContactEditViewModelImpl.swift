@@ -769,8 +769,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
             }
             
-            let completion = {
-                (contacts : [Contact]?, error : NSError?) in
+            let completion = { (contacts : [Contact]?, error : NSError?) in
                 if error == nil {
                     // we locally maintain the emailID by deleting all old ones
                     // and use the response to update the core data (see sharedContactDataService.update())
