@@ -89,11 +89,11 @@ final class TrustKitWrapper {
             if validatorResult.evaluationResult != .success,
                 validatorResult.finalTrustDecision != .shouldAllowConnection
             {
-                let alert = UIAlertController(title: "SSL Verification Failed", message: "", preferredStyle: .alert)
-                alert.addAction(.init(title: "Continue anyway", style: .destructive, handler: { _ in
+                let alert = UIAlertController(title: LocalString._cert_validation_failed_title, message: LocalString._cert_validation_failed_message, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._cert_validation_failed_continue, style: .destructive, handler: { _ in
                     self.start(delegate: delegate, customConfiguration: self.configuration(hardfail: false))
                 }))
-                alert.addAction(.init(title: "Cancel", style: .cancel, handler: { _ in /* nothing */ }))
+                alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ }))
                 self.delegate?.onTrustKitValidationError(alert)
             }
         }
