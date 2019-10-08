@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "مکمل کریں";
 
+"picker.select.all.title" = "تمام منتخب کریں";
+
 "picker.select.photosOrVideos.error.title" = "تصاویر اور ویڈیوز منتخب کریں";
 
 "picker.select.photosOrVideos.error.message" = "تصاویر اور ویڈیوز ایک ساتھ منتخب نھیں ہو سکتیں";

@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Xong";
 
+"picker.select.all.title" = "Chọn tất cả";
+
 "picker.select.photosOrVideos.error.title" = "Chọn ảnh hoặc video";
 
 "picker.select.photosOrVideos.error.message" = "Không thể lựa chọn đồng thời cả ảnh và video.";

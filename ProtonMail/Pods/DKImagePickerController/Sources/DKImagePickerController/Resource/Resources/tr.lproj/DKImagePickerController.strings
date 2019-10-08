@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Tamam";
 
+"picker.select.all.title" = "Hepsini seç";
+
 "picker.select.photosOrVideos.error.title" = "Fotoğraf veya video seçiniz.";
 
 "picker.select.photosOrVideos.error.message" = "Aynı anda fotoğraf ve video seçimi yapamazsınız.";

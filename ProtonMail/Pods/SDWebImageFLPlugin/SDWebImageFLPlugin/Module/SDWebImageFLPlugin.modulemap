@@ -1,0 +1,6 @@
+framework module SDWebImageFLPlugin {
+  umbrella header "SDWebImageFLPlugin.h"
+
+  export *
+  module * { export * }
+}

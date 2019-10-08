@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Udfør";
 
+"picker.select.all.title" = "Vælg alle";
+
 "picker.select.photosOrVideos.error.title" = "Tilføj fotos eller videoer";
 
 "picker.select.photosOrVideos.error.message" = "Det er ikke muligt at tilføje fotos og videoer på samme tid";

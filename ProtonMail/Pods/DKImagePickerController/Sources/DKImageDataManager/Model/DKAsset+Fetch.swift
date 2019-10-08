@@ -15,12 +15,16 @@ public extension DKAsset {
     /**
      Fetch an image with the specific size.
      */
-    @objc public func fetchImage(with size: CGSize,
-                                 options: PHImageRequestOptions? = nil,
-                                 contentMode: PHImageContentMode = .aspectFit,
-                                 completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
+    @objc func fetchImage(with size: CGSize,
+                          options: PHImageRequestOptions? = nil,
+                          contentMode: PHImageContentMode = .aspectFit,
+                          completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
         if self.originalAsset != nil {
-            self.add(requestID: getImageDataManager().fetchImage(for: self, size: size, options: options, contentMode: contentMode, completeBlock: completeBlock))
+            self.add(requestID: getImageDataManager().fetchImage(for: self,
+                                                                 size: size,
+                                                                 options: options,
+                                                                 contentMode: contentMode,
+                                                                 completeBlock: completeBlock))
         } else {
             completeBlock(self.image, nil)
         }
@@ -29,7 +33,7 @@ public extension DKAsset {
     /**
      Fetch an image with the current screen size.
      */
-    @objc public func fetchFullScreenImage(completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
+    @objc func fetchFullScreenImage(completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
         if let (image, info) = self.fullScreenImage {
             completeBlock(image, info)
         } else if self.originalAsset == nil {
@@ -41,11 +45,14 @@ public extension DKAsset {
             options.deliveryMode = .highQualityFormat
             options.resizeMode = .exact
             
-            self.add(requestID: getImageDataManager().fetchImage(for: self, size: screenSize.toPixel(), options: options, contentMode: .aspectFit) { [weak self] image, info in
-                guard let strongSelf = self else { return }
-                
-                strongSelf.fullScreenImage = (image, info)
-                completeBlock(image, info)
+            self.add(requestID: getImageDataManager().fetchImage(for: self,
+                                                                 size: screenSize.toPixel(),
+                                                                 options: options,
+                                                                 contentMode: .aspectFit) { [weak self] image, info in
+                                                                    guard let strongSelf = self else { return }
+                                                                    
+                                                                    strongSelf.fullScreenImage = (image, info)
+                                                                    completeBlock(image, info)
             })
         }
     }
@@ -53,14 +60,17 @@ public extension DKAsset {
     /**
      Fetch an image with the original size.
      */
-    @objc public func fetchOriginalImage(options: PHImageRequestOptions? = nil, completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
+    @objc func fetchOriginalImage(options: PHImageRequestOptions? = nil,
+                                  completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {
         if self.originalAsset != nil {
-            self.add(requestID: getImageDataManager().fetchImageData(for: self, options: options, completeBlock: { (data, info) in
-                var image: UIImage?
-                if let data = data {
-                    image = UIImage(data: data)
-                }
-                completeBlock(image, info)
+            self.add(requestID: getImageDataManager().fetchImageData(for: self,
+                                                                     options: options,
+                                                                     completeBlock: { (data, info) in
+                                                                        var image: UIImage?
+                                                                        if let data = data {
+                                                                            image = UIImage(data: data)
+                                                                        }
+                                                                        completeBlock(image, info)
             }))
         } else {
             completeBlock(self.image, nil)
@@ -70,9 +80,12 @@ public extension DKAsset {
     /**
      Fetch an image data with the original size.
      */
-    @objc public func fetchImageData(options: PHImageRequestOptions? = nil, completeBlock: @escaping (_ imageData: Data?, _ info: [AnyHashable: Any]?) -> Void) {
+    @objc func fetchImageData(options: PHImageRequestOptions? = nil,
+                              completeBlock: @escaping (_ imageData: Data?, _ info: [AnyHashable: Any]?) -> Void) {
         if self.originalAsset != nil {
-            self.add(requestID: getImageDataManager().fetchImageData(for: self, options: options, completeBlock: completeBlock))
+            self.add(requestID: getImageDataManager().fetchImageData(for: self,
+                                                                     options: options,
+                                                                     completeBlock: completeBlock))
         } else {
             if let image = self.image {
                 if self.hasAlphaChannel(image: image) {
@@ -89,11 +102,14 @@ public extension DKAsset {
     /**
      Fetch an AVAsset with a completeBlock and PHVideoRequestOptions.
      */
-    @objc public func fetchAVAsset(options: PHVideoRequestOptions? = nil, completeBlock: @escaping (_ AVAsset: AVAsset?, _ info: [AnyHashable: Any]?) -> Void) {
-        self.add(requestID: getImageDataManager().fetchAVAsset(for: self, options: options, completeBlock: completeBlock))
+    @objc func fetchAVAsset(options: PHVideoRequestOptions? = nil,
+                            completeBlock: @escaping (_ AVAsset: AVAsset?, _ info: [AnyHashable: Any]?) -> Void) {
+        self.add(requestID: getImageDataManager().fetchAVAsset(for: self,
+                                                               options: options,
+                                                               completeBlock: completeBlock))
     }
 
-    @objc public func cancelRequests() {
+    @objc func cancelRequests() {
         objc_sync_enter(self)
         defer { objc_sync_exit(self) }
         
@@ -144,7 +160,7 @@ public extension DKAsset {
         set { setAssociatedObject(key: &FetchKeys.requestIDs, value: newValue) }
     }
 
-    public private(set) var fullScreenImage: (image: UIImage?, info: [AnyHashable: Any]?)? {
+    private(set) var fullScreenImage: (image: UIImage?, info: [AnyHashable: Any]?)? {
         
         get { return getAssociatedObject(key: &FetchKeys.fullScreenImage) as? (image: UIImage?, info: [AnyHashable: Any]?) }
         set { setAssociatedObject(key: &FetchKeys.fullScreenImage, value: newValue) }

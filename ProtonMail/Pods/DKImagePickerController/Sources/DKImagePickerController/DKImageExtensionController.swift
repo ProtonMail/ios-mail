@@ -63,6 +63,10 @@ open class DKImageBaseExtension: NSObject, DKImageExtensionProtocol {
     
 }
 
+/// A placeholder object used to represent no any action for the certain ExtensionType.
+@objc
+open class DKImageExtensionNone: DKImageBaseExtension {}
+
 /// The class handles the loading of extensions.
 @objc
 public class DKImageExtensionController: NSObject {
@@ -100,7 +104,7 @@ public class DKImageExtensionController: NSObject {
     public func perform(extensionType: DKImageExtensionType, with extraInfo: [AnyHashable : Any]) {
         DKImageExtensionController.checkDefaultExtensions
         
-        if let extensionClass = (DKImageExtensionController.extensions[extensionType] ?? DKImageExtensionController.defaultExtensions[extensionType]) {
+        if let extensionClass = self.fetchExtensionClass(extensionType) {
             var e = self.cache[extensionType]
             if e == nil {
                 e = extensionClass.init(context: self.createContext())
@@ -120,7 +124,7 @@ public class DKImageExtensionController: NSObject {
     }
     
     public func isExtensionTypeAvailable(_ extensionType: DKImageExtensionType) -> Bool {
-        return (DKImageExtensionController.extensions[extensionType] ?? DKImageExtensionController.defaultExtensions[extensionType]) != nil
+        return self.fetchExtensionClass(extensionType) != nil
     }
     
     /// Registers an extension for the specified type.
@@ -138,6 +142,15 @@ public class DKImageExtensionController: NSObject {
         context.imagePickerController = self.imagePickerController
         
         return context
+    }
+    
+    private func fetchExtensionClass(_ extensionType: DKImageExtensionType) -> DKImageBaseExtension.Type? {
+        if let extensionClass = DKImageExtensionController.extensions[extensionType] ??
+            DKImageExtensionController.defaultExtensions[extensionType] {
+            return extensionClass is DKImageExtensionNone.Type ? nil : extensionClass
+        } else {
+            return nil
+        }
     }
     
     internal class func registerDefaultExtension(extensionClass: DKImageBaseExtension.Type, for type: DKImageExtensionType) {

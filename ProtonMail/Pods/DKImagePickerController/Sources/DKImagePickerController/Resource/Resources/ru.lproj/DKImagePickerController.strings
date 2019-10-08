@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Готово";
 
+"picker.select.all.title" = "Выбрать все";
+
 "picker.select.photosOrVideos.error.title" = "Выбрать фото или видео";
 
 "picker.select.photosOrVideos.error.message" = "Нельзя выбрать фото и видео одновременно";

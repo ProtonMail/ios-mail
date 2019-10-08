@@ -59,43 +59,70 @@ public class DKImageDataManager {
                            options: PHImageRequestOptions? = nil,
                            contentMode: PHImageContentMode = .aspectFill,
                            completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) -> DKImageRequestID {
-        return self.fetchImage(for: asset, size: size, options: options, contentMode: contentMode, oldRequestID: nil, completeBlock: completeBlock)
+        return self.fetchImage(for: asset,
+                               size: size,
+                               options: options,
+                               contentMode: contentMode,
+                               oldRequestID: nil,
+                               completeBlock: completeBlock)
     }
     
     @discardableResult
-    private func fetchImage(for asset: DKAsset, size: CGSize, options: PHImageRequestOptions?, contentMode: PHImageContentMode,
+    private func fetchImage(for asset: DKAsset,
+                            size: CGSize,
+                            options: PHImageRequestOptions?,
+                            contentMode: PHImageContentMode,
                             oldRequestID: DKImageRequestID?,
                             completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) -> DKImageRequestID {
         let requestID = oldRequestID ?? self.getSeed()
         
+        guard let originalAsset = asset.originalAsset else {
+            assertionFailure("Expect originalAsset")
+            completeBlock(nil, nil)
+            return requestID
+        }
+        
         let requestOptions = options ?? self.imageRequestOptions
-        let imageRequestID = self.manager.requestImage(for: asset.originalAsset!,
-                                                       targetSize: size,
-                                                       contentMode: contentMode,
-                                                       options: requestOptions,
-                                                       resultHandler: { image, info in
-                                                        self.update(requestID: requestID, with: info)
-                                                        
-                                                        if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
-                                                            completeBlock(image, info)
-                                                            return
-                                                        }
-                                                        
-                                                        if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?
-                                                            , image == nil && isInCloud.boolValue && !requestOptions.isNetworkAccessAllowed {
-                                                            if self.cancelledRequestIDs.contains(requestID) {
-                                                                self.cancelledRequestIDs.remove(requestID)
-                                                                completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
-                                                                return
-                                                            }
-
-                                                            let requestCloudOptions = requestOptions.copy() as! PHImageRequestOptions
-                                                            requestCloudOptions.isNetworkAccessAllowed = true
-                                                            
-                                                            self.fetchImage(for: asset, size: size, options: options, contentMode: contentMode, oldRequestID: requestID, completeBlock: completeBlock)
-                                                        } else {
-                                                            completeBlock(image, info)
-                                                        }
+        let imageRequestID = self.manager.requestImage(
+            for: originalAsset,
+            targetSize: size,
+            contentMode: contentMode,
+            options: requestOptions,
+            resultHandler: { image, info in
+                self.update(requestID: requestID, with: info)
+                
+                if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
+                    completeBlock(image, info)
+                    return
+                }
+                
+                if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?,
+                    image == nil,
+                    isInCloud.boolValue,
+                    !requestOptions.isNetworkAccessAllowed {
+                    if self.cancelledRequestIDs.contains(requestID) {
+                        self.cancelledRequestIDs.remove(requestID)
+                        completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
+                        return
+                    }
+                    
+                    guard let requestCloudOptions = requestOptions.copy() as? PHImageRequestOptions else {
+                        assertionFailure("Expect PHImageRequestOptions")
+                        completeBlock(nil, nil)
+                        return
+                    }
+                    
+                    requestCloudOptions.isNetworkAccessAllowed = true
+                    
+                    self.fetchImage(for: asset,
+                                    size: size,
+                                    options: requestCloudOptions,
+                                    contentMode: contentMode,
+                                    oldRequestID: requestID,
+                                    completeBlock: completeBlock)
+                } else {
+                    completeBlock(image, info)
+                }
         })
         
         self.update(requestID: requestID, with: imageRequestID, old: oldRequestID)
@@ -108,34 +135,54 @@ public class DKImageDataManager {
     }
     
     @discardableResult
-    private func fetchImageData(for asset: DKAsset, options: PHImageRequestOptions?, oldRequestID: DKImageRequestID?, completeBlock: @escaping (_ data: Data?, _ info: [AnyHashable: Any]?) -> Void) -> DKImageRequestID {
+    private func fetchImageData(for asset: DKAsset,
+                                options: PHImageRequestOptions?,
+                                oldRequestID: DKImageRequestID?,
+                                completeBlock: @escaping (_ data: Data?, _ info: [AnyHashable: Any]?) -> Void)
+        -> DKImageRequestID
+    {
         let requestID = oldRequestID ?? self.getSeed()
-        
+
+        guard let originalAsset = asset.originalAsset else {
+            assertionFailure("Expect originalAsset")
+            completeBlock(nil, nil)
+            return requestID
+        }
+
         let requestOptions = options ?? self.imageRequestOptions
-        let imageRequestID = self.manager.requestImageData(for: asset.originalAsset!,
-                                                           options: requestOptions) { (data, dataUTI, orientation, info) in
-                                                            self.update(requestID: requestID, with: info)
-                                                            
-                                                            if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
-                                                                completeBlock(data, info)
-                                                                return
-                                                            }
-                                                            
-                                                            if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?
-                                                                , data == nil && isInCloud.boolValue && !requestOptions.isNetworkAccessAllowed {
-                                                                if self.cancelledRequestIDs.contains(requestID) {
-                                                                    self.cancelledRequestIDs.remove(requestID)
-                                                                    completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
-                                                                    return
-                                                                }
-                                                                
-                                                                let requestCloudOptions = requestOptions.copy() as! PHImageRequestOptions
-                                                                requestCloudOptions.isNetworkAccessAllowed = true
-                                                                
-                                                                self.fetchImageData(for: asset, options: requestCloudOptions, oldRequestID: requestID, completeBlock: completeBlock)
-                                                            } else {
-                                                                completeBlock(data, info)
-                                                            }
+        let imageRequestID = self.manager.requestImageData(
+            for: originalAsset,
+            options: requestOptions) { (data, dataUTI, orientation, info) in
+                self.update(requestID: requestID, with: info)
+
+                if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
+                    completeBlock(data, info)
+                    return
+                }
+
+                if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?,
+                    data == nil,
+                    isInCloud.boolValue,
+                    !requestOptions.isNetworkAccessAllowed
+                {
+                    if self.cancelledRequestIDs.contains(requestID) {
+                        self.cancelledRequestIDs.remove(requestID)
+                        completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
+                        return
+                    }
+
+                    guard let requestCloudOptions = requestOptions.copy() as? PHImageRequestOptions else {
+                        assertionFailure("Expect PHImageRequestOptions")
+                        completeBlock(nil, nil)
+                        return
+                    }
+
+                    requestCloudOptions.isNetworkAccessAllowed = true
+
+                    self.fetchImageData(for: asset, options: requestCloudOptions, oldRequestID: requestID, completeBlock: completeBlock)
+                } else {
+                    completeBlock(data, info)
+                }
         }
         
         self.update(requestID: requestID, with: imageRequestID, old: oldRequestID)
@@ -148,34 +195,54 @@ public class DKImageDataManager {
     }
     
     @discardableResult
-    private func fetchAVAsset(for asset: DKAsset, options: PHVideoRequestOptions?, oldRequestID: DKImageRequestID?, completeBlock: @escaping (_ avAsset: AVAsset?, _ info: [AnyHashable: Any]?) -> Void) -> DKImageRequestID {
+    private func fetchAVAsset(for asset: DKAsset,
+                              options: PHVideoRequestOptions?,
+                              oldRequestID: DKImageRequestID?,
+                              completeBlock: @escaping (_ avAsset: AVAsset?, _ info: [AnyHashable: Any]?) -> Void)
+        -> DKImageRequestID
+    {
         let requestID = oldRequestID ?? self.getSeed()
-        
+
+        guard let originalAsset = asset.originalAsset else {
+            assertionFailure("Expect originalAsset")
+            completeBlock(nil, nil)
+            return requestID
+        }
+
         let requestOptions = options ?? self.videoRequestOptions
-        let imageRequestID = self.manager.requestAVAsset(forVideo: asset.originalAsset!,
-                                                         options: requestOptions) { avAsset, audioMix, info in
-                                                            self.update(requestID: requestID, with: info)
-                                                            
-                                                            if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
-                                                                completeBlock(avAsset, info)
-                                                                return
-                                                            }
+        let imageRequestID = self.manager.requestAVAsset(
+            forVideo: originalAsset,
+            options: requestOptions) { avAsset, audioMix, info in
+                self.update(requestID: requestID, with: info)
 
-                                                            if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?
-                                                                , avAsset == nil && isInCloud.boolValue && !requestOptions.isNetworkAccessAllowed {
-                                                                if self.cancelledRequestIDs.contains(requestID) {
-                                                                    self.cancelledRequestIDs.remove(requestID)
-                                                                    completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
-                                                                    return
-                                                                }
+                if let info = info, let isCancelled = info[PHImageCancelledKey] as? NSNumber, isCancelled.boolValue {
+                    completeBlock(avAsset, info)
+                    return
+                }
 
-                                                                let requestCloudOptions = requestOptions.copy() as! PHVideoRequestOptions
-                                                                requestCloudOptions.isNetworkAccessAllowed = true
-                                                                
-                                                                self.fetchAVAsset(for: asset, options: requestCloudOptions, oldRequestID: requestID, completeBlock: completeBlock)
-                                                            } else {
-                                                                completeBlock(avAsset, info)
-                                                            }
+                if let isInCloud = info?[PHImageResultIsInCloudKey] as AnyObject?,
+                    avAsset == nil,
+                    isInCloud.boolValue,
+                    !requestOptions.isNetworkAccessAllowed
+                {
+                    if self.cancelledRequestIDs.contains(requestID) {
+                        self.cancelledRequestIDs.remove(requestID)
+                        completeBlock(nil, [PHImageCancelledKey : NSNumber(value: 1)])
+                        return
+                    }
+
+                    guard let requestCloudOptions = requestOptions.copy() as? PHVideoRequestOptions else {
+                        assertionFailure("Expect PHImageRequestOptions")
+                        completeBlock(nil, nil)
+                        return
+                    }
+
+                    requestCloudOptions.isNetworkAccessAllowed = true
+
+                    self.fetchAVAsset(for: asset, options: requestCloudOptions, oldRequestID: requestID, completeBlock: completeBlock)
+                } else {
+                    completeBlock(avAsset, info)
+                }
         }
         
         self.update(requestID: requestID, with: imageRequestID, old: oldRequestID)

@@ -48,7 +48,7 @@ def pm_pods
     common_pods
     
     pod 'SWRevealViewController', '2.3.0'
-    pod 'DKImagePickerController/PhotoGallery', '~> 4.0.0'
+    pod 'DKImagePickerController/PhotoGallery', '~> 4.1.7'
 end
 
 # for extensions Share
