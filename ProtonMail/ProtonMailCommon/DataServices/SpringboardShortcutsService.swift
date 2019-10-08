@@ -53,9 +53,9 @@ class SpringboardShortcutsService: NSObject, Service {
         
         var localization: String {
             switch self {
-            case .search: return LocalString._general_search_placeholder
-            case .favorites: return LocalString._menu_starred_title
-            case .compose: return LocalString._composer_compose_action
+            case .search: return LocalString._springboard_shortcuts_search
+            case .favorites: return LocalString._springboard_shortcuts_starred
+            case .compose: return LocalString._springboard_shortcuts_composer
             }
         }
         

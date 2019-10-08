@@ -1756,4 +1756,15 @@ class LocalizedString {
     
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
+    
+    // TrustKit
+    
+    lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
+    lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nIf you fully trust your current network connection, select \"Disable Validation\" to continue; otherwise press \"Cancel\" and switch  networks immediately", comment: "Cert pinning failed alert message")
+    lazy var _cert_validation_failed_continue = NSLocalizedString("Disable Validation", comment: "Cert pinning failed alert message")
+    
+    // Springboard shortcuts
+    lazy var _springboard_shortcuts_search = NSLocalizedString("Search", comment: "Springboard (3D Touch) shortcuts action")
+    lazy var _springboard_shortcuts_starred = NSLocalizedString("Starred", comment: "Springboard (3D Touch) shortcuts action")
+    lazy var _springboard_shortcuts_composer = NSLocalizedString("Compose", comment: "Springboard (3D Touch) shortcuts action")
 }
