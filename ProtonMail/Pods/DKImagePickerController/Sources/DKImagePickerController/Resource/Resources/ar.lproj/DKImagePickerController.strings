@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "تم";
 
+"picker.select.all.title" = "اختر الكل";
+
 "picker.select.photosOrVideos.error.title" = "حدد صور أو مقاطع فيديو";
 
 "picker.select.photosOrVideos.error.message" = "لا يمكن تحديد الصور ومقاطع الفيديو في نفس الوقت.";

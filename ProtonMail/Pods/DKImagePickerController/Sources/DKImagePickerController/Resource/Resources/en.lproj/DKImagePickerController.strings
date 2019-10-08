@@ -14,11 +14,15 @@
 
 "permission.allow" = "Allow Access";
 
+"picker.albums" = "Albums";
+
 "picker.alert.ok" = "OK";
 
 "picker.select.title" = "Select(%@)";
 
 "picker.select.done.title" = "Done";
+
+"picker.select.all.title" = "Select All";
 
 "picker.select.photosOrVideos.error.title" = "Select Photos or Videos";
 

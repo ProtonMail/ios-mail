@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "完成";
 
+"picker.select.all.title" = "全選";
+
 "picker.select.photosOrVideos.error.title" = "選擇照片或影片";
 
 "picker.select.photosOrVideos.error.message" = "不能同時選擇照片或影片";

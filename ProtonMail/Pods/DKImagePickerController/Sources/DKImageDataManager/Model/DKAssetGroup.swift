@@ -10,11 +10,17 @@ import Photos
 
 /// A representation of a Photos asset grouping, such as a moment, user-created album, or smart album.
 public class DKAssetGroup: NSObject {
-	public var groupId: String!
-	public var groupName: String!
-    
+    public let groupId: String
+
+    public var groupName: String?
+
+    public var originalCollection: PHAssetCollection?
+    public var fetchResult: PHFetchResult<PHAsset>?
+
     public var totalCount: Int {
         get {
+            guard let fetchResult = fetchResult else { return 0 }
+
             if let displayCount = displayCount, displayCount > 0 {
                 return min(displayCount, fetchResult.count)
             } else {
@@ -24,7 +30,8 @@ public class DKAssetGroup: NSObject {
     }
     
     var displayCount: Int?
-	
-	public var originalCollection: PHAssetCollection!
-	public var fetchResult: PHFetchResult<PHAsset>!
+
+    init(groupId: String) {
+        self.groupId = groupId
+    }
 }

@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Klaar";
 
+"picker.select.all.title" = "Selecteer alles";
+
 "picker.select.photosOrVideos.error.title" = "Kies foto's of video's";
 
 "picker.select.photosOrVideos.error.message" = "het is niet mogelijk foto's en video's tegelijkertijd te selecteren";

@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Fertig";
 
+"picker.select.all.title" = "Alle auswählen";
+
 "picker.select.photosOrVideos.error.title" = "Wähle Fotos oder Videos aus";
 
 "picker.select.photosOrVideos.error.message" = "Es ist nicht möglich zur selben Zeit Fotos und Videos auszuwählen";

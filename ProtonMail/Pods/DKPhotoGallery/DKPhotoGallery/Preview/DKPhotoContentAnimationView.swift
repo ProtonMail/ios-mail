@@ -161,6 +161,8 @@ open class DKPhotoContentAnimationView: UIView {
         case .topRight:        layoutTopRight()
         case .bottomLeft:      layoutBottomLeft()
         case .bottomRight:     layoutBottomRight()
+        @unknown default:
+            break
         }
     }
 }

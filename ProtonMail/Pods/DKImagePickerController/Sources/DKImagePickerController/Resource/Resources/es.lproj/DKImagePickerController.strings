@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Hecho";
 
+"picker.select.all.title" = "Seleccionar todo";
+
 "picker.select.photosOrVideos.error.title" = "Selecciona Fotos o Vídeos";
 
 "picker.select.photosOrVideos.error.message" = "No es posible seleccionar fotos y videos a la vez.";

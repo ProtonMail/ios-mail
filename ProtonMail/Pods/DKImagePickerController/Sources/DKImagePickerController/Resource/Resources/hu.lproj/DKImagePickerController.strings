@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "Kész";
 
+"picker.select.all.title" = "Mindet kiválaszt";
+
 "picker.select.photosOrVideos.error.title" = "Válassz ki fotókat vagy videókat";
 
 "picker.select.photosOrVideos.error.message" = "Nem lehet egyszerre képet és videót kiválasztani.";

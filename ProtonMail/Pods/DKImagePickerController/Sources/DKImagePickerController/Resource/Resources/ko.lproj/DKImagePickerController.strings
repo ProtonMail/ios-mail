@@ -20,6 +20,8 @@
 
 "picker.select.done.title" = "확인";
 
+"picker.select.all.title" = "모두 선택";
+
 "picker.select.photosOrVideos.error.title" = "사진 또는 비디오를 선택하세요.";
 
 "picker.select.photosOrVideos.error.message" = "사진과 비디오는 동시에 선택할수 없습니다.";

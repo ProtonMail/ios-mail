@@ -21,32 +21,37 @@ PODS:
   - Crashlytics (3.12.0):
     - Fabric (~> 1.9.0)
   - CryptoSwift (0.12.0)
-  - DKImagePickerController/Core (4.0.4):
+  - DKImagePickerController/Core (4.1.7):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.0.4)
-  - DKImagePickerController/PhotoGallery (4.0.4):
+  - DKImagePickerController/ImageDataManager (4.1.7)
+  - DKImagePickerController/PhotoGallery (4.1.7):
     - DKImagePickerController/Core
     - DKPhotoGallery
-  - DKImagePickerController/Resource (4.0.4)
-  - DKPhotoGallery (0.0.12):
-    - DKPhotoGallery/Core (= 0.0.12)
-    - DKPhotoGallery/Model (= 0.0.12)
-    - DKPhotoGallery/Preview (= 0.0.12)
-    - DKPhotoGallery/Resource (= 0.0.12)
-    - SDWebImage/GIF
-  - DKPhotoGallery/Core (0.0.12):
+  - DKImagePickerController/Resource (4.1.7)
+  - DKPhotoGallery (0.0.14):
+    - DKPhotoGallery/Core (= 0.0.14)
+    - DKPhotoGallery/Model (= 0.0.14)
+    - DKPhotoGallery/Preview (= 0.0.14)
+    - DKPhotoGallery/Resource (= 0.0.14)
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Core (0.0.14):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Preview
-    - SDWebImage/GIF
-  - DKPhotoGallery/Model (0.0.12):
-    - SDWebImage/GIF
-  - DKPhotoGallery/Preview (0.0.12):
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Model (0.0.14):
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Preview (0.0.14):
     - DKPhotoGallery/Model
     - DKPhotoGallery/Resource
-    - SDWebImage/GIF
-  - DKPhotoGallery/Resource (0.0.12):
-    - SDWebImage/GIF
+    - SDWebImage
+    - SDWebImageFLPlugin
+  - DKPhotoGallery/Resource (0.0.14):
+    - SDWebImage
+    - SDWebImageFLPlugin
   - EllipticCurveKeyPair (1.0.2)
   - Fabric (1.9.0)
   - FLAnimatedImage (1.0.12)
@@ -82,10 +87,12 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.8.3):
     - PromiseKit/CorePromise
-  - SDWebImage/Core (4.4.6)
-  - SDWebImage/GIF (4.4.6):
-    - FLAnimatedImage (~> 1.0)
-    - SDWebImage/Core
+  - SDWebImage (5.2.2):
+    - SDWebImage/Core (= 5.2.2)
+  - SDWebImage/Core (5.2.2)
+  - SDWebImageFLPlugin (0.3.0):
+    - FLAnimatedImage (>= 1.0.11)
+    - SDWebImage/Core (~> 5.0)
   - Sentry (4.1.0):
     - Sentry/Core (= 4.1.0)
   - Sentry/Core (4.1.0)
@@ -102,7 +109,7 @@ DEPENDENCIES:
   - AwaitKit (~> 5.0.0)
   - Crashlytics
   - CryptoSwift (= 0.12.0)
-  - DKImagePickerController/PhotoGallery (~> 4.0.0)
+  - DKImagePickerController/PhotoGallery (~> 4.1.7)
   - EllipticCurveKeyPair (= 1.0.2)
   - Fabric
   - Groot (= 3.0.1)
@@ -137,6 +144,7 @@ SPEC REPOS:
     - OpenSSL
     - PromiseKit
     - SDWebImage
+    - SDWebImageFLPlugin
     - Sentry
     - SWRevealViewController
     - TrustKit
@@ -166,8 +174,8 @@ SPEC CHECKSUMS:
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
   Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
   CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
-  DKImagePickerController: debcc4eaa09b82c06fc237f1bebd6a9fd4be9fa3
-  DKPhotoGallery: 1b4d65d9a485dfdd2002f22daa5b955eafb350ea
+  DKImagePickerController: 6ffad961c212b0debf644f3d1aa72d0a2ee03d5f
+  DKPhotoGallery: 0290d32343574f06eaa4c26f8f2f8a1035e916be
   EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
@@ -180,12 +188,13 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  SDWebImage: 3f3f0c02f09798048c47a5ed0a13f17b063572d8
+  SDWebImage: 5fcdb02cc35e05fc35791ec514b191d27189f872
+  SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 9f4e552c1227be53c98c0736d09241dd6fa7e881
+PODFILE CHECKSUM: 6b8f171dfcad7ad90765791eacb7d0972074cd20
 
 COCOAPODS: 1.7.2
