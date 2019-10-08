@@ -196,7 +196,10 @@ class ContactImportViewController: UIViewController {
                             self.messageLabel.text = "Encrypting contacts...\(found)"
                         } ~> .main
                         
-                        let note = contact.note
+                        /* not included into requested keys since iOS 13 SDK, see comment in AddressBookSerivice.getAllContacts() */
+                        // let note = contact.note
+                        let note = ""
+                        
                         let rawData = try CNContactVCardSerialization.data(with: [contact])
                         let vcardStr = String(data: rawData, encoding: .utf8)!
                         if let vcard3 = PMNIEzvcard.parseFirst(vcardStr) {
