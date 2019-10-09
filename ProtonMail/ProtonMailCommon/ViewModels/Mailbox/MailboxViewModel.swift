@@ -154,7 +154,7 @@ class MailboxViewModel {
     /// - Parameter index: table cell indexpath
     /// - Returns: message (nil)
     func item(index: IndexPath) -> Message? {
-        guard let sections = self.fetchedResultsController?.numberOfSections() else {
+        guard !index.isEmpty, let sections = self.fetchedResultsController?.numberOfSections() else {
             return nil
         }
         guard sections > index.section else {
