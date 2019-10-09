@@ -55,7 +55,7 @@ class AppCacheService: Service {
     func checkSettingsBundle() {
         if UserDefaults.standard.bool(forKey: Constants.SettingsBundleKeys.clearAll) {
             // core data
-            self.coreDataCache.rebuild(reason: .inital)
+            try? FileManager.default.removeItem(at: CoreDataStore.dbUrl)
             
             // user defaults
             if let domain = Bundle.main.bundleIdentifier {
