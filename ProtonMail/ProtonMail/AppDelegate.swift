@@ -258,10 +258,12 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
     
+    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return self.application(app, handleOpen: url)
     }
     
+    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
             return false

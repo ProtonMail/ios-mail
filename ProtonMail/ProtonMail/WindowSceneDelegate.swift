@@ -38,6 +38,13 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
     }()
     
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
+        _ = URLContexts.first { context in
+            delegate.application(app, open: context.url)
+        }
+    }
+    
     // in case of Handoff will be called AFTER scene(_:willConnectTo:options:)
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         if let data = userActivity.userInfo?["deeplink"] as? Data,
