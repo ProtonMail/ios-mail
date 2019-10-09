@@ -114,9 +114,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     deinit {
-        self.observationsHeader = []
-        self.observationsBody = []
-        self.attachmentsObservation = []
+        self.unsubscribeFromUpdatesOfChildren()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -157,6 +155,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     internal func removeThread() { // TODO: remove logic should be different for threads
+        self.unsubscribeFromUpdatesOfChildren()
         self.messages.forEach { message in
             if message.contains(label: .trash) || message.contains(label: .spam) {
                 sharedMessageDataService.delete(message: message, label: Message.Location.trash.rawValue)
@@ -263,9 +262,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     }
     
     private func subscribe(toUpdatesOf children: [ChildViewModelPack]) {
-        self.observationsHeader = []
-        self.observationsBody = []
-        self.attachmentsObservation = []
+        self.unsubscribeFromUpdatesOfChildren()
         
         children.enumerated().forEach { index, child in
             let headObservation = child.head.observe(\.contentsHeight) { [weak self] head, _ in
@@ -289,6 +286,12 @@ class MessageContainerViewModel: TableContainerViewModel {
             }
             self.observationsBody.append(bodyObservation)
         }
+    }
+    
+    private func unsubscribeFromUpdatesOfChildren() {
+        self.observationsHeader = []
+        self.observationsBody = []
+        self.attachmentsObservation = []
     }
     
     internal func downloadThreadDetails() {
