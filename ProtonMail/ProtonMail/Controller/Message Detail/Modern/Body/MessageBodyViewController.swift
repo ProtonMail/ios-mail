@@ -103,9 +103,26 @@ extension MessageBodyViewController : LinkOpeningValidator {
         }
     }
     
-    @available(iOS 10.0, *)
+    @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "Will never be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared")
     override func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
         return sharedUserDataService.linkConfirmation == .openAtWill
+    }
+    
+    @available(iOS 13.0, *)
+    func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void)
+    {
+        // This will show default preview and default menu
+        guard sharedUserDataService.linkConfirmation != .openAtWill else {
+            completionHandler(nil)
+            return
+        }
+        
+        // Important: as of Xcode 11.1 (11A1027) documentation claims default preview will be shown if nil is returned by the closure
+        // As of iOS 13.2 - no preview is shown in this case. Not sure is it a bug or documentation misalignment.
+        let config = UIContextMenuConfiguration(identifier: nil,
+                                                previewProvider: { return nil },
+                                                actionProvider: { UIMenu(title: "", children: $0) } )
+        completionHandler(config)
     }
 }
 
