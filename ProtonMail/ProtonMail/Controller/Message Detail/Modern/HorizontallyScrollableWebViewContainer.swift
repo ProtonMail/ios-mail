@@ -103,9 +103,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         let config = WKWebViewConfiguration()
         loader?.inject(into: config)
         config.preferences = preferences
-        if #available(iOS 10.0, *) {
-            config.dataDetectorTypes = .pm_email
-        }
+        config.dataDetectorTypes = [.phoneNumber, .link]
         
         // oh, WKWebView is available in IB since iOS 11 only
         self.webView = WKWebView(frame: .zero, configuration: config)
@@ -231,9 +229,9 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
         decisionHandler(.allow)
     }
     
-    @available(iOS 10.0, *)
+    @available(iOS, introduced: 10.0, obsoleted: 13.0)
     func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return false // by some reason PM do not want 3d touch here yet
+        return false // those who need 3D touch or menu will override
     }
 }
 
@@ -291,8 +289,4 @@ fileprivate class ViewBlowingAfterTouch: UIView {
             self.removeFromSuperview()
         }
     }
-}
-
-@available(iOS 10.0, *) extension WKDataDetectorTypes {
-    public static var pm_email: WKDataDetectorTypes = [.phoneNumber, .link]
 }
