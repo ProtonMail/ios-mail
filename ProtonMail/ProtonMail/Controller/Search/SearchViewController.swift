@@ -371,7 +371,23 @@ extension SearchViewController: UITableViewDataSource {
 extension SearchViewController: UITableViewDelegate {
     
     @objc func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+        // open messages in MessaveContainerViewController
+        guard case let message = self.searchResult[indexPath.row], message.contains(label: .draft) else {
+            self.performSegue(withIdentifier: kSegueToMessageDetailController, sender: self)
+            return
+        }
+        
+        // open drafts in Composer
+        if let viewModel = ContainableComposeViewModel(msgId: message.messageID, action: .openDraft),
+            let navigationController = self.navigationController
+        {
+            let composer = ComposeContainerViewCoordinator(nav: navigationController,
+                                                           viewModel: ComposeContainerViewModel(editorViewModel: viewModel),
+                                                           services: ServiceFactory.default)
+            // this will present composer in a modal which is discouraged
+            // TODO: refactor when implementing enc search
+            composer.start()
+        }
     }
     
     @objc func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
