@@ -18,8 +18,7 @@ header = "// \r\n \
 //  Localization+Constants.swift \r\n\
 //  ProtonMail \r\n\
 // \r\n\
-//  Created by Yanfeng Zhang on 4/18/18. \r\n\
-//  Copyright © 2018 ProtonMail. All rights reserved. \r\n\
+//  Copyright (c) 2019 Proton Technologies AG \r\n\
 // \r\n\
  \r\n\
 import Foundation \r\n\

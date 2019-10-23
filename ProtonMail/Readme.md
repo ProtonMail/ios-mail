@@ -1,4 +1,30 @@
-# README
+# iOS-mail
+
+## Introduction
+
+iOS-mail — Protonmail iOS client app
+
+
+## License
+
+The code and datafiles in this distribution are licensed under the terms of the GPLv3 as published by the Free Software Foundation. See <https://www.gnu.org/licenses/> for a copy of this license.
+
+Any non-source executable version of the Program conveyed through the Apple App Store is licensed under the terms of the Mozilla Public License (MPL) v2.0. See <https://www.mozilla.org/en-US/MPL/2.0/> for a copy of this license.
+
+
+## Documentation
+
+### Setup
+
+
+### Install
+
+
+### Dependicy
+
+### wiki
+
+
 
 1. The pod is checked in with workspace, run the `pod install` or `pod update` when needed but not required.
 
@@ -6,7 +32,7 @@
 
 3. We are using git submodules for tracking DOMPurifier, so after cloning you have to run `git submodule init` and `git submodule update` to fetch it. Theory here: https://git-scm.com/book/en/v2/Git-Tools-Submodules. In order to update DOMPurify release you have to manually checkout the tagged commit `git checkout 1.0.9` in  submodule directory and then update it locally.
 
-# TODO
+## TODO
 
 * Need clean and refactor the code, split common to muitple framework
 * The Html edtor change to use framework then the code can't load the html file and js files
