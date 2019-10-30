@@ -1,0 +1,3726 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>Keymaker</source>
+        <target state="needs-translation">Keymaker</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>ProtonMail</source>
+        <target state="translated">ProtonMail</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>PushServiceDev</source>
+        <target state="needs-translation">PushServiceDev</target>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription">
+        <source>Required for attaching media to the email.</source>
+        <target state="translated">Erforderlich für das Anhängen von Medien an die Nachricht.</target>
+        <note>Privacy - Media Library Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <target state="translated">Erforderlich für das Anhängen von Fotos an die Nachricht.</target>
+        <note>Privacy - Camera Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription">
+        <source>Required for email autocomplete.</source>
+        <target state="translated">Erforderlich für die automatische Vervollständigung von E-Mail-Adressen.</target>
+        <note>Privacy - Contacts Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <target state="translated">Ermöglicht es Ihnen, Ihre Anwendung schnell und sicher freizuschalten.</target>
+        <note>Privacy - Face ID Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription">
+        <source>Required for saving image attachments to photo library.</source>
+        <target state="translated">Erforderlich zum Speichern von Bildanhängen in der Fotobibliothek.</target>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <target state="translated">Erforderlich für das Anhängen von Fotos an die Nachricht.</target>
+        <note>Privacy - Photo Library Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="%@ storage capacity">
+        <source>%@ storage capacity</source>
+        <target state="translated">%@ Speicherkapazität</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="%d Member">
+        <source>%d Member</source>
+        <target state="translated">%d Mitglied</target>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Members">
+        <source>%d Members</source>
+        <target state="translated">%d Mitglieder</target>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Minute">
+        <source>%d minute</source>
+        <target state="translated">%d Minute</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Minutes">
+        <source>%d minutes</source>
+        <target state="translated">%d Minuten</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Selected">
+        <source>%d Selected</source>
+        <target state="translated">%d ausgewählt</target>
+        <note>The string that describes how many contact groups are currently selected</note>
+      </trans-unit>
+      <trans-unit id="%i email address">
+        <source>%i email address</source>
+        <target state="translated">%i E-Mail-Adresse</target>
+        <note>Service plan capability; i = 1</note>
+      </trans-unit>
+      <trans-unit id="%i email addresses">
+        <source>%i email addresses</source>
+        <target state="translated">%i E-Mail-Adressen</target>
+        <note>Service plan capability; i = 5 or 50</note>
+      </trans-unit>
+      <trans-unit id="(2048 bit)">
+        <source>(2048 bit)</source>
+        <target state="translated">(2048 bit)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(4096 bit)">
+        <source>(4096 bit)</source>
+        <target state="translated">(4096 bit)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(total)">
+        <source>(total)</source>
+        <target state="translated">(Gesamt)</target>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+      </trans-unit>
+      <trans-unit id="**********">
+        <source>**********</source>
+        <target state="translated">★★★★★★★★</target>
+        <note>secret</note>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL">
+        <source>*OPTIONAL</source>
+        <target state="translated">*Optional</target>
+        <note>optional text field</note>
+      </trans-unit>
+      <trans-unit id="+ Drop here to add as attachment">
+        <source>+ Drop here to add as attachment</source>
+        <target state="translated">+ Hier ablegen, um als Anhang hinzuzufügen</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="/user">
+        <source>/user</source>
+        <target state="translated">/user</target>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+      </trans-unit>
+      <trans-unit id="2FA failed. Please try to login again.">
+        <source>2FA failed. Please try to login again.</source>
+        <target state="translated">Zwei-Faktor-Authentifizierung fehlgeschlagen. Bitte versuchen Sie sich erneut anzumelden.</target>
+        <note>2fa verification failed</note>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <target state="translated">&lt;Kein Objekt&gt;</target>
+        <note>default empty object</note>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels">
+        <source>A message cannot have more than 5 labels</source>
+        <target state="translated">Eine Nachricht darf nicht mehr als 5 Kategorien zugeordnet werden</target>
+        <note>*
+ *  LabelTableViewCell</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version.">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <target state="translated">Eine neue Version der ProtonMail-App ist verfügbar. Bitte auf neueste Version aktualisieren.</target>
+        <note>"Alert" = "Alert";</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to the latest version.">
+        <source>A new version of ProtonMail app is available. Please update to the latest version.</source>
+        <target state="translated">Eine neue Version der ProtonMail-App ist verfügbar. Bitte aktualisieren Sie auf die neueste Version.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <target state="translated">Für die Nutzung dieser Funktion ist ein kostenpflichtiger ProtonMail-Tarif erforderlich.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <target state="translated">Ein Passwort wurde nicht festgelegt. Dies kann in den Systemeinstellungen aktiviert werden</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="API Server not reachable...">
+        <source>API Server not reachable...</source>
+        <target state="translated">API-Server nicht erreichbar …</target>
+        <note>when server not reachable</note>
+      </trans-unit>
+      <trans-unit id="ARCHIVE">
+        <source>Archive</source>
+        <target state="translated">Archiv</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <target state="translated">Der Zugriff auf dieses Konto ist aufgrund der Nichtzahlung deaktiviert. Bitte melden Sie sich bei protonmail.com an, um Ihre ausstehende Rechnung zu begleichen.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
+        <source>Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <target state="translated">Der Zugang zu diesem Konto ist aufgrund des Zahlungsverzugs gesperrt.
+
+Bitte besuchen Sie &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;unsere Wissensdatenbank&lt;/a&gt; für weitere Informationen.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Account password invalid">
+        <source>Invalid account password</source>
+        <target state="translated">Ungültiges Passwort</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Add">
+        <source>Add</source>
+        <target state="translated">Hinzufügen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Anniversary">
+        <source>Add Anniversary</source>
+        <target state="translated">Jahrestag hinzufügen</target>
+        <note>new contacts add Anniversary</note>
+      </trans-unit>
+      <trans-unit id="Add Birthday">
+        <source>Add Birthday</source>
+        <target state="translated">Geburtstag hinzufügen</target>
+        <note>new contacts add Birthday</note>
+      </trans-unit>
+      <trans-unit id="Add Contact">
+        <source>Add Contact</source>
+        <target state="translated">Kontakt hinzufügen</target>
+        <note>Contacts add new contact</note>
+      </trans-unit>
+      <trans-unit id="Add Custom Label">
+        <source>Add Custom Label</source>
+        <target state="translated">Benutzerdefinierte Kategorie hinzufügen</target>
+        <note>add custom label type action</note>
+      </trans-unit>
+      <trans-unit id="Add Folder">
+        <source>Add Folder</source>
+        <target state="translated">Ordner hinzufügen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Add Gender">
+        <source>Add Gender</source>
+        <target state="translated">Geschlecht hinzufügen</target>
+        <note>new contacts add Gender</note>
+      </trans-unit>
+      <trans-unit id="Add Group">
+        <source>Add Group</source>
+        <target state="translated">Gruppe hinzufügen</target>
+        <note>The title for the contact group creation view</note>
+      </trans-unit>
+      <trans-unit id="Add Label">
+        <source>Add Label</source>
+        <target state="translated">Kategorie hinzufügen</target>
+        <note>add label action</note>
+      </trans-unit>
+      <trans-unit id="Add New Folder">
+        <source>Add New Folder</source>
+        <target state="translated">Neuen Ordner hinzufügen</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add New Label">
+        <source>Add New Label</source>
+        <target state="translated">Neue Kategorie hinzufügen</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add Nickname">
+        <source>Add Nickname</source>
+        <target state="translated">Spitznamen hinzufügen</target>
+        <note>new contacts add Nickname</note>
+      </trans-unit>
+      <trans-unit id="Add Organization">
+        <source>Add Organization</source>
+        <target state="translated">Organisation hinzufügen</target>
+        <note>new contacts add Organization</note>
+      </trans-unit>
+      <trans-unit id="Add Photo">
+        <source>Add Photo</source>
+        <target state="translated">Foto hinzufügen</target>
+        <note>The button text for add profile picture</note>
+      </trans-unit>
+      <trans-unit id="Add Star">
+        <source>Add Star</source>
+        <target state="translated">Kennzeichnung hinzufügen</target>
+        <note>mark message star</note>
+      </trans-unit>
+      <trans-unit id="Add Title">
+        <source>Add Title</source>
+        <target state="translated">Titel hinzufügen</target>
+        <note>new contacts add Title</note>
+      </trans-unit>
+      <trans-unit id="Add new address">
+        <source>Add new address</source>
+        <target state="translated">Neue Adresse hinzufügen</target>
+        <note>add new address action</note>
+      </trans-unit>
+      <trans-unit id="Add new custom field">
+        <source>Add new custom field</source>
+        <target state="translated">Neues benutzerdefiniertes Feld hinzufügen</target>
+        <note>new custom field action</note>
+      </trans-unit>
+      <trans-unit id="Add new email">
+        <source>Add new email</source>
+        <target state="translated">Neue E-Mail-Adresse hinzufügen</target>
+        <note>new email action</note>
+      </trans-unit>
+      <trans-unit id="Add new field">
+        <source>Add new field</source>
+        <target state="translated">Neues Feld hinzufügen</target>
+        <note>new field action</note>
+      </trans-unit>
+      <trans-unit id="Add new phone number">
+        <source>Add new phone number</source>
+        <target state="translated">Neue Telefonnummer hinzufügen</target>
+        <note>new phone action</note>
+      </trans-unit>
+      <trans-unit id="Add new url">
+        <source>Add new url</source>
+        <target state="translated">Neue URL hinzufügen</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Add to contacts">
+        <source>Add to contacts</source>
+        <target state="translated">Zu Kontakten hinzufügen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Address">
+        <source>Address</source>
+        <target state="translated">Adresse</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Alert">
+        <source>Alert</source>
+        <target state="translated">Benachrichtigung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="All Mail">
+        <source>All Mail</source>
+        <target state="translated">Alle Nachrichten</target>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="All contacts are imported">
+        <source>All contacts are imported</source>
+        <target state="translated">Alle Kontakte wurden importiert</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Also Archive">
+        <source>Also Archive</source>
+        <target state="translated">Auch archivieren</target>
+        <note>archive when apply label</note>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password.">
+        <source>Also used to reset a forgotten password.</source>
+        <target state="translated">Wird auch für das Zurücksetzen eines vergessenen Passworts verwendet.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Anniversary">
+        <source>Anniversary</source>
+        <target state="translated">Jahrestag</target>
+        <note>contacts talbe cell Anniversary title</note>
+      </trans-unit>
+      <trans-unit id="App is locked">
+        <source>App is locked</source>
+        <target state="translated">App ist gesperrt</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee">
+        <source>Apple in-app purchase fee</source>
+        <target state="translated">Apple In-App-Kaufgebühr</target>
+        <note>Price breakdown</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase.">
+        <source>Apple informed us they could not process the purchase.</source>
+        <target state="translated">Apple informierte uns, dass sie den Kauf nicht verarbeiten konnten.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <target state="translated">Apple informierte uns, dass Sie den Serviceplan aktualisiert haben, sagte aber nicht, welches Ihrer ProtonMail-Konten aktualisiert werden soll, falls Sie mehr als eines verwenden.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <target state="translated">Apple hat uns mitgeteilt, dass Sie den Serviceplan aktualisiert haben, aber es fehlen einige technische Daten. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <target state="translated">Apple hat uns mitgeteilt, dass Sie den Serviceplan aktualisiert haben, aber wir haben festgestellt, dass Sie sich seitdem vom Konto abgemeldet haben.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apply">
+        <source>Apply</source>
+        <target state="translated">Übernehmen</target>
+        <note>Apply action</note>
+      </trans-unit>
+      <trans-unit id="Apply Labels">
+        <source>Apply Labels</source>
+        <target state="translated">Kategorie übermehmen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Archive">
+        <source>Archive</source>
+        <target state="translated">Archivieren</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Archived">
+        <source>Archived</source>
+        <target state="translated">Archiviert</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Are you sure you want to logout?">
+        <source>Are you sure you want to logout?</source>
+        <target state="translated">Möchten Sie sich wirklich abmelden?</target>
+        <note>Alert to confirm logout</note>
+      </trans-unit>
+      <trans-unit id="Attachment imported">
+        <source>Attachment imported</source>
+        <target state="translated">Anhang importiert</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="Attachments">
+        <source>Attachments</source>
+        <target state="translated">Anhänge</target>
+        <note>VoiceOver: email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Authentication">
+        <source>Authentication</source>
+        <target state="translated">Authentifizierung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password">
+        <source>Authentication failed: wrong username or password.</source>
+        <target state="translated">Authentifizierung fehlgeschlagen: Benutzername oder Passwort ungültig</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed">
+        <source>Authentication failed</source>
+        <target state="translated">Authentifizierung fehlgeschlagen</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed. Please try to login again.">
+        <source>Authentication failed. Please try to login again.</source>
+        <target state="translated">Authentifizierungsfehler. Bitte versuchen Sie sich erneut anzumelden.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <target state="translated">Authentifizierungstoken ist unzugänglich, da die App gesperrt ist</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system">
+        <source>Authentication was cancelled by the system</source>
+        <target state="translated">Authentifizierung wurde vom System abgelehnt</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time">
+        <source>Auto lock time</source>
+        <target state="translated">Zeit bis zur automatischen Sperrung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Auto Show Images">
+        <source>Auto show images</source>
+        <target state="translated">Bilder automatisch anzeigen</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Back">
+        <source>Back</source>
+        <target state="translated">Zurück</target>
+        <note>top left back button</note>
+      </trans-unit>
+      <trans-unit id="Bad auth cache">
+        <source>Bad auth cache</source>
+        <target state="translated">Ungültiger Auth-Zwischenspeicher</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter">
+        <source>Bad parameter</source>
+        <target state="translated">Ungültige Parameter</target>
+        <note>Error title</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@">
+        <source>Bad parameter: %@</source>
+        <target state="translated">Ungültiger Parameter: %@</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bad path">
+        <source>Bad path</source>
+        <target state="translated">Ungültiger Pfad</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Bad response">
+        <source>Bad response</source>
+        <target state="translated">Ungültige Antwort</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bcc">
+        <source>BCC</source>
+        <target state="translated">BCC</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bcc:">
+        <source>Bcc:</source>
+        <target state="translated">BCC:</target>
+        <note>message Bcc: feild</note>
+      </trans-unit>
+      <trans-unit id="Birthday">
+        <source>Birthday</source>
+        <target state="translated">Geburtstag</target>
+        <note>contacts talbe cell Birthday title</note>
+      </trans-unit>
+      <trans-unit id="Bug Description">
+        <source>Bug Description</source>
+        <target state="translated">Beschreibung des Fehlers</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bug Report Received">
+        <source>Bug report received</source>
+        <target state="translated">Fehlerbericht erhalten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Buy More Credits">
+        <source>Buy More Credits</source>
+        <target state="translated">Mehr Guthaben erwerben</target>
+        <note>Link to More Credits screen</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our">
+        <source>By using protonmail, you agree to our</source>
+        <target state="translated">Mit der Nutzung von ProtonMail stimmen Sie unserer</target>
+        <note>agree check box first part words</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our %@ and %@.">
+        <source>By using protonmail, you agree to our %1$@ and %2$@.</source>
+        <target state="translated">Mit der Nutzung von Protonmail erklären Sie sich mit unseren %1$@ und %2$@ einverstanden.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="CAPTCHA">
+        <source>CAPTCHA</source>
+        <target state="translated">CAPTCHA</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Call Contact">
+        <source>Call Contact</source>
+        <target state="translated">Kontakt anrufen</target>
+        <note>Call the contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup.">
+        <source>Can take several minutes to setup.</source>
+        <target state="translated">Dieser Schritt kann einige Minuten in Anspruch nehmen.</target>
+        <note>key size note part 2</note>
+      </trans-unit>
+      <trans-unit id="Can't copy the file">
+        <source>Can't copy the file</source>
+        <target state="translated">Datei konnte nicht kopiert werden</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client">
+        <source>Can't create a SRP Client</source>
+        <target state="translated">SRP-Client konnte nicht erstellt werden</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!">
+        <source>Can't create a SRP verifier!</source>
+        <target state="translated">Fehler beim Erstellen der SRP-Prüfstelle!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!">
+        <source>Can't decrypt this attachment!</source>
+        <target state="translated">Anhang konnte nicht entschlüsselt werden!</target>
+        <note>When quick look attachment but can't decrypt it!</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group">
+        <source>Can't delete contact group</source>
+        <target state="translated">Kontaktgruppe konnte nicht gelöscht werden</target>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API">
+        <source>Can't delete contact group through API</source>
+        <target state="translated">Kontaktgruppe konnte nicht über die API gelöscht werden</target>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again.">
+        <source>Can't download message body, please try again.</source>
+        <target state="translated">Die Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal.</target>
+        <note>*
+ *  MessageViewController</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again.">
+        <source>Can't download message body. Please try again.</source>
+        <target state="translated">Die Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't fetch contact groups">
+        <source>Can't fetch contact groups</source>
+        <target state="translated">Kontaktgruppen können nicht abgerufen werden</target>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!">
+        <source>Can't find the clicked message please try again!</source>
+        <target state="translated">Die ausgewählte Nachricht konnte nicht geladen werden. Bitte versuchen Sie es noch einmal!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Can't find the selected message. Please try again.">
+        <source>Can't find the selected message. Please try again.</source>
+        <target state="translated">Die ausgewählte Nachricht konnte nicht gefunden werden. Bitte versuchen Sie es erneut.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!">
+        <source>Can't find this attachment!</source>
+        <target state="translated">Der Anhang konnte nicht gefunden werden!</target>
+        <note>when quick look attachment but can't find the data</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!">
+        <source>Can't get a Modulus ID!</source>
+        <target state="translated">Fehler beim Laden der Modulkennung!</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!">
+        <source>Can't get a Moduls!</source>
+        <target state="translated">Fehler beim Laden des Moduls!</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info">
+        <source>Can't get user auth info</source>
+        <target state="translated">Informationen zur Benutzerauthentifizierung konnten nicht geladen werden</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't load share content!">
+        <source>Can't load share content!</source>
+        <target state="translated">Geteilter Inhalt konnte nicht geladen werden!</target>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+      </trans-unit>
+      <trans-unit id="Can't load the file">
+        <source>Can't load the file</source>
+        <target state="translated">Die Datei konnte nicht geladen werden</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body">
+        <source>Can't not find the value from the response body</source>
+        <target state="translated">Wert im Nachrichtentext konnte nicht gefunden werden</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't open the file">
+        <source>Can't open the file</source>
+        <target state="translated">Die Datei konnte nicht geöffnet werden</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't save contact group">
+        <source>Can't save contact group</source>
+        <target state="translated">Kontaktgruppe konnte nicht gespeichert werden</target>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through the API">
+        <source>Can't update contact group through the API</source>
+        <target state="translated">Die Kontaktgruppe konnte nicht über die API aktualisiert werden</target>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target state="translated">Abbrechen</target>
+        <note>Cancel action</note>
+      </trans-unit>
+      <trans-unit id="Cancel Check">
+        <source>Cancel Check</source>
+        <target state="translated">Überprüfung abbrechen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Cancelling">
+        <source>Cancelling</source>
+        <target state="translated">Wird abgebrochen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!">
+        <source>Unable to decrypt this attachment.</source>
+        <target state="translated">Der Anhang konnte nicht entschlüsselt werden.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cc">
+        <source>CC</source>
+        <target state="translated">CC</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cc:">
+        <source>Cc:</source>
+        <target state="translated">CC:</target>
+        <note>message Cc: feild</note>
+      </trans-unit>
+      <trans-unit id="Cell phone number">
+        <source>Cell phone number</source>
+        <target state="translated">Mobilfunknummer</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Change Login Password">
+        <source>Change Login Password</source>
+        <target state="translated">Anmeldepasswort ändern</target>
+        <note>change password input label</note>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password">
+        <source>Change Mailbox Password</source>
+        <target state="translated">Mailbox-Passwort ändern</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change Password">
+        <source>Change password</source>
+        <target state="translated">Passwort ändern</target>
+        <note>update password error title</note>
+      </trans-unit>
+      <trans-unit id="Change Pin">
+        <source>Change PIN</source>
+        <target state="translated">PIN ändern</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Change Single Password">
+        <source>Change Single Password</source>
+        <target state="translated">Einzelnes Passwort ändern</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change default address to ..">
+        <source>Change default address to...</source>
+        <target state="translated">Standardadresse ändern auf …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change left swipe action">
+        <source>Change left swipe action</source>
+        <target state="translated">Nach-Links-Wischen-Aktion ändern</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change right swipe action">
+        <source>Change right swipe action</source>
+        <target state="translated">Nach-Rechts-Wischen-Aktion ändern</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change sender address to ..">
+        <source>Change sender address to...</source>
+        <target state="translated">Absenderadresse ändern auf …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Check Again">
+        <source>Check Again</source>
+        <target state="translated">Erneut überprüfen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Checking ....">
+        <source>Checking...</source>
+        <target state="translated">Wird überprüft …</target>
+        <note>loading message</note>
+      </trans-unit>
+      <trans-unit id="Choose a Password">
+        <source>Choose a Password</source>
+        <target state="translated">Passwort wählen</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="City">
+        <source>City</source>
+        <target state="translated">Stadt</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache">
+        <source>Clear local message cache</source>
+        <target state="translated">Lokalen Nachrichtenspeicher leeren</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Close">
+        <source>Close</source>
+        <target state="translated">Schließen</target>
+        <note>general close action</note>
+      </trans-unit>
+      <trans-unit id="Closing">
+        <source>Closing</source>
+        <target state="translated">Wird geschlossen</target>
+        <note>the message will show when closing a draft from the share extension</note>
+      </trans-unit>
+      <trans-unit id="Compose">
+        <source>Compose</source>
+        <target state="translated">Verfassen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Compose to">
+        <source>Compose to</source>
+        <target state="translated">Nachricht an</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm">
+        <source>Confirm</source>
+        <target state="translated">Bestätigen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password">
+        <source>Confirm login password</source>
+        <target state="translated">Anmeldepasswort bestätigen</target>
+        <note>"Login Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password">
+        <source>Confirm mailbox password</source>
+        <target state="translated">Mailbox-Passwort bestätigen</target>
+        <note>"Mailbox Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Password">
+        <source>Confirm password</source>
+        <target state="translated">Passwort bestätigen</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm new login password">
+        <source>Confirm new login password</source>
+        <target state="translated">Neues Anmeldepasswort bestätigen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password">
+        <source>Confirm new mailbox password</source>
+        <target state="translated">Neues Mailbox-Passwort bestätigen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new password">
+        <source>Confirm new password</source>
+        <target state="translated">Neues Passwort bestätigen</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report">
+        <source>Confirm phishing report</source>
+        <target state="translated">Phishing-Bericht bestätigen</target>
+        <note>alert title</note>
+      </trans-unit>
+      <trans-unit id="Confirmation">
+        <source>Confirmation</source>
+        <target state="translated">Bestätigung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Congratulations!">
+        <source>Congratulations!</source>
+        <target state="translated">Glückwunsch!</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Contact Details">
+        <source>Contact Details</source>
+        <target state="translated">Kontaktdetails</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team">
+        <source>Contact the ProtonMail team</source>
+        <target state="translated">Kontaktieren Sie das ProtonMail-Team</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Contacts">
+        <source>Contacts</source>
+        <target state="translated">Kontakte</target>
+        <note>Action and title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Continue">
+        <source>Continue</source>
+        <target state="translated">Weiter</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Continue and Don't ask again">
+        <source>Continue and Don't ask again</source>
+        <target state="translated">Fortfahren und nicht erneut nachfragen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Copy address">
+        <source>Copy address</source>
+        <target state="translated">Adresse kopieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Copy name">
+        <source>Copy name</source>
+        <target state="translated">Name kopieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Could not connect to Store. Please try again later.">
+        <source>Could not connect to Store. Please try again later.</source>
+        <target state="translated">Die Verbindung zum Store konnte nicht hergestellt werden. Bitte versuchen Sie es später noch einmal.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Country">
+        <source>Country</source>
+        <target state="translated">Land</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Create">
+        <source>Create</source>
+        <target state="translated">Erstellen</target>
+        <note>top right action text</note>
+      </trans-unit>
+      <trans-unit id="Create Account">
+        <source>Create Account</source>
+        <target state="translated">Konto erstellen</target>
+        <note>Create account button</note>
+      </trans-unit>
+      <trans-unit id="Create User failed. Please try again.">
+        <source>Create User failed. Please try again.</source>
+        <target state="translated">Erstellen des Benutzer fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Create a new account">
+        <source>Create a new account</source>
+        <target state="translated">Neues Konto erstellen</target>
+        <note>Signup top title</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Long press on a message for all options.">
+        <source>Create and add Labels to organize your inbox. Long press on a message for all options.</source>
+        <target state="translated">Kategorien erstellen und hinzufügen, um Ihren Posteingang zu organisieren. Langes drücken auf eine Nachricht, um alle Optionen anzuzeigen.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options.">
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <target state="translated">Erstellen und Hinzufügen von Kategorien, um Ihren Posteingang zu organisieren.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Create user failed">
+        <source>Create user failed</source>
+        <target state="translated">Erstellung des Nutzers fehlgeschlagen</target>
+        <note>error message title when create new user</note>
+      </trans-unit>
+      <trans-unit id="Current Language is: ">
+        <source>Current Language is: </source>
+        <target state="translated">Aktuelle Sprache: </target>
+        <note>Change language title</note>
+      </trans-unit>
+      <trans-unit id="Current login password">
+        <source>Current login password</source>
+        <target state="translated">Aktuelles Passwort</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Current password">
+        <source>Current password</source>
+        <target state="translated">Aktuelles Passwort</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Custom">
+        <source>Custom</source>
+        <target state="translated">Benutzerdefiniert</target>
+        <note>action sheet option
+   contacts default label type</note>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX">
+        <source>DECRYPT MAILBOX</source>
+        <target state="translated">Mailbox entschlüsseln</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="DRAFTS">
+        <source>Drafts</source>
+        <target state="translated">Entwürfe</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Date:">
+        <source>Date:</source>
+        <target state="translated">Datum:</target>
+        <note>message Date: text</note>
+      </trans-unit>
+      <trans-unit id="Date: %@">
+        <source>Date: %@</source>
+        <target state="translated">Datum: %@</target>
+        <note>like Date: 2017-10-10</note>
+      </trans-unit>
+      <trans-unit id="Debug">
+        <source>Debug</source>
+        <target state="translated">Fehlersuche</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Decrypt">
+        <source>Decrypt</source>
+        <target state="translated">Entschlüsseln</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed. Please try again.">
+        <source>Decrypt token failed. Please try again.</source>
+        <target state="translated">Entschlüsselung der Sicherheitskette fehlgeschlagen. Bitte erneut versuchen.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Decryption error">
+        <source>Decryption error</source>
+        <target state="translated">Entschlüsselungsfehler</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed">
+        <source>Decryption of this content failed</source>
+        <target state="translated">Entschlüsselung dieses Inhalts ist fehlgeschlagen</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Default">
+        <source>Default</source>
+        <target state="translated">Standard</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Default error. Please try again.">
+        <source>Default error. Please try again.</source>
+        <target state="translated">Standardfehler. Bitte versuchen Sie es erneut.</target>
+        <note>error message when create new user</note>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date">
+        <source>Define Expiration Date</source>
+        <target state="translated">Verfallsdatum festlegen</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)">
+        <source>Define hint (Optional)</source>
+        <target state="translated">Hinweis angeben (optional)</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Password">
+        <source>Define password</source>
+        <target state="translated">Passwort festlegen</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target state="translated">Löschen</target>
+        <note>general delete action</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact">
+        <source>Delete Contact</source>
+        <target state="translated">Kontakt löschen</target>
+        <note>Title-Contacts</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group">
+        <source>Delete Contact Group</source>
+        <target state="translated">Kontaktgruppe löschen</target>
+        <note>The description of the button for deleting the contact group</note>
+      </trans-unit>
+      <trans-unit id="Deleted">
+        <source>Deleted</source>
+        <target state="translated">Gelöscht</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Details">
+        <source>Details</source>
+        <target state="translated">Details</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Discard changes">
+        <source>Discard changes</source>
+        <target state="translated">Änderungen verwerfen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Discard draft">
+        <source>Discard draft</source>
+        <target state="translated">Entwurf verwerfen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Display Name">
+        <source>Display name</source>
+        <target state="translated">Anzeigename</target>
+        <note>Title in settings</note>
+      </trans-unit>
+      <trans-unit id="Display Name Updated">
+        <source>Display name updated</source>
+        <target state="translated">Anzeigenamen aktualisiert</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Display name">
+        <source>Display name</source>
+        <target state="translated">Angezeigter Name</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="DisplayName">
+        <source>Display name</source>
+        <target state="translated">Angezeigter Name</target>
+        <note>Title in display name settings</note>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for ">
+        <source>Do you want to activate the purchased service plan for </source>
+        <target state="translated">Möchten Sie den gekauften Servicetarif aktivieren für </target>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?">
+        <source>Do you want to cancel the process?</source>
+        <target state="translated">Möchten Sie den Vorgang abbrechen?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?">
+        <source>Do you want to save the unsaved changes?</source>
+        <target state="translated">Möchten Sie die Änderungen speichern?</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't Show Again">
+        <source>Don't Show Again</source>
+        <target state="translated">Nicht erneut anzeigen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't remind me again">
+        <source>Don't remind me again</source>
+        <target state="translated">Nicht erneut erinnern</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Done">
+        <source>Done</source>
+        <target state="translated">Fertig</target>
+        <note>Done action</note>
+      </trans-unit>
+      <trans-unit id="Double tap to setup">
+        <source>Double tap to setup</source>
+        <target state="translated">Zum Einrichten doppelt antippen</target>
+        <note>VoiceOver action description</note>
+      </trans-unit>
+      <trans-unit id="Draft">
+        <source>Draft</source>
+        <target state="translated">Entwurf</target>
+        <note>Action
+   mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Drafts">
+        <source>Drafts</source>
+        <target state="translated">Entwürfe</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Edit">
+        <source>Edit</source>
+        <target state="translated">Bearbeiten</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Edit Contact">
+        <source>Edit contact</source>
+        <target state="translated">Kontakt bearbeiten</target>
+        <note>*
+ *  Edit Contact view controller</note>
+      </trans-unit>
+      <trans-unit id="Edit Folder">
+        <source>Edit Folder</source>
+        <target state="translated">Ordner bearbeiten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Group">
+        <source>Edit Group</source>
+        <target state="translated">Gruppe bearbeiten</target>
+        <note>The title for the contact group editing view</note>
+      </trans-unit>
+      <trans-unit id="Edit Label">
+        <source>Edit Label</source>
+        <target state="translated">Kategorie bearbeiten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Photo">
+        <source>Edit Photo</source>
+        <target state="translated">Foto bearbeiten</target>
+        <note>The button text for edit profile picture</note>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature">
+        <source>Edit mobile signature</source>
+        <target state="translated">Signatur für Mobilgerät bearbeiten</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Edit signature">
+        <source>Edit signature</source>
+        <target state="translated">Signatur bearbeiten</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Email">
+        <source>Email</source>
+        <target state="translated">E-Mail-Adresse</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Email Addresses">
+        <source>Email Addresses</source>
+        <target state="translated">E-Mail-Adressen</target>
+        <note>contact detail view, email addresses section title</note>
+      </trans-unit>
+      <trans-unit id="Email Contact">
+        <source>Email Contact</source>
+        <target state="translated">E-Mail an Kontakt</target>
+        <note>Send an email to the current contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Email Verification">
+        <source>Email Verification</source>
+        <target state="translated">E-Mail-Adresse bestätigen</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Email address">
+        <source>Email address</source>
+        <target state="translated">E-Mail-Adresse</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Email address invalid">
+        <source>Email address invalid</source>
+        <target state="translated">Ungültige E-Mail-Adresse</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Email default signature">
+        <source>Email default signature</source>
+        <target state="translated">E-Mail-Standard-Signatur</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Email domain invalid">
+        <source>Invalid email domain</source>
+        <target state="translated">Ungültige E-Mail-Domäne</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Empty Folder">
+        <source>Empty folder</source>
+        <target state="translated">Ordner leeren</target>
+        <note>empty folder, for spam and trash</note>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature">
+        <source>Enable Default Signature</source>
+        <target state="translated">Standard-Signatur aktivieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable FaceID">
+        <source>Enable FaceID</source>
+        <target state="translated">FaceID aktivieren</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature">
+        <source>Enable Mobile Signature</source>
+        <target state="translated">Signatur auf Mobilgerät aktivieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email">
+        <source>Enable Notification Email</source>
+        <target state="translated">Benachrichtigungen aktivieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection">
+        <source>Enable PIN protection</source>
+        <target state="translated">PIN-Schutz aktivieren</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable TouchID">
+        <source>Enable TouchID</source>
+        <target state="translated">TouchID aktivieren</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details">
+        <source>Encrypted Contact Details</source>
+        <target state="translated">Verschlüsselte Kontaktinformationen</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside">
+        <source>Encrypted for outside</source>
+        <target state="translated">Für ausgehend verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply">
+        <source>Encrypted for outside reply</source>
+        <target state="translated">Für ausgehende Antwort verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside">
+        <source>Encrypted from outside</source>
+        <target state="translated">Von extern verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP inline">
+        <source>Encrypted from outside PGP inline</source>
+        <target state="translated">Außerhalb mit PGP/Inline verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/MIME">
+        <source>Encrypted from outside PGP/MIME</source>
+        <target state="translated">Außerhalb mit PGP/MIME verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed PGP/MIME">
+        <source>Encrypted from outside signed PGP/MIME</source>
+        <target state="translated">Außerhalb mit signiertem PGP/MIME verschlüsselt</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encryption Setup">
+        <source>Encryption Setup</source>
+        <target state="translated">Verschlüsselung einrichten</target>
+        <note>key setup top title</note>
+      </trans-unit>
+      <trans-unit id="End Time">
+        <source>End Time</source>
+        <target state="translated">Endzeitpunkt</target>
+        <note>settings option (End Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption">
+        <source>End-to-end encryption</source>
+        <target state="translated">Ende-zu-Ende-Verschlüsselung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted">
+        <source>End-to-end encrypted</source>
+        <target state="translated">Ende-zu-Ende verschlüsselt</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message">
+        <source>End-to-end encrypted message</source>
+        <target state="translated">Ende-zu-Ende verschlüsselte Nachricht</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address">
+        <source>End-to-end encrypted message from verified address</source>
+        <target state="translated">Ende-zu-Ende verschlüsselte Nachricht von bestätigter Adresse</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address">
+        <source>End-to-end encrypted to verified address</source>
+        <target state="translated">Ende-zu-Ende verschlüsselt zum verifizierten Empfänger</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Enter">
+        <source>Enter</source>
+        <target state="translated">Eingeben</target>
+        <note>Action in 2fa popup view</note>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code">
+        <source>Enter verification code</source>
+        <target state="translated">Bestätigungscode eingeben</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN">
+        <source>Enter your PIN</source>
+        <target state="translated">PIN eingeben</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox.">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <target state="translated">Geben Sie Ihre PIN ein, um den Posteingang zu entsperren.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number">
+        <source>Enter your cell phone number</source>
+        <target state="translated">Ihre Mobilfunknummer eingeben</target>
+        <note>human verification top title</note>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address.">
+        <source>Enter your existing email address.</source>
+        <target state="translated">Geben Sie Ihre bereits bestehende E-Mail-Adresse ein</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="Error Logs">
+        <source>Error logs</source>
+        <target state="translated">Fehlerprotokolle</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Error occured">
+        <source>Error occured</source>
+        <target state="translated">Fehler aufgetreten</target>
+        <note>Error alert title</note>
+      </trans-unit>
+      <trans-unit id="Every time enter app">
+        <source>Every time enter app</source>
+        <target state="translated">Jedes Mal, wenn Sie die App öffnen</target>
+        <note>lock app option</note>
+      </trans-unit>
+      <trans-unit id="Expires">
+        <source>Expires</source>
+        <target state="translated">Verfällt in/am</target>
+        <note>VoiceOver: email can expire</note>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <target state="translated">Läuft ab in %1$d Tagen, %2$d Stunden, %3$d Minuten und %4$d Sekunden</target>
+        <note>expiration time count down</note>
+      </trans-unit>
+      <trans-unit id="Expiring Messages">
+        <source>Expiring messages</source>
+        <target state="translated">Verfallende Nachrichten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Extreme Security">
+        <source>Extreme Security</source>
+        <target state="translated">Höchste Sicherheit</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?">
+        <source>Forgot password?</source>
+        <target state="translated">Passwort vergessen?</target>
+        <note>login page forgot pwd</note>
+      </trans-unit>
+      <trans-unit id="FW:">
+        <source>FW:</source>
+        <target state="translated">Fwd:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file">
+        <source>Failed to determine type of file</source>
+        <target state="translated">Dateityp konnte nicht bestimmt werden</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore.">
+        <source>Failed to get list of available products from AppStore.</source>
+        <target state="translated">Die Liste der verfügbaren Produkte im AppStore konnte nicht abgerufen werden.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the app's saved data">
+        <source>Failed to initialize the app's saved data</source>
+        <target state="translated">Gespeicherten Daten der App konnten nicht geladen werden</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data">
+        <source>Failed to initialize the application's saved data</source>
+        <target state="translated">Fehler beim Initialisieren der gespeicherten App-Daten</target>
+        <note>*
+ *  Core Data Service &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="Fax">
+        <source>Fax</source>
+        <target state="translated">Fax</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Feedback">
+        <source>Feedback</source>
+        <target state="translated">Feedback</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed">
+        <source>Fetch user info failed</source>
+        <target state="translated">Abrufen der Benutzerinformationen fehlgeschlagen</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Folder">
+        <source>Folder</source>
+        <target state="translated">Ordner</target>
+        <note>VoiceOver: email belongs to folder</note>
+      </trans-unit>
+      <trans-unit id="Folder Name">
+        <source>Folder Name</source>
+        <target state="translated">Ordnername</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <target state="translated">Für Einzelpersonen, die von einer sicheren und kostenlosen Kommunikation profitieren möchten.</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <target state="translated">Für Personen, die mehr Kapazität, Anpassung und erweiterte Funktionen benötigen.</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <target state="translated">Für Unternehmen, die Unterstützung für mehrere Benutzer und zusätzliche Produktivitätsfunktionen benötigen.</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <target state="translated">Für Power-User und Personengruppen, die Wert auf volle Anonymität und Privatsphäre legen.</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="Forward">
+        <source>Forward</source>
+        <target state="translated">Weiterleiten</target>
+        <note>forward action</note>
+      </trans-unit>
+      <trans-unit id="Forwarded message">
+        <source>Forwarded message</source>
+        <target state="translated">Weitergeleitete Nachricht</target>
+        <note>forwarded message title</note>
+      </trans-unit>
+      <trans-unit id="From">
+        <source>From</source>
+        <target state="translated">Von</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="From:">
+        <source>From:</source>
+        <target state="translated">Von:</target>
+        <note>message From: field text</note>
+      </trans-unit>
+      <trans-unit id="Fwd:">
+        <source>Fwd:</source>
+        <target state="translated">Fwd:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Gender">
+        <source>Gender</source>
+        <target state="translated">Geschlecht</target>
+        <note>contacts talbe cell gender title</note>
+      </trans-unit>
+      <trans-unit id="General Settings">
+        <source>General settings</source>
+        <target state="translated">Allgemeine Einstellungen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Get %@">
+        <source>Get %@</source>
+        <target state="translated">%@ abrufen</target>
+        <note>Screen header, like 'Get VISIONARY'</note>
+      </trans-unit>
+      <trans-unit id="Get more information">
+        <source>Get more information</source>
+        <target state="translated">Weitere Informationen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Go to inbox">
+        <source>Go to inbox</source>
+        <target state="translated">Zum Posteingang</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Group Details">
+        <source>Group Details</source>
+        <target state="translated">Gruppeninformationen</target>
+        <note>The title for the contact group detail view</note>
+      </trans-unit>
+      <trans-unit id="Group Name">
+        <source>Group Name</source>
+        <target state="translated">Gruppenname</target>
+        <note>The instruction label for the group name textfield</note>
+      </trans-unit>
+      <trans-unit id="Groups">
+        <source>Groups</source>
+        <target state="translated">Gruppen</target>
+        <note>menu title (contact groups)</note>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support">
+        <source>Help &amp; Support</source>
+        <target state="translated">Hilfe &amp; Unterstützung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input.">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <target state="translated">Helfen Sie uns, ProtonMail mit Ihrem Vorschlägen zu verbessern.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web.">
+        <source>Help us to make privacy the default in the web.</source>
+        <target state="translated">Helfen Sie uns Privatsphäre zum Standard im Web zu machen.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Hide">
+        <source>Hide</source>
+        <target state="translated">Ausblenden</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Hide Details">
+        <source>Hide details</source>
+        <target state="translated">Details ausblenden</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="High Security">
+        <source>High Security</source>
+        <target state="translated">Hohe Sicherheit</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="Hours">
+        <source>Hours</source>
+        <target state="translated">Stunden</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Human Check Failed">
+        <source>Human Check Failed</source>
+        <target state="translated">Menschliche Überprüfung fehlgeschlagen</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Human Check Warning">
+        <source>Human Check Warning</source>
+        <target state="translated">Warnhinweis zur menschliche Überprüfung</target>
+        <note>human check warning title</note>
+      </trans-unit>
+      <trans-unit id="Human Verification">
+        <source>Human Verification</source>
+        <target state="translated">Menschliche Überprüfung</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <target state="translated">IMAP/SMTP-Unterstützung über ProtonMail Bridge</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="INBOX">
+        <source>Inbox</source>
+        <target state="translated">Posteingang</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Import Error">
+        <source>Import Error</source>
+        <target state="translated">Fehler beim Importieren</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Import File From...">
+        <source>Import file from...</source>
+        <target state="translated">Datei importieren von …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Importing Contacts">
+        <source>Importing Contacts</source>
+        <target state="translated">Kontakte werden importiert</target>
+        <note>import contact title</note>
+      </trans-unit>
+      <trans-unit id="Importing attachment, that can take a while">
+        <source>Importing attachment, that can take a while</source>
+        <target state="translated">Anhänge werden importiert. Dies kann einige Zeit dauern</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service.">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <target state="translated">Um unsere Dienste nutzen zu können, müssen Sie den Allgemeinen Geschäftsbedingungen von ProtonMail zustimmen.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Inbox">
+        <source>Inbox</source>
+        <target state="translated">Posteingang</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN,">
+        <source>Incorrect PIN,</source>
+        <target state="translated">Falsche PIN</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Incorrect password">
+        <source>Incorrect password</source>
+        <target state="translated">Falsches Passwort</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Input Display Name ...">
+        <source>Input display name ...</source>
+        <target state="translated">Anzuzeigenden Namen eingeben …</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ...">
+        <source>Input Notification Email ...</source>
+        <target state="translated">Benachrichtigungs-E-Mail-Adresse eingeben ...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <target state="translated">Das sofortige Erstellen von ProtonMail-Accounts wurde temporär deaktiviert. Bitte besuchen Sie https://protonmail.com/invite um eine Einladung anzufragen.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Internal Error">
+        <source>Internal Error</source>
+        <target state="translated">Interner Fehler</target>
+        <note>The preconditions are not met</note>
+      </trans-unit>
+      <trans-unit id="Internet">
+        <source>Internet</source>
+        <target state="translated">Internet</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Invalid Password">
+        <source>Invalid Password</source>
+        <target state="translated">Ungültiges Passwort</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid URL">
+        <source>Invalid URL</source>
+        <target state="translated">Ungültige URL</target>
+        <note>Invalid URL error when click a url in contact</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName">
+        <source>Invalid username</source>
+        <target state="translated">Ungültiger Benutzername</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!">
+        <source>Invalid UserName!</source>
+        <target state="translated">Ungültiger Benutzername!</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin">
+        <source>Invalid access token please relogin</source>
+        <target state="translated">Ungültiger Zugangstoken. Bitte erneut anmelden</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin.">
+        <source>Invalid access token. Please relogin.</source>
+        <target state="translated">Ungültige Zugriffssicherheitskette. Bitte erneut anmelden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Invalid credential">
+        <source>Invalid credential</source>
+        <target state="translated">Ungültige Zugangsdaten</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!">
+        <source>Invalid hashed password!</source>
+        <target state="translated">Ungültiger Passwordhash!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?">
+        <source>Is this bug report about an in-app purchase?</source>
+        <target state="translated">Betrifft dieser Fehlerbericht einen In-App-Kauf?</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to %@ within our iOS app.">
+        <source>It is not possible to switch to %@ within our iOS app.</source>
+        <target state="translated">Es ist nicht möglich, innerhalb unserer iOS-App zu „%@” zu wechseln.</target>
+        <note>It is not possible to switch to `plan` within our iOS app.</note>
+      </trans-unit>
+      <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.">
+        <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
+        <target state="translated">Es war nicht möglich, Ihr gekauftes App Store Produkt mit anderen Produkten auf unserem Server zu vergleichen. Bitte füllen Sie den Fehlerbericht aus und unser Kundendienstteam wird sich mit Ihnen in Verbindung setzen.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features">
+        <source>Keep me updated about new features</source>
+        <target state="translated">Mich über neue Funktionen Informieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed">
+        <source>Key generation failed</source>
+        <target state="translated">Schlüsselgenerierung fehlgeschlagen</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed. Please try again.">
+        <source>Key generation failed. Please try again.</source>
+        <target state="translated">Schlüsselgenerierung fehlgeschlagen. Bitte erneut versuchen.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key invalid. Please go back and try again.">
+        <source>Key invalid. Please go back and try again.</source>
+        <target state="translated">Schlüssel ungültig. Bitte gehen Sie zurück und versuchen Sie es erneut.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="LOGIN">
+        <source>Login</source>
+        <target state="translated">Anmelden</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Label Management">
+        <source>Label management</source>
+        <target state="translated">Kategorieverwaltung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Label Name">
+        <source>Label Name</source>
+        <target state="translated">Kategoriename</target>
+        <note>createing lable input place holder</note>
+      </trans-unit>
+      <trans-unit id="Label as...">
+        <source>Label as...</source>
+        <target state="translated">Hinzufügen zur Kategorie …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels">
+        <source>Labels</source>
+        <target state="translated">Kategorien</target>
+        <note>VoiceOver: email has lables</note>
+      </trans-unit>
+      <trans-unit id="Labels have been applied.">
+        <source>Labels have been applied.</source>
+        <target state="translated">Kategorie wurden zugewiesen.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <target state="translated">Kategorien, Ordner, Filter &amp; Mehr</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Labels/Folders">
+        <source>Labels/Folders</source>
+        <target state="translated">Kategorien/Ordner</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Language">
+        <source>Language</source>
+        <target state="translated">Sprache</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Learn More">
+        <source>Learn More</source>
+        <target state="translated">Weitere Informationen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Learn more here">
+        <source>Learn more here</source>
+        <target state="translated">Hier erfahren Sie mehr</target>
+        <note>learn more button</note>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day">
+        <source>Limited to 150 messages sent/day</source>
+        <target state="translated">Beschränkt auf 150 gesendete Nachrichten/Tag</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Load remote content">
+        <source>Load remote content</source>
+        <target state="translated">Externe Inhalte laden</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Loading...">
+        <source>Loading...</source>
+        <target state="translated">Wird geladen …</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password">
+        <source>Local cache can't find mailbox password</source>
+        <target state="translated">Lokaler Zwischenspeicher konnte das Passwort nicht finden</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>Base</source>
+        <target state="translated">Basis</target>
+        <note>*
+ *  file string type</note>
+      </trans-unit>
+      <trans-unit id="Lock The App">
+        <source>Lock The App</source>
+        <target state="translated">App sperren</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Login">
+        <source>Login</source>
+        <target state="translated">Anmelden</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Login Password">
+        <source>Login password</source>
+        <target state="translated">Anmeldepasswort</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match">
+        <source>Login password doesn't match</source>
+        <target state="translated">Passwörter sind nicht identisch</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Logout">
+        <source>Logout</source>
+        <target state="translated">Abmelden</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Logs">
+        <source>Logs</source>
+        <target state="translated">Protokolle</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?">
+        <source>Looking to secure your contact's details?</source>
+        <target state="translated">Möchten Sie Ihre Kontaktdaten sichern?</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD">
+        <source>Mailbox password</source>
+        <target state="translated">Passwort des Kontos</target>
+        <note>*
+ *  MailboxPasswordViewController</note>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <target state="needs-translation">MBContactPickerPrompt</target>
+        <note>Default Prompt text shown in the prompt cell</note>
+      </trans-unit>
+      <trans-unit id="Mailbox Password">
+        <source>Mailbox password</source>
+        <target state="translated">Postfach-Passwort</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match">
+        <source>Mailbox password doesn't match</source>
+        <target state="translated">Passwörter sind nicht identisch</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Manage Addresses">
+        <source>Manage Addresses</source>
+        <target state="translated">Adressen verwalten</target>
+        <note>The title for the view where user can manage emails in the contact group</note>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders">
+        <source>Manage Labels/Folders</source>
+        <target state="translated">Kategorien/Ordner verwalten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Mark Read">
+        <source>Mark as read</source>
+        <target state="translated">Als gelesen markieren</target>
+        <note>mark message as read action</note>
+      </trans-unit>
+      <trans-unit id="Mark as unread">
+        <source>Mark as unread</source>
+        <target state="translated">Als „Ungelesen” markieren</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Menu">
+        <source>Menu</source>
+        <target state="translated">Menü</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Message %@">
+        <source>Message %@</source>
+        <target state="translated">Nachricht %@</target>
+        <note>Message with title</note>
+      </trans-unit>
+      <trans-unit id="Message Password">
+        <source>Message Password</source>
+        <target state="translated">Nachrichtenpasswort</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Message Queue">
+        <source>Message queue</source>
+        <target state="translated">Nachrichtenwarteschlange</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions">
+        <source>Message Swipe Actions</source>
+        <target state="translated">Nachricht-Wischaktionen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message expired">
+        <source>Message expired</source>
+        <target state="translated">Nachricht ist abgelaufen</target>
+        <note>*
+ *  Expiration View</note>
+      </trans-unit>
+      <trans-unit id="Message has been deleted.">
+        <source>Message has been deleted.</source>
+        <target state="translated">Nachricht wurde gelöscht.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message has been moved.">
+        <source>Message has been moved.</source>
+        <target state="translated">Nachricht wurde verschoben.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message password does not match.">
+        <source>Message password does not match.</source>
+        <target state="translated">Die eingegebenen Passwörter stimmen nicht überein.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again">
+        <source>Message sending failed please try again</source>
+        <target state="translated">Nachricht senden fehlgeschlagen. Bitte erneut versuchen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again.">
+        <source>Message sending failed. Please try again.</source>
+        <target state="translated">Senden der Nachricht fehlgeschlagen. Bitte versuchen Sie es erneut.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sent">
+        <source>Message sent</source>
+        <target state="translated">Nachricht gesendet</target>
+        <note>Description after message have been sent</note>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period.">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <target state="translated">Nachrichten, die Sie senden, können nach einer bestimmten Zeitspanne automatisch gelöscht werden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Mobile">
+        <source>Mobile</source>
+        <target state="translated">Mobiltelefon</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Mobile Signature">
+        <source>Mobile signature</source>
+        <target state="translated">Signatur auf Mobilgeräten</target>
+        <note>Mobile Signature title in settings</note>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <target state="translated">Mobile Anmeldungen sind vorübergehend deaktiviert. Bitte versuchen Sie es später erneut, oder melden Sie sich bei protonmail.com mit einem Desktop oder Laptop-Rechner an.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
+        <source>Modifying or turning off the default mobile signature is a paid feature.</source>
+        <target state="translated">Das Ändern oder Deaktivieren der standardmäßigen mobilen Signatur ist eine Funktion der kostenpflichtige Version.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="More">
+        <source>More</source>
+        <target state="translated">Mehr</target>
+        <note>More actions button</note>
+      </trans-unit>
+      <trans-unit id="More Credits">
+        <source>More Credits</source>
+        <target state="translated">Weiteres Guthaben</target>
+        <note>Screen header</note>
+      </trans-unit>
+      <trans-unit id="Move to AllMail">
+        <source>Move to AllMail</source>
+        <target state="translated">Verschieben in „Alle Nachrichten”</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Archive">
+        <source>Move to Archive</source>
+        <target state="translated">In Archiv verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Draft">
+        <source>Move to Draft</source>
+        <target state="translated">In Entwürfe verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Folder">
+        <source>Move to Folder</source>
+        <target state="translated">In Ordner verschieben</target>
+        <note>folder apply - title</note>
+      </trans-unit>
+      <trans-unit id="Move to Inbox">
+        <source>Move to Inbox</source>
+        <target state="translated">In Posteingang verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Outbox">
+        <source>Move to Outbox</source>
+        <target state="translated">In Postausgang verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Spam">
+        <source>Move to Spam</source>
+        <target state="translated">In Spam verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Trash">
+        <source>Move to Trash</source>
+        <target state="translated">In Papierkorb verschieben</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to...">
+        <source>Move to...</source>
+        <target state="translated">Verschieben nach …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses">
+        <source>Multiple addresses</source>
+        <target state="translated">Mehrere Adressen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP.">
+        <source>Sign up for free</source>
+        <target state="translated">Sie benötigen ein Konto? Hier anmelden.</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Name">
+        <source>Name</source>
+        <target state="translated">Name</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="New login password">
+        <source>New login password</source>
+        <target state="translated">Neues Anmeldepasswort</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New mailbox password">
+        <source>New mailbox password</source>
+        <target state="translated">Neues Postfachpasswort</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New password">
+        <source>New password</source>
+        <target state="translated">Neues Passwort</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Nickname">
+        <source>Nickname</source>
+        <target state="translated">Spitzname</target>
+        <note>contacts talbe cell Nickname title</note>
+      </trans-unit>
+      <trans-unit id="No Messages">
+        <source>No Messages</source>
+        <target state="translated">Keine Nachrichten</target>
+        <note>message when mailbox doesnt have emailsß</note>
+      </trans-unit>
+      <trans-unit id="No connectivity detected...">
+        <source>No connectivity detected...</source>
+        <target state="translated">Keine Verbindung erkannt …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="No, for another ProtonMail account">
+        <source>No, for another ProtonMail account</source>
+        <target state="translated">Nein, für ein anderes ProtonMail-Konto</target>
+        <note>Warning message option when user want to relogin to another account</note>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase">
+        <source>No, not related to in-app purchase</source>
+        <target state="translated">Nein, nicht im Zusammenhang mit dem In-App-Kauf</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="None">
+        <source>None</source>
+        <target state="translated">Keine</target>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
+      </trans-unit>
+      <trans-unit id="Not Now">
+        <source>Not Now</source>
+        <target state="translated">Nicht jetzt</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration">
+        <source>Not all recipients support message expiration</source>
+        <target state="translated">Nicht alle Empfänger unterstützen die Funktion „Verfällt in” von Nachrichten.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address.">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <target state="translated">Hinweis: Der Benutzername ist auch Ihre ProtonMail-Adresse.</target>
+        <note>Signup user name notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <target state="translated">Hinweis: Dies wird genutzt, um Ihre Nachrichten zu ver- &amp; entschlüsseln. Verlieren Sie dieses Passwort nicht, wir können es nicht zurücksetzen.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account.">
+        <source>Note: This is used to log you into your account.</source>
+        <target state="translated">Hinweis: Hiermit können Sie sich in Ihr Konto anmelden.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Notes">
+        <source>Notes</source>
+        <target state="translated">Notizen</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Notice">
+        <source>Notice</source>
+        <target state="translated">Hinweis</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email">
+        <source>Notification / Recovery Email</source>
+        <target state="translated">Benachrichtigung / E-Mail Wiederherstellung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Email">
+        <source>Notification email</source>
+        <target state="translated">E-Mail-Benachrichtigung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Snooze">
+        <source>Notification Snooze</source>
+        <target state="translated">Benachrichtigung später lesen</target>
+        <note>title of action sheet</note>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed">
+        <source>Notifications Are Snoozed</source>
+        <target state="translated">Benachrichtigungen werden später gelesen</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off">
+        <source>Notifications Snooze Off</source>
+        <target state="translated">„Später lesen” von Benachrichtigungen deaktiviert</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target state="translated">OK</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="OTHER PLANS">
+        <source>OTHER PLANS</source>
+        <target state="translated">Weitere Abonnements</target>
+        <note>Section header</note>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <target state="final">Am</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Ein</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@">
+        <source>On EE, MMM d, yyyy at %@</source>
+        <target state="translated">Am EE, dem d. MMM.yyyy um %@</target>
+        <note>forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@, %@, wrote:">
+        <source>On EE, MMM d, yyyy at %1$@, %2$@, wrote:</source>
+        <target state="translated">%2$@ schrieb am EE, dem d.MMM.yyyy um %1$@:</target>
+        <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="OpenDraft">
+        <source>Open draft</source>
+        <target state="translated">Entwurf öffnen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Organization">
+        <source>Organization</source>
+        <target state="translated">Organisation</target>
+        <note>contacts talbe cell Organization title</note>
+      </trans-unit>
+      <trans-unit id="Other">
+        <source>Other</source>
+        <target state="translated">Weitere</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <target state="translated">Unser Kundendienstteam wird versuchen, Ihren Serviceplan manuell zu aktivieren, wenn Sie damit einverstanden sind, technische Daten, die der AppStore der App zum Zeitpunkt des Kaufs zur Verfügung gestellt hat, anzuhängen. Diese Daten enthalten keinelei Angaben zu Ihrem iTunes-Konto, Ihrer Apple ID, verknüpften Kreditkarten oder anderen Benutzerinformationen. Technische Daten helfen uns nur bei der Überprüfung und Verifizierung, ob die Zahlung auf den Servern des App Store durchgeführt wurde.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Outbox">
+        <source>Outbox</source>
+        <target state="translated">Postausgang</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted">
+        <source>PGP-encrypted</source>
+        <target state="translated">PGP-verschlüsselt</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message">
+        <source>PGP-encrypted message</source>
+        <target state="translated">PNG-verschlüsselte Nachricht</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address">
+        <source>PGP-encrypted message from verified address</source>
+        <target state="translated">PGP-verschlüsselte Nachricht von bestätigtem Adresse</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed">
+        <source>PGP-signed</source>
+        <target state="translated">PGP-signiert</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address">
+        <source>PGP-signed message from verified address</source>
+        <target state="translated">PGP-signierte Nachricht von bestätigter Adresse</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE">
+        <source>PREMIUM FEATURE</source>
+        <target state="translated">Premium-Funktionen</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="Password">
+        <source>Password</source>
+        <target state="translated">Passwort</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Password Mismatch">
+        <source>Passwords do not match</source>
+        <target state="translated">Passwort stimmt nicht überein</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password Updated">
+        <source>Password updated</source>
+        <target state="translated">Passwort aktualisiert</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty.">
+        <source>Password cannot be empty.</source>
+        <target state="translated">Das Passwort darf nicht leer sein.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Password update failed">
+        <source>Password update failed</source>
+        <target state="translated">Aktualisierung des Passworts fehlgeschlagen</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Personal">
+        <source>Personal</source>
+        <target state="translated">Persönlich</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone">
+        <source>Phone</source>
+        <target state="translated">Telefon</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone Verification">
+        <source>Phone Verification</source>
+        <target state="translated">Verifizierung per Telefon</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Phone number">
+        <source>Phone number</source>
+        <target state="translated">Telefonnummer</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Phone number invalid">
+        <source>Phone number invalid</source>
+        <target state="translated">Ungültige Telefonnummer</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Photo Library">
+        <source>Photo Library</source>
+        <target state="translated">Fotobibliothek</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty.">
+        <source>Pin code can't be empty.</source>
+        <target state="translated">Der PIN-Code darf nicht leer sein.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients.">
+        <source>Please add a password for the following recipients.</source>
+        <target state="translated">Bitte Passwort für folgende Empfänger hinzufügen.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code.">
+        <source>Please check your cell phone for the verification code.</source>
+        <target state="translated">Bitte überprüfen Sie Ihr Handy für den Bestätigungscode.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code.">
+        <source>Please check your email for the verification code.</source>
+        <target state="translated">Bitte überprüfen Sie Ihre E-Mails für den Bestätigungscode.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses.">
+        <source>Please disable PGP Sending for following addresses.</source>
+        <target state="translated">Bitte das Senden über PGP für folgende Adressen deaktivieren</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number.">
+        <source>Please input a valid cell phone number.</source>
+        <target state="translated">Bitte eine gültige Mobilfunknummer eingeben.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address.">
+        <source>Please input a valid email address.</source>
+        <target state="translated">Bitte eine gültige E-Mail-Adresse eingeben.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <target state="translated">Bitte melden Sie sich bei dem ProtonMail-Konto an, für das Sie den Serviceplan aktualisieren möchten, damit wir den Kauf abschließen können.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <target state="translated">Bitte melden Sie sich bei dem ProtonMail-Konto an, für das Sie den Serviceplan aktualisieren möchten, damit wir die Aktivierung des Serviceplans abschließen können.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!">
+        <source>Please pick a username first!</source>
+        <target state="translated">Bitte zunächst einen Benutzernamen festlegen!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Please provide a group name">
+        <source>Please provide a group name</source>
+        <target state="translated">Bitte einen Gruppennamen angeben</target>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!">
+        <source>Please remove all attachments before changing the sender</source>
+        <target state="translated">Bitte vor dem Ändern des Absenders alle Anhänge entfernen</target>
+        <note>when switch sender but email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group">
+        <source>Please select at least one email for the contact group</source>
+        <target state="translated">Bitte mindestens eine E-Mail-Adresse für die Kontaktgruppe auswählen</target>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:">
+        <source>Please select one of the following options:</source>
+        <target state="translated">Bitte eine der folgenden Optionen wählen:</target>
+        <note>human check select option title</note>
+      </trans-unit>
+      <trans-unit id="Please set a password.">
+        <source>Please set a password.</source>
+        <target state="translated">Bitte ein Passwort festlegen.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please try a different domain.">
+        <source>Please try a different domain.</source>
+        <target state="translated">Bitte eine andere Domain versuchen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different email address.">
+        <source>Please try a different email address.</source>
+        <target state="translated">Bitte eine andere E-Mail-Adresse versuchen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different password.">
+        <source>Please try a different password.</source>
+        <target state="translated">Bitte ein anderes Passwort versuchen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different user name.">
+        <source>Please try a different username.</source>
+        <target state="translated">Bitte einen anderen Benutzernamen versuchen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try again.">
+        <source>Please try again</source>
+        <target state="translated">Bitte erneut versuchen</target>
+        <note>
+
+</note>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <target state="translated">Bitte entsperren Sie die App, um mit der Aktivierung Ihres Serviceplans fortzufahren.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first.">
+        <source>Please use ProtonMail App login first.</source>
+        <target state="translated">Bitte zuerst die Anmeldung in der App ProtonMail verwenden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password.">
+        <source>Please use the web application to reset your password.</source>
+        <target state="translated">Bitte verwenden Sie die Webanwendung, um Ihr Passwort zurückzusetzen.</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <target state="translated">Verwenden Sie die Web-Version von ProtonMail, um Ihr Mailbox-Passwort zu ändern!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <target state="translated">Bitte benutzen Sie die Web-Version von ProtonMail, um Ihre Passwörter zu ändern!</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in.">
+        <source>Please use your new password when signing in.</source>
+        <target state="translated">Bitte Ihr neues Passwort bei der Anmeldung verwenden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!">
+        <source>Please wait until the email downloaded!</source>
+        <target state="translated">Bitte warten, bis die Nachricht heruntergeladen wurde!</target>
+        <note>The</note>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone.">
+        <source>Please, manage it in your phone.</source>
+        <target state="translated">Bitte verwalten Sie es in Ihrem Handy.</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Print">
+        <source>Print</source>
+        <target state="translated">Drucken</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Protection">
+        <source>Protection</source>
+        <target state="translated">Schutz</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Protection Entire App">
+        <source>Protection entire app</source>
+        <target state="translated">Gesamte App schützen</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail">
+        <source>ProtonMail</source>
+        <target state="translated">ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <target state="translated">Sie benötigen ProtonMail Plus um Ihre mobile Signatur zu ändern</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <target state="translated">Mit ProtonMail Plus/Professional/Visionary können Sie Kontaktdaten hinzufügen und bearbeiten, die über den Namen und die E-Mail-Adresse Ihres Kontakts hinausgehen. Durch die Verwendung von ProtonMail sind diese Daten so sicher wie Ihre verschlüsselte E-Mail.</target>
+        <note>Upgrade warning message</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <target state="translated">ProtonMail verkauft keine Werbung oder verletzt Ihre Privatsphäre. Ihre Unterstützung ist essentiell um ProtonMail weiter am Laufen zu erhalten. Sie können zu einem bezahlten Account wechseln oder zur Unterstützung an ProtonMail spenden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails">
+        <source>ProtonMail encrypted emails</source>
+        <target state="translated">Durch ProtonMail verschlüsselte Nachrichten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <target state="translated">ProtonMail ist zur Zeit offline, schauen Sie auf Twitter nach unserem derzeitigen Status: https://twitter.com/protonmail</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonVPN included">
+        <source>ProtonVPN included</source>
+        <target state="translated">ProtonVPN enthalten</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions">
+        <source>Quick Swipe actions</source>
+        <target state="translated">Aktionen für Wischgesten</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD">
+        <source>RESET MAILBOX PASSWORD</source>
+        <target state="translated">Mailbox-Passwort zurücksetzen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review">
+        <source>Rate &amp; Review</source>
+        <target state="translated">Bewerten &amp; Rezensieren</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN">
+        <source>Re-Enter your PIN</source>
+        <target state="translated">Bitte PIN erneut eingeben</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Re:">
+        <source>Re:</source>
+        <target state="translated">Re:</target>
+        <note>abbreviation of reply:</note>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data...">
+        <source>Reading device contacts data...</source>
+        <target state="translated">Gerätekontakte werden gelesen …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Code">
+        <source>Recovery Code</source>
+        <target state="translated">Wiederherstellungsschlüssel</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email">
+        <source>Recovery Email</source>
+        <target state="translated">Wiederherstellungs-E-Mail-Adresse</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning">
+        <source>Recovery Email Warning</source>
+        <target state="translated">E-Mail-Wiederherstellungswarnung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remind Me Later">
+        <source>Remind Me Later</source>
+        <target state="translated">Später erneut fragen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remove">
+        <source>Remove</source>
+        <target state="translated">Entfernen</target>
+        <note>remove action</note>
+      </trans-unit>
+      <trans-unit id="Remove Star">
+        <source>Remove Star</source>
+        <target state="translated">Kennzeichnung entfernen</target>
+        <note>un star message</note>
+      </trans-unit>
+      <trans-unit id="Repeat">
+        <source>Repeat</source>
+        <target state="translated">Wiederholen</target>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+      </trans-unit>
+      <trans-unit id="Reply">
+        <source>Reply</source>
+        <target state="translated">Antworten</target>
+        <note>reply action</note>
+      </trans-unit>
+      <trans-unit id="Reply All">
+        <source>Reply All</source>
+        <target state="translated">Allen antworten</target>
+        <note>reply all action</note>
+      </trans-unit>
+      <trans-unit id="Reply message">
+        <source>Reply message</source>
+        <target state="translated">Nachricht beantworten</target>
+        <note>composer view model impl</note>
+      </trans-unit>
+      <trans-unit id="ReplyAll">
+        <source>Reply all</source>
+        <target state="translated">Allen antworten</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Report Bugs">
+        <source>Report Bugs</source>
+        <target state="translated">Fehler melden</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Report Phishing">
+        <source>Report Phishing</source>
+        <target state="translated">Phishing melden</target>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <target state="translated">Das Melden einer Nachricht als Phishing-Versuch wird die Nachricht an uns senden, damit wir diese analysieren und unsere Filter verbessern können. Das bedeutet, dass wir den Inhalt der Nachricht vollständig einsehen können.</target>
+        <note>alert message</note>
+      </trans-unit>
+      <trans-unit id="Request Link Confirmation">
+        <source>Request Link Confirmation</source>
+        <target state="translated">Link-Bestätigung anfordern</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ...">
+        <source>Resetting message cache ...</source>
+        <target state="translated">Nachrichtenspeicher wird zurückgesetzt ...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Retry">
+        <source>Retry</source>
+        <target state="translated">Wiederholen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds">
+        <source>Retry after %d seconds</source>
+        <target state="translated">Nach %d Sekunden erneut versuchen</target>
+        <note>email verify code resend count down</note>
+      </trans-unit>
+      <trans-unit id="SENT">
+        <source>Sent</source>
+        <target state="translated">Gesendet</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SPAM">
+        <source>Spam</source>
+        <target state="translated">Spam</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SRP Client">
+        <source>SRP Client</source>
+        <target state="translated">SRP-Client</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="SRP Server">
+        <source>SRP Server</source>
+        <target state="translated">SRP-Server</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="STARRED">
+        <source>Starred</source>
+        <target state="translated">Gekennzeichnet</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Save">
+        <source>Save</source>
+        <target state="translated">Speichern</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Save Changes">
+        <source>Save Changes</source>
+        <target state="translated">Änderungen speichern</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Save draft">
+        <source>Save draft</source>
+        <target state="translated">Entwurf speichern</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Scheduled">
+        <source>Scheduled</source>
+        <target state="translated">Geplant</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Search">
+        <source>Search</source>
+        <target state="translated">Suchen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Select An Option">
+        <source>Select An Option</source>
+        <target state="translated">Wähle Sie eine Option</target>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+      </trans-unit>
+      <trans-unit id="Select Color">
+        <source>Select Color</source>
+        <target state="translated">Farbe wählen</target>
+        <note>The title for the view where user can select the color for the group</note>
+      </trans-unit>
+      <trans-unit id="Select your language">
+        <source>Select your language</source>
+        <target state="translated">Sprache auswählen</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Send">
+        <source>Send</source>
+        <target state="translated">Senden</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send Verification Code">
+        <source>Send verification code</source>
+        <target state="translated">Verifizierungs-Code senden</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Send anyway">
+        <source>Send anyway</source>
+        <target state="translated">Dennoch senden</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send message without subject?">
+        <source>Send message without subject?</source>
+        <target state="translated">Nachricht ohne Betreff senden?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc">
+        <source>Send plain but stored enc</source>
+        <target state="translated">Im Klartext gesendet aber verschlüsselt gespeichert</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed">
+        <source>Sender Verification Failed</source>
+        <target state="translated">Die Überprüfung des Absenders ist fehlgeschlagen</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Sending Message">
+        <source>Sending message</source>
+        <target state="translated">Nachricht wird gesendet</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sending message">
+        <source>Sending message</source>
+        <target state="translated">Nachricht wird gesendet</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <target state="translated">Senden von Nachrichten von einer %1$@-Adresse ist eine Funktion für bezahlte Konten. Ihre Nachricht wird von Ihrer standardmäßigen Adresse „%2$@” gesendet</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="Sent">
+        <source>Sent</source>
+        <target state="translated">Gesendet</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Sent Failed">
+        <source>Sent Failed</source>
+        <target state="translated">Senden fehlgeschlagen</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sent by ProtonMail with zero access encryption">
+        <source>Sent by ProtonMail with zero access encryption</source>
+        <target state="translated">Gesendet von ProtonMail mit Zero-Access-Verschlüsselung</target>
+        <note>encryption lock description for auto reply</note>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption">
+        <source>Sent by you with end-to-end encryption</source>
+        <target state="translated">Von Ihnen mit Ende-zu-Ende-Verschlüsselung gesandt</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!">
+        <source>Server proofs not valid!</source>
+        <target state="translated">Servernachweise ungültig!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set Password">
+        <source>Set Password</source>
+        <target state="translated">Passwort festlegen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users.">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <target state="translated">Legen Sie ein Passwort zum Verschlüsseln dieser Nachricht für nicht-ProtonMail-Nutzer fest</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set passwords">
+        <source>Set passwords</source>
+        <target state="translated">Passwort festlegen</target>
+        <note>Signup passwords top title</note>
+      </trans-unit>
+      <trans-unit id="Settings">
+        <source>Settings</source>
+        <target state="translated">Einstellungen</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Share Alert">
+        <source>Share Alert</source>
+        <target state="translated">Benachrichtigung teilen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Share Contact">
+        <source>Share Contact</source>
+        <target state="translated">Kontakt teilen</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Share it with your friends">
+        <source>Share it with your friends</source>
+        <target state="translated">Mit Freunden teilen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sign Out">
+        <source>Log out</source>
+        <target state="translated">Abmelden</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Signature">
+        <source>Signature</source>
+        <target state="translated">Signatur</target>
+        <note>Title in signature settings</note>
+      </trans-unit>
+      <trans-unit id="Signature Updated">
+        <source>Signature Updated</source>
+        <target state="translated">Signatur aktualisiert</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Single Password">
+        <source>Single Password</source>
+        <target state="translated">Einzelpasswort</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications">
+        <source>Snooze Notifications</source>
+        <target state="translated">Später erinnern</target>
+        <note>settings option</note>
+      </trans-unit>
+      <trans-unit id="Snoozed for">
+        <source>Snoozed for</source>
+        <target state="translated">Stummgeschaltet bis</target>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+      </trans-unit>
+      <trans-unit id="Snoozed till">
+        <source>Snoozed till</source>
+        <target state="translated">Stummgeschaltet bis</target>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+      </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <target state="translated">Leider können wir in der Beta-Version der iOS-App keine Bestellungen verarbeiten. Vielen Dank für Ihre Teilnahme an unserer Public Beta!</target>
+        <note>Error message for beta users</note>
+      </trans-unit>
+      <trans-unit id="Space Warning">
+        <source>Space warning</source>
+        <target state="translated">Speicherplatz-Warnung</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Spam">
+        <source>Spam</source>
+        <target state="translated">Spam</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Spammed">
+        <source>Spammed</source>
+        <target state="translated">Spam</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!">
+        <source>Srp single password keysalt invalid!</source>
+        <target state="needs-translation">Srp single password keysalt invalid!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Star">
+        <source>Star</source>
+        <target state="translated">Kennzeichnen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Starred">
+        <source>Starred</source>
+        <target state="translated">Gekennzeichnet</target>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+      </trans-unit>
+      <trans-unit id="Start Time">
+        <source>Start Time</source>
+        <target state="translated">Startzeitpunkt</target>
+        <note>settings option (Start Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="State">
+        <source>State</source>
+        <target state="translated">Bundesstaat</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Storage">
+        <source>Storage</source>
+        <target state="translated">Speicher</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Storage Warning">
+        <source>Storage Warning</source>
+        <target state="translated">Speicherplatz-Warnung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption">
+        <source>Stored with zero access encryption</source>
+        <target state="translated">Gespeichert mit Zero-Access-Verschlüsselung</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Street">
+        <source>Street</source>
+        <target state="translated">Straße</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject">
+        <source>Subject</source>
+        <target state="translated">Betreff</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject:">
+        <source>Subject:</source>
+        <target state="translated">Betreff:</target>
+        <note>subject: text when forward</note>
+      </trans-unit>
+      <trans-unit id="Subscription">
+        <source>Subscription</source>
+        <target state="translated">Abonnement</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail">
+        <source>Support ProtonMail</source>
+        <target state="translated">ProtonMail unterstützen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <target state="translated">Unterstützung für %i benutzerdefinierte Domains (z.B. user@yourdomain.com)</target>
+        <note>Service plan capability; i = 2</note>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right">
+        <source>Swipe Left to Right</source>
+        <target state="translated">Von links nach rechts wischen</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left">
+        <source>Swipe Right to Left</source>
+        <target state="translated">Von rechts nach links wischen</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="System can't copy the file">
+        <source>System can't copy the file</source>
+        <target state="translated">System konnte nicht die Datei kopieren</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="TRASH">
+        <source>Trash</source>
+        <target state="translated">Papierkorb</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Take a Photo">
+        <source>Take photo</source>
+        <target state="translated">Foto aufnehmen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <target state="translated">Tippen Sie auf „Trotzdem senden”, um Nachrichten auch ohne Verfallszeitpunkt an diese Empfänger zu senden.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system.">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <target state="translated">Vielen Dank für Ihren Fehlerbericht. Wir haben Ihren Bericht zu unserem Fehlerverfolgungssystem hinzugefügt.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The Password is wrong.">
+        <source>The password is wrong.</source>
+        <target state="translated">Ungültiges Passwort</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline...">
+        <source>The ProtonMail current offline...</source>
+        <target state="translated">ProtonMail ist momentan Offline …</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken.">
+        <source>The username have been taken.</source>
+        <target state="translated">Dieser Benutzername ist bereits vergeben.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid.">
+        <source>The authentication credentials are invalid.</source>
+        <target state="translated">Die Authentifizierungsinformationen sind ungültig.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired.">
+        <source>The authentication token has expired.</source>
+        <target state="translated">Die Authentifizierungskette ist abgelaufen.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The current standard">
+        <source>The current standard</source>
+        <target state="translated">Der aktuelle Standard</target>
+        <note>key size notes</note>
+      </trans-unit>
+      <trans-unit id="The display name is now %@.">
+        <source>The display name is now %@.</source>
+        <target state="translated">Der Anzeigename ist jetzt %@.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken. Please try again.">
+        <source>The draft cache is broken. Please try again.</source>
+        <target state="translated">Der Entwurfs-Zwischenspeicher ist beschädigt. Bitte versuchen Sie es erneut.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!">
+        <source>Sending failed. There was an error with the draft format.</source>
+        <target state="translated">Das Entwurfsformat ist fehlerhaft. Senden fehlgeschlagen!</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available.">
+        <source>The highest level of encryption available.</source>
+        <target state="translated">Die höchstmögliche Verschlüsselung, die zur Verfügung steht.</target>
+        <note>key size note part 1</note>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate">
+        <source>The label name is duplicate</source>
+        <target state="translated">Der Kategoriename wurde dupliziert</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect.">
+        <source>The mailbox password is incorrect.</source>
+        <target state="translated">Das Mailbox-Passwort ist ungültig.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d">
+        <source>The maximum number of distinct recipients is %d</source>
+        <target state="translated">Die maximale Anzahl unterschiedlicher Empfänger beträgt %d</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d.">
+        <source>The maximum number of labels is %d.</source>
+        <target state="translated">Die maximale Kategorieanzahl beträgt %d.</target>
+        <note>*
+ *  LabelsViewController</note>
+      </trans-unit>
+      <trans-unit id="The new password can't empty">
+        <source>The new password can't be empty</source>
+        <target state="translated">Bitte das neue Passwort eingeben</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password can't empty.">
+        <source>The new password can't empty.</source>
+        <target state="translated">Das neue Passwort darf nicht leer sein.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The new password not match">
+        <source>Passwords do not match</source>
+        <target state="translated">Passwörter stimmen nicht überein</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password not match.">
+        <source>The new password not match.</source>
+        <target state="translated">Passwörter stimmen nicht überein.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it.">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <target state="translated">Die optionale Wiederherstellungs-E-Mail-Adresse ermöglicht es Ihnen, das Anmeldepasswort zurückzusetzen, wenn Sie es vergessen.</target>
+        <note>recovery email notes</note>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password.">
+        <source>The password you entered does not match the current password.</source>
+        <target state="translated">Das eingegebene Passwort stimmt nicht mit dem aktuellen Passwort überein.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match.">
+        <source>The passwords you entered do not match.</source>
+        <target state="translated">Die eingegebenen Passwörter stimmen nicht überein.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The private key update failed.">
+        <source>The private key update failed.</source>
+        <target state="translated">Die Aktualisierung des privaten Schlüssels ist fehlgeschlagen.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The request timed out.">
+        <source>The request timed out.</source>
+        <target state="translated">Die Anfrage ist abgelaufen.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <target state="translated">Die Gesamtgröße der Anhänge darf 25MB nicht überschreiten</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The total attachment size cannot exceed 25MB">
+        <source>The total attachment size cannot exceed 25MB</source>
+        <target state="translated">Die Gesamtgröße der Anhänge darf 25MB nicht überschreiten</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The verification email invalid">
+        <source>Invalid verification email</source>
+        <target state="translated">Ungültige Wiederherstellungs-E-Mail</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="The verification failed!">
+        <source>The verification failed!</source>
+        <target state="translated">Die Überprüfung ist fehlgeschlagen!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the app's saved data.">
+        <source>There was an error creating or loading the app's saved data.</source>
+        <target state="translated">Beim Erstellen oder Laden der gespeicherten App-Daten ist ein Fehler aufgetreten.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data.">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <target state="translated">Beim Erstellen oder Laden der gespeicherten Anwendungsdaten ist ein Fehler aufgetreten.</target>
+        <note>
+ &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app.">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <target state="translated">Bitte haben Sie ein wenig Geduld. Bitte die App nicht beenden.</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book.">
+        <source>This contact belongs to your address book.</source>
+        <target state="translated">Dieser Kontakt gehört zu Ihrem Adressbuch.</target>
+        <note>alert desc</note>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="translated">Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="translated">Diese E-Mail scheint von einer ProtonMail-Adresse zu stammen, kam jedoch von außerhalb unseres Systems und entspricht nicht unseren Authentifizierungsanforderungen. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <target state="translated">Diese Nachricht könnte ein Phishing-Versuch sein. Bitte überprüfen Sie den Absender und deren Inhalt, um sicherzustellen, dass diese seriös sind.</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="Title">
+        <source>Title</source>
+        <target state="translated">Titel</target>
+        <note>contacts talbe cell Title title</note>
+      </trans-unit>
+      <trans-unit id="To">
+        <source>To</source>
+        <target state="translated">An</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human.">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
+        <target state="translated">Um den Missbrauch von ProtonMail zu verhindern,&amp;#13;
+ müssen wir sicherstellen, dass Sie ein Mensch sind.</target>
+        <note>human verification notes</note>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="translated">Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="translated">Um Ihr Mailbox-Passwort zurückzusetzen, verwenden Sie bitte die Web-Version von ProtonMail unter protonmail.com.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="To:">
+        <source>To:</source>
+        <target state="translated">An:</target>
+        <note>message To: feild</note>
+      </trans-unit>
+      <trans-unit id="Token expired">
+        <source>Token expired</source>
+        <target state="translated">Token abgelaufen</target>
+        <note>*
+ *  API Error &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Too many recipients">
+        <source>Too many recipients</source>
+        <target state="translated">Zu viele Empfänger</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <target state="translated">TouchID ist nicht aktiviert, aktivieren Sie es in den Systemeinstellungen</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="TouchID not available">
+        <source>TouchID not available</source>
+        <target state="translated">TouchID ist nicht verfügbar</target>
+        <note>settings touchid/faceid error</note>
+      </trans-unit>
+      <trans-unit id="Trash">
+        <source>Trash</source>
+        <target state="translated">Papierkorb</target>
+        <note>mail location desc
+   menu title
+   move action</note>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide">
+        <source>Trouble shooting guide</source>
+        <target state="translated">Anleitung zur Fehlerbehebung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Turn Off">
+        <source>Turn Off</source>
+        <target state="translated">Deaktivieren</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail">
+        <source>Tweet about ProtonMail</source>
+        <target state="translated">Tweete über ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Two Factor Code">
+        <source>Two Factor Code</source>
+        <target state="translated">Zwei-Faktor-Code</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Type casting error">
+        <source>Type casting error</source>
+        <target state="needs-translation">Type casting error</target>
+        <note>Internal type casting error</note>
+      </trans-unit>
+      <trans-unit id="URL">
+        <source>URL</source>
+        <target state="translated">URL</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="USER LOGIN">
+        <source>User log in</source>
+        <target state="translated">Benutzeranmeldung</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server">
+        <source>Unable to connect to the server</source>
+        <target state="translated">Die Verbindung zum Server ist fehlgeschlagen</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <target state="translated">Fehler beim Erstellen einer URL mit folgendem Pfad: %@</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!">
+        <source>Unable to create SRP Client!</source>
+        <target state="translated">Fehler beim Erstellen des SRP-Clients!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message.">
+        <source>Unable to decrypt message.</source>
+        <target state="translated">Nachricht konnte nicht entschlüsselt werden.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline">
+        <source>Unable to edit this message offline</source>
+        <target state="translated">Diese Nachricht kann nicht ohne Internetverbindung bearbeitet werden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to generate hashed password!">
+        <source>Unable to generate hashed password!</source>
+        <target state="translated">Passwort-Hash konnte nicht generiert werden!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts">
+        <source>Unable to get contacts</source>
+        <target state="translated">Fehler beim Laden der Kontakte</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!">
+        <source>Unable to parse authentication info!</source>
+        <target state="translated">Fehler beim Verarbeiten der Authentifizierungsinformationen!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!">
+        <source>Unable to parse authentication token!</source>
+        <target state="translated">Fehler beim Verarbeiten der Authentifizierungskette!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse cached authentication token!">
+        <source>Unable to parse cached authentication token!</source>
+        <target state="translated">Die zwischengespeicherte Authentifizierungskette konnte nicht analysiert werden!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse response">
+        <source>Unable to parse response</source>
+        <target state="translated">Fehler beim Verarbeiten der Antwort</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:&#10;%@">
+        <source>Unable to parse the response object:
+%@</source>
+        <target state="translated">Das Antwortobjekt konnte nicht verarbeitet werden:
+%@</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse token">
+        <source>Unable to parse token</source>
+        <target state="translated">Fehler beim Verarbeiten des Tokens</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to send the email">
+        <source>Unable to send the email.</source>
+        <target state="translated">Fehler beim Senden der Nachricht</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="Undo">
+        <source>Undo</source>
+        <target state="translated">Widerrufen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Unknow Error">
+        <source>Unknown error</source>
+        <target state="translated">Unbekannter Fehler</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unknow file">
+        <source>Unknown file</source>
+        <target state="translated">Unbekannte Datei</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unknown">
+        <source>Unknown</source>
+        <target state="translated">Unbekannt</target>
+        <note>title, default display name</note>
+      </trans-unit>
+      <trans-unit id="Unknown Error">
+        <source>Unknown Error</source>
+        <target state="translated">Unbekannter Fehler</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unkonw Version">
+        <source>Unknown version</source>
+        <target state="translated">Unbekannte Version</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day">
+        <source>Unlimited messages sent/day</source>
+        <target state="translated">Unbegrenzte Anzahl von zu sendenden Nachrichten/Tag</target>
+        <note>Service plan capability;</note>
+      </trans-unit>
+      <trans-unit id="Unread">
+        <source>Unread</source>
+        <target state="translated">Ungelesen</target>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
+      </trans-unit>
+      <trans-unit id="Unsupported file type">
+        <source>Unsupported file type</source>
+        <target state="translated">Nicht unterstützter Dateityp</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Up to %i users">
+        <source>Up to %i users</source>
+        <target state="translated">Bis zu %i Nutzer</target>
+        <note>Service plan capability; i = 6</note>
+      </trans-unit>
+      <trans-unit id="Update">
+        <source>Update</source>
+        <target state="translated">Aktualisieren</target>
+        <note>like top right action text</note>
+      </trans-unit>
+      <trans-unit id="Update Contact">
+        <source>Update Contact</source>
+        <target state="translated">Kontakt aktualisieren</target>
+        <note>Contacts Update contact</note>
+      </trans-unit>
+      <trans-unit id="Update Notification Email">
+        <source>Update Notification Email</source>
+        <target state="translated">Benachrichtigungs-E-Mail-Adresse aktualisieren</target>
+        <note>update notification email error title</note>
+      </trans-unit>
+      <trans-unit id="Update Now">
+        <source>Update Now</source>
+        <target state="translated">Jetzt aktualisieren</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Update Required">
+        <source>Update Required</source>
+        <target state="translated">Aktualisierung erforderlich</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <target state="translated">Auf ein kostenpflichtiges Abonnement umsteigen, um weiteren Funktionen nutzen zu können.</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <target state="translated">Auf ein kostenpflichtiges Abonnement aktualisieren, um von Ihrer Adresse „%@” senden zu können</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features.">
+        <source>Upgrade to get all paid features.</source>
+        <target state="translated">Aktualisieren, um alle kostenpflichtigen Funktionen zu erhalten.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Upload Contacts">
+        <source>Upload Contacts</source>
+        <target state="translated">Kontakte hochladen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <target state="translated">iOS-Kontakte auf ProtonMail hochladen?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Url">
+        <source>Url</source>
+        <target state="translated">URL</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="User already exist!">
+        <source>Username already taken</source>
+        <target state="translated">Benutzer existiert bereits!</target>
+        <note>error when user already exist</note>
+      </trans-unit>
+      <trans-unit id="User is available!">
+        <source>Username is available</source>
+        <target state="translated">Nutzer ist verfügbar!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="User name exist">
+        <source>Username exist</source>
+        <target state="translated">Benutzername vergeben</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="User name invalid">
+        <source>Invalid username</source>
+        <target state="translated">Ungültiger Benutzername</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Username">
+        <source>Username</source>
+        <target state="translated">Benutzername</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code request failed">
+        <source>Verification code request failed</source>
+        <target state="translated">Überprüfen des Verifizierungscodes fehlgeschlagen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code sent">
+        <source>Verification code sent</source>
+        <target state="translated">Bestätigungsschlüssel gesendet</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification error">
+        <source>Verification error</source>
+        <target state="translated">Verifizierungsfehler</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed">
+        <source>Verification of this content’s signature failed</source>
+        <target state="translated">Prüfung der Signatur fehlgeschlagen</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Version %@ %@">
+        <source>Version %@ %@</source>
+        <target state="translated">Version %@ %@</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="View Headers">
+        <source>View Headers</source>
+        <target state="translated">Kopfzeilen anzeigen</target>
+        <note>message details-&gt; more action-&gt; view headers</note>
+      </trans-unit>
+      <trans-unit id="View Plans">
+        <source>View Plans</source>
+        <target state="translated">Abonnements anzeigen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning</source>
+        <target state="translated">Warnhinweis</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <target state="translated">Warnhinweis: Bevor Sie nicht die menschliche Prüfung bestanden haben, können Sie keine E-Mails versenden!</target>
+        <note>human check warning description</note>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <target state="translated">Warnung: Sie haben keine Wiederherstellungs-E-Mail-Adresse eingerichtet, sodass eine Wiederherstellung des Kontos unmöglich ist, falls Sie Ihr Passwort vergessen. Ohne Wiederherstellungs-E-Mail-Adresse fortfahren?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan.">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <target state="translated">Wir haben Ihr Abonnement erfolgreich aktiviert. Bitte starten Sie die App neu, um Ihren neuen Serviceplan nutzen zu können.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above.">
+        <source>We will send a verification code to the cell phone above.</source>
+        <target state="translated">Wir senden einen Verifizierungsschlüssel an das obige Mobilfunkgerät.</target>
+        <note>text field notes</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above.">
+        <source>We will send a verification code to the email address above.</source>
+        <target state="translated">Wir senden einen Verifizierungsschlüssel an die obige E-Mail-Adresse.</target>
+        <note>email field notes</note>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better.">
+        <source>We would like to know what we can do better.</source>
+        <target state="translated">Wir würden gerne wissen, was wir besser machen können.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!">
+        <source>Welcome to ProtonMail</source>
+        <target state="translated">Willkommen bei ProtonMail!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="What people see in the &quot;From&quot; field.">
+        <source>What people see in the "From" field.</source>
+        <target state="translated">Was anderen im Feld „Von” angezeigt wird.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field.">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <target state="translated">Wenn Sie eine E-Mail senden, ist dies der Name, der im Feld „Absender” angezeigt wird.</target>
+        <note>display name notes</note>
+      </trans-unit>
+      <trans-unit id="Work">
+        <source>Work</source>
+        <target state="translated">Arbeit</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Wrong verification code">
+        <source>Wrong verification code</source>
+        <target state="translated">Ungültiger Bestätigungsschlüssel</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for ">
+        <source>Yes, activate it for </source>
+        <target state="translated">Ja, aktivieren für </target>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment">
+        <source>Yes, attach details of payment</source>
+        <target state="translated">Ja, Zahlungsdaten anhängen</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="You are about to launch the web browser and navigate to">
+        <source>You are about to launch the web browser and navigate to</source>
+        <target state="translated">Es wird der Internetbrowser gestartet und Sie können zu folgender Adresse navigieren</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings.">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <target state="translated">Sie können die Wischgesten in den ProtonMail-App-Einstellungen anpassen.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <target state="translated">Hilfe und Unterstützung können Sie auf protonmail.com/support erhalten. Fehler können auch innerhalb der App gemeldet werden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature.">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <target state="translated">Sie können die %@-Adresse nicht als Standard festlegen, da es sich um eine kostenpflichtige Funktion handelt.</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <target state="translated">Sie haben einen Verfallszeitpunkt für diese Nachrichten aktiviert, aber nicht alle Empfänger unterstützen dies. Bitte fügen Sie ein Passwort hinzu und/oder deaktivieren Sie den PGP-Versand, um den Verfall für alle Empfänger zu nutzen.</target>
+        <note>description</note>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!">
+        <source>You have %d new emails!</source>
+        <target state="translated">Sie haben %d neue Nachrichten!</target>
+        <note>Message</note>
+      </trans-unit>
+      <trans-unit id="You have a new email!">
+        <source>You have a new email!</source>
+        <target state="translated">Sie haben eine neue Nachricht!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <target state="translated">Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern?</target>
+        <note>Confirmation message</note>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@).">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <target state="translated">Sie nutzen bereits %1$d%% Ihres Speicherplatzes (%2$@).</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@).">
+        <source>You have used up all of your storage space (%@).</source>
+        <target state="translated">Sie haben Ihren gesamten Speicherplatz (%@) aufgebraucht.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send">
+        <source>You need at least one recipient to send</source>
+        <target state="translated">Sie benötigen mindestens einen Empfänger, um die Nachricht senden zu können</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your Country Code">
+        <source>Your Country Code</source>
+        <target state="translated">Ihre Länder-Vorwahl</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <target state="translated">Ihr Postfach ist nun mit Ende-zu-Ende-Verschlüsselung geschützt. Um automatisch sicher Nachrichten an Freunde zu senden, holen Sie diese zu ProtonMail! Sie können Nachrichten auch manuell verschlüsseln, wenn diese ProtonMail nicht verwenden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages.">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <target state="translated">Ihr neues verschlüsseltes E-Mail-Konto wurde eingerichtet und ist bereit, um verschlüsselte Nachrichten zu empfangen und zu senden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready.">
+        <source>Your new secure email&#13;
+ account is ready.</source>
+        <target state="translated">Ihr neues sicheres E-Mail-&amp;#13;
+Konto ist eingerichtet.</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until">
+        <source>Your plan is currently active until</source>
+        <target state="translated">Ihr Abo ist derzeit aktiv bis</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on">
+        <source>Your plan will automatically renew on</source>
+        <target state="translated">Ihr Abo wird automatisch verlängert am</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated.">
+        <source>Your signature has been updated.</source>
+        <target state="translated">Ihre Signatur wurde aktualisiert.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ZIP">
+        <source>ZIP</source>
+        <target state="translated">ZIP</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>and</source>
+        <target state="translated">und</target>
+        <note>agree check box middle word</note>
+      </trans-unit>
+      <trans-unit id="at">
+        <source>at</source>
+        <target state="translated">um</target>
+        <note>like at 10:00pm</note>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!">
+        <source>attempt remaining until secure data wipe!</source>
+        <target state="translated">verbleibende Versuche bis zur sicheren Datenlöschung!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining">
+        <source>attempts remaining</source>
+        <target state="translated">verbleibende Versuche</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!">
+        <source>attempts remaining until secure data wipe!</source>
+        <target state="translated">verbleibende Versuche bis zur sicheren Datenlöschung!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="close tour">
+        <source>close tour</source>
+        <target state="translated">Einführung schließen</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="days">
+        <source>Days</source>
+        <target state="translated">Tage</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="for one year">
+        <source>for one year</source>
+        <target state="translated">für ein Jahr</target>
+        <note>Buy button second line</note>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <target state="needs-translation">get contacts() failed, peopleOrderedByUsersPreference return null!!</target>
+        <note>contacts api error when fetch</note>
+      </trans-unit>
+      <trans-unit id="hours">
+        <source>Hours</source>
+        <target state="translated">Stunden</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="inline attachments">
+        <source>inline attachments</source>
+        <target state="translated">Inline-Anhänge</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="no object">
+        <source>no object</source>
+        <target state="translated">Kein Objekt</target>
+        <note>no object error, local only , this could be not translated!</note>
+      </trans-unit>
+      <trans-unit id="normal attachments">
+        <source>normal attachments</source>
+        <target state="translated">normale Anhänge</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="privacy policy.">
+        <source>privacy policy.</source>
+        <target state="translated">Datenschutzerklärung</target>
+        <note>agree check box privacy</note>
+      </trans-unit>
+      <trans-unit id="terms and conditions">
+        <source>terms and conditions</source>
+        <target state="translated">Nutzungsbedingungen</target>
+        <note>agree check box terms</note>
+      </trans-unit>
+      <trans-unit id="wrote:">
+        <source>wrote:</source>
+        <target state="translated">schrieb:</target>
+        <note>Title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS">
+        <source>App Extension API is not available in this version of iOS</source>
+        <target state="translated">App-Erweiterungs-API ist in dieser Version von iOS nicht verfügbar</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension">
+        <source>Failed to contact the Password Extension</source>
+        <target state="translated">Die Passworterweiterung konnte nicht aufgerufen werden</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information">
+        <source>Failed to execute script that collects web page information</source>
+        <target state="translated">Skript zum Sammeln von Webseiteninformationen konnte nicht ausgeführt werden</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <target state="translated">Fehler beim Laden der Seite, da das Skript nicht ausgeführt werden konnte</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing">
+        <source>Failed to fill web page because script is missing</source>
+        <target state="translated">Fehler beim Laden der Seite, da das Skript fehlt</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <target state="translated">URL-String aus der Webansicht konnte nicht abgerufen werden. Die Webansicht muss beim Aufruf der Passworterweiterung vollständig geladen sein.</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension">
+        <source>Failed to parse information returned by Password Extension</source>
+        <target state="translated">Die von der Passworterweiterung zurückgegebenen Informationen konnten nicht verarbeitet werden.</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user">
+        <source>Password Extension was cancelled by the user</source>
+        <target state="translated">Passwort-Erweiterung wurde durch den Benutzer abgebrochen</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" source-language="en" target-language="de" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>Siri</source>
+        <target state="translated">Siri</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>Siri</source>
+        <target state="needs-translation">Siri</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

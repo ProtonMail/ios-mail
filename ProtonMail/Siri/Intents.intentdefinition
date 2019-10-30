@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>INEnums</key>
+	<array/>
+	<key>INIntentDefinitionModelVersion</key>
+	<string>1.1</string>
+	<key>INIntentDefinitionNamespace</key>
+	<string>GqNT32</string>
+	<key>INIntentDefinitionSystemVersion</key>
+	<string>19A582a</string>
+	<key>INIntentDefinitionToolsBuildVersion</key>
+	<string>11B41</string>
+	<key>INIntentDefinitionToolsVersion</key>
+	<string>11.2</string>
+	<key>INIntents</key>
+	<array>
+		<dict>
+			<key>INIntentCategory</key>
+			<string>generic</string>
+			<key>INIntentConfigurable</key>
+			<true/>
+			<key>INIntentDescription</key>
+			<string>Wipe all ProtonMail data from device</string>
+			<key>INIntentDescriptionID</key>
+			<string>JzMcTA</string>
+			<key>INIntentManagedParameterCombinations</key>
+			<dict>
+				<key></key>
+				<dict>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Wipe Local Data</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>kdU62L</string>
+					<key>INIntentParameterCombinationUpdatesLinked</key>
+					<true/>
+				</dict>
+			</dict>
+			<key>INIntentName</key>
+			<string>WipeMainKey</string>
+			<key>INIntentParameterCombinations</key>
+			<dict>
+				<key></key>
+				<dict>
+					<key>INIntentParameterCombinationIsPrimary</key>
+					<true/>
+					<key>INIntentParameterCombinationSubtitle</key>
+					<string>Fast remove all locally stored data including access token, messages cache and user account info.</string>
+					<key>INIntentParameterCombinationSubtitleID</key>
+					<string>LUSgmz</string>
+					<key>INIntentParameterCombinationSupportsBackgroundExecution</key>
+					<true/>
+					<key>INIntentParameterCombinationTitle</key>
+					<string>Wipe Local Data</string>
+					<key>INIntentParameterCombinationTitleID</key>
+					<string>iMyVya</string>
+				</dict>
+			</dict>
+			<key>INIntentResponse</key>
+			<dict>
+				<key>INIntentResponseCodes</key>
+				<array>
+					<dict>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>ProtonMail app is clear!</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>8MPEXy</string>
+						<key>INIntentResponseCodeName</key>
+						<string>success</string>
+						<key>INIntentResponseCodeSuccess</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>INIntentResponseCodeFormatString</key>
+						<string>Sorry, something went wrong and ProtonMail data is still on device</string>
+						<key>INIntentResponseCodeFormatStringID</key>
+						<string>Unxj5F</string>
+						<key>INIntentResponseCodeName</key>
+						<string>failure</string>
+					</dict>
+				</array>
+			</dict>
+			<key>INIntentTitle</key>
+			<string>Wipe Local Data</string>
+			<key>INIntentTitleID</key>
+			<string>KemFRI</string>
+			<key>INIntentType</key>
+			<string>Custom</string>
+			<key>INIntentVerb</key>
+			<string>Do</string>
+		</dict>
+	</array>
+	<key>INTypes</key>
+	<array/>
+</dict>
+</plist>

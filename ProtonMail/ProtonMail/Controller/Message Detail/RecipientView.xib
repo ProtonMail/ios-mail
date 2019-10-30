@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RecipientView" customModule="ProtonMail" customModuleProvider="target">
+            <connections>
+                <outlet property="tableView" destination="bbH-ul-OfE" id="UfN-3z-gET"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="bbH-ul-OfE">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="4E1-tf-FQv"/>
+                        <outlet property="delegate" destination="-1" id="3rq-Vl-Xgj"/>
+                    </connections>
+                </tableView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="bbH-ul-OfE" secondAttribute="bottom" id="28h-LJ-t5h"/>
+                <constraint firstAttribute="trailing" secondItem="bbH-ul-OfE" secondAttribute="trailing" id="OFS-2g-GPt"/>
+                <constraint firstItem="bbH-ul-OfE" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="UFG-xI-8dG"/>
+                <constraint firstItem="bbH-ul-OfE" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="woD-Nb-hPu"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <point key="canvasLocation" x="18" y="102"/>
+        </view>
+    </objects>
+</document>

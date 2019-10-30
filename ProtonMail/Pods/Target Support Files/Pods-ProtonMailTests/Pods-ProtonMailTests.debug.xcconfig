@@ -1,0 +1,13 @@
+ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES
+FRAMEWORK_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking" "${PODS_CONFIGURATION_BUILD_DIR}/Groot" "${PODS_CONFIGURATION_BUILD_DIR}/OHHTTPStubs"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/Groot/Groot.framework/Headers" "${PODS_CONFIGURATION_BUILD_DIR}/OHHTTPStubs/OHHTTPStubs.framework/Headers" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/OpenPGP" "${PODS_ROOT}/Headers/Public/OpenSSL"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/../../OpenPGP/libs" "${PODS_ROOT}/OpenSSL/lib"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking/AFNetworking.framework/Headers" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/Groot/Groot.framework/Headers" -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/OpenPGP" -isystem "${PODS_ROOT}/Headers/Public/OpenSSL" -isystem "${PODS_CONFIGURATION_BUILD_DIR}/OHHTTPStubs/OHHTTPStubs.framework/Headers" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/AFNetworking" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/Groot" -iframework "${PODS_CONFIGURATION_BUILD_DIR}/OHHTTPStubs"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"OpenPGP" -l"bz2" -l"crypto" -l"ssl" -l"z" -framework "AFNetworking" -framework "CFNetwork" -framework "CoreData" -framework "CoreGraphics" -framework "Foundation" -framework "Groot" -framework "MobileCoreServices" -framework "OHHTTPStubs" -framework "Security" -framework "SystemConfiguration"
+OTHER_SWIFT_FLAGS = $(inherited) -D COCOAPODS
+PODS_BUILD_DIR = ${BUILD_DIR}
+PODS_CONFIGURATION_BUILD_DIR = ${PODS_BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
+PODS_PODFILE_DIR_PATH = ${SRCROOT}/.
+PODS_ROOT = ${SRCROOT}/Pods

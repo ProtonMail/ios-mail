@@ -1,0 +1,3855 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" source-language="en" target-language="zh-Hant" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>Keymaker</source>
+        <target state="needs-translation">Keymaker</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" source-language="en" target-language="zh-Hant" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>ProtonMail</source>
+        <target state="translated">ProtonMail</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>PushServiceDev</source>
+        <target state="needs-translation">PushServiceDev</target>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription">
+        <source>Required for attaching media to the email.</source>
+        <target state="translated">必需將媒體附加到電子郵件。</target>
+        <note>Privacy - Media Library Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <target state="translated">必需將圖片附加到電子郵件。</target>
+        <note>Privacy - Camera Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription">
+        <source>Required for email autocomplete.</source>
+        <target state="translated">必需讓電子郵件自動完成。</target>
+        <note>Privacy - Contacts Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <target state="translated">允許您快速且安全的解鎖應用程式。</target>
+        <note>Privacy - Face ID Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription">
+        <source>Required for saving image attachments to photo library.</source>
+        <target state="translated">必需將圖片附件保存到照片庫。</target>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription">
+        <source>Required for attaching photos to the email.</source>
+        <target state="translated">必需將圖片附加到電子郵件。</target>
+        <note>Privacy - Photo Library Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" source-language="en" target-language="zh-Hant" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="%@ storage capacity">
+        <source>%@ storage capacity</source>
+        <target state="translated">%@ 存儲容量</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="%d Member">
+        <source>%d Member</source>
+        <target state="translated">%d 位成員</target>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Members">
+        <source>%d Members</source>
+        <target state="translated">%d 位成員</target>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Minute">
+        <source>%d minute</source>
+        <target state="translated">%d 分鐘</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Minutes">
+        <source>%d minutes</source>
+        <target state="translated">%d 分鐘</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Selected">
+        <source>%d Selected</source>
+        <target state="translated">已選擇 %d 個</target>
+        <note>The string that describes how many contact groups are currently selected</note>
+      </trans-unit>
+      <trans-unit id="%i email address">
+        <source>%i email address</source>
+        <target state="translated">%i電子郵件地址</target>
+        <note>Service plan capability; i = 1</note>
+      </trans-unit>
+      <trans-unit id="%i email addresses">
+        <source>%i email addresses</source>
+        <target state="translated">%i電子郵件地址</target>
+        <note>Service plan capability; i = 5 or 50</note>
+      </trans-unit>
+      <trans-unit id="(2048 bit)">
+        <source>(2048 bit)</source>
+        <target state="translated">(2048 位元)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(4096 bit)">
+        <source>(4096 bit)</source>
+        <target state="translated">(4096 位元)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(total)">
+        <source>(total)</source>
+        <target state="translated">(總計)</target>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+      </trans-unit>
+      <trans-unit id="**********">
+        <source>**********</source>
+        <target state="translated">**********</target>
+        <note>secret</note>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL">
+        <source>*OPTIONAL</source>
+        <target state="translated">* 選擇性的</target>
+        <note>optional text field</note>
+      </trans-unit>
+      <trans-unit id="+ Drop here to add as attachment">
+        <source>+ Drop here to add as attachment</source>
+        <target state="translated">+ 拖放到這裡來新增附件</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="/user">
+        <source>/user</source>
+        <target state="translated">/使用者</target>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+      </trans-unit>
+      <trans-unit id="2FA failed. Please try to login again.">
+        <source>2FA failed. Please try to login again.</source>
+        <target state="translated">2FA 驗證失敗。請嘗試重新登入。</target>
+        <note>2fa verification failed</note>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <target state="needs-translation">&lt;no object&gt;</target>
+        <note>default empty object</note>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels">
+        <source>A message cannot have more than 5 labels</source>
+        <target state="translated">郵件的標籤不能超過5個</target>
+        <note>*
+ *  LabelTableViewCell</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version.">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <target state="translated">新版的Protonmail已經在App Store上架，請更新到最新版本。</target>
+        <note>"Alert" = "Alert";</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to the latest version.">
+        <source>A new version of ProtonMail app is available. Please update to the latest version.</source>
+        <target state="translated">新版的 ProtonMail 應用程式已經發布，請更新到最新版本。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <target state="translated">使用此功能需要付費的 ProtonMail 計畫</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <target state="translated">尚未設置密碼，請至系統設定中啟用</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="API Server not reachable...">
+        <source>API Server not reachable...</source>
+        <target state="translated">無法連接到 API 伺服器…</target>
+        <note>when server not reachable</note>
+        <alt-trans>
+          <target>無法連接到API伺服器‧‧‧</target>
+        </alt-trans>
+        <alt-trans>
+          <target>無法連接到API伺服器</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ARCHIVE">
+        <source>Archive</source>
+        <target state="translated">封存</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <target state="translated">本帳號因有未付款項而被停用，請登入 https://protonmail.com 進行付款。</target>
+        <note>error message</note>
+        <alt-trans>
+          <target>本帳戶因欠費而被停用。請登入protonmail.com進行付款。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information.">
+        <source>Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <target state="translated">由於不付款, 無法訪問此帳戶。
+
+請訪問 &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;我們的知識庫&lt;/a&gt; 瞭解更多資訊。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Account password invalid">
+        <source>Invalid account password</source>
+        <target state="translated">無效的郵箱密碼</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Add">
+        <source>Add</source>
+        <target state="translated">新增</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Anniversary">
+        <source>Add Anniversary</source>
+        <target state="translated">新增紀念日</target>
+        <note>new contacts add Anniversary</note>
+      </trans-unit>
+      <trans-unit id="Add Birthday">
+        <source>Add Birthday</source>
+        <target state="translated">新增生日</target>
+        <note>new contacts add Birthday</note>
+      </trans-unit>
+      <trans-unit id="Add Contact">
+        <source>Add Contact</source>
+        <target state="translated">新增聯絡人</target>
+        <note>Contacts add new contact</note>
+      </trans-unit>
+      <trans-unit id="Add Custom Label">
+        <source>Add Custom Label</source>
+        <target state="translated">新增自定義標籤</target>
+        <note>add custom label type action</note>
+      </trans-unit>
+      <trans-unit id="Add Folder">
+        <source>Add Folder</source>
+        <target state="translated">新增資料夾</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Add Gender">
+        <source>Add Gender</source>
+        <target state="translated">新增性別</target>
+        <note>new contacts add Gender</note>
+      </trans-unit>
+      <trans-unit id="Add Group">
+        <source>Add Group</source>
+        <target state="translated">新增群組</target>
+        <note>The title for the contact group creation view</note>
+      </trans-unit>
+      <trans-unit id="Add Label">
+        <source>Add Label</source>
+        <target state="translated">新增標籤</target>
+        <note>add label action</note>
+      </trans-unit>
+      <trans-unit id="Add New Folder">
+        <source>Add New Folder</source>
+        <target state="translated">新增資料夾</target>
+        <note>add a new folder</note>
+        <alt-trans>
+          <target>新增新資料夾</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add New Label">
+        <source>Add New Label</source>
+        <target state="translated">新增標籤</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add Nickname">
+        <source>Add Nickname</source>
+        <target state="translated">新增暱稱</target>
+        <note>new contacts add Nickname</note>
+      </trans-unit>
+      <trans-unit id="Add Organization">
+        <source>Add Organization</source>
+        <target state="translated">新增公司單位</target>
+        <note>new contacts add Organization</note>
+        <alt-trans>
+          <target>新增組織</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add Photo">
+        <source>Add Photo</source>
+        <target state="translated">新增照片</target>
+        <note>The button text for add profile picture</note>
+      </trans-unit>
+      <trans-unit id="Add Star">
+        <source>Add Star</source>
+        <target state="translated">加上星號</target>
+        <note>mark message star</note>
+      </trans-unit>
+      <trans-unit id="Add Title">
+        <source>Add Title</source>
+        <target state="translated">新增頭銜</target>
+        <note>new contacts add Title</note>
+      </trans-unit>
+      <trans-unit id="Add new address">
+        <source>Add new address</source>
+        <target state="translated">新增地址</target>
+        <note>add new address action</note>
+      </trans-unit>
+      <trans-unit id="Add new custom field">
+        <source>Add new custom field</source>
+        <target state="translated">新增自訂欄位</target>
+        <note>new custom field action</note>
+      </trans-unit>
+      <trans-unit id="Add new email">
+        <source>Add new email</source>
+        <target state="translated">新增郵件</target>
+        <note>new email action</note>
+      </trans-unit>
+      <trans-unit id="Add new field">
+        <source>Add new field</source>
+        <target state="translated">新增欄位</target>
+        <note>new field action</note>
+      </trans-unit>
+      <trans-unit id="Add new phone number">
+        <source>Add new phone number</source>
+        <target state="translated">新增手機號碼</target>
+        <note>new phone action</note>
+      </trans-unit>
+      <trans-unit id="Add new url">
+        <source>Add new url</source>
+        <target state="translated">新增網址</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Add to contacts">
+        <source>Add to contacts</source>
+        <target state="translated">新增至通訊錄</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Address">
+        <source>Address</source>
+        <target state="translated">地址</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Alert">
+        <source>Alert</source>
+        <target state="translated">警告</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="All Mail">
+        <source>All Mail</source>
+        <target state="translated">所有郵件</target>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="All contacts are imported">
+        <source>All contacts are imported</source>
+        <target state="translated">聯絡人已匯入</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>聯絡人已全數匯入</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Also Archive">
+        <source>Also Archive</source>
+        <target state="translated">同時封存</target>
+        <note>archive when apply label</note>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password.">
+        <source>Also used to reset a forgotten password.</source>
+        <target state="translated">並用於重置密碼。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Anniversary">
+        <source>Anniversary</source>
+        <target state="translated">紀念日</target>
+        <note>contacts talbe cell Anniversary title</note>
+      </trans-unit>
+      <trans-unit id="App is locked">
+        <source>App is locked</source>
+        <target state="translated">應用程式已鎖定</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee">
+        <source>Apple in-app purchase fee</source>
+        <target state="translated">Apple應用內購費用</target>
+        <note>Price breakdown</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase.">
+        <source>Apple informed us they could not process the purchase.</source>
+        <target state="translated">Apple通知我們, 他們無法處理購買事宜。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <target state="translated">Apple 通知我们您已升级了服务计划, 但没有说明您要升级的是 protonmail 帐户中的哪一个.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <target state="translated">Apple 通知我们您已升级服务计划, 但却缺少一些技术数据。请填写 bugreport, 我们的客户支持团队将与您联系。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <target state="translated">苹果告诉我们你已经升级了服务计划，但我们检测到您自那时以来退出登陆了该帐户。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apply">
+        <source>Apply</source>
+        <target state="translated">套用</target>
+        <note>Apply action</note>
+      </trans-unit>
+      <trans-unit id="Apply Labels">
+        <source>Apply Labels</source>
+        <target state="translated">套用標籤</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Archive">
+        <source>Archive</source>
+        <target state="translated">封存</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Archived">
+        <source>Archived</source>
+        <target state="translated">已封存</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Are you sure you want to logout?">
+        <source>Are you sure you want to logout?</source>
+        <target state="translated">您確定要登出嗎？</target>
+        <note>Alert to confirm logout</note>
+      </trans-unit>
+      <trans-unit id="Attachment imported">
+        <source>Attachment imported</source>
+        <target state="translated">附件已匯入</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="Attachments">
+        <source>Attachments</source>
+        <target state="translated">附件</target>
+        <note>VoiceOver: email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Authentication">
+        <source>Authentication</source>
+        <target state="translated">驗證</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password">
+        <source>Authentication failed: wrong username or password.</source>
+        <target state="translated">登入失敗！使用者名稱或密碼錯誤</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>驗證失敗！使用者名稱或密碼錯誤</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <target state="final">驗證失敗</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed. Please try to login again.">
+        <source>Authentication failed. Please try to login again.</source>
+        <target state="translated">驗證失敗，請重新登入。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <target state="translated">無法訪問身份驗證權杖, 因為應用程式已鎖定</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <target state="final">系統已取消驗證</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto lock time</source>
+        <target state="final">自動鎖定時間</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto show images</source>
+        <target state="final">自動開啟圖片</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <target state="final">返回</target>
+        <note>top left back button</note>
+      </trans-unit>
+      <trans-unit id="Bad auth cache">
+        <source>Bad auth cache</source>
+        <target state="translated">錯誤的驗證緩存</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <target state="final">參數錯誤</target>
+        <note>Error title</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@">
+        <source>Bad parameter: %@</source>
+        <target state="translated">參數錯誤： %@</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bad path">
+        <source>Bad path</source>
+        <target state="translated">錯誤的路徑</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Bad response">
+        <source>Bad response</source>
+        <target state="translated">錯誤回應</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bcc">
+        <source>BCC</source>
+        <target state="translated">密件副本</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bcc:">
+        <source>Bcc:</source>
+        <target state="translated">密件副本：</target>
+        <note>message Bcc: feild</note>
+      </trans-unit>
+      <trans-unit id="Birthday">
+        <source>Birthday</source>
+        <target state="translated">生日</target>
+        <note>contacts talbe cell Birthday title</note>
+      </trans-unit>
+      <trans-unit id="Bug Description">
+        <source>Bug Description</source>
+        <target state="translated">錯誤描述</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bug Report Received">
+        <source>Bug report received</source>
+        <target state="translated">已收到您的錯誤回報</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Buy More Credits">
+        <source>Buy More Credits</source>
+        <target state="translated">購買更多點數</target>
+        <note>Link to More Credits screen</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our">
+        <source>By using protonmail, you agree to our</source>
+        <target state="translated">使用 ProtonMail，您將同意我們的</target>
+        <note>agree check box first part words</note>
+        <alt-trans>
+          <target>使用ProtonMail，您將同意我們的</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our %@ and %@.">
+        <source>By using protonmail, you agree to our %1$@ and %2$@.</source>
+        <target state="translated">使用 ProtonMail 即表示您同意我們的 %1$@ 和 %2$@。</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="CAPTCHA">
+        <source>CAPTCHA</source>
+        <target state="translated">驗證碼</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Call Contact">
+        <source>Call Contact</source>
+        <target state="translated">呼叫聯絡人</target>
+        <note>Call the contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup.">
+        <source>Can take several minutes to setup.</source>
+        <target state="translated">這需要幾分鐘進行設置。</target>
+        <note>key size note part 2</note>
+      </trans-unit>
+      <trans-unit id="Can't copy the file">
+        <source>Can't copy the file</source>
+        <target state="translated">無法複製檔案</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client">
+        <source>Can't create a SRP Client</source>
+        <target state="translated">無法建立一個 SRP 用戶端</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!">
+        <source>Can't create a SRP verifier!</source>
+        <target state="translated">無法建立一個 SRP 驗證程式！</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!">
+        <source>Can't decrypt this attachment!</source>
+        <target state="translated">無法解密這個附件！</target>
+        <note>When quick look attachment but can't decrypt it!</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group">
+        <source>Can't delete contact group</source>
+        <target state="translated">無法刪除連絡人群組</target>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API">
+        <source>Can't delete contact group through API</source>
+        <target state="translated">無法通過 API 刪除連絡人群組</target>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again.">
+        <source>Can't download message body, please try again.</source>
+        <target state="translated">無法下載信件內容，請再次嘗試。</target>
+        <note>*
+ *  MessageViewController</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again.">
+        <source>Can't download message body. Please try again.</source>
+        <target state="translated">無法下載信件內容，請再次嘗試。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't fetch contact groups">
+        <source>Can't fetch contact groups</source>
+        <target state="translated">無法獲取連絡人群組</target>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!">
+        <source>Can't find the clicked message please try again!</source>
+        <target state="translated">您所查看的信件不存在，請重新嘗試！</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Can't find the selected message. Please try again.">
+        <source>Can't find the selected message. Please try again.</source>
+        <target state="translated">找不到已選取的信件。請再試一次。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!">
+        <source>Can't find this attachment!</source>
+        <target state="translated">找不到這個附件！</target>
+        <note>when quick look attachment but can't find the data</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!">
+        <source>Can't get a Modulus ID!</source>
+        <target state="translated">找不到模組 ID！</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!">
+        <source>Can't get a Moduls!</source>
+        <target state="translated">找不到模組！</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info">
+        <source>Can't get user auth info</source>
+        <target state="translated">無法獲取使用者認證資訊</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't load share content!">
+        <source>Can't load share content!</source>
+        <target state="translated">無法載入共用內容！</target>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+      </trans-unit>
+      <trans-unit id="Can't load the file">
+        <source>Can't load the file</source>
+        <target state="translated">無法載入檔案</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body">
+        <source>Can't not find the value from the response body</source>
+        <target state="translated">無法找到回覆正文內相對應的值</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't open the file">
+        <source>Can't open the file</source>
+        <target state="translated">檔案無法打開！</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't save contact group">
+        <source>Can't save contact group</source>
+        <target state="translated">無法保存連絡人群組</target>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through the API">
+        <source>Can't update contact group through the API</source>
+        <target state="translated">無法通過 API 更新連絡人群組</target>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Cancel">
+        <source>Cancel</source>
+        <target state="translated">取消</target>
+        <note>Cancel action</note>
+      </trans-unit>
+      <trans-unit id="Cancel Check">
+        <source>Cancel Check</source>
+        <target state="translated">取消檢查</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Cancelling">
+        <source>Cancelling</source>
+        <target state="translated">正在取消</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!">
+        <source>Unable to decrypt this attachment.</source>
+        <target state="translated">無法解密這個附件。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cc">
+        <source>CC</source>
+        <target state="translated">副本</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cc:">
+        <source>Cc:</source>
+        <target state="translated">副本：</target>
+        <note>message Cc: feild</note>
+      </trans-unit>
+      <trans-unit id="Cell phone number">
+        <source>Cell phone number</source>
+        <target state="translated">手機號碼</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Change Login Password">
+        <source>Change Login Password</source>
+        <target state="translated">更改登入密碼</target>
+        <note>change password input label</note>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password">
+        <source>Change Mailbox Password</source>
+        <target state="translated">更改信箱密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change Password">
+        <source>Change password</source>
+        <target state="translated">更改密碼</target>
+        <note>update password error title</note>
+      </trans-unit>
+      <trans-unit id="Change Pin">
+        <source>Change PIN</source>
+        <target state="translated">變更 Pin 碼</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Change Single Password">
+        <source>Change Single Password</source>
+        <target state="translated">修改密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change default address to ..">
+        <source>Change default address to...</source>
+        <target state="translated">修改預設郵件地址為 ‧‧‧</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change left swipe action">
+        <source>Change left swipe action</source>
+        <target state="translated">更改往左滑動操作</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change right swipe action">
+        <source>Change right swipe action</source>
+        <target state="translated">更改往右滑動操作</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change sender address to ..">
+        <source>Change sender address to...</source>
+        <target state="translated">更改寄件人地址為‧‧</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Check Again">
+        <source>Check Again</source>
+        <target state="translated">再次檢查</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Checking ....">
+        <source>Checking...</source>
+        <target state="translated">正在檢查 ‧‧‧‧</target>
+        <note>loading message</note>
+      </trans-unit>
+      <trans-unit id="Choose a Password">
+        <source>Choose a Password</source>
+        <target state="translated">設置一個密碼</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="City">
+        <source>City</source>
+        <target state="translated">城市</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache">
+        <source>Clear local message cache</source>
+        <target state="translated">清除本機訊息快取</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Close">
+        <source>Close</source>
+        <target state="translated">關閉</target>
+        <note>general close action</note>
+      </trans-unit>
+      <trans-unit id="Closing">
+        <source>Closing</source>
+        <target state="translated">關閉</target>
+        <note>the message will show when closing a draft from the share extension</note>
+      </trans-unit>
+      <trans-unit id="Compose">
+        <source>Compose</source>
+        <target state="translated">撰寫</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Compose to">
+        <source>Compose to</source>
+        <target state="translated">撰寫到</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm">
+        <source>Confirm</source>
+        <target state="translated">確認</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password">
+        <source>Confirm login password</source>
+        <target state="translated">確認登入密碼</target>
+        <note>"Login Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password">
+        <source>Confirm mailbox password</source>
+        <target state="translated">確認郵箱密碼</target>
+        <note>"Mailbox Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Password">
+        <source>Confirm password</source>
+        <target state="translated">確認密碼</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm new login password">
+        <source>Confirm new login password</source>
+        <target state="translated">確認新密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password">
+        <source>Confirm new mailbox password</source>
+        <target state="translated">確認新的郵箱密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new password">
+        <source>Confirm new password</source>
+        <target state="translated">確認新密碼</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report">
+        <source>Confirm phishing report</source>
+        <target state="translated">確認回報為網路釣魚</target>
+        <note>alert title</note>
+      </trans-unit>
+      <trans-unit id="Confirmation">
+        <source>Confirmation</source>
+        <target state="translated">確認</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Congratulations!">
+        <source>Congratulations!</source>
+        <target state="translated">恭喜！</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Contact Details">
+        <source>Contact Details</source>
+        <target state="translated">聯絡資訊</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team">
+        <source>Contact the ProtonMail team</source>
+        <target state="translated">聯繫 ProtonMail 團隊</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>請聯繫ProtonMail團隊</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Contacts">
+        <source>Contacts</source>
+        <target state="translated">通訊錄</target>
+        <note>Action and title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Continue">
+        <source>Continue</source>
+        <target state="translated">繼續</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Continue and Don't ask again">
+        <source>Continue and Don't ask again</source>
+        <target state="translated">繼續並且不要再詢問</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Copy address">
+        <source>Copy address</source>
+        <target state="translated">複製郵箱地址</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Copy name">
+        <source>Copy name</source>
+        <target state="translated">複製名稱</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Could not connect to Store. Please try again later.">
+        <source>Could not connect to Store. Please try again later.</source>
+        <target state="translated">無法連接到應用商店。請稍後再試。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Country">
+        <source>Country</source>
+        <target state="translated">國家</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Create">
+        <source>Create</source>
+        <target state="translated">建立</target>
+        <note>top right action text</note>
+      </trans-unit>
+      <trans-unit id="Create Account">
+        <source>Create Account</source>
+        <target state="translated">建立帳戶</target>
+        <note>Create account button</note>
+      </trans-unit>
+      <trans-unit id="Create User failed. Please try again.">
+        <source>Create User failed. Please try again.</source>
+        <target state="translated">使用者建立失敗，請重試。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Create a new account">
+        <source>Create a new account</source>
+        <target state="translated">創建一個新的帳戶</target>
+        <note>Signup top title</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Long press on a message for all options.">
+        <source>Create and add Labels to organize your inbox. Long press on a message for all options.</source>
+        <target state="translated">建立並增加標籤來組織您的收件匣。長按郵件可以查看所有選項。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options.">
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <target state="translated">建立並且為您的收件匣建立標籤。長按郵件可以查看所有選項。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Create user failed">
+        <source>Create user failed</source>
+        <target state="translated">使用者建立失敗</target>
+        <note>error message title when create new user</note>
+      </trans-unit>
+      <trans-unit id="Current Language is: ">
+        <source>Current Language is: </source>
+        <target state="translated">當前語言為： </target>
+        <note>Change language title</note>
+        <alt-trans>
+          <target>目前語言為： </target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Current login password">
+        <source>Current login password</source>
+        <target state="translated">現有的登入密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Current password">
+        <source>Current password</source>
+        <target state="translated">現在密碼</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Custom">
+        <source>Custom</source>
+        <target state="translated">自訂</target>
+        <note>action sheet option
+   contacts default label type</note>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX">
+        <source>DECRYPT MAILBOX</source>
+        <target state="translated">解密郵箱</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="DRAFTS">
+        <source>Drafts</source>
+        <target state="translated">草稿</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Date:">
+        <source>Date:</source>
+        <target state="translated">日期：</target>
+        <note>message Date: text</note>
+      </trans-unit>
+      <trans-unit id="Date: %@">
+        <source>Date: %@</source>
+        <target state="translated">日期： %@</target>
+        <note>like Date: 2017-10-10</note>
+      </trans-unit>
+      <trans-unit id="Debug">
+        <source>Debug</source>
+        <target state="translated">抓臭蟲</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Decrypt">
+        <source>Decrypt</source>
+        <target state="translated">解密</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed. Please try again.">
+        <source>Decrypt token failed. Please try again.</source>
+        <target state="translated">Token 解密失敗，請重試。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Decryption error">
+        <source>Decryption error</source>
+        <target state="translated">解密發生錯誤</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed">
+        <source>Decryption of this content failed</source>
+        <target state="translated">內容解密失敗</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Default">
+        <source>Default</source>
+        <target state="translated">預設</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Default error. Please try again.">
+        <source>Default error. Please try again.</source>
+        <target state="translated">預設錯誤。請重試。</target>
+        <note>error message when create new user</note>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date">
+        <source>Define Expiration Date</source>
+        <target state="translated">設定有效日期</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)">
+        <source>Define hint (Optional)</source>
+        <target state="translated">設定密碼提示（可選）</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Password">
+        <source>Define password</source>
+        <target state="translated">設置密碼</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Delete">
+        <source>Delete</source>
+        <target state="translated">刪除</target>
+        <note>general delete action</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact">
+        <source>Delete Contact</source>
+        <target state="translated">刪除聯絡人</target>
+        <note>Title-Contacts</note>
+        <alt-trans>
+          <target>刪除連絡人</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group">
+        <source>Delete Contact Group</source>
+        <target state="translated">刪除連絡人群組</target>
+        <note>The description of the button for deleting the contact group</note>
+      </trans-unit>
+      <trans-unit id="Deleted">
+        <source>Deleted</source>
+        <target state="translated">已刪除</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Details">
+        <source>Details</source>
+        <target state="translated">詳情</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Discard changes">
+        <source>Discard changes</source>
+        <target state="translated">放棄變更</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Discard draft">
+        <source>Discard draft</source>
+        <target state="translated">放棄草稿</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Display Name">
+        <source>Display name</source>
+        <target state="translated">顯示名稱</target>
+        <note>Title in settings</note>
+      </trans-unit>
+      <trans-unit id="Display Name Updated">
+        <source>Display name updated</source>
+        <target state="translated">顯示名稱已更新</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Display name">
+        <source>Display name</source>
+        <target state="translated">顯示名稱</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="DisplayName">
+        <source>Display name</source>
+        <target state="translated">顯示名稱</target>
+        <note>Title in display name settings</note>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for ">
+        <source>Do you want to activate the purchased service plan for </source>
+        <target state="translated">是否要啟動購買的服務方案 </target>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?">
+        <source>Do you want to cancel the process?</source>
+        <target state="translated">您是否要取消此程序？</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?">
+        <source>Do you want to save the unsaved changes?</source>
+        <target state="translated">您想要保存此次的變更嗎？</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>您想要保存這次的變更嗎？</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Don't Show Again">
+        <source>Don't Show Again</source>
+        <target state="translated">不要再顯示</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't remind me again">
+        <source>Don't remind me again</source>
+        <target state="translated">不要再提醒我</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Done">
+        <source>Done</source>
+        <target state="translated">已完成</target>
+        <note>Done action</note>
+      </trans-unit>
+      <trans-unit id="Double tap to setup">
+        <source>Double tap to setup</source>
+        <target state="translated">雙擊螢幕以進行設置</target>
+        <note>VoiceOver action description</note>
+      </trans-unit>
+      <trans-unit id="Draft">
+        <source>Draft</source>
+        <target state="translated">草稿</target>
+        <note>Action
+   mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Drafts">
+        <source>Drafts</source>
+        <target state="translated">草稿</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Edit">
+        <source>Edit</source>
+        <target state="translated">編輯</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Edit Contact">
+        <source>Edit contact</source>
+        <target state="translated">編輯聯絡人</target>
+        <note>*
+ *  Edit Contact view controller</note>
+      </trans-unit>
+      <trans-unit id="Edit Folder">
+        <source>Edit Folder</source>
+        <target state="translated">編輯資料夾</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Group">
+        <source>Edit Group</source>
+        <target state="translated">編輯群組</target>
+        <note>The title for the contact group editing view</note>
+      </trans-unit>
+      <trans-unit id="Edit Label">
+        <source>Edit Label</source>
+        <target state="translated">編輯標籤</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Photo">
+        <source>Edit Photo</source>
+        <target state="translated">編輯相片</target>
+        <note>The button text for edit profile picture</note>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature">
+        <source>Edit mobile signature</source>
+        <target state="translated">編輯行動裝置簽名檔</target>
+        <note>title</note>
+        <alt-trans>
+          <target>編輯行動版簽名檔</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Edit signature">
+        <source>Edit signature</source>
+        <target state="translated">編輯簽名檔</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Email">
+        <source>Email</source>
+        <target state="translated">信箱</target>
+        <note>default vcard types</note>
+        <alt-trans>
+          <target>電子郵件</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Email Addresses">
+        <source>Email Addresses</source>
+        <target state="translated">電子郵件地址</target>
+        <note>contact detail view, email addresses section title</note>
+      </trans-unit>
+      <trans-unit id="Email Contact">
+        <source>Email Contact</source>
+        <target state="translated">郵件聯絡人</target>
+        <note>Send an email to the current contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Email Verification">
+        <source>Email Verification</source>
+        <target state="translated">電子信箱驗證</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Email address">
+        <source>Email address</source>
+        <target state="translated">電子郵件地址</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Email address invalid">
+        <source>Email address invalid</source>
+        <target state="translated">無效的電子郵件地址</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Email default signature">
+        <source>Email default signature</source>
+        <target state="translated">預設簽名檔</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Email domain invalid">
+        <source>Invalid email domain</source>
+        <target state="translated">無效的電子郵件域名</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty folder</source>
+        <target state="final">清空垃圾桶</target>
+        <note>empty folder, for spam and trash</note>
+        <alt-trans>
+          <target>空的資料夾</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature">
+        <source>Enable Default Signature</source>
+        <target state="translated">啟用預設簽名檔</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable FaceID">
+        <source>Enable FaceID</source>
+        <target state="translated">啟用 FaceID</target>
+        <note>settings protection section title</note>
+        <alt-trans>
+          <target>啟用FaceID</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature">
+        <source>Enable Mobile Signature</source>
+        <target state="translated">啟用行動裝置簽名檔</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>啟用行動版簽名檔</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email">
+        <source>Enable Notification Email</source>
+        <target state="translated">啟用信件通知</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>啟用電子郵件推播</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection">
+        <source>Enable PIN protection</source>
+        <target state="translated">啟用 PIN 碼保護</target>
+        <note>settings protection section title</note>
+        <alt-trans>
+          <target>啟用PIN碼保護</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Enable TouchID">
+        <source>Enable TouchID</source>
+        <target state="translated">使用TouchID</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details">
+        <source>Encrypted Contact Details</source>
+        <target state="translated">受加密保護的聯絡人資訊</target>
+        <note>contact section title</note>
+        <alt-trans>
+          <target>加密聯絡人資訊</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside">
+        <source>Encrypted for outside</source>
+        <target state="translated">為外部郵件加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply">
+        <source>Encrypted for outside reply</source>
+        <target state="translated">為回覆給外部的郵件加密</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>為外部的回覆郵件加密</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside">
+        <source>Encrypted from outside</source>
+        <target state="translated">為外部寄來的郵件加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP inline">
+        <source>Encrypted from outside PGP inline</source>
+        <target state="translated">以外部的 PGP inline 加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/MIME">
+        <source>Encrypted from outside PGP/MIME</source>
+        <target state="translated">以外部的 PGP/MIME 加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed PGP/MIME">
+        <source>Encrypted from outside signed PGP/MIME</source>
+        <target state="translated">以外部簽證過的 PGP/MIME 加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encryption Setup">
+        <source>Encryption Setup</source>
+        <target state="translated">加密設定</target>
+        <note>key setup top title</note>
+      </trans-unit>
+      <trans-unit id="End Time">
+        <source>End Time</source>
+        <target state="translated">結束時間</target>
+        <note>settings option (End Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption">
+        <source>End-to-end encryption</source>
+        <target state="translated">端對端加密</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted">
+        <source>End-to-end encrypted</source>
+        <target state="translated">端對端加密</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message">
+        <source>End-to-end encrypted message</source>
+        <target state="translated">端對端加密訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address">
+        <source>End-to-end encrypted message from verified address</source>
+        <target state="translated">傳自已驗證信箱的端對端加密訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address">
+        <source>End-to-end encrypted to verified address</source>
+        <target state="translated">對已驗證的郵件地址進行端對端加密</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Enter">
+        <source>Enter</source>
+        <target state="translated">鍵入</target>
+        <note>Action in 2fa popup view</note>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code">
+        <source>Enter verification code</source>
+        <target state="translated">輸入驗證碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN">
+        <source>Enter your PIN</source>
+        <target state="translated">請輸入您的PIN碼</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox.">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <target state="translated">請輸入 PIN 以解鎖收件匣</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number">
+        <source>Enter your cell phone number</source>
+        <target state="translated">輸入您的手機號碼</target>
+        <note>human verification top title</note>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address.">
+        <source>Enter your existing email address.</source>
+        <target state="translated">輸入您現有的電子郵件地址</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="Error Logs">
+        <source>Error logs</source>
+        <target state="translated">錯誤日誌</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Error occured">
+        <source>Error occured</source>
+        <target state="translated">發生錯誤</target>
+        <note>Error alert title</note>
+      </trans-unit>
+      <trans-unit id="Every time enter app">
+        <source>Every time enter app</source>
+        <target state="translated">每次進入 App 時</target>
+        <note>lock app option</note>
+      </trans-unit>
+      <trans-unit id="Expires">
+        <source>Expires</source>
+        <target state="translated">有效期限</target>
+        <note>VoiceOver: email can expire</note>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <target state="translated">在 %1$d 天又 %2$d 小時 %3$d 分鐘 %4$d 秒後失效</target>
+        <note>expiration time count down</note>
+      </trans-unit>
+      <trans-unit id="Expiring Messages">
+        <source>Expiring messages</source>
+        <target state="translated">有限期限信件</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Extreme Security">
+        <source>Extreme Security</source>
+        <target state="translated">最高級別安全</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?">
+        <source>Forgot password?</source>
+        <target state="translated">忘記密碼？</target>
+        <note>login page forgot pwd</note>
+      </trans-unit>
+      <trans-unit id="FW:">
+        <source>FW:</source>
+        <target state="translated">轉發：</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file">
+        <source>Failed to determine type of file</source>
+        <target state="translated">無法確定檔案類型</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore.">
+        <source>Failed to get list of available products from AppStore.</source>
+        <target state="translated">無法從 AppStore 取得可用產品的清單。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the app's saved data">
+        <source>Failed to initialize the app's saved data</source>
+        <target state="translated">應用程式的儲存資料初始化失敗</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data">
+        <source>Failed to initialize the application's saved data</source>
+        <target state="translated">應用程式資料初始化失敗</target>
+        <note>*
+ *  Core Data Service &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="Fax">
+        <source>Fax</source>
+        <target state="translated">傳真</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Feedback">
+        <source>Feedback</source>
+        <target state="translated">意見回饋</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed">
+        <source>Fetch user info failed</source>
+        <target state="translated">獲取使用者資訊失敗</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Folder">
+        <source>Folder</source>
+        <target state="translated">資料夾</target>
+        <note>VoiceOver: email belongs to folder</note>
+      </trans-unit>
+      <trans-unit id="Folder Name">
+        <source>Folder Name</source>
+        <target state="translated">資料夾名稱</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <target state="translated">适合想免费享受加密通信服务的个人</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <target state="translated">适合需要更大存储空间、更多功能、更高自由度的个人</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <target state="translated">适合需要支持多用户和生产力功能的组织</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <target state="translated">适合极其注重匿名和隐私的高级用户和组织</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="Forward">
+        <source>Forward</source>
+        <target state="translated">轉發</target>
+        <note>forward action</note>
+      </trans-unit>
+      <trans-unit id="Forwarded message">
+        <source>Forwarded message</source>
+        <target state="translated">已轉發的訊息</target>
+        <note>forwarded message title</note>
+      </trans-unit>
+      <trans-unit id="From">
+        <source>From</source>
+        <target state="translated">從</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="From:">
+        <source>From:</source>
+        <target state="translated">寄件人：</target>
+        <note>message From: field text</note>
+      </trans-unit>
+      <trans-unit id="Fwd:">
+        <source>Fwd:</source>
+        <target state="translated">轉發至：</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Gender">
+        <source>Gender</source>
+        <target state="translated">性別</target>
+        <note>contacts talbe cell gender title</note>
+      </trans-unit>
+      <trans-unit id="General Settings">
+        <source>General settings</source>
+        <target state="translated">一般設定</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Get %@">
+        <source>Get %@</source>
+        <target state="translated">取得 %@</target>
+        <note>Screen header, like 'Get VISIONARY'</note>
+      </trans-unit>
+      <trans-unit id="Get more information">
+        <source>Get more information</source>
+        <target state="translated">更多資訊</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Go to inbox">
+        <source>Go to inbox</source>
+        <target state="translated">回到收件匣</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Group Details">
+        <source>Group Details</source>
+        <target state="translated">群組詳細資訊</target>
+        <note>The title for the contact group detail view</note>
+      </trans-unit>
+      <trans-unit id="Group Name">
+        <source>Group Name</source>
+        <target state="translated">群組名稱</target>
+        <note>The instruction label for the group name textfield</note>
+      </trans-unit>
+      <trans-unit id="Groups">
+        <source>Groups</source>
+        <target state="translated">群組</target>
+        <note>menu title (contact groups)</note>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support">
+        <source>Help &amp; Support</source>
+        <target state="translated">説明 &amp; 支援</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input.">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <target state="translated">讓我們一起讓 ProtonMail 變得更好</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web.">
+        <source>Help us to make privacy the default in the web.</source>
+        <target state="translated">隱私，不該是選配，而是預設！</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Hide">
+        <source>Hide</source>
+        <target state="translated">隱藏</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Hide Details">
+        <source>Hide details</source>
+        <target state="translated">隱藏詳細訊息</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="High Security">
+        <source>High Security</source>
+        <target state="translated">高安全</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="Hours">
+        <source>Hours</source>
+        <target state="translated">小時</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Human Check Failed">
+        <source>Human Check Failed</source>
+        <target state="translated">確認是否為真人的檢查失敗</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Human Check Warning">
+        <source>Human Check Warning</source>
+        <target state="translated">確認是否為真人的檢查警告</target>
+        <note>human check warning title</note>
+      </trans-unit>
+      <trans-unit id="Human Verification">
+        <source>Human Verification</source>
+        <target state="translated">真人驗證</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <target state="translated">IMAP/SMTP 支援通過 ProtonMail 橋接</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="INBOX">
+        <source>Inbox</source>
+        <target state="translated">收件匣</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Import Error">
+        <source>Import Error</source>
+        <target state="translated">匯入錯誤</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Import File From...">
+        <source>Import file from...</source>
+        <target state="translated">從‧‧‧匯入</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Importing Contacts">
+        <source>Importing Contacts</source>
+        <target state="translated">正在匯入聯絡人</target>
+        <note>import contact title</note>
+      </trans-unit>
+      <trans-unit id="Importing attachment, that can take a while">
+        <source>Importing attachment, that can take a while</source>
+        <target state="translated">正在匯入附件中，那需要一點時間</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service.">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <target state="translated">要使用ProtonMail，您必須同意ProtonMail的服務條款。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Inbox">
+        <source>Inbox</source>
+        <target state="translated">收件匣</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN,">
+        <source>Incorrect PIN,</source>
+        <target state="translated">PIN 碼不正確</target>
+        <note>Error</note>
+        <alt-trans>
+          <target>Pin 碼不正確</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Incorrect password">
+        <source>Incorrect password</source>
+        <target state="translated">密碼錯誤</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Input Display Name ...">
+        <source>Input display name ...</source>
+        <target state="translated">輸入顯示名稱 ...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ...">
+        <source>Input Notification Email ...</source>
+        <target state="translated">輸入通知電子郵件 ...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <target state="translated">即時 ProtonMail 帳戶的建立已暫時停用。請到 https://protonmail.com/invite 索取邀請函。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Internal Error">
+        <source>Internal Error</source>
+        <target state="translated">內部錯誤</target>
+        <note>The preconditions are not met</note>
+      </trans-unit>
+      <trans-unit id="Internet">
+        <source>Internet</source>
+        <target state="translated">網路</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Invalid Password">
+        <source>Invalid Password</source>
+        <target state="translated">密碼無效</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid URL">
+        <source>Invalid URL</source>
+        <target state="translated">無效網址</target>
+        <note>Invalid URL error when click a url in contact</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName">
+        <source>Invalid username</source>
+        <target state="translated">無效的使用者名稱</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!">
+        <source>Invalid UserName!</source>
+        <target state="translated">無效的使用者名稱</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin">
+        <source>Invalid access token please relogin</source>
+        <target state="translated">不正確的訪問 token，請重新登入</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin.">
+        <source>Invalid access token. Please relogin.</source>
+        <target state="translated">無效的訪問權杖。請重新登入。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Invalid credential">
+        <source>Invalid credential</source>
+        <target state="translated">無效的登入憑證</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!">
+        <source>Invalid hashed password!</source>
+        <target state="translated">無效的雜湊密碼！</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?">
+        <source>Is this bug report about an in-app purchase?</source>
+        <target state="translated">這是關於應用內購買的錯誤回報嗎？</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to %@ within our iOS app.">
+        <source>It is not possible to switch to %@ within our iOS app.</source>
+        <target state="translated">在我們的 iOS 程式中是不可能去切換成 %@ 的。</target>
+        <note>It is not possible to switch to `plan` within our iOS app.</note>
+      </trans-unit>
+      <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.">
+        <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
+        <target state="translated">我們無法將您購買的 AppStore 產品與我們伺服器上的產品相配合。請填寫錯誤回報表, 我們的客戶支援小組將與您聯繫。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features">
+        <source>Keep me updated about new features</source>
+        <target state="translated">讓我收到有關新功能的通知</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed">
+        <source>Key generation failed</source>
+        <target state="translated">產生金鑰失敗</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed. Please try again.">
+        <source>Key generation failed. Please try again.</source>
+        <target state="translated">金鑰生成失敗。請再試一次。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key invalid. Please go back and try again.">
+        <source>Key invalid. Please go back and try again.</source>
+        <target state="translated">金鑰無效。請回去再試一次。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="LOGIN">
+        <source>Login</source>
+        <target state="translated">登入</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Label Management">
+        <source>Label management</source>
+        <target state="translated">管理標籤</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Label Name">
+        <source>Label Name</source>
+        <target state="translated">標籤名稱</target>
+        <note>createing lable input place holder</note>
+      </trans-unit>
+      <trans-unit id="Label as...">
+        <source>Label as...</source>
+        <target state="translated">標為‧‧‧</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels">
+        <source>Labels</source>
+        <target state="translated">標籤</target>
+        <note>VoiceOver: email has lables</note>
+      </trans-unit>
+      <trans-unit id="Labels have been applied.">
+        <source>Labels have been applied.</source>
+        <target state="translated">已套用此標籤。</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <target state="translated">標籤, 資料夾, 篩選器 &amp; 更多</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Labels/Folders">
+        <source>Labels/Folders</source>
+        <target state="translated">標籤/資料夾</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Language">
+        <source>Language</source>
+        <target state="translated">語言</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Learn More">
+        <source>Learn More</source>
+        <target state="translated">瞭解詳情</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Learn more here">
+        <source>Learn more here</source>
+        <target state="translated">了解更多</target>
+        <note>learn more button</note>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day">
+        <source>Limited to 150 messages sent/day</source>
+        <target state="translated">每日傳送限制為150則消息</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Load remote content">
+        <source>Load remote content</source>
+        <target state="translated">載入遠端內容</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Loading...">
+        <source>Loading...</source>
+        <target state="translated">載入中‧‧‧</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password">
+        <source>Local cache can't find mailbox password</source>
+        <target state="translated">本機快取找不到郵箱密碼</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>Base</source>
+        <target state="translated">基本</target>
+        <note>*
+ *  file string type</note>
+      </trans-unit>
+      <trans-unit id="Lock The App">
+        <source>Lock The App</source>
+        <target state="translated">鎖定應用程式</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Login">
+        <source>Login</source>
+        <target state="translated">登入</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Login Password">
+        <source>Login password</source>
+        <target state="translated">登錄密碼</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match">
+        <source>Login password doesn't match</source>
+        <target state="translated">密碼不相符</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Logout">
+        <source>Logout</source>
+        <target state="translated">登出</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Logs">
+        <source>Logs</source>
+        <target state="translated">日誌</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?">
+        <source>Looking to secure your contact's details?</source>
+        <target state="translated">想保護您連絡人的詳細資訊嗎？</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD">
+        <source>Mailbox password</source>
+        <target state="translated">郵箱密碼</target>
+        <note>*
+ *  MailboxPasswordViewController</note>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <target state="needs-translation">MBContactPickerPrompt</target>
+        <note>Default Prompt text shown in the prompt cell</note>
+      </trans-unit>
+      <trans-unit id="Mailbox Password">
+        <source>Mailbox password</source>
+        <target state="translated">郵箱密碼</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match">
+        <source>Mailbox password doesn't match</source>
+        <target state="translated">郵箱密碼不符合</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Manage Addresses">
+        <source>Manage Addresses</source>
+        <target state="translated">管理電子郵件位址</target>
+        <note>The title for the view where user can manage emails in the contact group</note>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders">
+        <source>Manage Labels/Folders</source>
+        <target state="translated">管理標籤和資料夾</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Mark Read">
+        <source>Mark as read</source>
+        <target state="translated">標示已讀</target>
+        <note>mark message as read action</note>
+      </trans-unit>
+      <trans-unit id="Mark as unread">
+        <source>Mark as unread</source>
+        <target state="translated">標示為未讀</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Menu">
+        <source>Menu</source>
+        <target state="translated">選單</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Message %@">
+        <source>Message %@</source>
+        <target state="translated">郵件訊息 %@</target>
+        <note>Message with title</note>
+        <alt-trans>
+          <target>訊息 %@</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Message Password">
+        <source>Message Password</source>
+        <target state="translated">郵件訊息密碼</target>
+        <note>Placeholder</note>
+        <alt-trans>
+          <target>訊息密碼</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Message Queue">
+        <source>Message queue</source>
+        <target state="translated">訊息佇列</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions">
+        <source>Message Swipe Actions</source>
+        <target state="translated">郵件滑動操作</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message expired">
+        <source>Message expired</source>
+        <target state="translated">郵件訊息已過期</target>
+        <note>*
+ *  Expiration View</note>
+      </trans-unit>
+      <trans-unit id="Message has been deleted.">
+        <source>Message has been deleted.</source>
+        <target state="translated">訊息已刪除。</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message has been moved.">
+        <source>Message has been moved.</source>
+        <target state="translated">已移動您的訊息。</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message password does not match.">
+        <source>Message password does not match.</source>
+        <target state="translated">郵件訊息密碼不相符。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again">
+        <source>Message sending failed please try again</source>
+        <target state="translated">信件寄送失敗，請稍後再嘗試。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again.">
+        <source>Message sending failed. Please try again.</source>
+        <target state="translated">信件寄送失敗，請再試一次。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sent">
+        <source>Message sent</source>
+        <target state="translated">訊息已傳送</target>
+        <note>Description after message have been sent</note>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period.">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <target state="translated">您所發送的郵件可以設置為在特定時間段後自動刪除。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Mobile">
+        <source>Mobile</source>
+        <target state="translated">行動裝置</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Mobile Signature">
+        <source>Mobile signature</source>
+        <target state="translated">行動裝置簽名檔</target>
+        <note>Mobile Signature title in settings</note>
+        <alt-trans>
+          <target>行動版簽名檔</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <target state="translated">目前暫時無法透過 ProtonMail App 註冊帳號，請稍後再嘗試或透過 ProtonMail 網頁（https://protonmail.com） 註冊帳號。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Modifying or turning off the default mobile signature is a paid feature.">
+        <source>Modifying or turning off the default mobile signature is a paid feature.</source>
+        <target state="translated">修改或關閉預設的行動裝置簽名是付費功能。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="More">
+        <source>More</source>
+        <target state="translated">更多</target>
+        <note>More actions button</note>
+      </trans-unit>
+      <trans-unit id="More Credits">
+        <source>More Credits</source>
+        <target state="translated">更多點數</target>
+        <note>Screen header</note>
+      </trans-unit>
+      <trans-unit id="Move to AllMail">
+        <source>Move to AllMail</source>
+        <target state="translated">移動到所有郵件</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Archive">
+        <source>Move to Archive</source>
+        <target state="translated">移動到封存</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Draft">
+        <source>Move to Draft</source>
+        <target state="translated">移動到草稿</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Folder">
+        <source>Move to Folder</source>
+        <target state="translated">移動到資料夾</target>
+        <note>folder apply - title</note>
+      </trans-unit>
+      <trans-unit id="Move to Inbox">
+        <source>Move to Inbox</source>
+        <target state="translated">移動到收件匣</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Outbox">
+        <source>Move to Outbox</source>
+        <target state="translated">移動到寄件匣</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Spam">
+        <source>Move to Spam</source>
+        <target state="translated">移動到垃圾郵件</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Trash">
+        <source>Move to Trash</source>
+        <target state="translated">移動到垃圾筒</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to...">
+        <source>Move to...</source>
+        <target state="translated">移到‧‧‧</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses">
+        <source>Multiple addresses</source>
+        <target state="translated">多個地址</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP.">
+        <source>Sign up for free</source>
+        <target state="translated">需要帳戶？註冊吧！</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Name">
+        <source>Name</source>
+        <target state="translated">姓名</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="New login password">
+        <source>New login password</source>
+        <target state="translated">新的登入密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New mailbox password">
+        <source>New mailbox password</source>
+        <target state="translated">新的郵箱密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New password">
+        <source>New password</source>
+        <target state="translated">新密碼</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Nickname">
+        <source>Nickname</source>
+        <target state="translated">暱稱</target>
+        <note>contacts talbe cell Nickname title</note>
+      </trans-unit>
+      <trans-unit id="No Messages">
+        <source>No Messages</source>
+        <target state="translated">沒有訊息</target>
+        <note>message when mailbox doesnt have emailsß</note>
+      </trans-unit>
+      <trans-unit id="No connectivity detected...">
+        <source>No connectivity detected...</source>
+        <target state="translated">沒有偵測到網路連線...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="No, for another ProtonMail account">
+        <source>No, for another ProtonMail account</source>
+        <target state="translated">否, 对于另一个 protonmail 帐户</target>
+        <note>Warning message option when user want to relogin to another account</note>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase">
+        <source>No, not related to in-app purchase</source>
+        <target state="translated">否, 與應用內購買無關</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="None">
+        <source>None</source>
+        <target state="translated">無</target>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
+      </trans-unit>
+      <trans-unit id="Not Now">
+        <source>Not Now</source>
+        <target state="translated">現在不要</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration">
+        <source>Not all recipients support message expiration</source>
+        <target state="translated">並非所有收件者都支援限時信件</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address.">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <target state="translated">註：使用者名稱同時為您的 ProtonMail 信箱地址</target>
+        <note>Signup user name notes</note>
+        <alt-trans>
+          <target>註：使用者名稱同時為您的ProtonMail信箱地址</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <target state="translated">註：此密碼用於加解密信件內容，如您遺失此密碼，將無任何救援機制。</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account.">
+        <source>Note: This is used to log you into your account.</source>
+        <target state="translated">註：這將用來登入您的帳號。</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Notes">
+        <source>Notes</source>
+        <target state="translated">備註</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Notice">
+        <source>Notice</source>
+        <target state="translated">通知</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email">
+        <source>Notification / Recovery Email</source>
+        <target state="translated">通知／恢復信件</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Email">
+        <source>Notification email</source>
+        <target state="translated">通知用電子郵件地址</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Snooze">
+        <source>Notification Snooze</source>
+        <target state="translated">通知暫停</target>
+        <note>title of action sheet</note>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed">
+        <source>Notifications Are Snoozed</source>
+        <target state="translated">通知已暫停</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off">
+        <source>Notifications Snooze Off</source>
+        <target state="translated">暫停通知已取消</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="OK">
+        <source>OK</source>
+        <target state="translated">OK</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="OTHER PLANS">
+        <source>OTHER PLANS</source>
+        <target state="translated">其他計畫</target>
+        <note>Section header</note>
+      </trans-unit>
+      <trans-unit id="On">
+        <source>On</source>
+        <target state="translated">開啟</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@">
+        <source>On EE, MMM d, yyyy at %@</source>
+        <target state="translated">在 EE, MMM d, yyyy 在 %@</target>
+        <note>forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@, %@, wrote:">
+        <source>On EE, MMM d, yyyy at %1$@, %2$@, wrote:</source>
+        <target state="translated">在 EE, MMM d, yyyy 的 %1$@, %2$@, 寫下:</target>
+        <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="OpenDraft">
+        <source>Open draft</source>
+        <target state="translated">正在編寫的草稿</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Organization">
+        <source>Organization</source>
+        <target state="translated">公司單位</target>
+        <note>contacts talbe cell Organization title</note>
+      </trans-unit>
+      <trans-unit id="Other">
+        <source>Other</source>
+        <target state="translated">其他</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <target state="translated">如果您同意將 AppStore 在購買時提供的技術資料附加到應用程式上, 我們的客戶支援小組將嘗試手動啟用您的服務方案。此資料不包括有關您的 iTunes 帳戶、Apple ID、連結的信用卡或任何其他使用者資訊的詳細資料。它只能協助我們驗證購買交易是否已在 AppStore 的伺服器上完成。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Outbox">
+        <source>Outbox</source>
+        <target state="translated">寄件匣</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted">
+        <source>PGP-encrypted</source>
+        <target state="translated">PGP加密</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message">
+        <source>PGP-encrypted message</source>
+        <target state="translated">PGP 加密訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address">
+        <source>PGP-encrypted message from verified address</source>
+        <target state="translated">來自已驗證的 PGP 加密訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed">
+        <source>PGP-signed</source>
+        <target state="translated">PGP 簽名</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address">
+        <source>PGP-signed message from verified address</source>
+        <target state="translated">來自已驗證的 PGP 簽章訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE">
+        <source>PREMIUM FEATURE</source>
+        <target state="translated">專業版功能</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="Password">
+        <source>Password</source>
+        <target state="translated">密碼</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Password Mismatch">
+        <source>Passwords do not match</source>
+        <target state="translated">密碼不符合</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password Updated">
+        <source>Password updated</source>
+        <target state="translated">密碼已更新</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty.">
+        <source>Password cannot be empty.</source>
+        <target state="translated">密碼欄位不能為空。</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>密碼欄位不得為空。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Password update failed">
+        <source>Password update failed</source>
+        <target state="translated">密碼更新失敗</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Personal">
+        <source>Personal</source>
+        <target state="translated">私人</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone">
+        <source>Phone</source>
+        <target state="translated">電話號碼</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone Verification">
+        <source>Phone Verification</source>
+        <target state="translated">手機驗證</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Phone number">
+        <source>Phone number</source>
+        <target state="translated">電話號碼</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Phone number invalid">
+        <source>Phone number invalid</source>
+        <target state="translated">無效的電話號碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Photo Library">
+        <source>Photo Library</source>
+        <target state="translated">相片集</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty.">
+        <source>Pin code can't be empty.</source>
+        <target state="translated">Pin 碼欄位不能為空。</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>PIN碼欄位不得為空。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients.">
+        <source>Please add a password for the following recipients.</source>
+        <target state="translated">請為以下收件者設定密碼</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code.">
+        <source>Please check your cell phone for the verification code.</source>
+        <target state="translated">請至手機查看您的驗證碼。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code.">
+        <source>Please check your email for the verification code.</source>
+        <target state="translated">請至您的信箱檢查驗證碼。</target>
+        <note>error message</note>
+        <alt-trans>
+          <target>請至您的電子郵件信箱取得驗證碼。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses.">
+        <source>Please disable PGP Sending for following addresses.</source>
+        <target state="translated">請發送給以下收件者時停用 PGP 傳送</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number.">
+        <source>Please input a valid cell phone number.</source>
+        <target state="translated">請輸入有效的手機號碼。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address.">
+        <source>Please input a valid email address.</source>
+        <target state="translated">請輸入有效的電子郵件地址。</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <target state="translated">請登錄您正在升級服務方案的 protonmail 帳戶, 以便我們完成購買。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <target state="translated">請登錄您正在升級服務方案的 protonmail 帳戶, 以便我們完成服務方案啟動。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!">
+        <source>Please pick a username first!</source>
+        <target state="translated">請先選擇一個使用者名稱！</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Please provide a group name">
+        <source>Please provide a group name</source>
+        <target state="translated">請提供群組名稱</target>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!">
+        <source>Please remove all attachments before changing the sender</source>
+        <target state="translated">請在更改寄件人之前刪除所有附件</target>
+        <note>when switch sender but email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group">
+        <source>Please select at least one email for the contact group</source>
+        <target state="translated">請至少為連絡人群組選擇一封電子郵件</target>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:">
+        <source>Please select one of the following options:</source>
+        <target state="translated">請選擇以下其中一個項目：</target>
+        <note>human check select option title</note>
+      </trans-unit>
+      <trans-unit id="Please set a password.">
+        <source>Please set a password.</source>
+        <target state="translated">請設置一組密碼。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please try a different domain.">
+        <source>Please try a different domain.</source>
+        <target state="translated">請嘗試其他域。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different email address.">
+        <source>Please try a different email address.</source>
+        <target state="translated">請嘗試其他電子郵件地址。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different password.">
+        <source>Please try a different password.</source>
+        <target state="translated">請嘗試其他密碼。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different user name.">
+        <source>Please try a different username.</source>
+        <target state="translated">請嘗試其他使用者名。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try again.">
+        <source>Please try again</source>
+        <target state="translated">請再試一次</target>
+        <note>
+
+</note>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <target state="translated">請解鎖應用程式, 繼續您的服務方案啟動</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first.">
+        <source>Please use ProtonMail App login first.</source>
+        <target state="translated">請先使用 protonmail 應用程式登錄。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password.">
+        <source>Please use the web application to reset your password.</source>
+        <target state="translated">請使用網頁版重新設定您的密碼</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <target state="translated">請使用網路版本的 protonmail 更改您的郵箱密碼!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <target state="translated">請使用ProtonMail的網頁版本以更改您的密碼！</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in.">
+        <source>Please use your new password when signing in.</source>
+        <target state="translated">請使用您的新密碼登入。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!">
+        <source>Please wait until the email downloaded!</source>
+        <target state="translated">您的信件正在下載中！</target>
+        <note>The</note>
+        <alt-trans>
+          <target>請稍候，正在下載您的郵件！</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone.">
+        <source>Please, manage it in your phone.</source>
+        <target state="translated">請在手機裡管理。</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Print">
+        <source>Print</source>
+        <target state="translated">列印</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Protection">
+        <source>Protection</source>
+        <target state="translated">隱私保護</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Protection Entire App">
+        <source>Protection entire app</source>
+        <target state="translated">保護整個 App</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail">
+        <source>ProtonMail</source>
+        <target state="translated">ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <target state="translated">成為ProtonMail Plus用戶來更改您的行動版簽名檔</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <target state="translated">ProtonMail Plus/Professional/Visionary 可以讓您不單單只有聯絡人姓名與郵件地址，還可編輯更詳盡的聯絡人資訊。透過使用 ProtonMail，這些資訊如同您的端對端加密郵件一樣保有隱私與安全性。</target>
+        <note>Upgrade warning message</note>
+        <alt-trans>
+          <target>ProtonMail Plus/Professional/Visionary可以讓您不單單只有基本的聯絡人姓名與郵件地址，還可編輯更詳盡的聯絡人資訊。透過使用ProtonMail，這些資訊也會像您的端對端加密郵件一樣保有隱私與安全性。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <target state="translated">ProtonMail 不透過廣告盈利，更不靠販賣使用者的隱私獲利。升級您的帳戶或贊助 ProtonMail 是我們唯二的收入來源，您可以讓 ProtonMail 更好。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails">
+        <source>ProtonMail encrypted emails</source>
+        <target state="translated">ProtonMail加密電子郵件</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <target state="translated">ProtonMail 目前處於離線狀態，請到 Twitter 查看最新狀況：https://twitter.com/ProtonMail</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonVPN included">
+        <source>ProtonVPN included</source>
+        <target state="translated">包括 ProtonVPN</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions">
+        <source>Quick Swipe actions</source>
+        <target state="translated">快速滑動手勢</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD">
+        <source>RESET MAILBOX PASSWORD</source>
+        <target state="translated">重新設置郵箱密碼</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review">
+        <source>Rate &amp; Review</source>
+        <target state="translated">評分與 &amp; 評論</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN">
+        <source>Re-Enter your PIN</source>
+        <target state="translated">重新輸入您的PIN碼</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Re:">
+        <source>Re:</source>
+        <target state="translated">回覆：</target>
+        <note>abbreviation of reply:</note>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data...">
+        <source>Reading device contacts data...</source>
+        <target state="translated">正在讀取裝置上的聯絡人資料...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Code">
+        <source>Recovery Code</source>
+        <target state="translated">恢復代碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email">
+        <source>Recovery Email</source>
+        <target state="translated">備援電子郵件地址</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning">
+        <source>Recovery Email Warning</source>
+        <target state="translated">備援電子郵件警告</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remind Me Later">
+        <source>Remind Me Later</source>
+        <target state="translated">稍後再提醒我</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remove">
+        <source>Remove</source>
+        <target state="translated">移除</target>
+        <note>remove action</note>
+      </trans-unit>
+      <trans-unit id="Remove Star">
+        <source>Remove Star</source>
+        <target state="translated">移除星號</target>
+        <note>un star message</note>
+      </trans-unit>
+      <trans-unit id="Repeat">
+        <source>Repeat</source>
+        <target state="translated">重複</target>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+      </trans-unit>
+      <trans-unit id="Reply">
+        <source>Reply</source>
+        <target state="translated">回覆</target>
+        <note>reply action</note>
+      </trans-unit>
+      <trans-unit id="Reply All">
+        <source>Reply All</source>
+        <target state="translated">回覆所有</target>
+        <note>reply all action</note>
+      </trans-unit>
+      <trans-unit id="Reply message">
+        <source>Reply message</source>
+        <target state="translated">回覆短訊</target>
+        <note>composer view model impl</note>
+      </trans-unit>
+      <trans-unit id="ReplyAll">
+        <source>Reply all</source>
+        <target state="translated">全部回覆</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Report Bugs">
+        <source>Report Bugs</source>
+        <target state="translated">錯誤回報</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Report Phishing">
+        <source>Report Phishing</source>
+        <target state="translated">举报欺诈邮件</target>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <target state="translated">檢舉詐騙電子郵件會轉寄該訊息給我們，讓我們可以分析和改進篩選器。這意味我們可以完整閱覽訊息內容。</target>
+        <note>alert message</note>
+      </trans-unit>
+      <trans-unit id="Request Link Confirmation">
+        <source>Request Link Confirmation</source>
+        <target state="translated">請求連結確認</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ...">
+        <source>Resetting message cache ...</source>
+        <target state="translated">正在重置訊息緩存 ...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Retry">
+        <source>Retry</source>
+        <target state="translated">重試</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds">
+        <source>Retry after %d seconds</source>
+        <target state="translated">在 %d 秒後重試</target>
+        <note>email verify code resend count down</note>
+      </trans-unit>
+      <trans-unit id="SENT">
+        <source>Sent</source>
+        <target state="translated">已傳送</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SPAM">
+        <source>Spam</source>
+        <target state="translated">垃圾郵件</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SRP Client">
+        <source>SRP Client</source>
+        <target state="translated">SRP客戶端</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="SRP Server">
+        <source>SRP Server</source>
+        <target state="translated">SRP伺服器</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="STARRED">
+        <source>Starred</source>
+        <target state="translated">已加星號</target>
+        <note>mail location title</note>
+        <alt-trans>
+          <target>已加註星號</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Save">
+        <source>Save</source>
+        <target state="translated">儲存</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Save Changes">
+        <source>Save Changes</source>
+        <target state="translated">儲存變更</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Save draft">
+        <source>Save draft</source>
+        <target state="translated">儲存草稿</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Scheduled">
+        <source>Scheduled</source>
+        <target state="translated">已排程</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Search">
+        <source>Search</source>
+        <target state="translated">搜尋</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Select An Option">
+        <source>Select An Option</source>
+        <target state="translated">选择选项</target>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+      </trans-unit>
+      <trans-unit id="Select Color">
+        <source>Select Color</source>
+        <target state="translated">選擇顏色</target>
+        <note>The title for the view where user can select the color for the group</note>
+      </trans-unit>
+      <trans-unit id="Select your language">
+        <source>Select your language</source>
+        <target state="translated">選擇您的語言</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Send">
+        <source>Send</source>
+        <target state="translated">傳送</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send Verification Code">
+        <source>Send verification code</source>
+        <target state="translated">傳送驗證碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Send anyway">
+        <source>Send anyway</source>
+        <target state="translated">仍然傳送</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send message without subject?">
+        <source>Send message without subject?</source>
+        <target state="translated">是否傳送沒有主旨的信件？</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>是否傳送沒有主旨的郵件？</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc">
+        <source>Send plain but stored enc</source>
+        <target state="translated">明文寄送但以加密方式儲存</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed">
+        <source>Sender Verification Failed</source>
+        <target state="translated">寄件人驗證失敗</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Sending Message">
+        <source>Sending message</source>
+        <target state="translated">訊息傳送中</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sending message">
+        <source>Sending message</source>
+        <target state="translated">發送訊息</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <target state="translated">從 %1$@ 寄送郵件是付費功能，您的郵件將會從預設地址 %2$@ 寄出。</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="Sent">
+        <source>Sent</source>
+        <target state="translated">已傳送</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Sent Failed">
+        <source>Sent Failed</source>
+        <target state="translated">傳送失敗</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sent by ProtonMail with zero access encryption">
+        <source>Sent by ProtonMail with zero access encryption</source>
+        <target state="translated">以零訪問加密方式由 ProtonMail 寄出</target>
+        <note>encryption lock description for auto reply</note>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption">
+        <source>Sent by you with end-to-end encryption</source>
+        <target state="translated">由您寄出的端對端加密訊息</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!">
+        <source>Server proofs not valid!</source>
+        <target state="translated">伺服器驗證無效！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set Password">
+        <source>Set Password</source>
+        <target state="translated">設定密碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users.">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <target state="translated">為非 ProtonMail 使用者設定一個密碼以加密此郵件。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set passwords">
+        <source>Set passwords</source>
+        <target state="translated">設定密碼</target>
+        <note>Signup passwords top title</note>
+      </trans-unit>
+      <trans-unit id="Settings">
+        <source>Settings</source>
+        <target state="translated">設定</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Share Alert">
+        <source>Share Alert</source>
+        <target state="translated">分享提醒</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Share Contact">
+        <source>Share Contact</source>
+        <target state="translated">分享聯絡人</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Share it with your friends">
+        <source>Share it with your friends</source>
+        <target state="translated">與您的朋友們分享</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sign Out">
+        <source>Log out</source>
+        <target state="translated">登出</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Signature">
+        <source>Signature</source>
+        <target state="translated">簽名檔</target>
+        <note>Title in signature settings</note>
+      </trans-unit>
+      <trans-unit id="Signature Updated">
+        <source>Signature Updated</source>
+        <target state="translated">簽名檔已經更新</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Single Password">
+        <source>Single Password</source>
+        <target state="translated">單一密碼</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications">
+        <source>Snooze Notifications</source>
+        <target state="translated">延遲通知</target>
+        <note>settings option</note>
+      </trans-unit>
+      <trans-unit id="Snoozed for">
+        <source>Snoozed for</source>
+        <target state="translated">延遲提醒</target>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+      </trans-unit>
+      <trans-unit id="Snoozed till">
+        <source>Snoozed till</source>
+        <target state="translated">延遲提醒至</target>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+      </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <target state="translated">对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！</target>
+        <note>Error message for beta users</note>
+      </trans-unit>
+      <trans-unit id="Space Warning">
+        <source>Space warning</source>
+        <target state="translated">儲存空間不足</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Spam">
+        <source>Spam</source>
+        <target state="translated">垃圾郵件</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Spammed">
+        <source>Spammed</source>
+        <target state="translated">設定為垃圾郵件</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!">
+        <source>Srp single password keysalt invalid!</source>
+        <target state="needs-translation">Srp single password keysalt invalid!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Star">
+        <source>Star</source>
+        <target state="translated">星號</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Starred">
+        <source>Starred</source>
+        <target state="translated">已加星號</target>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+        <alt-trans>
+          <target>已加註星號</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Start Time">
+        <source>Start Time</source>
+        <target state="translated">起始時間</target>
+        <note>settings option (Start Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="State">
+        <source>State</source>
+        <target state="translated">省／州</target>
+        <note>contact placeholder</note>
+        <alt-trans>
+          <target>省/州</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Storage">
+        <source>Storage</source>
+        <target state="translated">儲存空間</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Storage Warning">
+        <source>Storage Warning</source>
+        <target state="translated">儲存空間不足</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption">
+        <source>Stored with zero access encryption</source>
+        <target state="translated">儲存為零訪問加密</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Street">
+        <source>Street</source>
+        <target state="translated">街</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject">
+        <source>Subject</source>
+        <target state="translated">主旨</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject:">
+        <source>Subject:</source>
+        <target state="translated">主旨：</target>
+        <note>subject: text when forward</note>
+      </trans-unit>
+      <trans-unit id="Subscription">
+        <source>Subscription</source>
+        <target state="translated">訂閲</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail">
+        <source>Support ProtonMail</source>
+        <target state="translated">支持ProtonMail</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <target state="translated">支持 %i 个自定域名(如 user@yourdomain.com)</target>
+        <note>Service plan capability; i = 2</note>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right">
+        <source>Swipe Left to Right</source>
+        <target state="translated">將郵件向右滑動</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left">
+        <source>Swipe Right to Left</source>
+        <target state="translated">將郵件向左滑動</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="System can't copy the file">
+        <source>System can't copy the file</source>
+        <target state="translated">系統無法複製此檔案。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="TRASH">
+        <source>Trash</source>
+        <target state="translated">垃圾桶</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Take a Photo">
+        <source>Take photo</source>
+        <target state="translated">拍張照片</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <target state="translated">點擊發送，即使在沒有使用限時功能的情況下也直接寄給這些收件人。</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system.">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <target state="translated">我們已將您回報的 bug 加進追中系統中，感謝您的回報。</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The Password is wrong.">
+        <source>The password is wrong.</source>
+        <target state="translated">密碼錯誤。</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline...">
+        <source>The ProtonMail current offline...</source>
+        <target state="translated">ProtonMail 為離線狀況...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken.">
+        <source>The username have been taken.</source>
+        <target state="translated">名稱已使用</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid.">
+        <source>The authentication credentials are invalid.</source>
+        <target state="translated">身份驗證失敗。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired.">
+        <source>The authentication token has expired.</source>
+        <target state="translated">认证信息已过期。</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The current standard">
+        <source>The current standard</source>
+        <target state="translated">當前標準</target>
+        <note>key size notes</note>
+      </trans-unit>
+      <trans-unit id="The display name is now %@.">
+        <source>The display name is now %@.</source>
+        <target state="translated">現在顯示名稱為 %@。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken. Please try again.">
+        <source>The draft cache is broken. Please try again.</source>
+        <target state="translated">草稿緩存失敗請再次嘗試</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!">
+        <source>Sending failed. There was an error with the draft format.</source>
+        <target state="translated">草稿格式錯誤，寄送失敗！</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available.">
+        <source>The highest level of encryption available.</source>
+        <target state="translated">可用的最高級別加密。</target>
+        <note>key size note part 1</note>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate">
+        <source>The label name is duplicate</source>
+        <target state="translated">此标签已存在</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect.">
+        <source>The mailbox password is incorrect.</source>
+        <target state="translated">郵箱密碼錯誤。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d">
+        <source>The maximum number of distinct recipients is %d</source>
+        <target state="translated">最多只能有 %d 个收件人。</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d.">
+        <source>The maximum number of labels is %d.</source>
+        <target state="translated">標籤的最大數量為 %d。</target>
+        <note>*
+ *  LabelsViewController</note>
+      </trans-unit>
+      <trans-unit id="The new password can't empty">
+        <source>The new password can't be empty</source>
+        <target state="translated">新密碼不能空白</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password can't empty.">
+        <source>The new password can't empty.</source>
+        <target state="translated">請輸入您的新密碼。</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The new password not match">
+        <source>Passwords do not match</source>
+        <target state="translated">密碼不相符</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password not match.">
+        <source>The new password not match.</source>
+        <target state="translated">輸入的密碼不符。</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it.">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <target state="translated">備援信箱可幫助您重置登入密碼。</target>
+        <note>recovery email notes</note>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password.">
+        <source>The password you entered does not match the current password.</source>
+        <target state="translated">剛輸入的密碼與目前系統內的密碼不相符。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match.">
+        <source>The passwords you entered do not match.</source>
+        <target state="translated">密碼與密碼確認欄位不一致</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The private key update failed.">
+        <source>The private key update failed.</source>
+        <target state="translated">私鑰更新失敗。</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The request timed out.">
+        <source>The request timed out.</source>
+        <target state="translated">要求癒時。</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <target state="translated">附件檔案大小總和不能超過 25MB</target>
+        <note/>
+        <alt-trans>
+          <target>附加檔案大小總和不能超過25MB</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="The total attachment size cannot exceed 25MB">
+        <source>The total attachment size cannot exceed 25MB</source>
+        <target state="translated">附件檔案大小總和不能超過 25MB</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The verification email invalid">
+        <source>Invalid verification email</source>
+        <target state="translated">验证邮箱无效</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="The verification failed!">
+        <source>The verification failed!</source>
+        <target state="translated">驗證失敗！</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the app's saved data.">
+        <source>There was an error creating or loading the app's saved data.</source>
+        <target state="translated">建立或載入程式的儲存資料過程中發生錯誤。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data.">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <target state="translated">建立或載入程式儲存資料過程中發生錯誤。</target>
+        <note>
+ &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app.">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <target state="translated">這可能需要一段時間。請不要關閉該應用程式。</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book.">
+        <source>This contact belongs to your address book.</source>
+        <target state="translated">此連絡人屬於您的通訊錄。</target>
+        <note>alert desc</note>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="translated">此電子郵件無法通過網域驗證。這可能是詐騙郵件或是轉發不當導致！</target>
+        <note>spam score warning</note>
+        <alt-trans>
+          <target>此電子郵件未能成功取得與其域名相關條件之認證。這可能是詐騙郵件或是不當轉發導致。</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="translated">此封信件並非透過 ProtonMail 的系統寄出，極為可能是詐騙信件，請再三留意！</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <target state="translated">這可能是詐騙電子郵件。請檢查寄件者和內容以確保電子郵件是合法的。</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="Title">
+        <source>Title</source>
+        <target state="translated">頭銜／職稱</target>
+        <note>contacts talbe cell Title title</note>
+        <alt-trans>
+          <target>頭銜/職稱</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="To">
+        <source>To</source>
+        <target state="translated">收件人</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human.">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
+        <target state="translated">為了避免ProtonMail的服務被濫用,&amp;#13;
+ 我們需要驗證您是人類。</target>
+        <note>human verification notes</note>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="translated">要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="translated">要重設您的郵箱密碼，請到 protonmail.com 使用網頁版ProtonMail</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>要重設您的郵箱密碼，請到 protonmail.com 使用網頁版Protonmail</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="To:">
+        <source>To:</source>
+        <target state="translated">收件人：</target>
+        <note>message To: feild</note>
+        <alt-trans>
+          <target>至：</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Token expired">
+        <source>Token expired</source>
+        <target state="translated">權杖已過期</target>
+        <note>*
+ *  API Error &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Too many recipients">
+        <source>Too many recipients</source>
+        <target state="translated">太多收件者</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <target state="translated">TouchID 未設置，請在系統設定中啟用。</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="TouchID not available">
+        <source>TouchID not available</source>
+        <target state="translated">TouchID 無法使用</target>
+        <note>settings touchid/faceid error</note>
+      </trans-unit>
+      <trans-unit id="Trash">
+        <source>Trash</source>
+        <target state="translated">垃圾桶</target>
+        <note>mail location desc
+   menu title
+   move action</note>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide">
+        <source>Trouble shooting guide</source>
+        <target state="translated">疑難解答</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Turn Off">
+        <source>Turn Off</source>
+        <target state="translated">關閉</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail">
+        <source>Tweet about ProtonMail</source>
+        <target state="translated">推文分享ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Two Factor Code">
+        <source>Two Factor Code</source>
+        <target state="translated">兩步驟驗證碼</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Type casting error">
+        <source>Type casting error</source>
+        <target state="needs-translation">Type casting error</target>
+        <note>Internal type casting error</note>
+      </trans-unit>
+      <trans-unit id="URL">
+        <source>URL</source>
+        <target state="translated">網址</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="USER LOGIN">
+        <source>User log in</source>
+        <target state="translated">使用者登入</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server">
+        <source>Unable to connect to the server</source>
+        <target state="translated">伺服器無法連接</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <target state="translated">無法組成具有以下路徑的有效URL: %@</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!">
+        <source>Unable to create SRP Client!</source>
+        <target state="translated">無法建立 SRP 客戶端！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message.">
+        <source>Unable to decrypt message.</source>
+        <target state="translated">無法解密訊息。</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline">
+        <source>Unable to edit this message offline</source>
+        <target state="translated">無法離線編輯此消息</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to generate hashed password!">
+        <source>Unable to generate hashed password!</source>
+        <target state="translated">無法產生雜湊密碼！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts">
+        <source>Unable to get contacts</source>
+        <target state="translated">無法取得聯絡人</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!">
+        <source>Unable to parse authentication info!</source>
+        <target state="translated">無法解析身份驗證資訊！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!">
+        <source>Unable to parse authentication token!</source>
+        <target state="translated">無法解析身份驗證 token！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse cached authentication token!">
+        <source>Unable to parse cached authentication token!</source>
+        <target state="translated">無法解析身份驗證資訊！</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse response">
+        <source>Unable to parse response</source>
+        <target state="translated">無法解析回覆訊息</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:&#10;%@">
+        <source>Unable to parse the response object:
+%@</source>
+        <target state="translated">無法解析回應物件:
+%@</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse token">
+        <source>Unable to parse token</source>
+        <target state="translated">無法解析 token</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to send the email">
+        <source>Unable to send the email.</source>
+        <target state="translated">無法寄送信件</target>
+        <note>error when sending the message</note>
+        <alt-trans>
+          <target>郵件無法傳送</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Undo">
+        <source>Undo</source>
+        <target state="translated">復原</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Unknow Error">
+        <source>Unknown error</source>
+        <target state="translated">未知的錯誤</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unknow file">
+        <source>Unknown file</source>
+        <target state="translated">未知的檔案</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unknown">
+        <source>Unknown</source>
+        <target state="translated">未知</target>
+        <note>title, default display name</note>
+      </trans-unit>
+      <trans-unit id="Unknown Error">
+        <source>Unknown Error</source>
+        <target state="translated">未知的錯誤</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unkonw Version">
+        <source>Unknown version</source>
+        <target state="translated">未知的版本</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day">
+        <source>Unlimited messages sent/day</source>
+        <target state="translated">無限制的消息發送/天</target>
+        <note>Service plan capability;</note>
+      </trans-unit>
+      <trans-unit id="Unread">
+        <source>Unread</source>
+        <target state="translated">尚未讀取</target>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
+      </trans-unit>
+      <trans-unit id="Unsupported file type">
+        <source>Unsupported file type</source>
+        <target state="translated">不支援的檔案類型</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Up to %i users">
+        <source>Up to %i users</source>
+        <target state="translated">高達 %i 個使用者</target>
+        <note>Service plan capability; i = 6</note>
+      </trans-unit>
+      <trans-unit id="Update">
+        <source>Update</source>
+        <target state="translated">更新</target>
+        <note>like top right action text</note>
+      </trans-unit>
+      <trans-unit id="Update Contact">
+        <source>Update Contact</source>
+        <target state="translated">更新聯絡人</target>
+        <note>Contacts Update contact</note>
+      </trans-unit>
+      <trans-unit id="Update Notification Email">
+        <source>Update Notification Email</source>
+        <target state="translated">更新通知用電子郵件</target>
+        <note>update notification email error title</note>
+      </trans-unit>
+      <trans-unit id="Update Now">
+        <source>Update Now</source>
+        <target state="translated">立即更新</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Update Required">
+        <source>Update Required</source>
+        <target state="translated">需要更新</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <target state="translated">升級到付費計畫以享受更多功能</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <target state="translated">升級到付費方案後再從您的 %@ 地址寄送</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features.">
+        <source>Upgrade to get all paid features.</source>
+        <target state="translated">升級以取得所有付費功能。</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Upload Contacts">
+        <source>Upload Contacts</source>
+        <target state="translated">上傳聯絡人</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <target state="translated">是否上傳iOS通訊錄至ProtonMail？</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>上傳iOS通訊錄至ProtonMail？</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Url">
+        <source>Url</source>
+        <target state="translated">網址</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="User already exist!">
+        <source>Username already taken</source>
+        <target state="translated">該使用者名稱已存在！</target>
+        <note>error when user already exist</note>
+      </trans-unit>
+      <trans-unit id="User is available!">
+        <source>Username is available</source>
+        <target state="translated">可以使用的名稱！</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="User name exist">
+        <source>Username exist</source>
+        <target state="translated">使用者名稱已存在</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="User name invalid">
+        <source>Invalid username</source>
+        <target state="translated">無效的使用者名稱</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Username">
+        <source>Username</source>
+        <target state="translated">使用者名稱</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code request failed">
+        <source>Verification code request failed</source>
+        <target state="translated">驗證碼請求失敗</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code sent">
+        <source>Verification code sent</source>
+        <target state="translated">已傳送驗證碼</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification error">
+        <source>Verification error</source>
+        <target state="translated">驗證錯誤</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed">
+        <source>Verification of this content’s signature failed</source>
+        <target state="translated">內容簽章驗證失敗</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Version %@ %@">
+        <source>Version %@ %@</source>
+        <target state="translated">版本 %@ %@</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="View Headers">
+        <source>View Headers</source>
+        <target state="translated">檢視標頭</target>
+        <note>message details-&gt; more action-&gt; view headers</note>
+      </trans-unit>
+      <trans-unit id="View Plans">
+        <source>View Plans</source>
+        <target state="translated">檢視計畫</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Warning">
+        <source>Warning</source>
+        <target state="translated">警告</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <target state="translated">警告：在通過身分驗證之前您還不能傳送郵件！！！</target>
+        <note>human check warning description</note>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <target state="translated">警告：您未設定備援信箱，如果您忘了密碼，您將失去這個帳號。是否要在未設定備援信箱的狀況下繼續？</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan.">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <target state="translated">我們已成功啟動您的訂閱。請重新啟動應用程式以開始使用新的服務方案。</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above.">
+        <source>We will send a verification code to the cell phone above.</source>
+        <target state="translated">我們會傳送驗證碼至上述的手機號碼。</target>
+        <note>text field notes</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above.">
+        <source>We will send a verification code to the email address above.</source>
+        <target state="translated">我們會傳送驗證碼至上述的電子郵件地址。</target>
+        <note>email field notes</note>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better.">
+        <source>We would like to know what we can do better.</source>
+        <target state="translated">請讓我們知道我們如何能做得更好。</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!">
+        <source>Welcome to ProtonMail</source>
+        <target state="translated">歡迎使用ProtonMail!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="What people see in the &quot;From&quot; field.">
+        <source>What people see in the "From" field.</source>
+        <target state="translated">人們在 "來自" 領域看到的。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field.">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <target state="translated">當你寄送郵件時，這個名稱將做為發件人欄位的名稱。</target>
+        <note>display name notes</note>
+      </trans-unit>
+      <trans-unit id="Work">
+        <source>Work</source>
+        <target state="translated">公司</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Wrong verification code">
+        <source>Wrong verification code</source>
+        <target state="translated">驗證碼錯誤</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for ">
+        <source>Yes, activate it for </source>
+        <target state="translated">是的, 啟用它 </target>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment">
+        <source>Yes, attach details of payment</source>
+        <target state="translated">是, 附上付款詳情</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="You are about to launch the web browser and navigate to">
+        <source>You are about to launch the web browser and navigate to</source>
+        <target state="translated">您將開啟網頁瀏覽器並導覽到</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings.">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <target state="translated">您可以在 ProtonMail 應用程式設定中自訂滑動手勢。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app.">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <target state="translated">您可在 https://protonmail.com/support 獲得說明和支援，此外，您也可透過 ProtonMail App 回報 bug。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature.">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <target state="translated">不能將 %@ 位址設置為預設值，因為這是付費功能。</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <target state="translated">儘管您已啟用限時信件，但並非所有收件者都支援此功能，請啟用密碼保護或停用 PGP 來達到限時功能。</target>
+        <note>description</note>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!">
+        <source>You have %d new emails!</source>
+        <target state="translated">您有 %d 封新郵件！</target>
+        <note>Message</note>
+      </trans-unit>
+      <trans-unit id="You have a new email!">
+        <source>You have a new email!</source>
+        <target state="translated">您有一封新郵件！</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <target state="translated">您有尚未儲存的更動，是否要存檔？</target>
+        <note>Confirmation message</note>
+        <alt-trans>
+          <target>您有尚未儲存的更動。是否存檔？</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@).">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <target state="translated">您已經使用了 %1$d%% 的儲存空間 (%2$@)。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@).">
+        <source>You have used up all of your storage space (%@).</source>
+        <target state="translated">您已經使用了所有的儲存空間 (%@)。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send">
+        <source>You need at least one recipient to send</source>
+        <target state="translated">至少需有一位收件人</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>請至少輸入一位寄件人</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Your Country Code">
+        <source>Your Country Code</source>
+        <target state="translated">國碼</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <target state="translated">您的信件已受到端對端加密的保護，邀請您的朋友一起加入 ProtonMail，享受安全的信件收發！他們尚未使用 ProtonMail？沒關係，您仍可將信件內容加密。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages.">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <target state="translated">新的加密電子郵件帳戶已經設置完成，您可以開始收發加密訊息。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready.">
+        <source>Your new secure email&#13;
+ account is ready.</source>
+        <target state="translated">您新的安全電子郵件&amp;#13;
+ 帳戶已準備就緒。</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until">
+        <source>Your plan is currently active until</source>
+        <target state="translated">您的計畫當前處於啟用狀態直到</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on">
+        <source>Your plan will automatically renew on</source>
+        <target state="translated">您的計畫將自動續訂</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated.">
+        <source>Your signature has been updated.</source>
+        <target state="translated">您的簽名檔已經更新。</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ZIP">
+        <source>ZIP</source>
+        <target state="translated">郵遞區號</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="and">
+        <source>and</source>
+        <target state="translated">和</target>
+        <note>agree check box middle word</note>
+      </trans-unit>
+      <trans-unit id="at">
+        <source>at</source>
+        <target state="translated">在</target>
+        <note>like at 10:00pm</note>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!">
+        <source>attempt remaining until secure data wipe!</source>
+        <target state="translated">嘗試保留，直到資料安全清除！</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining">
+        <source>attempts remaining</source>
+        <target state="translated">剩餘的嘗試機會</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!">
+        <source>attempts remaining until secure data wipe!</source>
+        <target state="translated">嘗試保留，直到資料安全清除！</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="close tour">
+        <source>close tour</source>
+        <target state="translated">結束引導</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="days">
+        <source>Days</source>
+        <target state="translated">天</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="for one year">
+        <source>for one year</source>
+        <target state="translated">1年</target>
+        <note>Buy button second line</note>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <target state="needs-translation">get contacts() failed, peopleOrderedByUsersPreference return null!!</target>
+        <note>contacts api error when fetch</note>
+      </trans-unit>
+      <trans-unit id="hours">
+        <source>Hours</source>
+        <target state="translated">小時</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="inline attachments">
+        <source>inline attachments</source>
+        <target state="translated">內嵌附件</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="no object">
+        <source>no object</source>
+        <target state="needs-translation">no object</target>
+        <note>no object error, local only , this could be not translated!</note>
+      </trans-unit>
+      <trans-unit id="normal attachments">
+        <source>normal attachments</source>
+        <target state="translated">一般附件</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="privacy policy.">
+        <source>privacy policy.</source>
+        <target state="translated">隱私政策。</target>
+        <note>agree check box privacy</note>
+      </trans-unit>
+      <trans-unit id="terms and conditions">
+        <source>terms and conditions</source>
+        <target state="translated">條款及細則</target>
+        <note>agree check box terms</note>
+      </trans-unit>
+      <trans-unit id="wrote:">
+        <source>wrote:</source>
+        <target state="translated">寫道：</target>
+        <note>Title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" source-language="en" target-language="zh-Hant" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS">
+        <source>App Extension API is not available in this version of iOS</source>
+        <target state="translated">應用程式擴展 API 在這個版本的 iOS 中不可用。</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension">
+        <source>Failed to contact the Password Extension</source>
+        <target state="translated">密碼擴張機能連線失敗。</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information">
+        <source>Failed to execute script that collects web page information</source>
+        <target state="translated">無法執行收集網頁資訊的腳本</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <target state="needs-translation">Failed to fill web page because script could not be evaluated</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing">
+        <source>Failed to fill web page because script is missing</source>
+        <target state="translated">無法填充網頁, 因為缺少腳本</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <target state="translated">未能從 web 視圖獲取 url 字串。調用密碼擴展時, 必須完全載入 web 視圖</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension">
+        <source>Failed to parse information returned by Password Extension</source>
+        <target state="translated">未能分析密碼擴展返回的資訊</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user">
+        <source>Password Extension was cancelled by the user</source>
+        <target state="translated">使用者已取消延伸密碼</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" source-language="en" target-language="zh-Hant" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName">
+        <source>Siri</source>
+        <target state="translated">Siri</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>Siri</source>
+        <target state="needs-translation">Siri</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

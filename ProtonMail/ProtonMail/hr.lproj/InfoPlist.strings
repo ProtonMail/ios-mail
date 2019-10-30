@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Potrebno za pridodavanje medija poruci e-pošte.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Potrebno za pridodavanje slika poruci e-pošte.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Obavezno za automatsko dovršavanje e-pošte.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Omogućuje brzo i sigurno otključavanje aplikacije.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Potrebno za spremanje slikovnih privitaka u galeriju slika.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Potrebno za pridodavanje slika poruci e-pošte.";
+

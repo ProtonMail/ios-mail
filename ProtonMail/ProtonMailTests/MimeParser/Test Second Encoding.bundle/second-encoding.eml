@@ -1,0 +1,1583 @@
+Return-Path: <bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net>
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+	 by sloti37d1t32 (Cyrus fastmail-fmjessie45326-15386-git-fastmail-15386) with LMTPA;
+	 Sat, 30 Sep 2017 14:43:26 -0400
+X-Cyrus-Session-Id: sloti37d1t32-616202-1506797006-2-17718577258752963541
+X-Sieve: CMU Sieve 3.0
+X-Spam-known-sender: no
+X-Spam-score: 0.0
+X-Spam-hits: BAYES_00 -1.9, HEADER_FROM_DIFFERENT_DOMAINS 0.001, HTML_MESSAGE 0.001,
+  MIME_QP_LONG_LINE 0.001, SPF_HELO_PASS -0.001, SPF_NEUTRAL 0.779,
+  URIBL_GREY 0.424, LANGUAGES en, BAYES_USED global, SA_VERSION 3.4.0
+X-Spam-source: IP='45.79.187.215', Host='redacted.com', Country='US', FromHeader='io',
+  MailFrom='net'
+X-Spam-charsets: subject='utf-8', from='utf-8', plain='utf-8', html='utf-8'
+X-Resolved-to: ___@redacted.net
+X-Delivered-to: ___@redacted.net
+X-Mail-from: bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net
+Received: from mx4 ([10.202.2.203])
+  by compute2.internal (LMTPProxy); Sat, 30 Sep 2017 14:43:26 -0400
+Received: from mx4.messagingengine.com (localhost [127.0.0.1])
+	by mailmx.nyi.internal (Postfix) with ESMTP id 31555C84AA
+	for <___@redacted.net>; Sat, 30 Sep 2017 14:43:25 -0400 (EDT)
+Received: from mx4.messagingengine.com (localhost [127.0.0.1])
+    by mx4.messagingengine.com (Authentication Milter) with ESMTP
+    id A38BA068661;
+    Sat, 30 Sep 2017 14:43:25 -0400
+Authentication-Results: mx4.messagingengine.com;
+    dkim=pass (1024-bit rsa key sha256) header.d=ios-developers.io header.i=hello@ios-developers.io header.b=pltoEvgT;
+    dmarc=none (p=none;has-list-id=yes) header.from=ios-developers.io;
+    iprev=pass policy.iprev=45.79.187.215 (redacted.com);
+    spf=neutral smtp.mailfrom=bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net smtp.helo=redacted.com;
+    x-ptr=pass x-ptr-helo=redacted.com x-ptr-lookup=redacted.com
+Received-SPF: neutral
+    (mail52.sea61.rsgsv.net: Domain does not state whether sender is authorized to use 'bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net' in 'mfrom' identity (mechanism '?all' matched))
+    receiver=mx4.messagingengine.com;
+    identity=mailfrom;
+    envelope-from="bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net";
+    helo=redacted.com;
+    client-ip=45.79.187.215
+Received: from redacted.com (redacted.com [45.79.187.215])
+	by mx4.messagingengine.com (Postfix) with ESMTP
+	for <___@redacted.net>; Sat, 30 Sep 2017 14:43:25 -0400 (EDT)
+Received: by redacted.com (Postfix)
+	id 0487972E3; Sat, 30 Sep 2017 18:43:24 +0000 (UTC)
+X-Remote-Delivered-To: ___@redacted.com
+Received: from mail52.sea61.rsgsv.net (mail52.sea61.rsgsv.net [148.105.14.52])
+	by redacted.com (Postfix) with ESMTP id A239071D8
+	for <___@redacted.com>; Sat, 30 Sep 2017 18:43:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=k1; d=ios-developers.io;
+ h=Subject:From:Reply-To:To:Date:Message-ID:List-ID:List-Unsubscribe:
+ Content-Type:MIME-Version; i=hello@ios-developers.io;
+ bh=Cs3wDeR34GBBHSGvOqWq+goNV1BKxLFmeZ47TfyVZx0=;
+ b=pltoEvgT3GcDZXRCGwx1NSN7GgaAjNJ8YpXBA9nO5id7v6lv39PeBA7Bwf1wya2tqGcFngEJmuxD
+   Dxe2GP4mMFWlTZEKOhsR0DSZJM7TK+qTU2WFOzy0AtmoCh3uPwUJBVQpYmx86MuibbMgwSMfYeSk
+   ls18gUwabBOengbXbEc=
+Received: from (127.0.0.1) by mail52.sea61.rsgsv.net id hpvism2akech for <___@redacted.com>; Sat, 30 Sep 2017 18:43:20 +0000 (envelope-from <bounce-mc.us9_36946381.2385413-ben=redacted.com@mail52.sea61.rsgsv.net>)
+Subject: =?utf-8?Q?Supporting=20iPhone=20X=20=2F=20iOS=2011=20Adoption=20=2F=20Apple=20&=20Conference=20Videos?=
+From: =?utf-8?Q?iOS=20Developers=20HQ?= <hello@ios-developers.io>
+Reply-To: =?utf-8?Q?iOS=20Developers=20HQ?= <hello@ios-developers.io>
+To: <___@redacted.com>
+Date: Sat, 30 Sep 2017 18:43:20 +0000
+Message-ID: <369a391f12b9b88cfdc5134d4.e42cd16d3a.20170930184214.4212543a29.a6927603@mail52.sea61.rsgsv.net>
+X-Mailer: MailChimp Mailer - **CID4212543a29e42cd16d3a**
+X-Campaign: mailchimp369a391f12b9b88cfdc5134d4.4212543a29
+X-campaignid: mailchimp369a391f12b9b88cfdc5134d4.4212543a29
+X-Report-Abuse: Please report abuse for this campaign here: http://www.mailchimp.com/abuse/abuse.phtml?u=369a391f12b9b88cfdc5134d4&id=4212543a29&e=e42cd16d3a
+X-MC-User: 369a391f12b9b88cfdc5134d4
+Feedback-ID: 36946381:36946381.2385413:us9:mc
+List-ID: 369a391f12b9b88cfdc5134d4mc list <369a391f12b9b88cfdc5134d4.529377.list-id.mcsv.net>
+X-Accounttype: pd
+List-Unsubscribe: <http://ios-developers.us9.list-manage1.com/unsubscribe?u=369a391f12b9b88cfdc5134d4&id=54776c1eb7&e=e42cd16d3a&c=4212543a29>, <mailto:unsubscribe-mc.us9_369a391f12b9b88cfdc5134d4.4212543a29-e42cd16d3a@mailin1.us2.mcsv.net?subject=unsubscribe>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+x-mcda: FALSE
+Content-Type: multipart/alternative; boundary="_----------=_MCPart_137377076"
+MIME-Version: 1.0
+
+
+--_----------=_MCPart_137377076
+Content-Type: text/plain;
+	charset=utf-8;
+	format=fixed
+Content-Transfer-Encoding: quoted-printable
+
+
+
+
+
+http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88c=
+
+fdc5134d4&id=3D1922b770b9&e=3De42cd16d3a
+
+
+
+
+
+** iOS Developers Weekly Digest
+
+------------------------------------------------------------
+
+September 30=2C 2017
+
+------------------------------------------------------------
+
+
+
+
+
+** Supporting iPhone X (http://ios-developers.us9.list-manage.com/track/cl=
+
+ick?u=3D369a391f12b9b88cfdc5134d4&id=3Dd30bb34950&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+If you haven=E2=80=99t thought about how you should be updating your app t=
+
+o support the iPhone X=2C then this is a super quick 5 minute read that wi=
+
+ll get you all up to speed.
+
+
+
+
+
+** The Best New Features in Swift 4 (http://ios-developers.us9.list-manage=
+
+1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D08b046f7f1&e=3D=
+
+e42cd16d3a)
+
+------------------------------------------------------------
+
+Swift 4 is out! Here=E2=80=99s a list of some new goodies that you can now=
+
+ take advantage of.
+
+
+
+
+
+** Rich push notifications by Countly (http://ios-developers.us9.list-mana=
+
+ge.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Def612c8a74&e=3D=
+
+e42cd16d3a)
+
+------------------------------------------------------------
+
+
+
+http://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88c=
+
+fdc5134d4&id=3D4791467314&e=3De42cd16d3a
+
+Re-engage your users anywhere=2C anytime with rich and interactive push no=
+
+tifications. Send them timely messages=2C and help increase the open rate=
+
+ and retention of your users. Countly is the leading open source=2C enterp=
+
+rise=2C self-hosted or SaaS analytics and marketing solution powering more=
+
+ than 13.000 applications and web apps. Try Countly for free now. sponsore=
+
+d (http://ios-developers.us9.list-manage1.com/track/click?u=3D369a391f12b9=
+
+b88cfdc5134d4&id=3Dee98177a9e&e=3De42cd16d3a)
+
+Interested in sponsoring our newsletter? Let us know! (mailto:hello@ios-de=
+
+velopers.io?subject=3DNewsletter%20Sponsorship)
+
+
+
+
+
+** Apple Fall 2017 Videos (http://ios-developers.us9.list-manage.com/track=
+
+/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dca51e83f89&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+Want WWDC-style videos that talk about developing for the new iPhones/Watc=
+
+h? Apple released their Fall 2017 sessions (finally!).
+
+
+
+
+
+** New App Review Guidelines (http://ios-developers.us9.list-manage.com/tr=
+
+ack/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dcc2cb53818&e=3D=
+
+e42cd16d3a)
+
+------------------------------------------------------------
+
+With the new devices and frameworks come new App Review Guidelines. Here i=
+
+s a quick list of the changes.
+
+
+
+
+
+** New Human Interface Guidelines (http://ios-developers.us9.list-manage1.=
+
+com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D044bfd3a45&e=3D=
+
+e42cd16d3a)
+
+------------------------------------------------------------
+
+=E2=80=A6 and on that same note=2C here are the new Human Interface Guidel=
+
+ines for the iPhone X.
+
+
+
+
+
+** HarshilShah/NotchKit (http://ios-developers.us9.list-manage2.com/track/=
+
+click?u=3D369a391f12b9b88cfdc5134d4&id=3D2400fe9fb6&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+I=E2=80=99m curious to see how Apple handles this in App Review because of=
+
+ the new Human Interface Guidelines=2C but if you hate the notch as much a=
+
+s I do=2C you can hide it quite nicely with this library.
+
+
+
+
+
+** Using SpriteKit to Create Custom WatchOS Loading Animations (http://ios=
+
+-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&=
+
+id=3D92aea00fa8&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+With the introduction of watchOS3 came the ability to add custom animation=
+
+s inside watch apps. Thing is=2C it doesn't have Core Animation=2C so you'=
+
+ll have to do your animations with SpriteKit/SceneKit. Here's a good guide=
+
+ on this.
+
+
+
+
+
+** Sourcery In Practice (http://ios-developers.us9.list-manage.com/track/c=
+
+lick?u=3D369a391f12b9b88cfdc5134d4&id=3D8c77dda9f8&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+I really like this one. Soroush Khanlou details using Sourcery to do a bit=
+
+ of meta-programming for encoding/decoding objects. Interesting approach!
+
+
+
+
+
+** Apple Updates Swift Playgrounds With New Augmented Reality Challenge (h=
+
+ttp://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88cf=
+
+dc5134d4&id=3Dc3f63cc7cd&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+As the title says=2C Apple updated the Swift Playgrounds iPad app to inclu=
+
+de challenges for ARKit.
+
+
+
+
+
+** NSSpain 2017 Videos (http://ios-developers.us9.list-manage.com/track/cl=
+
+ick?u=3D369a391f12b9b88cfdc5134d4&id=3D0cb402117d&e=3De42cd16d3a)
+
+------------------------------------------------------------
+
+NSSpain released their videos. Enjoy!
+
+
+
+
+
+** iOS 11 Adoption Numbers (http://ios-developers.us9.list-manage.com/trac=
+
+k/click?u=3D369a391f12b9b88cfdc5134d4&id=3D70373adf85&e=3De42cd16d3a=
+
+)
+
+------------------------------------------------------------
+
+Each year=2C Mixpanel creates reports on the adoption of the new iOS versi=
+
+ons. As of this week=2C iOS11 is on 30% of devices. Hooray!
+
+------------------------------------------------------------
+
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+** Support us on Patreon for as little as $1 (http://ios-developers.us9.li=
+
+st-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D2baf5475c6&e=
+
+=3De42cd16d3a)
+
+
+
+A huge thank you to our supporters pledging $5 or more per month: ** @MatC=
+
+artmill (http://ios-developers.us9.list-manage1.com/track/click?u=3D369a39=
+
+1f12b9b88cfdc5134d4&id=3Df7464d6925&e=3De42cd16d3a)
+
+=2C ** @jonnyklemmer (http://ios-developers.us9.list-manage.com/track/clic=
+
+k?u=3D369a391f12b9b88cfdc5134d4&id=3D979cc5ebf8&e=3De42cd16d3a)
+
+=2C Paddy Flanagan=2C ** @alex_persian (http://ios-developers.us9.list-man=
+
+age1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D048b032fb4&e=3D=
+
+e42cd16d3a)
+
+=2C ** @martincliffordmedia (http://ios-developers.us9.list-manage.com/tra=
+
+ck/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dbe2bc0fa50&e=3D=
+
+e42cd16d3a)
+
+=2C ** @agreatdaytocode (http://ios-developers.us9.list-manage.com/track/c=
+
+lick?u=3D369a391f12b9b88cfdc5134d4&id=3D0f46a485c9&e=3De42cd16d3a)
+
+=2C ** @KelCodesStuff (http://ios-developers.us9.list-manage1.com/track/cl=
+
+ick?u=3D369a391f12b9b88cfdc5134d4&id=3D5910a5e326&e=3De42cd16d3a)
+
+=2C ** @KelCodesStuff (http://ios-developers.us9.list-manage.com/track/cli=
+
+ck?u=3D369a391f12b9b88cfdc5134d4&id=3Df3cda929c0&e=3De42cd16d3a)
+
+and Michael Huggett.
+
+
+
+The newsletter team is ** @james (http://ios-developers.us9.list-manage1.c=
+
+om/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Db021ee0de6&e=3D=
+
+e42cd16d3a)
+
+=2C ** @frankacy (http://ios-developers.us9.list-manage.com/track/click?u=
+
+=3D369a391f12b9b88cfdc5134d4&id=3D8bf4943d02&e=3De42cd16d3a)
+
+=2C ** @katy (http://ios-developers.us9.list-manage.com/track/click?u=3D36=
+
+9a391f12b9b88cfdc5134d4&id=3D804db0d8cc&e=3De42cd16d3a)
+
+=2C ** @kpbode (http://ios-developers.us9.list-manage.com/track/click?u=3D=
+
+369a391f12b9b88cfdc5134d4&id=3D36ecf928a8&e=3De42cd16d3a)
+
+=2C ** @lisadziuba (http://ios-developers.us9.list-manage1.com/track/click=
+
+?u=3D369a391f12b9b88cfdc5134d4&id=3D85593c5b9d&e=3De42cd16d3a)
+
+=2C and ** @simkus9 (http://ios-developers.us9.list-manage.com/track/click=
+
+?u=3D369a391f12b9b88cfdc5134d4&id=3Df111a0d6ca&e=3De42cd16d3a)
+
+=2E =F0=9F=93=B0
+
+Until next week!
+
+** hello@ios-developers.io (mailto:hello@ios-developers.io)
+
+| ** Manage subscription (http://ios-developers.us9.list-manage.com/profil=
+
+e?u=3D369a391f12b9b88cfdc5134d4&id=3D54776c1eb7&e=3De42cd16d3a)
+
+| ** Unsubscribe (http://ios-developers.us9.list-manage1.com/unsubscribe?u=
+
+=3D369a391f12b9b88cfdc5134d4&id=3D54776c1eb7&e=3De42cd16d3a&c=3D4212543a29)
+
+What do you think of our newsletter? We value your feedback and welcome an=
+
+y comments you have to help us improve it! Just hit REPLY on this email.
+--_----------=_MCPart_137377076
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+	<head>
+		<!-- NAME: 1 COLUMN -->
+		<!--[if gte mso 15]>
+		<xml>
+			<o:OfficeDocumentSettings>
+			<o:AllowPNG/>
+			<o:PixelsPerInch>96</o:PixelsPerInch>
+			</o:OfficeDocumentSettings>
+		</xml>
+		<![endif]-->
+		<meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Supporting iPhone X / iOS 11 Adoption / Apple & Conference Videos</title>
+
+    <style type="text/css">
+		p{
+			margin:10px 0;
+			padding:0;
+		}
+		table{
+			border-collapse:collapse;
+		}
+		h1,h2,h3,h4,h5,h6{
+			display:block;
+			margin:0;
+			padding:0;
+		}
+		img,a img{
+			border:0;
+			height:auto;
+			outline:none;
+			text-decoration:none;
+		}
+		body,#bodyTable,#bodyCell{
+			height:100%;
+			margin:0;
+			padding:0;
+			width:100%;
+		}
+		.mcnPreviewText{
+			display:none !important;
+		}
+		#outlook a{
+			padding:0;
+		}
+		img{
+			-ms-interpolation-mode:bicubic;
+		}
+		table{
+			mso-table-lspace:0pt;
+			mso-table-rspace:0pt;
+		}
+		.ReadMsgBody{
+			width:100%;
+		}
+		.ExternalClass{
+			width:100%;
+		}
+		p,a,li,td,blockquote{
+			mso-line-height-rule:exactly;
+		}
+		a[href^=tel],a[href^=sms]{
+			color:inherit;
+			cursor:default;
+			text-decoration:none;
+		}
+		p,a,li,td,body,table,blockquote{
+			-ms-text-size-adjust:100%;
+			-webkit-text-size-adjust:100%;
+		}
+		.ExternalClass,.ExternalClass p,.ExternalClass td,.ExternalClass div,.ExternalClass span,.ExternalClass font{
+			line-height:100%;
+		}
+		a[x-apple-data-detectors]{
+			color:inherit !important;
+			text-decoration:none !important;
+			font-size:inherit !important;
+			font-family:inherit !important;
+			font-weight:inherit !important;
+			line-height:inherit !important;
+		}
+		#bodyCell{
+			padding:10px;
+		}
+		.templateContainer{
+			max-width:600px !important;
+		}
+		a.mcnButton{
+			display:block;
+		}
+		.mcnImage{
+			vertical-align:bottom;
+		}
+		.mcnTextContent{
+			word-break:break-word;
+		}
+		.mcnTextContent img{
+			height:auto !important;
+		}
+		.mcnDividerBlock{
+			table-layout:fixed !important;
+		}
+		body,#bodyTable{
+			background-color:#ffffff;
+		}
+		#bodyCell{
+			border-top:0;
+		}
+		.templateContainer{
+			border:0;
+		}
+		h1{
+			color:#222222;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:26px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:150%;
+			letter-spacing:normal;
+			text-align:left;
+		}
+		h2{
+			color:#222222;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:22px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:150%;
+			letter-spacing:normal;
+			text-align:left;
+		}
+		h3{
+			color:#222222;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:20px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:150%;
+			letter-spacing:normal;
+			text-align:left;
+		}
+		h4{
+			color:#222222;
+			font-family:'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:18px;
+			font-style:normal;
+			font-weight:bold;
+			line-height:150%;
+			letter-spacing:normal;
+			text-align:left;
+		}
+		#templatePreheader{
+			background-color:#ffffff;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:0px;
+			padding-bottom:px;
+		}
+		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
+			color:#222222;
+			font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:12px;
+			line-height:150%;
+			text-align:left;
+		}
+		#templatePreheader .mcnTextContent a,#templatePreheader .mcnTextContent p a{
+			color:#222222;
+			font-weight:normal;
+			text-decoration:underline;
+		}
+		#templateHeader{
+			background-color:#ffffff;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:0px;
+			padding-bottom:0px;
+		}
+		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
+			color:#222222;
+			font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:16px;
+			line-height:150%;
+			text-align:left;
+		}
+		#templateHeader .mcnTextContent a,#templateHeader .mcnTextContent p a{
+			color:#222222;
+			font-weight:normal;
+			text-decoration:underline;
+		}
+		#templateBody{
+			background-color:#ffffff;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:0px;
+			padding-bottom:10px;
+		}
+		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
+			color:#222222;
+			font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:16px;
+			line-height:150%;
+			text-align:left;
+		}
+		#templateBody .mcnTextContent a,#templateBody .mcnTextContent p a{
+			color:#2baadf;
+			font-weight:normal;
+			text-decoration:none;
+		}
+		#templateFooter{
+			background-color:#ffffff;
+			background-image:none;
+			background-repeat:no-repeat;
+			background-position:center;
+			background-size:cover;
+			border-top:0;
+			border-bottom:0;
+			padding-top:0px;
+			padding-bottom:10px;
+		}
+		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
+			color:#222222;
+			font-family:'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+			font-size:14px;
+			line-height:150%;
+			text-align:center;
+		}
+		#templateFooter .mcnTextContent a,#templateFooter .mcnTextContent p a{
+			color:#2baadf;
+			font-weight:normal;
+			text-decoration:none;
+		}
+	@media only screen and (min-width:768px){
+		.templateContainer{
+			width:600px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		body,table,td,p,a,li,blockquote{
+			-webkit-text-size-adjust:none !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		body{
+			width:100% !important;
+			min-width:100% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#bodyCell{
+			padding-top:10px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImage{
+			width:100% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnCartContainer,.mcnCaptionTopContent,.mcnRecContentContainer,.mcnCaptionBottomContent,.mcnTextContentContainer,.mcnBoxedTextContentContainer,.mcnImageGroupContentContainer,.mcnCaptionLeftTextContentContainer,.mcnCaptionRightTextContentContainer,.mcnCaptionLeftImageContentContainer,.mcnCaptionRightImageContentContainer,.mcnImageCardLeftTextContentContainer,.mcnImageCardRightTextContentContainer{
+			max-width:100% !important;
+			width:100% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnBoxedTextContentContainer{
+			min-width:100% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageGroupContent{
+			padding:9px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnCaptionLeftContentOuter .mcnTextContent,.mcnCaptionRightContentOuter .mcnTextContent{
+			padding-top:9px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageCardTopImageContent,.mcnCaptionBlockInner .mcnCaptionTopContent:last-child .mcnTextContent{
+			padding-top:18px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageCardBottomImageContent{
+			padding-bottom:9px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageGroupBlockInner{
+			padding-top:0 !important;
+			padding-bottom:0 !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageGroupBlockOuter{
+			padding-top:9px !important;
+			padding-bottom:9px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnTextContent,.mcnBoxedTextContentColumn{
+			padding-right:18px !important;
+			padding-left:18px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnImageCardLeftImageContent,.mcnImageCardRightImageContent{
+			padding-right:18px !important;
+			padding-bottom:0 !important;
+			padding-left:18px !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcpreview-image-uploader{
+			display:none !important;
+			width:100% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		h1{
+			font-size:22px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		h2{
+			font-size:20px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		h3{
+			font-size:18px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		h4{
+			font-size:16px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		.mcnBoxedTextContentContainer .mcnTextContent,.mcnBoxedTextContentContainer .mcnTextContent p{
+			font-size:14px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#templatePreheader{
+			display:block !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#templatePreheader .mcnTextContent,#templatePreheader .mcnTextContent p{
+			font-size:14px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#templateHeader .mcnTextContent,#templateHeader .mcnTextContent p{
+			font-size:16px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#templateBody .mcnTextContent,#templateBody .mcnTextContent p{
+			font-size:16px !important;
+			line-height:150% !important;
+		}
+
+}	@media only screen and (max-width: 480px){
+		#templateFooter .mcnTextContent,#templateFooter .mcnTextContent p{
+			font-size:14px !important;
+			line-height:150% !important;
+		}
+
+}</style><!--[if !mso]><!--><link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Open+Sans:400,400i,700,700i" rel="stylesheet"><!--<![endif]--></head>
+    <body style="height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;">
+		<!--
+-->
+        <center>
+            <table align="center" border="0" cellpadding="0" cellspacing="0" height="100%" width="100%" id="bodyTable" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 0;width: 100%;background-color: #ffffff;">
+                <tr>
+                    <td align="center" valign="top" id="bodyCell" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;border-top: 0;">
+                        <!-- BEGIN TEMPLATE // -->
+						<!--[if gte mso 9]>
+						<table align="center" border="0" cellspacing="0" cellpadding="0" width="600" style="width:600px;">
+						<tr>
+						<td align="center" valign="top" width="600" style="width:600px;">
+						<![endif]-->
+                        <table border="0" cellpadding="0" cellspacing="0" width="100%" class="templateContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !important;">
+                            <tr>
+                                <td valign="top" id="templatePreheader" style="background:#ffffff none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: px;"></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateHeader" style="background:#ffffff none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 0px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <div style="text-align: center;"><a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=5b4ee59784&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #222222;font-weight: normal;text-decoration: underline;"><img align="none" height="80" src="https://gallery.mailchimp.com/369a391f12b9b88cfdc5134d4/images/0b400067-5d25-4bb7-a776-a521929f0b8f.png" style="width: 80px;height: 80px;margin: 0px;border: 0;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="80"></a></div>
+
+<h1 class="null" style="text-align: center;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 26px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;">iOS Developers Weekly Digest</h1>
+
+<div style="text-align: center;">September 30, 2017</div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateBody" style="background:#ffffff none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 10px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <hr style="border:0;height:2px;background:#F0F0F0;">
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=0eda820364&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">Supporting iPhone X</a></h3>
+If you haven’t thought about how you should be updating your app to support the iPhone X, then this is a super quick 5 minute read that will get you all up to speed.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=65f8403e91&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">The Best New Features in Swift 4</a></h3>
+Swift 4 is out! Here’s a list of some new goodies that you can now take advantage of.
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage1.com/track/click?u=369a391f12b9b88cfdc5134d4&id=ec1885c2b3&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;" target="_blank">Rich push notifications by Countly</a></h3>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="210" style="width:210px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 210px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <div style="text-align: center;"><br>
+<br>
+<a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=6b42137542&e=e42cd16d3a" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;"><img align="none" data-file-id="5047145" height="130" src="https://gallery.mailchimp.com/369a391f12b9b88cfdc5134d4/images/07dbead2-8ba4-4cd8-8435-e281f1fc4bfc.png" style="border: 0px;width: 174px;height: 130px;margin: 0px;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" width="174"></a></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				<td valign="top" width="390" style="width:390px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 390px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=7d2c8ab3df&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;"><span style="color:#222222">Re-engage your users anywhere, anytime with rich and interactive push notifications. Send them timely messages, and help increase the open rate and retention of your users. Countly is the leading open source, enterprise, self-hosted or SaaS analytics and marketing solution powering more than 13.000 applications and web apps.  </span><strong>Try Countly for free now.</strong><br>
+<em><span style="color:#9b9b9b"><span style="font-size:12px">sponsored</span></span></em></a>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <div style="text-align: center;"><a href="mailto:hello@ios-developers.io?subject=Newsletter%20Sponsorship" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;"><span style="color:#222222; font-size:13px">Interested in sponsoring our newsletter? Let us know!</span></a></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=0b8a0e5a4e&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">Apple Fall 2017 Videos</a></h3>
+Want WWDC-style videos that talk about developing for the new iPhones/Watch? Apple released their Fall 2017 sessions (finally!).
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=0c2561d927&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">New App Review Guidelines</a></h3>
+With the new devices and frameworks come new App Review Guidelines. Here is a quick list of the changes.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=2c9bd33c40&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">New Human Interface Guidelines</a></h3>
+… and on that same note, here are the new Human Interface Guidelines for the iPhone X.
+
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=9a171288fd&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">HarshilShah/NotchKit</a></h3>
+I’m curious to see how Apple handles this in App Review because of the new Human Interface Guidelines, but if you hate the notch as much as I do, you can hide it quite nicely with this library.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=86b2ca8c9c&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">Using SpriteKit to Create Custom WatchOS Loading Animations</a></h3>
+With the introduction of watchOS3 came the ability to add custom animations inside watch apps. Thing is, it doesn't have Core Animation, so you'll have to do your animations with SpriteKit/SceneKit. Here's a good guide on this.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=8c390f304e&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">Sourcery In Practice</a></h3>
+I really like this one. Soroush Khanlou details using Sourcery to do a bit of meta-programming for encoding/decoding objects. Interesting approach!
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=11155613bd&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">Apple Updates Swift Playgrounds With New Augmented Reality Challenge</a></h3>
+As the title says, Apple updated the Swift Playgrounds iPad app to include challenges for ARKit.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=5b6a0b0a8c&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">NSSpain 2017 Videos</a></h3>
+NSSpain released their videos. Enjoy!
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class="null" style="margin-bottom: 0.5em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 20px;font-style: normal;font-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;"><a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=b7974fff79&e=e42cd16d3a" style="font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration: none;">iOS 11 Adoption Numbers</a></h3>
+Each year, Mixpanel creates reports on the adoption of the new iOS versions. As of this week, iOS11 is on 30% of devices. Hooray!
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 16px;line-height: 150%;text-align: left;">
+
+                            <hr style="border:0;height:2px;background:#F0F0F0;">
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign="top" id="templateFooter" style="background:#ffffff none no-repeat center/cover;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;background-image: none;background-repeat: no-repeat;background-position: center;background-size: cover;border-top: 0;border-bottom: 0;padding-top: 0px;padding-bottom: 10px;"><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;line-height: 150%;text-align: center;">
+
+                            <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=bf61b626b2&e=e42cd16d3a" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;"><strong style="color:#e6461a; font-weight:bold">Support us on Patreon for as little as $1</strong></a><br>
+<br>
+<strong style="font-size:13px; font-weight:bold">A huge thank you to our supporters pledging $5 or more per month:&nbsp;<a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=572cc5b5b1&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@MatCartmill</a>,&nbsp;<a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=90c9f6c346&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@jonnyklemmer</a>, Paddy Flanagan, <a href="http://ios-developers.us9.list-manage1.com/track/click?u=369a391f12b9b88cfdc5134d4&id=a7ee515f71&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@alex_persian</a>, <a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=141ec6d05e&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@martincliffordmedia</a>, <a href="http://ios-developers.us9.list-manage1.com/track/click?u=369a391f12b9b88cfdc5134d4&id=ca826c459d&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@agreatdaytocode</a>,&nbsp;<a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=898abdb233&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@KelCodesStuff</a>, <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=a7019c7c75&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@KelCodesStuff</a> and Michael Huggett.</strong><br>
+<br>
+<span style="font-size:13px">The newsletter team is <a href="http://ios-developers.us9.list-manage1.com/track/click?u=369a391f12b9b88cfdc5134d4&id=c93fb575ce&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@james</a>, <a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=1543ff559e&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@frankacy</a>, <a href="http://ios-developers.us9.list-manage2.com/track/click?u=369a391f12b9b88cfdc5134d4&id=21781268d7&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@katy</a>, <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=9af6db6600&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@kpbode</a>, <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=0d4198dc0d&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@lisadziuba</a>, and <a href="http://ios-developers.us9.list-manage.com/track/click?u=369a391f12b9b88cfdc5134d4&id=ecc1c8cd44&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">@simkus9</a>. 📰 </span>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnImageBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnImageBlockOuter">
+            <tr>
+                <td valign="top" style="padding: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnImageBlockInner">
+                    <table align="left" width="100%" border="0" cellpadding="0" cellspacing="0" class="mcnImageContentContainer" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+                        <tbody><tr>
+                            <td class="mcnImageContent" valign="top" style="padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+
+
+                                        <img align="center" alt="" src="https://gallery.mailchimp.com/369a391f12b9b88cfdc5134d4/images/fb24094e-7c59-49e4-ab9f-8f3a90377ffb.png" width="80" style="max-width: 80px;padding-bottom: 0;display: inline !important;vertical-align: bottom;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" class="mcnImage">
+
+
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;line-height: 150%;text-align: center;">
+
+                            <span style="color:#424242"><span style="font-size:20px"><em>Until next week!</em></span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;line-height: 150%;text-align: center;">
+
+                            <a href="mailto:hello@ios-developers.io" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">hello@ios-developers.io</a>&nbsp;| <a href="http://ios-developers.us9.list-manage.com/profile?u=369a391f12b9b88cfdc5134d4&id=54776c1eb7&e=e42cd16d3a" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">Manage subscription</a>&nbsp;| <a href="http://ios-developers.us9.list-manage1.com/unsubscribe?u=369a391f12b9b88cfdc5134d4&id=54776c1eb7&e=e42cd16d3a&c=4212543a29" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none;">Unsubscribe</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border="0" cellpadding="0" cellspacing="0" width="100%" class="mcnTextBlock" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class="mcnTextBlockOuter">
+        <tr>
+            <td valign="top" class="mcnTextBlockInner" style="padding-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+              	<!--[if mso]>
+				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
+				<tr>
+				<![endif]-->
+			
+				<!--[if mso]>
+				<td valign="top" width="600" style="width:600px;">
+				<![endif]-->
+                <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" class="mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign="top" class="mcnTextContent" style="padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;font-size: 14px;line-height: 150%;text-align: center;">
+
+                            <span style="color:#9b9b9b">What do you think of our newsletter? We value your feedback and welcome any comments you have to help us improve it! Just hit REPLY on this email.</span>
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                        </table>
+						<!--[if gte mso 9]>
+						</td>
+						</tr>
+						</table>
+						<![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    <img src="http://ios-developers.us9.list-manage.com/track/open.php?u=369a391f12b9b88cfdc5134d4&id=4212543a29&e=e42cd16d3a" height="1" width="1"></body>
+</html>
+--_----------=_MCPart_137377076--

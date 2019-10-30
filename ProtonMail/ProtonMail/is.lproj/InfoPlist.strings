@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "Nauðsynlegt til að hengja margmiðlunarefni við tölvupóst.";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "Nauðsynlegt til að hengja myndir við tölvupóst.";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "Nauðsynlegt fyrir sjálfvirka útfyllingu tölvupósts.";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "Gerir þér kleift að aflæsa forritinu á fljótlegan og öruggan hátt.";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "Nauðsynlegt til að vista myndaviðhengi í myndasafnið.";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "Nauðsynlegt til að hengja myndir við tölvupóst.";
+

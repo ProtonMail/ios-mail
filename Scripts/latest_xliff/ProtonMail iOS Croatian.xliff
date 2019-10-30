@@ -1,0 +1,3778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" source-language="en" target-language="hr" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName">
+        <source>Keymaker</source>
+        <target state="needs-translation">Keymaker</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" source-language="en" target-language="hr" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>ProtonMail</source>
+        <target state="final">ProtonMail</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>PushServiceDev</source>
+        <target state="needs-translation">PushServiceDev</target>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription" approved="yes">
+        <source>Required for attaching media to the email.</source>
+        <target state="final">Potrebno za pridodavanje medija poruci e-pošte.</target>
+        <note>Privacy - Media Library Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <target state="final">Potrebno za pridodavanje slika poruci e-pošte.</target>
+        <note>Privacy - Camera Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription" approved="yes">
+        <source>Required for email autocomplete.</source>
+        <target state="final">Obavezno za automatsko dovršavanje e-pošte.</target>
+        <note>Privacy - Contacts Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription" approved="yes">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <target state="final">Omogućuje brzo i sigurno otključavanje aplikacije.</target>
+        <note>Privacy - Face ID Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription" approved="yes">
+        <source>Required for saving image attachments to photo library.</source>
+        <target state="final">Potrebno za spremanje slikovnih privitaka u galeriju slika.</target>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <target state="final">Potrebno za pridodavanje slika poruci e-pošte.</target>
+        <note>Privacy - Photo Library Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" source-language="en" target-language="hr" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="%@ storage capacity" approved="yes">
+        <source>%@ storage capacity</source>
+        <target state="final">%@ prostora za pohranu</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="%d Member" approved="yes">
+        <source>%d Member</source>
+        <target state="final">%d član</target>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Members" approved="yes">
+        <source>%d Members</source>
+        <target state="final">%d člana/ova</target>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+        <alt-trans>
+          <target>%d člana</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="%d Minute" approved="yes">
+        <source>%d minute</source>
+        <target state="final">%d minuta</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Minutes" approved="yes">
+        <source>%d minutes</source>
+        <target state="final">%d minute/a</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Selected" approved="yes">
+        <source>%d Selected</source>
+        <target state="final">%d odabrano</target>
+        <note>The string that describes how many contact groups are currently selected</note>
+      </trans-unit>
+      <trans-unit id="%i email address" approved="yes">
+        <source>%i email address</source>
+        <target state="final">%i adresa e-pošte</target>
+        <note>Service plan capability; i = 1</note>
+      </trans-unit>
+      <trans-unit id="%i email addresses" approved="yes">
+        <source>%i email addresses</source>
+        <target state="final">%i adresa e-pošte</target>
+        <note>Service plan capability; i = 5 or 50</note>
+      </trans-unit>
+      <trans-unit id="(2048 bit)" approved="yes">
+        <source>(2048 bit)</source>
+        <target state="final">(2048 bita)</target>
+        <note>Key size text when setup key</note>
+        <alt-trans>
+          <target>(2048 bit)</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="(4096 bit)" approved="yes">
+        <source>(4096 bit)</source>
+        <target state="final">(4096 bita)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(total)" approved="yes">
+        <source>(total)</source>
+        <target state="final">(ukupno)</target>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+      </trans-unit>
+      <trans-unit id="**********" approved="yes">
+        <source>**********</source>
+        <target state="final">**********</target>
+        <note>secret</note>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL" approved="yes">
+        <source>*OPTIONAL</source>
+        <target state="final">*NEOBAVEZNO</target>
+        <note>optional text field</note>
+      </trans-unit>
+      <trans-unit id="+ Drop here to add as attachment" approved="yes">
+        <source>+ Drop here to add as attachment</source>
+        <target state="final">+ Ispustite ovdje da biste dodali kao privitak</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="/user" approved="yes">
+        <source>/user</source>
+        <target state="final">/korisniku</target>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+      </trans-unit>
+      <trans-unit id="2FA failed. Please try to login again." approved="yes">
+        <source>2FA failed. Please try to login again.</source>
+        <target state="final">Provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.</target>
+        <note>2fa verification failed</note>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;">
+        <source>&lt;no object&gt;</source>
+        <target state="needs-translation">&lt;no object&gt;</target>
+        <note>default empty object</note>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels" approved="yes">
+        <source>A message cannot have more than 5 labels</source>
+        <target state="final">Poruka ne može imati više od 5 oznaka</target>
+        <note>*
+ *  LabelTableViewCell</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <target state="final">Dostupna je nova verzija ProtonMail aplikacije. Ažurirajte na najnoviju verziju.</target>
+        <note>"Alert" = "Alert";</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to the latest version." approved="yes">
+        <source>A new version of ProtonMail app is available. Please update to the latest version.</source>
+        <target state="final">Dostupna je nova verzija ProtonMail aplikacije. Molimo ažurirajte na najnoviju verziju.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature" approved="yes">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <target state="final">Plaćeni ProtonMail plan je potreban za korištenje ove značajke</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <target state="final">Šifra nije postavljena, omogućite je u postavkama sustava</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="API Server not reachable..." approved="yes">
+        <source>API Server not reachable...</source>
+        <target state="final">API poslužitelj nije dostupan...</target>
+        <note>when server not reachable</note>
+      </trans-unit>
+      <trans-unit id="ARCHIVE" approved="yes">
+        <source>Archive</source>
+        <target state="final">Arhiva</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <target state="final">Pristup ovom računu onemogućen je zbog neplaćanja. Prijavite se putem protonmail.com kako biste platili neplaćenu fakturu.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
+        <source>Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <target state="final">Pristup ovom računu je onemogućen zbog neplaćanja.
+
+Molimo posjetite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;našu bazu znanja&lt;/a&gt; za više informacija.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Account password invalid" approved="yes">
+        <source>Invalid account password</source>
+        <target state="final">Neispravna lozinka računa</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Add" approved="yes">
+        <source>Add</source>
+        <target state="final">Dodaj</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Anniversary" approved="yes">
+        <source>Add Anniversary</source>
+        <target state="final">Dodaj godišnjicu</target>
+        <note>new contacts add Anniversary</note>
+      </trans-unit>
+      <trans-unit id="Add Birthday" approved="yes">
+        <source>Add Birthday</source>
+        <target state="final">Dodaj rođendan</target>
+        <note>new contacts add Birthday</note>
+      </trans-unit>
+      <trans-unit id="Add Contact" approved="yes">
+        <source>Add Contact</source>
+        <target state="final">Dodaj kontakt</target>
+        <note>Contacts add new contact</note>
+      </trans-unit>
+      <trans-unit id="Add Custom Label" approved="yes">
+        <source>Add Custom Label</source>
+        <target state="final">Dodaj prilagođenu oznaku</target>
+        <note>add custom label type action</note>
+      </trans-unit>
+      <trans-unit id="Add Folder" approved="yes">
+        <source>Add Folder</source>
+        <target state="final">Dodaj mapu</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Add Gender" approved="yes">
+        <source>Add Gender</source>
+        <target state="final">Dodaj spol</target>
+        <note>new contacts add Gender</note>
+      </trans-unit>
+      <trans-unit id="Add Group" approved="yes">
+        <source>Add Group</source>
+        <target state="final">Dodaj grupu</target>
+        <note>The title for the contact group creation view</note>
+        <alt-trans>
+          <target>Dodaj Grupu</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Add Label" approved="yes">
+        <source>Add Label</source>
+        <target state="final">Dodaj oznaku</target>
+        <note>add label action</note>
+      </trans-unit>
+      <trans-unit id="Add New Folder" approved="yes">
+        <source>Add New Folder</source>
+        <target state="final">Dodaj novu mapu</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add New Label" approved="yes">
+        <source>Add New Label</source>
+        <target state="final">Dodaj novu oznaku</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add Nickname" approved="yes">
+        <source>Add Nickname</source>
+        <target state="final">Dodaj nadimak</target>
+        <note>new contacts add Nickname</note>
+      </trans-unit>
+      <trans-unit id="Add Organization" approved="yes">
+        <source>Add Organization</source>
+        <target state="final">Dodaj organizaciju</target>
+        <note>new contacts add Organization</note>
+      </trans-unit>
+      <trans-unit id="Add Photo" approved="yes">
+        <source>Add Photo</source>
+        <target state="final">Dodaj fotografiju</target>
+        <note>The button text for add profile picture</note>
+      </trans-unit>
+      <trans-unit id="Add Star" approved="yes">
+        <source>Add Star</source>
+        <target state="final">Dodaj zvjezdicu</target>
+        <note>mark message star</note>
+      </trans-unit>
+      <trans-unit id="Add Title" approved="yes">
+        <source>Add Title</source>
+        <target state="final">Dodaj naslov</target>
+        <note>new contacts add Title</note>
+      </trans-unit>
+      <trans-unit id="Add new address" approved="yes">
+        <source>Add new address</source>
+        <target state="final">Dodaj novu adresu</target>
+        <note>add new address action</note>
+      </trans-unit>
+      <trans-unit id="Add new custom field" approved="yes">
+        <source>Add new custom field</source>
+        <target state="final">Dodaj novo prilagođeno polje</target>
+        <note>new custom field action</note>
+      </trans-unit>
+      <trans-unit id="Add new email" approved="yes">
+        <source>Add new email</source>
+        <target state="final">Dodaj novu adresu e-pošte</target>
+        <note>new email action</note>
+      </trans-unit>
+      <trans-unit id="Add new field" approved="yes">
+        <source>Add new field</source>
+        <target state="final">Dodati novo polje</target>
+        <note>new field action</note>
+      </trans-unit>
+      <trans-unit id="Add new phone number" approved="yes">
+        <source>Add new phone number</source>
+        <target state="final">Dodaj novi broj telefona</target>
+        <note>new phone action</note>
+      </trans-unit>
+      <trans-unit id="Add new url" approved="yes">
+        <source>Add new url</source>
+        <target state="final">Dodaj novi URL</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Add to contacts" approved="yes">
+        <source>Add to contacts</source>
+        <target state="final">Dodaj u kontakte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Address" approved="yes">
+        <source>Address</source>
+        <target state="final">Adresa</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Alert" approved="yes">
+        <source>Alert</source>
+        <target state="final">Upozorenje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="All Mail" approved="yes">
+        <source>All Mail</source>
+        <target state="final">Sva pošta</target>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="All contacts are imported" approved="yes">
+        <source>All contacts are imported</source>
+        <target state="final">Svi kontakti su uvezeni</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Also Archive" approved="yes">
+        <source>Also Archive</source>
+        <target state="final">Također i arhivu</target>
+        <note>archive when apply label</note>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password." approved="yes">
+        <source>Also used to reset a forgotten password.</source>
+        <target state="final">Također se koristi za ponovno postavljanje izgubljene lozinke.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Anniversary" approved="yes">
+        <source>Anniversary</source>
+        <target state="final">Godišnjica</target>
+        <note>contacts talbe cell Anniversary title</note>
+      </trans-unit>
+      <trans-unit id="App is locked" approved="yes">
+        <source>App is locked</source>
+        <target state="final">Aplikacija je zaključana</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee" approved="yes">
+        <source>Apple in-app purchase fee</source>
+        <target state="final">Appleova naknada za kupnju u aplikaciji</target>
+        <note>Price breakdown</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase." approved="yes">
+        <source>Apple informed us they could not process the purchase.</source>
+        <target state="final">Apple nas je obavijestio da ne mogu obraditi kupnju.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <target state="final">Apple nas je obavijestio da ste nadogradili plan usluga, ali niste odabrali koji od vaših ProtonMail računa želite nadograditi u slučaju da imate više od jednog računa.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <target state="final">Apple nas je obavijestio da ste nadogradili plan usluga, ali nedostajali su neki tehnički podaci. Ispunite izvještaj o pogrešci i naš tim za korisničku podršku će vas kontaktirati.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <target state="final">Apple nas je obavijestio da ste nadogradili plan usluge, ali smo otkrili da ste se od tada odjavili s računa.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">Primijeni</target>
+        <note>Apply action</note>
+      </trans-unit>
+      <trans-unit id="Apply Labels" approved="yes">
+        <source>Apply Labels</source>
+        <target state="final">Primjeni oznake</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Arhiva</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Archived" approved="yes">
+        <source>Archived</source>
+        <target state="final">Arhivirano</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Are you sure you want to logout?" approved="yes">
+        <source>Are you sure you want to logout?</source>
+        <target state="final">Jeste li sigurni da se želite odjaviti?</target>
+        <note>Alert to confirm logout</note>
+      </trans-unit>
+      <trans-unit id="Attachment imported" approved="yes">
+        <source>Attachment imported</source>
+        <target state="final">Privitak je uvezen</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="Attachments" approved="yes">
+        <source>Attachments</source>
+        <target state="final">Privitci</target>
+        <note>VoiceOver: email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Authentication" approved="yes">
+        <source>Authentication</source>
+        <target state="final">Autentifikacija</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Autentikacija</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
+        <source>Authentication failed: wrong username or password.</source>
+        <target state="final">Provjera autentičnosti nije uspjela: pogrešno korisničko ime ili lozinka.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <target state="final">Autentifikacija neuspješna</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed. Please try to login again." approved="yes">
+        <source>Authentication failed. Please try to login again.</source>
+        <target state="final">Provjera autentičnosti nije uspjela. Molim pokušajte se prijaviti ponovno.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked" approved="yes">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <target state="final">Token autentifikacije nije dostupan jer je aplikacija zaključana</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <target state="final">Sustav je poništio autorizaciju</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto lock time</source>
+        <target state="final">Vrijeme automatskog zaključavanja</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto show images</source>
+        <target state="final">Automatsko prikazivanje slika</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <target state="final">Natrag</target>
+        <note>top left back button</note>
+      </trans-unit>
+      <trans-unit id="Bad auth cache" approved="yes">
+        <source>Bad auth cache</source>
+        <target state="final">Bad auth cache</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <target state="final">Loš parametar</target>
+        <note>Error title</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@" approved="yes">
+        <source>Bad parameter: %@</source>
+        <target state="final">Loš parametar: %@</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bad path" approved="yes">
+        <source>Bad path</source>
+        <target state="final">Loša putanja</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Bad response" approved="yes">
+        <source>Bad response</source>
+        <target state="final">Loš odgovor</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bcc" approved="yes">
+        <source>BCC</source>
+        <target state="final">BCC</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bcc:" approved="yes">
+        <source>Bcc:</source>
+        <target state="final">Bcc:</target>
+        <note>message Bcc: feild</note>
+      </trans-unit>
+      <trans-unit id="Birthday" approved="yes">
+        <source>Birthday</source>
+        <target state="final">Rođendan</target>
+        <note>contacts talbe cell Birthday title</note>
+      </trans-unit>
+      <trans-unit id="Bug Description" approved="yes">
+        <source>Bug Description</source>
+        <target state="final">Opis greške</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bug Report Received" approved="yes">
+        <source>Bug report received</source>
+        <target state="final">Izvještaj zaprimljen</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Buy More Credits" approved="yes">
+        <source>Buy More Credits</source>
+        <target state="final">Kupite više kredita</target>
+        <note>Link to More Credits screen</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our" approved="yes">
+        <source>By using protonmail, you agree to our</source>
+        <target state="final">Koristeći ProtonMail, slažete se s našim</target>
+        <note>agree check box first part words</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our %@ and %@." approved="yes">
+        <source>By using protonmail, you agree to our %1$@ and %2$@.</source>
+        <target state="final">Koristeći ProtonMail, slažete se s našim %1$@ i %2$@.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="CAPTCHA" approved="yes">
+        <source>CAPTCHA</source>
+        <target state="final">CAPTCHA</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Call Contact" approved="yes">
+        <source>Call Contact</source>
+        <target state="final">Nazovi kontakta</target>
+        <note>Call the contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup." approved="yes">
+        <source>Can take several minutes to setup.</source>
+        <target state="final">Postavljanje može potrajati nekoliko minuta.</target>
+        <note>key size note part 2</note>
+      </trans-unit>
+      <trans-unit id="Can't copy the file" approved="yes">
+        <source>Can't copy the file</source>
+        <target state="final">Nije moguće kopiranje datoteke</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client" approved="yes">
+        <source>Can't create a SRP Client</source>
+        <target state="final">Neuspješno stvaranje SRP klijenta</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!" approved="yes">
+        <source>Can't create a SRP verifier!</source>
+        <target state="final">Neuspješno stvaranje SRP verifikatora!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!" approved="yes">
+        <source>Can't decrypt this attachment!</source>
+        <target state="final">Neuspješno dešifriranje ovog privitka!</target>
+        <note>When quick look attachment but can't decrypt it!</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group" approved="yes">
+        <source>Can't delete contact group</source>
+        <target state="final">Neuspješno brisanje grupe kontakata</target>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API" approved="yes">
+        <source>Can't delete contact group through API</source>
+        <target state="final">Nije moguće izbrisati grupu kontakata putem API-ja</target>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again." approved="yes">
+        <source>Can't download message body, please try again.</source>
+        <target state="final">Nije moguće preuzeti tijelo poruke. Molimo pokušaj ponovno.</target>
+        <note>*
+ *  MessageViewController</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again." approved="yes">
+        <source>Can't download message body. Please try again.</source>
+        <target state="final">Nije moguće preuzeti tijelo poruke. Molimo pokušaj ponovno.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't fetch contact groups" approved="yes">
+        <source>Can't fetch contact groups</source>
+        <target state="final">Neuspješno dohvaćanje grupa kontakata</target>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+        <alt-trans>
+          <target>Neuspješno dohvaćanje grupe kontakata</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!" approved="yes">
+        <source>Can't find the clicked message please try again!</source>
+        <target state="final">Ne mogu pronaći pritisnutu poruku. Molimo pokušajte ponovno!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Can't find the selected message. Please try again." approved="yes">
+        <source>Can't find the selected message. Please try again.</source>
+        <target state="final">Ne mogu pronaći odabranu poruku. Molimo pokušajte ponovno.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!" approved="yes">
+        <source>Can't find this attachment!</source>
+        <target state="final">Neuspješno pronalaženje ovog privitka!</target>
+        <note>when quick look attachment but can't find the data</note>
+        <alt-trans>
+          <target>Ne mogu pronaći ovaj privitak!</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!" approved="yes">
+        <source>Can't get a Modulus ID!</source>
+        <target state="final">Nije moguće dobiti Modulus ID!</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!" approved="yes">
+        <source>Can't get a Moduls!</source>
+        <target state="final">Nije moguće dobiti Moduls!</target>
+        <note>update password error = typo:Modulus</note>
+        <alt-trans>
+          <target>Can't get a Moduls!</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info" approved="yes">
+        <source>Can't get user auth info</source>
+        <target state="final">Ne mogu dobiti informacije o autentifikaciji korisnika</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't load share content!" approved="yes">
+        <source>Can't load share content!</source>
+        <target state="final">Nije moguće učitati dijeljeni sadržaj!</target>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+      </trans-unit>
+      <trans-unit id="Can't load the file" approved="yes">
+        <source>Can't load the file</source>
+        <target state="final">Nije moguće učitavanje datoteke</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body" approved="yes">
+        <source>Can't not find the value from the response body</source>
+        <target state="final">Ne mogu pronaći vrijednost iz tijela odgovora</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't open the file" approved="yes">
+        <source>Can't open the file</source>
+        <target state="final">Nije moguće otvoriti datoteku</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't save contact group" approved="yes">
+        <source>Can't save contact group</source>
+        <target state="final">Neuspješno spremanje grupe kontakata</target>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through the API" approved="yes">
+        <source>Can't update contact group through the API</source>
+        <target state="final">Nije moguće ažurirati grupu kontakata putem API-ja</target>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Poništi</target>
+        <note>Cancel action</note>
+      </trans-unit>
+      <trans-unit id="Cancel Check" approved="yes">
+        <source>Cancel Check</source>
+        <target state="final">Odustani od provjere</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Cancelling" approved="yes">
+        <source>Cancelling</source>
+        <target state="final">Otkazivanje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!" approved="yes">
+        <source>Unable to decrypt this attachment.</source>
+        <target state="final">Neuspješno dešifriranje ovog privitka.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cc" approved="yes">
+        <source>CC</source>
+        <target state="final">CC</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cc:" approved="yes">
+        <source>Cc:</source>
+        <target state="final">Cc:</target>
+        <note>message Cc: feild</note>
+      </trans-unit>
+      <trans-unit id="Cell phone number" approved="yes">
+        <source>Cell phone number</source>
+        <target state="final">Broj telefona</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Change Login Password" approved="yes">
+        <source>Change Login Password</source>
+        <target state="final">Promijeni lozinku za prijavu</target>
+        <note>change password input label</note>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password" approved="yes">
+        <source>Change Mailbox Password</source>
+        <target state="final">Promijeni lozinku sandučića e-pošte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change Password" approved="yes">
+        <source>Change password</source>
+        <target state="final">Promjena lozinke</target>
+        <note>update password error title</note>
+      </trans-unit>
+      <trans-unit id="Change Pin" approved="yes">
+        <source>Change PIN</source>
+        <target state="final">Promijenite PIN</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Change Single Password" approved="yes">
+        <source>Change Single Password</source>
+        <target state="final">Promijeni samostalnu lozinku</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change default address to .." approved="yes">
+        <source>Change default address to...</source>
+        <target state="final">Promijeni zadanu adresu u...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change left swipe action" approved="yes">
+        <source>Change left swipe action</source>
+        <target state="final">Promjeni lijevu radnju prelaska prstom</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change right swipe action" approved="yes">
+        <source>Change right swipe action</source>
+        <target state="final">Promjeni desnu radnju prelaska prstom</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change sender address to .." approved="yes">
+        <source>Change sender address to...</source>
+        <target state="final">Promijeni adresu pošiljatelja u...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Check Again" approved="yes">
+        <source>Check Again</source>
+        <target state="final">Provjeri ponovno</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Checking ...." approved="yes">
+        <source>Checking...</source>
+        <target state="final">Provjera...</target>
+        <note>loading message</note>
+      </trans-unit>
+      <trans-unit id="Choose a Password" approved="yes">
+        <source>Choose a Password</source>
+        <target state="final">Odaberite lozinku</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="City" approved="yes">
+        <source>City</source>
+        <target state="final">Grad</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache" approved="yes">
+        <source>Clear local message cache</source>
+        <target state="final">Očisti lokalnu predmemoriju poruka</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Close" approved="yes">
+        <source>Close</source>
+        <target state="final">Zatvori</target>
+        <note>general close action</note>
+      </trans-unit>
+      <trans-unit id="Closing" approved="yes">
+        <source>Closing</source>
+        <target state="final">Zatvaranje</target>
+        <note>the message will show when closing a draft from the share extension</note>
+      </trans-unit>
+      <trans-unit id="Compose" approved="yes">
+        <source>Compose</source>
+        <target state="final">Nova poruka</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Compose to" approved="yes">
+        <source>Compose to</source>
+        <target state="final">Nova poruka za</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Potvrdi</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password" approved="yes">
+        <source>Confirm login password</source>
+        <target state="final">Potvrdi lozinku za prijavu</target>
+        <note>"Login Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password" approved="yes">
+        <source>Confirm mailbox password</source>
+        <target state="final">Potvrdi lozinku za sandučić e-pošte</target>
+        <note>"Mailbox Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Password" approved="yes">
+        <source>Confirm password</source>
+        <target state="final">Potvrdi lozinku</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm new login password" approved="yes">
+        <source>Confirm new login password</source>
+        <target state="final">Potvrdi novu lozinku za prijavu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password" approved="yes">
+        <source>Confirm new mailbox password</source>
+        <target state="final">Potvrdi novu lozinku za sandučić e-pošte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new password" approved="yes">
+        <source>Confirm new password</source>
+        <target state="final">Potvrdi novu lozinku</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report" approved="yes">
+        <source>Confirm phishing report</source>
+        <target state="final">Potvrdi izvještaj o krađi identiteta</target>
+        <note>alert title</note>
+      </trans-unit>
+      <trans-unit id="Confirmation" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Potvrda</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Congratulations!" approved="yes">
+        <source>Congratulations!</source>
+        <target state="final">Čestitamo!</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Contact Details" approved="yes">
+        <source>Contact Details</source>
+        <target state="final">Detalji o kontaktu</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team" approved="yes">
+        <source>Contact the ProtonMail team</source>
+        <target state="final">Kontaktirajte ProtonMail tim</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Contacts" approved="yes">
+        <source>Contacts</source>
+        <target state="final">Kontakti</target>
+        <note>Action and title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Continue" approved="yes">
+        <source>Continue</source>
+        <target state="final">Nastavi</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Continue and Don't ask again" approved="yes">
+        <source>Continue and Don't ask again</source>
+        <target state="final">Nastavi i ne pitaj ponovno</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Copy address" approved="yes">
+        <source>Copy address</source>
+        <target state="final">Kopiraj adresu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Copy name" approved="yes">
+        <source>Copy name</source>
+        <target state="final">Kopiraj ime</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Could not connect to Store. Please try again later." approved="yes">
+        <source>Could not connect to Store. Please try again later.</source>
+        <target state="final">Povezivanje s trgovinom nije uspjelo. Molimo pokušajte kasnije.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Country" approved="yes">
+        <source>Country</source>
+        <target state="final">Država</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Create" approved="yes">
+        <source>Create</source>
+        <target state="final">Stvori</target>
+        <note>top right action text</note>
+      </trans-unit>
+      <trans-unit id="Create Account" approved="yes">
+        <source>Create Account</source>
+        <target state="final">Stvori račun</target>
+        <note>Create account button</note>
+        <alt-trans>
+          <target>Napravi račun</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Create User failed. Please try again." approved="yes">
+        <source>Create User failed. Please try again.</source>
+        <target state="final">Izrada korisnka nije uspjela. Molimo Vas pokušajte ponovo.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Create a new account" approved="yes">
+        <source>Create a new account</source>
+        <target state="final">Stvori novi račun</target>
+        <note>Signup top title</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Long press on a message for all options." approved="yes">
+        <source>Create and add Labels to organize your inbox. Long press on a message for all options.</source>
+        <target state="final">Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Dugo pritisnite i držite poruku za prikaz svih opcija.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options." approved="yes">
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <target state="final">Stvorite i dodajte oznake da biste organizirali pristiglu poštu. Pritisnite i držite poruku za sve opcije.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Create user failed" approved="yes">
+        <source>Create user failed</source>
+        <target state="final">Neuspješno stvaranje korisnika</target>
+        <note>error message title when create new user</note>
+      </trans-unit>
+      <trans-unit id="Current Language is: " approved="yes">
+        <source>Current Language is: </source>
+        <target state="final">Trenutni jezik je: </target>
+        <note>Change language title</note>
+      </trans-unit>
+      <trans-unit id="Current login password" approved="yes">
+        <source>Current login password</source>
+        <target state="final">Trenutna lozinka za prijavu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Current password" approved="yes">
+        <source>Current password</source>
+        <target state="final">Trenutna lozinka</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">Prilagođeno</target>
+        <note>action sheet option
+   contacts default label type</note>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX" approved="yes">
+        <source>DECRYPT MAILBOX</source>
+        <target state="final">DEŠIFRIRANJE SANDUČIĆA E-POŠTE</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="DRAFTS" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Skice</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Date:" approved="yes">
+        <source>Date:</source>
+        <target state="final">Datum:</target>
+        <note>message Date: text</note>
+      </trans-unit>
+      <trans-unit id="Date: %@" approved="yes">
+        <source>Date: %@</source>
+        <target state="final">Datum: %@</target>
+        <note>like Date: 2017-10-10</note>
+      </trans-unit>
+      <trans-unit id="Debug" approved="yes">
+        <source>Debug</source>
+        <target state="final">Otklanjanje pogrešaka</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Decrypt" approved="yes">
+        <source>Decrypt</source>
+        <target state="final">Dešifriranje</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed. Please try again." approved="yes">
+        <source>Decrypt token failed. Please try again.</source>
+        <target state="final">Neuspješno dešifriranje tokena. Molimo pokuštajte ponovno.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Decryption error" approved="yes">
+        <source>Decryption error</source>
+        <target state="final">Pogreška pri dešifriranju</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed" approved="yes">
+        <source>Decryption of this content failed</source>
+        <target state="final">Dešifriranje ovog sadržaja nije uspjelo</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Default" approved="yes">
+        <source>Default</source>
+        <target state="final">Zadano</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Default error. Please try again." approved="yes">
+        <source>Default error. Please try again.</source>
+        <target state="final">Zadana greška. Molimo pokušajte ponovno.</target>
+        <note>error message when create new user</note>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date" approved="yes">
+        <source>Define Expiration Date</source>
+        <target state="final">Odredite datum vremenskog isteka</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)" approved="yes">
+        <source>Define hint (Optional)</source>
+        <target state="final">Odredite hint-pomoć (neobavezno)</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Password" approved="yes">
+        <source>Define password</source>
+        <target state="final">Lozinka</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Obriši</target>
+        <note>general delete action</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact" approved="yes">
+        <source>Delete Contact</source>
+        <target state="final">Obriši kontakt</target>
+        <note>Title-Contacts</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group" approved="yes">
+        <source>Delete Contact Group</source>
+        <target state="final">Obriši grupu kontakta</target>
+        <note>The description of the button for deleting the contact group</note>
+      </trans-unit>
+      <trans-unit id="Deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">Izbrisano</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Details" approved="yes">
+        <source>Details</source>
+        <target state="final">Pojedinosti</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Detalji</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Discard changes" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">Odbaciti promjene</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Discard draft" approved="yes">
+        <source>Discard draft</source>
+        <target state="final">Odbaci skicu</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Display Name" approved="yes">
+        <source>Display name</source>
+        <target state="final">Zaslonsko ime</target>
+        <note>Title in settings</note>
+      </trans-unit>
+      <trans-unit id="Display Name Updated" approved="yes">
+        <source>Display name updated</source>
+        <target state="final">Zaslonsko ime je ažurirano</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Display name" approved="yes">
+        <source>Display name</source>
+        <target state="final">Zaslonsko ime</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="DisplayName" approved="yes">
+        <source>Display name</source>
+        <target state="final">Zaslonsko ime</target>
+        <note>Title in display name settings</note>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for " approved="yes">
+        <source>Do you want to activate the purchased service plan for </source>
+        <target state="final">Želite li aktivirati kupljeni plan usluge za </target>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?" approved="yes">
+        <source>Do you want to cancel the process?</source>
+        <target state="final">Želite li prekinuti proces?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?" approved="yes">
+        <source>Do you want to save the unsaved changes?</source>
+        <target state="final">Želite li sačuvati izmjene?</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't Show Again" approved="yes">
+        <source>Don't Show Again</source>
+        <target state="final">Ne prikazuj ponovno</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't remind me again" approved="yes">
+        <source>Don't remind me again</source>
+        <target state="final">Ne podsjećaj me više</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Done" approved="yes">
+        <source>Done</source>
+        <target state="final">Gotovo</target>
+        <note>Done action</note>
+      </trans-unit>
+      <trans-unit id="Double tap to setup" approved="yes">
+        <source>Double tap to setup</source>
+        <target state="final">Dvaput dodirni za postavljanje</target>
+        <note>VoiceOver action description</note>
+      </trans-unit>
+      <trans-unit id="Draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Skica</target>
+        <note>Action
+   mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Skice</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Uredi</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Edit Contact" approved="yes">
+        <source>Edit contact</source>
+        <target state="final">Uredi kontakt</target>
+        <note>*
+ *  Edit Contact view controller</note>
+      </trans-unit>
+      <trans-unit id="Edit Folder" approved="yes">
+        <source>Edit Folder</source>
+        <target state="final">Uredi mapu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Group" approved="yes">
+        <source>Edit Group</source>
+        <target state="final">Uredi grupu</target>
+        <note>The title for the contact group editing view</note>
+      </trans-unit>
+      <trans-unit id="Edit Label" approved="yes">
+        <source>Edit Label</source>
+        <target state="final">Uredi oznaku</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Photo" approved="yes">
+        <source>Edit Photo</source>
+        <target state="final">Uredi fotografiju</target>
+        <note>The button text for edit profile picture</note>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature" approved="yes">
+        <source>Edit mobile signature</source>
+        <target state="final">Uredi potpis na mobilnim uređajima</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Edit signature" approved="yes">
+        <source>Edit signature</source>
+        <target state="final">Uredi potpis</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Email" approved="yes">
+        <source>Email</source>
+        <target state="final">E-pošta</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Email Addresses" approved="yes">
+        <source>Email Addresses</source>
+        <target state="final">Adrese e-pošte</target>
+        <note>contact detail view, email addresses section title</note>
+      </trans-unit>
+      <trans-unit id="Email Contact" approved="yes">
+        <source>Email Contact</source>
+        <target state="final">Pošalji poruku e-pošte kontaktu</target>
+        <note>Send an email to the current contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Email Verification" approved="yes">
+        <source>Email Verification</source>
+        <target state="final">Potvrda putem e-pošte</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Email address" approved="yes">
+        <source>Email address</source>
+        <target state="final">Adresa e-pošte</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Email address invalid" approved="yes">
+        <source>Email address invalid</source>
+        <target state="final">Adresa e-pošte nije valjana</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Email default signature" approved="yes">
+        <source>Email default signature</source>
+        <target state="final">Zadani potpis e-pošte</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Email domain invalid" approved="yes">
+        <source>Invalid email domain</source>
+        <target state="final">Neispravna domena e-pošte</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty folder</source>
+        <target state="final">Isprazni mapu</target>
+        <note>empty folder, for spam and trash</note>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature" approved="yes">
+        <source>Enable Default Signature</source>
+        <target state="final">Omogući zadani potpis e-pošte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable FaceID" approved="yes">
+        <source>Enable FaceID</source>
+        <target state="final">Omogući FaceID</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature" approved="yes">
+        <source>Enable Mobile Signature</source>
+        <target state="final">Omogući potpis na mobilnim uređajima</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email" approved="yes">
+        <source>Enable Notification Email</source>
+        <target state="final">Omogući obavijesti e-pošte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection" approved="yes">
+        <source>Enable PIN protection</source>
+        <target state="final">Omogući PIN zaštitu</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable TouchID" approved="yes">
+        <source>Enable TouchID</source>
+        <target state="final">Omogući TouchID</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details" approved="yes">
+        <source>Encrypted Contact Details</source>
+        <target state="final">Šifrirani podaci o kontaktu</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside" approved="yes">
+        <source>Encrypted for outside</source>
+        <target state="final">Šifrirano za vanjsku komunikaciju</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply" approved="yes">
+        <source>Encrypted for outside reply</source>
+        <target state="final">Šifrirano za odgovor vanjske komunikacije</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Šifrirano za vanjsku komunikaciju</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside" approved="yes">
+        <source>Encrypted from outside</source>
+        <target state="final">Šifrirano izvana</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP inline" approved="yes">
+        <source>Encrypted from outside PGP inline</source>
+        <target state="final">Šifrirano vanjskim PGP inline</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/MIME" approved="yes">
+        <source>Encrypted from outside PGP/MIME</source>
+        <target state="final">Šifrirano vanjskim PGP/MIME</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed PGP/MIME" approved="yes">
+        <source>Encrypted from outside signed PGP/MIME</source>
+        <target state="final">Šifrirano vanjskim potpisanim PGP/MIME</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encryption Setup" approved="yes">
+        <source>Encryption Setup</source>
+        <target state="final">Postavljanje šifriranja</target>
+        <note>key setup top title</note>
+      </trans-unit>
+      <trans-unit id="End Time" approved="yes">
+        <source>End Time</source>
+        <target state="final">Vrijeme završetka</target>
+        <note>settings option (End Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption" approved="yes">
+        <source>End-to-end encryption</source>
+        <target state="final">End-to-End šifriranje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted" approved="yes">
+        <source>End-to-end encrypted</source>
+        <target state="final">End-to-End šifriranje</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message" approved="yes">
+        <source>End-to-end encrypted message</source>
+        <target state="final">End-to-end šifrirane poruke</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address" approved="yes">
+        <source>End-to-end encrypted message from verified address</source>
+        <target state="final">End-to-end šifrirana poruka od potvrđene adrese</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address" approved="yes">
+        <source>End-to-end encrypted to verified address</source>
+        <target state="final">End-to-end šifiranje za potvrđenu adresu</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Enter" approved="yes">
+        <source>Enter</source>
+        <target state="final">U redu</target>
+        <note>Action in 2fa popup view</note>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code" approved="yes">
+        <source>Enter verification code</source>
+        <target state="final">Unesite kôd za provjeru</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN" approved="yes">
+        <source>Enter your PIN</source>
+        <target state="final">Unesite PIN</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox." approved="yes">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <target state="final">Unesite vaš PIN za otključavanje pristigle pošte.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number" approved="yes">
+        <source>Enter your cell phone number</source>
+        <target state="final">Unesite broj svog mobilnog telefona</target>
+        <note>human verification top title</note>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address." approved="yes">
+        <source>Enter your existing email address.</source>
+        <target state="final">Unesite vašu postojeću adresu e-pošte.</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="Error Logs" approved="yes">
+        <source>Error logs</source>
+        <target state="final">Evidencija grešaka</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Error occured" approved="yes">
+        <source>Error occured</source>
+        <target state="final">Došlo je do pogreške</target>
+        <note>Error alert title</note>
+      </trans-unit>
+      <trans-unit id="Every time enter app" approved="yes">
+        <source>Every time enter app</source>
+        <target state="final">Pri svakom ulasku u aplikaciju</target>
+        <note>lock app option</note>
+      </trans-unit>
+      <trans-unit id="Expires" approved="yes">
+        <source>Expires</source>
+        <target state="final">Ističe</target>
+        <note>VoiceOver: email can expire</note>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds" approved="yes">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <target state="final">Ističe za %1$d dana %2$d sati %3$d minuta %4$d sekundi</target>
+        <note>expiration time count down</note>
+      </trans-unit>
+      <trans-unit id="Expiring Messages" approved="yes">
+        <source>Expiring messages</source>
+        <target state="final">Poruke s vremenskim istekom</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Extreme Security" approved="yes">
+        <source>Extreme Security</source>
+        <target state="final">Ekstremna sigurnost</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?" approved="yes">
+        <source>Forgot password?</source>
+        <target state="final">Zaboravili ste lozinku?</target>
+        <note>login page forgot pwd</note>
+      </trans-unit>
+      <trans-unit id="FW:" approved="yes">
+        <source>FW:</source>
+        <target state="final">FW:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file" approved="yes">
+        <source>Failed to determine type of file</source>
+        <target state="final">Utvrđivanje vrste datoteke nije uspjelo</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore." approved="yes">
+        <source>Failed to get list of available products from AppStore.</source>
+        <target state="final">Nije moguće dohvatiti popis dostupnih proizvoda iz AppStorea.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the app's saved data" approved="yes">
+        <source>Failed to initialize the app's saved data</source>
+        <target state="final">Inicijalizacija spremljenih podataka aplikacije nije uspjela</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data" approved="yes">
+        <source>Failed to initialize the application's saved data</source>
+        <target state="final">Inicijalizacija spremljenih podataka aplikacije nije uspjela</target>
+        <note>*
+ *  Core Data Service &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="Fax" approved="yes">
+        <source>Fax</source>
+        <target state="final">Faks</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Feedback" approved="yes">
+        <source>Feedback</source>
+        <target state="final">Povratne informacije</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed" approved="yes">
+        <source>Fetch user info failed</source>
+        <target state="final">Neuspješno dohvaćanje informacija o korisniku</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Mapa</target>
+        <note>VoiceOver: email belongs to folder</note>
+      </trans-unit>
+      <trans-unit id="Folder Name" approved="yes">
+        <source>Folder Name</source>
+        <target state="final">Naziv mape</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost" approved="yes">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <target state="final">Za pojedince koji žele besplatno koristiti sigurnu komunikaciju</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features" approved="yes">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <target state="final">Za pojedince kojima je potreban veći kapacitet, prilagodljivost i napredne značajke</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features" approved="yes">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <target state="final">Za organizacije kojima je potrebna podrška za više korisnika i dodatne značajke produktivnosti</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy" approved="yes">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <target state="final">Za napredne korisnike i grupe ljudi koji cijene punu anonimnost i privatnost</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="Forward" approved="yes">
+        <source>Forward</source>
+        <target state="final">Proslijedi</target>
+        <note>forward action</note>
+      </trans-unit>
+      <trans-unit id="Forwarded message" approved="yes">
+        <source>Forwarded message</source>
+        <target state="final">Proslijeđena poruka</target>
+        <note>forwarded message title</note>
+      </trans-unit>
+      <trans-unit id="From" approved="yes">
+        <source>From</source>
+        <target state="final">Od</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="From:" approved="yes">
+        <source>From:</source>
+        <target state="final">Od:</target>
+        <note>message From: field text</note>
+      </trans-unit>
+      <trans-unit id="Fwd:" approved="yes">
+        <source>Fwd:</source>
+        <target state="final">Fwd:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Gender" approved="yes">
+        <source>Gender</source>
+        <target state="final">Spol</target>
+        <note>contacts talbe cell gender title</note>
+      </trans-unit>
+      <trans-unit id="General Settings" approved="yes">
+        <source>General settings</source>
+        <target state="final">Opće postavke</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Get %@" approved="yes">
+        <source>Get %@</source>
+        <target state="final">Nabavite %@</target>
+        <note>Screen header, like 'Get VISIONARY'</note>
+      </trans-unit>
+      <trans-unit id="Get more information" approved="yes">
+        <source>Get more information</source>
+        <target state="final">Zatražite dodatne informacije</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Go to inbox" approved="yes">
+        <source>Go to inbox</source>
+        <target state="final">Idi u pristiglu poštu</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Group Details" approved="yes">
+        <source>Group Details</source>
+        <target state="final">Detalji o grupi</target>
+        <note>The title for the contact group detail view</note>
+      </trans-unit>
+      <trans-unit id="Group Name" approved="yes">
+        <source>Group Name</source>
+        <target state="final">Naziv grupe</target>
+        <note>The instruction label for the group name textfield</note>
+      </trans-unit>
+      <trans-unit id="Groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Grupe</target>
+        <note>menu title (contact groups)</note>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support" approved="yes">
+        <source>Help &amp; Support</source>
+        <target state="final">Pomoć i podrška</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input." approved="yes">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <target state="final">Pomozite nam da poboljšamo ProtonMail s povratnim informacijama.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web." approved="yes">
+        <source>Help us to make privacy the default in the web.</source>
+        <target state="final">Pomozite nam učiniti privatnost zadanom na webu.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Sakrij</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Hide Details" approved="yes">
+        <source>Hide details</source>
+        <target state="final">Sakrij detalje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="High Security" approved="yes">
+        <source>High Security</source>
+        <target state="final">Velika sigurnost</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="Hours" approved="yes">
+        <source>Hours</source>
+        <target state="final">Sati</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Human Check Failed" approved="yes">
+        <source>Human Check Failed</source>
+        <target state="final">Ljudska provjera nije uspjela</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Human Check Warning" approved="yes">
+        <source>Human Check Warning</source>
+        <target state="final">Upozorenje o ljudskoj provjeri</target>
+        <note>human check warning title</note>
+      </trans-unit>
+      <trans-unit id="Human Verification" approved="yes">
+        <source>Human Verification</source>
+        <target state="final">Ljudska provjera</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge" approved="yes">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <target state="final">IMAP/SMTP podrška putem ProtonMail Bridgea</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="INBOX" approved="yes">
+        <source>Inbox</source>
+        <target state="final">Pristigla pošta</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Import Error" approved="yes">
+        <source>Import Error</source>
+        <target state="final">Pogreška uvoza</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Import File From..." approved="yes">
+        <source>Import file from...</source>
+        <target state="final">Uvezi datoteku iz...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Importing Contacts" approved="yes">
+        <source>Importing Contacts</source>
+        <target state="final">Uvoz kontakata</target>
+        <note>import contact title</note>
+      </trans-unit>
+      <trans-unit id="Importing attachment, that can take a while" approved="yes">
+        <source>Importing attachment, that can take a while</source>
+        <target state="final">Uvozi se privitak, što može potrajati</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service." approved="yes">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <target state="final">Da biste koristili naše usluge, morate prihvatiti Uvjete pružanja usluge ProtonMaila.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Inbox" approved="yes">
+        <source>Inbox</source>
+        <target state="final">Pristigla pošta</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN," approved="yes">
+        <source>Incorrect PIN,</source>
+        <target state="final">Pogrešan PIN,</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Incorrect password" approved="yes">
+        <source>Incorrect password</source>
+        <target state="final">Neispravna lozinka</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Input Display Name ..." approved="yes">
+        <source>Input display name ...</source>
+        <target state="final">Unesite zaslonsko ime...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ..." approved="yes">
+        <source>Input Notification Email ...</source>
+        <target state="final">Unesite adresu e-pošte za obavijesti...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <target state="final">Izrada instantnog ProtonMail računa privremeno je onemogućena. Idite na https://protonmail.com/invite da biste zatražili pozivnicu.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Internal Error" approved="yes">
+        <source>Internal Error</source>
+        <target state="final">Unutarnja pogreška</target>
+        <note>The preconditions are not met</note>
+      </trans-unit>
+      <trans-unit id="Internet" approved="yes">
+        <source>Internet</source>
+        <target state="final">Internet</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Invalid Password" approved="yes">
+        <source>Invalid Password</source>
+        <target state="final">Netočna lozinka</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid URL" approved="yes">
+        <source>Invalid URL</source>
+        <target state="final">Neispravan URL</target>
+        <note>Invalid URL error when click a url in contact</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName" approved="yes">
+        <source>Invalid username</source>
+        <target state="final">Nevažeće korisničko ime</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!" approved="yes">
+        <source>Invalid UserName!</source>
+        <target state="final">Neispravno korisničko ime!</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin" approved="yes">
+        <source>Invalid access token please relogin</source>
+        <target state="final">Nevažeći token za pristup. Molimo prijavite se ponovno</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin." approved="yes">
+        <source>Invalid access token. Please relogin.</source>
+        <target state="final">Nevažeći token za pristup. Molimo prijavite se ponovno.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Invalid credential" approved="yes">
+        <source>Invalid credential</source>
+        <target state="final">Neispravne vjerodajnice</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!" approved="yes">
+        <source>Invalid hashed password!</source>
+        <target state="final">Neispravna hashirana lozinka!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?" approved="yes">
+        <source>Is this bug report about an in-app purchase?</source>
+        <target state="final">Je li ovo izvješće o greški vezano za kupnju u aplikaciji?</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to %@ within our iOS app." approved="yes">
+        <source>It is not possible to switch to %@ within our iOS app.</source>
+        <target state="final">Nije moguće prebaciti se na %@ unutar naše iOS aplikacije.</target>
+        <note>It is not possible to switch to `plan` within our iOS app.</note>
+      </trans-unit>
+      <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." approved="yes">
+        <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
+        <target state="final">Nismo uspjeli pronaći AppStore proizvod koji ste kupili s proizvodima na našem poslužitelju. Ispunite izvještaj o pogreški i naš tim za korisničku podršku će vas kontaktirati.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features" approved="yes">
+        <source>Keep me updated about new features</source>
+        <target state="final">Informirajte me o novim značajkama</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed" approved="yes">
+        <source>Key generation failed</source>
+        <target state="final">Generiranje ključa nije uspjelo</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed. Please try again." approved="yes">
+        <source>Key generation failed. Please try again.</source>
+        <target state="final">Izrada ključa nije uspjela. Molimo Vas pokušajte ponovo.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key invalid. Please go back and try again." approved="yes">
+        <source>Key invalid. Please go back and try again.</source>
+        <target state="final">Ključ nije valjan. Vratite se natrag i pokušajte ponovno.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="LOGIN" approved="yes">
+        <source>Login</source>
+        <target state="final">Prijava</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Label Management" approved="yes">
+        <source>Label management</source>
+        <target state="final">Upravljanje oznakama</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Label Name" approved="yes">
+        <source>Label Name</source>
+        <target state="final">Naziv oznake</target>
+        <note>createing lable input place holder</note>
+      </trans-unit>
+      <trans-unit id="Label as..." approved="yes">
+        <source>Label as...</source>
+        <target state="final">Označi kao...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels" approved="yes">
+        <source>Labels</source>
+        <target state="final">Oznake</target>
+        <note>VoiceOver: email has lables</note>
+      </trans-unit>
+      <trans-unit id="Labels have been applied." approved="yes">
+        <source>Labels have been applied.</source>
+        <target state="final">Oznake su primijenjene.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More" approved="yes">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <target state="final">Oznake, mape, filtri i više</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Labels/Folders" approved="yes">
+        <source>Labels/Folders</source>
+        <target state="final">Oznake/Mape</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Language" approved="yes">
+        <source>Language</source>
+        <target state="final">Jezik</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Learn More" approved="yes">
+        <source>Learn More</source>
+        <target state="final">Saznaj više</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Learn more here" approved="yes">
+        <source>Learn more here</source>
+        <target state="final">Saznajte više ovdje</target>
+        <note>learn more button</note>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day" approved="yes">
+        <source>Limited to 150 messages sent/day</source>
+        <target state="final">Ograničeno na 150 poruka poslano po danu</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Load remote content" approved="yes">
+        <source>Load remote content</source>
+        <target state="final">Prikaži udaljeni sadržaj</target>
+        <note>Action</note>
+        <alt-trans>
+          <target>Učitavanje udaljenog sadržaja</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Loading..." approved="yes">
+        <source>Loading...</source>
+        <target state="final">Učitavanje...</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password" approved="yes">
+        <source>Local cache can't find mailbox password</source>
+        <target state="final">Neuspješno pronalaženje lozinke sandučića e-pošte u lokalnoj predmemoriji</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Localizable.strings">
+        <source>Base</source>
+        <target state="needs-translation">Base</target>
+        <note>*
+ *  file string type</note>
+      </trans-unit>
+      <trans-unit id="Lock The App" approved="yes">
+        <source>Lock The App</source>
+        <target state="final">Zaključaj aplikaciju</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Login" approved="yes">
+        <source>Login</source>
+        <target state="final">Prijava</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Login Password" approved="yes">
+        <source>Login password</source>
+        <target state="final">Lozinka za prijavu</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match" approved="yes">
+        <source>Login password doesn't match</source>
+        <target state="final">Lozinke za prijavu se ne poklapaju</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Odjava</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Logs" approved="yes">
+        <source>Logs</source>
+        <target state="final">Zapisnici</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?" approved="yes">
+        <source>Looking to secure your contact's details?</source>
+        <target state="final">Želite li osigurati svoje detalje o kontaktima?</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD" approved="yes">
+        <source>Mailbox password</source>
+        <target state="final">Lozinka sandučića e-pošte</target>
+        <note>*
+ *  MailboxPasswordViewController</note>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt">
+        <source>MBContactPickerPrompt</source>
+        <target state="needs-translation">MBContactPickerPrompt</target>
+        <note>Default Prompt text shown in the prompt cell</note>
+      </trans-unit>
+      <trans-unit id="Mailbox Password" approved="yes">
+        <source>Mailbox password</source>
+        <target state="final">Lozinka sandučića e-pošte</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match" approved="yes">
+        <source>Mailbox password doesn't match</source>
+        <target state="final">Lozinke sandučića e-pošte se ne podudaraju</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Manage Addresses" approved="yes">
+        <source>Manage Addresses</source>
+        <target state="final">Upravljanje adresama</target>
+        <note>The title for the view where user can manage emails in the contact group</note>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders" approved="yes">
+        <source>Manage Labels/Folders</source>
+        <target state="final">Upravljanje Oznakama/Mapama</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Mark Read" approved="yes">
+        <source>Mark as read</source>
+        <target state="final">Označi kao pročitano</target>
+        <note>mark message as read action</note>
+      </trans-unit>
+      <trans-unit id="Mark as unread" approved="yes">
+        <source>Mark as unread</source>
+        <target state="final">Označi kao nepročitano</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Izbornik</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Message %@" approved="yes">
+        <source>Message %@</source>
+        <target state="final">Poruka %@</target>
+        <note>Message with title</note>
+      </trans-unit>
+      <trans-unit id="Message Password" approved="yes">
+        <source>Message Password</source>
+        <target state="final">Lozinka poruke</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Message Queue" approved="yes">
+        <source>Message queue</source>
+        <target state="final">Red čekanja poruka</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions" approved="yes">
+        <source>Message Swipe Actions</source>
+        <target state="final">Upravljanje radnjama pomicanja prstom</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message expired" approved="yes">
+        <source>Message expired</source>
+        <target state="final">Poruka je istekla</target>
+        <note>*
+ *  Expiration View</note>
+      </trans-unit>
+      <trans-unit id="Message has been deleted." approved="yes">
+        <source>Message has been deleted.</source>
+        <target state="final">Poruka je obrisana.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message has been moved." approved="yes">
+        <source>Message has been moved.</source>
+        <target state="final">Poruka je premještena.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message password does not match." approved="yes">
+        <source>Message password does not match.</source>
+        <target state="final">Lozinke poruke se ne podudaraju.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again" approved="yes">
+        <source>Message sending failed please try again</source>
+        <target state="final">Slanje poruke nije uspjelo. Molimo pokušajte ponovno</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again." approved="yes">
+        <source>Message sending failed. Please try again.</source>
+        <target state="final">Slanje poruke nije uspjelo. Molimo pokušajte ponovno.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sent" approved="yes">
+        <source>Message sent</source>
+        <target state="final">Poruka je poslana</target>
+        <note>Description after message have been sent</note>
+        <alt-trans>
+          <target>Poruka poslana</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period." approved="yes">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <target state="final">Poruke koje šaljete mogu se podesiti na automatsko brisanje nakon određenog vremenskog razdoblja.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Mobitel</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Mobile Signature" approved="yes">
+        <source>Mobile signature</source>
+        <target state="final">Potpis na mobilnim uređajima</target>
+        <note>Mobile Signature title in settings</note>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <target state="final">Prijave za mobilne uređaje privremeno su onemogućene. Pokušajte ponovo kasnije ili se pokušajte prijaviti na protonmail.com pomoću računala ili prijenosnog računala.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
+        <source>Modifying or turning off the default mobile signature is a paid feature.</source>
+        <target state="final">Izmjena ili isključivanje zadanog mobilnog potpisa je plaćena značajka.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="More" approved="yes">
+        <source>More</source>
+        <target state="final">Više</target>
+        <note>More actions button</note>
+      </trans-unit>
+      <trans-unit id="More Credits" approved="yes">
+        <source>More Credits</source>
+        <target state="final">Više kredita</target>
+        <note>Screen header</note>
+      </trans-unit>
+      <trans-unit id="Move to AllMail" approved="yes">
+        <source>Move to AllMail</source>
+        <target state="final">Premjesti u svu poštu</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Archive" approved="yes">
+        <source>Move to Archive</source>
+        <target state="final">Premjesti u arhivu</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Draft" approved="yes">
+        <source>Move to Draft</source>
+        <target state="final">Premjesti u skice</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Folder" approved="yes">
+        <source>Move to Folder</source>
+        <target state="final">Premjesti u mapu</target>
+        <note>folder apply - title</note>
+      </trans-unit>
+      <trans-unit id="Move to Inbox" approved="yes">
+        <source>Move to Inbox</source>
+        <target state="final">Premjesti u pristiglu poštu</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Outbox" approved="yes">
+        <source>Move to Outbox</source>
+        <target state="final">Premjesti u odlaznu poštu</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Spam" approved="yes">
+        <source>Move to Spam</source>
+        <target state="final">Premjesti u neželjenu poštu</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Trash" approved="yes">
+        <source>Move to Trash</source>
+        <target state="final">Premjesti u otpad</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to..." approved="yes">
+        <source>Move to...</source>
+        <target state="final">Premjesti u...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses" approved="yes">
+        <source>Multiple addresses</source>
+        <target state="final">Više adresa</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP." approved="yes">
+        <source>Sign up for free</source>
+        <target state="final">Prijavite se besplatno</target>
+        <note>Action</note>
+        <alt-trans>
+          <target>Prijavite se za besplatno</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Name" approved="yes">
+        <source>Name</source>
+        <target state="final">Naziv</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="New login password" approved="yes">
+        <source>New login password</source>
+        <target state="final">Nova lozinka za prijavu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New mailbox password" approved="yes">
+        <source>New mailbox password</source>
+        <target state="final">Nova lozinka sandučića e-pošte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New password" approved="yes">
+        <source>New password</source>
+        <target state="final">Nova lozinka</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Nickname" approved="yes">
+        <source>Nickname</source>
+        <target state="final">Nadimak</target>
+        <note>contacts talbe cell Nickname title</note>
+      </trans-unit>
+      <trans-unit id="No Messages" approved="yes">
+        <source>No Messages</source>
+        <target state="final">Nema poruka</target>
+        <note>message when mailbox doesnt have emailsß</note>
+      </trans-unit>
+      <trans-unit id="No connectivity detected..." approved="yes">
+        <source>No connectivity detected...</source>
+        <target state="final">Nije otkrivena veza...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="No, for another ProtonMail account" approved="yes">
+        <source>No, for another ProtonMail account</source>
+        <target state="final">Ne, za drugi ProtonMail račun</target>
+        <note>Warning message option when user want to relogin to another account</note>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase" approved="yes">
+        <source>No, not related to in-app purchase</source>
+        <target state="final">Ne, ne odnosi se na kupnju u aplikaciji</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="None" approved="yes">
+        <source>None</source>
+        <target state="final">Ništa</target>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
+      </trans-unit>
+      <trans-unit id="Not Now" approved="yes">
+        <source>Not Now</source>
+        <target state="final">Ne sada</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration" approved="yes">
+        <source>Not all recipients support message expiration</source>
+        <target state="final">Ne podržavaju svi primatelji poruke s istekom</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address." approved="yes">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <target state="final">Napomena: Korisničko ime je također i vaša ProtonMail adresa.</target>
+        <note>Signup user name notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." approved="yes">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <target state="final">Napomena: Ovo se koristi za šifriranje i dešifriranje vaših poruka. Nemojte izgubiti ovu lozinku, ne možemo je oporaviti.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account." approved="yes">
+        <source>Note: This is used to log you into your account.</source>
+        <target state="final">Napomena: Koristi se za prijavu na vaš račun.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Bilješke</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Notice" approved="yes">
+        <source>Notice</source>
+        <target state="final">Napomena</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email" approved="yes">
+        <source>Notification / Recovery Email</source>
+        <target state="final">Adresa e-pošte za obavijesti/oporavak</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Email" approved="yes">
+        <source>Notification email</source>
+        <target state="final">Adresa e-pošte za obavijesti</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Snooze" approved="yes">
+        <source>Notification Snooze</source>
+        <target state="final">Utišavanje obavijesti</target>
+        <note>title of action sheet</note>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed" approved="yes">
+        <source>Notifications Are Snoozed</source>
+        <target state="final">Obavijesti su utišane</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off" approved="yes">
+        <source>Notifications Snooze Off</source>
+        <target state="final">Utišavanje obavijesti je isključeno</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="OK" approved="yes">
+        <source>OK</source>
+        <target state="final">U redu</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="OTHER PLANS" approved="yes">
+        <source>OTHER PLANS</source>
+        <target state="final">OSTALI PLANOVI</target>
+        <note>Section header</note>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <target state="final">Dana</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@" approved="yes">
+        <source>On EE, MMM d, yyyy at %@</source>
+        <target state="final">Dana EE, d. MMM, yyyy u %@</target>
+        <note>forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@, %@, wrote:" approved="yes">
+        <source>On EE, MMM d, yyyy at %1$@, %2$@, wrote:</source>
+        <target state="final">Dana EE, d. MMM, yyyy u %1$@, %2$@ je napisao/la:</target>
+        <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="OpenDraft" approved="yes">
+        <source>Open draft</source>
+        <target state="final">Otvori skicu</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Organization" approved="yes">
+        <source>Organization</source>
+        <target state="final">Organizacija</target>
+        <note>contacts talbe cell Organization title</note>
+      </trans-unit>
+      <trans-unit id="Other" approved="yes">
+        <source>Other</source>
+        <target state="final">Ostalo</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." approved="yes">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <target state="final">Naš tim za korisničku podršku pokušat će ručno aktivirati vaš servisni plan ako pristanete priložiti tehničke podatke koje je AppStore dostavio u trenutku kupnje. Ovi podaci ne uključuju nikakve pojedinosti o vašem iTunes računu, Apple ID-u, povezanim kreditnim karticama ili bilo kojim drugim korisničkim informacijama. Tehnički podaci nam samo pomažu provjeriti i ovjeriti da li je transakcija dovršena na poslužiteljima AppStorea.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Outbox" approved="yes">
+        <source>Outbox</source>
+        <target state="final">Odlazni spremnik</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted" approved="yes">
+        <source>PGP-encrypted</source>
+        <target state="final">PGP šifrirano</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message" approved="yes">
+        <source>PGP-encrypted message</source>
+        <target state="final">PGP-šifrirana poruka</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address" approved="yes">
+        <source>PGP-encrypted message from verified address</source>
+        <target state="final">PGP-šifrirana poruka od potvrđene adrese</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed" approved="yes">
+        <source>PGP-signed</source>
+        <target state="final">PGP potpisano</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address" approved="yes">
+        <source>PGP-signed message from verified address</source>
+        <target state="final">PGP-potpisana poruka od potvrđene adrese</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE" approved="yes">
+        <source>PREMIUM FEATURE</source>
+        <target state="final">PREMIUM ZNAČAJKE</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="Password" approved="yes">
+        <source>Password</source>
+        <target state="final">Lozinka</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Password Mismatch" approved="yes">
+        <source>Passwords do not match</source>
+        <target state="final">Lozinke se ne poklapaju</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password Updated" approved="yes">
+        <source>Password updated</source>
+        <target state="final">Lozinka je ažurirana</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty." approved="yes">
+        <source>Password cannot be empty.</source>
+        <target state="final">Lozinka ne može biti prazna.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Password update failed" approved="yes">
+        <source>Password update failed</source>
+        <target state="final">Promjena lozinke neuspješna</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Privatno</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone" approved="yes">
+        <source>Phone</source>
+        <target state="final">Telefon</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone Verification" approved="yes">
+        <source>Phone Verification</source>
+        <target state="final">Potvrda telefonom</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Phone number" approved="yes">
+        <source>Phone number</source>
+        <target state="final">Broj telefona</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Phone number invalid" approved="yes">
+        <source>Phone number invalid</source>
+        <target state="final">Telefonski broj nije ispravan</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Photo Library" approved="yes">
+        <source>Photo Library</source>
+        <target state="final">Galerija</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty." approved="yes">
+        <source>Pin code can't be empty.</source>
+        <target state="final">PIN ne može biti prazan.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients." approved="yes">
+        <source>Please add a password for the following recipients.</source>
+        <target state="final">Molimo dodajte lozinku za sljedeće primatelje.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code." approved="yes">
+        <source>Please check your cell phone for the verification code.</source>
+        <target state="final">Provjerite vaš mobilni uređaj za kontrolni kôd.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code." approved="yes">
+        <source>Please check your email for the verification code.</source>
+        <target state="final">Provjerite vašu e-poštu za kontrolni kôd.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses." approved="yes">
+        <source>Please disable PGP Sending for following addresses.</source>
+        <target state="final">Molimo onemogućite PGP Slanja za sljedeće adrese.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number." approved="yes">
+        <source>Please input a valid cell phone number.</source>
+        <target state="final">Molimo unesite važeći broj telefona.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address." approved="yes">
+        <source>Please input a valid email address.</source>
+        <target state="final">Molimo unesite valjanu adresu e-pošte.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <target state="final">Prijavite se na ProtonMail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti kupnju.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <target state="final">Prijavite se na ProtonMail račun za koji nadograđujete plan usluga, kako bismo mogli dovršiti aktivaciju plana usluga.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!" approved="yes">
+        <source>Please pick a username first!</source>
+        <target state="final">Molim vas prvo odaberite nadimak!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Please provide a group name" approved="yes">
+        <source>Please provide a group name</source>
+        <target state="final">Molimo unesite naziv grupe</target>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!" approved="yes">
+        <source>Please remove all attachments before changing the sender</source>
+        <target state="final">Molimo uklonite sve privitke prije mijenjanja pošiljatelja</target>
+        <note>when switch sender but email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group" approved="yes">
+        <source>Please select at least one email for the contact group</source>
+        <target state="final">Odaberite barem jednu adresu e-pošte za grupu kontakata</target>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:" approved="yes">
+        <source>Please select one of the following options:</source>
+        <target state="final">Odaberite jednu od sljedećih mogućnosti:</target>
+        <note>human check select option title</note>
+      </trans-unit>
+      <trans-unit id="Please set a password." approved="yes">
+        <source>Please set a password.</source>
+        <target state="final">Molimo vas da postavite lozinku.</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>Molimo vas da postavite novu lozinku.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Please try a different domain." approved="yes">
+        <source>Please try a different domain.</source>
+        <target state="final">Molimo pokušajte drugu domenu.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different email address." approved="yes">
+        <source>Please try a different email address.</source>
+        <target state="final">Molimo pokušajte drugu adresu e-pošte.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different password." approved="yes">
+        <source>Please try a different password.</source>
+        <target state="final">Molimo pokušajte drugu lozinku.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different user name." approved="yes">
+        <source>Please try a different username.</source>
+        <target state="final">Molimo pokušajte drugo korisničko ime.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try again." approved="yes">
+        <source>Please try again</source>
+        <target state="final">Molimo pokušajte ponovno</target>
+        <note>
+
+</note>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation" approved="yes">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <target state="final">Otključajte aplikaciju da biste nastavili s aktivacijom plana usluge</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first." approved="yes">
+        <source>Please use ProtonMail App login first.</source>
+        <target state="final">Najprije koristite prijavu u ProtonMail aplikaciju.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password." approved="yes">
+        <source>Please use the web application to reset your password.</source>
+        <target state="final">Molimo da pomoću web aplikacije poništite lozinku.</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <target state="final">Molimo koristite web verziju ProtonMaila da promijenite svoje lozinke sandučića e-pošte!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <target state="final">Molimo koristite web verziju ProtonMaila da promijenite svoje lozinke!</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in." approved="yes">
+        <source>Please use your new password when signing in.</source>
+        <target state="final">Prilikom prijave koristite novu lozinku.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!" approved="yes">
+        <source>Please wait until the email downloaded!</source>
+        <target state="final">Pričekajte da se e-poruka učita!</target>
+        <note>The</note>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone." approved="yes">
+        <source>Please, manage it in your phone.</source>
+        <target state="final">Molimo, upravljajte time na mobilnom uređaju.</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Print" approved="yes">
+        <source>Print</source>
+        <target state="final">Ispis</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Protection" approved="yes">
+        <source>Protection</source>
+        <target state="final">Zaštita</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Protection Entire App" approved="yes">
+        <source>Protection entire app</source>
+        <target state="final">Zaštita cijele aplikacije</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail" approved="yes">
+        <source>ProtonMail</source>
+        <target state="final">ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature" approved="yes">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <target state="final">ProtonMail Plus je nužan za uređivanje potpisa na mobilnim uređajima</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <target state="final">ProtonMail Plus/Professional/Visionary omogućuje vam dodavanje i uređivanje detalja o kontaktima osim imena i e-pošte kontakta. Pomoću ProtonMaila ti će podaci biti sigurni kao i vaša end-to-end šifrirana e-pošte.</target>
+        <note>Upgrade warning message</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." approved="yes">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <target state="final">ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMaila. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>ProtonMail ne prodaje oglase niti zloupotrebljava vašu privatnost. Vaša podrška je ključna za održavanje ProtonMail-a. Možete nadograditi na plaćeni račun ili donirajte za podršku ProtonMailu.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails" approved="yes">
+        <source>ProtonMail encrypted emails</source>
+        <target state="final">ProtonMail šifrirana e-pošta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" approved="yes">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <target state="final">ProtonMail je trenutno nedostupan, provjerite naš twitter za trenutni status: https://twitter.com/protonmail</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonVPN included" approved="yes">
+        <source>ProtonVPN included</source>
+        <target state="final">ProtonVPN uključen</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions" approved="yes">
+        <source>Quick Swipe actions</source>
+        <target state="final">Radnje brzog prelaska prstom</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD" approved="yes">
+        <source>RESET MAILBOX PASSWORD</source>
+        <target state="final">PONOVNO POSTAVLJANJE LOZINKE SANDUČIĆA E-POŠTE</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review" approved="yes">
+        <source>Rate &amp; Review</source>
+        <target state="final">Ocijenite i pregledajte</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN" approved="yes">
+        <source>Re-Enter your PIN</source>
+        <target state="final">Ponovno unesite PIN</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Re:" approved="yes">
+        <source>Re:</source>
+        <target state="final">Re:</target>
+        <note>abbreviation of reply:</note>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data..." approved="yes">
+        <source>Reading device contacts data...</source>
+        <target state="final">Čitanje podataka o kontaktima uređaja...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Code" approved="yes">
+        <source>Recovery Code</source>
+        <target state="final">Kôd za oporavak</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email" approved="yes">
+        <source>Recovery Email</source>
+        <target state="final">Adresa e-pošte za oporavak</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning" approved="yes">
+        <source>Recovery Email Warning</source>
+        <target state="final">Upozorenje o adresi e-pošte za oporavak</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remind Me Later" approved="yes">
+        <source>Remind Me Later</source>
+        <target state="final">Podsjeti me kasnije</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Ukloni</target>
+        <note>remove action</note>
+      </trans-unit>
+      <trans-unit id="Remove Star" approved="yes">
+        <source>Remove Star</source>
+        <target state="final">Ukloni zvjezdicu</target>
+        <note>un star message</note>
+      </trans-unit>
+      <trans-unit id="Repeat" approved="yes">
+        <source>Repeat</source>
+        <target state="final">Ponovi</target>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+      </trans-unit>
+      <trans-unit id="Reply" approved="yes">
+        <source>Reply</source>
+        <target state="final">Odgovor</target>
+        <note>reply action</note>
+      </trans-unit>
+      <trans-unit id="Reply All" approved="yes">
+        <source>Reply All</source>
+        <target state="final">Odgovori svima</target>
+        <note>reply all action</note>
+      </trans-unit>
+      <trans-unit id="Reply message" approved="yes">
+        <source>Reply message</source>
+        <target state="final">Odgovori na poruku</target>
+        <note>composer view model impl</note>
+      </trans-unit>
+      <trans-unit id="ReplyAll" approved="yes">
+        <source>Reply all</source>
+        <target state="final">Odgovori svima</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Report Bugs" approved="yes">
+        <source>Report Bugs</source>
+        <target state="final">Prijavi problem</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Report Phishing" approved="yes">
+        <source>Report Phishing</source>
+        <target state="final">Prijavi krađu identiteta</target>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." approved="yes">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <target state="final">Prijavljivanje poruke kao pokušaja krađe identiteta će nam poslati poruku kako bismo je mogli analizirati i poboljšati filtre. To znači da ćemo moći vidjeti sadržaj poruke u cijelosti.</target>
+        <note>alert message</note>
+      </trans-unit>
+      <trans-unit id="Request Link Confirmation" approved="yes">
+        <source>Request Link Confirmation</source>
+        <target state="final">Zatražite potvrdu poveznice</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ..." approved="yes">
+        <source>Resetting message cache ...</source>
+        <target state="final">Ponovno postavljanje predmemorije poruka...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Retry" approved="yes">
+        <source>Retry</source>
+        <target state="final">Pokušaj ponovno</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds" approved="yes">
+        <source>Retry after %d seconds</source>
+        <target state="final">Pokušajte ponovno za %d sekundi</target>
+        <note>email verify code resend count down</note>
+      </trans-unit>
+      <trans-unit id="SENT" approved="yes">
+        <source>Sent</source>
+        <target state="final">Poslano</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SPAM" approved="yes">
+        <source>Spam</source>
+        <target state="final">Neželjena pošta</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SRP Client" approved="yes">
+        <source>SRP Client</source>
+        <target state="final">SRP Client</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="SRP Server" approved="yes">
+        <source>SRP Server</source>
+        <target state="final">SRP Server</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="STARRED" approved="yes">
+        <source>Starred</source>
+        <target state="final">Sa zvjezdicom</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">Spremi</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Save Changes" approved="yes">
+        <source>Save Changes</source>
+        <target state="final">Spremi promjene</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Save draft" approved="yes">
+        <source>Save draft</source>
+        <target state="final">Spremi skicu</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Scheduled" approved="yes">
+        <source>Scheduled</source>
+        <target state="final">Planirano</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Search" approved="yes">
+        <source>Search</source>
+        <target state="final">Pretraga</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Select An Option" approved="yes">
+        <source>Select An Option</source>
+        <target state="final">Odaberite mogućnost</target>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+      </trans-unit>
+      <trans-unit id="Select Color" approved="yes">
+        <source>Select Color</source>
+        <target state="final">Odabir boje</target>
+        <note>The title for the view where user can select the color for the group</note>
+      </trans-unit>
+      <trans-unit id="Select your language" approved="yes">
+        <source>Select your language</source>
+        <target state="final">Odaberite svoj jezik</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Send" approved="yes">
+        <source>Send</source>
+        <target state="final">Pošalji</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send Verification Code" approved="yes">
+        <source>Send verification code</source>
+        <target state="final">Pošalji kôd za provjeru</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Send anyway" approved="yes">
+        <source>Send anyway</source>
+        <target state="final">Svejedno pošalji</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send message without subject?" approved="yes">
+        <source>Send message without subject?</source>
+        <target state="final">Poslati poruku bez predmeta?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc" approved="yes">
+        <source>Send plain but stored enc</source>
+        <target state="final">Pošalji kao obično, ali pohranjeno šifriranje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed" approved="yes">
+        <source>Sender Verification Failed</source>
+        <target state="final">Neuspjela potvrda pošiljatelja</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Sending Message" approved="yes">
+        <source>Sending message</source>
+        <target state="final">Poruka se šalje</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sending message" approved="yes">
+        <source>Sending message</source>
+        <target state="final">Poruka se šalje</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" approved="yes">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <target state="final">Slanje poruka s %1$@ adrese je plaćena značajka. Vaša će poruka biti poslana s Vaše zadane adrese %2$@</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="Sent" approved="yes">
+        <source>Sent</source>
+        <target state="final">Poslano</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Sent Failed" approved="yes">
+        <source>Sent Failed</source>
+        <target state="final">Poruka nije poslana</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sent by ProtonMail with zero access encryption" approved="yes">
+        <source>Sent by ProtonMail with zero access encryption</source>
+        <target state="final">Poslano putem ProtonMaila s šifriranjem nultog pristupa</target>
+        <note>encryption lock description for auto reply</note>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
+        <source>Sent by you with end-to-end encryption</source>
+        <target state="final">Poslano od strane Vas s end-to-end šifriranjem</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!" approved="yes">
+        <source>Server proofs not valid!</source>
+        <target state="final">Server proofs not valid!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set Password" approved="yes">
+        <source>Set Password</source>
+        <target state="final">Postavite lozinku</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users." approved="yes">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <target state="final">Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici ProtonMaila.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set passwords" approved="yes">
+        <source>Set passwords</source>
+        <target state="final">Postavi lozinke</target>
+        <note>Signup passwords top title</note>
+      </trans-unit>
+      <trans-unit id="Settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Postavke</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Share Alert" approved="yes">
+        <source>Share Alert</source>
+        <target state="final">Upozorenje o dijeljenju</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Share Contact" approved="yes">
+        <source>Share Contact</source>
+        <target state="final">Podijeli kontakt</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Share it with your friends" approved="yes">
+        <source>Share it with your friends</source>
+        <target state="final">Dijeli sa svojim prijateljima</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sign Out" approved="yes">
+        <source>Log out</source>
+        <target state="final">Odjavite se</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Signature" approved="yes">
+        <source>Signature</source>
+        <target state="final">Potpis</target>
+        <note>Title in signature settings</note>
+      </trans-unit>
+      <trans-unit id="Signature Updated" approved="yes">
+        <source>Signature Updated</source>
+        <target state="final">Potpis je ažuriran</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Single Password" approved="yes">
+        <source>Single Password</source>
+        <target state="final">Jedna lozinka</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications" approved="yes">
+        <source>Snooze Notifications</source>
+        <target state="final">Utišaj obavijesti</target>
+        <note>settings option</note>
+      </trans-unit>
+      <trans-unit id="Snoozed for" approved="yes">
+        <source>Snoozed for</source>
+        <target state="final">Odgoda na</target>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+      </trans-unit>
+      <trans-unit id="Snoozed till" approved="yes">
+        <source>Snoozed till</source>
+        <target state="final">Odgođeno do</target>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+      </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" approved="yes">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <target state="final">Nažalost, ne možemo obrađivati kupnje u beta inačici aplikacije na iOS-u. Hvala što sudjelujete u našoj javnoj beta verziji!</target>
+        <note>Error message for beta users</note>
+      </trans-unit>
+      <trans-unit id="Space Warning" approved="yes">
+        <source>Space warning</source>
+        <target state="final">Upozorenje o slobodnom prostoru</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Spam" approved="yes">
+        <source>Spam</source>
+        <target state="final">Neželjena pošta</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Spammed" approved="yes">
+        <source>Spammed</source>
+        <target state="final">Neželjena pošta</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!">
+        <source>Srp single password keysalt invalid!</source>
+        <target state="needs-translation">Srp single password keysalt invalid!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Star" approved="yes">
+        <source>Star</source>
+        <target state="final">Zvjezdica</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Starred" approved="yes">
+        <source>Starred</source>
+        <target state="final">Sa zvjezdicom</target>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+      </trans-unit>
+      <trans-unit id="Start Time" approved="yes">
+        <source>Start Time</source>
+        <target state="final">Vrijeme početka</target>
+        <note>settings option (Start Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="State" approved="yes">
+        <source>State</source>
+        <target state="final">Država</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">Prostor za pohranu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Storage Warning" approved="yes">
+        <source>Storage Warning</source>
+        <target state="final">Upozorenje o slobodnom prostoru</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption" approved="yes">
+        <source>Stored with zero access encryption</source>
+        <target state="final">Spremljeno s šifriranjem nultog pristupa</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Street" approved="yes">
+        <source>Street</source>
+        <target state="final">Ulica</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Predmet</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject:" approved="yes">
+        <source>Subject:</source>
+        <target state="final">Predmet:</target>
+        <note>subject: text when forward</note>
+      </trans-unit>
+      <trans-unit id="Subscription" approved="yes">
+        <source>Subscription</source>
+        <target state="final">Pretplata</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail" approved="yes">
+        <source>Support ProtonMail</source>
+        <target state="final">Podržite ProtonMail</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)" approved="yes">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <target state="final">Podrška za %i prilagođene domene (npr. korisnik@vasadomena.hr)</target>
+        <note>Service plan capability; i = 2</note>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right" approved="yes">
+        <source>Swipe Left to Right</source>
+        <target state="final">Prijeđite prstom s lijeva na desno</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left" approved="yes">
+        <source>Swipe Right to Left</source>
+        <target state="final">Prijeđite prstom s desna na lijevo</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="System can't copy the file" approved="yes">
+        <source>System can't copy the file</source>
+        <target state="final">Sustav ne može kopirati datoteku</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="TRASH" approved="yes">
+        <source>Trash</source>
+        <target state="final">Otpad</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Take a Photo" approved="yes">
+        <source>Take photo</source>
+        <target state="final">Uslikaj fotografiju</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients" approved="yes">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <target state="final">Pritisnite pošalji ako svejedno želite poslati poruku ovim primateljima, ali bez isteka poruke</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <target state="final">Hvala što ste poslali izvješće o pogrešci. Dodali smo vaše izvješće našem sustavu za praćenja pogrešaka.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The Password is wrong." approved="yes">
+        <source>The password is wrong.</source>
+        <target state="final">Pogrešna lozinka.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline..." approved="yes">
+        <source>The ProtonMail current offline...</source>
+        <target state="final">ProtonMail je trenutno van mreže...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken." approved="yes">
+        <source>The username have been taken.</source>
+        <target state="final">Korisničko ime je zauzeto.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid." approved="yes">
+        <source>The authentication credentials are invalid.</source>
+        <target state="final">Vjerodajnice za provjeru autentičnosti nisu važeće.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired." approved="yes">
+        <source>The authentication token has expired.</source>
+        <target state="final">Token za autentifikaciju je istekao.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The current standard" approved="yes">
+        <source>The current standard</source>
+        <target state="final">Trenutni standard</target>
+        <note>key size notes</note>
+      </trans-unit>
+      <trans-unit id="The display name is now %@." approved="yes">
+        <source>The display name is now %@.</source>
+        <target state="final">Zaslonsko ime je sada %@.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken. Please try again." approved="yes">
+        <source>The draft cache is broken. Please try again.</source>
+        <target state="final">Predmemorija skica je neupotrebljiva. Molim te pokušaj ponovno.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!" approved="yes">
+        <source>Sending failed. There was an error with the draft format.</source>
+        <target state="final">Format nacrta nije ispravan. Slanje nije uspjelo.</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available." approved="yes">
+        <source>The highest level of encryption available.</source>
+        <target state="final">Najviša dostupna razina šifriranja.</target>
+        <note>key size note part 1</note>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate" approved="yes">
+        <source>The label name is duplicate</source>
+        <target state="final">Naziv oznake je duplikat</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect." approved="yes">
+        <source>The mailbox password is incorrect.</source>
+        <target state="final">Lozinka sandučića e-pošte nije ispravna.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d" approved="yes">
+        <source>The maximum number of distinct recipients is %d</source>
+        <target state="final">Maksimalan broj različitih primatelja je %d</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d." approved="yes">
+        <source>The maximum number of labels is %d.</source>
+        <target state="final">Maksimalan broj oznaka je %d.</target>
+        <note>*
+ *  LabelsViewController</note>
+      </trans-unit>
+      <trans-unit id="The new password can't empty" approved="yes">
+        <source>The new password can't be empty</source>
+        <target state="final">Nova lozinka ne može biti prazna</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password can't empty." approved="yes">
+        <source>The new password can't empty.</source>
+        <target state="final">Nova lozinka ne može biti prazna.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The new password not match" approved="yes">
+        <source>Passwords do not match</source>
+        <target state="final">Lozinke se ne poklapaju</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password not match." approved="yes">
+        <source>The new password not match.</source>
+        <target state="final">Nova lozinka se ne podudara.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it." approved="yes">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <target state="final">Opcionalna adresa e-pošte za oporavak omogućuje vam da poništite lozinku za prijavu ako je zaboravite.</target>
+        <note>recovery email notes</note>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password." approved="yes">
+        <source>The password you entered does not match the current password.</source>
+        <target state="final">Lozinka koju ste unijeli ne odgovara trenutnoj lozinki.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match." approved="yes">
+        <source>The passwords you entered do not match.</source>
+        <target state="final">Lozinke koje ste unijeli se ne podudaraju.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The private key update failed." approved="yes">
+        <source>The private key update failed.</source>
+        <target state="final">Ažuriranje privatnog ključa nije uspjelo.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The request timed out." approved="yes">
+        <source>The request timed out.</source>
+        <target state="final">Zahtjev je istekao.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB" approved="yes">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <target state="final">Ukupna veličina privitka ne smije biti veća od 25MB</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The total attachment size cannot exceed 25MB" approved="yes">
+        <source>The total attachment size cannot exceed 25MB</source>
+        <target state="final">Ukupna veličina privitka ne smije biti veća od 25MB</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The verification email invalid" approved="yes">
+        <source>Invalid verification email</source>
+        <target state="final">Nevažeća kontrolna poruka e-pošte</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="The verification failed!" approved="yes">
+        <source>The verification failed!</source>
+        <target state="final">Provjera nije uspjela!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the app's saved data." approved="yes">
+        <source>There was an error creating or loading the app's saved data.</source>
+        <target state="final">Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data." approved="yes">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <target state="final">Došlo je do pogreške prilikom izrade ili učitavanja spremljenih podataka aplikacije.</target>
+        <note>
+ &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app." approved="yes">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <target state="final">Ovo može potrajati. Nemojte napustiti aplikaciju.</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book." approved="yes">
+        <source>This contact belongs to your address book.</source>
+        <target state="final">Ovaj kontakt pripada vašem adresaru.</target>
+        <note>alert desc</note>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="final">Ova poruka e-pošte nije ispunila zahtjeve za provjeru autentičnosti svoje domene. Može biti lažna ili nepropisno proslijeđena!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="final">Čini se da je ova poruka e-pošte s adrese ProtonMail, ali je došla izvan našeg sustava i nije ispunila naše zahtjeve za provjeru autentičnosti. Može biti lažna ili nepropisno proslijeđena!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." approved="yes">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <target state="final">Ova poruka može biti pokušaj krađe identiteta. Provjerite pošiljatelja i sadržaj kako biste bili sigurni da su legitimni.</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="Title" approved="yes">
+        <source>Title</source>
+        <target state="final">Naslov</target>
+        <note>contacts talbe cell Title title</note>
+      </trans-unit>
+      <trans-unit id="To" approved="yes">
+        <source>To</source>
+        <target state="final">Za</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human." approved="yes">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
+        <target state="final">Da biste spriječili zlouporabu ProtonMaila,&amp;#13;
+ morate potvrditi da ste čovjek.</target>
+        <note>human verification notes</note>
+        <alt-trans>
+          <target>Da biste spriječili zlouporabu ProtonMail-a,&amp;#13;
+ morate potvrditi da ste čovjek.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="final">Da biste poništili lozinku sandučića e-pošte, upotrijebite web-verziju ProtonMaila na adresi protonmail.com</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="To:" approved="yes">
+        <source>To:</source>
+        <target state="final">Za:</target>
+        <note>message To: feild</note>
+      </trans-unit>
+      <trans-unit id="Token expired" approved="yes">
+        <source>Token expired</source>
+        <target state="final">Token je istekao</target>
+        <note>*
+ *  API Error &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Too many recipients" approved="yes">
+        <source>Too many recipients</source>
+        <target state="final">Previše primatelja</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <target state="final">TouchID nije registriran, omogućite ga u postavkama sustava</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="TouchID not available" approved="yes">
+        <source>TouchID not available</source>
+        <target state="final">TouchID nije dostupan</target>
+        <note>settings touchid/faceid error</note>
+      </trans-unit>
+      <trans-unit id="Trash" approved="yes">
+        <source>Trash</source>
+        <target state="final">Otpad</target>
+        <note>mail location desc
+   menu title
+   move action</note>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide" approved="yes">
+        <source>Trouble shooting guide</source>
+        <target state="final">Vodič za rješavanje problema</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Turn Off" approved="yes">
+        <source>Turn Off</source>
+        <target state="final">Isključi</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail" approved="yes">
+        <source>Tweet about ProtonMail</source>
+        <target state="final">Tweetaj o ProtonMailu</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Two Factor Code" approved="yes">
+        <source>Two Factor Code</source>
+        <target state="final">Šifra za provjeru autentičnosti u dva koraka</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Type casting error">
+        <source>Type casting error</source>
+        <target state="needs-translation">Type casting error</target>
+        <note>Internal type casting error</note>
+      </trans-unit>
+      <trans-unit id="URL" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="USER LOGIN" approved="yes">
+        <source>User log in</source>
+        <target state="final">Prijava korisnika</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server" approved="yes">
+        <source>Unable to connect to the server</source>
+        <target state="final">Nije se moguće povezati na poslužitelj</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@" approved="yes">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <target state="final">Nije moguće izgraditi valjani URL sa sljedećom putanjom: %@</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!" approved="yes">
+        <source>Unable to create SRP Client!</source>
+        <target state="final">Nije moguće stvoriti SRP klijent!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message." approved="yes">
+        <source>Unable to decrypt message.</source>
+        <target state="final">Nije moguće dešifrirati poruku.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline" approved="yes">
+        <source>Unable to edit this message offline</source>
+        <target state="final">Nije moguće urediti ovu poruku izvan mreže</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to generate hashed password!" approved="yes">
+        <source>Unable to generate hashed password!</source>
+        <target state="final">Nije moguće generirati hashiranu lozinke!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts" approved="yes">
+        <source>Unable to get contacts</source>
+        <target state="final">Nije moguće dohvatiti kontakte</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!" approved="yes">
+        <source>Unable to parse authentication info!</source>
+        <target state="final">Nije moguće parsirati podatke o provjeri autentičnosti!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!" approved="yes">
+        <source>Unable to parse authentication token!</source>
+        <target state="final">Nije moguće parsirati token za provjeru autentičnosti!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse cached authentication token!" approved="yes">
+        <source>Unable to parse cached authentication token!</source>
+        <target state="final">Nije moguće parsirati predmemorirani token za provjeru autentičnosti!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse response" approved="yes">
+        <source>Unable to parse response</source>
+        <target state="final">Nije moguće parsirati odgovor</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:&#10;%@" approved="yes">
+        <source>Unable to parse the response object:
+%@</source>
+        <target state="final">Nije moguće parsirati objekt odgovora:
+%@</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse token" approved="yes">
+        <source>Unable to parse token</source>
+        <target state="final">Nije moguće parsirati token</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to send the email" approved="yes">
+        <source>Unable to send the email.</source>
+        <target state="final">Nije moguće poslati poruku e-pošte.</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="Undo" approved="yes">
+        <source>Undo</source>
+        <target state="final">Poništi</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Unknow Error" approved="yes">
+        <source>Unknown error</source>
+        <target state="final">Nepoznata greška</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unknow file" approved="yes">
+        <source>Unknown file</source>
+        <target state="final">Nepoznata datoteka</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">Nepoznato</target>
+        <note>title, default display name</note>
+      </trans-unit>
+      <trans-unit id="Unknown Error" approved="yes">
+        <source>Unknown Error</source>
+        <target state="final">Nepoznata greška</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unkonw Version" approved="yes">
+        <source>Unknown version</source>
+        <target state="final">Nepoznata verzija</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day" approved="yes">
+        <source>Unlimited messages sent/day</source>
+        <target state="final">Noegraničeno slanje poruka po danu</target>
+        <note>Service plan capability;</note>
+      </trans-unit>
+      <trans-unit id="Unread" approved="yes">
+        <source>Unread</source>
+        <target state="final">Nepročitano</target>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
+      </trans-unit>
+      <trans-unit id="Unsupported file type" approved="yes">
+        <source>Unsupported file type</source>
+        <target state="final">Nepodržan tip datoteke</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Up to %i users" approved="yes">
+        <source>Up to %i users</source>
+        <target state="final">Do %i korisnika</target>
+        <note>Service plan capability; i = 6</note>
+      </trans-unit>
+      <trans-unit id="Update" approved="yes">
+        <source>Update</source>
+        <target state="final">Ažuriraj</target>
+        <note>like top right action text</note>
+      </trans-unit>
+      <trans-unit id="Update Contact" approved="yes">
+        <source>Update Contact</source>
+        <target state="final">Ažuriraj kontakt</target>
+        <note>Contacts Update contact</note>
+      </trans-unit>
+      <trans-unit id="Update Notification Email" approved="yes">
+        <source>Update Notification Email</source>
+        <target state="final">Ažuriranje obavijesti e-pošte</target>
+        <note>update notification email error title</note>
+      </trans-unit>
+      <trans-unit id="Update Now" approved="yes">
+        <source>Update Now</source>
+        <target state="final">Ažuriraj sada</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Update Required" approved="yes">
+        <source>Update Required</source>
+        <target state="final">Potrebno ažuriranje</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features" approved="yes">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <target state="final">Nadogradite na plaćeni plan kako biste imali koristi od više značajki</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <target state="final">Nadogradite na plaćeni plan kako biste mogli slati s vaše %@ adrese</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features." approved="yes">
+        <source>Upgrade to get all paid features.</source>
+        <target state="final">Nadogradite kako biste dobili sve plaćene značajke.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Upload Contacts" approved="yes">
+        <source>Upload Contacts</source>
+        <target state="final">Učitavanje kontakata</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?" approved="yes">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <target state="final">Prenesite iOS kontakte na ProtonMail?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Url" approved="yes">
+        <source>Url</source>
+        <target state="final">Url</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="User already exist!" approved="yes">
+        <source>Username already taken</source>
+        <target state="final">Korisničko ime je zauzeto</target>
+        <note>error when user already exist</note>
+      </trans-unit>
+      <trans-unit id="User is available!" approved="yes">
+        <source>Username is available</source>
+        <target state="final">Korisničko ime je dostupno</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="User name exist" approved="yes">
+        <source>Username exist</source>
+        <target state="final">Korisničko ime već postoji</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="User name invalid" approved="yes">
+        <source>Invalid username</source>
+        <target state="final">Nevažeće korisničko ime</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Username" approved="yes">
+        <source>Username</source>
+        <target state="final">Korisničko ime</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code request failed" approved="yes">
+        <source>Verification code request failed</source>
+        <target state="final">Zahtjev za kodom za potvrdu nije uspjeo</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code sent" approved="yes">
+        <source>Verification code sent</source>
+        <target state="final">Kôd za potvrdu je poslan</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Kod za potvrdu je poslan</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Verification error" approved="yes">
+        <source>Verification error</source>
+        <target state="final">Pogreška pri provjeri valjanosti</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed" approved="yes">
+        <source>Verification of this content’s signature failed</source>
+        <target state="final">Provjera potpisa ovog sadržaja nije uspjela</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Version %@ %@" approved="yes">
+        <source>Version %@ %@</source>
+        <target state="final">Verzija %@ %@</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="View Headers" approved="yes">
+        <source>View Headers</source>
+        <target state="final">Pregled zaglavlja</target>
+        <note>message details-&gt; more action-&gt; view headers</note>
+      </trans-unit>
+      <trans-unit id="View Plans" approved="yes">
+        <source>View Plans</source>
+        <target state="final">Pregledajte planove</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Upozorenje</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <target state="final">Upozorenje: Prije nego li prođete ljudsku provjeru, ne možete slati e-poštu!!!</target>
+        <note>human check warning description</note>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" approved="yes">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <target state="final">Upozorenje: Vi niste postavili adresu e-pošte za oporavak računa, stoga je oporavak računa nemoguć u slučaju da zaboravite lozinku. Želite nastaviti bez e-pošte za oporavak?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan." approved="yes">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <target state="final">Uspješno smo aktivirali vašu pretplatu. Ponovno pokrenite aplikaciju da biste počeli koristiti novi plan usluge.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above." approved="yes">
+        <source>We will send a verification code to the cell phone above.</source>
+        <target state="final">Poslati ćemo kôd za potvrdu na gore navedeni telefonski broj.</target>
+        <note>text field notes</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above." approved="yes">
+        <source>We will send a verification code to the email address above.</source>
+        <target state="final">Poslati ćemo kôd za potvrdu na gore navedenu adresu e-pošte.</target>
+        <note>email field notes</note>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better." approved="yes">
+        <source>We would like to know what we can do better.</source>
+        <target state="final">Željeli bismo znati što možemo učiniti boljim.</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Željeli bismo znati što možemo učiniti bolje.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!" approved="yes">
+        <source>Welcome to ProtonMail</source>
+        <target state="final">Dobro došli na ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="What people see in the &quot;From&quot; field." approved="yes">
+        <source>What people see in the "From" field.</source>
+        <target state="final">Što ljudi vide u polju "Od".</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field." approved="yes">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <target state="final">Kada pošaljete poruku e-pošte, ovo je naziv koji se pojavljuje u polju pošiljatelja.</target>
+        <note>display name notes</note>
+      </trans-unit>
+      <trans-unit id="Work" approved="yes">
+        <source>Work</source>
+        <target state="final">Posao</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Wrong verification code" approved="yes">
+        <source>Wrong verification code</source>
+        <target state="final">Netočan kôd za provjeru</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for " approved="yes">
+        <source>Yes, activate it for </source>
+        <target state="final">Da, aktiviraj za </target>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment" approved="yes">
+        <source>Yes, attach details of payment</source>
+        <target state="final">Da, priložite pojedinosti o plaćanju</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="You are about to launch the web browser and navigate to" approved="yes">
+        <source>You are about to launch the web browser and navigate to</source>
+        <target state="final">Upravo ćete pokrenuti web preglednik i otići na</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <target state="final">Geste pokreta prsta možete prilagoditi u postavkama ProtonMail aplikacije.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <target state="final">Pomoć i podršku možete dobiti na protonmail.com/support. Pogreške možete prijaviti i pomoću aplikacije.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <target state="final">Ne možete postaviti %@ adresu kao zadanu jer je to plaćena značajka.</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." approved="yes">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <target state="final">Omogućili ste vremenski istek poruke, ali to ne podržavaju svi primatelji. Dodajte lozinku i/ili onemogućite PGP slanje za korištenje isteka za sve primatelje.</target>
+        <note>description</note>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!" approved="yes">
+        <source>You have %d new emails!</source>
+        <target state="final">Imate %d novih poruka e-pošte!</target>
+        <note>Message</note>
+      </trans-unit>
+      <trans-unit id="You have a new email!" approved="yes">
+        <source>You have a new email!</source>
+        <target state="final">Imate novu poruku!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?" approved="yes">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <target state="final">Imate nespremljene promjene. Želite li ih spremiti?</target>
+        <note>Confirmation message</note>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@)." approved="yes">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <target state="final">Iskoristili ste %1$d%% od vašeg prostora za pohranu (%2$@).</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@)." approved="yes">
+        <source>You have used up all of your storage space (%@).</source>
+        <target state="final">Iskoristili ste sav prostor za pohranu (%@).</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send" approved="yes">
+        <source>You need at least one recipient to send</source>
+        <target state="final">Potreban je barem jedan primatelj za slanje</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your Country Code" approved="yes">
+        <source>Your Country Code</source>
+        <target state="final">Pozivni broj države</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." approved="yes">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <target state="final">Vaša pristigla pošta sada je zaštićena s end-to-end enkripcijom. Da biste automatski slali sigurne poruke e-pošte kontaktima, pozovite ih da koriste ProtonMail! Također možete ručno šifrirati poruke ako ne koriste ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages." approved="yes">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <target state="final">Vaš novi šifrirani račun e-pošte je postavljen i spreman za slanje i primanje šifriranih poruka.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready." approved="yes">
+        <source>Your new secure email&#13;
+ account is ready.</source>
+        <target state="final">Vaš novi, sigurni račun&amp;#13;
+ e-pošte je spreman.</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until" approved="yes">
+        <source>Your plan is currently active until</source>
+        <target state="final">Vaš plan je trenutno aktivan do</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on" approved="yes">
+        <source>Your plan will automatically renew on</source>
+        <target state="final">Vaš će se plan automatski obnoviti</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated." approved="yes">
+        <source>Your signature has been updated.</source>
+        <target state="final">Vaš potpis je ažuriran.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ZIP" approved="yes">
+        <source>ZIP</source>
+        <target state="final">Poštanski broj</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <target state="final">i</target>
+        <note>agree check box middle word</note>
+      </trans-unit>
+      <trans-unit id="at" approved="yes">
+        <source>at</source>
+        <target state="final">u</target>
+        <note>like at 10:00pm</note>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!" approved="yes">
+        <source>attempt remaining until secure data wipe!</source>
+        <target state="final">pokušaj preostalo do sigurnog brisanja podataka!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining" approved="yes">
+        <source>attempts remaining</source>
+        <target state="final">pokušaja preostalo</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!" approved="yes">
+        <source>attempts remaining until secure data wipe!</source>
+        <target state="final">pokušaja preostalo do sigurnog brisanja podataka!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="close tour" approved="yes">
+        <source>close tour</source>
+        <target state="final">zatvori obilazak</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="days" approved="yes">
+        <source>Days</source>
+        <target state="final">Dani</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="for one year" approved="yes">
+        <source>for one year</source>
+        <target state="final">na jednu godinu</target>
+        <note>Buy button second line</note>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!" approved="yes">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <target state="final">get contacts() je neuspješno, peopleOrderedByUsersPreference vraća null!!</target>
+        <note>contacts api error when fetch</note>
+      </trans-unit>
+      <trans-unit id="hours" approved="yes">
+        <source>Hours</source>
+        <target state="final">Sati</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="inline attachments" approved="yes">
+        <source>inline attachments</source>
+        <target state="final">ugrađeni privitak</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="no object">
+        <source>no object</source>
+        <target state="needs-translation">no object</target>
+        <note>no object error, local only , this could be not translated!</note>
+      </trans-unit>
+      <trans-unit id="normal attachments" approved="yes">
+        <source>normal attachments</source>
+        <target state="final">normalni privitci</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="privacy policy." approved="yes">
+        <source>privacy policy.</source>
+        <target state="final">pravila privatnosti.</target>
+        <note>agree check box privacy</note>
+      </trans-unit>
+      <trans-unit id="terms and conditions" approved="yes">
+        <source>terms and conditions</source>
+        <target state="final">uvjeti i odredbe</target>
+        <note>agree check box terms</note>
+      </trans-unit>
+      <trans-unit id="wrote:" approved="yes">
+        <source>wrote:</source>
+        <target state="final">je napisao:</target>
+        <note>Title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" source-language="en" target-language="hr" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS" approved="yes">
+        <source>App Extension API is not available in this version of iOS</source>
+        <target state="final">API za proširenje aplikacije nije dostupan u ovoj verziji sustava iOS</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension" approved="yes">
+        <source>Failed to contact the Password Extension</source>
+        <target state="final">Kontaktiranje proširenja lozinki nije uspjelo</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information" approved="yes">
+        <source>Failed to execute script that collects web page information</source>
+        <target state="final">Nije uspjelo izvođenje skripte koja prikuplja informacije o web stranici</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated" approved="yes">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <target state="final">Ispunjavanje web stranice nije uspjelo jer skriptu nije moguće evaluirati</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing" approved="yes">
+        <source>Failed to fill web page because script is missing</source>
+        <target state="final">Ispunjavanje web-stranice nije uspjelo jer nedostaje skripta</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension" approved="yes">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <target state="final">Nije uspjelo dohvaćanje URL stringa iz web prikaza. Prikaz weba mora se u potpunosti učitati prilikom pozivanja proširenja lozinki</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension" approved="yes">
+        <source>Failed to parse information returned by Password Extension</source>
+        <target state="final">Nije uspjelo parsiranje informacija koje je vratilo proširenje lozinki</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user" approved="yes">
+        <source>Password Extension was cancelled by the user</source>
+        <target state="final">Korisnik je poništio proširenje lozinki</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" source-language="en" target-language="hr" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>Siri</source>
+        <target state="final">Siri</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName">
+        <source>Siri</source>
+        <target state="needs-translation">Siri</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

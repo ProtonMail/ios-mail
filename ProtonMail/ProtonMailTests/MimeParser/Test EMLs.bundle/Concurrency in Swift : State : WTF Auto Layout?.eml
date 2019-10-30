@@ -1,0 +1,1733 @@
+Return-Path: <bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net>
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.42])
+	 by sloti37d1t32 (Cyrus fastmail-fmjessie44855-15364-git-fastmail-15364) with LMTPA;
+	 Thu, 31 Aug 2017 20:31:28 -0400
+X-Cyrus-Session-Id: sloti37d1t32-3175336-1504225888-2-15098707989557164999
+X-Sieve: CMU Sieve 3.0
+X-Spam-known-sender: no
+X-Spam-score: 0.0
+X-Spam-hits: BAYES_00 -1.9, HEADER_FROM_DIFFERENT_DOMAINS 0.001, HTML_MESSAGE 0.001,
+  MIME_QP_LONG_LINE 0.001, SPF_HELO_PASS -0.001, SPF_NEUTRAL 0.779,
+  URIBL_GREY 0.424, LANGUAGES en, BAYES_USED global, SA_VERSION 3.4.0
+X-Spam-source: IP='192.168.1.200', Host='redacted.com', Country='US', FromHeader='io',
+  MailFrom='net'
+X-Spam-charsets: subject='utf-8', from='utf-8', plain='utf-8', html='utf-8'
+X-Resolved-to: name@redacted.net
+X-Delivered-to: name@redacted.net
+X-Mail-from: bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net
+Received: from mx4 ([10.202.2.203])
+  by compute2.internal (LMTPProxy); Thu, 31 Aug 2017 20:31:28 -0400
+Received: from mx4.messagingengine.com (localhost [127.0.0.1])
+	by mailmx.nyi.internal (Postfix) with ESMTP id CE76AC858F
+	for <name@redacted.net>; Thu, 31 Aug 2017 20:31:26 -0400 (EDT)
+Received: from mx4.messagingengine.com (localhost [127.0.0.1])
+    by mx4.messagingengine.com (Authentication Milter) with ESMTP
+    id 8385E86BC28;
+    Thu, 31 Aug 2017 20:31:26 -0400
+Authentication-Results: mx4.messagingengine.com;
+    dkim=pass (1024-bit rsa key sha256) header.d=ios-developers.io header.i=hello@ios-developers.io header.b=XIfs2Z9h;
+    dmarc=none (p=none;has-list-id=yes) header.from=ios-developers.io;
+    iprev=pass policy.iprev=192.168.1.200 (redacted.com);
+    spf=neutral smtp.mailfrom=bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net smtp.helo=redacted.com;
+    x-ptr=pass x-ptr-helo=redacted.com x-ptr-lookup=redacted.com
+Received-SPF: neutral
+    (mail12.us4.mcsv.net: Domain does not state whether sender is authorized to use 'bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net' in 'mfrom' identity (mechanism '?all' matched))
+    receiver=mx4.messagingengine.com;
+    identity=mailfrom;
+    envelope-from="bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net";
+    helo=redacted.com;
+    client-ip=192.168.1.200
+Received: from redacted.com (redacted.com [192.168.1.200])
+	by mx4.messagingengine.com (Postfix) with ESMTP
+	for <name@redacted.net>; Thu, 31 Aug 2017 20:31:26 -0400 (EDT)
+Received: by redacted.com (Postfix)
+	id 9EA197B64; Fri,  1 Sep 2017 00:31:25 +0000 (UTC)
+X-Remote-Delivered-To: name@redacted.com
+Received: from mail12.us4.mcsv.net (mail12.us4.mcsv.net [205.201.128.12])
+	by redacted.com (Postfix) with ESMTP id 8BC5D753A
+	for <name@redacted.com>; Fri,  1 Sep 2017 00:31:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=k1; d=ios-developers.io;
+ h=Subject:From:Reply-To:To:Date:Message-ID:List-ID:List-Unsubscribe:
+ Content-Type:MIME-Version; i=hello@ios-developers.io;
+ bh=yWSkQp2FIJVmOTqcIP1FiFansk9+u0aLIpIQVTB6hHc=;
+ b=XIfs2Z9hyYZk3JRPApmZ+b5m/6hrEZWuNn/mGsjlQCUN4ECiQ6/6Asz3rZpb00IFj8xRh1HiETZj
+   KgjmaanV6BW+DewqO773tMEEAu6LDdz2oZywXNsOS/mUbf+CE99rJY0BrJ0SUF5BQrW7UQA6hZgA
+   wlRL4WJPYJPeU2WhIzU=
+Received: from (127.0.0.1) by mail12.us4.mcsv.net id hl2l5q2akeci for <name@redacted.com>; Fri, 1 Sep 2017 00:31:22 +0000 (envelope-from <bounce-mc.us9_36946381.2359093-name=redacted.com@mail12.us4.mcsv.net>)
+Subject: =?utf-8?Q?Concurrency=20in=20Swift=20=2F=20State=C2=A0=2F=20WTF=20Auto=20Layout=3F?=
+From: =?utf-8?Q?iOS=20Developers=20HQ?= <hello@ios-developers.io>
+Reply-To: =?utf-8?Q?iOS=20Developers=20HQ?= <hello@ios-developers.io>
+To: <name@redacted.com>
+Date: Fri, 1 Sep 2017 00:31:22 +0000
+Message-ID: <369a391f12b9b88cfdc5134d4.e42cd16d3a.20170901003017.9ca713007d.a4144642@mail12.us4.mcsv.net>
+X-Mailer: MailChimp Mailer - **CID9ca713007de42cd16d3a**
+X-Campaign: mailchimp369a391f12b9b88cfdc5134d4.9ca713007d
+X-campaignid: mailchimp369a391f12b9b88cfdc5134d4.9ca713007d
+X-Report-Abuse: Please report abuse for this campaign here: http://www.mailchimp.com/abuse/abuse.phtml?u=369a391f12b9b88cfdc5134d4&id=9ca713007d&e=e42cd16d3a
+X-MC-User: 369a391f12b9b88cfdc5134d4
+Feedback-ID: 36946381:36946381.2359093:us9:mc
+List-ID: 369a391f12b9b88cfdc5134d4mc list <369a391f12b9b88cfdc5134d4.529377.list-id.mcsv.net>
+X-Accounttype: pd
+List-Unsubscribe: <http://ios-developers.us9.list-manage1.com/unsubscribe?u=369a391f12b9b88cfdc5134d4&id=54776c1eb7&e=e42cd16d3a&c=9ca713007d>, <mailto:unsubscribe-mc.us9_369a391f12b9b88cfdc5134d4.9ca713007d-e42cd16d3a@mailin1.us2.mcsv.net?subject=unsubscribe>
+List-Unsubscribe-Post: List-Unsubscribe=One-Click
+x-mcda: FALSE
+Content-Type: multipart/alternative; boundary="_----------=_MCPart_2139241319"
+MIME-Version: 1.0
+
+This is a multi-part message in MIME format
+
+--_----------=_MCPart_2139241319
+Content-Type: text/plain; charset="utf-8"; format="fixed"
+Content-Transfer-Encoding: quoted-printable
+
+
+
+http://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88c=
+fdc5134d4&id=3D056bee408b&e=3De42cd16d3a
+
+
+** iOS Developers Weekly Digest
+------------------------------------------------------------
+August 31=2C 2017
+------------------------------------------------------------
+
+
+** Modeling state in Swift (http://ios-developers.us9.list-manage.com/trac=
+k/click?u=3D369a391f12b9b88cfdc5134d4&id=3Da93727243a&e=3De42cd16d3a=
+)
+------------------------------------------------------------
+In this post that=E2=80=99s full of examples=2C John Sundell shares best p=
+ractices for managing and handling state changes.
+
+
+** Codable Dates (http://ios-developers.us9.list-manage.com/track/click?u=
+=3D369a391f12b9b88cfdc5134d4&id=3Dc5eb47c04f&e=3De42cd16d3a)
+------------------------------------------------------------
+Codable articles are all over the place lately=2C but this one talks about=
+ handling dates a dateEncodingStrategy that can handle many=2C many format=
+s. =F0=9F=8E=89
+
+
+** Stop Testing On Simulators =E2=80=93 Access Real Devices (http://ios-de=
+velopers.us9.list-manage1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=
+=3Dde6c522c3f&e=3De42cd16d3a)
+------------------------------------------------------------
+http://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88c=
+fdc5134d4&id=3D853c6e60ee&e=3De42cd16d3a
+Kobiton is a mobile device cloud that lets you test native=2C web and hybr=
+id apps on real iOS devices. Test your way with manual and automation test=
+ing. Automatically generated activity logs help you track your progress. S=
+upports Appium 1.6.4. Try it for free - no commitment required sponsored (=
+http://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88c=
+fdc5134d4&id=3D2443f0a25c&e=3De42cd16d3a)
+
+
+** Concurrency in Swift: One possible approach (http://ios-developers.us9.=
+list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D22426f5889&=
+e=3De42cd16d3a)
+------------------------------------------------------------
+Chris Lattner has written a manifesto about a possible approach he thinks=
+ Swift could take to handle concurrency. I really like async/await; yes=2C=
+ I know it=E2=80=99s been around for a long time in other languages. Anywa=
+y=2C if you=E2=80=99re interested in the future before we get there=2C rea=
+d away!
+
+
+** Deep Learning for Siri=E2=80=99s Voice (http://ios-developers.us9.list-=
+manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D5b519f2e20&e=3D=
+e42cd16d3a)
+------------------------------------------------------------
+Apple has been consistently releasing machine learning posts on their blog=
+ since they announced it back in July. This post is about how Siri voices=
+ are based on deep learning to create a more natural sounding voice. This=
+ one hurts my head a little bit.
+
+
+** WTF Auto Layout? (http://ios-developers.us9.list-manage1.com/track/clic=
+k?u=3D369a391f12b9b88cfdc5134d4&id=3Da5862f8e10&e=3De42cd16d3a)
+------------------------------------------------------------
+This one made me laugh! John Patrick Morgan created a site to help you vis=
+ually debug autolayout errors. If you want to try it out for yourself with=
+out having a real error=2C pull up the test suite (http://ios-developers.u=
+s9.list-manage1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dc72dbce=
+7d6&e=3De42cd16d3a) and copy over an error. Enjoy!
+
+
+** DRY String Localization with Interface Builder (http://ios-developers.u=
+s9.list-manage1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D765a7c9=
+035&e=3De42cd16d3a)
+------------------------------------------------------------
+Another one from the team at Flawless =E2=80=94 if you=E2=80=99re using In=
+terface Builder to create your apps=2C Xcode will duplicate your Xib/Story=
+board to create localized versions. Instead of doing that=2C create your s=
+ingle IB file and then use a method like this to localize your project. Or=
+=2C you know=2C just code your views! =F0=9F=99=88
+Interested in sponsoring our newsletter? Let us know! (mailto:hello@ios-de=
+velopers.io?subject=3DNewsletter%20Sponsorship)
+------------------------------------------------------------
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+** Support us on Patreon for as little as $1 (http://ios-developers.us9.li=
+st-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dfcc6dcdf45&e=
+=3De42cd16d3a)
+
+A huge thank you to our supporters pledging $5 or more per month: ** @MatC=
+artmill (http://ios-developers.us9.list-manage1.com/track/click?u=3D369a39=
+1f12b9b88cfdc5134d4&id=3Dd329babbed&e=3De42cd16d3a)
+=2C ** @jonnyklemmer (http://ios-developers.us9.list-manage.com/track/clic=
+k?u=3D369a391f12b9b88cfdc5134d4&id=3Dd6e8fa8194&e=3De42cd16d3a)
+=2C Paddy Flanagan=2C ** @alex_persian (http://ios-developers.us9.list-man=
+age.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dced87c38f8&e=3D=
+e42cd16d3a)
+=2C ** @martincliffordmedia (http://ios-developers.us9.list-manage.com/tra=
+ck/click?u=3D369a391f12b9b88cfdc5134d4&id=3D512a0312ba&e=3D=
+e42cd16d3a)
+=2C ** @agreatdaytocode (http://ios-developers.us9.list-manage.com/track/c=
+lick?u=3D369a391f12b9b88cfdc5134d4&id=3D604f75721f&e=3De42cd16d3a)
+=2C and ** @KelCodesStuff (http://ios-developers.us9.list-manage.com/track=
+/click?u=3D369a391f12b9b88cfdc5134d4&id=3Db88caa497c&e=3De42cd16d3a)
+=2E
+
+The newsletter team is ** @james (http://ios-developers.us9.list-manage.co=
+m/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3De07b7a17c0&e=3D=
+e42cd16d3a)
+=2C ** @frankacy (http://ios-developers.us9.list-manage.com/track/click?u=
+=3D369a391f12b9b88cfdc5134d4&id=3D67f0568a9c&e=3De42cd16d3a)
+=2C ** @katy (http://ios-developers.us9.list-manage.com/track/click?u=3D36=
+9a391f12b9b88cfdc5134d4&id=3Ddbe57cb8a7&e=3De42cd16d3a)
+=2C ** @kpbode (http://ios-developers.us9.list-manage.com/track/click?u=3D=
+369a391f12b9b88cfdc5134d4&id=3D63997a25fb&e=3De42cd16d3a)
+=2C ** @lisadziuba (http://ios-developers.us9.list-manage.com/track/click?=
+u=3D369a391f12b9b88cfdc5134d4&id=3D7347ef8e68&e=3De42cd16d3a)
+=2C and ** @simkus9 (http://ios-developers.us9.list-manage1.com/track/clic=
+k?u=3D369a391f12b9b88cfdc5134d4&id=3D5957e0b480&e=3De42cd16d3a)
+=2E =F0=9F=93=B0
+Until next week!
+** hello@ios-developers.io (mailto:hello@ios-developers.io)
+| ** Manage subscription (http://ios-developers.us9.list-manage.com/profil=
+e?u=3D369a391f12b9b88cfdc5134d4&id=3D54776c1eb7&e=3De42cd16d3a)
+| ** Unsubscribe (http://ios-developers.us9.list-manage1.com/unsubscribe?u=
+=3D369a391f12b9b88cfdc5134d4&id=3D54776c1eb7&e=3De42cd16d3a&c=3D9ca713007d)
+What do you think of our newsletter? We value your feedback and welcome an=
+y comments you have to help us improve it! Just hit REPLY on this email.
+--_----------=_MCPart_2139241319
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<!doctype html>
+<html xmlns=3D"http://www.w3.org/1999/xhtml" xmlns:v=3D"urn:schemas-micros=
+oft-com:vml" xmlns:o=3D"urn:schemas-microsoft-com:office:office">
+=09<head>
+=09=09<!-- NAME: 1 COLUMN -->
+=09=09<!--[if gte mso 15]>
+=09=09<xml>
+=09=09=09<o:OfficeDocumentSettings>
+=09=09=09<o:AllowPNG/>
+=09=09=09<o:PixelsPerInch>96</o:PixelsPerInch>
+=09=09=09</o:OfficeDocumentSettings>
+=09=09</xml>
+=09=09<![endif]-->
+=09=09<meta charset=3D"UTF-8">
+        <meta http-equiv=3D"X-UA-Compatible" content=3D"IE=3Dedge">
+        <meta name=3D"viewport" content=3D"width=3Ddevice-width=2C initial=
+-scale=3D1">
+=09=09<title>Concurrency in Swift / State=C2=A0/ WTF Auto Layout?</title>
+
+    <style type=3D"text/css">
+=09=09p{
+=09=09=09margin:10px 0;
+=09=09=09padding:0;
+=09=09}
+=09=09table{
+=09=09=09border-collapse:collapse;
+=09=09}
+=09=09h1=2Ch2=2Ch3=2Ch4=2Ch5=2Ch6{
+=09=09=09display:block;
+=09=09=09margin:0;
+=09=09=09padding:0;
+=09=09}
+=09=09img=2Ca img{
+=09=09=09border:0;
+=09=09=09height:auto;
+=09=09=09outline:none;
+=09=09=09text-decoration:none;
+=09=09}
+=09=09body=2C#bodyTable=2C#bodyCell{
+=09=09=09height:100%;
+=09=09=09margin:0;
+=09=09=09padding:0;
+=09=09=09width:100%;
+=09=09}
+=09=09.mcnPreviewText{
+=09=09=09display:none !important;
+=09=09}
+=09=09#outlook a{
+=09=09=09padding:0;
+=09=09}
+=09=09img{
+=09=09=09-ms-interpolation-mode:bicubic;
+=09=09}
+=09=09table{
+=09=09=09mso-table-lspace:0pt;
+=09=09=09mso-table-rspace:0pt;
+=09=09}
+=09=09.ReadMsgBody{
+=09=09=09width:100%;
+=09=09}
+=09=09.ExternalClass{
+=09=09=09width:100%;
+=09=09}
+=09=09p=2Ca=2Cli=2Ctd=2Cblockquote{
+=09=09=09mso-line-height-rule:exactly;
+=09=09}
+=09=09a[href^=3Dtel]=2Ca[href^=3Dsms]{
+=09=09=09color:inherit;
+=09=09=09cursor:default;
+=09=09=09text-decoration:none;
+=09=09}
+=09=09p=2Ca=2Cli=2Ctd=2Cbody=2Ctable=2Cblockquote{
+=09=09=09-ms-text-size-adjust:100%;
+=09=09=09-webkit-text-size-adjust:100%;
+=09=09}
+=09=09.ExternalClass=2C.ExternalClass p=2C.ExternalClass td=2C.ExternalCla=
+ss div=2C.ExternalClass span=2C.ExternalClass font{
+=09=09=09line-height:100%;
+=09=09}
+=09=09a[x-apple-data-detectors]{
+=09=09=09color:inherit !important;
+=09=09=09text-decoration:none !important;
+=09=09=09font-size:inherit !important;
+=09=09=09font-family:inherit !important;
+=09=09=09font-weight:inherit !important;
+=09=09=09line-height:inherit !important;
+=09=09}
+=09=09#bodyCell{
+=09=09=09padding:10px;
+=09=09}
+=09=09.templateContainer{
+=09=09=09max-width:600px !important;
+=09=09}
+=09=09a.mcnButton{
+=09=09=09display:block;
+=09=09}
+=09=09.mcnImage{
+=09=09=09vertical-align:bottom;
+=09=09}
+=09=09.mcnTextContent{
+=09=09=09word-break:break-word;
+=09=09}
+=09=09.mcnTextContent img{
+=09=09=09height:auto !important;
+=09=09}
+=09=09.mcnDividerBlock{
+=09=09=09table-layout:fixed !important;
+=09=09}
+=09=09body=2C#bodyTable{
+=09=09=09background-color:#ffffff;
+=09=09}
+=09=09#bodyCell{
+=09=09=09border-top:0;
+=09=09}
+=09=09.templateContainer{
+=09=09=09border:0;
+=09=09}
+=09=09h1{
+=09=09=09color:#222222;
+=09=09=09font-family:'Lato'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C s=
+ans-serif;
+=09=09=09font-size:26px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:150%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h2{
+=09=09=09color:#222222;
+=09=09=09font-family:'Lato'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C s=
+ans-serif;
+=09=09=09font-size:22px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:150%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h3{
+=09=09=09color:#222222;
+=09=09=09font-family:'Lato'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C s=
+ans-serif;
+=09=09=09font-size:20px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:150%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09h4{
+=09=09=09color:#222222;
+=09=09=09font-family:'Lato'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C s=
+ans-serif;
+=09=09=09font-size:18px;
+=09=09=09font-style:normal;
+=09=09=09font-weight:bold;
+=09=09=09line-height:150%;
+=09=09=09letter-spacing:normal;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templatePreheader{
+=09=09=09background-color:#ffffff;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:0px;
+=09=09=09padding-bottom:px;
+=09=09}
+=09=09#templatePreheader .mcnTextContent=2C#templatePreheader .mcnTextCont=
+ent p{
+=09=09=09color:#222222;
+=09=09=09font-family:'Open Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=
+=2C sans-serif;
+=09=09=09font-size:12px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templatePreheader .mcnTextContent a=2C#templatePreheader .mcnTextCo=
+ntent p a{
+=09=09=09color:#222222;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09=09#templateHeader{
+=09=09=09background-color:#ffffff;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:0px;
+=09=09=09padding-bottom:0px;
+=09=09}
+=09=09#templateHeader .mcnTextContent=2C#templateHeader .mcnTextContent p{
+=09=09=09color:#222222;
+=09=09=09font-family:'Open Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=
+=2C sans-serif;
+=09=09=09font-size:16px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templateHeader .mcnTextContent a=2C#templateHeader .mcnTextContent=
+ p a{
+=09=09=09color:#222222;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:underline;
+=09=09}
+=09=09#templateBody{
+=09=09=09background-color:#ffffff;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:0px;
+=09=09=09padding-bottom:10px;
+=09=09}
+=09=09#templateBody .mcnTextContent=2C#templateBody .mcnTextContent p{
+=09=09=09color:#222222;
+=09=09=09font-family:'Open Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=
+=2C sans-serif;
+=09=09=09font-size:16px;
+=09=09=09line-height:150%;
+=09=09=09text-align:left;
+=09=09}
+=09=09#templateBody .mcnTextContent a=2C#templateBody .mcnTextContent p a{
+=09=09=09color:#2baadf;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:none;
+=09=09}
+=09=09#templateFooter{
+=09=09=09background-color:#ffffff;
+=09=09=09background-image:none;
+=09=09=09background-repeat:no-repeat;
+=09=09=09background-position:center;
+=09=09=09background-size:cover;
+=09=09=09border-top:0;
+=09=09=09border-bottom:0;
+=09=09=09padding-top:0px;
+=09=09=09padding-bottom:10px;
+=09=09}
+=09=09#templateFooter .mcnTextContent=2C#templateFooter .mcnTextContent p{
+=09=09=09color:#222222;
+=09=09=09font-family:'Open Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=
+=2C sans-serif;
+=09=09=09font-size:14px;
+=09=09=09line-height:150%;
+=09=09=09text-align:center;
+=09=09}
+=09=09#templateFooter .mcnTextContent a=2C#templateFooter .mcnTextContent=
+ p a{
+=09=09=09color:#2baadf;
+=09=09=09font-weight:normal;
+=09=09=09text-decoration:none;
+=09=09}
+=09@media only screen and (min-width:768px){
+=09=09.templateContainer{
+=09=09=09width:600px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09body=2Ctable=2Ctd=2Cp=2Ca=2Cli=2Cblockquote{
+=09=09=09-webkit-text-size-adjust:none !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09body{
+=09=09=09width:100% !important;
+=09=09=09min-width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#bodyCell{
+=09=09=09padding-top:10px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImage{
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnCartContainer=2C.mcnCaptionTopContent=2C.mcnRecContentContainer=
+=2C.mcnCaptionBottomContent=2C.mcnTextContentContainer=2C.mcnBoxedTextCont=
+entContainer=2C.mcnImageGroupContentContainer=2C.mcnCaptionLeftTextContent=
+Container=2C.mcnCaptionRightTextContentContainer=2C.mcnCaptionLeftImageCon=
+tentContainer=2C.mcnCaptionRightImageContentContainer=2C.mcnImageCardLeftT=
+extContentContainer=2C.mcnImageCardRightTextContentContainer{
+=09=09=09max-width:100% !important;
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnBoxedTextContentContainer{
+=09=09=09min-width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupContent{
+=09=09=09padding:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnCaptionLeftContentOuter .mcnTextContent=2C.mcnCaptionRightConten=
+tOuter .mcnTextContent{
+=09=09=09padding-top:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardTopImageContent=2C.mcnCaptionBlockInner .mcnCaptionTopC=
+ontent:last-child .mcnTextContent{
+=09=09=09padding-top:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardBottomImageContent{
+=09=09=09padding-bottom:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupBlockInner{
+=09=09=09padding-top:0 !important;
+=09=09=09padding-bottom:0 !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageGroupBlockOuter{
+=09=09=09padding-top:9px !important;
+=09=09=09padding-bottom:9px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnTextContent=2C.mcnBoxedTextContentColumn{
+=09=09=09padding-right:18px !important;
+=09=09=09padding-left:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnImageCardLeftImageContent=2C.mcnImageCardRightImageContent{
+=09=09=09padding-right:18px !important;
+=09=09=09padding-bottom:0 !important;
+=09=09=09padding-left:18px !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcpreview-image-uploader{
+=09=09=09display:none !important;
+=09=09=09width:100% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h1{
+=09=09=09font-size:22px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h2{
+=09=09=09font-size:20px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h3{
+=09=09=09font-size:18px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09h4{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09.mcnBoxedTextContentContainer .mcnTextContent=2C.mcnBoxedTextContent=
+Container .mcnTextContent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templatePreheader{
+=09=09=09display:block !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templatePreheader .mcnTextContent=2C#templatePreheader .mcnTextCont=
+ent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateHeader .mcnTextContent=2C#templateHeader .mcnTextContent p{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateBody .mcnTextContent=2C#templateBody .mcnTextContent p{
+=09=09=09font-size:16px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}=09@media only screen and (max-width: 480px){
+=09=09#templateFooter .mcnTextContent=2C#templateFooter .mcnTextContent p{
+=09=09=09font-size:14px !important;
+=09=09=09line-height:150% !important;
+=09=09}
+
+}</style><!--[if !mso]><!--><link href=3D"https://fonts.googleapis.com/cs=
+s?family=3DLato:400=2C400i=2C700=2C700i|Open+Sans:400=2C400i=2C700=2C700i"=
+ rel=3D"stylesheet"><!--<![endif]--></head>
+    <body style=3D"height: 100%;margin: 0;padding: 0;width: 100%;-ms-text-=
+size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff=
+;">
+=09=09<!--
+-->
+        <center>
+            <table align=3D"center" border=3D"0" cellpadding=3D"0" cellspa=
+cing=3D"0" height=3D"100%" width=3D"100%" id=3D"bodyTable" style=3D"border=
+-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-s=
+ize-adjust: 100%;-webkit-text-size-adjust: 100%;height: 100%;margin: 0;pad=
+ding: 0;width: 100%;background-color: #ffffff;">
+                <tr>
+                    <td align=3D"center" valign=3D"top" id=3D"bodyCell" st=
+yle=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-te=
+xt-size-adjust: 100%;height: 100%;margin: 0;padding: 10px;width: 100%;bord=
+er-top: 0;">
+                        <!-- BEGIN TEMPLATE // -->
+=09=09=09=09=09=09<!--[if gte mso 9]>
+=09=09=09=09=09=09<table align=3D"center" border=3D"0" cellspacing=3D"0" c=
+ellpadding=3D"0" width=3D"600" style=3D"width:600px;">
+=09=09=09=09=09=09<tr>
+=09=09=09=09=09=09<td align=3D"center" valign=3D"top" width=3D"600" style=
+=3D"width:600px;">
+=09=09=09=09=09=09<![endif]-->
+                        <table border=3D"0" cellpadding=3D"0" cellspacing=
+=3D"0" width=3D"100%" class=3D"templateContainer" style=3D"border-collapse=
+: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjus=
+t: 100%;-webkit-text-size-adjust: 100%;border: 0;max-width: 600px !importa=
+nt;">
+                            <tr>
+                                <td valign=3D"top" id=3D"templatePreheader=
+" style=3D"background:#ffffff none no-repeat center/cover;mso-line-height-=
+rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;ba=
+ckground-color: #ffffff;background-image: none;background-repeat: no-repea=
+t;background-position: center;background-size: cover;border-top: 0;border-=
+bottom: 0;padding-top: 0px;padding-bottom: px;"></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateHeader" s=
+tyle=3D"background:#ffffff none no-repeat center/cover;mso-line-height-rul=
+e: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backg=
+round-color: #ffffff;background-image: none;background-repeat: no-repeat;b=
+ackground-position: center;background-size: cover;border-top: 0;border-bot=
+tom: 0;padding-top: 0px;padding-bottom: 0px;"><table border=3D"0" cellpadd=
+ing=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnTextBlock" style=3D=
+"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table=
+-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <div style=3D"text-align: center;"><a href=3D"=
+http://ios-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88c=
+fdc5134d4&id=3D3fde048132&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-=
+line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adj=
+ust: 100%;color: #222222;font-weight: normal;text-decoration: underline;">=
+<img align=3D"none" height=3D"80" src=3D"https://gallery.mailchimp.com/369=
+a391f12b9b88cfdc5134d4/images/0b400067-5d25-4bb7-a776-a521929f0b8f.png" st=
+yle=3D"width: 80px;height: 80px;margin: 0px;border: 0;outline: none;text-d=
+ecoration: none;-ms-interpolation-mode: bicubic;" width=3D"80"></a></div>
+
+<h1 class=3D"null" style=3D"text-align: center;display: block;margin: 0;pa=
+dding: 0;color: #222222;font-family: 'Lato'=2C 'Helvetica Neue'=2C Helveti=
+ca=2C Arial=2C sans-serif;font-size: 26px;font-style: normal;font-weight:=
+ bold;line-height: 150%;letter-spacing: normal;">iOS Developers Weekly Dig=
+est</h1>
+
+<div style=3D"text-align: center;">August 31=2C 2017</div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateBody" sty=
+le=3D"background:#ffffff none no-repeat center/cover;mso-line-height-rule:=
+ exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backgro=
+und-color: #ffffff;background-image: none;background-repeat: no-repeat;bac=
+kground-position: center;background-size: cover;border-top: 0;border-botto=
+m: 0;padding-top: 0px;padding-bottom: 10px;"><table border=3D"0" cellpaddi=
+ng=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnTextBlock" style=3D"=
+min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-=
+rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <hr style=3D"border:0;height:2px;background:#F=
+0F0F0;">
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage.com=
+/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D2df020b077&e=3De42cd16d3a=
+" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-a=
+djust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration:=
+ none;">Modeling state in Swift</a></h3>
+In this post that=E2=80=99s full of examples=2C John Sundell shares best p=
+ractices for managing and handling state changes.
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage2.co=
+m/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Df847ee16b1&e=3D=
+e42cd16d3a" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-=
+adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration=
+: none;">Codable Dates</a></h3>
+Codable articles are all over the place lately=2C but this one talks about=
+ handling dates a dateEncodingStrategy that can handle many=2C many format=
+s. =F0=9F=8E=89
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"display: block;mar=
+gin: 0;padding: 0;color: #222222;font-family: 'Lato'=2C 'Helvetica Neue'=
+=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;font-style: normal;fo=
+nt-weight: bold;line-height: 150%;letter-spacing: normal;text-align: left;=
+"><a href=3D"http://ios-developers.us9.list-manage.com/track/click?u=3D369=
+a391f12b9b88cfdc5134d4&id=3D79239c6d42&e=3De42cd16d3a" style=3D"font-weig=
+ht: bold;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-=
+text-size-adjust: 100%;color: #2baadf;text-decoration: none;" target=3D"_b=
+lank">Stop Testing On Simulators =E2=80=93 Access Real Devices</a></h3>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"210" style=3D"width:210px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 210px;border-collapse: collapse;mso-table=
+-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text=
+-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <div style=3D"text-align: center;"><br>
+<a href=3D"http://ios-developers.us9.list-manage1.com/track/click?u=3D369a=
+391f12b9b88cfdc5134d4&id=3D8d0d652994&e=3De42cd16d3a" style=3D"mso-line-h=
+eight-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 1=
+00%;color: #2baadf;font-weight: normal;text-decoration: none;"><img align=
+=3D"none" data-file-id=3D"4660425" height=3D"122" src=3D"https://gallery.m=
+ailchimp.com/369a391f12b9b88cfdc5134d4/images/2fd84190-40b9-4aa7-bd2c-41cd=
+b94d5b7b.png" style=3D"border: 0px;width: 174px;height: 122px;margin: 0px;=
+outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;" widt=
+h=3D"174"></a></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"390" style=3D"width:390px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 390px;border-collapse: collapse;mso-table=
+-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text=
+-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContentContainer">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-left: 18px;padding-bottom: 9px;padding-right: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <a href=3D"http://ios-developers.us9.list-mana=
+ge1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D57a66dcac4&e=3D=
+e42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text=
+-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weig=
+ht: normal;text-decoration: none;"><span style=3D"color:#222222">Kobiton i=
+s a mobile device cloud that lets you test native=2C web and hybrid apps o=
+n real iOS devices. Test your way with manual and automation testing. Auto=
+matically generated activity logs help you track your progress. Supports A=
+ppium 1.6.4. </span>Try it for free - no commitment required<br>
+<em><span style=3D"color:#9b9b9b"><span style=3D"font-size:12px">sponsored=
+</span></span></em></a>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage.com=
+/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dab1fc1ca40&e=3De42cd16d3a=
+" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-a=
+djust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration:=
+ none;">Concurrency in Swift: One possible approach</a></h3>
+Chris Lattner has written a manifesto about a possible approach he thinks=
+ Swift could take to handle concurrency. I really like async/await; yes=2C=
+ I know it=E2=80=99s been around for a long time in other languages. Anywa=
+y=2C if you=E2=80=99re interested in the future before we get there=2C rea=
+d away!
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage.com=
+/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D3e96fa5e64&e=3De42cd16d3a=
+" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-a=
+djust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration:=
+ none;">Deep Learning for Siri=E2=80=99s Voice</a></h3>
+Apple has been consistently releasing machine learning posts on their blog=
+ since they announced it back in July. This post is about how Siri voices=
+ are based on deep learning to create a more natural sounding voice. This=
+ one hurts my head a little bit.
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage1.co=
+m/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D1d121306b1&e=3D=
+e42cd16d3a" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-=
+adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration=
+: none;">WTF Auto Layout?</a></h3>
+This one made me laugh! John Patrick Morgan created a site to help you vis=
+ually debug autolayout errors. If you want to try it out for yourself with=
+out having a real error=2C <a href=3D"http://ios-developers.us9.list-manag=
+e.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dbc7a6bd0f0&e=3D=
+e42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-s=
+ize-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight=
+: normal;text-decoration: none;">pull up the test suite</a> and copy over=
+ an error. Enjoy!
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding: 0px 18px 9px;font-style: normal;font-weight: normal;mso-line-=
+height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust:=
+ 100%;word-break: break-word;color: #222222;font-family: 'Open Sans'=2C 'H=
+elvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 16px;line-he=
+ight: 150%;text-align: left;">
+
+                            <h3 class=3D"null" style=3D"margin-bottom: 0.5=
+em;display: block;margin: 0;padding: 0;color: #222222;font-family: 'Lato'=
+=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size: 20px;f=
+ont-style: normal;font-weight: bold;line-height: 150%;letter-spacing: norm=
+al;text-align: left;"><a href=3D"http://ios-developers.us9.list-manage2.co=
+m/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Deb391ae91e&e=3D=
+e42cd16d3a" style=3D"font-weight: bold;mso-line-height-rule: exactly;-ms-text-size-=
+adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;text-decoration=
+: none;">DRY String Localization with Interface Builder</a></h3>
+Another one from the team at Flawless =E2=80=94 if you=E2=80=99re using In=
+terface Builder to create your apps=2C Xcode will duplicate your Xib/Story=
+board to create localized versions. Instead of doing that=2C create your s=
+ingle IB file and then use a method like this to localize your project. Or=
+=2C you know=2C just code your views! =F0=9F=99=88
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <div style=3D"text-align: center;"><a href=3D"=
+mailto:hello@ios-developers.io?subject=3DNewsletter%20Sponsorship" target=
+=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 1=
+00%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text=
+-decoration: none;"><span style=3D"color:#222222; font-size:13px">Interest=
+ed in sponsoring our newsletter? Let us know!</span></a></div>
+
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 16px;line-height: 150%;text-align: left;">
+
+                            <hr style=3D"border:0;height:2px;background:#F=
+0F0F0;">
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign=3D"top" id=3D"templateFooter" s=
+tyle=3D"background:#ffffff none no-repeat center/cover;mso-line-height-rul=
+e: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;backg=
+round-color: #ffffff;background-image: none;background-repeat: no-repeat;b=
+ackground-position: center;background-size: cover;border-top: 0;border-bot=
+tom: 0;padding-top: 0px;padding-bottom: 10px;"><table border=3D"0" cellpad=
+ding=3D"0" cellspacing=3D"0" width=3D"100%" class=3D"mcnTextBlock" style=
+=3D"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;=
+">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 14px;line-height: 150%;text-align: center;">
+
+                            <a href=3D"http://ios-developers.us9.list-mana=
+ge.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D9503aa0147&e=3D=
+e42cd16d3a" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;=
+-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-dec=
+oration: none;"><strong style=3D"color:#e6461a; font-weight:bold">Support=
+ us on Patreon for as little as $1</strong></a><br>
+<br>
+<span style=3D"font-size:13px; font-weight: bold;">A huge thank you to our=
+ supporters pledging $5 or more per month:&nbsp;<a href=3D"http://ios-deve=
+lopers.us9.list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D=
+82decdb486&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rul=
+e: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color=
+: #2baadf;font-weight: normal;text-decoration: none;">@MatCartmill</a>=2C&=
+nbsp;<a href=3D"http://ios-developers.us9.list-manage.com/track/click?u=3D=
+369a391f12b9b88cfdc5134d4&id=3D890463a8db&e=3De42cd16d3a" target=3D"_blan=
+k" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webk=
+it-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decorati=
+on: none;">@jonnyklemmer</a>=2C Paddy Flanagan=2C <a href=3D"http://ios-de=
+velopers.us9.list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=
+=3D64ce5dc381&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-height-=
+rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;co=
+lor: #2baadf;font-weight: normal;text-decoration: none;">@alex_persian</a>=
+=2C <a href=3D"http://ios-developers.us9.list-manage1.com/track/click?u=3D=
+369a391f12b9b88cfdc5134d4&id=3D7ea0f3a4b5&e=3De42cd16d3a" target=3D"_blan=
+k" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webk=
+it-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decorati=
+on: none;">@martincliffordmedia</a>=2C <a href=3D"http://ios-developers.us=
+9.list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D2aa257069=
+b&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule: exactl=
+y;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf=
+;font-weight: normal;text-decoration: none;">@agreatdaytocode</a>=2C and <=
+a href=3D"http://ios-developers.us9.list-manage.com/track/click?u=3D369a39=
+1f12b9b88cfdc5134d4&id=3D39b9d19b2e&e=3De42cd16d3a" target=3D"_blank" sty=
+le=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-tex=
+t-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: no=
+ne;">@KelCodesStuff</a>.</span><br>
+<br>
+<span style=3D"font-size:13px">The newsletter team is <a href=3D"http://io=
+s-developers.us9.list-manage.com/track/click?u=3D369a391f12b9b88cfdc5134d4=
+&id=3D4769fc74dd&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-heig=
+ht-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%=
+;color: #2baadf;font-weight: normal;text-decoration: none;">@james</a>=2C=
+ <a href=3D"http://ios-developers.us9.list-manage1.com/track/click?u=3D369=
+a391f12b9b88cfdc5134d4&id=3Dd4c6b49608&e=3De42cd16d3a" target=3D"_blank"=
+ style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit=
+-text-size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration=
+: none;">@frankacy</a>=2C <a href=3D"http://ios-developers.us9.list-manage=
+=2Ecom/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Dd5d230206f&e=3D=
+e42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-si=
+ze-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight:=
+ normal;text-decoration: none;">@katy</a>=2C <a href=3D"http://ios-develop=
+ers.us9.list-manage1.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3Df1=
+64b60cfd&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule:=
+ exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color:=
+ #2baadf;font-weight: normal;text-decoration: none;">@kpbode</a>=2C <a hre=
+f=3D"http://ios-developers.us9.list-manage1.com/track/click?u=3D369a391f12=
+b9b88cfdc5134d4&id=3Dc4631c0536&e=3De42cd16d3a" target=3D"_blank" style=
+=3D"mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;color: #2baadf;font-weight: normal;text-decoration: none=
+;">@lisadziuba</a>=2C and <a href=3D"http://ios-developers.us9.list-manage=
+2.com/track/click?u=3D369a391f12b9b88cfdc5134d4&id=3D0a35c66c51&e=3D=
+e42cd16d3a" target=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-s=
+ize-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight=
+: normal;text-decoration: none;">@simkus9</a>. =F0=9F=93=B0 </span>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnImageBlock" style=3D"min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnImageBlockOuter">
+            <tr>
+                <td valign=3D"top" style=3D"padding: 9px;mso-line-height-r=
+ule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" c=
+lass=3D"mcnImageBlockInner">
+                    <table align=3D"left" width=3D"100%" border=3D"0" cell=
+padding=3D"0" cellspacing=3D"0" class=3D"mcnImageContentContainer" style=
+=3D"min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-ta=
+ble-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;=
+">
+                        <tbody><tr>
+                            <td class=3D"mcnImageContent" valign=3D"top" s=
+tyle=3D"padding-right: 9px;padding-left: 9px;padding-top: 0;padding-bottom=
+: 0;text-align: center;mso-line-height-rule: exactly;-ms-text-size-adjust:=
+ 100%;-webkit-text-size-adjust: 100%;">
+
+
+                                        <img align=3D"center" alt=3D"" src=
+=3D"https://gallery.mailchimp.com/369a391f12b9b88cfdc5134d4/images/fb24094=
+e-7c59-49e4-ab9f-8f3a90377ffb.png" width=3D"80" style=3D"max-width: 80px;p=
+adding-bottom: 0;display: inline !important;vertical-align: bottom;border:=
+ 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode=
+: bicubic;" class=3D"mcnImage">
+
+
+                            </td>
+                        </tr>
+                    </tbody></table>
+                </td>
+            </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 14px;line-height: 150%;text-align: center;">
+
+                            <span style=3D"color:#424242"><span style=3D"f=
+ont-size:20px"><em>Until next week!</em></span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 14px;line-height: 150%;text-align: center;">
+
+                            <a href=3D"mailto:hello@ios-developers.io" tar=
+get=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-size-adjust=
+: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight: normal;t=
+ext-decoration: none;">hello@ios-developers.io</a>&nbsp;| <a href=3D"http:=
+//ios-developers.us9.list-manage.com/profile?u=3D369a391f12b9b88cfdc5134d4=
+&id=3D54776c1eb7&e=3De42cd16d3a" target=3D"_blank" style=3D"mso-line-height-=
+rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;co=
+lor: #2baadf;font-weight: normal;text-decoration: none;">Manage subscripti=
+on</a>&nbsp;| <a href=3D"http://ios-developers.us9.list-manage1.com/unsubs=
+cribe?u=3D369a391f12b9b88cfdc5134d4&id=3D54776c1eb7&e=3De42cd16d3a&c=3D9ca71=
+3007d" target=3D"_blank" style=3D"mso-line-height-rule: exactly;-ms-text-s=
+ize-adjust: 100%;-webkit-text-size-adjust: 100%;color: #2baadf;font-weight=
+: normal;text-decoration: none;">Unsubscribe</a>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table><table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"1=
+00%" class=3D"mcnTextBlock" style=3D"min-width: 100%;border-collapse: coll=
+apse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100=
+%;-webkit-text-size-adjust: 100%;">
+    <tbody class=3D"mcnTextBlockOuter">
+        <tr>
+            <td valign=3D"top" class=3D"mcnTextBlockInner" style=3D"paddin=
+g-top: 9px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webki=
+t-text-size-adjust: 100%;">
+              =09<!--[if mso]>
+=09=09=09=09<table align=3D"left" border=3D"0" cellspacing=3D"0" cellpaddi=
+ng=3D"0" width=3D"100%" style=3D"width:100%;">
+=09=09=09=09<tr>
+=09=09=09=09<![endif]-->
+=09=09=09
+=09=09=09=09<!--[if mso]>
+=09=09=09=09<td valign=3D"top" width=3D"600" style=3D"width:600px;">
+=09=09=09=09<![endif]-->
+                <table align=3D"left" border=3D"0" cellpadding=3D"0" cells=
+pacing=3D"0" style=3D"max-width: 100%;min-width: 100%;border-collapse: col=
+lapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 10=
+0%;-webkit-text-size-adjust: 100%;" width=3D"100%" class=3D"mcnTextContent=
+Container">
+                    <tbody><tr>
+
+                        <td valign=3D"top" class=3D"mcnTextContent" style=
+=3D"padding-top: 0;padding-right: 18px;padding-bottom: 9px;padding-left: 1=
+8px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-=
+size-adjust: 100%;word-break: break-word;color: #222222;font-family: 'Open=
+ Sans'=2C 'Helvetica Neue'=2C Helvetica=2C Arial=2C sans-serif;font-size:=
+ 14px;line-height: 150%;text-align: center;">
+
+                            <span style=3D"color:#9b9b9b">What do you thin=
+k of our newsletter? We value your feedback and welcome any comments you h=
+ave to help us improve it! Just hit REPLY on this email.</span>
+                        </td>
+                    </tr>
+                </tbody></table>
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</td>
+=09=09=09=09<![endif]-->
+
+=09=09=09=09<!--[if mso]>
+=09=09=09=09</tr>
+=09=09=09=09</table>
+=09=09=09=09<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                        </table>
+=09=09=09=09=09=09<!--[if gte mso 9]>
+=09=09=09=09=09=09</td>
+=09=09=09=09=09=09</tr>
+=09=09=09=09=09=09</table>
+=09=09=09=09=09=09<![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    <img src=3D"http://ios-developers.us9.list-manage.com/track/open.php?u=
+=3D369a391f12b9b88cfdc5134d4&id=3D9ca713007d&e=3De42cd16d3a" height=3D"1"=
+ width=3D"1"></body>
+</html>
+--_----------=_MCPart_2139241319--

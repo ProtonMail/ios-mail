@@ -1,0 +1,21 @@
+/* Bundle display name */
+"CFBundleDisplayName" = "ProtonMail";
+
+/* Privacy - Media Library Usage Description */
+"NSAppleMusicUsageDescription" = "用于向邮件中添加多媒体。";
+
+/* Privacy - Camera Usage Description */
+"NSCameraUsageDescription" = "用于向邮件中添加图片。";
+
+/* Privacy - Contacts Usage Description */
+"NSContactsUsageDescription" = "用于自动补全收件人地址。";
+
+/* Privacy - Face ID Usage Description */
+"NSFaceIDUsageDescription" = "能让您快速安全地解锁程序。";
+
+/* Privacy - Photo Library Additions Usage Description */
+"NSPhotoLibraryAddUsageDescription" = "用于将附件中的图片存至图库中。";
+
+/* Privacy - Photo Library Usage Description */
+"NSPhotoLibraryUsageDescription" = "用于向邮件中添加图片。";
+

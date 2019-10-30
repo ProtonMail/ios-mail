@@ -1,0 +1,3777 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 http://docs.oasis-open.org/xliff/v1.2/os/xliff-core-1.2-strict.xsd">
+  <file original="Keymaker/en.lproj/InfoPlist.strings" source-language="en" target-language="es" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>Keymaker</source>
+        <target state="final">Keymaker</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/InfoPlist.strings" source-language="en" target-language="es" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>ProtonMail</source>
+        <target state="final">ProtonMail</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>PushServiceDev</source>
+        <target state="final">PushServiceDev</target>
+        <note>Bundle name</note>
+      </trans-unit>
+      <trans-unit id="NSAppleMusicUsageDescription" approved="yes">
+        <source>Required for attaching media to the email.</source>
+        <target state="final">Requerido para adjuntar medios al correo electrónico.</target>
+        <note>Privacy - Media Library Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSCameraUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <target state="final">Requerido para adjuntar imágenes al correo electrónico.</target>
+        <note>Privacy - Camera Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSContactsUsageDescription" approved="yes">
+        <source>Required for email autocomplete.</source>
+        <target state="final">Requerido para autocompletar el correo electrónico.</target>
+        <note>Privacy - Contacts Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSFaceIDUsageDescription" approved="yes">
+        <source>Allows you quick and secure to unlock your application.</source>
+        <target state="final">Permite desbloquear la aplicación rápido y seguro.</target>
+        <note>Privacy - Face ID Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryAddUsageDescription" approved="yes">
+        <source>Required for saving image attachments to photo library.</source>
+        <target state="final">Requerido para guardar imágenes adjuntas a la galería de fotos.</target>
+        <note>Privacy - Photo Library Additions Usage Description</note>
+      </trans-unit>
+      <trans-unit id="NSPhotoLibraryUsageDescription" approved="yes">
+        <source>Required for attaching photos to the email.</source>
+        <target state="final">Requerido para adjuntar imágenes al correo electrónico.</target>
+        <note>Privacy - Photo Library Usage Description</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/Localizable.strings" source-language="en" target-language="es" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="%@ storage capacity" approved="yes">
+        <source>%@ storage capacity</source>
+        <target state="final">%@ de capacidad de almacenamiento</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="%d Member" approved="yes">
+        <source>%d Member</source>
+        <target state="final">%d miembro</target>
+        <note>The string that describes whether there are 0 or 1 member in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Members" approved="yes">
+        <source>%d Members</source>
+        <target state="final">%d miembros</target>
+        <note>The string that describes whether there are 2 or more members in the contact group</note>
+      </trans-unit>
+      <trans-unit id="%d Minute" approved="yes">
+        <source>%d minute</source>
+        <target state="final">%d minuto</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Minutes" approved="yes">
+        <source>%d minutes</source>
+        <target state="final">%d minutos</target>
+        <note>auto lock time format</note>
+      </trans-unit>
+      <trans-unit id="%d Selected" approved="yes">
+        <source>%d Selected</source>
+        <target state="final">%d seleccionado</target>
+        <note>The string that describes how many contact groups are currently selected</note>
+      </trans-unit>
+      <trans-unit id="%i email address" approved="yes">
+        <source>%i email address</source>
+        <target state="final">%i dirección de correo</target>
+        <note>Service plan capability; i = 1</note>
+      </trans-unit>
+      <trans-unit id="%i email addresses" approved="yes">
+        <source>%i email addresses</source>
+        <target state="final">%i direcciones de correo</target>
+        <note>Service plan capability; i = 5 or 50</note>
+      </trans-unit>
+      <trans-unit id="(2048 bit)" approved="yes">
+        <source>(2048 bit)</source>
+        <target state="final">(2048 bit)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(4096 bit)" approved="yes">
+        <source>(4096 bit)</source>
+        <target state="final">(4096 bit)</target>
+        <note>Key size text when setup key</note>
+      </trans-unit>
+      <trans-unit id="(total)" approved="yes">
+        <source>(total)</source>
+        <target state="final">(total)</target>
+        <note>Service plan capability detail; like in '50 email addresses (total)'</note>
+      </trans-unit>
+      <trans-unit id="**********" approved="yes">
+        <source>**********</source>
+        <target state="final">**********</target>
+        <note>secret</note>
+      </trans-unit>
+      <trans-unit id="*OPTIONAL" approved="yes">
+        <source>*OPTIONAL</source>
+        <target state="final">*OPCIONAL</target>
+        <note>optional text field</note>
+      </trans-unit>
+      <trans-unit id="+ Drop here to add as attachment" approved="yes">
+        <source>+ Drop here to add as attachment</source>
+        <target state="final">+ Suelte aquí para añadir como adjunto</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="/user" approved="yes">
+        <source>/user</source>
+        <target state="final">/usuario</target>
+        <note>Service plan capability detail; like in '5 email addresses/user'</note>
+      </trans-unit>
+      <trans-unit id="2FA failed. Please try to login again." approved="yes">
+        <source>2FA failed. Please try to login again.</source>
+        <target state="final">Falló la autentificación en dos factores. Intente nuevamente.</target>
+        <note>2fa verification failed</note>
+        <alt-trans>
+          <target>Autentificación en dos factores fallida. Por favor, intente iniciar sesión de nuevo.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="&lt;no object&gt;" approved="yes">
+        <source>&lt;no object&gt;</source>
+        <target state="final">&lt;sin objeto&gt;</target>
+        <note>default empty object</note>
+      </trans-unit>
+      <trans-unit id="A message cannot have more than 5 labels" approved="yes">
+        <source>A message cannot have more than 5 labels</source>
+        <target state="final">Un mensaje no puede tener más de 5 etiquetas</target>
+        <note>*
+ *  LabelTableViewCell</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available, please update to latest version." approved="yes">
+        <source>A new version of ProtonMail app is available, please update to latest version.</source>
+        <target state="final">Una nueva versión de la aplicación ProtonMail está disponible, por favor actualice a la última versión.</target>
+        <note>"Alert" = "Alert";</note>
+      </trans-unit>
+      <trans-unit id="A new version of ProtonMail app is available. Please update to the latest version." approved="yes">
+        <source>A new version of ProtonMail app is available. Please update to the latest version.</source>
+        <target state="final">Una nueva versión de la aplicación ProtonMail está disponible. Actualice a la última versión.</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>Una nueva versión de la aplicación ProtonMail está disponible. Por favor, actualice a la última versión.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="A paid ProtonMail plan is required to use this feature" approved="yes">
+        <source>A paid ProtonMail plan is required to use this feature</source>
+        <target state="final">Se necesita un plan de ProtonMail para utilizar esta característica</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="A passcode has not been set, enable it in the system Settings" approved="yes">
+        <source>A passcode has not been set, enable it in the system Settings</source>
+        <target state="final">No se ha establecido un código de acceso, habilítelo en los ajustes del sistema</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="API Server not reachable..." approved="yes">
+        <source>API Server not reachable...</source>
+        <target state="final">Servidor API no accesible...</target>
+        <note>when server not reachable</note>
+      </trans-unit>
+      <trans-unit id="ARCHIVE" approved="yes">
+        <source>Archive</source>
+        <target state="final">ARCHIVO</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." approved="yes">
+        <source>Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice.</source>
+        <target state="final">El acceso a esta cuenta está deshabilitado por falta de pago. Inicie sesión a través de protonmail.com para pagar su factura no pagada.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." approved="yes">
+        <source>Access to this account is disabled due to non-payment.
+ Please visit &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;our knowledge base&lt;/a&gt; for more information.</source>
+        <target state="final">El acceso a esta cuenta está deshabilitado por falta de pago.
+
+Visite &lt;a href="https://protonmail.com/support/knowledge-base/delinquency/"&gt;la base de conocimiento&lt;/a&gt; para más información.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Account password invalid" approved="yes">
+        <source>Invalid account password</source>
+        <target state="final">Contraseña de cuenta incorrecta</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Add" approved="yes">
+        <source>Add</source>
+        <target state="final">Añadir</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Add Anniversary" approved="yes">
+        <source>Add Anniversary</source>
+        <target state="final">Añadir aniversario</target>
+        <note>new contacts add Anniversary</note>
+      </trans-unit>
+      <trans-unit id="Add Birthday" approved="yes">
+        <source>Add Birthday</source>
+        <target state="final">Añadir cumpleaños</target>
+        <note>new contacts add Birthday</note>
+      </trans-unit>
+      <trans-unit id="Add Contact" approved="yes">
+        <source>Add Contact</source>
+        <target state="final">Añadir contacto</target>
+        <note>Contacts add new contact</note>
+      </trans-unit>
+      <trans-unit id="Add Custom Label" approved="yes">
+        <source>Add Custom Label</source>
+        <target state="final">Añadir etiqueta personalizada</target>
+        <note>add custom label type action</note>
+      </trans-unit>
+      <trans-unit id="Add Folder" approved="yes">
+        <source>Add Folder</source>
+        <target state="final">Añadir carpeta</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Add Gender" approved="yes">
+        <source>Add Gender</source>
+        <target state="final">Añadir sexo</target>
+        <note>new contacts add Gender</note>
+      </trans-unit>
+      <trans-unit id="Add Group" approved="yes">
+        <source>Add Group</source>
+        <target state="final">Añadir grupo</target>
+        <note>The title for the contact group creation view</note>
+      </trans-unit>
+      <trans-unit id="Add Label" approved="yes">
+        <source>Add Label</source>
+        <target state="final">Añadir etiqueta</target>
+        <note>add label action</note>
+      </trans-unit>
+      <trans-unit id="Add New Folder" approved="yes">
+        <source>Add New Folder</source>
+        <target state="final">Añadir carpeta nueva</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add New Label" approved="yes">
+        <source>Add New Label</source>
+        <target state="final">Añadir etiqueta nueva</target>
+        <note>add a new folder</note>
+      </trans-unit>
+      <trans-unit id="Add Nickname" approved="yes">
+        <source>Add Nickname</source>
+        <target state="final">Añadir apodo</target>
+        <note>new contacts add Nickname</note>
+      </trans-unit>
+      <trans-unit id="Add Organization" approved="yes">
+        <source>Add Organization</source>
+        <target state="final">Añadir organización</target>
+        <note>new contacts add Organization</note>
+      </trans-unit>
+      <trans-unit id="Add Photo" approved="yes">
+        <source>Add Photo</source>
+        <target state="final">Añadir imagen</target>
+        <note>The button text for add profile picture</note>
+      </trans-unit>
+      <trans-unit id="Add Star" approved="yes">
+        <source>Add Star</source>
+        <target state="final">Destacar</target>
+        <note>mark message star</note>
+      </trans-unit>
+      <trans-unit id="Add Title" approved="yes">
+        <source>Add Title</source>
+        <target state="final">Añadir título</target>
+        <note>new contacts add Title</note>
+      </trans-unit>
+      <trans-unit id="Add new address" approved="yes">
+        <source>Add new address</source>
+        <target state="final">Añadir nueva dirección</target>
+        <note>add new address action</note>
+      </trans-unit>
+      <trans-unit id="Add new custom field" approved="yes">
+        <source>Add new custom field</source>
+        <target state="final">Añadir nuevo campo personalizado</target>
+        <note>new custom field action</note>
+      </trans-unit>
+      <trans-unit id="Add new email" approved="yes">
+        <source>Add new email</source>
+        <target state="final">Añadir correo electrónico nuevo</target>
+        <note>new email action</note>
+      </trans-unit>
+      <trans-unit id="Add new field" approved="yes">
+        <source>Add new field</source>
+        <target state="final">Añadir campo nuevo</target>
+        <note>new field action</note>
+      </trans-unit>
+      <trans-unit id="Add new phone number" approved="yes">
+        <source>Add new phone number</source>
+        <target state="final">Añadir nuevo número telefónico</target>
+        <note>new phone action</note>
+      </trans-unit>
+      <trans-unit id="Add new url" approved="yes">
+        <source>Add new url</source>
+        <target state="final">Añadir url nueva</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Add to contacts" approved="yes">
+        <source>Add to contacts</source>
+        <target state="final">Añadir a contactos</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Address" approved="yes">
+        <source>Address</source>
+        <target state="final">Dirección</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Alert" approved="yes">
+        <source>Alert</source>
+        <target state="final">Alerta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="All Mail" approved="yes">
+        <source>All Mail</source>
+        <target state="final">Todos</target>
+        <note>mail location desc
+   mail location title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="All contacts are imported" approved="yes">
+        <source>All contacts are imported</source>
+        <target state="final">Todos los contactos están importados</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Also Archive" approved="yes">
+        <source>Also Archive</source>
+        <target state="final">Además archivar</target>
+        <note>archive when apply label</note>
+      </trans-unit>
+      <trans-unit id="Also used to reset a forgotten password." approved="yes">
+        <source>Also used to reset a forgotten password.</source>
+        <target state="final">También se utiliza para restablecer una contraseña olvidada.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Anniversary" approved="yes">
+        <source>Anniversary</source>
+        <target state="final">Aniversario</target>
+        <note>contacts talbe cell Anniversary title</note>
+      </trans-unit>
+      <trans-unit id="App is locked" approved="yes">
+        <source>App is locked</source>
+        <target state="final">La aplicación está bloqueada</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Apple in-app purchase fee" approved="yes">
+        <source>Apple in-app purchase fee</source>
+        <target state="final">Tarifa de compra en la aplicación de Apple</target>
+        <note>Price breakdown</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us they could not process the purchase." approved="yes">
+        <source>Apple informed us they could not process the purchase.</source>
+        <target state="final">Nos informó Apple que no se pudo procesar la compra.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one.</source>
+        <target state="final">Nos informó Apple que ha actualizado el plan de servicio, pero no dijo cuál de sus cuentas de ProtonMail actualizar en caso de tener más de una.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.</source>
+        <target state="final">Nos informó Apple que ha actualizado el plan de servicio, pero faltan algunos datos técnicos. Envíenos un reporte de errores y nuestro equipo se pondrá en contacto con usted.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." approved="yes">
+        <source>Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then.</source>
+        <target state="final">Nos informó Apple que ha actualizado el plan de servicio, pero detectamos que cerró sesión desde entonces.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Apply" approved="yes">
+        <source>Apply</source>
+        <target state="final">Aplicar</target>
+        <note>Apply action</note>
+      </trans-unit>
+      <trans-unit id="Apply Labels" approved="yes">
+        <source>Apply Labels</source>
+        <target state="final">Aplicar etiquetas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Archive" approved="yes">
+        <source>Archive</source>
+        <target state="final">Archivados</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Archived" approved="yes">
+        <source>Archived</source>
+        <target state="final">Archivado</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Are you sure you want to logout?" approved="yes">
+        <source>Are you sure you want to logout?</source>
+        <target state="final">¿Seguro que quiere cerrar la sesión?</target>
+        <note>Alert to confirm logout</note>
+      </trans-unit>
+      <trans-unit id="Attachment imported" approved="yes">
+        <source>Attachment imported</source>
+        <target state="final">Adjunto importado</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="Attachments" approved="yes">
+        <source>Attachments</source>
+        <target state="final">Adjuntos</target>
+        <note>VoiceOver: email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Authentication" approved="yes">
+        <source>Authentication</source>
+        <target state="final">Autenticación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Authentication Failed Wrong username or password" approved="yes">
+        <source>Authentication failed: wrong username or password.</source>
+        <target state="final">Error en la autenticación: usuario o contraseña incorrecta</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed" approved="yes">
+        <source>Authentication failed</source>
+        <target state="final">Autenticación fallida</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication failed. Please try to login again." approved="yes">
+        <source>Authentication failed. Please try to login again.</source>
+        <target state="final">Autenticación fallida, intente nuevamente.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Authentication token is not accessible because the app is locked" approved="yes">
+        <source>Authentication token is not accessible because the app is locked</source>
+        <target state="final">El token de autenticación no es accesible porque la aplicación está bloqueada</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Authentication was cancelled by the system" approved="yes">
+        <source>Authentication was cancelled by the system</source>
+        <target state="final">Autenticación cancelada por el sistema</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Auto Lock Time" approved="yes">
+        <source>Auto lock time</source>
+        <target state="final">Tiempo de bloqueo automático</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Auto Show Images" approved="yes">
+        <source>Auto show images</source>
+        <target state="final">Mostrar imágenes automáticamente</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Back" approved="yes">
+        <source>Back</source>
+        <target state="final">Atrás</target>
+        <note>top left back button</note>
+      </trans-unit>
+      <trans-unit id="Bad auth cache" approved="yes">
+        <source>Bad auth cache</source>
+        <target state="final">Autenticación de caché errónea</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter" approved="yes">
+        <source>Bad parameter</source>
+        <target state="final">Parámetro erróneo</target>
+        <note>Error title</note>
+      </trans-unit>
+      <trans-unit id="Bad parameter: %@" approved="yes">
+        <source>Bad parameter: %@</source>
+        <target state="final">Parámetro erróneo: %@</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bad path" approved="yes">
+        <source>Bad path</source>
+        <target state="final">Ruta errónea</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Bad response" approved="yes">
+        <source>Bad response</source>
+        <target state="final">Respuesta errónea</target>
+        <note>Error Description</note>
+      </trans-unit>
+      <trans-unit id="Bcc" approved="yes">
+        <source>BCC</source>
+        <target state="final">Cco</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bcc:" approved="yes">
+        <source>Bcc:</source>
+        <target state="final">Bcc:</target>
+        <note>message Bcc: feild</note>
+      </trans-unit>
+      <trans-unit id="Birthday" approved="yes">
+        <source>Birthday</source>
+        <target state="final">Cumpleaños</target>
+        <note>contacts talbe cell Birthday title</note>
+      </trans-unit>
+      <trans-unit id="Bug Description" approved="yes">
+        <source>Bug Description</source>
+        <target state="final">Descripción del Error</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Bug Report Received" approved="yes">
+        <source>Bug report received</source>
+        <target state="final">Informe de error recibido</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Buy More Credits" approved="yes">
+        <source>Buy More Credits</source>
+        <target state="final">Comprar más créditos</target>
+        <note>Link to More Credits screen</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our" approved="yes">
+        <source>By using protonmail, you agree to our</source>
+        <target state="final">Al usar ProtonMail, acepta nuestros</target>
+        <note>agree check box first part words</note>
+      </trans-unit>
+      <trans-unit id="By using protonmail, you agree to our %@ and %@." approved="yes">
+        <source>By using protonmail, you agree to our %1$@ and %2$@.</source>
+        <target state="final">Al usar protonmail, acepta nuestros %1$@ y %2$@.</target>
+        <note>No comment provided by engineer.</note>
+      </trans-unit>
+      <trans-unit id="CAPTCHA" approved="yes">
+        <source>CAPTCHA</source>
+        <target state="final">CAPTCHA</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Call Contact" approved="yes">
+        <source>Call Contact</source>
+        <target state="final">Llamar al contacto</target>
+        <note>Call the contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Can take several minutes to setup." approved="yes">
+        <source>Can take several minutes to setup.</source>
+        <target state="final">La configuración puede tardar varios minutos.</target>
+        <note>key size note part 2</note>
+      </trans-unit>
+      <trans-unit id="Can't copy the file" approved="yes">
+        <source>Can't copy the file</source>
+        <target state="final">No se puede copiar el archivo</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP Client" approved="yes">
+        <source>Can't create a SRP Client</source>
+        <target state="final">No se puede crear un cliente SRP</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't create a SRP verifier!" approved="yes">
+        <source>Can't create a SRP verifier!</source>
+        <target state="final">¡No se puede crear un verificador SRP!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't decrypt this attachment!" approved="yes">
+        <source>Can't decrypt this attachment!</source>
+        <target state="final">¡No se puede descifrar el archivo adjunto!</target>
+        <note>When quick look attachment but can't decrypt it!</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group" approved="yes">
+        <source>Can't delete contact group</source>
+        <target state="final">No se pudo eliminar el grupo de contactos</target>
+        <note>The error message title that will be shown when the deletion of the contact group failed</note>
+      </trans-unit>
+      <trans-unit id="Can't delete contact group through API" approved="yes">
+        <source>Can't delete contact group through API</source>
+        <target state="final">No se pudo eliminar el grupo de contactos a través de la API</target>
+        <note>The error message will be shown when the deletionn of the contact group through API failed</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body, please try again." approved="yes">
+        <source>Can't download message body, please try again.</source>
+        <target state="final">No se puede descargar el contenido del mensaje, por favor intente otra vez.</target>
+        <note>*
+ *  MessageViewController</note>
+      </trans-unit>
+      <trans-unit id="Can't download message body. Please try again." approved="yes">
+        <source>Can't download message body. Please try again.</source>
+        <target state="final">No se pudo descargar el contenido del mensaje, intente nuevamente.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't fetch contact groups" approved="yes">
+        <source>Can't fetch contact groups</source>
+        <target state="final">No se pudieron obtener los grupos de contactos</target>
+        <note>The error message title that will be shown when the app attempts to fetch contact groups from the server but failed</note>
+      </trans-unit>
+      <trans-unit id="Can't find the clicked message please try again!" approved="yes">
+        <source>Can't find the clicked message please try again!</source>
+        <target state="final">¡No puede encontrar el mensaje por favor inténtelo de nuevo!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Can't find the selected message. Please try again." approved="yes">
+        <source>Can't find the selected message. Please try again.</source>
+        <target state="final">No se pudo encontrar el mensaje seleccionado. Intente de nuevo.</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>No se puede encontrar el mensaje seleccionado. Inténtalo de nuevo.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Can't find this attachment!" approved="yes">
+        <source>Can't find this attachment!</source>
+        <target state="final">¡No se puede encontrar este archivo adjunto!</target>
+        <note>when quick look attachment but can't find the data</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls ID!" approved="yes">
+        <source>Can't get a Modulus ID!</source>
+        <target state="final">¡No se puede obtener un ID de Moduls!</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get a Moduls!" approved="yes">
+        <source>Can't get a Moduls!</source>
+        <target state="final">¡No se puede obtener un Moduls!</target>
+        <note>update password error = typo:Modulus</note>
+      </trans-unit>
+      <trans-unit id="Can't get user auth info" approved="yes">
+        <source>Can't get user auth info</source>
+        <target state="final">No se puede obtener la información de autenticación del usuario</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Can't load share content!" approved="yes">
+        <source>Can't load share content!</source>
+        <target state="final">¡No se puede cargar el contenido compartido!</target>
+        <note>This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly</note>
+      </trans-unit>
+      <trans-unit id="Can't load the file" approved="yes">
+        <source>Can't load the file</source>
+        <target state="final">No se puede cargar el archivo</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't not find the value from the response body" approved="yes">
+        <source>Can't not find the value from the response body</source>
+        <target state="final">No se puede encontrar el valor del cuerpo de respuesta</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Can't open the file" approved="yes">
+        <source>Can't open the file</source>
+        <target state="final">No se puede abrir el archivo</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Can't save contact group" approved="yes">
+        <source>Can't save contact group</source>
+        <target state="final">No se pudo guardar el grupo de contactos</target>
+        <note>The error message title that will be shown when the contact group being created or edited can't be saved</note>
+      </trans-unit>
+      <trans-unit id="Can't update contact group through the API" approved="yes">
+        <source>Can't update contact group through the API</source>
+        <target state="final">No se pudo actualizar el grupo de contactos mediante la API</target>
+        <note>The error message will be shown when the update of the contact group through API failed</note>
+        <alt-trans>
+          <target>No se puede actualizar el grupo de contactos a través de la API</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Cancel" approved="yes">
+        <source>Cancel</source>
+        <target state="final">Cancelar</target>
+        <note>Cancel action</note>
+      </trans-unit>
+      <trans-unit id="Cancel Check" approved="yes">
+        <source>Cancel Check</source>
+        <target state="final">Cancelar la verificación</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Cancelling" approved="yes">
+        <source>Cancelling</source>
+        <target state="final">Cancelando</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cant' decrypt this attachment!" approved="yes">
+        <source>Unable to decrypt this attachment.</source>
+        <target state="final">No se puede descifrar este archivo adjunto.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Cc" approved="yes">
+        <source>CC</source>
+        <target state="final">Cc</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Cc:" approved="yes">
+        <source>Cc:</source>
+        <target state="final">Cc:</target>
+        <note>message Cc: feild</note>
+      </trans-unit>
+      <trans-unit id="Cell phone number" approved="yes">
+        <source>Cell phone number</source>
+        <target state="final">Número de teléfono móvil</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Change Login Password" approved="yes">
+        <source>Change Login Password</source>
+        <target state="final">Cambiar contraseña de inicio de sesión</target>
+        <note>change password input label</note>
+      </trans-unit>
+      <trans-unit id="Change Mailbox Password" approved="yes">
+        <source>Change Mailbox Password</source>
+        <target state="final">Cambiar contraseña de buzón</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change Password" approved="yes">
+        <source>Change password</source>
+        <target state="final">Cambiar contraseña</target>
+        <note>update password error title</note>
+      </trans-unit>
+      <trans-unit id="Change Pin" approved="yes">
+        <source>Change PIN</source>
+        <target state="final">Cambiar PIN</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Change Single Password" approved="yes">
+        <source>Change Single Password</source>
+        <target state="final">Cambiar contraseña única</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change default address to .." approved="yes">
+        <source>Change default address to...</source>
+        <target state="final">Cambiar la dirección predeterminada a...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Change left swipe action" approved="yes">
+        <source>Change left swipe action</source>
+        <target state="final">Cambiar acción de deslizamiento hacia la izquierda</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change right swipe action" approved="yes">
+        <source>Change right swipe action</source>
+        <target state="final">Cambiar acción de deslizamiento hacia la derecha</target>
+        <note>settings swipe actions section action description</note>
+      </trans-unit>
+      <trans-unit id="Change sender address to .." approved="yes">
+        <source>Change sender address to...</source>
+        <target state="final">Cambiar la dirección del remitente a...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Check Again" approved="yes">
+        <source>Check Again</source>
+        <target state="final">Verificar de nuevo</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Checking ...." approved="yes">
+        <source>Checking...</source>
+        <target state="final">Verificando...</target>
+        <note>loading message</note>
+      </trans-unit>
+      <trans-unit id="Choose a Password" approved="yes">
+        <source>Choose a Password</source>
+        <target state="final">Elija una contraseña</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="City" approved="yes">
+        <source>City</source>
+        <target state="final">Ciudad</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Clear Local Message Cache" approved="yes">
+        <source>Clear local message cache</source>
+        <target state="final">Vaciar caché de mensajes locales</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Close" approved="yes">
+        <source>Close</source>
+        <target state="final">Cerrar</target>
+        <note>general close action</note>
+      </trans-unit>
+      <trans-unit id="Closing" approved="yes">
+        <source>Closing</source>
+        <target state="final">Cerrando</target>
+        <note>the message will show when closing a draft from the share extension</note>
+      </trans-unit>
+      <trans-unit id="Compose" approved="yes">
+        <source>Compose</source>
+        <target state="final">Redactar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Compose to" approved="yes">
+        <source>Compose to</source>
+        <target state="final">Redactar a</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm" approved="yes">
+        <source>Confirm</source>
+        <target state="final">Confirmar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Confirm Login Password" approved="yes">
+        <source>Confirm login password</source>
+        <target state="final">Confirmar la contraseña de inicio de sesión</target>
+        <note>"Login Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Mailbox Password" approved="yes">
+        <source>Confirm mailbox password</source>
+        <target state="final">Confirmar la contraseña del buzón</target>
+        <note>"Mailbox Password"</note>
+      </trans-unit>
+      <trans-unit id="Confirm Password" approved="yes">
+        <source>Confirm password</source>
+        <target state="final">Confirmar contraseña</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm new login password" approved="yes">
+        <source>Confirm new login password</source>
+        <target state="final">Confirmar nueva contraseña de inicio de sesión</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new mailbox password" approved="yes">
+        <source>Confirm new mailbox password</source>
+        <target state="final">Confirmar nueva contraseña de buzón</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Confirm new password" approved="yes">
+        <source>Confirm new password</source>
+        <target state="final">Confirmar nueva contraseña</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Confirm phishing report" approved="yes">
+        <source>Confirm phishing report</source>
+        <target state="final">Confirmar reporte de suplantación de identidad</target>
+        <note>alert title</note>
+      </trans-unit>
+      <trans-unit id="Confirmation" approved="yes">
+        <source>Confirmation</source>
+        <target state="final">Confirmación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Congratulations!" approved="yes">
+        <source>Congratulations!</source>
+        <target state="final">¡Felicitaciones!</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Contact Details" approved="yes">
+        <source>Contact Details</source>
+        <target state="final">Detalles del contacto</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Contact the ProtonMail team" approved="yes">
+        <source>Contact the ProtonMail team</source>
+        <target state="final">Contactar con el equipo de ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Contacts" approved="yes">
+        <source>Contacts</source>
+        <target state="final">Contactos</target>
+        <note>Action and title
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Continue" approved="yes">
+        <source>Continue</source>
+        <target state="final">Continuar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Continue and Don't ask again" approved="yes">
+        <source>Continue and Don't ask again</source>
+        <target state="final">Seguir y no volver a preguntar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Copy address" approved="yes">
+        <source>Copy address</source>
+        <target state="final">Copiar dirección</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Copy name" approved="yes">
+        <source>Copy name</source>
+        <target state="final">Copiar nombre</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Could not connect to Store. Please try again later." approved="yes">
+        <source>Could not connect to Store. Please try again later.</source>
+        <target state="final">No se pudo conectar con la tienda. Intente de nuevo más tarde.</target>
+        <note>Error message</note>
+        <alt-trans>
+          <target>No se pudo conectar a la tienda. Por favor, inténtelo de nuevo más tarde.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Country" approved="yes">
+        <source>Country</source>
+        <target state="final">País</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Create" approved="yes">
+        <source>Create</source>
+        <target state="final">Crear</target>
+        <note>top right action text</note>
+      </trans-unit>
+      <trans-unit id="Create Account" approved="yes">
+        <source>Create Account</source>
+        <target state="final">Crear cuenta</target>
+        <note>Create account button</note>
+      </trans-unit>
+      <trans-unit id="Create User failed. Please try again." approved="yes">
+        <source>Create User failed. Please try again.</source>
+        <target state="final">Falló la creación del usuario, inténtelo nuevamente.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Create a new account" approved="yes">
+        <source>Create a new account</source>
+        <target state="final">Crear una nueva cuenta</target>
+        <note>Signup top title</note>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Long press on a message for all options." approved="yes">
+        <source>Create and add Labels to organize your inbox. Long press on a message for all options.</source>
+        <target state="final">Cree y añada etiquetas para organizar su bandeja de entrada. Mantenga pulsado un mensaje para ver todas las opciones.</target>
+        <note>Description</note>
+        <alt-trans>
+          <target>Crea y agrega etiquetas para organizar tu bandeja de entrada. Mantenga pulsado un mensaje para todas las opciones.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Create and add Labels to organize your inbox. Press and hold down on a message for all options." approved="yes">
+        <source>Create and add labels to organize your inbox. Press and hold down on a message for all options.</source>
+        <target state="final">Cree y añada etiquetas para organizar su bandeja de entrada. Presione y mantenga pulsado un mensaje para todas las opciones.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Create user failed" approved="yes">
+        <source>Create user failed</source>
+        <target state="final">Error al crear el usuario</target>
+        <note>error message title when create new user</note>
+      </trans-unit>
+      <trans-unit id="Current Language is: " approved="yes">
+        <source>Current Language is: </source>
+        <target state="final">El idioma actual es: </target>
+        <note>Change language title</note>
+      </trans-unit>
+      <trans-unit id="Current login password" approved="yes">
+        <source>Current login password</source>
+        <target state="final">Contraseña de inicio de sesión actual</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Current password" approved="yes">
+        <source>Current password</source>
+        <target state="final">Contraseña actual</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Custom" approved="yes">
+        <source>Custom</source>
+        <target state="final">Personalizar</target>
+        <note>action sheet option
+   contacts default label type</note>
+      </trans-unit>
+      <trans-unit id="DECRYPT MAILBOX" approved="yes">
+        <source>DECRYPT MAILBOX</source>
+        <target state="final">DESCIFRAR BUZÓN</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="DRAFTS" approved="yes">
+        <source>Drafts</source>
+        <target state="final">BORRADORES</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Date:" approved="yes">
+        <source>Date:</source>
+        <target state="final">Fecha:</target>
+        <note>message Date: text</note>
+      </trans-unit>
+      <trans-unit id="Date: %@" approved="yes">
+        <source>Date: %@</source>
+        <target state="final">Fecha: %@</target>
+        <note>like Date: 2017-10-10</note>
+      </trans-unit>
+      <trans-unit id="Debug" approved="yes">
+        <source>Debug</source>
+        <target state="final">Depurar</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Decrypt" approved="yes">
+        <source>Decrypt</source>
+        <target state="final">Descifrar</target>
+        <note>Action</note>
+        <alt-trans>
+          <target>Descrifrar</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Decrypt token failed. Please try again." approved="yes">
+        <source>Decrypt token failed. Please try again.</source>
+        <target state="final">Falló el token de descifrado, inténtelo nuevamente.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Decryption error" approved="yes">
+        <source>Decryption error</source>
+        <target state="final">Error de descifrado</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Decryption of this content failed" approved="yes">
+        <source>Decryption of this content failed</source>
+        <target state="final">Falló el descifrado de este contenido</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Default" approved="yes">
+        <source>Default</source>
+        <target state="final">Por defecto</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Default error. Please try again." approved="yes">
+        <source>Default error. Please try again.</source>
+        <target state="final">Ocurrió un error, inténtelo nuevamente.</target>
+        <note>error message when create new user</note>
+      </trans-unit>
+      <trans-unit id="Define Expiration Date" approved="yes">
+        <source>Define Expiration Date</source>
+        <target state="final">Definir fecha de expiración</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Hint (Optional)" approved="yes">
+        <source>Define hint (Optional)</source>
+        <target state="final">Definir pista (opcional)</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Define Password" approved="yes">
+        <source>Define password</source>
+        <target state="final">Definir contraseña</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Delete" approved="yes">
+        <source>Delete</source>
+        <target state="final">Eliminar</target>
+        <note>general delete action</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact" approved="yes">
+        <source>Delete Contact</source>
+        <target state="final">Eliminar contacto</target>
+        <note>Title-Contacts</note>
+      </trans-unit>
+      <trans-unit id="Delete Contact Group" approved="yes">
+        <source>Delete Contact Group</source>
+        <target state="final">Eliminar grupo de contactos</target>
+        <note>The description of the button for deleting the contact group</note>
+      </trans-unit>
+      <trans-unit id="Deleted" approved="yes">
+        <source>Deleted</source>
+        <target state="final">Eliminado</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Details" approved="yes">
+        <source>Details</source>
+        <target state="final">Detalles</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Discard changes" approved="yes">
+        <source>Discard changes</source>
+        <target state="final">Descartar cambios</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Discard draft" approved="yes">
+        <source>Discard draft</source>
+        <target state="final">Descartar borrador</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Display Name" approved="yes">
+        <source>Display name</source>
+        <target state="final">Nombre para mostrar</target>
+        <note>Title in settings</note>
+      </trans-unit>
+      <trans-unit id="Display Name Updated" approved="yes">
+        <source>Display name updated</source>
+        <target state="final">Nombre a mostrar actualizado</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Display name" approved="yes">
+        <source>Display name</source>
+        <target state="final">Nombra para mostrar</target>
+        <note/>
+        <alt-trans>
+          <target>Mostrar nombre</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="DisplayName" approved="yes">
+        <source>Display name</source>
+        <target state="final">Nombre para mostrar</target>
+        <note>Title in display name settings</note>
+        <alt-trans>
+          <target>Mostrar nombre</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Do you want to activate the purchased service plan for " approved="yes">
+        <source>Do you want to activate the purchased service plan for </source>
+        <target state="final">¿Desea activar el plan de servicio comprado para </target>
+        <note>Question is user wants to bypass username validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Do you want to cancel the process?" approved="yes">
+        <source>Do you want to cancel the process?</source>
+        <target state="final">¿Desea cancelar el proceso?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Do you want to save the unsaved changes?" approved="yes">
+        <source>Do you want to save the unsaved changes?</source>
+        <target state="final">¿Desea guardar los cambios sin guardar?</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't Show Again" approved="yes">
+        <source>Don't Show Again</source>
+        <target state="final">No mostrar de nuevo</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Don't remind me again" approved="yes">
+        <source>Don't remind me again</source>
+        <target state="final">No volver a recordarme</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Done" approved="yes">
+        <source>Done</source>
+        <target state="final">Hecho</target>
+        <note>Done action</note>
+      </trans-unit>
+      <trans-unit id="Double tap to setup" approved="yes">
+        <source>Double tap to setup</source>
+        <target state="final">Doble toque para configurar</target>
+        <note>VoiceOver action description</note>
+      </trans-unit>
+      <trans-unit id="Draft" approved="yes">
+        <source>Draft</source>
+        <target state="final">Borrador</target>
+        <note>Action
+   mail location desc</note>
+      </trans-unit>
+      <trans-unit id="Drafts" approved="yes">
+        <source>Drafts</source>
+        <target state="final">Borradores</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Edit" approved="yes">
+        <source>Edit</source>
+        <target state="final">Editar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Edit Contact" approved="yes">
+        <source>Edit contact</source>
+        <target state="final">Editar contacto</target>
+        <note>*
+ *  Edit Contact view controller</note>
+      </trans-unit>
+      <trans-unit id="Edit Folder" approved="yes">
+        <source>Edit Folder</source>
+        <target state="final">Editar carpeta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Group" approved="yes">
+        <source>Edit Group</source>
+        <target state="final">Editar grupo</target>
+        <note>The title for the contact group editing view</note>
+      </trans-unit>
+      <trans-unit id="Edit Label" approved="yes">
+        <source>Edit Label</source>
+        <target state="final">Editar etiqueta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Edit Photo" approved="yes">
+        <source>Edit Photo</source>
+        <target state="final">Editar foto</target>
+        <note>The button text for edit profile picture</note>
+      </trans-unit>
+      <trans-unit id="Edit mobile signature" approved="yes">
+        <source>Edit mobile signature</source>
+        <target state="final">Editar firma de móvil</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Edit signature" approved="yes">
+        <source>Edit signature</source>
+        <target state="final">Editar firma</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Email" approved="yes">
+        <source>Email</source>
+        <target state="final">Correo</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Email Addresses" approved="yes">
+        <source>Email Addresses</source>
+        <target state="final">Direcciones de correo electrónico</target>
+        <note>contact detail view, email addresses section title</note>
+      </trans-unit>
+      <trans-unit id="Email Contact" approved="yes">
+        <source>Email Contact</source>
+        <target state="final">Mensaje a contacto</target>
+        <note>Send an email to the current contact (button title text)</note>
+      </trans-unit>
+      <trans-unit id="Email Verification" approved="yes">
+        <source>Email Verification</source>
+        <target state="final">Verificación de correo electrónico</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Email address" approved="yes">
+        <source>Email address</source>
+        <target state="final">Dirección de correo</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Email address invalid" approved="yes">
+        <source>Email address invalid</source>
+        <target state="final">La dirección de correo electrónico es inválida</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Email default signature" approved="yes">
+        <source>Email default signature</source>
+        <target state="final">Firma de correo electrónico predeterminada</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Email domain invalid" approved="yes">
+        <source>Invalid email domain</source>
+        <target state="final">Dominio de correo electrónico inválido</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Empty Folder" approved="yes">
+        <source>Empty folder</source>
+        <target state="final">Vaciar carpeta</target>
+        <note>empty folder, for spam and trash</note>
+      </trans-unit>
+      <trans-unit id="Enable Default Signature" approved="yes">
+        <source>Enable Default Signature</source>
+        <target state="final">Habilitar la firma predeterminada</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable FaceID" approved="yes">
+        <source>Enable FaceID</source>
+        <target state="final">Habilitar FaceID</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable Mobile Signature" approved="yes">
+        <source>Enable Mobile Signature</source>
+        <target state="final">Habilitar la firma móvil</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Notification Email" approved="yes">
+        <source>Enable Notification Email</source>
+        <target state="final">Habilitar correo electrónico de notificación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enable Pin Protection" approved="yes">
+        <source>Enable PIN protection</source>
+        <target state="final">Habilitar protección con PIN</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Enable TouchID" approved="yes">
+        <source>Enable TouchID</source>
+        <target state="final">Habilitar TouchID</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted Contact Details" approved="yes">
+        <source>Encrypted Contact Details</source>
+        <target state="final">Datos de contacto cifrados</target>
+        <note>contact section title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside" approved="yes">
+        <source>Encrypted for outside</source>
+        <target state="final">Cifrado para externos</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted for outside reply" approved="yes">
+        <source>Encrypted for outside reply</source>
+        <target state="final">Cifrado para respuesta externa</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside" approved="yes">
+        <source>Encrypted from outside</source>
+        <target state="final">Cifrado desde afuera</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP inline" approved="yes">
+        <source>Encrypted from outside PGP inline</source>
+        <target state="final">Cifrado desde fuera con PGP en línea</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside PGP/MIME" approved="yes">
+        <source>Encrypted from outside PGP/MIME</source>
+        <target state="final">Cifrado desde fuera con PGP/MIME</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Cifrado desde el exterior, PGP/MIME</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encrypted from outside signed PGP/MIME" approved="yes">
+        <source>Encrypted from outside signed PGP/MIME</source>
+        <target state="final">Cifrado desde fuera y firmado con PGP/MIME</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Cifrado desde el exterior, firmado PGP/MIME</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Encryption Setup" approved="yes">
+        <source>Encryption Setup</source>
+        <target state="final">Configuración de cifrado</target>
+        <note>key setup top title</note>
+      </trans-unit>
+      <trans-unit id="End Time" approved="yes">
+        <source>End Time</source>
+        <target state="final">Hora Fin</target>
+        <note>settings option (End Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="End-to-End Encryption" approved="yes">
+        <source>End-to-end encryption</source>
+        <target state="final">Cifrado de extremo a extremo</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted" approved="yes">
+        <source>End-to-end encrypted</source>
+        <target state="final">Cifrado de extremo a extremo</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message" approved="yes">
+        <source>End-to-end encrypted message</source>
+        <target state="final">Mensaje cifrado de extremo a extremo</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted message from verified address" approved="yes">
+        <source>End-to-end encrypted message from verified address</source>
+        <target state="final">Mensaje cifrado de extremo a extremo de dirección verificada</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="End-to-end encrypted to verified address" approved="yes">
+        <source>End-to-end encrypted to verified address</source>
+        <target state="final">Cifrado de extremo a extremo a la dirección verificada</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Enter" approved="yes">
+        <source>Enter</source>
+        <target state="final">Ingresar</target>
+        <note>Action in 2fa popup view</note>
+      </trans-unit>
+      <trans-unit id="Enter Verification Code" approved="yes">
+        <source>Enter verification code</source>
+        <target state="final">Ingrese el código de verificación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN" approved="yes">
+        <source>Enter your PIN</source>
+        <target state="final">Ingrese su PIN</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Enter your PIN to unlock your inbox." approved="yes">
+        <source>Enter your PIN to unlock your inbox.</source>
+        <target state="final">Ingrese su PIN para desbloquear el buzón.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Enter your cell phone number" approved="yes">
+        <source>Enter your cell phone number</source>
+        <target state="final">Ingrese su número de teléfono móvil</target>
+        <note>human verification top title</note>
+      </trans-unit>
+      <trans-unit id="Enter your existing email address." approved="yes">
+        <source>Enter your existing email address.</source>
+        <target state="final">Ingrese su dirección de correo existente.</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="Error Logs" approved="yes">
+        <source>Error logs</source>
+        <target state="final">Registro de errores</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Error occured" approved="yes">
+        <source>Error occured</source>
+        <target state="final">Ocurrió un error</target>
+        <note>Error alert title</note>
+      </trans-unit>
+      <trans-unit id="Every time enter app" approved="yes">
+        <source>Every time enter app</source>
+        <target state="final">Cada vez al abrir la aplicación</target>
+        <note>lock app option</note>
+      </trans-unit>
+      <trans-unit id="Expires" approved="yes">
+        <source>Expires</source>
+        <target state="final">Expira</target>
+        <note>VoiceOver: email can expire</note>
+      </trans-unit>
+      <trans-unit id="Expires in %d days %d hours %d mins %d seconds" approved="yes">
+        <source>Expires in %1$d days %2$d hours %3$d mins %4$d seconds</source>
+        <target state="final">Expira en %1$d días %2$d horas %3$d minutos %4$d segundos</target>
+        <note>expiration time count down</note>
+      </trans-unit>
+      <trans-unit id="Expiring Messages" approved="yes">
+        <source>Expiring messages</source>
+        <target state="final">Expiración de mensajes</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Extreme Security" approved="yes">
+        <source>Extreme Security</source>
+        <target state="final">Máxima seguridad</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="FORGOT PASSWORD?" approved="yes">
+        <source>Forgot password?</source>
+        <target state="final">¿OLVIDÓ LA CONTRASEÑA?</target>
+        <note>login page forgot pwd</note>
+      </trans-unit>
+      <trans-unit id="FW:" approved="yes">
+        <source>FW:</source>
+        <target state="final">RV:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Failed to determine type of file" approved="yes">
+        <source>Failed to determine type of file</source>
+        <target state="final">Falló al determinar el tipo de archivo</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to get list of available products from AppStore." approved="yes">
+        <source>Failed to get list of available products from AppStore.</source>
+        <target state="final">Falló al obtener la lista de productos disponibles desde AppStore.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the app's saved data" approved="yes">
+        <source>Failed to initialize the app's saved data</source>
+        <target state="final">Error al inicializar los datos guardados de la aplicación</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Failed to initialize the application's saved data" approved="yes">
+        <source>Failed to initialize the application's saved data</source>
+        <target state="final">Error al inicializar los datos guardados de la aplicación</target>
+        <note>*
+ *  Core Data Service &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="Fax" approved="yes">
+        <source>Fax</source>
+        <target state="final">Fax</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Feedback" approved="yes">
+        <source>Feedback</source>
+        <target state="final">Comentarios</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Fetch user info failed" approved="yes">
+        <source>Fetch user info failed</source>
+        <target state="final">Error al obtener información de usuario</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Folder" approved="yes">
+        <source>Folder</source>
+        <target state="final">Carpeta</target>
+        <note>VoiceOver: email belongs to folder</note>
+      </trans-unit>
+      <trans-unit id="Folder Name" approved="yes">
+        <source>Folder Name</source>
+        <target state="final">Nombre de la carpeta</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="For individuals looking to benefit from secure communication at no cost" approved="yes">
+        <source>For individuals looking to benefit from secure communication at no cost</source>
+        <target state="final">Para personas que buscan beneficiarse de una comunicación segura sin costo</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For individuals that need more capacity, customization and advanced features" approved="yes">
+        <source>For individuals that need more capacity, customization and advanced features</source>
+        <target state="final">Para personas que necesitan más capacidad, personalización y funciones avanzadas</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For organizations that need multi-user support and additional productivity features" approved="yes">
+        <source>For organizations that need multi-user support and additional productivity features</source>
+        <target state="final">Para organizaciones que necesitan soporte multi usuario y funciones de productividad adicionales</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="For power users and groups of people that value full anonymity and privacy" approved="yes">
+        <source>For power users and groups of people that value full anonymity and privacy</source>
+        <target state="final">Para personas y grupos que valoran el anonimato y la privacidad</target>
+        <note>Service Plan description</note>
+      </trans-unit>
+      <trans-unit id="Forward" approved="yes">
+        <source>Forward</source>
+        <target state="final">Reenviar</target>
+        <note>forward action</note>
+      </trans-unit>
+      <trans-unit id="Forwarded message" approved="yes">
+        <source>Forwarded message</source>
+        <target state="final">Mensaje reenviado</target>
+        <note>forwarded message title</note>
+      </trans-unit>
+      <trans-unit id="From" approved="yes">
+        <source>From</source>
+        <target state="final">De</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="From:" approved="yes">
+        <source>From:</source>
+        <target state="final">De:</target>
+        <note>message From: field text</note>
+      </trans-unit>
+      <trans-unit id="Fwd:" approved="yes">
+        <source>Fwd:</source>
+        <target state="final">Fwd:</target>
+        <note>abbreviation of forward:</note>
+      </trans-unit>
+      <trans-unit id="Gender" approved="yes">
+        <source>Gender</source>
+        <target state="final">Sexo</target>
+        <note>contacts talbe cell gender title</note>
+      </trans-unit>
+      <trans-unit id="General Settings" approved="yes">
+        <source>General settings</source>
+        <target state="final">Ajustes generales</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Get %@" approved="yes">
+        <source>Get %@</source>
+        <target state="final">Obtenga %@</target>
+        <note>Screen header, like 'Get VISIONARY'</note>
+      </trans-unit>
+      <trans-unit id="Get more information" approved="yes">
+        <source>Get more information</source>
+        <target state="final">Obtener más información</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Go to inbox" approved="yes">
+        <source>Go to inbox</source>
+        <target state="final">Ir al buzón</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Group Details" approved="yes">
+        <source>Group Details</source>
+        <target state="final">Detalles del grupo</target>
+        <note>The title for the contact group detail view</note>
+      </trans-unit>
+      <trans-unit id="Group Name" approved="yes">
+        <source>Group Name</source>
+        <target state="final">Nombre del grupo</target>
+        <note>The instruction label for the group name textfield</note>
+      </trans-unit>
+      <trans-unit id="Groups" approved="yes">
+        <source>Groups</source>
+        <target state="final">Grupos</target>
+        <note>menu title (contact groups)</note>
+      </trans-unit>
+      <trans-unit id="Help &amp; Support" approved="yes">
+        <source>Help &amp; Support</source>
+        <target state="final">Ayuda y Soporte</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Ayuda &amp; Soporte</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Help us to improve ProtonMail with your input." approved="yes">
+        <source>Help us to improve ProtonMail with your input.</source>
+        <target state="final">Ayúdenos a mejorar ProtonMail con sus comentarios.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Help us to make privacy the default in the web." approved="yes">
+        <source>Help us to make privacy the default in the web.</source>
+        <target state="final">Ayúdenos a hacer de la privacidad el estándar en la web.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Hide" approved="yes">
+        <source>Hide</source>
+        <target state="final">Ocultar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Hide Details" approved="yes">
+        <source>Hide details</source>
+        <target state="final">Ocultar detalles</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="High Security" approved="yes">
+        <source>High Security</source>
+        <target state="final">Alta seguridad</target>
+        <note>Key size checkbox</note>
+      </trans-unit>
+      <trans-unit id="Hours" approved="yes">
+        <source>Hours</source>
+        <target state="final">Horas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Human Check Failed" approved="yes">
+        <source>Human Check Failed</source>
+        <target state="final">Error de captcha</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Human Check Warning" approved="yes">
+        <source>Human Check Warning</source>
+        <target state="final">Advertencia de captcha</target>
+        <note>human check warning title</note>
+      </trans-unit>
+      <trans-unit id="Human Verification" approved="yes">
+        <source>Human Verification</source>
+        <target state="final">Captcha</target>
+        <note>top title</note>
+      </trans-unit>
+      <trans-unit id="IMAP/SMTP Support via ProtonMail Bridge" approved="yes">
+        <source>IMAP/SMTP Support via ProtonMail Bridge</source>
+        <target state="final">Soporte IMAP/SMTP mediante ProtonMail Bridge</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="INBOX" approved="yes">
+        <source>Inbox</source>
+        <target state="final">BUZÓN</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Import Error" approved="yes">
+        <source>Import Error</source>
+        <target state="final">Error al importar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Import File From..." approved="yes">
+        <source>Import file from...</source>
+        <target state="final">Importar archivo desde...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Importing Contacts" approved="yes">
+        <source>Importing Contacts</source>
+        <target state="final">Importando contactos</target>
+        <note>import contact title</note>
+      </trans-unit>
+      <trans-unit id="Importing attachment, that can take a while" approved="yes">
+        <source>Importing attachment, that can take a while</source>
+        <target state="final">Importando adjunto, puede tomar un tiempo</target>
+        <note>Drag and drop zone for attachments</note>
+      </trans-unit>
+      <trans-unit id="In order to use our services, you must agree to ProtonMail's Terms of Service." approved="yes">
+        <source>In order to use our services, you must agree to ProtonMail's Terms of Service.</source>
+        <target state="final">Para poder utilizar nuestros servicios, debe aceptar las condiciones del servicio de ProtonMail.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Inbox" approved="yes">
+        <source>Inbox</source>
+        <target state="final">Buzón</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Incorrect PIN," approved="yes">
+        <source>Incorrect PIN,</source>
+        <target state="final">PIN incorrecto</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Incorrect password" approved="yes">
+        <source>Incorrect password</source>
+        <target state="final">Contraseña incorrecta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Input Display Name ..." approved="yes">
+        <source>Input display name ...</source>
+        <target state="final">Ingrese el nombre para mostrar...</target>
+        <note>place holder</note>
+        <alt-trans>
+          <target>Introduzca el nombre para mostrar...</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Input Notification Email ..." approved="yes">
+        <source>Input Notification Email ...</source>
+        <target state="final">Ingresar email de notificaciones...</target>
+        <note>place holder</note>
+      </trans-unit>
+      <trans-unit id="Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." approved="yes">
+        <source>Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation.</source>
+        <target state="final">La creación instantánea de cuentas de ProtonMail se ha deshabilitado temporalmente. Diríjase a https://protonmail.com/invite para solicitar una invitación.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Internal Error" approved="yes">
+        <source>Internal Error</source>
+        <target state="final">Error interno</target>
+        <note>The preconditions are not met</note>
+      </trans-unit>
+      <trans-unit id="Internet" approved="yes">
+        <source>Internet</source>
+        <target state="final">Internet</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Invalid Password" approved="yes">
+        <source>Invalid Password</source>
+        <target state="final">Contraseña incorrecta</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid URL" approved="yes">
+        <source>Invalid URL</source>
+        <target state="final">URL incorrecta</target>
+        <note>Invalid URL error when click a url in contact</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName" approved="yes">
+        <source>Invalid username</source>
+        <target state="final">Nombre de usuario inválido</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Invalid UserName!" approved="yes">
+        <source>Invalid UserName!</source>
+        <target state="final">¡Nombre de usuario inválido!</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Invalid access token please relogin" approved="yes">
+        <source>Invalid access token please relogin</source>
+        <target state="final">Token de acceso inválido, vuelva a iniciar sesión</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Invalid access token. Please relogin." approved="yes">
+        <source>Invalid access token. Please relogin.</source>
+        <target state="final">Token de acceso inválido, vuelva a iniciar sesión.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Invalid credential" approved="yes">
+        <source>Invalid credential</source>
+        <target state="final">Credencial inválida</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Invalid hashed password!" approved="yes">
+        <source>Invalid hashed password!</source>
+        <target state="final">¡Contraseña hash inválida!</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Is this bug report about an in-app purchase?" approved="yes">
+        <source>Is this bug report about an in-app purchase?</source>
+        <target state="final">¿Este reporte es acerca de una compra en la aplicación?</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="It is not possible to switch to %@ within our iOS app." approved="yes">
+        <source>It is not possible to switch to %@ within our iOS app.</source>
+        <target state="final">No es posible cambiar a %@ dentro de nuestra aplicación iOS.</target>
+        <note>It is not possible to switch to `plan` within our iOS app.</note>
+      </trans-unit>
+      <trans-unit id="It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." approved="yes">
+        <source>It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you.</source>
+        <target state="final">No fue posible hacer coincidir el producto de la App Store comprado con ningún producto de nuestro servidor. Rellene y envíe el reporte de errores y nuestro equipo se contactará con usted.</target>
+        <note>Error message</note>
+        <alt-trans>
+          <target>No fue posible hacer coincidir el producto de la App Store comprado con ningún producto de nuestro servidor. Rellene el informe de error y nuestro equipo de atención al cliente se pondrá en contacto con usted.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Keep me updated about new features" approved="yes">
+        <source>Keep me updated about new features</source>
+        <target state="final">Mantenerme actualizado acerca de nuevas funciones</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed" approved="yes">
+        <source>Key generation failed</source>
+        <target state="final">Error en la generación de claves</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key generation failed. Please try again." approved="yes">
+        <source>Key generation failed. Please try again.</source>
+        <target state="final">Ocurrió un error al generar las claves, intente nuevamente.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Key invalid. Please go back and try again." approved="yes">
+        <source>Key invalid. Please go back and try again.</source>
+        <target state="final">Clave inválida, intente nuevamente.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="LOGIN" approved="yes">
+        <source>Login</source>
+        <target state="final">Iniciar sesión</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Label Management" approved="yes">
+        <source>Label management</source>
+        <target state="final">Gestión de etiquetas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Label Name" approved="yes">
+        <source>Label Name</source>
+        <target state="final">Nombre de la etiqueta</target>
+        <note>createing lable input place holder</note>
+      </trans-unit>
+      <trans-unit id="Label as..." approved="yes">
+        <source>Label as...</source>
+        <target state="final">Etiquetar como...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels" approved="yes">
+        <source>Labels</source>
+        <target state="final">Etiquetas</target>
+        <note>VoiceOver: email has lables</note>
+      </trans-unit>
+      <trans-unit id="Labels have been applied." approved="yes">
+        <source>Labels have been applied.</source>
+        <target state="final">Las etiquetas han sido aplicadas.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Labels, Folders, Filters &amp; More" approved="yes">
+        <source>Labels, Folders, Filters &amp; More</source>
+        <target state="final">Etiquetas, carpetas, filtros y más</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Labels/Folders" approved="yes">
+        <source>Labels/Folders</source>
+        <target state="final">Etiquetas/Carpetas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Language" approved="yes">
+        <source>Language</source>
+        <target state="final">Idioma</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Learn More" approved="yes">
+        <source>Learn More</source>
+        <target state="final">Más información</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Learn more here" approved="yes">
+        <source>Learn more here</source>
+        <target state="final">Más información aquí</target>
+        <note>learn more button</note>
+      </trans-unit>
+      <trans-unit id="Limited to 150 messages sent/day" approved="yes">
+        <source>Limited to 150 messages sent/day</source>
+        <target state="final">Limitado a 150 mensajes enviados por día</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Load remote content" approved="yes">
+        <source>Load remote content</source>
+        <target state="final">Cargar contenido remoto</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Loading..." approved="yes">
+        <source>Loading...</source>
+        <target state="final">Cargando...</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Local cache can't find mailbox password" approved="yes">
+        <source>Local cache can't find mailbox password</source>
+        <target state="final">La caché local no puede encontrar la contraseña del buzón</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Localizable.strings" approved="yes">
+        <source>Base</source>
+        <target state="final">Base</target>
+        <note>*
+ *  file string type</note>
+      </trans-unit>
+      <trans-unit id="Lock The App" approved="yes">
+        <source>Lock The App</source>
+        <target state="final">Bloquear la aplicación</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Login" approved="yes">
+        <source>Login</source>
+        <target state="final">Iniciar sesión</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Login Password" approved="yes">
+        <source>Login password</source>
+        <target state="final">Contraseña de inicio de sesión</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Login password doesn't match" approved="yes">
+        <source>Login password doesn't match</source>
+        <target state="final">La contraseña de inicio de sesión no coincide</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Logout" approved="yes">
+        <source>Logout</source>
+        <target state="final">Cerrar sesión</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Logs" approved="yes">
+        <source>Logs</source>
+        <target state="final">Registros</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Looking to secure your contact's details?" approved="yes">
+        <source>Looking to secure your contact's details?</source>
+        <target state="final">¿Buscando asegurar sus datos de contacto?</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="MAILBOX PASSWORD" approved="yes">
+        <source>Mailbox password</source>
+        <target state="final">Contraseña del buzón</target>
+        <note>*
+ *  MailboxPasswordViewController</note>
+      </trans-unit>
+      <trans-unit id="MBContactPickerPrompt" approved="yes">
+        <source>MBContactPickerPrompt</source>
+        <target state="final">MBContactPickerPrompt</target>
+        <note>Default Prompt text shown in the prompt cell</note>
+      </trans-unit>
+      <trans-unit id="Mailbox Password" approved="yes">
+        <source>Mailbox password</source>
+        <target state="final">Contraseña del buzón</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Mailbox password doesn't match" approved="yes">
+        <source>Mailbox password doesn't match</source>
+        <target state="final">La contraseña del buzón no coincide</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Manage Addresses" approved="yes">
+        <source>Manage Addresses</source>
+        <target state="final">Gestionar direcciones</target>
+        <note>The title for the view where user can manage emails in the contact group</note>
+      </trans-unit>
+      <trans-unit id="Manage Labels/Folders" approved="yes">
+        <source>Manage Labels/Folders</source>
+        <target state="final">Administrar Etiquetas/Carpetas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Mark Read" approved="yes">
+        <source>Mark as read</source>
+        <target state="final">Marcar como leído</target>
+        <note>mark message as read action</note>
+      </trans-unit>
+      <trans-unit id="Mark as unread" approved="yes">
+        <source>Mark as unread</source>
+        <target state="final">Marcar como no leído</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Menu" approved="yes">
+        <source>Menu</source>
+        <target state="final">Menú</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Message %@" approved="yes">
+        <source>Message %@</source>
+        <target state="final">Mensaje %@</target>
+        <note>Message with title</note>
+      </trans-unit>
+      <trans-unit id="Message Password" approved="yes">
+        <source>Message Password</source>
+        <target state="final">Contraseña del mensaje</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Message Queue" approved="yes">
+        <source>Message queue</source>
+        <target state="final">Cola de mensajes</target>
+        <note>settings debug section title</note>
+      </trans-unit>
+      <trans-unit id="Message Swipe Actions" approved="yes">
+        <source>Message Swipe Actions</source>
+        <target state="final">Acciones de deslizamiento de mensajes</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message expired" approved="yes">
+        <source>Message expired</source>
+        <target state="final">Mensaje expirado</target>
+        <note>*
+ *  Expiration View</note>
+      </trans-unit>
+      <trans-unit id="Message has been deleted." approved="yes">
+        <source>Message has been deleted.</source>
+        <target state="final">El mensaje ha sido eliminado.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message has been moved." approved="yes">
+        <source>Message has been moved.</source>
+        <target state="final">El mensaje ha sido movido.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Message password does not match." approved="yes">
+        <source>Message password does not match.</source>
+        <target state="final">La contraseña del mensaje no coincide.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sending failed please try again" approved="yes">
+        <source>Message sending failed please try again</source>
+        <target state="final">No se pudo enviar el mensaje, inténtelo de nuevo</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Message sending failed. Please try again." approved="yes">
+        <source>Message sending failed. Please try again.</source>
+        <target state="final">No se pudo enviar el mensaje, intentelo nuevamente.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Message sent" approved="yes">
+        <source>Message sent</source>
+        <target state="final">Mensaje enviado</target>
+        <note>Description after message have been sent</note>
+      </trans-unit>
+      <trans-unit id="Messages you send can be set to auto delete after a certain time period." approved="yes">
+        <source>Messages you send can be set to auto delete after a certain time period.</source>
+        <target state="final">Los mensajes enviados se pueden establecer en borrado automático después de un cierto período de tiempo.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Mobile" approved="yes">
+        <source>Mobile</source>
+        <target state="final">Móvil</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Mobile Signature" approved="yes">
+        <source>Mobile signature</source>
+        <target state="final">Firma móvil</target>
+        <note>Mobile Signature title in settings</note>
+      </trans-unit>
+      <trans-unit id="Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." approved="yes">
+        <source>Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer.</source>
+        <target state="final">El registro por móvil está temporalmente deshabilitado. Inténtelo de nuevo más tarde o intente registrarse en protonmail.com utilizando una computadora.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Modifying or turning off the default mobile signature is a paid feature." approved="yes">
+        <source>Modifying or turning off the default mobile signature is a paid feature.</source>
+        <target state="final">Modificar o desactivar la firma móvil predeterminada es una función de pago.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="More" approved="yes">
+        <source>More</source>
+        <target state="final">Más</target>
+        <note>More actions button</note>
+      </trans-unit>
+      <trans-unit id="More Credits" approved="yes">
+        <source>More Credits</source>
+        <target state="final">Más créditos</target>
+        <note>Screen header</note>
+      </trans-unit>
+      <trans-unit id="Move to AllMail" approved="yes">
+        <source>Move to AllMail</source>
+        <target state="final">Mover a Todos</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Archive" approved="yes">
+        <source>Move to Archive</source>
+        <target state="final">Mover a Archivo</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Draft" approved="yes">
+        <source>Move to Draft</source>
+        <target state="final">Mover a Borradores</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Folder" approved="yes">
+        <source>Move to Folder</source>
+        <target state="final">Mover a carpeta</target>
+        <note>folder apply - title</note>
+      </trans-unit>
+      <trans-unit id="Move to Inbox" approved="yes">
+        <source>Move to Inbox</source>
+        <target state="final">Mover al Buzón</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Outbox" approved="yes">
+        <source>Move to Outbox</source>
+        <target state="final">Mover a Enviados</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Spam" approved="yes">
+        <source>Move to Spam</source>
+        <target state="final">Mover a Spam</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to Trash" approved="yes">
+        <source>Move to Trash</source>
+        <target state="final">Mover a Papelera</target>
+        <note>move action</note>
+      </trans-unit>
+      <trans-unit id="Move to..." approved="yes">
+        <source>Move to...</source>
+        <target state="final">Mover a...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Multiple Addresses" approved="yes">
+        <source>Multiple addresses</source>
+        <target state="final">Direcciones múltiples</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="NEED AN ACCOUNT? SIGN UP." approved="yes">
+        <source>Sign up for free</source>
+        <target state="final">¿NECESITA UNA CUENTA? REGÍSTRESE.</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Name" approved="yes">
+        <source>Name</source>
+        <target state="final">Nombre</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="New login password" approved="yes">
+        <source>New login password</source>
+        <target state="final">Nueva contraseña de inicio de sesión</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New mailbox password" approved="yes">
+        <source>New mailbox password</source>
+        <target state="final">Nueva contraseña del buzón</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="New password" approved="yes">
+        <source>New password</source>
+        <target state="final">Nueva contraseña</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Nickname" approved="yes">
+        <source>Nickname</source>
+        <target state="final">Apodo</target>
+        <note>contacts talbe cell Nickname title</note>
+      </trans-unit>
+      <trans-unit id="No Messages" approved="yes">
+        <source>No Messages</source>
+        <target state="final">No hay mensajes</target>
+        <note>message when mailbox doesnt have emailsß</note>
+      </trans-unit>
+      <trans-unit id="No connectivity detected..." approved="yes">
+        <source>No connectivity detected...</source>
+        <target state="final">No se detectó ninguna conexión...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="No, for another ProtonMail account" approved="yes">
+        <source>No, for another ProtonMail account</source>
+        <target state="final">No, para otra cuenta de ProtonMail</target>
+        <note>Warning message option when user want to relogin to another account</note>
+      </trans-unit>
+      <trans-unit id="No, not related to in-app purchase" approved="yes">
+        <source>No, not related to in-app purchase</source>
+        <target state="final">No, no relacionado con una compra en la aplicación</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="None" approved="yes">
+        <source>None</source>
+        <target state="final">Ninguno</target>
+        <note>A *short* description saying that there is no contact group associated with this contact email
+   Title</note>
+      </trans-unit>
+      <trans-unit id="Not Now" approved="yes">
+        <source>Not Now</source>
+        <target state="final">No ahora</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Not all recipients support message expiration" approved="yes">
+        <source>Not all recipients support message expiration</source>
+        <target state="final">No todos los destinatarios admiten la expiración de mensajes</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Note: The Username is also your ProtonMail address." approved="yes">
+        <source>Note: The Username is also your ProtonMail address.</source>
+        <target state="final">Nota: El nombre de usuario es también su dirección de ProtonMail.</target>
+        <note>Signup user name notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." approved="yes">
+        <source>Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it.</source>
+        <target state="final">Nota: Esto se utiliza para cifrar y descifrar sus mensajes. No pierda esta contraseña, no podemos recuperarla.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Note: This is used to log you into your account." approved="yes">
+        <source>Note: This is used to log you into your account.</source>
+        <target state="final">Nota: Esto se utiliza para iniciar sesión en su cuenta.</target>
+        <note>setup password notes</note>
+      </trans-unit>
+      <trans-unit id="Notes" approved="yes">
+        <source>Notes</source>
+        <target state="final">Notas</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Notice" approved="yes">
+        <source>Notice</source>
+        <target state="final">Aviso</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Notification / Recovery Email" approved="yes">
+        <source>Notification / Recovery Email</source>
+        <target state="final">Notificación / Email de recuperación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Email" approved="yes">
+        <source>Notification email</source>
+        <target state="final">Correo electrónico de notificación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Notification Snooze" approved="yes">
+        <source>Notification Snooze</source>
+        <target state="final">Silenciar notificaciones</target>
+        <note>title of action sheet</note>
+      </trans-unit>
+      <trans-unit id="Notifications Are Snoozed" approved="yes">
+        <source>Notifications Are Snoozed</source>
+        <target state="final">Notificaciones silenciadas</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="Notifications Snooze Off" approved="yes">
+        <source>Notifications Snooze Off</source>
+        <target state="final">Notificaciones desactivadas</target>
+        <note>VoiceOver description</note>
+      </trans-unit>
+      <trans-unit id="OK" approved="yes">
+        <source>OK</source>
+        <target state="final">OK</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="OTHER PLANS" approved="yes">
+        <source>OTHER PLANS</source>
+        <target state="final">OTROS PLANES</target>
+        <note>Section header</note>
+      </trans-unit>
+      <trans-unit id="On" approved="yes">
+        <source>On</source>
+        <target state="final">On</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@" approved="yes">
+        <source>On EE, MMM d, yyyy at %@</source>
+        <target state="final">El EE, d MMM, yyyy a las %@</target>
+        <note>forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code.</note>
+        <alt-trans>
+          <target>En EE, MMM d, yyyy en %@</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="On EE, MMM d, yyyy at %@, %@, wrote:" approved="yes">
+        <source>On EE, MMM d, yyyy at %1$@, %2$@, wrote:</source>
+        <target state="final">El EE, d MMM, yyyy a las %1$@, %2$@ escribió:</target>
+        <note>reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code.</note>
+      </trans-unit>
+      <trans-unit id="OpenDraft" approved="yes">
+        <source>Open draft</source>
+        <target state="final">Abrir borrador</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Organization" approved="yes">
+        <source>Organization</source>
+        <target state="final">Organización</target>
+        <note>contacts talbe cell Organization title</note>
+      </trans-unit>
+      <trans-unit id="Other" approved="yes">
+        <source>Other</source>
+        <target state="final">Otro</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." approved="yes">
+        <source>Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers.</source>
+        <target state="final">Nuestro equipo tratará de activar su plan de servicio manualmente si está de acuerdo en adjuntar los datos técnicos que AppStore proporcionó al momento de la compra. Estos datos no incluyen detalles de su cuenta en iTunes, Apple ID, tarjetas de crédito u otra información personal. Solamente servirá para verificar que la transacción fue realizada en los servidores de AppStore.</target>
+        <note>Error message</note>
+        <alt-trans>
+          <target>Nuestro equipo de atención al cliente intentará activar su plan de servicio manualmente si acepta adjuntar los datos técnicos que AppStore proporcionó a la aplicación en el momento de la compra. Estos datos no incluyen ningún detalle sobre su cuenta de iTunes, ID de Apple, tarjetas de crédito vinculadas o cualquier otra información del usuario. Los datos técnicos solo nos ayudan a verificar y verificar que la transacción se realizó en los servidores de AppStore.</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Outbox" approved="yes">
+        <source>Outbox</source>
+        <target state="final">Enviados</target>
+        <note>mail location desc</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted" approved="yes">
+        <source>PGP-encrypted</source>
+        <target state="final">PGP-cifrado</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message" approved="yes">
+        <source>PGP-encrypted message</source>
+        <target state="final">Mensaje PGP-cifrado</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-encrypted message from verified address" approved="yes">
+        <source>PGP-encrypted message from verified address</source>
+        <target state="final">Mensaje PGP-cifrado de dirección verificada</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed" approved="yes">
+        <source>PGP-signed</source>
+        <target state="final">PGP-firmado</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PGP-signed message from verified address" approved="yes">
+        <source>PGP-signed message from verified address</source>
+        <target state="final">Mensaje PGP-firmado de dirección verificada</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="PREMIUM FEATURE" approved="yes">
+        <source>PREMIUM FEATURE</source>
+        <target state="final">CARACTERÍSTICA PREMIUM</target>
+        <note>Upgrade warning title</note>
+      </trans-unit>
+      <trans-unit id="Password" approved="yes">
+        <source>Password</source>
+        <target state="final">Contraseña</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Password Mismatch" approved="yes">
+        <source>Passwords do not match</source>
+        <target state="final">La contraseña no coincide</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password Updated" approved="yes">
+        <source>Password updated</source>
+        <target state="final">Contraseña actualizada</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Password cannot be empty." approved="yes">
+        <source>Password cannot be empty.</source>
+        <target state="final">La contraseña no puede estar vacía.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Password update failed" approved="yes">
+        <source>Password update failed</source>
+        <target state="final">Falló la actualización de la contraseña</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="Personal" approved="yes">
+        <source>Personal</source>
+        <target state="final">Personal</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone" approved="yes">
+        <source>Phone</source>
+        <target state="final">Teléfono</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Phone Verification" approved="yes">
+        <source>Phone Verification</source>
+        <target state="final">Verificación de teléfono</target>
+        <note>human check option button</note>
+      </trans-unit>
+      <trans-unit id="Phone number" approved="yes">
+        <source>Phone number</source>
+        <target state="final">Número de teléfono</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Phone number invalid" approved="yes">
+        <source>Phone number invalid</source>
+        <target state="final">Número de teléfono inválido</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Photo Library" approved="yes">
+        <source>Photo Library</source>
+        <target state="final">Galería de fotos</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Pin code can't be empty." approved="yes">
+        <source>Pin code can't be empty.</source>
+        <target state="final">El código PIN no puede estar vacío.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please add a password for the following recipients." approved="yes">
+        <source>Please add a password for the following recipients.</source>
+        <target state="final">Por favor añada una contraseña para los siguientes destinatarios.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please check your cell phone for the verification code." approved="yes">
+        <source>Please check your cell phone for the verification code.</source>
+        <target state="final">Por favor revise su teléfono para obtener el código de verificación.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please check your email for the verification code." approved="yes">
+        <source>Please check your email for the verification code.</source>
+        <target state="final">Por favor revise su correo electrónico para obtener el código de verificación.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please disable PGP Sending for following addresses." approved="yes">
+        <source>Please disable PGP Sending for following addresses.</source>
+        <target state="final">Por favor deshabilite el envío PGP para las siguientes direcciones.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid cell phone number." approved="yes">
+        <source>Please input a valid cell phone number.</source>
+        <target state="final">Ingrese un número de teléfono válido.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please input a valid email address." approved="yes">
+        <source>Please input a valid email address.</source>
+        <target state="final">Por favor, ingrese una dirección de correo válida.</target>
+        <note>error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase.</source>
+        <target state="final">Inicie sesión en la cuenta de ProtonMail que quiere actualizar para poder completar la compra.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." approved="yes">
+        <source>Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation.</source>
+        <target state="final">Inicie sesión en la cuenta de ProtonMail que quiere actualizar para completar la activación del plan de servicio.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please pick a user name first!" approved="yes">
+        <source>Please pick a username first!</source>
+        <target state="final">¡Por favor elija un nombre de usuario primero!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Please provide a group name" approved="yes">
+        <source>Please provide a group name</source>
+        <target state="final">Proporcione un nombre del grupo</target>
+        <note>The message will show up when the user attempts to create a contact group without any name specified</note>
+      </trans-unit>
+      <trans-unit id="Please remove all attachments before changing sender!" approved="yes">
+        <source>Please remove all attachments before changing the sender</source>
+        <target state="final">Elimine todos los datos adjuntos antes de cambiar el remitente</target>
+        <note>when switch sender but email has attachments</note>
+      </trans-unit>
+      <trans-unit id="Please select at least one email for the contact group" approved="yes">
+        <source>Please select at least one email for the contact group</source>
+        <target state="final">Seleccione al menos un correo electrónico para el grupo de contactos</target>
+        <note>The message will show up when the user attempts to create a contact group without any email selected</note>
+      </trans-unit>
+      <trans-unit id="Please select one of the following options:" approved="yes">
+        <source>Please select one of the following options:</source>
+        <target state="final">Por favor, seleccione una de las siguientes opciones:</target>
+        <note>human check select option title</note>
+      </trans-unit>
+      <trans-unit id="Please set a password." approved="yes">
+        <source>Please set a password.</source>
+        <target state="final">Por favor, establezca una contraseña.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please try a different domain." approved="yes">
+        <source>Please try a different domain.</source>
+        <target state="final">Por favor intente con un dominio diferente.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different email address." approved="yes">
+        <source>Please try a different email address.</source>
+        <target state="final">Intente con una dirección de correo electrónico diferente.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different password." approved="yes">
+        <source>Please try a different password.</source>
+        <target state="final">Intente con una contraseña diferente.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try a different user name." approved="yes">
+        <source>Please try a different username.</source>
+        <target state="final">Intente con un nombre de usuario diferente.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please try again." approved="yes">
+        <source>Please try again</source>
+        <target state="final">Inténtelo de nuevo</target>
+        <note>
+
+</note>
+      </trans-unit>
+      <trans-unit id="Please unlock the app to proceed with your service plan activation" approved="yes">
+        <source>Please unlock the app to proceed with your service plan activation</source>
+        <target state="final">Desbloquee la aplicación para proceder con la activación del plan de servicio</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Please use ProtonMail App login first." approved="yes">
+        <source>Please use ProtonMail App login first.</source>
+        <target state="final">Primero inicie sesión en la app de ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please use the web application to reset your password." approved="yes">
+        <source>Please use the web application to reset your password.</source>
+        <target state="final">Por favor utilice la versión web para restablecer su contraseña.</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your mailbox password!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your mailbox password!</source>
+        <target state="final">¡Utilice la versión web de ProtonMail para cambiar la contraseña del buzón!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Please use the web version of ProtonMail to change your passwords!" approved="yes">
+        <source>Please use the web version of ProtonMail to change your passwords!</source>
+        <target state="final">Utilice la versión web de ProtonMail para cambiar sus contraseñas.</target>
+        <note>Alert</note>
+      </trans-unit>
+      <trans-unit id="Please use your new password when signing in." approved="yes">
+        <source>Please use your new password when signing in.</source>
+        <target state="final">Utilice su nueva contraseña al iniciar sesión.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Please wait until the email downloaded!" approved="yes">
+        <source>Please wait until the email downloaded!</source>
+        <target state="final">¡Espere hasta que se descargue el correo electrónico!</target>
+        <note>The</note>
+      </trans-unit>
+      <trans-unit id="Please, manage it in your phone." approved="yes">
+        <source>Please, manage it in your phone.</source>
+        <target state="final">Por favor, hágalo en su teléfono.</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Print" approved="yes">
+        <source>Print</source>
+        <target state="final">Imprimir</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Protection" approved="yes">
+        <source>Protection</source>
+        <target state="final">Protección</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Protection Entire App" approved="yes">
+        <source>Protection entire app</source>
+        <target state="final">Proteger toda la aplicación</target>
+        <note>settings protection section title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail" approved="yes">
+        <source>ProtonMail</source>
+        <target state="final">ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus is required to customize your mobile signature" approved="yes">
+        <source>ProtonMail Plus is required to customize your mobile signature</source>
+        <target state="final">Es necesario tener ProtonMail Plus para editar la firma móvil</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." approved="yes">
+        <source>ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.</source>
+        <target state="final">ProtonMail Plus/Professional/Visionary le permite añadir y editar los datos de contacto más allá del nombre y el correo electrónico. Al usar ProtonMail, estos datos se mantendrán tan seguros con el cifrado de extremo a extremo de su correo electrónico.</target>
+        <note>Upgrade warning message</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." approved="yes">
+        <source>ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail.</source>
+        <target state="final">ProtonMail no vende anuncios o abusa su privacidad. Su apoyo es esencial para mantener ProtonMail en ejecución. Puede actualizar a una cuenta de pago o donar para apoyar a ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail encrypted emails" approved="yes">
+        <source>ProtonMail encrypted emails</source>
+        <target state="final">Correos cifrados de ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" approved="yes">
+        <source>ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail</source>
+        <target state="final">ProtonMail no está actualmente en línea, consulte nuestro twitter para conocer el estado actual: https://twitter.com/protonmail</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ProtonVPN included" approved="yes">
+        <source>ProtonVPN included</source>
+        <target state="final">ProtonVPN incluido</target>
+        <note>Service plan capability</note>
+      </trans-unit>
+      <trans-unit id="Quick swipe actions" approved="yes">
+        <source>Quick Swipe actions</source>
+        <target state="final">Acciones de deslizamiento rápido</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="RESET MAILBOX PASSWORD" approved="yes">
+        <source>RESET MAILBOX PASSWORD</source>
+        <target state="final">RESTABLECER CONTRASEÑA DEL BUZÓN</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Rate &amp; Review" approved="yes">
+        <source>Rate &amp; Review</source>
+        <target state="final">Calificar y Comentar</target>
+        <note>Title</note>
+        <alt-trans>
+          <target>Calificar &amp; Comentar</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Re-Enter your PIN" approved="yes">
+        <source>Re-Enter your PIN</source>
+        <target state="final">Vuelva a ingresar su PIN</target>
+        <note>set pin title</note>
+      </trans-unit>
+      <trans-unit id="Re:" approved="yes">
+        <source>Re:</source>
+        <target state="final">Re:</target>
+        <note>abbreviation of reply:</note>
+      </trans-unit>
+      <trans-unit id="Reading device contacts data..." approved="yes">
+        <source>Reading device contacts data...</source>
+        <target state="final">Leyendo datos de contactos del dispositivo...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Code" approved="yes">
+        <source>Recovery Code</source>
+        <target state="final">Código de recuperación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email" approved="yes">
+        <source>Recovery Email</source>
+        <target state="final">Correo electrónico de recuperación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Recovery Email Warning" approved="yes">
+        <source>Recovery Email Warning</source>
+        <target state="final">Aviso de email de recuperación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remind Me Later" approved="yes">
+        <source>Remind Me Later</source>
+        <target state="final">Recordarme más tarde</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Remove" approved="yes">
+        <source>Remove</source>
+        <target state="final">Eliminar</target>
+        <note>remove action</note>
+      </trans-unit>
+      <trans-unit id="Remove Star" approved="yes">
+        <source>Remove Star</source>
+        <target state="final">Quitar destacado</target>
+        <note>un star message</note>
+      </trans-unit>
+      <trans-unit id="Repeat" approved="yes">
+        <source>Repeat</source>
+        <target state="final">Repetir</target>
+        <note>settings option (Repeat: sun, mon, thu)</note>
+      </trans-unit>
+      <trans-unit id="Reply" approved="yes">
+        <source>Reply</source>
+        <target state="final">Responder</target>
+        <note>reply action</note>
+      </trans-unit>
+      <trans-unit id="Reply All" approved="yes">
+        <source>Reply All</source>
+        <target state="final">Responder a todos</target>
+        <note>reply all action</note>
+      </trans-unit>
+      <trans-unit id="Reply message" approved="yes">
+        <source>Reply message</source>
+        <target state="final">Responder mensaje</target>
+        <note>composer view model impl</note>
+      </trans-unit>
+      <trans-unit id="ReplyAll" approved="yes">
+        <source>Reply all</source>
+        <target state="final">Responder a todos</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Report Bugs" approved="yes">
+        <source>Report Bugs</source>
+        <target state="final">Reportar Errores</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Report Phishing" approved="yes">
+        <source>Report Phishing</source>
+        <target state="final">Reportar suplantación</target>
+        <note>message details-&gt; more action-&gt; report phishing</note>
+        <alt-trans>
+          <target>Reportar suplantación de identidad</target>
+        </alt-trans>
+      </trans-unit>
+      <trans-unit id="Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." approved="yes">
+        <source>Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full.</source>
+        <target state="final">Al reportar un mensaje como suplantación de identidad, enviará una alerta a nosotros para analizarlo y mejorar nuestros filtros. Significa que podremos ver todo el contenido del mensaje.</target>
+        <note>alert message</note>
+      </trans-unit>
+      <trans-unit id="Request Link Confirmation" approved="yes">
+        <source>Request Link Confirmation</source>
+        <target state="final">Solicitar confirmación de enlace</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="Resetting message cache ..." approved="yes">
+        <source>Resetting message cache ...</source>
+        <target state="final">Restableciendo la caché del mensaje...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Retry" approved="yes">
+        <source>Retry</source>
+        <target state="final">Reintentar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Retry after %d seconds" approved="yes">
+        <source>Retry after %d seconds</source>
+        <target state="final">Reintentar después de %d segundos</target>
+        <note>email verify code resend count down</note>
+      </trans-unit>
+      <trans-unit id="SENT" approved="yes">
+        <source>Sent</source>
+        <target state="final">ENVIADOS</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SPAM" approved="yes">
+        <source>Spam</source>
+        <target state="final">SPAM</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="SRP Client" approved="yes">
+        <source>SRP Client</source>
+        <target state="final">Cliente SRP</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="SRP Server" approved="yes">
+        <source>SRP Server</source>
+        <target state="final">Servidor SRP</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="STARRED" approved="yes">
+        <source>Starred</source>
+        <target state="final">DESTACADOS</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Save" approved="yes">
+        <source>Save</source>
+        <target state="final">Guardar</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Save Changes" approved="yes">
+        <source>Save Changes</source>
+        <target state="final">Guardar cambios</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Save draft" approved="yes">
+        <source>Save draft</source>
+        <target state="final">Guardar borrador</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Scheduled" approved="yes">
+        <source>Scheduled</source>
+        <target state="final">Programado</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Search" approved="yes">
+        <source>Search</source>
+        <target state="final">Buscar</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Select An Option" approved="yes">
+        <source>Select An Option</source>
+        <target state="final">Seleccione una opción</target>
+        <note>The title for the popup list, presenting a list of options for creating a contact or creating a contact group</note>
+      </trans-unit>
+      <trans-unit id="Select Color" approved="yes">
+        <source>Select Color</source>
+        <target state="final">Seleccionar color</target>
+        <note>The title for the view where user can select the color for the group</note>
+      </trans-unit>
+      <trans-unit id="Select your language" approved="yes">
+        <source>Select your language</source>
+        <target state="final">Seleccione su idioma</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Send" approved="yes">
+        <source>Send</source>
+        <target state="final">Enviar</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send Verification Code" approved="yes">
+        <source>Send verification code</source>
+        <target state="final">Enviar el código de verificación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Send anyway" approved="yes">
+        <source>Send anyway</source>
+        <target state="final">Enviar de todos modos</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Send message without subject?" approved="yes">
+        <source>Send message without subject?</source>
+        <target state="final">¿Enviar mensaje sin asunto?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Send plain but stored enc" approved="yes">
+        <source>Send plain but stored enc</source>
+        <target state="final">Enviar plano pero almacenar cifrado</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sender Verification Failed" approved="yes">
+        <source>Sender Verification Failed</source>
+        <target state="final">Falló la verificación del remitente</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Sending Message" approved="yes">
+        <source>Sending message</source>
+        <target state="final">Enviando mensaje</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sending message" approved="yes">
+        <source>Sending message</source>
+        <target state="final">Enviando mensaje</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" approved="yes">
+        <source>Sending messages from %1$@ address is a paid feature. Your message will be sent from your default address %2$@</source>
+        <target state="final">El envío de mensajes desde la dirección %1$@ es una característica de pago. Su mensaje será enviado desde su dirección predeterminada %2$@</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="Sent" approved="yes">
+        <source>Sent</source>
+        <target state="final">Enviados</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Sent Failed" approved="yes">
+        <source>Sent Failed</source>
+        <target state="final">Falló el envío</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Sent by ProtonMail with zero access encryption" approved="yes">
+        <source>Sent by ProtonMail with zero access encryption</source>
+        <target state="final">Enviado por ProtonMail con cifrado de acceso cero</target>
+        <note>encryption lock description for auto reply</note>
+      </trans-unit>
+      <trans-unit id="Sent by you with end-to-end encryption" approved="yes">
+        <source>Sent by you with end-to-end encryption</source>
+        <target state="final">Enviado por usted con cifrado de extremo a extremo</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Server proofs not valid!" approved="yes">
+        <source>Server proofs not valid!</source>
+        <target state="final">¡Las comprobaciones del servidor son inválidas!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set Password" approved="yes">
+        <source>Set Password</source>
+        <target state="final">Definir contraseña</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Set a password to encrypt this message for non-ProtonMail users." approved="yes">
+        <source>Set a password to encrypt this message for non-ProtonMail users.</source>
+        <target state="final">Defina una contraseña para cifrar este mensaje para usuarios que no sean de ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Set passwords" approved="yes">
+        <source>Set passwords</source>
+        <target state="final">Definir contraseñas</target>
+        <note>Signup passwords top title</note>
+      </trans-unit>
+      <trans-unit id="Settings" approved="yes">
+        <source>Settings</source>
+        <target state="final">Ajustes</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Share Alert" approved="yes">
+        <source>Share Alert</source>
+        <target state="final">Compartir alerta</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Share Contact" approved="yes">
+        <source>Share Contact</source>
+        <target state="final">Compartir contacto</target>
+        <note>action</note>
+      </trans-unit>
+      <trans-unit id="Share it with your friends" approved="yes">
+        <source>Share it with your friends</source>
+        <target state="final">Compartir con sus amigos</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Sign Out" approved="yes">
+        <source>Log out</source>
+        <target state="final">Cerrar sesión</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Signature" approved="yes">
+        <source>Signature</source>
+        <target state="final">Firma</target>
+        <note>Title in signature settings</note>
+      </trans-unit>
+      <trans-unit id="Signature Updated" approved="yes">
+        <source>Signature Updated</source>
+        <target state="final">Firma actualizada</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Single Password" approved="yes">
+        <source>Single Password</source>
+        <target state="final">Contraseña Única</target>
+        <note>settings general section title</note>
+      </trans-unit>
+      <trans-unit id="Snooze Notifications" approved="yes">
+        <source>Snooze Notifications</source>
+        <target state="final">Silenciar notificaciones</target>
+        <note>settings option</note>
+      </trans-unit>
+      <trans-unit id="Snoozed for" approved="yes">
+        <source>Snoozed for</source>
+        <target state="final">Silenciado por</target>
+        <note>title of action sheet when quick snooze is active (Snoozed for 30min)</note>
+      </trans-unit>
+      <trans-unit id="Snoozed till" approved="yes">
+        <source>Snoozed till</source>
+        <target state="final">Silenciado hasta</target>
+        <note>title of action sheet when scheduled scoone is active (Snoozed till 8am)</note>
+      </trans-unit>
+      <trans-unit id="Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" approved="yes">
+        <source>Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!</source>
+        <target state="final">No podemos procesar compras en la versión beta de la aplicación para iOS. ¡Gracias por participar en la beta pública!</target>
+        <note>Error message for beta users</note>
+      </trans-unit>
+      <trans-unit id="Space Warning" approved="yes">
+        <source>Space warning</source>
+        <target state="final">Advertencia de espacio</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Spam" approved="yes">
+        <source>Spam</source>
+        <target state="final">Spam</target>
+        <note>mail location desc
+   menu title</note>
+      </trans-unit>
+      <trans-unit id="Spammed" approved="yes">
+        <source>Spammed</source>
+        <target state="final">Correo no deseado</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Srp single password keyslat invalid!" approved="yes">
+        <source>Srp single password keysalt invalid!</source>
+        <target state="final">¡Paquete de claves de única contraseña de SRP inválido!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Star" approved="yes">
+        <source>Star</source>
+        <target state="final">Destacar</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Starred" approved="yes">
+        <source>Starred</source>
+        <target state="final">Destacados</target>
+        <note>mail location desc
+   menu title
+   VoiceOver: email is starred</note>
+      </trans-unit>
+      <trans-unit id="Start Time" approved="yes">
+        <source>Start Time</source>
+        <target state="final">Hora inicio</target>
+        <note>settings option (Start Time: 8am)</note>
+      </trans-unit>
+      <trans-unit id="State" approved="yes">
+        <source>State</source>
+        <target state="final">Estado</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Storage" approved="yes">
+        <source>Storage</source>
+        <target state="final">Almacenamiento</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Storage Warning" approved="yes">
+        <source>Storage Warning</source>
+        <target state="final">Advertencia de almacenamiento</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Stored with zero access encryption" approved="yes">
+        <source>Stored with zero access encryption</source>
+        <target state="final">Almacenado con cifrado de acceso cero</target>
+        <note>encryption lock description</note>
+      </trans-unit>
+      <trans-unit id="Street" approved="yes">
+        <source>Street</source>
+        <target state="final">Calle</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject" approved="yes">
+        <source>Subject</source>
+        <target state="final">Asunto</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Subject:" approved="yes">
+        <source>Subject:</source>
+        <target state="final">Asunto:</target>
+        <note>subject: text when forward</note>
+      </trans-unit>
+      <trans-unit id="Subscription" approved="yes">
+        <source>Subscription</source>
+        <target state="final">Suscripción</target>
+        <note>menu title</note>
+      </trans-unit>
+      <trans-unit id="Support ProtonMail" approved="yes">
+        <source>Support ProtonMail</source>
+        <target state="final">Apoye a ProtonMail</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Support for %i custom domains (e.g. user@yourdomain.com)" approved="yes">
+        <source>Support for %i custom domains (e.g. user@yourdomain.com)</source>
+        <target state="final">Soporte para %i dominios personalizados (p. ej. usuario@sudominio.com)</target>
+        <note>Service plan capability; i = 2</note>
+      </trans-unit>
+      <trans-unit id="Swipe Left to Right" approved="yes">
+        <source>Swipe Left to Right</source>
+        <target state="final">Deslizar de izquierda a derecha</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="Swipe Right to Left" approved="yes">
+        <source>Swipe Right to Left</source>
+        <target state="final">Deslizar de derecha a izquierda</target>
+        <note>settings swipe actions section title</note>
+      </trans-unit>
+      <trans-unit id="System can't copy the file" approved="yes">
+        <source>System can't copy the file</source>
+        <target state="final">El sistema no puede copiar el archivo</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="TRASH" approved="yes">
+        <source>Trash</source>
+        <target state="final">PAPELERA</target>
+        <note>mail location title</note>
+      </trans-unit>
+      <trans-unit id="Take a Photo" approved="yes">
+        <source>Take photo</source>
+        <target state="final">Tomar una foto</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Tap send anyway to send without expiration to these recipients" approved="yes">
+        <source>Tap send anyway to send without expiration to these recipients</source>
+        <target state="final">Pulse enviar para enviar sin expiración para estos destinatarios</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Thank you for submitting a bug report.  We have added your report to our bug tracking system." approved="yes">
+        <source>Thank you for submitting a bug report.  We have added your report to our bug tracking system.</source>
+        <target state="final">Gracias por enviar un informe de error.  Hemos añadido su informe a nuestro sistema de seguimiento de errores.</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The Password is wrong." approved="yes">
+        <source>The password is wrong.</source>
+        <target state="final">La contraseña es incorrecta.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The ProtonMail current offline..." approved="yes">
+        <source>The ProtonMail current offline...</source>
+        <target state="final">No hay conexión con ProtonMail...</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The UserName have been taken." approved="yes">
+        <source>The username have been taken.</source>
+        <target state="final">El nombre de usuario ya está en uso.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The authentication credentials are invalid." approved="yes">
+        <source>The authentication credentials are invalid.</source>
+        <target state="final">Las credenciales de autenticación son inválidas.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The authentication token has expired." approved="yes">
+        <source>The authentication token has expired.</source>
+        <target state="final">El token de autenticación ha expirado.</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="The current standard" approved="yes">
+        <source>The current standard</source>
+        <target state="final">El estándar actual</target>
+        <note>key size notes</note>
+      </trans-unit>
+      <trans-unit id="The display name is now %@." approved="yes">
+        <source>The display name is now %@.</source>
+        <target state="final">El nombre para mostrar es ahora %@.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft cache is broken. Please try again." approved="yes">
+        <source>The draft cache is broken. Please try again.</source>
+        <target state="final">La caché del borrador está rota, inténtelo de nuevo.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The draft format incorrectly sending failed!" approved="yes">
+        <source>Sending failed. There was an error with the draft format.</source>
+        <target state="final">¡El formato del borrador es incorrecto, el envío falló!</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="The highest level of encryption available." approved="yes">
+        <source>The highest level of encryption available.</source>
+        <target state="final">El máximo nivel de cifrado disponible.</target>
+        <note>key size note part 1</note>
+      </trans-unit>
+      <trans-unit id="The label name is duplicate" approved="yes">
+        <source>The label name is duplicate</source>
+        <target state="final">El nombre de la etiqueta está duplicado</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The mailbox password is incorrect." approved="yes">
+        <source>The mailbox password is incorrect.</source>
+        <target state="final">La contraseña del buzón es incorrecta.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of distinct recipients is %d" approved="yes">
+        <source>The maximum number of distinct recipients is %d</source>
+        <target state="final">El número máximo de destinatarios es de %d</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="The maximum number of labels is %d." approved="yes">
+        <source>The maximum number of labels is %d.</source>
+        <target state="final">El número máximo de etiquetas es %d.</target>
+        <note>*
+ *  LabelsViewController</note>
+      </trans-unit>
+      <trans-unit id="The new password can't empty" approved="yes">
+        <source>The new password can't be empty</source>
+        <target state="final">La nueva contraseña no puede estar vacía</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password can't empty." approved="yes">
+        <source>The new password can't empty.</source>
+        <target state="final">La contraseña nueva no puede estar vacía.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The new password not match" approved="yes">
+        <source>Passwords do not match</source>
+        <target state="final">Las contraseñas no coinciden</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The new password not match." approved="yes">
+        <source>The new password not match.</source>
+        <target state="final">La contraseña nueva no coincide.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The optional recovery email address allows you to reset your login password if you forget it." approved="yes">
+        <source>The optional recovery email address allows you to reset your login password if you forget it.</source>
+        <target state="final">El email de recuperación opcional le permite restablecer su contraseña de acceso si la olvidara.</target>
+        <note>recovery email notes</note>
+      </trans-unit>
+      <trans-unit id="The password you entered does not match the current password." approved="yes">
+        <source>The password you entered does not match the current password.</source>
+        <target state="final">La contraseña ingresada no coincide con la contraseña actual.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The passwords you entered do not match." approved="yes">
+        <source>The passwords you entered do not match.</source>
+        <target state="final">Las contraseñas ingresadas no coinciden.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The private key update failed." approved="yes">
+        <source>The private key update failed.</source>
+        <target state="final">Falló la actualización de clave privada.</target>
+        <note>update password error</note>
+      </trans-unit>
+      <trans-unit id="The request timed out." approved="yes">
+        <source>The request timed out.</source>
+        <target state="final">Tiempo de espera agotado.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="The total attachment size can't be bigger than 25MB" approved="yes">
+        <source>The total attachment size can't be bigger than 25MB</source>
+        <target state="final">El tamaño total de ajuntos no puede ser mayor que 25 MB</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="The total attachment size cannot exceed 25MB" approved="yes">
+        <source>The total attachment size cannot exceed 25MB</source>
+        <target state="final">El tamaño total del archivo adjunto no puede exceder los 25MB</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="The verification email invalid" approved="yes">
+        <source>Invalid verification email</source>
+        <target state="final">Correo de verificación inválido</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="The verification failed!" approved="yes">
+        <source>The verification failed!</source>
+        <target state="final">¡La verificación ha fallado!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the app's saved data." approved="yes">
+        <source>There was an error creating or loading the app's saved data.</source>
+        <target state="final">Se produjo un error al crear o cargar los datos guardados de la aplicación.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="There was an error creating or loading the application's saved data." approved="yes">
+        <source>There was an error creating or loading the application's saved data.</source>
+        <target state="final">Se ha producido un error al crear o cargar los datos guardados de la aplicación.</target>
+        <note>
+ &amp; local error</note>
+      </trans-unit>
+      <trans-unit id="This can take a while. Please do not dismiss the app." approved="yes">
+        <source>This can take a while. Please do not dismiss the app.</source>
+        <target state="final">Esto puede tomar un tiempo, no cierre la aplicación.</target>
+        <note>Alert message</note>
+      </trans-unit>
+      <trans-unit id="This contact belongs to your Address Book." approved="yes">
+        <source>This contact belongs to your address book.</source>
+        <target state="final">Este contacto pertenece a su libreta de direcciones.</target>
+        <note>alert desc</note>
+      </trans-unit>
+      <trans-unit id="This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="final">Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede ser falsificado o reenviado incorrectamente!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" approved="yes">
+        <source>This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!</source>
+        <target state="final">Este correo parece ser de una dirección de ProtonMail, pero vino de fuera de nuestro sistema y ha fallado los requisitos de autenticación. ¡Pudo ser falsificado o reenviado incorrectamente!</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." approved="yes">
+        <source>This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate.</source>
+        <target state="final">Este mensaje puede ser un intento de suplantación. Verifique el remitente y el contenido y asegúrese que sean legítimos.</target>
+        <note>spam score warning</note>
+      </trans-unit>
+      <trans-unit id="Title" approved="yes">
+        <source>Title</source>
+        <target state="final">Título</target>
+        <note>contacts talbe cell Title title</note>
+      </trans-unit>
+      <trans-unit id="To" approved="yes">
+        <source>To</source>
+        <target state="final">Para</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="To prevent abuse of ProtonMail,&#13;&#10; we need to verify that you are human." approved="yes">
+        <source>To prevent abuse of ProtonMail,&#13;
+ we need to verify that you are human.</source>
+        <target state="final">Para prevenir abusos de ProtonMail,&amp;#13;
+ necesitamos verificar que es humano.</target>
+        <note>human verification notes</note>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" approved="yes">
+        <source>To reset your mailbox password, please use the web version of ProtonMail at protonmail.com</source>
+        <target state="final">Para restablecer la contraseña de su buzón, utilice la versión web de ProtonMail en protonmail.com</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="To:" approved="yes">
+        <source>To:</source>
+        <target state="final">Para:</target>
+        <note>message To: feild</note>
+      </trans-unit>
+      <trans-unit id="Token expired" approved="yes">
+        <source>Token expired</source>
+        <target state="final">Token expirado</target>
+        <note>*
+ *  API Error &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Too many recipients" approved="yes">
+        <source>Too many recipients</source>
+        <target state="final">Demasiados destinatarios</target>
+        <note>Alert title</note>
+      </trans-unit>
+      <trans-unit id="TouchID is not enrolled, enable it in the system Settings" approved="yes">
+        <source>TouchID is not enrolled, enable it in the system Settings</source>
+        <target state="final">El TouchID no está registrado, habilítelo en los ajustes del sistema</target>
+        <note>settings touchid error</note>
+      </trans-unit>
+      <trans-unit id="TouchID not available" approved="yes">
+        <source>TouchID not available</source>
+        <target state="final">TouchID no disponible</target>
+        <note>settings touchid/faceid error</note>
+      </trans-unit>
+      <trans-unit id="Trash" approved="yes">
+        <source>Trash</source>
+        <target state="final">Papelera</target>
+        <note>mail location desc
+   menu title
+   move action</note>
+      </trans-unit>
+      <trans-unit id="Trouble shooting guide" approved="yes">
+        <source>Trouble shooting guide</source>
+        <target state="final">Guía para resolver problemas</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Turn Off" approved="yes">
+        <source>Turn Off</source>
+        <target state="final">Desactivar</target>
+        <note>action sheet option</note>
+      </trans-unit>
+      <trans-unit id="Tweet about ProtonMail" approved="yes">
+        <source>Tweet about ProtonMail</source>
+        <target state="final">Tweetear acerca de ProtonMail</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Two Factor Code" approved="yes">
+        <source>Two Factor Code</source>
+        <target state="final">Código de dos factores</target>
+        <note>Placeholder</note>
+      </trans-unit>
+      <trans-unit id="Type casting error" approved="yes">
+        <source>Type casting error</source>
+        <target state="final">Tipo de error arrojado</target>
+        <note>Internal type casting error</note>
+      </trans-unit>
+      <trans-unit id="URL" approved="yes">
+        <source>URL</source>
+        <target state="final">URL</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="USER LOGIN" approved="yes">
+        <source>User log in</source>
+        <target state="final">INICIO DE SESIÓN DE USUARIO</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Unable to connect to the server" approved="yes">
+        <source>Unable to connect to the server</source>
+        <target state="final">No se puede conectar con el servidor</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to construct a valid URL with the following path: %@" approved="yes">
+        <source>Unable to construct a valid URL with the following path: %@</source>
+        <target state="final">No se puede definir una dirección URL válida con la siguiente ruta: %@</target>
+        <note>
+</note>
+      </trans-unit>
+      <trans-unit id="Unable to create SRP Client!" approved="yes">
+        <source>Unable to create SRP Client!</source>
+        <target state="final">¡No se puede crear el cliente SRP!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to decrypt message." approved="yes">
+        <source>Unable to decrypt message.</source>
+        <target state="final">No se puede descifrar el mensaje.</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to edit this message offline" approved="yes">
+        <source>Unable to edit this message offline</source>
+        <target state="final">No se puede editar este mensaje sin conexión</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to generate hashed password!" approved="yes">
+        <source>Unable to generate hashed password!</source>
+        <target state="final">¡No se puede generar el hash de la contraseña!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to get contacts" approved="yes">
+        <source>Unable to get contacts</source>
+        <target state="final">No se pueden obtener los contactos</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication info!" approved="yes">
+        <source>Unable to parse authentication info!</source>
+        <target state="final">¡No se puede analizar la información de autenticación!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse authentication token!" approved="yes">
+        <source>Unable to parse authentication token!</source>
+        <target state="final">¡No se puede analizar el token de autenticación!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse cached authentication token!" approved="yes">
+        <source>Unable to parse cached authentication token!</source>
+        <target state="final">¡No se puede analizar el token de autenticación en caché!</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse response" approved="yes">
+        <source>Unable to parse response</source>
+        <target state="final">No se puede analizar la respuesta</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse the response object:&#10;%@" approved="yes">
+        <source>Unable to parse the response object:
+%@</source>
+        <target state="final">No se puede analizar el objeto de respuesta:
+%@</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unable to parse token" approved="yes">
+        <source>Unable to parse token</source>
+        <target state="final">No se puede analizar el token</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unable to send the email" approved="yes">
+        <source>Unable to send the email.</source>
+        <target state="final">No se puede enviar el mensaje</target>
+        <note>error when sending the message</note>
+      </trans-unit>
+      <trans-unit id="Undo" approved="yes">
+        <source>Undo</source>
+        <target state="final">Deshacer</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Unknow Error" approved="yes">
+        <source>Unknown error</source>
+        <target state="final">Error desconocido</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Unknow file" approved="yes">
+        <source>Unknown file</source>
+        <target state="final">Archivo desconocido</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unknown" approved="yes">
+        <source>Unknown</source>
+        <target state="final">Desconocido</target>
+        <note>title, default display name</note>
+      </trans-unit>
+      <trans-unit id="Unknown Error" approved="yes">
+        <source>Unknown Error</source>
+        <target state="final">Error desconocido</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Unkonw Version" approved="yes">
+        <source>Unknown version</source>
+        <target state="final">Versión desconocida</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="Unlimited messages sent/day" approved="yes">
+        <source>Unlimited messages sent/day</source>
+        <target state="final">Enviar mensajes ilimitados por día</target>
+        <note>Service plan capability;</note>
+      </trans-unit>
+      <trans-unit id="Unread" approved="yes">
+        <source>Unread</source>
+        <target state="final">Sin leer</target>
+        <note>The verb for describing the unread action
+   VoiceOver: email is not read yet</note>
+      </trans-unit>
+      <trans-unit id="Unsupported file type" approved="yes">
+        <source>Unsupported file type</source>
+        <target state="final">Tipo de archivo no soportado</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="Up to %i users" approved="yes">
+        <source>Up to %i users</source>
+        <target state="final">Hasta %i usuarios</target>
+        <note>Service plan capability; i = 6</note>
+      </trans-unit>
+      <trans-unit id="Update" approved="yes">
+        <source>Update</source>
+        <target state="final">Actualizar</target>
+        <note>like top right action text</note>
+      </trans-unit>
+      <trans-unit id="Update Contact" approved="yes">
+        <source>Update Contact</source>
+        <target state="final">Actualizar contacto</target>
+        <note>Contacts Update contact</note>
+      </trans-unit>
+      <trans-unit id="Update Notification Email" approved="yes">
+        <source>Update Notification Email</source>
+        <target state="final">Actualizar correo de notificación</target>
+        <note>update notification email error title</note>
+      </trans-unit>
+      <trans-unit id="Update Now" approved="yes">
+        <source>Update Now</source>
+        <target state="final">Actualizar ahora</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Update Required" approved="yes">
+        <source>Update Required</source>
+        <target state="final">Actualización requerida</target>
+        <note>title</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to benefit from more features" approved="yes">
+        <source>Upgrade to a paid plan to benefit from more features</source>
+        <target state="final">Actualice a un plan de pago para obtener más beneficios</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to a paid plan to send from your %@ address" approved="yes">
+        <source>Upgrade to a paid plan to send from your %@ address</source>
+        <target state="final">Actualice a un plan de pago para enviar desde su dirección %@</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="Upgrade to get all paid features." approved="yes">
+        <source>Upgrade to get all paid features.</source>
+        <target state="final">Actualizar para obtener todas las características.</target>
+        <note>alert description</note>
+      </trans-unit>
+      <trans-unit id="Upload Contacts" approved="yes">
+        <source>Upload Contacts</source>
+        <target state="final">Cargar contactos</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Upload iOS contacts to ProtonMail?" approved="yes">
+        <source>Upload iOS contacts to ProtonMail?</source>
+        <target state="final">¿Cargar contactos de iOS a ProtonMail?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Url" approved="yes">
+        <source>Url</source>
+        <target state="final">Url</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="User already exist!" approved="yes">
+        <source>Username already taken</source>
+        <target state="final">¡El usuario ya existe!</target>
+        <note>error when user already exist</note>
+      </trans-unit>
+      <trans-unit id="User is available!" approved="yes">
+        <source>Username is available</source>
+        <target state="final">¡Usuario disponible!</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="User name exist" approved="yes">
+        <source>Username exist</source>
+        <target state="final">El nombre de usuario existe</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="User name invalid" approved="yes">
+        <source>Invalid username</source>
+        <target state="final">Nombre de usuario inválido</target>
+        <note>
+ &amp; alert title</note>
+      </trans-unit>
+      <trans-unit id="Username" approved="yes">
+        <source>Username</source>
+        <target state="final">Nombre de usuario</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code request failed" approved="yes">
+        <source>Verification code request failed</source>
+        <target state="final">Falló la solicitud del código de verificación</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification code sent" approved="yes">
+        <source>Verification code sent</source>
+        <target state="final">Código de verificación enviado</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Verification error" approved="yes">
+        <source>Verification error</source>
+        <target state="final">Error de verificación</target>
+        <note>error title</note>
+      </trans-unit>
+      <trans-unit id="Verification of this content’s signature failed" approved="yes">
+        <source>Verification of this content’s signature failed</source>
+        <target state="final">Falló la verificación de la firma de este contenido</target>
+        <note>error details</note>
+      </trans-unit>
+      <trans-unit id="Version %@ %@" approved="yes">
+        <source>Version %@ %@</source>
+        <target state="final">Versión %@ %@</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="View Headers" approved="yes">
+        <source>View Headers</source>
+        <target state="final">Mostrar encabezados</target>
+        <note>message details-&gt; more action-&gt; view headers</note>
+      </trans-unit>
+      <trans-unit id="View Plans" approved="yes">
+        <source>View Plans</source>
+        <target state="final">Ver planes</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="Warning" approved="yes">
+        <source>Warning</source>
+        <target state="final">Advertencia</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Warning: Before you pass the human check you can't sent email!!!" approved="yes">
+        <source>Warning: Before you pass the human check you can't sent email!!!</source>
+        <target state="final">Advertencia: ¡Antes de pasar el control humano no puede enviar correos electrónicos!</target>
+        <note>human check warning description</note>
+      </trans-unit>
+      <trans-unit id="Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" approved="yes">
+        <source>Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?</source>
+        <target state="final">Advertencia: no estableció un correo electrónico de recuperación por lo que la recuperación de cuentas es imposible si olvida su contraseña. ¿Proceder sin correo electrónico de recuperación?</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="We have successfully activated your subscription. Please relaunch the app to start using your new service plan." approved="yes">
+        <source>We have successfully activated your subscription. Please relaunch the app to start using your new service plan.</source>
+        <target state="final">Hemos activado su suscripción exitosamente. Reinicie la aplicación para empezar a utilizar su plan de servicio nuevo.</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the cell phone above." approved="yes">
+        <source>We will send a verification code to the cell phone above.</source>
+        <target state="final">Le enviaremos un código de verificación al número de teléfono indicado.</target>
+        <note>text field notes</note>
+      </trans-unit>
+      <trans-unit id="We will send a verification code to the email address above." approved="yes">
+        <source>We will send a verification code to the email address above.</source>
+        <target state="final">Enviaremos un código de verificación a la dirección de correo indicada.</target>
+        <note>email field notes</note>
+      </trans-unit>
+      <trans-unit id="We would like to know what we can do better." approved="yes">
+        <source>We would like to know what we can do better.</source>
+        <target state="final">Nos gustaría saber qué podemos hacer mejor.</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="Welcome to ProtonMail!" approved="yes">
+        <source>Welcome to ProtonMail</source>
+        <target state="final">¡Bienvenido/a a ProtonMail!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="What people see in the &quot;From&quot; field." approved="yes">
+        <source>What people see in the "From" field.</source>
+        <target state="final">Lo que la gente ve en el campo "De".</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="When you send an email, this is the name that appears in the sender field." approved="yes">
+        <source>When you send an email, this is the name that appears in the sender field.</source>
+        <target state="final">Cuando envía un correo, este es el nombre que aparecerá en el campo del remitente.</target>
+        <note>display name notes</note>
+      </trans-unit>
+      <trans-unit id="Work" approved="yes">
+        <source>Work</source>
+        <target state="final">Trabajo</target>
+        <note>default vcard types</note>
+      </trans-unit>
+      <trans-unit id="Wrong verification code" approved="yes">
+        <source>Wrong verification code</source>
+        <target state="final">Código de verificación incorrecto</target>
+        <note>
+ &amp; title</note>
+      </trans-unit>
+      <trans-unit id="Yes, activate it for " approved="yes">
+        <source>Yes, activate it for </source>
+        <target state="final">Sí, activarlo para </target>
+        <note>Warning message option to bypass validation and activate plan for current username</note>
+      </trans-unit>
+      <trans-unit id="Yes, attach details of payment" approved="yes">
+        <source>Yes, attach details of payment</source>
+        <target state="final">Sí, adjuntar los datos de pago</target>
+        <note>Error message</note>
+      </trans-unit>
+      <trans-unit id="You are about to launch the web browser and navigate to" approved="yes">
+        <source>You are about to launch the web browser and navigate to</source>
+        <target state="final">Está a punto de abrir el navegador web y navegar hacia</target>
+        <note>link opeining confirmation</note>
+      </trans-unit>
+      <trans-unit id="You can customize swipe gestures in the ProtonMail App Settings." approved="yes">
+        <source>You can customize swipe gestures in the ProtonMail App Settings.</source>
+        <target state="final">Puede personalizar gestos de deslizamiento en los ajustes de la aplicación de ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can get help and support at protonmail.com/support. Bugs can also be reported with the app." approved="yes">
+        <source>You can get help and support at protonmail.com/support. Bugs can also be reported with the app.</source>
+        <target state="final">Puede obtener ayuda y soporte en protonmail.com/support. Los errores también se pueden informar desde la aplicación.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You can't set %@ address as default because it is a paid feature." approved="yes">
+        <source>You can't set %@ address as default because it is a paid feature.</source>
+        <target state="final">No puede establecer la dirección %@ como predeterminada porque es una característica de pago.</target>
+        <note>pm.me upgrade warning in composer</note>
+      </trans-unit>
+      <trans-unit id="You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." approved="yes">
+        <source>You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.</source>
+        <target state="final">Ha habilitado la expiración de mensajes, pero no todos los destinatarios lo admiten. Por favor, añada una contraseña o deshabilite el envío PGP para utilizar la expiración con todos los destinatarios.</target>
+        <note>description</note>
+      </trans-unit>
+      <trans-unit id="You have %d new emails!" approved="yes">
+        <source>You have %d new emails!</source>
+        <target state="final">¡Tiene %d mensajes nuevos!</target>
+        <note>Message</note>
+      </trans-unit>
+      <trans-unit id="You have a new email!" approved="yes">
+        <source>You have a new email!</source>
+        <target state="final">¡Tiene un mensaje nuevo!</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="You have unsaved changes. Do you want to save it?" approved="yes">
+        <source>You have unsaved changes. Do you want to save it?</source>
+        <target state="final">Tiene cambios sin guardar. ¿Desea guardarlos?</target>
+        <note>Confirmation message</note>
+      </trans-unit>
+      <trans-unit id="You have used %d%% of your storage space (%@)." approved="yes">
+        <source>You have used %1$d%% of your storage space (%2$@).</source>
+        <target state="final">Ha utilizado %1$d%% de su espacio de almacenamiento (%2$@).</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You have used up all of your storage space (%@)." approved="yes">
+        <source>You have used up all of your storage space (%@).</source>
+        <target state="final">Ha usado todo su espacio de almacenamiento (%@).</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="You need at least one recipient to send" approved="yes">
+        <source>You need at least one recipient to send</source>
+        <target state="final">Necesita al menos un destinatario para enviar</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your Country Code" approved="yes">
+        <source>Your Country Code</source>
+        <target state="final">Su código de país</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." approved="yes">
+        <source>Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail.</source>
+        <target state="final">Su bandeja de entrada está ahora protegida con cifrado de extremo a extremo. Para enviar mensajes de email de forma automática y segura a sus amigos, pídales que se unan a ProtonMail. También puede cifrar los mensajes manualmente si no utilizan ProtonMail.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new encrypted email account has been set up and is ready to send and receive encrypted messages." approved="yes">
+        <source>Your new encrypted email account has been set up and is ready to send and receive encrypted messages.</source>
+        <target state="final">Su nueva cuenta de email cifrado se ha configurado y está lista para enviar y recibir mensajes cifrados.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="Your new secure email&#13;&#10; account is ready." approved="yes">
+        <source>Your new secure email&#13;
+ account is ready.</source>
+        <target state="final">Su nueva cuenta de correo&amp;#13;
+ seguro está lista.</target>
+        <note>view top title</note>
+      </trans-unit>
+      <trans-unit id="Your plan is currently active until" approved="yes">
+        <source>Your plan is currently active until</source>
+        <target state="final">Su plan está activo hasta</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your plan will automatically renew on" approved="yes">
+        <source>Your plan will automatically renew on</source>
+        <target state="final">Su suscripción se renovará automáticamente en</target>
+        <note>Service plan description footer</note>
+      </trans-unit>
+      <trans-unit id="Your signature has been updated." approved="yes">
+        <source>Your signature has been updated.</source>
+        <target state="final">Su firma ha sido actualizada.</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="ZIP" approved="yes">
+        <source>ZIP</source>
+        <target state="final">ZIP</target>
+        <note>contact placeholder</note>
+      </trans-unit>
+      <trans-unit id="and" approved="yes">
+        <source>and</source>
+        <target state="final">y</target>
+        <note>agree check box middle word</note>
+      </trans-unit>
+      <trans-unit id="at" approved="yes">
+        <source>at</source>
+        <target state="final">a las</target>
+        <note>like at 10:00pm</note>
+      </trans-unit>
+      <trans-unit id="attempt remaining until secure data wipe!" approved="yes">
+        <source>attempt remaining until secure data wipe!</source>
+        <target state="final">intento restante hasta que los datos seguros se borren!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining" approved="yes">
+        <source>attempts remaining</source>
+        <target state="final">intentos restantes</target>
+        <note>Description</note>
+      </trans-unit>
+      <trans-unit id="attempts remaining until secure data wipe!" approved="yes">
+        <source>attempts remaining until secure data wipe!</source>
+        <target state="final">intentos restantes hasta que los datos seguros se borren!</target>
+        <note>Error</note>
+      </trans-unit>
+      <trans-unit id="close tour" approved="yes">
+        <source>close tour</source>
+        <target state="final">cerrar recorrido</target>
+        <note>Action</note>
+      </trans-unit>
+      <trans-unit id="days" approved="yes">
+        <source>Days</source>
+        <target state="final">días</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="for one year" approved="yes">
+        <source>for one year</source>
+        <target state="final">por un año</target>
+        <note>Buy button second line</note>
+      </trans-unit>
+      <trans-unit id="get contacts() failed, peopleOrderedByUsersPreference return null!!" approved="yes">
+        <source>get contacts() failed, peopleOrderedByUsersPreference return null!!</source>
+        <target state="final">falló obtener contacts(), peopleOrderedByUsersPreference devuelve nulo</target>
+        <note>contacts api error when fetch</note>
+      </trans-unit>
+      <trans-unit id="hours" approved="yes">
+        <source>Hours</source>
+        <target state="final">Horas</target>
+        <note/>
+      </trans-unit>
+      <trans-unit id="inline attachments" approved="yes">
+        <source>inline attachments</source>
+        <target state="final">adjuntos incrustados</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="no object" approved="yes">
+        <source>no object</source>
+        <target state="final">sin objetos</target>
+        <note>no object error, local only , this could be not translated!</note>
+      </trans-unit>
+      <trans-unit id="normal attachments" approved="yes">
+        <source>normal attachments</source>
+        <target state="final">archivos adjuntos normales</target>
+        <note>Title</note>
+      </trans-unit>
+      <trans-unit id="privacy policy." approved="yes">
+        <source>privacy policy.</source>
+        <target state="final">política de privacidad.</target>
+        <note>agree check box privacy</note>
+      </trans-unit>
+      <trans-unit id="terms and conditions" approved="yes">
+        <source>terms and conditions</source>
+        <target state="final">términos y condiciones</target>
+        <note>agree check box terms</note>
+      </trans-unit>
+      <trans-unit id="wrote:" approved="yes">
+        <source>wrote:</source>
+        <target state="final">escribió:</target>
+        <note>Title</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="ProtonMail/Base.lproj/PasswordExtension.strings" source-language="en" target-language="es" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="App Extension API is not available in this version of iOS" approved="yes">
+        <source>App Extension API is not available in this version of iOS</source>
+        <target state="final">La API de extensión de la aplicación no está disponible en esta versión de iOS</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to contact the Password Extension" approved="yes">
+        <source>Failed to contact the Password Extension</source>
+        <target state="final">No se pudo establecer contacto con la extensión de contraseña</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to execute script that collects web page information" approved="yes">
+        <source>Failed to execute script that collects web page information</source>
+        <target state="final">Error al ejecutar el script que recopila información de la página web</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script could not be evaluated" approved="yes">
+        <source>Failed to fill web page because script could not be evaluated</source>
+        <target state="final">Error al llenar la página web porque no se pudo evaluar el script</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to fill web page because script is missing" approved="yes">
+        <source>Failed to fill web page because script is missing</source>
+        <target state="final">No se pudo completar la página web porque falta el script</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension" approved="yes">
+        <source>Failed to obtain URL String from web view. The web view must be loaded completely when calling the Password Extension</source>
+        <target state="final">Error al obtener la cadena URL de la vista web. La vista web debe cargarse completamente al llamar a la extensión de contraseña</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Failed to parse information returned by Password Extension" approved="yes">
+        <source>Failed to parse information returned by Password Extension</source>
+        <target state="final">Error al analizar la información devuelta por la extensión de contraseña</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+      <trans-unit id="Password Extension was cancelled by the user" approved="yes">
+        <source>Password Extension was cancelled by the user</source>
+        <target state="final">La extensión de la contraseña fue cancelada por el usuario</target>
+        <note>Password Extension Error Message</note>
+      </trans-unit>
+    </body>
+  </file>
+  <file original="Siri/en.lproj/InfoPlist.strings" source-language="en" target-language="es" datatype="plaintext">
+    <header>
+      <tool tool-id="com.apple.dt.xcode" tool-name="Xcode" tool-version="10.2.1" build-num="10E1001"/>
+    </header>
+    <body>
+      <trans-unit id="CFBundleDisplayName" approved="yes">
+        <source>Siri</source>
+        <target state="final">Siri</target>
+        <note>Bundle display name</note>
+      </trans-unit>
+      <trans-unit id="CFBundleName" approved="yes">
+        <source>Siri</source>
+        <target state="final">Siri</target>
+        <note>Bundle name</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

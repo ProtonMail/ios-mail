@@ -1,0 +1,2171 @@
+/* Service plan capability */
+"%@ storage capacity" = "%@ tárhely";
+
+/* The string that describes whether there are 0 or 1 member in the contact group */
+"%d Member" = "%d tag";
+
+/* The string that describes whether there are 2 or more members in the contact group */
+"%d Members" = "%d tag";
+
+/* auto lock time format */
+"%d Minute" = "%d perc";
+
+/* auto lock time format */
+"%d Minutes" = "%d perc";
+
+/* The string that describes how many contact groups are currently selected */
+"%d Selected" = "%d kiválasztva";
+
+/* Service plan capability; i = 1 */
+"%i email address" = "%i e-mail cím";
+
+/* Service plan capability; i = 5 or 50 */
+"%i email addresses" = "%i e-mail cím";
+
+/* Key size text when setup key */
+"(2048 bit)" = "(2048 bit)";
+
+/* Key size text when setup key */
+"(4096 bit)" = "(4096 bit)";
+
+/* Service plan capability detail; like in '50 email addresses (total)' */
+"(total)" = "(összesen)";
+
+/* secret */
+"**********" = "**********";
+
+/* optional text field */
+"*OPTIONAL" = "* OPCIONÁLIS";
+
+/* Drag and drop zone for attachments */
+"+ Drop here to add as attachment" = "+ Húzza ide a melléklet csatolásához";
+
+/* Service plan capability detail; like in '5 email addresses/user' */
+"/user" = " felhasználónként";
+
+/* 2fa verification failed */
+"2FA failed. Please try to login again." = "A bejelentkezés nem sikerült. Próbálja meg újra.";
+
+/* default empty object */
+"<no object>" = "<no object>";
+
+/* *
+ *  LabelTableViewCell */
+"A message cannot have more than 5 labels" = "Az üzenet maximum 5 címkével rendelkezhet";
+
+/* "Alert" = "Alert"; */
+"A new version of ProtonMail app is available, please update to latest version." = "A ProtonMail egy új verziója érhető el. Kérjük, frissítsen a legújabb változatra.";
+
+/* Description */
+"A new version of ProtonMail app is available. Please update to the latest version." = "A ProtonMail egy új verziója érhető el. Kérjük, frissítsen a legújabb változatra.";
+
+/* alert description */
+"A paid ProtonMail plan is required to use this feature" = "A funkció használatához egy előfizetéses ProtonMail csomag szükséges";
+
+/* settings touchid error */
+"A passcode has not been set, enable it in the system Settings" = "Nincs beállítva kód. Engedélyezze a rendszer Beállításoknál";
+
+/* when server not reachable */
+"API Server not reachable..." = "API szerver nem elérhető...";
+
+/* mail location title */
+"ARCHIVE" = "Archív";
+
+/* error message */
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "A fiók elérése számlatartozás miatt le van tiltva. Kérjük, lépjen be a protonmail.com weblapon és egyenlítse ki a számláit.";
+
+/* None */
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "A fiók elérése számlatartozás miatt le van tiltva.
+
+Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">tudásbázist</a> további információkért.";
+
+/* 
+ & title */
+"Account password invalid" = "Érvénytelen fiók jelszó";
+
+/* None */
+"Add" = "Hozzáadás";
+
+/* new contacts add Anniversary */
+"Add Anniversary" = "Évforduló hozzáadása";
+
+/* new contacts add Birthday */
+"Add Birthday" = "Születésnap hozzáadása";
+
+/* Contacts add new contact */
+"Add Contact" = "Új névjegy";
+
+/* add custom label type action */
+"Add Custom Label" = "Új címke hozzáadása";
+
+/* Action */
+"Add Folder" = "Mappa hozzáadása";
+
+/* new contacts add Gender */
+"Add Gender" = "Nem hozzáadása";
+
+/* The title for the contact group creation view */
+"Add Group" = "Csoport hozzáadása";
+
+/* add label action */
+"Add Label" = "Címke hozzáadása";
+
+/* add a new folder */
+"Add New Folder" = "Új mappa hozzáadása";
+
+/* add a new folder */
+"Add New Label" = "Új címke hozzáadása";
+
+/* new contacts add Nickname */
+"Add Nickname" = "Becenév hozzáadása";
+
+/* new contacts add Organization */
+"Add Organization" = "Szervezet hozzáadása";
+
+/* The button text for add profile picture */
+"Add Photo" = "Fénykép hozzáadása";
+
+/* mark message star */
+"Add Star" = "Csillagozás";
+
+/* new contacts add Title */
+"Add Title" = "Beosztás hozzáadása";
+
+/* add new address action */
+"Add new address" = "Cím hozzáadása";
+
+/* new custom field action */
+"Add new custom field" = "Egyéni mező hozzáadása";
+
+/* new email action */
+"Add new email" = "E-mail cím hozzáadása";
+
+/* new field action */
+"Add new field" = "Új mező hozzáadása";
+
+/* new phone action */
+"Add new phone number" = "Telefonszám hozzáadása";
+
+/* action */
+"Add new url" = "URL hozzáadása";
+
+/* Title */
+"Add to contacts" = "Hozzáadása a névjegyekhez";
+
+/* default vcard types */
+"Address" = "Cím";
+
+/* Title */
+"Alert" = "Figyelmeztetés";
+
+/* mail location desc
+   mail location title
+   menu title */
+"All Mail" = "Összes levél";
+
+/* Title */
+"All contacts are imported" = "Minden névjegy importálva";
+
+/* archive when apply label */
+"Also Archive" = "Archiválás";
+
+/* Description */
+"Also used to reset a forgotten password." = "Használható elfelejtett jelszó helyreállítására is.";
+
+/* contacts talbe cell Anniversary title */
+"Anniversary" = "Évforduló";
+
+/* Error */
+"App is locked" = "Az alkalmazás zárolt";
+
+/* Price breakdown */
+"Apple in-app purchase fee" = "Apple alkalmazáson belüli vásárlás költsége";
+
+/* Error message */
+"Apple informed us they could not process the purchase." = "Az Apple azt jelezte vissza, hogy nem tudták feldolgozni a vásárlást.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de nem adta meg, hogy melyik ProtonMail fiókját kívánja frissíteni, amennyiben több is van.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de bizonyos technikai adatok hiányoznak. Kérjük, töltsön ki egy hiba jelentést és a támogatási csoportunk felveszi önnel a kapcsolatot.";
+
+/* Error message */
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Az Apple azt jelezte vissza, hogy ön nagyobb csomagra váltott, de úgy vettük észre, hogy azóta kilépett a fiókból.";
+
+/* Apply action */
+"Apply" = "Alkalmazás";
+
+/* Title */
+"Apply Labels" = "Címkék alkalmazása";
+
+/* mail location desc
+   menu title */
+"Archive" = "Archív";
+
+/* Description */
+"Archived" = "Archivált";
+
+/* Alert to confirm logout */
+"Are you sure you want to logout?" = "Biztos, hogy ki szeretne jelentkezni?";
+
+/* Drag and drop zone for attachments */
+"Attachment imported" = "A melléklet importálva";
+
+/* VoiceOver: email has attachments */
+"Attachments" = "Mellékletek";
+
+/* Title */
+"Authentication" = "Azonosítás";
+
+/* Description */
+"Authentication Failed Wrong username or password" = "A bejelentkezés sikertelen: hibás felhasználónév vagy jelszó.";
+
+/* Description */
+"Authentication failed" = "Sikertelen bejelentkezés";
+
+/* Error */
+"Authentication failed. Please try to login again." = "A bejelentkezés nem sikerült. Próbálja meg újra.";
+
+/* Description */
+"Authentication token is not accessible because the app is locked" = "Az azonosítási token nem érhető el, mert az alkalmazás zárolt";
+
+/* Description */
+"Authentication was cancelled by the system" = "A bejelentkezést a készüléke megszakította";
+
+/* Title */
+"Auto Lock Time" = "Automatikus zárolás ideje";
+
+/* settings general section title */
+"Auto Show Images" = "Képek automatikus megjelenítése";
+
+/* top left back button */
+"Back" = "Vissza";
+
+/* Error */
+"Bad auth cache" = "Hibás azonosítási gyorstár";
+
+/* Error title */
+"Bad parameter" = "Hibás paraméter";
+
+/* Error Description */
+"Bad parameter: %@" = "Hibás paraméter: %@";
+
+/* title */
+"Bad path" = "Hibás útvonal";
+
+/* Error Description */
+"Bad response" = "Hibás válasz";
+
+/* Title */
+"Bcc" = "Titkos másolat";
+
+/* message Bcc: feild */
+"Bcc:" = "Titkos másolat:";
+
+/* contacts talbe cell Birthday title */
+"Birthday" = "Születésnap";
+
+/* Title */
+"Bug Description" = "Hiba leírása";
+
+/* Title */
+"Bug Report Received" = "Hiba jelentés megérkezett";
+
+/* Link to More Credits screen */
+"Buy More Credits" = "Vásároljon további kreditet";
+
+/* agree check box first part words */
+"By using protonmail, you agree to our" = "A ProtonMail használatával elfogadja a";
+
+/* No comment provided by engineer. */
+"By using protonmail, you agree to our %@ and %@." = "ProtonMail használatával elfogadja, a %1$@ és %2$@ dokumentumokat.";
+
+/* human check option button */
+"CAPTCHA" = "CAPTCHA";
+
+/* Call the contact (button title text) */
+"Call Contact" = "Partner felhívása";
+
+/* key size note part 2 */
+"Can take several minutes to setup." = "A beállítás percekig is eltarthat.";
+
+/* Error */
+"Can't copy the file" = "Nem másolható a fájl";
+
+/* update password error */
+"Can't create a SRP Client" = "Nem hozható létre SRP kliens";
+
+/* update password error */
+"Can't create a SRP verifier!" = "Nem hozható létre SRP ellenőrző!";
+
+/* When quick look attachment but can't decrypt it! */
+"Can't decrypt this attachment!" = "Melléklet visszafejtése sikertelen!";
+
+/* The error message title that will be shown when the deletion of the contact group failed */
+"Can't delete contact group" = "Névjegy csoport törlése sikertelen";
+
+/* The error message will be shown when the deletionn of the contact group through API failed */
+"Can't delete contact group through API" = "Névjegy csoport törlése az API-n keresztül meghiúsult";
+
+/* *
+ *  MessageViewController */
+"Can't download message body, please try again." = "Az üzenettörzs nem tölthető le, próbálja meg újra.";
+
+/* Error */
+"Can't download message body. Please try again." = "Az üzenettörzs nem tölthető le, próbálja meg újra.";
+
+/* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
+"Can't fetch contact groups" = "Névjegy csoportok letöltése nem sikerült";
+
+/* None */
+"Can't find the clicked message please try again!" = "A kiválasztott üzenet nem található. Próbálja meg újra!";
+
+/* Description */
+"Can't find the selected message. Please try again." = "Nem található a kijelölt üzenetet. Kérjük, próbálja meg újra.";
+
+/* when quick look attachment but can't find the data */
+"Can't find this attachment!" = "Ez a melléklet nem található!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls ID!" = "Nem szerezhető be egy Modulus azonosító!";
+
+/* update password error = typo:Modulus */
+"Can't get a Moduls!" = "Nem szerezhető be egy Modulus!";
+
+/* update password error */
+"Can't get user auth info" = "Nem szerezhető be a felhasználó azonosítási információ";
+
+/* This is a generic error when the user uses share feature. It is like when you share files from Dropbox but cant read the file correctly */
+"Can't load share content!" = "Nem tölthető be a megosztott tartalom!";
+
+/* Error */
+"Can't load the file" = "Nem tölthető be a fájl";
+
+/* Description */
+"Can't not find the value from the response body" = "A válasz törzsében nem található meg a kívánt érték";
+
+/* Error */
+"Can't open the file" = "A fájl nem nyitható meg";
+
+/* The error message title that will be shown when the contact group being created or edited can't be saved */
+"Can't save contact group" = "A névjegy csoport mentése sikertelen";
+
+/* The error message will be shown when the update of the contact group through API failed */
+"Can't update contact group through the API" = "Névjegy csoport frissítése API-n keresztül meghiúsult";
+
+/* Cancel action */
+"Cancel" = "Mégsem";
+
+/* Action */
+"Cancel Check" = "Ellenőrzés megszakítása";
+
+/* Title */
+"Cancelling" = "Megszakítás";
+
+/* None */
+"Cant' decrypt this attachment!" = "Melléklet visszafejtése sikertelen.";
+
+/* Title */
+"Cc" = "Másolat";
+
+/* message Cc: feild */
+"Cc:" = "Másolat:";
+
+/* place holder */
+"Cell phone number" = "Mobil telefonszám";
+
+/* change password input label */
+"Change Login Password" = "Bejelentkezési jelszó módosítása";
+
+/* Title */
+"Change Mailbox Password" = "E-mail jelszó módosítása";
+
+/* update password error title */
+"Change Password" = "Jelszó módosítása";
+
+/* settings protection section title */
+"Change Pin" = "PIN módosítása";
+
+/* Title */
+"Change Single Password" = "Egy jelszavas jelszó módosítása";
+
+/* Title */
+"Change default address to .." = "Alapértelmezett cím átállítása...";
+
+/* settings swipe actions section action description */
+"Change left swipe action" = "Balra csúsztatás művelet megváltoztatása";
+
+/* settings swipe actions section action description */
+"Change right swipe action" = "Jobbra csúsztatás művelet megváltoztatása";
+
+/* Title */
+"Change sender address to .." = "Feladó címének megváltoztatása...";
+
+/* Action */
+"Check Again" = "Ellenőrizze újra";
+
+/* loading message */
+"Checking ...." = "Ellenőrzés...";
+
+/* place holder */
+"Choose a Password" = "Adjon meg egy jelszót";
+
+/* contact placeholder */
+"City" = "Település";
+
+/* settings general section title */
+"Clear Local Message Cache" = "Helyi üzenet gyorstár törlése";
+
+/* general close action */
+"Close" = "Bezárás";
+
+/* the message will show when closing a draft from the share extension */
+"Closing" = "Bezárás";
+
+/* Action */
+"Compose" = "Levélírás";
+
+/* Title */
+"Compose to" = "Levélírás neki";
+
+/* Action */
+"Confirm" = "Jóváhagyás";
+
+/* "Login Password" */
+"Confirm Login Password" = "Bejelentkezési jelszó megerősítése";
+
+/* "Mailbox Password" */
+"Confirm Mailbox Password" = "E-mail jelszó megerősítése";
+
+/* Placeholder */
+"Confirm Password" = "Jelszó megerősítése";
+
+/* Title */
+"Confirm new login password" = "Új bejelentkezési jelszó megerősítése";
+
+/* Title */
+"Confirm new mailbox password" = "Új e-mail jelszó megerősítése";
+
+/* Placeholder */
+"Confirm new password" = "Új jelszó megerősítése";
+
+/* alert title */
+"Confirm phishing report" = "Erősítse meg az adathalász bejelentést";
+
+/* Title */
+"Confirmation" = "Megerősítés";
+
+/* view top title */
+"Congratulations!" = "Gratulálunk!";
+
+/* contact section title */
+"Contact Details" = "Névjegy részletei";
+
+/* Title */
+"Contact the ProtonMail team" = "Kapcsolatfelvétel a ProtonMail csapattal";
+
+/* Action and title
+   menu title */
+"Contacts" = "Névjegyek";
+
+/* Action */
+"Continue" = "Tovább";
+
+/* Action */
+"Continue and Don't ask again" = "Folytatás, ne kérdezze újra";
+
+/* Title */
+"Copy address" = "Cím másolása";
+
+/* Title */
+"Copy name" = "Név másolása";
+
+/* Error message */
+"Could not connect to Store. Please try again later." = "Nem sikerült csatlakozni az AppStore-hoz. Próbálja meg később.";
+
+/* contact placeholder */
+"Country" = "Ország";
+
+/* top right action text */
+"Create" = "Létrehozás";
+
+/* Create account button */
+"Create Account" = "Fiók létrehozása";
+
+/* Error */
+"Create User failed. Please try again." = "A felhasználó létrehozása nem sikerült. Próbálja meg újra.";
+
+/* Signup top title */
+"Create a new account" = "Új fiók létrehozása";
+
+/* Description */
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Címkékkel jelölheti meg a beérkezett üzeneteket. Érintsen meg hosszan egy üzenetet az összes lehetőség megjelenítéséhez.";
+
+/* None */
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Címkékkel jelölheti meg a beérkezett üzeneteket. Érintsen meg egy üzenetet és tartsa lenyomva a lehetőségek megjelenítéséhez.";
+
+/* error message title when create new user */
+"Create user failed" = "A felhasználó létrehozása nem sikerült";
+
+/* Change language title */
+"Current Language is: " = "Jelenlegi nyelv: ";
+
+/* Title */
+"Current login password" = "Jelenlegi bejelentkezési jelszó";
+
+/* Placeholder */
+"Current password" = "Jelenlegi jelszó";
+
+/* action sheet option
+   contacts default label type */
+"Custom" = "Egyéni";
+
+/* Title */
+"DECRYPT MAILBOX" = "LEVELEK VISSZAFEJTÉSE";
+
+/* mail location title */
+"DRAFTS" = "Piszkozatok";
+
+/* message Date: text */
+"Date:" = "Dátum:";
+
+/* like Date: 2017-10-10 */
+"Date: %@" = "Dátum: %@";
+
+/* Title */
+"Debug" = "Hibakeresés";
+
+/* Action */
+"Decrypt" = "Visszafejtés";
+
+/* Description */
+"Decrypt token failed. Please try again." = "Token visszafejtése sikertelen. Próbálja meg újra.";
+
+/* error title */
+"Decryption error" = "Visszafejtési hiba";
+
+/* error details */
+"Decryption of this content failed" = "A tartalom visszafejtése sikertelen";
+
+/* Title */
+"Default" = "Alapértelmezett";
+
+/* error message when create new user */
+"Default error. Please try again." = "Alapértelmezett hiba. Próbálja meg újra.";
+
+/* Placeholder */
+"Define Expiration Date" = "Lejárati időtartam meghatározása";
+
+/* Placeholder */
+"Define Hint (Optional)" = "Emlékeztető megadása (opcionális)";
+
+/* place holder */
+"Define Password" = "Jelszó megadása";
+
+/* general delete action */
+"Delete" = "Törlés";
+
+/* Title-Contacts */
+"Delete Contact" = "Névjegy törlése";
+
+/* The description of the button for deleting the contact group */
+"Delete Contact Group" = "Névjegy csoport törlése";
+
+/* mail location desc */
+"Deleted" = "Törölve";
+
+/* Title */
+"Details" = "Részletek";
+
+/* Action */
+"Discard changes" = "Módosítások elvetése";
+
+/* Action */
+"Discard draft" = "Piszkozat elvetése";
+
+/* Title in settings */
+"Display Name" = "Megjelenített név";
+
+/* Title */
+"Display Name Updated" = "Megjelenített név frissítve";
+
+/* None */
+"Display name" = "Megjelenítendő név";
+
+/* Title in display name settings */
+"DisplayName" = "Megjelenítendő név";
+
+/* Question is user wants to bypass username validation and activate plan for current username */
+"Do you want to activate the purchased service plan for " = "Aktiválja a megvásárolt csomagot a következőhöz: ";
+
+/* Description */
+"Do you want to cancel the process?" = "Megszakítja a folyamatot?";
+
+/* Title */
+"Do you want to save the unsaved changes?" = "Kívánja menteni a változásokat?";
+
+/* Title */
+"Don't Show Again" = "Ne jelenjen meg újra";
+
+/* Action */
+"Don't remind me again" = "Ne emlékeztessen újra";
+
+/* Done action */
+"Done" = "Kész";
+
+/* VoiceOver action description */
+"Double tap to setup" = "Duplán érintse meg a beállításhoz";
+
+/* Action
+   mail location desc */
+"Draft" = "Piszkozat";
+
+/* menu title */
+"Drafts" = "Piszkozatok";
+
+/* Action */
+"Edit" = "Szerkesztés";
+
+/* *
+ *  Edit Contact view controller */
+"Edit Contact" = "Névjegy szerkesztése";
+
+/* Title */
+"Edit Folder" = "Mappa szerkesztése";
+
+/* The title for the contact group editing view */
+"Edit Group" = "Csoport szerkesztése";
+
+/* Title */
+"Edit Label" = "Címke szerkesztése";
+
+/* The button text for edit profile picture */
+"Edit Photo" = "Fénykép szerkesztése";
+
+/* title */
+"Edit mobile signature" = "Mobil aláírás szerkesztése";
+
+/* title */
+"Edit signature" = "Aláírás szerkesztése";
+
+/* default vcard types */
+"Email" = "E-mail";
+
+/* contact detail view, email addresses section title */
+"Email Addresses" = "E-mail cím";
+
+/* Send an email to the current contact (button title text) */
+"Email Contact" = "E-mail küldése";
+
+/* human check option button */
+"Email Verification" = "E-mailes ellenőrzés";
+
+/* contact placeholder */
+"Email address" = "E-mail cím";
+
+/* Title */
+"Email address invalid" = "Érvénytelen e-mail cím";
+
+/* place holder */
+"Email default signature" = "Alapértelmezett e-mail aláírás";
+
+/* 
+ & title */
+"Email domain invalid" = "Érvénytelen email domain";
+
+/* empty folder, for spam and trash */
+"Empty Folder" = "Mappa kiürítése";
+
+/* Title */
+"Enable Default Signature" = "Alapértelmezett aláírás bekapcsolása";
+
+/* settings protection section title */
+"Enable FaceID" = "FaceID engedélyezése";
+
+/* Title */
+"Enable Mobile Signature" = "Mobil aláírás bekapcsolása";
+
+/* Title */
+"Enable Notification Email" = "Értesítési e-mail engedélyezése";
+
+/* settings protection section title */
+"Enable Pin Protection" = "PIN kódos védelem engedélyezése";
+
+/* settings protection section title */
+"Enable TouchID" = "TouchID engedélyezése";
+
+/* contact section title */
+"Encrypted Contact Details" = "Titkosított névjegy adatok";
+
+/* Title */
+"Encrypted for outside" = "Titkosított, külső címzettnek";
+
+/* Title */
+"Encrypted for outside reply" = "Titkosított, külső címzettnek, válasz";
+
+/* Title */
+"Encrypted from outside" = "Titkosított, külső feladótól";
+
+/* Title */
+"Encrypted from outside PGP inline" = "PGP/Inline titkosított, külső feladótól";
+
+/* Title */
+"Encrypted from outside PGP/MIME" = "PGP/MIME titkosított, külső feladótól";
+
+/* Title */
+"Encrypted from outside signed PGP/MIME" = "PGP/MIME aláírt és titkosított, külső feladótól";
+
+/* key setup top title */
+"Encryption Setup" = "Titkosítás beállítása";
+
+/* settings option (End Time: 8am) */
+"End Time" = "Befejezés";
+
+/* Title */
+"End-to-End Encryption" = "Végpontok közti titkosítás";
+
+/* encryption lock description */
+"End-to-end encrypted" = "Végpontok közt titkosított";
+
+/* encryption lock description */
+"End-to-end encrypted message" = "Végpontok közt titkosított üzenet";
+
+/* encryption lock description */
+"End-to-end encrypted message from verified address" = "Végpontok közt titkosított, ellenőrzött címről";
+
+/* encryption lock description */
+"End-to-end encrypted to verified address" = "Végpontok közt titkosított, ellenőrzött címre";
+
+/* Action in 2fa popup view */
+"Enter" = "Belépés";
+
+/* Title */
+"Enter Verification Code" = "Írja be az ellenőrző kódot";
+
+/* set pin title */
+"Enter your PIN" = "Írja be a PIN kódot";
+
+/* Title */
+"Enter your PIN to unlock your inbox." = "Írja be a PIN kódot a levelek feloldásához.";
+
+/* human verification top title */
+"Enter your cell phone number" = "Írja be a mobiltelefonszámát";
+
+/* top title */
+"Enter your existing email address." = "Adjon meg egy létező e-mail címet.";
+
+/* settings debug section title */
+"Error Logs" = "Hibanaplók";
+
+/* Error alert title */
+"Error occured" = "Hiba történt";
+
+/* lock app option */
+"Every time enter app" = "Az alkalmazás minden megnyitásakor";
+
+/* VoiceOver: email can expire */
+"Expires" = "Lejár";
+
+/* expiration time count down */
+"Expires in %d days %d hours %d mins %d seconds" = "Lejár %1$d nap, %2$d óra, %3$d perc, %4$d másodperc múlva";
+
+/* Title */
+"Expiring Messages" = "Időkorlátos üzenetek";
+
+/* Key size checkbox */
+"Extreme Security" = "Extrém biztonság";
+
+/* login page forgot pwd */
+"FORGOT PASSWORD?" = "Elfelejtett jelszó?";
+
+/* abbreviation of forward: */
+"FW:" = "Továbbítás:";
+
+/* Error message */
+"Failed to determine type of file" = "Nem sikerült meghatározni a fájl típusát";
+
+/* Error message */
+"Failed to get list of available products from AppStore." = "Nem sikerült betölteni az elérhető termékeket az AppStore-ból.";
+
+/* Description */
+"Failed to initialize the app's saved data" = "Nem sikerült inicializálni az alkalmazás által mentett adatokat";
+
+/* *
+ *  Core Data Service & local error */
+"Failed to initialize the application's saved data" = "Nem sikerült inicializálni az alkalmazás által mentett adatokat";
+
+/* default vcard types */
+"Fax" = "Fax";
+
+/* menu title */
+"Feedback" = "Visszajelzés";
+
+/* Error */
+"Fetch user info failed" = "Felhasználó adatainak betöltése nem sikerült";
+
+/* VoiceOver: email belongs to folder */
+"Folder" = "Mappa";
+
+/* place holder */
+"Folder Name" = "Mappa neve";
+
+/* Service Plan description */
+"For individuals looking to benefit from secure communication at no cost" = "Azoknak, akik ingyenesen szeretnének élni a biztonságos kommunikáció előnyeivel";
+
+/* Service Plan description */
+"For individuals that need more capacity, customization and advanced features" = "Azoknak, akiknek nagyobb csomagra, testreszabharóságra és komolyabb funkcióra van szüksége";
+
+/* Service Plan description */
+"For organizations that need multi-user support and additional productivity features" = "Szervezeteknek, akiknek több felhasználóra és további produktív funkciókra van szüksége";
+
+/* Service Plan description */
+"For power users and groups of people that value full anonymity and privacy" = "Magas szintű felhasználóknak és felhasználói csoportoknak, akik értékelik a teljes anonimitást és adatvédelmet";
+
+/* forward action */
+"Forward" = "Továbbítás";
+
+/* forwarded message title */
+"Forwarded message" = "Továbbított üzenet";
+
+/* Title */
+"From" = "Feladó";
+
+/* message From: field text */
+"From:" = "Feladó:";
+
+/* abbreviation of forward: */
+"Fwd:" = "Fwd:";
+
+/* contacts talbe cell gender title */
+"Gender" = "Nem";
+
+/* Title */
+"General Settings" = "Általános beállítások";
+
+/* Screen header, like 'Get VISIONARY' */
+"Get %@" = "%@ beszerzése";
+
+/* Action */
+"Get more information" = "További információk";
+
+/* Action */
+"Go to inbox" = "Ugrás a beérkezett üzenetekhez";
+
+/* The title for the contact group detail view */
+"Group Details" = "Csoport beállításai";
+
+/* The instruction label for the group name textfield */
+"Group Name" = "Csoport neve";
+
+/* menu title (contact groups) */
+"Groups" = "Csoportok";
+
+/* Title */
+"Help & Support" = "Segítség & támogatás";
+
+/* Title */
+"Help us to improve ProtonMail with your input." = "Segítsen a visszajelzéseivel a ProtonMail fejlesztésében.";
+
+/* Title */
+"Help us to make privacy the default in the web." = "Segítsen, hogy az személyes adatok védelmét alapértelmezetté tehessük az interneten.";
+
+/* Action */
+"Hide" = "Elrejtés";
+
+/* Title */
+"Hide Details" = "Részletek elrejtése";
+
+/* Key size checkbox */
+"High Security" = "Magas szintű biztonság";
+
+/* Title */
+"Hours" = "Óra";
+
+/* Description */
+"Human Check Failed" = "Robot ellenőrzés sikertelen";
+
+/* human check warning title */
+"Human Check Warning" = "Robot ellenőrzés figyelmeztetés";
+
+/* top title */
+"Human Verification" = "Bizonyítsa, hogy nem robot";
+
+/* Service plan capability */
+"IMAP/SMTP Support via ProtonMail Bridge" = "IMAP/SMTP támogatás a ProtonMail Bridge segítségével";
+
+/* mail location title */
+"INBOX" = "Beérkezett üzenetek";
+
+/* Action */
+"Import Error" = "Importálási hiba";
+
+/* Title */
+"Import File From..." = "Importálás fájlból...";
+
+/* import contact title */
+"Importing Contacts" = "Névjegyek importálása";
+
+/* Drag and drop zone for attachments */
+"Importing attachment, that can take a while" = "Melléklet importálása. Ez eltarthat egy ideig";
+
+/* Error */
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "A szolgáltatásink használatához el kell fogadnia a ProtonMail Felhasználási Feltételeket.";
+
+/* mail location desc
+   menu title */
+"Inbox" = "Beérkezett üzenetek";
+
+/* Error */
+"Incorrect PIN," = "Helytelen PIN-kód,";
+
+/* Title */
+"Incorrect password" = "Hibás jelszó";
+
+/* place holder */
+"Input Display Name ..." = "Írja be a megjelenítendő nevet...";
+
+/* place holder */
+"Input Notification Email ..." = "Írja be az értesítési e-mail címet...";
+
+/* Error */
+"Instant ProtonMail account creation has been temporarily disabled. Please go to https://protonmail.com/invite to request an invitation." = "A ProtonMail fiók létrehozás átmenetileg nem elérhető. Kérjük, látogasson el a https://protonmail.com/invite címre és kérjen egy meghívót.";
+
+/* The preconditions are not met */
+"Internal Error" = "Belső hiba";
+
+/* default vcard types */
+"Internet" = "Internet";
+
+/* Error */
+"Invalid Password" = "Hibás jelszó";
+
+/* Invalid URL error when click a url in contact */
+"Invalid URL" = "Érvénytelen URL cím";
+
+/* title */
+"Invalid UserName" = "Érvénytelen felhasználónév";
+
+/* Error message */
+"Invalid UserName!" = "Érvénytelen felhasználónév!";
+
+/* None */
+"Invalid access token please relogin" = "Érvénytelen elérési token, kérjük jelentkezzen be újra";
+
+/* Description */
+"Invalid access token. Please relogin." = "Érvénytelen elérési token, kérjük jelentkezzen be újra.";
+
+/* Error */
+"Invalid credential" = "Érvénytelen bejelentkezési adatok";
+
+/* update password error */
+"Invalid hashed password!" = "Érvénytelen hash-elt jelszó!";
+
+/* Error message */
+"Is this bug report about an in-app purchase?" = "Ez a hiba bejelentés egy alkalmazáson belüli vásárlást érint?";
+
+/* It is not possible to switch to `plan` within our iOS app. */
+"It is not possible to switch to %@ within our iOS app." = "Az iOS alkalmazásban nem lehet erre váltani: %@.";
+
+/* Error message */
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Nem sikerült összeegyeztetni a megvásárolt AppStore terméket a rendelkezésre álló termékeinkkel. Kérjük, küldjön egy hibabejelentést és ügyfélszolgálatunk felveszi önnel a kapcsolatot.";
+
+/* Title */
+"Keep me updated about new features" = "Tájékoztasson az új funkciókról";
+
+/* Error */
+"Key generation failed" = "Kulcs generálás sikertelen";
+
+/* Error */
+"Key generation failed. Please try again." = "Kulcs generálás sikertelen. Próbálja meg újra.";
+
+/* Error */
+"Key invalid. Please go back and try again." = "Érvénytelen kulcs. Kérjük, menjen vissza és próbálja meg újra.";
+
+/* None */
+"LOGIN" = "Bejelentkezés";
+
+/* Title */
+"Label Management" = "Címke kezelés";
+
+/* createing lable input place holder */
+"Label Name" = "Címke neve";
+
+/* Title */
+"Label as..." = "Címkézés, mint...";
+
+/* VoiceOver: email has lables */
+"Labels" = "Címkék";
+
+/* Title */
+"Labels have been applied." = "Címkék alkalmazva.";
+
+/* Service plan capability */
+"Labels, Folders, Filters & More" = "Címék, mappák, szűrők és még több";
+
+/* Title */
+"Labels/Folders" = "Címkék és mappák";
+
+/* Title */
+"Language" = "Nyelv";
+
+/* Action */
+"Learn More" = "További információk";
+
+/* learn more button */
+"Learn more here" = "További információk";
+
+/* Service plan capability */
+"Limited to 150 messages sent/day" = "Maximum 150 üzenet küldése naponta";
+
+/* Action */
+"Load remote content" = "Távoli tartalom betöltése";
+
+/* None */
+"Loading..." = "Betöltés...";
+
+/* Description */
+"Local cache can't find mailbox password" = "Nem található meg az e-mail jelszó a helyi gyorstárban";
+
+/* *
+ *  file string type */
+"Localizable.strings" = "Base";
+
+/* menu title */
+"Lock The App" = "Alkalmazás zárolása";
+
+/* Title */
+"Login" = "Bejelentkezés";
+
+/* settings general section title */
+"Login Password" = "Bejelentkezési jelszó";
+
+/* Error */
+"Login password doesn't match" = "Bejelentkezési a jelszó nem egyezik";
+
+/* menu title */
+"Logout" = "Kijelentkezés";
+
+/* error title */
+"Logs" = "Naplók";
+
+/* Upgrade warning title */
+"Looking to secure your contact's details?" = "Titkosítani szeretné a névjegyek részleteit?";
+
+/* *
+ *  MailboxPasswordViewController */
+"MAILBOX PASSWORD" = "E-mail jelszó";
+
+/* Default Prompt text shown in the prompt cell */
+"MBContactPickerPrompt" = "MBContactPickerPrompt";
+
+/* settings general section title */
+"Mailbox Password" = "E-mail jelszó";
+
+/* None */
+"Mailbox password doesn't match" = "Az e-mail jelszó nem egyezik";
+
+/* The title for the view where user can manage emails in the contact group */
+"Manage Addresses" = "Tagok kezelése";
+
+/* Title */
+"Manage Labels/Folders" = "Címékék és mappák kezelése";
+
+/* mark message as read action */
+"Mark Read" = "Megjelölés olvasottként";
+
+/* Action */
+"Mark as unread" = "Megjelölés olvasatlanként";
+
+/* menu title */
+"Menu" = "Menü";
+
+/* Message with title */
+"Message %@" = "Üzenet %@";
+
+/* Placeholder */
+"Message Password" = "Üzenet jelszó";
+
+/* settings debug section title */
+"Message Queue" = "Üzenet várólista";
+
+/* Title */
+"Message Swipe Actions" = "Üzenet csúsztatási műveletek";
+
+/* *
+ *  Expiration View */
+"Message expired" = "Az üzenet időkorlátja lejárt";
+
+/* Title */
+"Message has been deleted." = "Üzenet törölve.";
+
+/* Title */
+"Message has been moved." = "Üzenet áthelyezve.";
+
+/* Description */
+"Message password does not match." = "Az üzenet jelszó nem egyezik meg.";
+
+/* None */
+"Message sending failed please try again" = "Üzenet küldése sikertelen, próbálja meg újra";
+
+/* Description */
+"Message sending failed. Please try again." = "Üzenet küldése sikertelen. Próbálja meg újra.";
+
+/* Description after message have been sent */
+"Message sent" = "Üzenet elküldve";
+
+/* Description */
+"Messages you send can be set to auto delete after a certain time period." = "Az elküldött üzenetek beállíthatóak úgy, hogy bizonyos idő elteltével automatikusan törlődjenek.";
+
+/* default vcard types */
+"Mobile" = "Mobil";
+
+/* Mobile Signature title in settings */
+"Mobile Signature" = "Mobil aláírás";
+
+/* Description */
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "A mobil regisztráció átmenetileg nem érhető el. Kérjük, próbálja meg később, vagy regisztráljon a protonmail.com weblapon egy számítógépről.";
+
+/* Description */
+"Modifying or turning off the default mobile signature is a paid feature." = "A mobil aláírás szerkesztése vagy kikapcsolása csak előfizetéses csomagokban lehetséges.";
+
+/* More actions button */
+"More" = "Továbbiak";
+
+/* Screen header */
+"More Credits" = "Több kredit";
+
+/* move action */
+"Move to AllMail" = "Áthelyezés az Összes Üzenethez";
+
+/* move action */
+"Move to Archive" = "Archiválás";
+
+/* move action */
+"Move to Draft" = "Áthelyezés a piszkozatokhoz";
+
+/* folder apply - title */
+"Move to Folder" = "Áthelyezés mappába";
+
+/* move action */
+"Move to Inbox" = "Áthelyezés a beérkezett üzenetekhez";
+
+/* move action */
+"Move to Outbox" = "Áthelyezés a kimenő üzenetekhez";
+
+/* move action */
+"Move to Spam" = "Áthelyezés a levélszeméthez";
+
+/* move action */
+"Move to Trash" = "Áthelyezés a lomtárba";
+
+/* Title */
+"Move to..." = "Áthelyezés...";
+
+/* Title */
+"Multiple Addresses" = "Több cím";
+
+/* Action */
+"NEED AN ACCOUNT? SIGN UP." = "Regisztráljon ingyenesen";
+
+/* title */
+"Name" = "Név";
+
+/* Title */
+"New login password" = "Új bejelentkezési jelszó";
+
+/* Title */
+"New mailbox password" = "Új e-mail jelszó";
+
+/* Placeholder */
+"New password" = "Új jelszó";
+
+/* contacts talbe cell Nickname title */
+"Nickname" = "Becenév";
+
+/* message when mailbox doesnt have emailsß */
+"No Messages" = "Nincsenek üzenetek";
+
+/* Title */
+"No connectivity detected..." = "Nincs kapcsolat...";
+
+/* Warning message option when user want to relogin to another account */
+"No, for another ProtonMail account" = "Nem, egy másik ProtonMail fiókhoz";
+
+/* Error message */
+"No, not related to in-app purchase" = "Nem, nem érint alkalmazáson belüli vásárlást";
+
+/* A *short* description saying that there is no contact group associated with this contact email
+   Title */
+"None" = "Nincs";
+
+/* Action */
+"Not Now" = "Most nem";
+
+/* alert description */
+"Not all recipients support message expiration" = "Nem minden címzett támogatja az időkorlátos üzeneteket";
+
+/* Signup user name notes */
+"Note: The Username is also your ProtonMail address." = "Megjegyzés: A felhasználónév egyben a ProtonMail e-mail cím is.";
+
+/* setup password notes */
+"Note: This is used to encrypt and decrypt your messages. Do not lose this password, we cannot recover it." = "Megjegyzés: Ez az üzenetek titkosítására és visszafejtésére szolgál. Ne veszítse el ezt a jelszót - nem lehetséges helyreállítani.";
+
+/* setup password notes */
+"Note: This is used to log you into your account." = "Megjegyzés: Ez a fiókba való bejelentkezéshez használatos.";
+
+/* title */
+"Notes" = "Megjegyzések";
+
+/* Alert title */
+"Notice" = "Értesítés";
+
+/* Title */
+"Notification / Recovery Email" = "Értesítési és helyreállító e-mail cím";
+
+/* Title */
+"Notification Email" = "Értesítési e-mail";
+
+/* title of action sheet */
+"Notification Snooze" = "Értesítések szüneteltetése";
+
+/* VoiceOver description */
+"Notifications Are Snoozed" = "Értesítések szüneteltetve";
+
+/* VoiceOver description */
+"Notifications Snooze Off" = "Értesítések szüneteltetése Ki";
+
+/* Action */
+"OK" = "OK";
+
+/* Section header */
+"OTHER PLANS" = "TOVÁBBI CSOMAGOK";
+
+/* Title */
+"On" = "Ekkor:";
+
+/* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
+"On EE, MMM d, yyyy at %@" = "yyyy. MMM d., EE, %@";
+
+/* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "yyyy. MMM d., EE, keltezéssel, %1$@, %2$@ írta:";
+
+/* None */
+"OpenDraft" = "Piszkozat megnyitása";
+
+/* contacts talbe cell Organization title */
+"Organization" = "Szervezet";
+
+/* default vcard types */
+"Other" = "Egyéb";
+
+/* Error message */
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Ügyfélszolgálatunk megpróbálja manuálisan aktiválni az Ön szolgáltatási csomagját, amennyiben beleegyezik, hogy a vásárlás folyamán keletkező technikai adatok csatolva legyenek. Ezek az adatok nem tartalmazzák sem az iTunes, sem az Apple-azonosítót, sem pedig a bankkártyával vagy a felhasználóval kapcsolatos egyéb információkat. Mindössze azt segít ellenőrizni, hogy az ügylet teljesült-e az AppStore szerverein.";
+
+/* mail location desc */
+"Outbox" = "Kimenő";
+
+/* encryption lock description */
+"PGP-encrypted" = "PGP titkosított";
+
+/* encryption lock description */
+"PGP-encrypted message" = "PGP titkosított üzenet";
+
+/* encryption lock description */
+"PGP-encrypted message from verified address" = "PGP titkosított üzenet, ellenőrzött címről";
+
+/* encryption lock description */
+"PGP-signed" = "PGP aláírt";
+
+/* encryption lock description */
+"PGP-signed message from verified address" = "PGP aláírt üzenet, ellenőrzött címről";
+
+/* Upgrade warning title */
+"PREMIUM FEATURE" = "PRÉMIUM FUNKCIÓ";
+
+/* title */
+"Password" = "Jelszó";
+
+/* Title */
+"Password Mismatch" = "A jelszavak nem egyeznek meg";
+
+/* Title */
+"Password Updated" = "Jelszó frissítve";
+
+/* Description */
+"Password cannot be empty." = "A jelszó nem lehet üres.";
+
+/* update password error */
+"Password update failed" = "A jelszó frissítése nem sikerült";
+
+/* default vcard types */
+"Personal" = "Személyes";
+
+/* default vcard types */
+"Phone" = "Telefonszám";
+
+/* human check option button */
+"Phone Verification" = "Telefonos ellenőrzés";
+
+/* contact placeholder */
+"Phone number" = "Telefonszám";
+
+/* Title */
+"Phone number invalid" = "Érvénytelen telefonszám";
+
+/* Title */
+"Photo Library" = "Fotók";
+
+/* Description */
+"Pin code can't be empty." = "A PIN kód nem lehet üres.";
+
+/* alert description */
+"Please add a password for the following recipients." = "Kérjük, adjon meg jelszót a következő címzetteknek.";
+
+/* Description */
+"Please check your cell phone for the verification code." = "Kérjük, nézze meg az ellenőrző kódot a telefonján.";
+
+/* error message */
+"Please check your email for the verification code." = "Kérjük, nézze meg az ellenőrző kódot az e-mail címén.";
+
+/* alert description */
+"Please disable PGP Sending for following addresses." = "Kérjük, kapcsolja ki a PGP küldést a következő címzettekhez.";
+
+/* Description */
+"Please input a valid cell phone number." = "Adjon meg egy érvényes telefonszámot.";
+
+/* error message */
+"Please input a valid email address." = "Adjon meg egy érvényes e-mail címet.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Kérjük, hogy a vásárlás véglegesítéséhez és előfizetői csomagjának frissítéséhez jelentkezzen be ProtonMail fiókjába.";
+
+/* Error message */
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Kérjük, jelentkezzen be ProtonMail fiókjába, hogy az Ön által vásárolt előfizetői csomag aktiválásra kerüljön.";
+
+/* Error */
+"Please pick a user name first!" = "Kérjük, először válasszon egy felhasználónevet!";
+
+/* The message will show up when the user attempts to create a contact group without any name specified */
+"Please provide a group name" = "Kérjük, adjon meg egy csoport nevet";
+
+/* when switch sender but email has attachments */
+"Please remove all attachments before changing sender!" = "Kérjük, törölje az összes mellékletet, mielőtt megváltoztatja a feladót";
+
+/* The message will show up when the user attempts to create a contact group without any email selected */
+"Please select at least one email for the contact group" = "Kérjük, válasszon ki legalább egy e-mailt a névjegy-csoport számára";
+
+/* human check select option title */
+"Please select one of the following options:" = "Kérjük, válasszon egyet az alábbi lehetőségek közül:";
+
+/* Description */
+"Please set a password." = "Kérjük, állítson be jelszót.";
+
+/* None */
+"Please try a different domain." = "Kérjük, próbálkozzon másik domainnel.";
+
+/* None */
+"Please try a different email address." = "Kérjük, próbálkozzon másik e-mail címmel.";
+
+/* None */
+"Please try a different password." = "Kérjük, próbálkozzon másik jelszóval.";
+
+/* None */
+"Please try a different user name." = "Kérjük, próbálkozzon másik felhasználó névvel.";
+
+/* 
+
+ */
+"Please try again." = "Kérjük, próbálja meg újra";
+
+/* Error message */
+"Please unlock the app to proceed with your service plan activation" = "Kérjük, szolgáltatási csomagjának aktiválásához oldja fel az alkalmazást";
+
+/* Description */
+"Please use ProtonMail App login first." = "Kérjük, először a ProtonMail alkalmazás bejelentkezési felületét használja.";
+
+/* Alert */
+"Please use the web application to reset your password." = "Kérjük, a jelszó visszaállításához a webes alkalmazást használja.";
+
+/* None */
+"Please use the web version of ProtonMail to change your mailbox password!" = "Kérjük, hogy a postafiók jelszavának megváltoztatásához a ProtonMail webes verzióját használja!";
+
+/* Alert */
+"Please use the web version of ProtonMail to change your passwords!" = "Kérjük, hogy jelszavának megváltoztatásához a ProtonMail webes verzióját használja!";
+
+/* Description */
+"Please use your new password when signing in." = "Kérjük, hogy bejelentkezéskor az új jelszót használja.";
+
+/* The */
+"Please wait until the email downloaded!" = "Kis türelmét kérjük, amíg az e-mail letöltődik!";
+
+/* 
+ & alert title */
+"Please, manage it in your phone." = "Please, manage it in your phone.";
+
+/* Action */
+"Print" = "Nyomtatás";
+
+/* Title */
+"Protection" = "Védelem";
+
+/* settings protection section title */
+"Protection Entire App" = "A teljes alkalmazás védelme";
+
+/* Title */
+"ProtonMail" = "ProtonMail";
+
+/* Description */
+"ProtonMail Plus is required to customize your mobile signature" = "A mobil aláírás testreszabásához ProtonMail Plus előfizetés szükséges";
+
+/* Upgrade warning message */
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary csomagok lehetővé teszik, hogy a néven és e-mail címen kívül további kapcsolattartási adatokat is tárolhasson a névjegyekben. A ProtonMail használatával ezek az adatok olyan biztonságban lesznek, mint a végpontok közt titkosított üzenetek.";
+
+/* Description */
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "A ProtonMail nem küld hirdetéseket és nem él vissza magánéletével. Támogatása elengedhetetlen a ProtonMail fenntartásához. Támogathatja munkánkat adományokkal, vagy valamely előfizetői csomag választásával.";
+
+/* Title */
+"ProtonMail encrypted emails" = "ProtonMail által titkosított e-mailek";
+
+/* Description */
+"ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "A ProtonMail jelenleg offline, kérjük figyelje a bejelentéseket Twitter oldalunkon: https://twitter.com/protonmail";
+
+/* Service plan capability */
+"ProtonVPN included" = "Tartalmazza a ProtonVPN-t";
+
+/* Title */
+"Quick swipe actions" = "Gyors csúsztatási műveletek";
+
+/* Action */
+"RESET MAILBOX PASSWORD" = "POSTAFIÓK-JELSZÓ ALAPHELYZETBE ÁLLÍTÁSA";
+
+/* Title */
+"Rate & Review" = "Értékelés és vélemény írása";
+
+/* set pin title */
+"Re-Enter your PIN" = "Adja meg újra a PIN-kódját";
+
+/* abbreviation of reply: */
+"Re:" = "Re:";
+
+/* Title */
+"Reading device contacts data..." = "Az eszköz névjegyeinek olvasása...";
+
+/* Title */
+"Recovery Code" = "Helyreállító kód";
+
+/* Title */
+"Recovery Email" = "Helyreállító e-mail";
+
+/* Title */
+"Recovery Email Warning" = "Helyreállító e-mail figyelmeztetés";
+
+/* Title */
+"Remind Me Later" = "Emlékeztessen később";
+
+/* remove action */
+"Remove" = "Eltávolítás";
+
+/* un star message */
+"Remove Star" = "Csillag törlése";
+
+/* settings option (Repeat: sun, mon, thu) */
+"Repeat" = "Ismétlődés";
+
+/* reply action */
+"Reply" = "Válasz";
+
+/* reply all action */
+"Reply All" = "Válasz mindenkinek";
+
+/* composer view model impl */
+"Reply message" = "Válasz üzenet";
+
+/* None */
+"ReplyAll" = "Válasz mindenkinek";
+
+/* menu title */
+"Report Bugs" = "Hiba bejelentése";
+
+/* message details-> more action-> report phishing */
+"Report Phishing" = "Adathalászat bejelentése";
+
+/* alert message */
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Az adathalász kísérletként megjelölt üzeneteket a rendszer hozzánk továbbítja, hogy kiértékelhessük és fejleszthessük a szűrőinket. Ebben az esetben az üzenet teljes szövegéhez hozzáférhetünk.";
+
+/* link opeining confirmation */
+"Request Link Confirmation" = "Link jóváhagyás kérése";
+
+/* Title */
+"Resetting message cache ..." = "Üzenet gyorstár törlése...";
+
+/* Action */
+"Retry" = "Újra";
+
+/* email verify code resend count down */
+"Retry after %d seconds" = "Újraküldés %d mp után";
+
+/* mail location title */
+"SENT" = "Elküldött";
+
+/* mail location title */
+"SPAM" = "Levélszemét";
+
+/* Error */
+"SRP Client" = "SRP kliens";
+
+/* Error */
+"SRP Server" = "SRP szerver";
+
+/* mail location title */
+"STARRED" = "Csillagozott";
+
+/* Title */
+"Save" = "Mentés";
+
+/* title */
+"Save Changes" = "Változtatások mentése";
+
+/* Action */
+"Save draft" = "Piszkozat mentése";
+
+/* action sheet option */
+"Scheduled" = "Ütemezett";
+
+/* Title */
+"Search" = "Keresés";
+
+/* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
+"Select An Option" = "Válasszon egy lehetőséget";
+
+/* The title for the view where user can select the color for the group */
+"Select Color" = "Szín kiválasztása";
+
+/* None */
+"Select your language" = "Nyelv kiválasztása";
+
+/* Action */
+"Send" = "Küldés";
+
+/* Title */
+"Send Verification Code" = "Ellenőrző kód küldése";
+
+/* Action */
+"Send anyway" = "Küldés mindenképpen";
+
+/* Description */
+"Send message without subject?" = "Elküldi az üzenetet tárgy nélkül?";
+
+/* Title */
+"Send plain but stored enc" = "Titkosítatlanul küldve, titkosítottan tárolva";
+
+/* encryption lock description */
+"Sender Verification Failed" = "A küldő ellenőrzése sikertelen volt";
+
+/* Description */
+"Sending Message" = "Üzenet küldése";
+
+/* Alert title */
+"Sending message" = "Üzenet küldése";
+
+/* pm.me upgrade warning in composer */
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Üzenetek küldése a %1$@ címről előfizetéshez kötött. Az Ön üzenete az %2$@, alapértelmezett címről lesz elküldve";
+
+/* menu title */
+"Sent" = "Elküldött";
+
+/* Description */
+"Sent Failed" = "Küldés sikertelen";
+
+/* encryption lock description for auto reply */
+"Sent by ProtonMail with zero access encryption" = "A ProtonMail küldte, Zéró Hozzáférés titkosítással";
+
+/* encryption lock description */
+"Sent by you with end-to-end encryption" = "Ön által küldve, végpontok közt titkosítva";
+
+/* Description */
+"Server proofs not valid!" = "Szerver tanúsítvány (proof) érvénytelen!";
+
+/* Title */
+"Set Password" = "Jelszó beállítása";
+
+/* Description */
+"Set a password to encrypt this message for non-ProtonMail users." = "Állítson be egy jelszót a nem ProtonMail felhasználók számára küldött titkosított üzenethez.";
+
+/* Signup passwords top title */
+"Set passwords" = "Jelszavak beállítása";
+
+/* menu title */
+"Settings" = "Beállítások";
+
+/* Title */
+"Share Alert" = "Megosztási figyelmeztetés";
+
+/* action */
+"Share Contact" = "Névjegy megosztása";
+
+/* Title */
+"Share it with your friends" = "Ossza meg barátaival";
+
+/* Action */
+"Sign Out" = "Kijelentkezés";
+
+/* Title in signature settings */
+"Signature" = "Aláírás";
+
+/* Title */
+"Signature Updated" = "Aláírás frissítve";
+
+/* settings general section title */
+"Single Password" = "Jelszó";
+
+/* settings option */
+"Snooze Notifications" = "Értesítések szüneteltetése";
+
+/* title of action sheet when quick snooze is active (Snoozed for 30min) */
+"Snoozed for" = "Szüneteltetve:";
+
+/* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
+"Snoozed till" = "Szüneteltetve:";
+
+/* Error message for beta users */
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "Elnézést, de az iOS alkalmazás béta verziójából nem tudunk vásárlásokat fogadni. De azért köszönjük, hogy részt vesz a béta programban!";
+
+/* None */
+"Space Warning" = "Tárhely figyelmeztetés";
+
+/* mail location desc
+   menu title */
+"Spam" = "Levélszemét";
+
+/* Description */
+"Spammed" = "Levélszemét küldés";
+
+/* Description */
+"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+
+/* Title */
+"Star" = "Csillagozás";
+
+/* mail location desc
+   menu title
+   VoiceOver: email is starred */
+"Starred" = "Csillagozott";
+
+/* settings option (Start Time: 8am) */
+"Start Time" = "Kezdő időpont";
+
+/* contact placeholder */
+"State" = "Megye/régió";
+
+/* Title */
+"Storage" = "Tárhely";
+
+/* Title */
+"Storage Warning" = "Tároló figyelmeztetés";
+
+/* encryption lock description */
+"Stored with zero access encryption" = "Tárolva Nulla Hozzáférés titkosítással";
+
+/* contact placeholder */
+"Street" = "Utca, házszám";
+
+/* Placeholder */
+"Subject" = "Tárgy";
+
+/* subject: text when forward */
+"Subject:" = "Tárgy:";
+
+/* menu title */
+"Subscription" = "Előfizetés";
+
+/* Action */
+"Support ProtonMail" = "A ProtonMail támogatása";
+
+/* Service plan capability; i = 2 */
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "%i domain név (pl.: sajat@domain.hu)";
+
+/* settings swipe actions section title */
+"Swipe Left to Right" = "Csúsztatás balról jobbra";
+
+/* settings swipe actions section title */
+"Swipe Right to Left" = "Csúsztatás jobbról balra";
+
+/* Error */
+"System can't copy the file" = "A fájl másolása nem sikerült";
+
+/* mail location title */
+"TRASH" = "Lomtár";
+
+/* Title */
+"Take a Photo" = "Fotó készítése";
+
+/* alert description */
+"Tap send anyway to send without expiration to these recipients" = "Érintse meg, hogy ezeknek a címzetteknek időkorlát nélküli üzenetet küldjön";
+
+/* None */
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Köszönjük, hogy hibajelentést küldött. A bejelentést nyilvántartásba vettük.";
+
+/* update password error */
+"The Password is wrong." = "A megadott jelszó hibás.";
+
+/* Title */
+"The ProtonMail current offline..." = "A ProtonMail jelenleg offline...";
+
+/* 
+ */
+"The UserName have been taken." = "A felhasználónév foglalt.";
+
+/* Description */
+"The authentication credentials are invalid." = "A bejelentkezési adatok helytelenek.";
+
+/* 
+ */
+"The authentication token has expired." = "Az azonosítási token lejárt.";
+
+/* key size notes */
+"The current standard" = "A jelenlegi szabvány";
+
+/* Description */
+"The display name is now %@." = "A megjelenített név most: %@.";
+
+/* Description */
+"The draft cache is broken. Please try again." = "A piszkozat gyorstár elromlott. Próbálja meg újra.";
+
+/* error when sending the message */
+"The draft format incorrectly sending failed!" = "A küldés nem sikerült. A piszkozat formátuma hibás.";
+
+/* key size note part 1 */
+"The highest level of encryption available." = "Az elérhető legnagyobb titkosítási szint.";
+
+/* None */
+"The label name is duplicate" = "Van már ilyen címke";
+
+/* Error */
+"The mailbox password is incorrect." = "Az e-mail jelszó helytelen.";
+
+/* Alert message */
+"The maximum number of distinct recipients is %d" = "Egyszerre maximálisan %d különböző címzett szerepelhet";
+
+/* *
+ *  LabelsViewController */
+"The maximum number of labels is %d." = "A címkék maximális száma: %d.";
+
+/* None */
+"The new password can't empty" = "Az új jelszó nem lehet üres";
+
+/* update password error */
+"The new password can't empty." = "Az új jelszó nem lehet üres.";
+
+/* None */
+"The new password not match" = "A jelszavak nem egyeznek meg";
+
+/* update password error */
+"The new password not match." = "Az új jelszó nem egyezik.";
+
+/* recovery email notes */
+"The optional recovery email address allows you to reset your login password if you forget it." = "Az opcionális helyreállító e-mail cím, lehetőséget biztosít a bejelentkezési jelszó visszaállítására, ha elfelejtené azt.";
+
+/* Description */
+"The password you entered does not match the current password." = "A beírt jelszó nem egyezik meg a jelenlegi jelszóval.";
+
+/* Description */
+"The passwords you entered do not match." = "A beírt jelszavak nem egyeznek meg.";
+
+/* update password error */
+"The private key update failed." = "A privát kulcs frissítése nem sikerült.";
+
+/* Title */
+"The request timed out." = "A kérés túllépte az időkorlátot.";
+
+/* None */
+"The total attachment size can't be bigger than 25MB" = "A mellékletek maximális mérete összesen 25MB lehet";
+
+/* Description */
+"The total attachment size cannot exceed 25MB" = "A mellékletek teljes mérete nem haladhatja meg a 25MB-ot";
+
+/* 
+ & title */
+"The verification email invalid" = "Érvénytelen ellenőrző e-mail";
+
+/* Error */
+"The verification failed!" = "Az ellenőrzés sikertelen!";
+
+/* Description */
+"There was an error creating or loading the app's saved data." = "Hiba történt az alkalmazás mentett adatainak betöltésekor vagy létrehozásakor.";
+
+/* 
+ & local error */
+"There was an error creating or loading the application's saved data." = "Hiba történt az alkalmazás mentett adatainak betöltésekor vagy létrehozásakor.";
+
+/* Alert message */
+"This can take a while. Please do not dismiss the app." = "Ez eltarthat egy darabig. Ne hagyja el az alkalmazást.";
+
+/* alert desc */
+"This contact belongs to your Address Book." = "Ez a partner szerepel a névjegyek közt.";
+
+/* spam score warning */
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan továbbított!";
+
+/* spam score warning */
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Ez az e-mail a ProtonMailról feladottnak tűnik, de külső rendszerből érkezett és nem felelt meg az ellenőrzési követelményeknek. Lehet becsapós üzenet vagy hibásan továbbított!";
+
+/* spam score warning */
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Ez az üzenet lehetséges, hogy egy adathalászati kísérlet! Kérjük, alaposan ellenőrizze, hogy a feladó és az üzenet szövege megbízható-e.";
+
+/* contacts talbe cell Title title */
+"Title" = "Beosztás";
+
+/* Title */
+"To" = "Címzett";
+
+/* human verification notes */
+"To prevent abuse of ProtonMail,
+ we need to verify that you are human." = "A ProtonMaillel való visszaélések elkerülése érdekében
+ ellenőriznünk kell, hogy nem robot.";
+
+/* None */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
+
+/* Description */
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "Az e-mail fiók jelszavának helyreállításához, kérjük, használja a ProtonMail webes felületét, a protonmail.com címen";
+
+/* message To: feild */
+"To:" = "Címzett:";
+
+/* *
+ *  API Error & alert title */
+"Token expired" = "A token lejárt";
+
+/* Alert title */
+"Too many recipients" = "Túl sok címzett";
+
+/* settings touchid error */
+"TouchID is not enrolled, enable it in the system Settings" = "A TouchID nincs beállítva. Engedélyezze a rendszer Beállításoknál";
+
+/* settings touchid/faceid error */
+"TouchID not available" = "A TouchID nem érhető el";
+
+/* mail location desc
+   menu title
+   move action */
+"Trash" = "Lomtár";
+
+/* Title */
+"Trouble shooting guide" = "Problémamegoldó kézikönyv";
+
+/* action sheet option */
+"Turn Off" = "Kikapcsolás";
+
+/* Title */
+"Tweet about ProtonMail" = "Tweeteljen a ProtonMailről";
+
+/* Placeholder */
+"Two Factor Code" = "Kétlépcsős kód";
+
+/* Internal type casting error */
+"Type casting error" = "Type casting error";
+
+/* default vcard types */
+"URL" = "URL";
+
+/* Title */
+"USER LOGIN" = "Bejelentkezés";
+
+/* Description */
+"Unable to connect to the server" = "Nem lehet csatlakozni a kiszolgálóhoz";
+
+/* 
+ */
+"Unable to construct a valid URL with the following path: %@" = "Nem lehet érvényes URL-t létrehozni a következő útvonallal: %@";
+
+/* Description */
+"Unable to create SRP Client!" = "SRP kliens létrehozása nem sikerült!";
+
+/* Error */
+"Unable to decrypt message." = "Üzenet visszafejtése sikertelen.";
+
+/* Description */
+"Unable to edit this message offline" = "Ez az üzenet offline nem szerkeszthető";
+
+/* Description */
+"Unable to generate hashed password!" = "Nem sikerült a hash-elt jelszó létrehozása!";
+
+/* Error */
+"Unable to get contacts" = "Névjegyek betöltése sikertelen";
+
+/* Description */
+"Unable to parse authentication info!" = "Azonosítási információk feldolgozása sikertelen!";
+
+/* Description */
+"Unable to parse authentication token!" = "Azonosítási token feldolgozása sikertelen!";
+
+/* Description */
+"Unable to parse cached authentication token!" = "Azonosítási token feldolgozása sikertelen!";
+
+/* Description */
+"Unable to parse response" = "A válasz feldolgozása nem sikerült";
+
+/* Description */
+"Unable to parse the response object:
+%@" = "A válasz objektum feldolgozása nem sikerült:
+%@";
+
+/* Error */
+"Unable to parse token" = "A token feldolgozása nem sikerült";
+
+/* error when sending the message */
+"Unable to send the email" = "Az üzenet küldése sikertelen.";
+
+/* Action */
+"Undo" = "Visszavonás";
+
+/* Description */
+"Unknow Error" = "Ismeretlen hiba";
+
+/* None */
+"Unknow file" = "Ismeretlen fájl";
+
+/* title, default display name */
+"Unknown" = "Ismeretlen";
+
+/* Error */
+"Unknown Error" = "Ismeretlen hiba";
+
+/* None */
+"Unkonw Version" = "Ismeretlen verzió";
+
+/* Service plan capability; */
+"Unlimited messages sent/day" = "Korlátlan számú üzenet küldése";
+
+/* The verb for describing the unread action
+   VoiceOver: email is not read yet */
+"Unread" = "Olvasatlan";
+
+/* Error message */
+"Unsupported file type" = "Nem támogatott fájltípus";
+
+/* Service plan capability; i = 6 */
+"Up to %i users" = "%i felhasználó";
+
+/* like top right action text */
+"Update" = "Frissítés";
+
+/* Contacts Update contact */
+"Update Contact" = "Névjegy frissítése";
+
+/* update notification email error title */
+"Update Notification Email" = "Értesítési e-mail frissítése";
+
+/* title */
+"Update Now" = "Frissítés most";
+
+/* title */
+"Update Required" = "Frissítés szükséges";
+
+/* Service plan description footer */
+"Upgrade to a paid plan to benefit from more features" = "Váltson előfizetéses csomagra, hogy több hasznos lehetőséghez férjen hozzá";
+
+/* Error */
+"Upgrade to a paid plan to send from your %@ address" = "Váltson előfizetéses csomagra, hogy erről a címről is küldhessen üzenetet: %@";
+
+/* alert description */
+"Upgrade to get all paid features." = "Váltson csomagot, a fizetős funkciókért.";
+
+/* Action */
+"Upload Contacts" = "Névjegyek feltöltése";
+
+/* Description */
+"Upload iOS contacts to ProtonMail?" = "Feltölti az iOS névjegyeket a ProtonMailre?";
+
+/* default vcard types */
+"Url" = "Url";
+
+/* error when user already exist */
+"User already exist!" = "A felhasználónév már foglalt";
+
+/* None */
+"User is available!" = "A felhasználónév elérhető";
+
+/* 
+ & title */
+"User name exist" = "Felhasználónév létezik";
+
+/* 
+ & alert title */
+"User name invalid" = "Érvénytelen felhasználónév";
+
+/* Title */
+"Username" = "Felhasználónév";
+
+/* Title */
+"Verification code request failed" = "Ellenőrzési kód kérése nem sikerült";
+
+/* Title */
+"Verification code sent" = "Ellenőrzési kód elküldve";
+
+/* error title */
+"Verification error" = "Ellenőrzési hiba";
+
+/* error details */
+"Verification of this content’s signature failed" = "A tartalom aláírásának ellenőrzése sikertelen";
+
+/* None */
+"Version %@ %@" = "Verzió %@ %@";
+
+/* message details-> more action-> view headers */
+"View Headers" = "Fejlécek megtekintése";
+
+/* Action */
+"View Plans" = "Csomagok";
+
+/* Title */
+"Warning" = "Figyelem";
+
+/* human check warning description */
+"Warning: Before you pass the human check you can't sent email!!!" = "Figyelem: amíg nem teljesíti a robot kizáró ellenőrzést, nem küldhet leveleket!";
+
+/* Description */
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Figyelem: nem adott meg helyreállító e-mail címet. Ha elveszíti a jelszavát, így lehetetlen lesz visszaszereznie a fiók elérést. Biztos, hogy folytatja helyreállító e-mail nélkül?";
+
+/* Error message */
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Új előfizetését sikeresen aktiváltuk. Indítsa újra az alkalmazást, az új csomag funkcióinak eléréséhez.";
+
+/* text field notes */
+"We will send a verification code to the cell phone above." = "Egy ellenőrző kódot küldünk a fenti telefonszámra.";
+
+/* email field notes */
+"We will send a verification code to the email address above." = "Egy ellenőrző kódot küldünk a fenti e-mail címre.";
+
+/* Title */
+"We would like to know what we can do better." = "Szeretnénk tudni, hogy mit tudnánk jobbá tenni.";
+
+/* Title */
+"Welcome to ProtonMail!" = "Üdvözöljük a ProtonMailnél";
+
+/* Description */
+"What people see in the \"From\" field." = "Ez fog megjelenni a címzetteknél a \"Feladó\" sorában.";
+
+/* display name notes */
+"When you send an email, this is the name that appears in the sender field." = "E-mail küldésekor, ez a név fog megjelenni feladóként.";
+
+/* default vcard types */
+"Work" = "Munkahelyi";
+
+/* 
+ & title */
+"Wrong verification code" = "Hibás ellenőrző kód";
+
+/* Warning message option to bypass validation and activate plan for current username */
+"Yes, activate it for " = "Igen, aktiváljuk ehhez: ";
+
+/* Error message */
+"Yes, attach details of payment" = "Igen, csatolja a fizetési részleteket";
+
+/* link opeining confirmation */
+"You are about to launch the web browser and navigate to" = "Webböngészőt fog megnyitni a következő címmel:";
+
+/* Description */
+"You can customize swipe gestures in the ProtonMail App Settings." = "A csúsztatásos műveleteket a ProtonMail Beállítások menüjében állíthatja be igényeihez.";
+
+/* Description */
+"You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Segítséget és támogatást kaphat a protonmail.com/support webhelyen. A hibákat az alkalmazás segítségével is jelentheti.";
+
+/* pm.me upgrade warning in composer */
+"You can't set %@ address as default because it is a paid feature." = "%@ cím nem állítható be az alapértelmezettként, mert ez egy fizetős szolgáltatás.";
+
+/* description */
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Nem minden címzett támogatja az időkorlátos üzeneteket. Adjon meg jelszót és/vagy kapcsolja ki a PGP küldést, hogy minden címzetthez időkorlátos üzenetet küldhessen.";
+
+/* Message */
+"You have %d new emails!" = "%d új üzenete van!";
+
+/* Title */
+"You have a new email!" = "Új üzenete érkezett!";
+
+/* Confirmation message */
+"You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
+
+/* Description */
+"You have used %d%% of your storage space (%@)." = "Eddig %1$d%%-ot használt fel a rendelkezésre álló helyből (%2$@).";
+
+/* Description */
+"You have used up all of your storage space (%@)." = "Az összes rendelkezésre álló tárhelyet elhasználta (%@).";
+
+/* Description */
+"You need at least one recipient to send" = "A küldéshez legalább 1 címzett megadása szükséges";
+
+/* view top title */
+"Your Country Code" = "Országkód";
+
+/* Description */
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "A beérkezett üzenetek mostantól végpontok közötti titkosítással védettek. Amennyiben szeretné elküldött üzeneteit automatikusan biztonságossá tenni, kérje fel ismerőseit a ProtonMail használatára! Természetesen manuálisan is küldhet titkosított e-mailt, amennyiben a címzett nem ProtonMail felhasználó.";
+
+/* Description */
+"Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Az új e-mail fiókja készen áll a titkosított üzenetek fogadására és küldésére.";
+
+/* view top title */
+"Your new secure email
+ account is ready." = "Az új biztonságos e-mail
+ fiókja készen áll.";
+
+/* Service plan description footer */
+"Your plan is currently active until" = "A jelenlegi csomagja aktív:";
+
+/* Service plan description footer */
+"Your plan will automatically renew on" = "A jelenlegi csomagja automatikusan megújításra kerül:";
+
+/* Description */
+"Your signature has been updated." = "Az aláírás frissítve.";
+
+/* contact placeholder */
+"ZIP" = "Irányítószám";
+
+/* agree check box middle word */
+"and" = "és";
+
+/* like at 10:00pm */
+"at" = ".";
+
+/* Error */
+"attempt remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
+
+/* Description */
+"attempts remaining" = "kísérlet maradt";
+
+/* Error */
+"attempts remaining until secure data wipe!" = "kísérlet maradt az adatok biztonságos törléséig!";
+
+/* Action */
+"close tour" = "bemutató bezárása";
+
+/* Title */
+"days" = "Nap";
+
+/* Buy button second line */
+"for one year" = "egy évre";
+
+/* contacts api error when fetch */
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() failed, peopleOrderedByUsersPreference return null!!";
+
+/* None */
+"hours" = "Óra";
+
+/* Title */
+"inline attachments" = "beszúrt mellékletek";
+
+/* no object error, local only , this could be not translated! */
+"no object" = "no object";
+
+/* Title */
+"normal attachments" = "csatolt mellékletek";
+
+/* agree check box privacy */
+"privacy policy." = "adatvédelmi irányelvek.";
+
+/* agree check box terms */
+"terms and conditions" = "felhasználási feltételek";
+
+/* Title */
+"wrote:" = "írta:";
+
