@@ -26,6 +26,10 @@ import Foundation
 extension UIImage {
     
     enum Top {
+        static var archive: UIImage? {
+            return UIImage(named: "top_archive")
+        }
+
         static var compose: UIImage? {
             return UIImage(named: "top_compose")
         }

@@ -653,7 +653,23 @@ class UserDataService : Service {
             completion(self.userInfo, nil, response?.error)
         }
     }
-    
+
+    func updateShowArchiveButton(status: Bool, completion: @escaping UserInfoBlock) {
+        guard let userInfo = self.userInfo,
+            let cachedMainKey = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+
+        // TODO: save settings server-side
+        DispatchQueue.main.async {
+            userInfo.showArchiveButton = status
+            self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
+            completion(self.userInfo, nil, nil)
+        }
+    }
+
     #if !APP_EXTENSION
     func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
         guard let authCredential = AuthCredential.fetchFromKeychain(),

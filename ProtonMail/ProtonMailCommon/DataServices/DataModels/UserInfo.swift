@@ -61,6 +61,7 @@ final class UserInfo : NSObject {
             return self.showImages.contains(.remote)
         }
     }
+    var showArchiveButton : Bool = false
     var swipeLeft : Int = 3
     var swipeRight : Int = 0
     var linkConfirmation: LinkOpeningMode = .confirmationAlert
@@ -89,6 +90,7 @@ final class UserInfo : NSObject {
         displayName: String?, maxSpace: Int64?, notificationEmail: String?, signature: String?,
         usedSpace: Int64?, userAddresses: [Address]?,
         autoSC:Int?, language:String?, maxUpload:Int64?, notify:Int?, showImage:Int?,  //v1.0.8
+        showArchiveButton: Bool?,
         swipeL:Int?, swipeR:Int?,  //v1.1.4
         role:Int?,
         delinquent : Int?,
@@ -118,6 +120,7 @@ final class UserInfo : NSObject {
         self.defaultSignature = signature ?? ""
         self.autoSaveContact  = autoSC ?? 0
         self.showImages = ShowImages(rawValue: showImage ?? 0)
+        self.showArchiveButton = showArchiveButton ?? false
         self.swipeLeft = swipeL ?? 3
         self.swipeRight = swipeR ?? 0
         
@@ -276,6 +279,7 @@ extension UserInfo: NSCoding {
         static let maxUpload = "maxUpload"
         static let notify = "notify"
         static let showImages = "showImages"
+        static let showArchiveButton = "showArchiveButton"
         
         static let swipeLeft = "swipeLeft"
         static let swipeRight = "swipeRight"
@@ -319,6 +323,7 @@ extension UserInfo: NSCoding {
             maxUpload:aDecoder.decodeInt64(forKey: CoderKey.maxUpload),
             notify:aDecoder.decodeInteger(forKey: CoderKey.notify),
             showImage:aDecoder.decodeInteger(forKey: CoderKey.showImages),
+            showArchiveButton:aDecoder.decodeBool(forKey: CoderKey.showArchiveButton),
             
             swipeL:aDecoder.decodeInteger(forKey: CoderKey.swipeLeft),
             swipeR:aDecoder.decodeInteger(forKey: CoderKey.swipeRight),
@@ -358,6 +363,7 @@ extension UserInfo: NSCoding {
         aCoder.encode(defaultSignature, forKey: CoderKey.signature)
         aCoder.encode(autoSaveContact, forKey: CoderKey.autoSaveContact)
         aCoder.encode(showImages.rawValue, forKey: CoderKey.showImages)
+        aCoder.encode(showArchiveButton, forKey: CoderKey.showArchiveButton)
         aCoder.encode(swipeLeft, forKey: CoderKey.swipeLeft)
         aCoder.encode(swipeRight, forKey: CoderKey.swipeRight)
         aCoder.encode(userId, forKey: CoderKey.userId)

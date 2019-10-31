@@ -48,15 +48,24 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         // navigation bar buttons
         let moreButton = UIBarButtonItem(image: UIImage.Top.more, style: .plain, target: self, action: #selector(topMoreButtonTapped))
         moreButton.accessibilityLabel = LocalString._general_more
-        let trashButton = UIBarButtonItem(image: UIImage.Top.trash, style: .plain, target: self, action: #selector(topTrashButtonTapped))
-        trashButton.accessibilityLabel = LocalString._menu_trash_title
+
+        let disposeButton: UIBarButtonItem
+
+        if let userInfo = sharedUserDataService.userInfo, userInfo.showArchiveButton {
+            disposeButton = UIBarButtonItem(image: UIImage.Top.archive, style: .plain, target: self, action: #selector(topArchiveButtonTapped))
+            disposeButton.accessibilityLabel = LocalString._menu_archive_title
+        } else {
+            disposeButton = UIBarButtonItem(image: UIImage.Top.trash, style: .plain, target: self, action: #selector(topTrashButtonTapped))
+            disposeButton.accessibilityLabel = LocalString._menu_trash_title
+        }
+
         let folderButton = UIBarButtonItem(image: UIImage.Top.folder, style: .plain, target: self, action: #selector(topFolderButtonTapped))
         folderButton.accessibilityLabel = LocalString._move_to_
         let labelButton = UIBarButtonItem(image: UIImage.Top.label, style: .plain, target: self, action: #selector(topLabelButtonTapped))
         labelButton.accessibilityLabel = LocalString._label_as_
         let unreadButton = UIBarButtonItem(image: UIImage.Top.unread, style: .plain, target: self, action: #selector(topUnreadButtonTapped))
         unreadButton.accessibilityLabel = LocalString._mark_as_unread
-        self.navigationItem.setRightBarButtonItems([moreButton, trashButton, folderButton, labelButton, unreadButton], animated: true)
+        self.navigationItem.setRightBarButtonItems([moreButton, disposeButton, folderButton, labelButton, unreadButton], animated: true)
         
         // others
         self.bottomView.delegate = self
@@ -120,6 +129,10 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         if let url = self.viewModel.bodyTemporaryUrl() {
             self.coordinator.previewQuickLook(for: url)
         }
+    }
+    @objc func topArchiveButtonTapped(_ sender: UIBarButtonItem) {
+        self.viewModel.moveThread(to: .archive)
+        self.coordinator.dismiss()
     }
     @objc func topTrashButtonTapped(_ sender: UIBarButtonItem) {
         func remove() {

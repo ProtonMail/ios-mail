@@ -1009,6 +1009,8 @@ class LocalizedString {
     lazy var _clear_local_message_cache = NSLocalizedString("Clear Local Message Cache", comment: "settings general section title")
     /// "Auto Show Images"
     lazy var _auto_show_images = NSLocalizedString("Auto Show Images", comment: "settings general section title")
+    /// "Show Archive Button"
+    lazy var _show_archive_button = NSLocalizedString("Archive messages instead of deleting", comment: "settings general section title")
     /// "Swipe Left to Right"
     lazy var _swipe_left_to_right = NSLocalizedString("Swipe Left to Right", comment: "settings swipe actions section title")
     /// "Swipe Right to Left"

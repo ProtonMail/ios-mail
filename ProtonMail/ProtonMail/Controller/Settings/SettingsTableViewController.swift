@@ -52,7 +52,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .version] //.Debug,
     
     var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
+                                                            .mbp, .autoLoadImage, .showArchiveMessageButton, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -119,9 +119,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         self.updateProtectionItems()
         
         if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
+            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .showArchiveMessageButton, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
         } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
+            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .showArchiveMessageButton, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
         }
         if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
             setting_general_items.append(.notificationsSnooze)
@@ -228,6 +228,32 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                     let view = UIApplication.shared.keyWindow ?? UIView()
                                     MBProgressHUD.showAdded(to: view, animated: true)
                                     sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
+                                        MBProgressHUD.hide(for: view, animated: true)
+                                        if let error = error {
+                                            feedback(false)
+                                            let alertController = error.alertController()
+                                            alertController.addOKAction()
+                                            self.present(alertController, animated: true, completion: nil)
+                                        } else {
+                                            feedback(true)
+                                        }
+                                    })
+                                } else {
+                                    feedback(false)
+                                }
+                            })
+                        }
+                        cellout = cell
+                    case .showArchiveMessageButton:
+                        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
+                        cell.accessoryType = UITableViewCell.AccessoryType.none
+                        cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                        if let userInfo = userInfo {
+                            cell.configCell(itme.description, bottomLine: "", status: userInfo.showArchiveButton, complete: { (cell, newStatus, feedback: @escaping ActionStatus) -> Void in
+                                if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
+                                    let view = UIApplication.shared.keyWindow ?? UIView()
+                                    MBProgressHUD.showAdded(to: view, animated: true)
+                                    sharedUserDataService.updateShowArchiveButton(status: newStatus, completion: { (_, _, error) in
                                         MBProgressHUD.hide(for: view, animated: true)
                                         if let error = error {
                                             feedback(false)
@@ -560,7 +586,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                         self.present(alert, animated: true, completion: nil)
                         
-                    case .autoLoadImage, .linkOpeningMode, .metadataStripping:
+                    case .autoLoadImage, .linkOpeningMode, .metadataStripping, .showArchiveMessageButton:
                         break
                     }
                 }
