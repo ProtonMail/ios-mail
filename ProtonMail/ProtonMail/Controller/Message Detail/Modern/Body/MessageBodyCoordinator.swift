@@ -22,6 +22,7 @@
     
 
 import Foundation
+import SafariServices
 
 class MessageBodyCoordinator {
     private weak var controller: MessageBodyViewController!
@@ -35,15 +36,20 @@ class MessageBodyCoordinator {
     }
     
     internal func open(url originalURL: URL) {
-        if let url = userCachedStatus.browser.deeplink(to: originalURL),
-            UIApplication.shared.canOpenURL(url)
-        {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
-            return
+        if userCachedStatus.browser == .inAppBrowser {
+            let safari = SFSafariViewController(url: originalURL)
+            controller.present(safari, animated: true)
+        } else {
+            var urlToOpen = originalURL
+
+            if let customSchemeURL = userCachedStatus.browser.deeplink(to: originalURL),
+                UIApplication.shared.canOpenURL(customSchemeURL)
+            {
+                urlToOpen = customSchemeURL
+            }
+
+            UIApplication.shared.open(urlToOpen, options: [:], completionHandler: nil)
         }
-        
-        // fallback to Safari if there are any problems
-        UIApplication.shared.open(originalURL, options: [:], completionHandler: nil)
     }
     
     internal func mail(to url: URL) {

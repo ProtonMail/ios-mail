@@ -664,6 +664,8 @@ class LocalizedString {
     /// "Resetting message cache ..."
     lazy var _settings_resetting_cache = NSLocalizedString("Resetting message cache ...", comment: "Title")
 
+    /// "In-app browser"
+    lazy var _in_app_browser = NSLocalizedString("In-app browser", comment: "Option in browser list")
     /// "This preference will fallback to Safari if the browser of choice will be uninstalled."
     lazy var _settings_browser_disclaimer = NSLocalizedString("This preference will fallback to Safari if the browser of choice will be uninstalled.", comment: "Title")
     
