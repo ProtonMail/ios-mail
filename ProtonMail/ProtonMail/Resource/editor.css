@@ -31,8 +31,14 @@ body {
     width: 100%;
     box-sizing: border-box;
     padding: 1rem;
-    word-break: break-word;
     color: #505061;
+    /* outside of tables we force wrap long text */
+    word-break: break-word;
+}
+
+table * {
+    /* inside of tables we use detault wrapping for best formatting (such as Amazon reciept emails) */
+    word-break: initial;
 }
 
 blockquote {
@@ -182,7 +188,8 @@ img {
     border: 0;
     -ms-interpolation-mode: bicubic;
     max-width: 100%;
-    height: auto; /* will prevent embed image improper sizing */
+    /* will prevent embed image improper sizing */
+    /*    height: auto; remove it if test ok*/
 }
 
 td {
@@ -192,6 +199,7 @@ td {
 table {
     /* Some html newsletters set up inline style for tables to take 100% of height and then add footer contents like Unsubscribe button and credits. This practice breaks MessageBodyViewController layout: webView does not include footer into contentSize because consider it to be scrollable. No matter what, webView will place footer below the bottomline of the view in order to make users scroll for it. Since we do not want webViews to be scrollable (in order to support conversation mode), we have to override this styling practice and let table take as much space as its content really needs and place the footer just below. */
     height: auto !important;
+    min-height: auto !important;
 }
 
 svg:not(:root) {
