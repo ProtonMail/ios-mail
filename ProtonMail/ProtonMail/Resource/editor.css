@@ -41,6 +41,10 @@ table * {
     word-break: initial;
 }
 
+table a {
+    word-break: break-word;
+}
+
 blockquote {
     padding: 0 0 0 0.6rem !important;
     margin: 0 !important;
@@ -191,6 +195,10 @@ img {
     /* will prevent embed image improper sizing */
     /*    height: auto; remove it if test ok*/
 }
+
+/*img.proton-embedded {*/
+/*    height: auto;*/
+/*}*/
 
 td {
     max-width: 100%;
