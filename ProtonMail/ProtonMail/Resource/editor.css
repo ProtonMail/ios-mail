@@ -41,7 +41,7 @@ table * {
     word-break: initial;
 }
 
-table a {
+table a, table p {
     word-break: break-word;
 }
 
