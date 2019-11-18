@@ -101,7 +101,7 @@ enum LinkOpener: String, CaseIterable {
                 return URL(string: "firefox-focus://open-url?url=\(escapedUrl)")
             }
         case .brave:
-            if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
+            if let escapedUrl = url.absoluteString.addingPercentEncoding(withAllowedCharacters: .urlQueryValueAllowed) {
                 return URL(string: "brave://open-url?url=\(escapedUrl)")
             }
         case .yandex:
