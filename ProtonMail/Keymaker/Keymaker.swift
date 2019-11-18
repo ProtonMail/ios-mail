@@ -41,9 +41,9 @@ public class Keymaker: NSObject {
         defer {
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                       name: UIWindowScene.willEnterForegroundNotification, object: nil)
+                                                       name: UIApplication.willEnterForegroundNotification, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                       name: UIWindowScene.didActivateNotification, object: nil)
+                                                       name: UIApplication.willEnterForegroundNotification, object: nil)
             } else {
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                        name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -128,7 +128,7 @@ public class Keymaker: NSObject {
             NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
             return false
         }
-        if let _ = self._mainKey {
+        if let _ = self.mainKey {
             self.resetAutolock()
         }
         return true
