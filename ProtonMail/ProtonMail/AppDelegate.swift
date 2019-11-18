@@ -210,6 +210,18 @@ extension AppDelegate: UIApplicationDelegate {
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
+        #if DEBUG
+        NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in
+            (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
+        }
+        NotificationCenter.default.addObserver(forName: Keymaker.obtainedMainKey, object: nil, queue: .main) { notification in
+            "Obtained main key".alertToastBottom()
+        }
+        NotificationCenter.default.addObserver(forName: Keymaker.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
+            "Removed main key from memory".alertToastBottom()
+        }
+        #endif
+        
         if #available(iOS 12.0, *) {
             let intent = WipeMainKeyIntent()
             let suggestions = [INShortcut(intent: intent)!]
