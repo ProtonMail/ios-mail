@@ -215,11 +215,14 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         let body = standalone.observe(\.heightOfBody) { [weak self] _, _ in
             // this super-short animation duration will make animation invisible, otherwise it looks like cell is unfolding from top to bottom with a default 0.3s duration and resizing afrer zoom looks jumpy
-            UIView.animate(withDuration: 0.001, animations: {
-                self?.saveOffset()
-                self?.tableView?.beginUpdates()
-                self?.tableView?.endUpdates()
-                self?.restoreOffset()
+            UIView.animate(withDuration: 0.001, animations: { [weak self] in
+                guard let self = self, let tableView = self.tableView else {
+                    return
+                }
+                self.saveOffset()
+                tableView.beginUpdates()
+                tableView.endUpdates()
+                self.restoreOffset()
             })
         }
         self.standalonesObservation.append(body)
