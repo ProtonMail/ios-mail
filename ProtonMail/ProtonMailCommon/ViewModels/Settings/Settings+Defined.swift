@@ -55,7 +55,7 @@ extension ELanguage {
             case .italian:
                 return "Italiano"
             case .portugueseBrazil:
-                return "Portuguese Brazil"
+                return "Português do Brasil"
             case .chineseSimplified:
                 return "简体中文"
             case .chineseTraditional:
@@ -83,7 +83,7 @@ extension ELanguage {
             case .japanese:
                 return "日本語"
             case .indonesian:
-                return "Bahasa Indonesia"
+                return "bahasa Indonesia"
             case .count:
                 return ""
             }
