@@ -121,12 +121,15 @@ class contactTests: XCTestCase {
         
         let cells = app.tables.staticTexts.containing(label: sampleContact)
         cells.allElementsBoundByIndex.first?.tap()
-        tablesQuery.cells.staticTexts[shareContactLabel].tap()
-        Thread.sleep(forTimeInterval: 0.5)
         
         if #available(iOS 13.0, *) {
-            app.navigationBars["UIActivityContentView"].buttons[closeLabel].tap()
+            
+            //skip
+            
         } else {
+            
+            tablesQuery.cells.staticTexts[shareContactLabel].tap()
+            Thread.sleep(forTimeInterval: 0.5)
             app.buttons[cancelLabel].tap()
         }
         

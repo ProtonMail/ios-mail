@@ -46,6 +46,7 @@ import UIKit
     func configCell(_ left:String, right:String) {
         LeftText.text = left
         RightText.text = right
+        self.accessibilityLabel = left
     }
 }
 

@@ -203,14 +203,14 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     switch itme {
                     case .notifyEmail:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description
-                        cell.RightText.text = userInfo?.notificationEmail
+                        cell.configCell(leftText: itme.description,
+                                        rightText: userInfo?.notificationEmail ?? "")
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .loginPWD, .mbp, .singlePWD:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
-                        cell.LeftText.text = itme.description
-                        cell.RightText.text = LocalString._settings_secret_x_string
+                        cell.configCell(leftText: itme.description,
+                                        rightText: LocalString._settings_secret_x_string)
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .cleanCache:
@@ -251,9 +251,9 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cellout = cell
                     case .browser:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
-                        cell.domainText.text = itme.description
                         let browser = userCachedStatus.browser
-                        cell.defaultMark.text = browser.isInstalled ? browser.title : LinkOpener.safari.title
+                        cell.configCell(domainText: itme.description,
+                                        defaultMark: browser.isInstalled ? browser.title : LinkOpener.safari.title)
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                         
@@ -374,8 +374,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         }
                         
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
-                        cell.LeftText.text = item.description
-                        cell.RightText.text = text
+                        cell.configCell(leftText: item.description,
+                                        rightText: text)
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     }
@@ -395,20 +395,23 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     case .addresses:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
                         if let addr = multi_domains.defaultAddress() {
-                            cell.domainText.text = addr.email
+                            cell.configCell(domainText: addr.email,
+                                            defaultMark: LocalString._general_default)
                         } else {
-                            cell.domainText.text = LocalString._general_unknown_title
+                            cell.configCell(domainText: LocalString._general_unknown_title,
+                                            defaultMark: LocalString._general_default)
                         }
-                        cell.defaultMark.text = LocalString._general_default
+                        
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
                     case .displayName:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingTwoLinesCell, for: indexPath) as! SettingsCell
-                        cell.LeftText.text = address_item.description
                         if let addr = userInfo?.userAddresses.defaultAddress() {
-                            cell.RightText.text = addr.display_name
+                            cell.configCell(leftText: address_item.description,
+                                            rightText: addr.display_name)
                         } else {
-                            cell.RightText.text = userInfo?.displayName.decodeHtml()
+                            cell.configCell(leftText: address_item.description,
+                                            rightText: userInfo?.displayName.decodeHtml() ?? "")
                         }
                         cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                         cellout = cell
@@ -429,8 +432,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     let actionItem = setting_swipe_action_items[indexPath.row]
                     let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell
                     let action = actionItem == .left ? userInfo?.swipeLeftAction : userInfo?.swipeRightAction
-                    cell.domainText.text = actionItem.description
-                    cell.defaultMark.text = action?.description
+                    cell.configCell(domainText: actionItem.description,
+                                    defaultMark: action?.description ?? "")
                     cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                     cellout = cell
                 }
