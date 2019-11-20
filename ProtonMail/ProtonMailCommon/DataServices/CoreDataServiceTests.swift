@@ -97,7 +97,7 @@ class CoreDataServiceTests: XCTestCase {
             "IsReplied" : 0
         }
         """
-        guard let metaMsg = metadata1.parseObjectAny() else {
+        guard let metaMsg = metadata.parseObjectAny() else {
             return
         }
         
