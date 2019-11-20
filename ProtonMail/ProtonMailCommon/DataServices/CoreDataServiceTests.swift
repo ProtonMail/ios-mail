@@ -33,6 +33,95 @@ class CoreDataServiceTests: XCTestCase {
         
     }
     
+    
+    func testMessageTableWithEmptyValues() {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+        //        try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
+        let coredata = CoreDataService(store: CoreDataStore.shared.memoryPersistentStore)
+        let metadata = """
+     {
+        "IsForwarded" : 0,
+        "IsEncrypted" : 1,
+        "ExpirationTime" : 0,
+        "ReplyTo" : {
+            "Address" : "contact@protonmail.ch",
+            "Name" : "ProtonMail"
+        },
+        "Subject" : "Important phishing warning for all ProtonMail users",
+        "Size" : 2217,
+        "ToList" : "null",
+        "Order" : 200441873160,
+        "IsRepliedAll" : 0,
+        "ExternalID" : "MQV54A1N98S8ASTB7Z183NM1MG@protonmail.ch",
+        "AddressID" : "hbBwBsOdTi5cDhhZcF28yrJ50AZQ8jhXF4d0P7OaUcCS5iv2N8hN_FjvAyPMt8EiP5ch_E_81gHZAjK4D3gfzw==",
+        "Location" : 0,
+        "LabelIDs" : [
+        "0",
+        "5",
+        "10"
+        ],
+        "Time" : 1525279399,
+        "NumAttachments" : 0,
+        "SenderAddress" : "contact@protonmail.ch",
+        "MIMEType" : "texthtml",
+        "Starred" : 1,
+        "Unread" : 0,
+        "ID" : "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==",
+        "ConversationID" : "3Spjf96LXv8EDUylCxJkKsL7x9IgBac_0z416buSBBMwAkbh_dHh2Ng7O6ss70yhlaLBht0hiJqvqbxoBKtb9Q==",
+        "Flags" : 13,
+        "SenderName" : "ProtonMail",
+        "SpamScore" : 0,
+        "Type" : 0,
+        "CCList" : "nil",
+        "Sender" : {
+            "Address" : "contact@protonmail.ch",
+            "Name" : "ProtonMail"
+        },
+        "IsReplied" : 0
+    }
+    """
+        
+        let metadata1 = """
+         {
+            "IsForwarded" : 0,
+            "BCCList" : [
+            ],
+            "Size" : 2217,
+            "ToList" : [
+            {
+            "Address" : "feng88@protonmail.com",
+            "Name" : "",
+            "Group" : ""
+            }
+            ],
+            "IsReplied" : 0
+        }
+        """
+        guard let metaMsg = metadata1.parseObjectAny() else {
+            return
+        }
+        
+        let managedObj = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                          fromJSONDictionary: metaMsg,
+                                                          in: coredata.mainManagedObjectContext) as? Message
+        // apply the label changes
+        
+        let error = coredata.mainManagedObjectContext.saveUpstreamIfNeeded()
+        XCTAssertNil(error)
+        XCTAssertNotNil(managedObj)
+        guard let message = managedObj as? Message else {
+            XCTAssertNotNil(nil)
+            return
+        }
+        XCTAssertEqual(message.messageID, "cA6j2rszbPUSnKojxhGlLX2U74ibyCXc3-zUAb_nBQ5UwkYSAhoBcZag8Wa0F_y_X5C9k9fQnbHAITfDd_au1Q==")
+        XCTAssertEqual(message.body, "")
+        XCTAssertEqual(message.spamScore, 0)
+        XCTAssertEqual(message.mimeType, "texthtml")
+        //        print(message.toList)
+        //        print(message.ccList)
+        //        print(message.bccList)
+    }
+    
     func testBackgroudContext() {
         return //TODO::FIXME. this test fails
         for i in 1 ... 50 {

@@ -1992,6 +1992,12 @@ class MessageDataService : Service {
                                 labelObjs.removeAllObjects()
                                 message.setValue(labelObjs, forKey: "labels")
                                 context.delete(message)
+                                //in case
+                                error = context.saveUpstreamIfNeeded()
+                                if error != nil  {
+                                    error?.upload(toAnalytics: "GRTJSONSerialization Delete")
+                                    PMLog.D(" error: \(String(describing: error))")
+                                }
                             }
                         }
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
@@ -2076,6 +2082,12 @@ class MessageDataService : Service {
                                         messageObject.messageStatus = 1
                                     }
                                 }
+                                //in case
+                                error = context.saveUpstreamIfNeeded()
+                                if error != nil  {
+                                    error?.upload(toAnalytics: "GRTJSONSerialization Update")
+                                    PMLog.D(" error: \(String(describing: error))")
+                                }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
@@ -2083,7 +2095,6 @@ class MessageDataService : Service {
                                 }
                                 PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
                                 BugDataService.debugReport("GRTJSONSerialization Insert", "insert empty", completion: nil)
-                                
                             }
                         } catch let err as NSError {
                             // when GRTJSONSerialization insert failed
@@ -2097,7 +2108,7 @@ class MessageDataService : Service {
                         PMLog.D(" unknown type in message: \(message)")
                     }
                 }
-                
+                //TODO:: move this to the loop and to catch the error also put it in noCache queue.
                 error = context.saveUpstreamIfNeeded()
                 if error != nil  {
                     error?.upload(toAnalytics: "GRTJSONSerialization Save")
