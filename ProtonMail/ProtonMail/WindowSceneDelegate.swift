@@ -26,10 +26,12 @@ import Foundation
 @available(iOS 13.0, *)
 class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     lazy var coordinator: WindowsCoordinator = {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
-        } else {
+        if UIDevice.current.stateRestorationPolicy == .multiwindow {
+            // each window scene has it's own windowCoordinator
             return WindowsCoordinator()
+        } else {
+            // windowCoordinator is shared across whole app
+            return (UIApplication.shared.delegate as? AppDelegate)!.coordinator
         }
     }()
     
@@ -74,7 +76,7 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         {
             self.windowScene(scene, performActionFor: shortcutItem, completionHandler: { _ in })
             return
-        } else if UIDevice.current.stateRestorationPolicy == .deeplink,
+        } else if UIDevice.current.stateRestorationPolicy == .multiwindow,
             let userActivity = connectionOptions.userActivities.first ?? session.stateRestorationActivity
         {
             self.scene(scene, continue: userActivity)
@@ -88,6 +90,8 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
+        // to prevent built-in restoration on iPhones, which is broken up to at least iOS 13.3 beta 2
+        guard UIDevice.current.stateRestorationPolicy == .multiwindow else { return nil }
         return self.currentUserActivity(in: scene)
     }
     
