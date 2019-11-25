@@ -1253,6 +1253,8 @@
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB4B7D92569019502DFEEF328690BCE7 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BBFA49B1795340A19F9D3BB25504DB /* Coordinator.swift */; };
+		AB67651D238BF0A00090A920 /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283624B6469818966374EF6D3D48C809 /* PMWebView.swift */; };
+		AB67651E238BF0A00090A920 /* PMWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283624B6469818966374EF6D3D48C809 /* PMWebView.swift */; };
 		ABB8B0A4F0A3D204C06EE4B7B0D4B6C5 /* SignUpEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4BCD1DE1ECEA2BDA7AAE74D7D916B8 /* SignUpEmailViewController.swift */; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
@@ -7251,6 +7253,7 @@
 				59994D91FE05DD4D1283051DF8A6622D /* KeysAPI.swift in Sources */,
 				31BCDC020EF7877E2727797C936574FD /* Label+Extension.swift in Sources */,
 				95AA447AEFDA858547B27F85F7808CDA /* Label.swift in Sources */,
+				AB67651E238BF0A00090A920 /* PMWebView.swift in Sources */,
 				E060FBB2C8220C7BE1C05FD8BC507697 /* LabelAPI.swift in Sources */,
 				334FE475EB9338BC516ED97AF82A7B21 /* LabelsDataService.swift in Sources */,
 				9915208DB3B59CFA36F7E8D14582BC8A /* LanguageManager.m in Sources */,
@@ -7494,6 +7497,7 @@
 				924E7F45F008EF93DC53E9659A1F8D8C /* Data+Extension.swift in Sources */,
 				1A23FEF39C822E826B9161B3839EE30F /* Data+Mime.swift in Sources */,
 				BA5BDD546C86F839CB64787CCD570D2E /* DataService+Error.swift in Sources */,
+				AB67651D238BF0A00090A920 /* PMWebView.swift in Sources */,
 				ECEC94D71E8864FF5E36320EEC55609F /* Date+Extension.swift in Sources */,
 				F600A2B88892D45FF160821C8CEAA83A /* DeepLink.swift in Sources */,
 				C5F7E2AA2A613504310750E6F3030A7A /* Dictionary+Extension.swift in Sources */,

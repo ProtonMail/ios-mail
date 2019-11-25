@@ -25,7 +25,7 @@ import UIKit
 import TrustKit
 
 class HorizontallyScrollableWebViewContainer: UIViewController {
-    internal var webView: WKWebView!
+    internal var webView: PMWebView!
     
     private var height: NSLayoutConstraint!
     private var lastContentOffset: CGPoint = .zero
@@ -101,7 +101,7 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         config.dataDetectorTypes = [.phoneNumber, .link]
         
         // oh, WKWebView is available in IB since iOS 11 only
-        self.webView = WKWebView(frame: .zero, configuration: config)
+        self.webView = PMWebView(frame: .zero, configuration: config)
         self.webView.translatesAutoresizingMaskIntoConstraints = false
         self.webView.navigationDelegate = self
         self.webView.uiDelegate = self
