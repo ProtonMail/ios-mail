@@ -126,8 +126,7 @@ public struct Part: CustomStringConvertible {
     var data: Data {
         if self.contentEncoding == .base64,
             let string = String(data: self.body, encoding: .ascii) {
-            var trimmed = string.preg_replace_none_regex("\r\n", replaceto: "")
-            
+            var trimmed = string.components(separatedBy: .whitespacesAndNewlines).joined()
             let count = trimmed.count
             let remainder = count % 4
             if remainder > 0 { //workaround fix the padding there. somehow the parser breaks the padding. hard to debug now. 
