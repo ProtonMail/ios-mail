@@ -179,11 +179,11 @@ class TableContainerViewController<ViewModel: TableContainerViewModel, Coordinat
     }
     
     @objc internal func saveOffset() {
-        self.contentOffsetToPerserve = self.tableView.contentOffset
+        self.contentOffsetToPerserve = self.tableView?.contentOffset ?? .zero
     }
     
     @objc internal func restoreOffset() {
-        self.tableView.setContentOffset(self.contentOffsetToPerserve, animated: false)
+        self.tableView?.setContentOffset(self.contentOffsetToPerserve, animated: false)
     }
 }
 
