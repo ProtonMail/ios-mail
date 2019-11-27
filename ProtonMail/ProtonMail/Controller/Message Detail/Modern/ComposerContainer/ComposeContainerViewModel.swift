@@ -38,7 +38,14 @@ extension ComposeContainerViewModel: Codable {
         if let message = self.childViewModel.message {
             try container.encode(message.messageID, forKey: .messageID)
         }
-        try container.encode(self.childViewModel.messageAction.rawValue, forKey: .messageAction)
+        
+        if self.childViewModel.messageAction == .newDraft {
+            // newDraft is an action for cases when there is no corresponding Message object in viewModel
+            // since we already have an existing Message and encoded it a bit earlier, we'll tweak action to openDraft
+            try container.encode(ComposeMessageAction.openDraft.rawValue, forKey: .messageAction)
+        } else {
+            try container.encode(self.childViewModel.messageAction.rawValue, forKey: .messageAction)
+        }
     }
 }
 
