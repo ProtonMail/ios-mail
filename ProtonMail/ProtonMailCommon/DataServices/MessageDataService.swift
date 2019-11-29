@@ -1578,7 +1578,7 @@ class MessageDataService : Service {
                 status.insert(SendStatus.initBuilders)
                 //build address packages
                 return when(resolved: sendbuilder.promises)
-            }.then { results -> Promise<ApiResponse> in
+            }.then { results -> Promise<SendResponse> in
                 //Debug info
                 status.insert(SendStatus.encodeBody)
                 
@@ -1616,35 +1616,19 @@ class MessageDataService : Service {
                 if error == nil {
                     self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
                     
-                    //TODO::
-                    if message.contains(label: .draft) {
-                        if isEO {
-                            if sendBuilder.outSideUser {
-                                message.isEncrypted =  NSNumber(value: Message.EncryptType.outEnc.rawValue)
-                            } else {
-                                message.isEncrypted = NSNumber(value: Message.EncryptType.inner.rawValue)
-                            }
-                        } else {
-                            if sendBuilder.outSideUser {
-                                message.isEncrypted = NSNumber(value: Message.EncryptType.outPlain.rawValue)
-                            } else {
-                                message.isEncrypted = NSNumber(value: Message.EncryptType.inner.rawValue)
-                            }
+                    NSError.alertMessageSentToast()
+                    
+                    self.managedObjectContext.performAndWait {
+                        if let newMessage = try? GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName,
+                                                                          fromJSONDictionary: res.responseDict["Sent"] as! [String: Any],
+                                                                          in: self.managedObjectContext) as? Message {
+
+                            newMessage.messageStatus = 1
+                            newMessage.isDetailDownloaded = true
+                            newMessage.unRead = false
                         }
-                        if attachments.count > 0 {
-                            message.numAttachments = NSNumber(value: attachments.count)
-                        }
-                        //TODO::fix later 1.7
-                        message.mimeType = "text/html"
-                        message.unRead = false
-                        message.isDetailDownloaded = false
-                        if let lid = message.remove(labelID: Message.Location.draft.rawValue), message.unRead {
-                            self.updateCounter(plus: false, with: lid)
-                        }
-                        message.add(labelID: Message.Location.sent.rawValue)
                     }
                     
-                    NSError.alertMessageSentToast()
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D(" error: \(error)")
                     } else {
