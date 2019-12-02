@@ -24,11 +24,11 @@
 import Foundation
 
 enum LinkOpener: String, CaseIterable {
-    case safari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion
+    case safari, inAppSafari, chrome, firefox, firefoxFocus, operaMini, operaTouch, brave, edge, yandex, duckDuckGo, onion
     
     private var scheme: String {
         switch self {
-        case .safari: return "https" // default case
+        case .safari, .inAppSafari: return "https" // default case
         case .chrome: return "googlechrome"
         case .firefox: return "firefox"
         case .firefoxFocus: return "firefox-focus"
@@ -55,6 +55,7 @@ enum LinkOpener: String, CaseIterable {
         case .yandex: return "Yandex"
         case .duckDuckGo: return "DuckDuckGo"
         case .onion: return "Onion Browser"
+        case .inAppSafari: return "In-App Safari"
         }
     }
     
@@ -111,7 +112,7 @@ enum LinkOpener: String, CaseIterable {
         case .duckDuckGo:
             return URL(string: "ddgQuickLink://\(url)")
             
-        case .safari:
+        case .safari, .inAppSafari:
             return url
         }
         
