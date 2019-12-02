@@ -1626,6 +1626,8 @@ class MessageDataService : Service {
                             newMessage.messageStatus = 1
                             newMessage.isDetailDownloaded = true
                             newMessage.unRead = false
+                        } else {
+                            assert(false, "Failed to parse response Message")
                         }
                     }
                     
@@ -2037,9 +2039,6 @@ class MessageDataService : Service {
                                                 labelObjs.remove(label)
                                                 messageObject.setValue(labelObjs, forKey: "labels")
                                             }
-                                        }
-                                        if labelID == "1" {
-                                            messageObject.isDetailDownloaded = false
                                         }
                                     }
                                 }
