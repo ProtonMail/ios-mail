@@ -36,20 +36,17 @@ class MessageBodyCoordinator {
     }
     
     internal func open(url originalURL: URL) {
-        func proceedToOpen(_ url: URL) {
-            switch userCachedStatus.browser {
-            case .inAppSafari:
-                let safari = SFSafariViewController(url: originalURL)
-                self.controller.present(safari, animated: true, completion: nil)
-            default:
-                UIApplication.shared.open(originalURL, options: [:], completionHandler: nil)
-            }
-        }
-        
-        if let deeplink = userCachedStatus.browser.deeplink(to: originalURL), UIApplication.shared.canOpenURL(deeplink) {
-            proceedToOpen(deeplink)
-        } else {
-            proceedToOpen(originalURL)
+        let browserSpecificUrl = userCachedStatus.browser.deeplink(to: originalURL) ?? originalURL
+        switch userCachedStatus.browser {
+        case .inAppSafari:
+            let safari = SFSafariViewController(url: browserSpecificUrl)
+            self.controller.present(safari, animated: true, completion: nil)
+            
+        case _ where UIApplication.shared.canOpenURL(browserSpecificUrl):
+            UIApplication.shared.open(browserSpecificUrl, options: [:], completionHandler: nil)
+            
+        default:
+            UIApplication.shared.open(originalURL, options: [:], completionHandler: nil)
         }
     }
     
