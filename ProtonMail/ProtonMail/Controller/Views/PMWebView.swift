@@ -29,4 +29,12 @@ class  PMWebView: WKWebView {
     override var canBecomeFirstResponder : Bool {
         return true
     }
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        if action == #selector(selectAll(_:)) {
+            return true
+        } else {
+            return super.canPerformAction(action, withSender: sender)
+        }
+    }
 }

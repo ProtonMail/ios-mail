@@ -27,6 +27,21 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     weak var delegate : PinCodeViewControllerDelegate?
     
     func authenticateUser() {
+        guard UIDevice.current.biometricType != .none else {
+            let alert = UIAlertController.init(title: LocalString._unlock_required,
+                                               message: LocalString._enable_faceid_in_settings,
+                                               preferredStyle: .alert)
+            let settings = UIAlertAction(title: LocalString._go_to_settings, style: .cancel) { _ in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }
+            let logout = UIAlertAction(title: LocalString._go_to_login, style: .default) { _ in
+                self.logout()
+            }
+            [settings, logout].forEach(alert.addAction)
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
             self.delegate?.Next()
         })
@@ -92,11 +107,16 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
     
     @objc func logoutButtonTapped() {
         let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
-        alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: { _ in
-            self.delegate?.Cancel()
-            self.navigationController?.popViewController(animated: true)
-        }))
-        alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        let logout = UIAlertAction(title: LocalString._sign_out, style: .destructive) { _ in
+            self.logout()
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil)
+        [logout, cancel].forEach(alert.addAction)
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func logout() {
+        self.delegate?.Cancel()
+        self.navigationController?.popViewController(animated: true)
     }
 }

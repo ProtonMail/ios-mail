@@ -74,12 +74,16 @@ class MessageContainerViewModel: TableContainerViewModel {
         super.init()
         
         NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: nil, queue: nil) { [weak self] notification in
-            guard let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet,
-                case let deleted = deletedObjects.compactMap({ $0 as? Message }) else
+            guard let self = self,
+                let deletedObjects = notification.userInfo?[NSDeletedObjectsKey] as? NSSet,
+                case let deleted = deletedObjects.compactMap({ $0 as? Message }),
+                case let intersection = Set(self.messages).intersection(Set(deleted)),
+                !intersection.isEmpty else
             {
                 return
             }
-            self?.messages.removeAll(where: deleted.contains)
+            
+            self.messages.removeAll(where: deleted.contains)
         }
         
         NotificationCenter.default.addObserver(forName: NSNotification.Name.reachabilityChanged, object: nil, queue: nil) { [weak self] notification in

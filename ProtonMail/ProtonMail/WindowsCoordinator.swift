@@ -231,6 +231,8 @@ class WindowsCoordinator: CoordinatorNew {
                 return
             }
             coder.encodeRootObject(root)
+        case .multiwindow:
+            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }
     }
     
@@ -251,6 +253,8 @@ class WindowsCoordinator: CoordinatorNew {
                 return
             }
             self.appWindow?.rootViewController = root
+        case .multiwindow:
+            assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }
     }
     

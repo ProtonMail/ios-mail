@@ -22,8 +22,12 @@
 
 
 import Foundation
+import EllipticCurveKeyPair
 
 public class Keymaker: NSObject {
+    public static let removedMainKeyFromMemory: NSNotification.Name = .init(String(describing: Keymaker.self) + ".removedMainKeyFromMemory")
+    public static let errorObtainingMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".errorObtainingMainKey")
+    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
     public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
     public typealias Key = Array<UInt8>
     
@@ -37,9 +41,9 @@ public class Keymaker: NSObject {
         defer {
             if #available(iOS 13.0, *) {
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                       name: UIWindowScene.willEnterForegroundNotification, object: nil)
+                                                       name: UIApplication.willEnterForegroundNotification, object: nil)
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
-                                                       name: UIWindowScene.didActivateNotification, object: nil)
+                                                       name: UIApplication.willEnterForegroundNotification, object: nil)
             } else {
                 NotificationCenter.default.addObserver(self, selector: #selector(mainKeyExists),
                                                        name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -59,6 +63,8 @@ public class Keymaker: NSObject {
             if _mainKey != nil {
                 self.resetAutolock()
                 self.setupCryptoTransformers(key: _mainKey)
+            } else {
+                NotificationCenter.default.post(name: Keymaker.removedMainKeyFromMemory, object: self)
             }
         }
     }
@@ -154,9 +160,23 @@ public class Keymaker: NSObject {
             do {
                 let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
                 self._mainKey = mainKeyBytes
+                NotificationCenter.default.post(name: Keymaker.obtainedMainKey, object: self)
             } catch let error {
-                print(error)
-                self._mainKey = nil
+                NotificationCenter.default.post(name: Keymaker.errorObtainingMainKey, object: self, userInfo: ["error": error])
+                
+                // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
+                // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
+                // description: "Could not decrypt. Failed to get externalizedContext from LAContext"
+                if #available(iOS 13.0, *),
+                    case EllipticCurveKeyPair.Error.underlying(message: _, error: let underlyingError) = error,
+                    underlyingError.code == -2
+                {
+                    isMainThread
+                        ? DispatchQueue.main.async { self.obtainMainKey(with: protector, handler: handler) }
+                        : self.obtainMainKey(with: protector, handler: handler)
+                } else {
+                    self._mainKey = nil
+                }
             }
             
             isMainThread ? DispatchQueue.main.async { handler(self._mainKey) } : handler(self._mainKey)
