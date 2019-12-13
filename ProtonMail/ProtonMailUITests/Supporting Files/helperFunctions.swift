@@ -120,7 +120,7 @@ let sampleMessageSubject = "Self test"
 let sampleMessageSubjectReply = "Re: Self test"
 let sampleMessageBody = "Self test 2"
 let sampleMessageInlineImage = "download.jpeg"
-let sampleMessageHeaderSubject = "2019-03-15T09:49:42-Self-test"
+let sampleMessageHeaderSubject = "headers-2019-03-15T09:49:42-Self-test"
 let sampleMessagePrintSubject = "Self-test"
 
 

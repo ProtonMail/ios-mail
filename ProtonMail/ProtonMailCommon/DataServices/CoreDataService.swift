@@ -51,6 +51,15 @@ class CoreDataService {
         return mainManagedObjectContext
     }()
     
+    func childBackgroundManagedObjectContext(forUseIn thread: Thread) -> NSManagedObjectContext  {
+        if Thread.current.isMainThread {
+            assert(false, "This object is not supposed to be used on main thread")
+        }
+        let background = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
+        background.parent = self.backgroundManagedObjectContext
+        return background
+    }
+    
     func makeReadonlyBackgroundManagedObjectContext() -> NSManagedObjectContext {
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = self.persistentStore

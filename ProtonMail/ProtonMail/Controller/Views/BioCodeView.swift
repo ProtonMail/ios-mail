@@ -56,8 +56,17 @@ class BioCodeView: PMView {
         touchID.isEnabled = false
         touchID.layer.cornerRadius = 25
         
-        if UIDevice.current.biometricType == .faceID {
+        switch UIDevice.current.biometricType {
+        case .faceID:
             self.touchID.setImage(UIImage(named: "face_id_icon"), for: .normal)
+            self.touchID.isHidden = false
+            
+        case .touchID:
+            self.touchID.setImage(UIImage(named: "touch_id_icon"), for: .normal)
+            self.touchID.isHidden = false
+            
+        case .none:
+            self.touchID.isHidden = true
         }
     }
     

@@ -390,9 +390,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         if self.viewModel.hasDraft || self.headerView.hasContent || ((attachments?.count ?? 0) > 0) {
             self.isShowingConfirm = true
             let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-                                                    message: nil, preferredStyle: .actionSheet)
-            alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
-                                                    style: .default, handler: { (action) -> Void in
+                                                    message: nil,
+                                                    preferredStyle: .actionSheet)
+            let save = UIAlertAction(title: LocalString._composer_save_draft_action,
+                                     style: .default) { _ in
                 self.stopAutoSave()
                 self.collectDraftData().done {
                     self.viewModel.updateDraft()
@@ -401,20 +402,24 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 }.finally {
                     dismiss()
                 }
-            }))
-
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                    style: .cancel, handler: { (action) -> Void in
+            }
+            let cancel = UIAlertAction(title: LocalString._general_cancel_button,
+                                       style: .cancel) { _ in
                 self.isShowingConfirm = false
-            }))
-
-            alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
-                                                    style: .destructive, handler: { (action) -> Void in
+            }
+            let delete = UIAlertAction(title: LocalString._composer_discard_draft_action,
+                                       style: .destructive) { _ in
                 self.stopAutoSave()
                 self.viewModel.deleteDraft()
                 dismiss()
-            }))
-
+            }
+            
+            // for UITests
+            save.accessibilityLabel = "saveDraftButton"
+            cancel.accessibilityLabel = "cancelDraftButton"
+            delete.accessibilityLabel = "deleteDraftButton"
+            
+            [save, delete, cancel].forEach(alertController.addAction)
             alertController.popoverPresentationController?.barButtonItem = sender
             alertController.popoverPresentationController?.sourceRect = self.view.frame
             present(alertController, animated: true, completion: nil)
@@ -566,15 +571,17 @@ extension ComposeViewController : ComposeViewDelegate {
         let alertController = UIAlertController(title: LocalString._composer_change_sender_address_to,
                                                 message: nil,
                                                 preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                style: .cancel,
-                                                handler: nil))
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button,
+                                   style: .cancel,
+                                   handler: nil)
+        cancel.accessibilityLabel = "cancelButton"
+        alertController.addAction(cancel)
         let multi_domains = self.viewModel.getAddresses()
         let defaultAddr = self.viewModel.getDefaultSendAddress()
         for addr in multi_domains {
             if addr.status == 1 && addr.receive == 1 && defaultAddr != addr {
                 needsShow = true
-                alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
+                let selectEmail = UIAlertAction(title: addr.email, style: .default) { _ in
                     if addr.send == 0 {
                         let alertController = String(format: LocalString._composer_change_paid_plan_sender_error, addr.email).alertController()
                         alertController.addOKAction()
@@ -594,7 +601,9 @@ extension ComposeViewController : ComposeViewDelegate {
                                 MBProgressHUD.hide(for: self.view, animated: true)
                         }
                     }
-                }))
+                }
+                selectEmail.accessibilityLabel = selectEmail.title
+                alertController.addAction(selectEmail)
             }
         }
         if needsShow {

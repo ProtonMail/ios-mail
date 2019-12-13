@@ -36,5 +36,6 @@ class GeneralSettingSinglelineCell: UITableViewCell {
     
     func configCell(_ left:String) {
         LeftText.text = left
+        self.accessibilityLabel = left
     }
 }

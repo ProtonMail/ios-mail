@@ -130,19 +130,19 @@ class SettingsNotificationsSnoozeTableViewController: UITableViewController, Sec
         
         case .startTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = LocalString._start_time + ":"
             let start = self.scheduledRules!.first!.startMatching
             let date = Calendar.current.date(bySettingHour: start.hour!, minute: start.minute!, second: 0, of: Date())!
-            cell.defaultMark.text = self.timeFormatter.string(from: date)
+            cell.configCell(domainText: LocalString._start_time + ":",
+                            defaultMark: self.timeFormatter.string(from: date))
             cell.accessoryType = .none
             return cell
  
         case .endTime:
             let cell = tableView.dequeueReusableCell(withIdentifier: "\(DomainsTableViewCell.self)", for: indexPath) as! DomainsTableViewCell
-            cell.domainText.text = LocalString._end_time + ":"
             let end = self.scheduledRules!.first!.endMatching
             let date = Calendar.current.date(bySettingHour: end.hour!, minute: end.minute!, second: 0, of: Date())!
-            cell.defaultMark.text = self.timeFormatter.string(from: date)
+            cell.configCell(domainText: LocalString._end_time + ":",
+                            defaultMark: self.timeFormatter.string(from: date))
             cell.accessoryType = .none
             return cell
 

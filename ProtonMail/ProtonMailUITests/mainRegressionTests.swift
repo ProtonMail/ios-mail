@@ -252,7 +252,7 @@ class mainRegressionTests: XCTestCase {
             tablesQuery.cells.containing(.staticText, identifier:"  Folder  ").buttons["mail check"].tap()
             
         }
-        
+       
         applyButton.tap()
         sidebarButton.tap()
         app.tables.staticTexts[sampleFolder].tap()
@@ -261,7 +261,11 @@ class mainRegressionTests: XCTestCase {
         folderNavigationBar.buttons[moreButton].tap()
         app.sheets.buttons["Move to Inbox"].tap()
         
+        Thread.sleep(forTimeInterval: 2)
+        
         app.tables["Empty list"].swipeDown()
+        
+        Thread.sleep(forTimeInterval: 2)
         
         XCTAssertTrue(noMessagesText.exists)
         
@@ -270,7 +274,8 @@ class mainRegressionTests: XCTestCase {
 
         XCTAssertTrue(emailToSwipe.exists)
         
-        removeFolderLabel()
+        // Move to seperate test:
+        // removeFolderLabel()
         
     }
     

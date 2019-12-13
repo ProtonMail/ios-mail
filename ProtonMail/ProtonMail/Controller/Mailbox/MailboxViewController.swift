@@ -1433,7 +1433,7 @@ extension MailboxViewController: UITableViewDelegate {
     }
 }
 
-@available(iOS, deprecated: 13.0, message: "Multiwindow environment restores state via Deeplinkable conformance")
+@available(iOS, deprecated: 13.0, message: "iOS 13 restores state via Deeplinkable conformance")
 extension MailboxViewController: UIViewControllerRestoration {
     static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
         guard let data = coder.decodeObject(forKey: "viewModel") as? Data,

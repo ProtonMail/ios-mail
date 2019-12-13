@@ -349,7 +349,7 @@ final class EmptyMessage : ApiRequest <ApiResponse> {
 
 // MARK : Message Send part
 /// send message reuqest
-final class SendMessage : ApiRequestNew<ApiResponse> {
+final class SendMessage : ApiRequestNew<SendResponse> {
     var messagePackage : [AddressPackageBase]!  // message package
     var body : String!
     let messageID : String!
@@ -524,5 +524,14 @@ final class SendMessage : ApiRequestNew<ApiResponse> {
     
     override func method() -> APIService.HTTPMethod {
         return .post
+    }
+}
+
+final class SendResponse: ApiResponse {
+    var responseDict: [String: Any] = [:]
+    
+    override func ParseResponse(_ response: [String : Any]) -> Bool {
+        self.responseDict = response
+        return super.ParseResponse(response)
     }
 }

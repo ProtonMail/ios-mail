@@ -26,7 +26,7 @@ import Keymaker
 
 extension UIDevice {
     enum StateRestorationPolicy {
-        case coders, deeplink
+        case coders, deeplink, multiwindow
     }
     
     var stateRestorationPolicy: StateRestorationPolicy {
@@ -34,10 +34,9 @@ extension UIDevice {
         let hasSignificantProtection: Bool = keymaker.isProtectorActive(BioProtection.self) || keymaker.isProtectorActive(PinProtection.self)
         
         /*
-         TL;DR: restore via deeplink when have only one window with mainKey available
-         
          Deeplink restoratin downside: it can not restore UI statle, scrolling offset in tableViews for example.
          NSCoders restoration downside: it does not work when mainKey is protected, it encodes only one UIWindow on multiwindow scene.
+         Multiwindow: relies on NSUserActivity of UIWindowScene sessions, which is broken up to iOS 13.3 beta 2 at least. We do not have any choice in multiwindow environment of iPadOS, but for iPhone we'll use old Deeplink method instead.
          
          Such way, we are balancing between these two methods based on iOS version, mainKey availability and iPhone/iPad idiom.
          
@@ -46,18 +45,20 @@ extension UIDevice {
          iOS 9-12   / protection        / iPhone    - deeplink
          iOS 9-12   / protection        / iPad      - deeplink
          iOS 13     / no protection     / iPhone    - coders
-         iOS 13     / no protection     / iPad      - deeplink
+         iOS 13     / no protection     / iPad      - multiwindow
          iOS 13     / protection        / iPhone    - deeplink
-         iOS 13     / protection        / iPad      - deeplink
+         iOS 13     / protection        / iPad      - multiwindow
          
          */
         
         switch (iOS13, hasSignificantProtection, self.userInterfaceIdiom) {
-        case (_, true, _):          return .deeplink
-        case (true, _, .pad):       return .deeplink
-        case (true, false, .phone): return .coders
+        case (true, false, .phone): return .deeplink
+        case (true, _, .pad):       return .multiwindow
         case (false, false, _):     return .coders
-        default:                    return .deeplink
+        case (_, true, _):          return .deeplink
+        default:
+            assert(false, "All possible combinations should be covered by cases above")
+            return .deeplink
         }
     }
 }

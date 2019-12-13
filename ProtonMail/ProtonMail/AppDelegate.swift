@@ -210,6 +210,18 @@ extension AppDelegate: UIApplicationDelegate {
         StoreKitManager.default.subscribeToPaymentQueue()
         StoreKitManager.default.updateAvailableProductsList()
         
+        #if DEBUG
+        NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in
+            (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
+        }
+        NotificationCenter.default.addObserver(forName: Keymaker.obtainedMainKey, object: nil, queue: .main) { notification in
+            "Obtained main key".alertToastBottom()
+        }
+        NotificationCenter.default.addObserver(forName: Keymaker.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
+            "Removed main key from memory".alertToastBottom()
+        }
+        #endif
+        
         if #available(iOS 12.0, *) {
             let intent = WipeMainKeyIntent()
             let suggestions = [INShortcut(intent: intent)!]
@@ -253,12 +265,12 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
     
-    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
+    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return self.application(app, handleOpen: url)
     }
     
-    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
+    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
         guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
             return false
@@ -280,7 +292,7 @@ extension AppDelegate: UIApplicationDelegate {
         return true
     }
     
-    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
+    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
         sharedMessageDataService.purgeOldMessages()
@@ -303,7 +315,7 @@ extension AppDelegate: UIApplicationDelegate {
         PMLog.D("Enter Background")
     }
     
-    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, deprecated in favor of similar method in WindowSceneDelegate" )
+    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
                      continue userActivity: NSUserActivity,
                      restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool
@@ -370,16 +382,15 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: - State restoration via NSCoders, for iOS 9 - 12 and iOS 13 single window env (iPhone)
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        if #available(iOS 13.0, *) {
-            return UIDevice.current.stateRestorationPolicy == .coders
+        if UIDevice.current.stateRestorationPolicy == .multiwindow {
+            return false
         } else {
-            // iOS 9-12 with protection still needs coder to support deeplink restoration
             self.coordinator.saveForRestoration(coder)
             return true
         }
     }
     func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-        if #available(iOS 13.0, *) {
+        if UIDevice.current.stateRestorationPolicy == .multiwindow {
             // everything is handled by a window scene delegate
         } else if UIDevice.current.stateRestorationPolicy == .deeplink {
             self.coordinator.restoreState(coder)
@@ -413,13 +424,14 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
         sceneSessions.forEach { session in
             // TODO: check that this discards state restoration for scenes explicitely closed by user
+            // up to at least iOS 13.3 beta 2 this does not work properly
             session.stateRestorationActivity = nil
             session.scene?.userActivity = nil
         }
     }
     
     // MARK: Shortcuts
-    @available(iOS, deprecated: 13, message: "This method will not get called on multiwindow env, deprecated in favor of similar method in WindowSceneDelegate" )
+    @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, deprecated in favor of similar method in WindowSceneDelegate" )
     func application(_ application: UIApplication,
                      performActionFor shortcutItem: UIApplicationShortcutItem,
                      completionHandler: @escaping (Bool) -> Void)

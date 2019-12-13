@@ -125,8 +125,9 @@ extension BannerView: UIGestureRecognizerDelegate {
         let initAnchor = CGPoint(x: (baseView.bounds.width / 2),
                                  y: from == .bottom ? (baseView.bounds.height - self.bounds.height / 2) - offset
                                                     : (self.bounds.height / 2) + offset)
-        
-        self.animator = UIDynamicAnimator(referenceView: baseView)
+        //if directly assign to this value, it could be removed from the other function. looks like it is not thread-safe
+        let dyAnimator = UIDynamicAnimator(referenceView: baseView)
+        self.animator = dyAnimator
         
         // original location
         self.center = initAnchor.applying(CGAffineTransform(translationX: 0, y: from == .bottom ? (baseView.bounds.height - initAnchor.y)
@@ -136,7 +137,7 @@ extension BannerView: UIGestureRecognizerDelegate {
         springBehavior.length = 0
         springBehavior.damping = 0.9
         springBehavior.frequency = 2
-        self.animator.addBehavior(springBehavior)
+        dyAnimator.addBehavior(springBehavior)
         self.springBehavior = springBehavior
         
         UIView.animate(withDuration: 0.3,
