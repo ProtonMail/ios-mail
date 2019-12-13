@@ -73,14 +73,6 @@ class AuthAPITests: XCTestCase {
     }
     
     func testAuth() {
-//        apiService.authAuth(username: "zhj4478", password: "31Feng31"){ auth, error in
-//            if error == nil {
-//                XCTAssert(true, "Pass")
-//            } else {
-//                
-//                XCTAssertTrue(false, "failed")
-//            }
-//        }
 
     }
 

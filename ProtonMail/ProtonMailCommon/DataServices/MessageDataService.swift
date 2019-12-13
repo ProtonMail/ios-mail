@@ -1489,7 +1489,7 @@ class MessageDataService : Service {
                     case .fulfilled(let value):
                         let req = requests[index]
                         //check contacts have pub key or not
-                        if let contact = contacts.find(email: req.email) { //"zhj44781@gmail.com") {//req.email) {
+                        if let contact = contacts.find(email: req.email) {
                             if value.recipientType == 1 {
                                 //if type is internal check is key match with contact key
                                 //compare the key if doesn't match

@@ -260,30 +260,6 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 
 
     func testExample() {
-//        sharedAPIService.authAuth(username: "feng", password: "123") { auth, error in
-//            if error == nil {
-//                self.isSignedIn = true
-//                self.username = username
-//                self.password = password
-//                
-//                if isRemembered {
-//                    self.isRememberUser = isRemembered
-//                }
-//                
-//                let completionWrapper: UserInfoBlock = { auth, error in
-//                    if error == nil {
-//                        NSNotificationCenter.defaultCenter().postNotificationName(Notification.didSignIn, object: self)
-//                    }
-//                    
-//                    completion(auth, error)
-//                }
-//                
-//                self.fetchUserInfo(completion: completionWrapper)
-//            } else {
-//                self.signOut(true)
-//                completion(nil, error)
-//            }
-//        }
         XCTAssert(true, "Pass")
     }
 
@@ -295,14 +271,7 @@ qqGRQm3MxoTdgQUShAwbNwNNQR9cInfMnA==
 //    }
     
     func testAuth() {
-//        apiService.authAuth(username: "zhj4478", password: "31Feng31"){ auth, error in
-//            if error == nil {
-//                XCTAssert(true, "Pass")
-//            } else {
-//                
-//                XCTAssertTrue(false, "failed")
-//            }
-//        }
+
 
     }
 
