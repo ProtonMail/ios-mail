@@ -86,11 +86,11 @@ class WindowsCoordinator: CoordinatorNew {
         //let cacheService : AppCacheService = serviceHolder.get()
         //cacheService.restoreCacheAfterAuthorized()
     }
-    func prepare() {
+    func prepareForCoders() {
         self.currentWindow = self.appWindow
+    }
         
-        
-        
+    func prepareForAll() {
         //    ///
         //        let msgService: MessageDataService = MessageDataService(api: APIService.shared)
         //        helper.add(MessageDataService.self, for: msgService)

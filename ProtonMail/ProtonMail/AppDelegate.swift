@@ -143,8 +143,9 @@ extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         if UIDevice.current.stateRestorationPolicy == .coders {
             // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
-            self.coordinator.prepare()
+            self.coordinator.prepareForCoders()
         }
+        self.coordinator.prepareForAll()
         return true
     }
     
