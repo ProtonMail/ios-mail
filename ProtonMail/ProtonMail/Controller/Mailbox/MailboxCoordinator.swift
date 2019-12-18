@@ -146,6 +146,41 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft)
+
+            // Some parsing for mailto: options. Might be better elsewhere.
+            if let composeQueryItems = sender as? [URLQueryItem] {
+                composeQueryItems.forEach { (query: URLQueryItem) in
+                    switch query.name {
+                    case "to":
+                        query.value?.components(separatedBy: ",").forEach({ (email) in
+                            let contact = ContactVO(name: "", email: email)
+                            viewModel.addToContacts(contact)
+                        })
+
+                    case "cc":
+                        query.value?.components(separatedBy: ",").forEach({ (email) in
+                            let contact = ContactVO(name: "", email: email)
+                            viewModel.addCcContacts(contact)
+                        })
+                        
+                    case "bcc":
+                        query.value?.components(separatedBy: ",").forEach({ (email) in
+                            let contact = ContactVO(name: "", email: email)
+                            viewModel.addBccContacts(contact)
+                        })
+                        
+                    case "subject":
+                        viewModel.setSubject(query.value ?? "")
+                        
+                    case "body":
+                        viewModel.setBody(query.value ?? "")
+                        
+                    default:
+                        return
+                    }
+                }
+            }
+
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             

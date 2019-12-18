@@ -272,7 +272,14 @@ extension AppDelegate: UIApplicationDelegate {
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else { return false; }
+
+        if urlComponents.host == "compose" {
+            coordinator.presentComposer(urlComponents.queryItems)
+            return true;
+        }
+
+        if urlComponents.host != "signup" {
             return false
         }
         
