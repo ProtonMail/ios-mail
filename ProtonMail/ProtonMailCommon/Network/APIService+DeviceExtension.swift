@@ -29,8 +29,7 @@ extension APIService {
         static let basePath = "/devices"
     }
     
-    func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
-        
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential, completion: CompletionBlock?) {
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         #if Enterprise
             #if DEBUG
@@ -68,6 +67,7 @@ extension APIService {
                 path: DevicePath.basePath,
                 parameters: parameters,
                 headers: [HTTPHeader.apiVersion: 3],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
     

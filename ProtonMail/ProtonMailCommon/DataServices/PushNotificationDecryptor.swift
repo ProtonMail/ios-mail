@@ -34,13 +34,13 @@ class PushNotificationDecryptor {
         static let deviceToken      = "latestDeviceToken"
     }
     
-    static var saver = KeychainSaver<PushSubscriptionSettings>(key: Key.encyptionKit, cachingInMemory: false)
+    static var saver = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.encyptionKit, cachingInMemory: false)
     static var outdater = KeychainSaver<Set<PushSubscriptionSettings>>(key: Key.outdatedSettings, cachingInMemory: false)
     static var deviceTokenSaver = KeychainSaver<String>(key: Key.deviceToken, cachingInMemory: false)
     
     static func encryptionKit(forSession uid: String) -> EncryptionKit? {
-        guard let settings = self.saver.get(),
-            uid == settings.UID else
+        guard let allSettings = self.saver.get(),
+            let settings = allSettings.first(where: { $0.UID == uid}) else
         {
             return nil
         }

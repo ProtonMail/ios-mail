@@ -79,6 +79,7 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
         self.services = services
+        self.prepareForAll()
     }
     
     /// restore some cache after login/authorized

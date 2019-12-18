@@ -24,7 +24,7 @@
 import Foundation
 
 extension PushNotificationService {
-    enum Subscription {
+    enum Subscription: Hashable {
         /// no subscription locally. NOT persisted via Codable
         case none
         

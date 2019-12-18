@@ -145,7 +145,6 @@ extension AppDelegate: UIApplicationDelegate {
             // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
             self.coordinator.prepareForCoders()
         }
-        self.coordinator.prepareForAll()
         return true
     }
     
@@ -202,10 +201,10 @@ extension AppDelegate: UIApplicationDelegate {
         //setup language
         LanguageManager.setupCurrentLanguage()
 
-        //        let pushService : PushNotificationService = sharedServices.get()
-        //        UNUserNotificationCenter.current().delegate = pushService
-        //        pushService.registerForRemoteNotifications()
-        //        pushService.setLaunchOptions(launchOptions)
+        let pushService : PushNotificationService = sharedServices.get()
+        UNUserNotificationCenter.current().delegate = pushService
+        pushService.registerForRemoteNotifications()
+        pushService.setLaunchOptions(launchOptions)
         
         //        StoreKitManager.default.subscribeToPaymentQueue()
         //        StoreKitManager.default.updateAvailableProductsList()
