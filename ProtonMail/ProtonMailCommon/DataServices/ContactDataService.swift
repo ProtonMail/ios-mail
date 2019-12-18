@@ -467,7 +467,7 @@ class ContactDataService: Service  {
         self.isFetching = true
         self.retries = self.retries + 1
         {
-            let context = sharedCoreDataService.childBackgroundManagedObjectContext(forUseIn: Thread.current)
+            let context = CoreDataService.shared.childBackgroundManagedObjectContext(forUseIn: Thread.current)
             do {
                 // fetch contacts, without their respective emails
                 var currentPage = 0

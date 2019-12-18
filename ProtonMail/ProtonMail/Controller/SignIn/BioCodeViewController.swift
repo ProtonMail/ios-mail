@@ -42,9 +42,9 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             return
         }
         
-        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.delegate?.Next()
-        })
+//        UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
+//            self.delegate?.Next()
+//        })
     }
     
     func touch_id_action(_ sender: Any) {
