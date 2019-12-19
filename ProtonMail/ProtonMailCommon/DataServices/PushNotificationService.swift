@@ -42,9 +42,6 @@ public class PushNotificationService: NSObject, Service {
     private let messageService: MessageDataService?
     
     ///
-    private let subscriptionSaver: Saver<Set<Subscription>>
-    private let outdatedSaver: Saver<Set<SubscriptionSettings>>
-    private let encryptionKitSaver: Saver<Set<SubscriptionSettings>>
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
     private let signInProvider: SignInProvider
@@ -52,7 +49,7 @@ public class PushNotificationService: NSObject, Service {
     private let deviceTokenSaver: Saver<String>
     
     init(service: MessageDataService? = nil,
-         subscriptionSaver: Saver<Set<Subscription>> = KeychainSaver(key: Key.subscription),
+         subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
@@ -62,9 +59,7 @@ public class PushNotificationService: NSObject, Service {
          unlockProvider: UnlockProvider = UnlockManagerProvider())
     {
         self.messageService = service
-        self.subscriptionSaver = subscriptionSaver
-        self.encryptionKitSaver = encryptionKitSaver
-        self.outdatedSaver = outdatedSaver
+        self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
         self.deviceRegistrator = deviceRegistrator
         self.signInProvider = signInProvider
@@ -86,25 +81,7 @@ public class PushNotificationService: NSObject, Service {
     fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
         didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
     }
-    fileprivate var outdatedSettings: Set<SubscriptionSettings> {
-        get { return self.outdatedSaver.get() ?? [] } // cuz PushNotificationDecryptor can add values to this colletion while app is running
-        set { self.outdatedSaver.set(newValue: newValue) } // in keychain cuz should persist over reinstalls
-    }
-    fileprivate var currentSubscriptions: Set<Subscription> {
-        get { return self.subscriptionSaver.get() ?? Set([Subscription.none]) }
-        set {
-            self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
-            
-            let reportedSettings: [SubscriptionSettings] = newValue.compactMap { subscription -> SubscriptionSettings? in
-                switch subscription { // save encryption kit to userdefaults for PushNotificationDecryptor but not persist over reinstalls
-                case .reported(let settings):   return settings
-                default:                        return nil
-                }
-            }
-            
-            self.encryptionKitSaver.set(newValue: Set(reportedSettings))
-        }
-    }
+    fileprivate let currentSubscriptions: SubscriptionsPack
     
     // MARK: - register for notificaitons
     
@@ -117,7 +94,7 @@ public class PushNotificationService: NSObject, Service {
             }
         }
         
-        self.unreport(self.outdatedSettings)
+        self.unreportOutdated()
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
@@ -140,29 +117,12 @@ public class PushNotificationService: NSObject, Service {
         
         let settingsWeNeedToHave = sessionIDs.map { SubscriptionSettings(token: deviceToken, UID: $0) }
         
-        var settingsToUnreport = Array<SubscriptionSettings>()
-        var settingsAlreadyReported = Array<SubscriptionSettings>()
-        var subscriptionsToKeep = Array<Subscription>()
+        let settingsToUnreport = self.currentSubscriptions.settings().subtracting(Set(settingsWeNeedToHave))
+        self.currentSubscriptions.outdate(settingsToUnreport)
         
-        self.currentSubscriptions.forEach { subscription in
-            switch subscription {
-            case .notReported(let oldSettings) where !settingsWeNeedToHave.contains(oldSettings),
-                 .pending(let oldSettings) where !settingsWeNeedToHave.contains(oldSettings),
-                 .reported(let oldSettings) where !settingsWeNeedToHave.contains(oldSettings):
-                
-                settingsToUnreport.append(oldSettings)
-                
-            case .reported(let relevantSettings), .pending(let relevantSettings), .notReported(let relevantSettings):
-                
-                subscriptionsToKeep.append(subscription)
-                settingsAlreadyReported.append(relevantSettings)
-                
-            default: break
-            }
-        }
-        
-        let settingsToReport = settingsWeNeedToHave.filter { !settingsToUnreport.contains($0) && !settingsAlreadyReported.contains($0) }
-        let settingsToReportWithEncryptionKit = settingsToReport.map { settings -> SubscriptionSettings in
+        let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter { $0.state == .reported && !settingsToUnreport.contains($0.settings) }
+        var settingsToReport = Set(settingsWeNeedToHave).subtracting(Set(subscriptionsToKeep.map { $0.settings}))
+        settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
             var newSettings = settings
             do {
                 try newSettings.generateEncryptionKit()
@@ -170,74 +130,50 @@ public class PushNotificationService: NSObject, Service {
                 assert(false, "failed to generate enryption kit: \(error)")
             }
             return newSettings
-        }
+        })
         
-        self.currentSubscriptions = Set(subscriptionsToKeep)
-        self.report(Set(settingsToReportWithEncryptionKit))
+        let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
+        self.currentSubscriptions.insert(subcriptionsBeforeReport)
+        self.report(settingsToReport)
+        self.unreportOutdated()
     }
     
     @objc private func didSignOut() {
-        let settingsToUnreport = self.currentSubscriptions.compactMap { subscription -> SubscriptionSettings? in
-            switch subscription {
-            case .reported(let currentSettings), .pending(let currentSettings):
-                return currentSettings
-            case .none, .notReported:
-                return nil
-            }
+        let settingsToUnreport = self.currentSubscriptions.subscriptions.compactMap { subscription -> SubscriptionSettings? in
+            return subscription.state == .notReported ? nil : subscription.settings
         }
-        self.unreport(Set(settingsToUnreport))
+        self.currentSubscriptions.outdate(Set(settingsToUnreport))
+        self.unreportOutdated()
     }
     
     // register on BE and validate local values
     private func report(_ settingsToReport: Set<SubscriptionSettings>) {
-        let subscriptionsToKeep = self.currentSubscriptions.filter { subscription in
-            switch subscription {
-            case .reported(let currentSettings), .pending(let currentSettings):
-                return !settingsToReport.contains(currentSettings)
-            case .none, .notReported:
-                return false
-            }
-        }
-        
-        let pending = Set(settingsToReport.map(Subscription.pending))
-        self.currentSubscriptions = pending.union(Set(subscriptionsToKeep))
-        
         settingsToReport.forEach { settings in
             let completion: CompletionBlock = { _, _, error in
-                self.currentSubscriptions.remove(.pending(settings))
                 guard error == nil else {
-                    self.currentSubscriptions.insert(.notReported(settings))
+                    self.currentSubscriptions.update(settings, toState: .notReported)
                     return
                 }
-                self.currentSubscriptions.insert(.reported(settings))
-                self.outdatedSettings.remove(settings)
+                self.currentSubscriptions.update(settings, toState: .reported)
             }
-            if let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth {
-                self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
-            } else {
-                self.outdatedSettings.insert(settings)
-            }
+            self.currentSubscriptions.update(settings, toState: .pending)
+            self.deviceRegistrator.device(registerWith: settings,
+                                          authCredential: sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth,
+                                          completion: completion)
         }
-        self.unreport(self.outdatedSettings)
     }
     
     // unregister on BE and validate local values
-    internal func unreport(_ settingsToUnreport: Set<SubscriptionSettings>) {
-        settingsToUnreport.forEach { settings in
+    internal func unreportOutdated() {
+        self.currentSubscriptions.outdatedSettings.forEach { settings in
             let completion: CompletionBlock = { _, _, error in
                 guard error == nil ||               // no errors
                     error?.code == 11211 ||         // "Device does not exist"
                     error?.code == 11200 else       // "Invalid device token"
                 {
-                    self.outdatedSettings.insert(settings)
                     return
                 }
-                self.outdatedSettings.remove(settings)
-                
-                // just in case
-                self.currentSubscriptions.remove(.reported(settings))
-                self.currentSubscriptions.remove(.notReported(settings))
-                self.currentSubscriptions.remove(.pending(settings))
+                self.currentSubscriptions.removed(settings)
             }
             self.deviceRegistrator.deviceUnregister(settings, completion: completion)
         }
@@ -312,8 +248,10 @@ public class PushNotificationService: NSObject, Service {
     
     // MARK: - Private methods
     private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        if let encrypted = userInfo["encryptedMessage"] as? String { // new pushes
-            guard let encryptionKit = self.encryptionKitSaver.get()?.first(where: { $0.UID == "FIXME" })?.encryptionKit else {
+        if let encrypted = userInfo["encryptedMessage"] as? String,
+            let uid = userInfo["UID"] as? String { // new pushes
+            guard let encryptionKit = self.currentSubscriptions.encryptionKit(forUID: uid) else {
+                assert(false, "no encryption kit fround")
                 return nil
             }
             do {
@@ -400,7 +338,7 @@ struct UnlockManagerProvider: UnlockProvider {
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential, completion: CompletionBlock?)
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?)
     func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock)
 }
 
