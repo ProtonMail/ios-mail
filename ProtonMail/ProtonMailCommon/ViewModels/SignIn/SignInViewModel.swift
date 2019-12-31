@@ -34,29 +34,30 @@ class SigninViewModel : NSObject {
     }
 
     let usersManager: UsersManager
-    
-    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
+    let signinManager: SignInManager
+    let unlockManager: UnlockManager
     
     init(usersManager: UsersManager) {
         self.usersManager = usersManager
+        self.signinManager = sharedServices.get()
+        self.unlockManager = sharedServices.get()
     }
     
     func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SigninComplete)->Void) {
-        let signinManager = SignInManager(usersManager: self.usersManager)
         signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, ask2fa: {
             complete(.ask2fa)
         }, onError: { (error) in
             complete(.error(error))
         }, afterSignIn: {
             complete(.ok)
-            self.unlockManager.unlockIfRememberedCredentials {
+            self.unlockManager.unlockIfRememberedCredentials(forUser: username) {
                 complete(.mbpwd)
             }
         }, requestMailboxPassword: {
             complete(.mbpwd)
         }) {//require mailbox pwd
             
-            self.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
+            self.unlockManager.unlockIfRememberedCredentials(forUser: username) { }
             
             complete(.ok)
         }

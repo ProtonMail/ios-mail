@@ -63,7 +63,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     // the login private key, ususally it is first userkey
     public var privateKey : String?
-
+    private var passwordKeySalt : String?
     
     public var password: String = ""
     
@@ -86,7 +86,7 @@ final class AuthCredential: NSObject, NSCoding {
     
     func update(salt: String?, privateKey: String?) {
         self.privateKey = privateKey
-        //        self.passwordKeySalt = salt
+        self.passwordKeySalt = salt
     }
     
     func udpate (password: String) {
@@ -98,6 +98,7 @@ final class AuthCredential: NSObject, NSCoding {
     }
     
     func update(_ res : AuthResponse, updateUID: Bool) {
+        assert(false)
         //        self.encryptToken = res.accessToken
         //        if res.refreshToken != nil {
         //            self.refreshToken = res.refreshToken
@@ -124,11 +125,11 @@ final class AuthCredential: NSObject, NSCoding {
         //        self.expiration = Date(timeIntervalSinceNow: res.expiresIn ?? 0)
         //
         //        ///TODO:: rmeove this later , when server switch off them
-        //        self.privateKey = res.privateKey
-        //        self.passwordKeySalt = res.keySalt
+        self.privateKey = res.privateKey
+        self.passwordKeySalt = res.keySalt
     }
     
-    required init(accessToken: String, refreshToken: String, sessionID: String, expiration: Date/*, key : String, plain: String?, pwd:String?, salt:String?*/) {
+    required init(accessToken: String, refreshToken: String, sessionID: String, expiration: Date, key : String, /*plain: String?, pwd:String?,*/ salt:String?) {
         self.accessToken = accessToken
         self.sessionID = sessionID
         self.refreshToken = refreshToken
@@ -140,8 +141,8 @@ final class AuthCredential: NSObject, NSCoding {
         //        self.expiration = expiration
         //        self.plainToken = plain
         //        self.password = pwd
-        //        self.privateKey = key
-        //        self.passwordKeySalt = salt
+        self.privateKey = key
+        self.passwordKeySalt = salt
     }
     
     convenience required init?(coder aDecoder: NSCoder) {
@@ -156,9 +157,10 @@ final class AuthCredential: NSObject, NSCoding {
         self.init(accessToken: token,
                   refreshToken: refreshToken,
                   sessionID: sessionID,
-                  expiration: expirationDate)
+                  expiration: expirationDate,
+                  key: aDecoder.decodeObject(forKey: CoderKey.key) as? String ?? "",
+                  salt: aDecoder.decodeObject(forKey: CoderKey.salt) as? String)
         self.userID = aDecoder.decodeObject(forKey: CoderKey.userID) as? String ?? ""
-        self.privateKey = aDecoder.decodeObject(forKey: CoderKey.key) as? String ?? ""
         self.password = aDecoder.decodeObject(forKey: CoderKey.password) as? String ?? ""
     }
     
@@ -177,14 +179,13 @@ final class AuthCredential: NSObject, NSCoding {
     ////        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: Key.keychainStore)
     //    }
     
-    class func getPrivateKey() -> String! {
-        return ""
+//    func getPrivateKey() -> String! {
+//        return ""
         // return self.fetchFromKeychain()?.privateKey
-    }
+//    }
     
-    class func getKeySalt() -> String? {
-        return ""
-        //        return self.fetchFromKeychain()?.passwordKeySalt
+    func getKeySalt() -> String? {
+        return self.passwordKeySalt
     }
     
     class func unarchive(data: NSData?) -> AuthCredential? {
@@ -244,5 +245,6 @@ final class AuthCredential: NSObject, NSCoding {
         aCoder.encode(userID, forKey: CoderKey.userID)
         aCoder.encode(privateKey, forKey: CoderKey.key)
         aCoder.encode(password, forKey: CoderKey.password)
+        aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
     }
 }

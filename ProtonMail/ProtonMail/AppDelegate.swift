@@ -141,24 +141,26 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
+        
         if UIDevice.current.stateRestorationPolicy == .coders {
             // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
             self.coordinator.prepareForCoders()
         }
+        let usersManager = UsersManager(server: Server.live, delegate: self)
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
         return true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // #if DEBUG
-        // PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
-        // PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
-        // PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
-        // #endif
+        #if DEBUG 
+        PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
+        PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
+        PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
+        #endif
 
-        // moved to coordinator
-        //let cacheService : AppCacheService = sharedServices.get()
-        //cacheService.restoreCacheWhenAppStart()
-        
         #if Enterprise
         Fabric.with([Crashlytics.self])
         #endif
@@ -201,6 +203,7 @@ extension AppDelegate: UIApplicationDelegate {
         //setup language
         LanguageManager.setupCurrentLanguage()
 
+        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
         let pushService : PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
@@ -443,3 +446,39 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
+extension AppDelegate : UsersManagerDelegate {
+
+    func migrating() {
+        
+    }
+    
+    func session() {
+        
+    }
+    
+    
+}
+
+extension AppDelegate : UnlockManagerDelegate {
+    var isUserCredentialStored: Bool {
+        sharedServices.get(by: UsersManager.self).hasUsers()
+    }
+    
+    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
+        guard let _ = uid else {
+            return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
+        }
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
+    }
+    
+    func cleanAll() {
+        ///
+        sharedServices.get(by: UsersManager.self).clean()
+        keymaker.wipeMainKey()
+        keymaker.mainKeyExists()
+    }
+    
+    func unlocked() {
+        // should work via messages
+    }
+}

@@ -53,9 +53,6 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var decryptButton: UIButton!
     @IBOutlet weak var resetMailboxPasswordAction: UIButton!
     
-    
-    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()

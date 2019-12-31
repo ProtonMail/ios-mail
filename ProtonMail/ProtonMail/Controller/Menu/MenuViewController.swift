@@ -248,8 +248,7 @@ extension MenuViewController: UITableViewDelegate {
                 //self.performSegue(withIdentifier: kSegueToFeedback, sender: indexPath)
             } else if item == .lockapp {
                 keymaker.lockTheApp() // remove mainKey from memory
-                //TODO:: fix me
-                //let _ = UnlockManager.shared.isUnlocked() // provoke mainKey obtaining
+                let _ = sharedServices.get(by: UnlockManager.self).isUnlocked() // provoke mainKey obtaining
                 self.sectionClicked = false
                 self.closeMenu()
             } else if item == .servicePlan {

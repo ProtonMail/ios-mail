@@ -36,21 +36,29 @@ protocol CacheStatusInject {
     var isPinCodeEnabled : Bool { get }
     var isTouchIDEnabled : Bool { get }
     var pinFailedCount : Int { get set }
-    
-    var isUserCredentialStored : Bool { get }
-    var isMailboxPasswordStored : Bool { get }
 }
 
 protocol UnlockManagerDelegate : class {
     func cleanAll()
     func unlocked()
+    
+    var isUserCredentialStored : Bool { get }
+    func isMailboxPasswordStored(forUser uid: String?) -> Bool
 }
 
 class UnlockManager: Service {
     var cacheStatus : CacheStatusInject
     weak var delegate : UnlockManagerDelegate?
     
-    init(cacheStatus: CacheStatusInject, delegate : UnlockManagerDelegate?) {
+    static var shared: UnlockManager {
+        #if !APP_EXTENSION
+        return sharedServices.get(by: UnlockManager.self)
+        #else
+        fatalError("FIXME")
+        #endif
+    }
+    
+    init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
     }
@@ -135,13 +143,14 @@ class UnlockManager: Service {
         }
     }
     
-    internal func unlockIfRememberedCredentials(requestMailboxPassword: ()->Void) {
-        guard keymaker.mainKeyExists(), cacheStatus.isUserCredentialStored else {
+    internal func unlockIfRememberedCredentials(forUser uid: String? = nil,
+                                                requestMailboxPassword: ()->Void) {
+        guard keymaker.mainKeyExists(), self.delegate?.isUserCredentialStored == true else {
             self.delegate?.cleanAll()
             return
         }
         
-        guard cacheStatus.isMailboxPasswordStored else { // this will provoke mainKey obtention
+        guard self.delegate?.isMailboxPasswordStored(forUser: uid) == true else { // this will provoke mainKey obtention
             requestMailboxPassword()
             return
         }
@@ -150,14 +159,12 @@ class UnlockManager: Service {
         
         #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()
-        //TODO:: fix me
-        //sharedMessageDataService.injectTransientValuesIntoMessages()
+        sharedServices.get(by: UsersManager.self).users.forEach { $0.messageService.injectTransientValuesIntoMessages() }
         self.updateUserData()
         #endif
         
-        //TODO:: fix me
-//        self.delegate?.unlocked()
-        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil)
+        NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
+        NotificationCenter.default.post(name: Notification.Name.didObtainMailboxPassword, object: nil) // needed by 2-password mode AccountConnectViewController
     }
     
     

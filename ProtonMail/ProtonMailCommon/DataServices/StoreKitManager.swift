@@ -253,13 +253,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             
         case .purchased:
             do {
-                guard SignInManager.shared.isSignedIn() else {
+                guard sharedServices.get(by: UsersManager.self).hasUsers() else {
                     throw Errors.pleaseSignIn
                 }
-                //TODO:: fix me
-//                guard UnlockManager.shared.isUnlocked() else {
-//                    throw Errors.appIsLocked
-//                }
+                guard UnlockManager.shared.isUnlocked() else {
+                    throw Errors.appIsLocked
+                }
                 try self.proceed(withPurchased: transaction, shouldVerifyPurchaseWasForSameAccount: shouldVerify)
                 
             } catch Errors.noHashedUsernameArrivedInTransaction { // storekit bug

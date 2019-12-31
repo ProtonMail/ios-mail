@@ -59,8 +59,6 @@ class MailboxPasswordViewController: UIViewController {
     @IBOutlet weak var resetMailboxPasswordAction: UIButton!
     
     
-    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupDecryptButton()
@@ -174,18 +172,26 @@ class MailboxPasswordViewController: UIViewController {
     }
     
     func decryptPassword() {
+        let signInManager = sharedServices.get(by: SignInManager.self)
+        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        guard let auth = sharedServices.get(by: UsersManager.self).users.last?.auth else {
+            unlockManager.delegate?.cleanAll()
+            return
+        }
+        
         let password = (passwordTextField.text ?? "")
-        let mailbox_password = SignInManager.shared.mailboxPassword(from: password)
+        let mailbox_password = signInManager.mailboxPassword(from: password, auth: auth)
         
         MBProgressHUD.showAdded(to: view, animated: true)
-        SignInManager.shared.proceedWithMailboxPassword(mailbox_password, auth: nil,
-                                 onError: { error in
+        signInManager.proceedWithMailboxPassword(mailbox_password,
+                                                 auth: auth,
+                                                 onError: { error in
                                     MBProgressHUD.hide(for: self.view, animated: true)
                                     let alert = error.alertController()
                                     alert.addAction((UIAlertAction.okAction()))
                                     self.present(alert, animated: true, completion: nil)
         }, tryUnlock: {
-            self.unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
+            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
         })
     }
     

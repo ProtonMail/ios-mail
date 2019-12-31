@@ -332,6 +332,22 @@ extension UsersManager {
 //        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
 //    }
     
+    internal func clean() { //TODO:: fix later
+        SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
+        KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
+        KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
+        
+        UserTempCachedStatus.backup()
+        sharedUserDataService.signOut(true)
+        userCachedStatus.signOut()
+        //sharedMessageDataService.launchCleanUpIfNeeded()
+    }
+    
+    func hasUsers() -> Bool {
+        return KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) != nil &&
+            SharedCacheBase.getDefault()?.value(forKey: CoderKey.usersInfo) != nil
+    }
+    
     var isMailboxPasswordStored : Bool {
         return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }

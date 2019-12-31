@@ -36,9 +36,6 @@ class SigninCoordinator: DefaultCoordinator {
     let viewModel : SigninViewModel
     var services: ServiceFactory
     
-    let window : UIWindow
-    let source : UIWindow
-    
     enum Destination : String {
         case mailbox   = "toMailboxSegue"
         case label     = "toLabelboxSegue"
@@ -62,93 +59,20 @@ class SigninCoordinator: DefaultCoordinator {
         }
     }
     
-    init(source: UIWindow, vm: SigninViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
-        self.source = source
-        self.window = UIWindow(storyboard: .signIn, scene: scene)
+    init(destination: UIWindow, vm: SigninViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.services = services
         
-        self.viewController = self.window.topmostViewController() as? SigninCoordinator.VC
+        // defined by Storyboard
+        let controller = (destination.rootViewController as! UINavigationController).viewControllers.first as! VC
+        
+        self.viewController = controller
         self.viewController?.modalPresentationStyle = .fullScreen
     }
     
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
-
-        guard source != window, source.rootViewController?.restorationIdentifier != window.rootViewController?.restorationIdentifier else {
-            return
-        }
-        
-        let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
-        source.addSubview(effectView)
-        window.alpha = 0.0
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            effectView.effect = UIBlurEffect(style: .dark)
-            self.window.alpha = 1.0
-        }, completion: { _ in
-            let _ = self.source
-            let _ = self.window
-            effectView.removeFromSuperview()
-        })
-        
-        // notify source's views they are disappearing
-        window.topmostViewController()?.viewWillDisappear(false)
-        
-        window.makeKeyAndVisible()
-        
-        // notify destination views they are about to show up
-        if let topDestination = window.topmostViewController(), topDestination.isViewLoaded {
-            topDestination.viewDidAppear(false)
-        }
-        
-        return
-        
-//        let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
-//        source.addSubview(effectView)
-//        self.window.alpha = 0.0
-//
-//        UIView.animate(withDuration: 0.5, animations: {
-//            effectView.effect = UIBlurEffect(style: .dark)
-//            self.window.alpha = 1.0
-//        }, completion: { _ in
-//            effectView.removeFromSuperview()
-//        })
-//
-//        // notify source's views they are disappearing
-//        source.topmostViewController()?.viewWillDisappear(false)
-//
-//        self.window.makeKeyAndVisible()
-////        self.currentWindow = destination
-//
-//        // notify destination views they are about to show up
-////        if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
-////            topDestination.viewDidAppear(false)
-////        }
-//
-//        let effectView = UIVisualEffectView(frame: UIScreen.main.bounds)
-//        self.source.addSubview(effectView)
-//        self.window.alpha = 0.0
-//
-//        UIView.animate(withDuration: 0.5, animations: {
-//            effectView.effect = UIBlurEffect(style: .dark)
-//            self.window.alpha = 1.0
-//        }, completion: { _ in
-////            let _ = source
-////            let _ = self.viewController
-//            effectView.removeFromSuperview()
-//        })
-//
-//        // notify source's views they are disappearing
-//        self.viewController?.viewWillDisappear(false)
-//
-//        self.window.makeKeyAndVisible()
-//
-//        // notify destination views they are about to show up
-//        if let topDestination = self.viewController, topDestination.isViewLoaded {
-//            topDestination.viewDidAppear(false)
-//        }
     }
     
     private func toPlan() {

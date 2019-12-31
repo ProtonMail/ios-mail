@@ -25,25 +25,9 @@ import Foundation
 import Keymaker
 
 class SignInManager: Service {
-    
-    static var shared = SignInManager(usersManager: UsersManager(server: Server.live, delegate: nil))
-    
     let usersManager: UsersManager
     init(usersManager: UsersManager) {
         self.usersManager = usersManager
-    }
-    
-    //Clean up should put in to usermanager
-    internal func clean() { //TODO:: fix later
-        UserTempCachedStatus.backup()
-        sharedUserDataService.signOut(true)
-        userCachedStatus.signOut()
-        //sharedMessageDataService.launchCleanUpIfNeeded()
-    }
-    
-    internal func isSignedIn() -> Bool {
-        return self.usersManager.isMailboxPasswordStored
-        //return sharedUserDataService.isUserCredentialStored && sharedUserDataService.isMailboxPasswordStored
     }
     
     internal func signIn(username: String,
@@ -80,9 +64,9 @@ class SignInManager: Service {
                          onSuccess: success)
     }
     
-    internal func mailboxPassword(from cleartextPassword: String) -> String {
+    internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
         var mailboxPassword = cleartextPassword
-        if let keysalt = AuthCredential.getKeySalt(), !keysalt.isEmpty {
+        if let keysalt = auth.getKeySalt(), !keysalt.isEmpty {
             let keysalt_byte: Data = keysalt.decodeBase64()
             mailboxPassword = PasswordUtils.getMailboxPassword(cleartextPassword, salt: keysalt_byte)
         }
@@ -120,7 +104,7 @@ class SignInManager: Service {
             tryUnlock()
         }.catch(on: .main) { (error) in
             onError(error as NSError)
-            self.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
+            self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
 

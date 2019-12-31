@@ -180,23 +180,12 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == kSignUpKeySegue {
-//            let viewController = segue.destination as! SignUpUserNameViewController
-//            let deviceCheckToken = sender as? String ?? ""
-//            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
-//        } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
-//            let viewController = segue.destination as! PinCodeViewController
-//            viewController.viewModel = UnlockPinCodeModelImpl()
-//            viewController.delegate = self
-//        } else if segue.identifier == kSegueToBioViewNoAnimation {
-//            let viewController = segue.destination as! BioCodeViewController
-//            viewController.delegate = self
-//        } else if segue.identifier == kSegueTo2FACodeSegue {
-//            let popup = segue.destination as! TwoFACodeViewController
-//            popup.delegate = self
-//            popup.mode = .twoFactorCode
-//            self.setPresentationStyleForSelfController(self, presentingController: popup)
-//        }
+        if segue.identifier == kSegueTo2FACodeSegue {
+            let popup = segue.destination as! TwoFACodeViewController
+            popup.delegate = self
+            popup.mode = .twoFactorCode
+            self.setPresentationStyleForSelfController(self, presentingController: popup)
+        }
     }
     
     // MARK: - Private methods

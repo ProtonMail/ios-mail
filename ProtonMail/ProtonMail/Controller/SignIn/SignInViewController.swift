@@ -191,7 +191,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         if SignInViewController.isComeBackFromMailbox {
             showLoginViews()
-            SignInManager.shared.clean()
+            self.coordinator?.services.get(by: UsersManager.self).clean()
         }
     }
     
@@ -246,37 +246,36 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         // choose flow
         
-//        if sharedUserDataService.isNewUser {
-//            sharedUserDataService.isNewUser = false
-//            /// This logic is when creating new user success but the setup key is failed.
-//            /// when creating user success the isUserCredentialStored will be true but isTouchIDEnabled and isPinCodeEnabled should be all false
-//            /// this also fixed the user see the mailbox password view after created the new account and enable the pin/face in the same session.
-//            if sharedUserDataService.isUserCredentialStored && !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
-//                //TODO:: fix me
-////                UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: {
-////                    self.isRemembered = true
-////                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-////                })
-////                if isRemembered {
-////                    hideLoginViews()
-////                } else {
-////                    showLoginViews()
-////                }
-//            }
-//        }
+        if sharedUserDataService.isNewUser {
+            sharedUserDataService.isNewUser = false
+            /// This logic is when creating new user success but the setup key is failed.
+            /// when creating user success the isUserCredentialStored will be true but isTouchIDEnabled and isPinCodeEnabled should be all false
+            /// this also fixed the user see the mailbox password view after created the new account and enable the pin/face in the same session.
+            if sharedUserDataService.isUserCredentialStored && !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
+                UnlockManager.shared.unlockIfRememberedCredentials(forUser: uName) {
+                    self.isRemembered = true
+                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+                }
+                if isRemembered {
+                    hideLoginViews()
+                } else {
+                    showLoginViews()
+                }
+            }
+        }
         
         // unlock when locked
         
-//        let signinFlow = UnlockManager.shared.getUnlockFlow()
-//        switch signinFlow {
-//        case .requirePin:
-//            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
-//        case .requireTouchID:
-//            self.performSegue(withIdentifier: self.kSegueToBioViewNoAnimation, sender: self)
-//        case .restore:
-//            /* nothing here, let the user login from the beginning */
-//            break
-//        }
+        let signinFlow = UnlockManager.shared.getUnlockFlow()
+        switch signinFlow {
+        case .requirePin:
+            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
+        case .requireTouchID:
+            self.performSegue(withIdentifier: self.kSegueToBioViewNoAnimation, sender: self)
+        case .restore:
+            /* nothing here, let the user login from the beginning */
+            break
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -284,40 +283,12 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         
         if SignInViewController.isComeBackFromMailbox {
             showLoginViews()
-            SignInManager.shared.clean()
+            self.coordinator?.services.get(by: UsersManager.self).clean()
         }
         
         if UIDevice.current.isLargeScreen() && !isRemembered {
             usernameTextField.becomeFirstResponder()
         }
-        //TODO:: fix me
-//        if UIDevice.current.isLargeScreen() && !isRemembered {
-//            let signinFlow = UnlockManager.shared.getUnlockFlow()
-//            if signinFlow != .requireTouchID {
-//                usernameTextField.becomeFirstResponder()
-//            }
-//        }
-//
-//        // unlock when locked
-//
-//        let signinFlow = UnlockManager.shared.getUnlockFlow()
-//        signinFlow == .requireTouchID ? self.showButtonTouchID(false) : self.hideButtonTouchID(true)
-//
-//        if signinFlow == .requirePin {
-//            self.showingTouchID = false
-//            self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self)
-//        } else {
-//            self.showingTouchID = true
-//            UnlockManager.shared.initiateUnlock(flow: signinFlow,
-//                                                requestPin: {
-//                                                    self.showingTouchID = false
-//                                                    self.performSegue(withIdentifier: self.kSegueToPinCodeViewNoAnimation, sender: self) },
-//                                                requestMailboxPassword: {
-//                                                    self.showingTouchID = false
-//                                                    self.isRemembered = true
-//                                                    self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-//            })
-//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -573,7 +544,7 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
 
     func Cancel2FA() {
         sharedUserDataService.twoFactorStatus = 0
-        sharedUserDataService.authResponse = nil
+        UserDataService.authResponse = nil
         NotificationCenter.default.addKeyboardObserver(self)
     }
 }
@@ -582,16 +553,15 @@ extension SignInViewController : PinCodeViewControllerDelegate {
     
     func Cancel() {
         UserTempCachedStatus.backup()
-        SignInManager.shared.clean()
+        self.coordinator?.services.get(by: UsersManager.self).clean()
     }
     
     func Next() {
-        //TODO:: fix me
-//        UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: {
-//            self.isRemembered = true
-//            self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-//        })
-//        setupView()
+        UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: {
+            self.isRemembered = true
+            self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+        })
+        setupView()
     }
 }
 

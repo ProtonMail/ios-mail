@@ -324,7 +324,7 @@ protocol SignInProvider {
 }
 struct SignInManagerProvider: SignInProvider {
     var isSignedIn: Bool {
-        return SignInManager.shared.isSignedIn()
+        return sharedServices.get(by: UsersManager.self).hasUsers()
     }
 }
 

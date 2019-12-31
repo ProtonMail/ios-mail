@@ -464,45 +464,18 @@ class UserDataService : Service {
         //mailboxPassword = password
     }
     
-    var authResponse: AuthResponse? = nil
-    func signIn(_ username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
+    static var authResponse: AuthResponse? = nil
+    func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
                 ask2fa: @escaping LoginAsk2FABlock,
                 onError:@escaping LoginErrorBlock,
                 onSuccess: @escaping LoginSuccessBlock) {
-        // will use standard authCredential
-//        apiService.auth(username: username, password: password, twoFACode: twoFACode, checkSalt: true) { (task, mpwd, status, auth, error) in
-//            if status == .ask2FA {
-//                self.twoFactorStatus = 1
-//                self.authResponse = res
-//                ask2fa()
-//            } else {
-//                self.authResponse = nil
-//                if error == nil {
-//                    self.username = username
-//                    self.passwordMode = mpwd != nil ? 1 : 2
-//                    self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
-//                    onSuccess(mpwd, auth)
-//                } else {
-//                    self.twoFactorStatus = 0
-//                    self.signOut(true)
-//                    onError(error!)
-//                }
-//            }
-//        }
-//
-//        if let authRes = authResponse {
-//            sharedAPIService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
-//        } else {
-//            // will use standard authCredential
-//            sharedAPIService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
-//        }
-        apiService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt) {( task, mpwd, status, res, auth, userinfo, error) in
+        let completionWrapper: APIService.AuthCompleteBlock = { task, mpwd, status, res, auth, userinfo, error in
             if status == .ask2FA {
                 self.twoFactorStatus = 1
-                self.authResponse = res
+                UserDataService.authResponse = res
                 ask2fa()
             } else {
-                self.authResponse = nil
+                UserDataService.authResponse = nil
                 if error == nil {
                     self.username = username
                     self.passwordMode = mpwd != nil ? 1 : 2
@@ -516,11 +489,11 @@ class UserDataService : Service {
             }
         }
         
-        if let authRes = authResponse {
-//            apiService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
+        if let authRes = UserDataService.authResponse {
+            apiService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
         } else {
             // will use standard authCredential
-            //apiService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
+            apiService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
         }
     }
 
@@ -1093,7 +1066,7 @@ class UserDataService : Service {
     typealias LoginAsk2FABlock = () -> Void
     typealias LoginErrorBlock = (_ error: NSError) -> Void
     typealias LoginSuccessBlock = (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void
-    
+    /*
     func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
               ask2fa: @escaping LoginAsk2FABlock,
               onError:@escaping LoginErrorBlock,
@@ -1117,7 +1090,7 @@ class UserDataService : Service {
             }
         }
     }
-       
+       */
 }
 
 

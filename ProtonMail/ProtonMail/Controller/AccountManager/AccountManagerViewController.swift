@@ -52,6 +52,10 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         self.tableView.dataSource = self
         self.tableView.delegate = self
         
+        NotificationCenter.default.addObserver(forName: Notification.Name.didObtainMailboxPassword, object: nil, queue: .main) { _ in
+            self.navigationController?.popToViewController(self, animated: true)
+        }
+        
         self.title = LocalString._account
 
         let cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))

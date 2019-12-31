@@ -59,4 +59,8 @@ extension Notification.Name {
     static var didUnlock: Notification.Name {
         return .init(rawValue: "UserDataServiceDidUnlockNotification")
     }
+    
+    static var didObtainMailboxPassword: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidObtainMailboxPasswordNotification")
+    }
 }

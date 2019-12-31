@@ -71,7 +71,7 @@ class SpringboardShortcutsService: NSObject, Service {
     }
     
     private func updateShortcuts() {
-        if SignInManager.shared.isSignedIn() {
+        if sharedServices.get(by: UsersManager.self).hasUsers() {
             self.addShortcuts()
         } else {
             self.removeShortcuts()

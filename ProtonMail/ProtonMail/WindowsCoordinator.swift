@@ -28,14 +28,30 @@ import SWRevealViewController // for state restoration
 
 
 // this view controller is placed into AppWindow only until it is correctly loaded from storyboard or correctly restored with use of MainKey
-fileprivate class PlaceholderVC: UIViewController { }
+fileprivate class PlaceholderVC: UIViewController {
+    var color: UIColor = .blue
+    
+    convenience init(color: UIColor) {
+        self.init()
+        self.color = color
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        #if DEBUG
+        self.view.backgroundColor = color
+        #else
+        Snapshot().show(at: self.view)
+        #endif
+    }
+}
 
 class WindowsCoordinator: CoordinatorNew {
     private lazy var snapshot = Snapshot()
     
     private var deeplink: DeepLink?
     private var upgradeView: ForceUpgradeView?
-    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(), scene: nil)
+    private var appWindow: UIWindow! = UIWindow(root: PlaceholderVC(color: .red), scene: nil)
     private var lockWindow: UIWindow?
     
     private var services: ServiceFactory
@@ -79,7 +95,6 @@ class WindowsCoordinator: CoordinatorNew {
             }
         }
         self.services = services
-        self.prepareForAll()
     }
     
     /// restore some cache after login/authorized
@@ -90,27 +105,10 @@ class WindowsCoordinator: CoordinatorNew {
     func prepareForCoders() {
         self.currentWindow = self.appWindow
     }
-        
-    func prepareForAll() {
-        //    ///
-        //        let msgService: MessageDataService = MessageDataService(api: APIService.shared)
-        //        helper.add(MessageDataService.self, for: msgService)
-        //
-        self.services.add(PushNotificationService.self, for: PushNotificationService())
-        //        helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
-        // Temparay
-        self.services.add(UsersManager.self, for: UsersManager(server: Server.live, delegate: self))
-        self.services.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
-    }
     
     func start() {
-        let placeholder = UIWindow(root: UIViewController(), scene: self.scene)
-        self.snapshot.show(at: placeholder)
+        let placeholder = UIWindow(root: PlaceholderVC(color: .yellow), scene: self.scene)
         self.currentWindow = placeholder
-        
-        let cacheService : AppCacheService = self.services.get()
-        cacheService.restoreCacheWhenAppStart()
-        
         
         //some cache may need user to unlock first. so this need to move to after windows showup
         let usersManager : UsersManager = self.services.get()
@@ -143,7 +141,7 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func lock() {
-        guard SignInManager.shared.isSignedIn() else {
+        guard sharedServices.get(by: UsersManager.self).hasUsers() else {
             self.go(dest: .signInWindow)
             return
         }
@@ -152,7 +150,9 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func unlock() {
         self.lockWindow = nil
-        guard SignInManager.shared.isSignedIn() else {
+        let usersManager : UsersManager = self.services.get()
+        
+        guard usersManager.hasUsers() else {
             self.go(dest: .signInWindow)
             return
         }
@@ -160,11 +160,10 @@ class WindowsCoordinator: CoordinatorNew {
 //            sharedUserDataService.isNewUser = false
 //            self.appWindow = nil
 //        }
-        let usersManager : UsersManager = self.services.get()
-        usersManager.tryRestore()
         
+        usersManager.tryRestore()
         if usersManager.count <= 0 {
-            self.cleanAll()
+            usersManager.clean()
             self.go(dest: .signInWindow)
         } else {
             self.go(dest: .appWindow)
@@ -175,22 +174,12 @@ class WindowsCoordinator: CoordinatorNew {
         DispatchQueue.main.async { // cuz
             switch dest {
             case .signInWindow:
-                
-                if self.appWindow == nil {
-                    return
-                }
-                
                 self.appWindow = nil
-                let signin = SigninCoordinator(source: self.currentWindow,
-                                               vm: SigninViewModel(usersManager: self.services.get()),
-                                               services: self.services, scene: self.scene)
-
-                signin.start()
-                
-//                self.currentWindow = signin.window
-                
-//                self.appWindow = nil
-//                self.navigate(from: self.currentWindow, to: UIWindow(storyboard: .signIn, scene: self.scene))
+                let newWindow = UIWindow(storyboard: .signIn, scene: self.scene)
+                let vm = SigninViewModel(usersManager: sharedServices.get())
+                let coordinator = SigninCoordinator(destination: newWindow, vm: vm, services: sharedServices)
+                coordinator.start()
+                self.navigate(from: self.currentWindow, to: newWindow)
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
@@ -368,32 +357,4 @@ extension WindowsCoordinator: ForceUpgradeViewDelegate {
             }
         }
     }
-}
-
-
-extension WindowsCoordinator : UsersManagerDelegate {
-
-    func migrating() {
-        
-    }
-    
-    func session() {
-        
-    }
-    
-    
-}
-
-
-extension WindowsCoordinator : UnlockManagerDelegate {
-    func cleanAll() {
-        ///
-        SignInManager.shared.clean()
-    }
-    
-    func unlocked() {
-        self.unlock()
-    }
-    
-    
 }

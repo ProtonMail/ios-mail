@@ -45,7 +45,7 @@ extension APIService {
                     let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
                     return completion(nil, mpwd, .resCheck, nil, credential, userInfo, nil)
                 } else {
-                    return completion(nil, nil, .resCheck, nil, nil, userInfo, nil)
+                    return completion(nil, nil, .resCheck, nil, credential, userInfo, nil)
                 }
             }
             

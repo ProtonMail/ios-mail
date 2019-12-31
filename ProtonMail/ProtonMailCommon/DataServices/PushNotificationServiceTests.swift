@@ -281,7 +281,7 @@ extension PushNotificationServiceTests {
     typealias SubscriptionSettings = PushSubscriptionSettings
     typealias Completion = CompletionBlock
     
-    private class InMemorySaver<T: Codable>: Saver<T> {
+    internal class InMemorySaver<T: Codable>: Saver<T> {
         convenience init() {
             self.init(key: "", store: StoreMock())
         }
