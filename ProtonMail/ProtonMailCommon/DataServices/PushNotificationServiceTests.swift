@@ -310,12 +310,6 @@ extension PushNotificationServiceTests {
             registrationDone()
         }
         
-        
-        var registration: (_ settings: SubscriptionSettings) -> NSError?
-        var unregistration: (_ settings: SubscriptionSettings) -> NSError?
-        var registrationDone: ()->Void
-        var unregistrationDone: ()->Void
-        
         func deviceUnregister(_ settings: SubscriptionSettings, completion: @escaping Completion) {
             completion(nil, nil, self.unregistration(settings))
             unregistrationDone()
