@@ -290,6 +290,7 @@ class ServicePlanDetailsTests: XCTestCase {
         let subscription = ServicePlanSubscription(start: .distantPast,
                                         end: .distantFuture,
                                         planDetails: [self.address5, self.pro],
+                                        defaultPlanDetails: nil,
                                         paymentMethods: [.init(iD: "424242", type: .card)])
         
         XCTAssertEqual(subscription.plan, .pro)
