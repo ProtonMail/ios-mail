@@ -24,8 +24,7 @@
 import UIKit
 
 class StorefrontCoordinator: PushCoordinator {
-    ///tempery for build error
-    var services: ServiceFactory = ServiceFactory()
+    var services: ServiceFactory = sharedServices
     
     typealias VC = StorefrontCollectionViewController
     weak var viewController: StorefrontCollectionViewController?
@@ -43,8 +42,9 @@ class StorefrontCoordinator: PushCoordinator {
     func go(to nextPlan: ServicePlan) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let storefront = Storefront.init(plan: nextPlan)
-            controller.viewModel = StorefrontViewModel(storefront: storefront)
+            let servicePlanService = self.services.get(by: UsersManager.self).firstUser.sevicePlanService
+            let storefront = Storefront.init(plan: nextPlan, servicePlanService: servicePlanService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
         }
         nextCoordinator.start()
     }
@@ -52,8 +52,9 @@ class StorefrontCoordinator: PushCoordinator {
     func goToBuyMoreCredits(for subscription: ServicePlanSubscription) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let storefront = Storefront(creditsFor: subscription)
-            controller.viewModel = StorefrontViewModel(storefront: storefront)
+            let servicePlanService = self.services.get(by: UsersManager.self).firstUser.sevicePlanService
+            let storefront = Storefront(creditsFor: subscription, servicePlanService: servicePlanService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
         }
         nextCoordinator.start()
     }

@@ -211,8 +211,8 @@ extension AppDelegate: UIApplicationDelegate {
         pushService.registerForRemoteNotifications()
         pushService.setLaunchOptions(launchOptions)
         
-        //        StoreKitManager.default.subscribeToPaymentQueue()
-        //        StoreKitManager.default.updateAvailableProductsList()
+        StoreKitManager.default.subscribeToPaymentQueue()
+        StoreKitManager.default.updateAvailableProductsList()
         
         #if DEBUG
         NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in

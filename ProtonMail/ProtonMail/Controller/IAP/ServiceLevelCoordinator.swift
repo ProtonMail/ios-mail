@@ -32,10 +32,13 @@ class ServiceLevelCoordinator: Coordinator {
     
     init(navigationController: UINavigationController) {
         let controller = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
-        if let currentSubscription = ServicePlanDataService.shared.currentSubscription {
-            controller.viewModel = StorefrontViewModel(storefront: Storefront(subscription: currentSubscription))
+        let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser.sevicePlanService
+        if let currentSubscription = servicePlanService.currentSubscription {
+            let storefront = Storefront(subscription: currentSubscription, servicePlanService: servicePlanService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
         } else {
-            controller.viewModel = StorefrontViewModel(storefront: Storefront(plan: .free))
+            let storefront = Storefront(plan: .free, servicePlanService: servicePlanService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
         }
         self.controller = controller
         

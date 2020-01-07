@@ -24,7 +24,7 @@
 import Foundation
 import AwaitKit
 
-protocol ServicePlanDataStorage {
+protocol ServicePlanDataStorage: class {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
     var isIAPAvailableOnBE: Bool { get set }
     var defaultPlanDetails: ServicePlanDetails? { get set }
@@ -33,24 +33,23 @@ protocol ServicePlanDataStorage {
 
 class ServicePlanDataService: NSObject, Service {
     
-    static var shared = ServicePlanDataService(localStorage: userCachedStatus)
-    
-    internal init(localStorage: ServicePlanDataStorage) {
+    internal init(localStorage: ServicePlanDataStorage, apiService: APIService) {
         self.localStorage = localStorage
         self.allPlanDetails = localStorage.servicePlansDetails ?? []
         self.isIAPAvailableOnBE = localStorage.isIAPAvailableOnBE
         self.defaultPlanDetails = localStorage.defaultPlanDetails
         self.currentSubscription = localStorage.currentSubscription
+        self.apiService = apiService
         super.init()
     }
     
     typealias CompletionHandler = ()->Void
     private let localStorage: ServicePlanDataStorage
     
-    let apiService = APIService.shared
+    let apiService: APIService
     
     private var allPlanDetails: [ServicePlanDetails] {
-        willSet { userCachedStatus.servicePlansDetails = newValue }
+        willSet { self.localStorage.servicePlansDetails = newValue }
     }
     
     internal var isIAPAvailable: Bool {
@@ -64,15 +63,15 @@ class ServicePlanDataService: NSObject, Service {
     }
     
     private var isIAPAvailableOnBE: Bool {
-        willSet { userCachedStatus.isIAPAvailableOnBE = newValue }
+        willSet { self.localStorage.isIAPAvailableOnBE = newValue }
     }
     
     var defaultPlanDetails: ServicePlanDetails? {
-        willSet { userCachedStatus.defaultPlanDetails = newValue }
+        willSet { self.localStorage.defaultPlanDetails = newValue }
     }
     
     @objc dynamic var currentSubscription: ServicePlanSubscription? {
-        willSet { userCachedStatus.currentSubscription = newValue }
+        willSet { self.localStorage.currentSubscription = newValue }
     }
     
     internal func detailsOfServicePlan(named name: String) -> ServicePlanDetails? {
@@ -143,7 +142,7 @@ extension ServicePlanDataService {
             completion?()
         }.catch { error in
             if (error as NSError).code == 22110 { // no subscription stands for free/default plan
-                self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, paymentMethods: nil)
+                self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, defaultPlanDetails: self.defaultPlanDetails, paymentMethods: nil)
             }
             completion?()
         }.finally {

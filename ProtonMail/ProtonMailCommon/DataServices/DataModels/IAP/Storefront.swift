@@ -24,6 +24,8 @@
 import Foundation
 
 class Storefront: NSObject {
+    private var servicePlanService: ServicePlanDataService
+    
     var plan: ServicePlan
     var details: ServicePlanDetails?
     var others: [ServicePlan]
@@ -35,21 +37,23 @@ class Storefront: NSObject {
     
     private var subscriptionObserver: NSKeyValueObservation!
     
-    init(plan: ServicePlan) {
+    init(plan: ServicePlan, servicePlanService: ServicePlanDataService) {
+        self.servicePlanService = servicePlanService
         self.plan = plan
-        self.details = plan.fetchDetails()!
+        self.details = servicePlanService.detailsOfServicePlan(named: plan.rawValue)
         self.others = []
         self.title = plan.subheader.0
         
         self.isProductPurchasable = ( plan == .plus
-                                        && ServicePlanDataService.shared.currentSubscription?.plan == .free
+                                        && servicePlanService.currentSubscription?.plan == .free
                                         && StoreKitManager.default.readyToPurchaseProduct() )
         self.canBuyMoreCredits = false
         self.credits = sharedUserDataService.userInfo?.credit ?? 0
         super.init()
     }
     
-    init(subscription: ServicePlanSubscription) {
+    init(subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService) {
+        self.servicePlanService = servicePlanService
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
@@ -63,7 +67,7 @@ class Storefront: NSObject {
         self.credits = sharedUserDataService.userInfo?.credit ?? 0
         super.init()
 
-        self.subscriptionObserver = ServicePlanDataService.shared.observe(\.currentSubscription) { [unowned self] shared, change in
+        self.subscriptionObserver = self.servicePlanService.observe(\.currentSubscription) { [unowned self] shared, change in
             guard let newSubscription = shared.currentSubscription else { return }
             DispatchQueue.main.async {
                 self.plan = newSubscription.plan
@@ -75,7 +79,8 @@ class Storefront: NSObject {
         }
     }
     
-    init(creditsFor subscription: ServicePlanSubscription) {
+    init(creditsFor subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService) {
+        self.servicePlanService = servicePlanService
         self.subscription = subscription
         self.plan = subscription.plan
         self.title = LocalString._buy_more_credits

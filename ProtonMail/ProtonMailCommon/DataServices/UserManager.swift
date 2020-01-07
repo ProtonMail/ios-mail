@@ -77,6 +77,13 @@ class UserManager : Service {
         let service = UserDataService(check: false, api: self.apiService)
         return service
     }()
+    
+    #if !APP_EXTENSION
+    public lazy var sevicePlanService: ServicePlanDataService = {
+        let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
+        return service
+    }()
+    #endif
 
     init(api: APIService, userinfo: UserInfo, auth: AuthCredential) {
         self.userinfo = userinfo

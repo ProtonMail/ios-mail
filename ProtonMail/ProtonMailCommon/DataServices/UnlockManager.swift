@@ -159,8 +159,12 @@ class UnlockManager: Service {
         
         #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()
-        sharedServices.get(by: UsersManager.self).users.forEach { $0.messageService.injectTransientValuesIntoMessages() }
-        self.updateUserData()
+        sharedServices.get(by: UsersManager.self).users.forEach {
+            $0.messageService.injectTransientValuesIntoMessages()
+            self.updateUserData(of: $0)
+        }
+        self.updateCommonUserData()
+        StoreKitManager.default.processAllTransactions()
         #endif
         
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
@@ -170,11 +174,12 @@ class UnlockManager: Service {
     
     #if !APP_EXTENSION
     // TODO: verify if some of these operations can be optimized
-    private func updateUserData() { // previously this method was called loadContactsAfterInstall()
-//        ServicePlanDataService.shared.updateServicePlans()
-//        ServicePlanDataService.shared.updateCurrentSubscription()
- //       StoreKitManager.default.processAllTransactions()
-        
+    private func updateUserData(of user: UserManager) { // previously this method was called loadContactsAfterInstall()
+        user.sevicePlanService.updateServicePlans()
+        user.sevicePlanService.updateCurrentSubscription()
+    }
+    
+    func updateCommonUserData() {
 //        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
 //        //TODO:: here need to be changed
 //        sharedContactDataService.fetchContacts { (contacts, error) in

@@ -86,11 +86,10 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    var labelDataService : LabelsDataService
+    lazy var labelDataService : LabelsDataService = self.usersManager.firstUser.labelService
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
-        self.labelDataService = self.usersManager.firstUser.labelService
     }
     
     func currentUser() -> UserManager? {
@@ -102,7 +101,7 @@ class MenuViewModelImpl : MenuViewModel {
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
-        if !ServicePlanDataService.shared.isIAPAvailable {
+        if let user = self.currentUser(), !user.sevicePlanService.isIAPAvailable {
             otherItems = otherItems.filter { $0 != .servicePlan }
         }
     }

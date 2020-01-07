@@ -158,6 +158,7 @@ class UsersManager : Service {
     }
     
     var firstUser : UserManager {
+        assert(!users.isEmpty, "no users, you may not have first one")
         return users.first!
     }
     

@@ -188,7 +188,7 @@ final class GetSubscriptionResponse: ApiResponse {
         let plans = plansParser.availableServicePlans
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
+        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, defaultPlanDetails: nil, paymentMethods: nil)
         
         return true
     }
