@@ -51,7 +51,6 @@ let sharedServices: ServiceFactory = {
     //    let addrService: AddressBookService = helper.get()
     //    helper.add(ContactDataService.self, for: ContactDataService(api: apiService, addressBookService: addrService))
     //    helper.add(BugDataService.self, for: BugDataService(api: apiService))
-    //    helper.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
     
     return helper
 }()
@@ -154,6 +153,7 @@ extension AppDelegate: UIApplicationDelegate {
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
         sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
+        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         return true
     }
     
