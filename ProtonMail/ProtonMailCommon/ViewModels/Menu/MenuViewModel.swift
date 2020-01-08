@@ -60,4 +60,6 @@ protocol MenuViewModel : AnyObject {
     func item(others at: Int ) ->MenuItem
     
     func find( section : MenuSection, item : MenuItem) -> IndexPath
+    
+    func signOut()
 }

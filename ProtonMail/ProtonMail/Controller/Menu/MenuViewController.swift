@@ -171,11 +171,19 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     
     func handleSignOut(_ sender : UIView?) {
         let alertController = UIAlertController(title: LocalString._logout_confirmation, message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
+//        alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
+//            self.signingOut = true
+//            UserTempCachedStatus.backup()
+//            //sharedUserDataService.signOut(true)
+//            userCachedStatus.signOut()
+//        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalString._sign_out_all, style: .destructive, handler: { (action) -> Void in
             self.signingOut = true
             UserTempCachedStatus.backup()
-            //sharedUserDataService.signOut(true)
             userCachedStatus.signOut()
+            self.viewModel.signOut()
+            sharedUserDataService.signOut(true)
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
@@ -412,5 +420,19 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
 extension MenuViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
         return DeepLink.Node(name: String(describing: MenuViewController.self))
+    }
+}
+
+
+extension MenuViewController: CoordinatedAlerts {
+    func controller(notFount dest: String) {
+        #if DEBUG
+        let alertController = "can't open \(dest) ".alertController()
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
+        
+        self.sectionClicked = false
+        self.closeMenu()
+        #endif
     }
 }

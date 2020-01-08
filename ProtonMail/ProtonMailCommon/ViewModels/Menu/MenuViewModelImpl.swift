@@ -187,4 +187,9 @@ class MenuViewModelImpl : MenuViewModel {
         return IndexPath(row: r, section: s)
     }
     
+    
+    func signOut() {
+        self.usersManager.loggedOutAll()
+    }
+    
 }

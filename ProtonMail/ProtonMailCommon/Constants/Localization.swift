@@ -1349,6 +1349,10 @@ class LocalizedString {
 
     /// "Sign Out"
     lazy var _sign_out = NSLocalizedString("Sign Out", comment: "Action")
+    
+    
+    /// "Log  Out all"
+    lazy var _sign_out_all = NSLocalizedString("Log Out All", comment: "Action")
 
     /// "Rate & Review"
     lazy var _rate_review = NSLocalizedString("Rate & Review", comment: "Title")
@@ -1786,4 +1790,44 @@ class LocalizedString {
     lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
     
     lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
+    
+    
+    /// New Settings
+    lazy var _account_settings = NSLocalizedString("Account Settings", comment: "section title in settings")
+    lazy var _app_settings = NSLocalizedString("App Settings", comment: "section title in settings")
+    lazy var _app_information = NSLocalizedString("APP INFORMATION", comment: "section title in settings")
+    
+    lazy var _auto_lock = NSLocalizedString("Auto-lock", comment: "section title in settings")
+    lazy var _app_language = NSLocalizedString("App Language", comment: "cell title in device settings")
+    lazy var _combined_contacts = NSLocalizedString("Combined Contacts", comment: "cell title in device settings")
+    lazy var _local_cache_management = NSLocalizedString("Local Cache Management", comment: "cell title in device settings")
+    
+    lazy var _password_management = NSLocalizedString("Password management", comment: "cell title in device settings")
+    lazy var _mailbox_size = NSLocalizedString("Mailbox size", comment: "cell title in device settings")
+    
+    
+    lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
+    lazy var _snooze = NSLocalizedString("Snooze", comment: "cell title in device settings")
+    lazy var _mailbox = NSLocalizedString("MAILBOX", comment: "cell title in device settings")
+    
+    
+    
+    lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
+    
+    
+    
+    lazy var _label_and_folders = NSLocalizedString("Labels & Folders", comment: "cell title in device settings")
+    
+    
+    
+    lazy var _swiping_gestures = NSLocalizedString("Swiping gestures", comment: "cell title in device settings")
+    
+    
+    
+    lazy var _local_storage_limit = NSLocalizedString("Local storage limit", comment: "cell title in device settings")
+    
+    
+  
+    
+    
 }

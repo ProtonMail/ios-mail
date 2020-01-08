@@ -134,10 +134,10 @@ class MenuCoordinatorNew: DefaultCoordinator {
     private func toInbox(labelID: String, deepLink: DeepLink) {
         //Example of deeplink without segue
         var nextVM : MailboxViewModel?
-        let labelService : LabelsDataService = self.services.get()
         
         let users : UsersManager = self.services.get()
         let user = users.firstUser
+        let labelService = user.labelService
         
         if let mailbox = Message.Location(rawValue: labelID) {
             nextVM = MailboxViewModelImpl(label: mailbox, userManager: user, pushService: services.get())
@@ -243,16 +243,20 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
             
         case .settings:
-            guard let next = navigation?.firstViewController() as? SettingsTableViewController else {
+            guard let next = navigation else {
                 return false
             }
-            
-            let deepLink = sender as? DeepLink
-            let viewModel = SettingsViewModelImpl()
-            let settings = SettingsCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services, deeplink: deepLink)
-            self.lastestCoordinator = settings
+            let usersManager : UsersManager = sharedServices.get()
+            let user = usersManager.firstUser
+            let vm = SettingsDeviceViewModelImpl(user: user)
+            guard let settings = SettingsDeviceCoordinator(rvc: rvc, nav: next,
+                                                           vm: vm, services: self.services, scene: nil) else {
+                return false
+            }
             settings.start()
-
+            if let deeplink = sender as? DeepLink {
+                settings.follow(deeplink)
+            }
         case .contacts:
             guard let tabBarController = destination as? ContactTabBarViewController else {
                 return false

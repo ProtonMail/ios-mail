@@ -43,6 +43,9 @@ let sharedServices: ServiceFactory = {
     helper.add(AppCacheService.self, for: AppCacheService())
     // view model factory
     helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    
+    // push service
+    helper.add(PushNotificationService.self, for: PushNotificationService())
 
     //    let apiService: APIService = helper.get()
     //    let addrService: AddressBookService = helper.get()
@@ -203,7 +206,6 @@ extension AppDelegate: UIApplicationDelegate {
         //setup language
         LanguageManager.setupCurrentLanguage()
 
-        sharedServices.add(PushNotificationService.self, for: PushNotificationService())
         let pushService : PushNotificationService = sharedServices.get()
         UNUserNotificationCenter.current().delegate = pushService
         pushService.registerForRemoteNotifications()
