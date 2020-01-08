@@ -279,6 +279,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     }
 
     override func viewDidAppear(_ animated: Bool) {
+        assert(self.viewModel != nil)
         super.viewDidAppear(animated)
         
         if SignInViewController.isComeBackFromMailbox {

@@ -183,7 +183,9 @@ class WindowsCoordinator: CoordinatorNew {
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
-                    lock.windowLevel = .statusBar
+                    let vm = SigninViewModel(usersManager: sharedServices.get())
+                    let coordinator = SigninCoordinator(destination: lock, vm: vm, services: sharedServices)
+                    coordinator.start()
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock
                 }
