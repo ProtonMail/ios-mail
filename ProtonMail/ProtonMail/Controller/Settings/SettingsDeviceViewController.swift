@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewController.swift
+//  SettingsDeviceViewController.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //
@@ -26,24 +26,18 @@ import MBProgressHUD
 import Keymaker
 
 class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
-    
-    struct CellKey {
+    struct Key {
         static let headerCell : String        = "header_cell"
         static let headerCellHeight : CGFloat = 36.0
-        /// cells
-        static let oneLineCell         = "settings_device_general"
-//        let SettingSingalSingleLineCell   = "settings_general_single_line"
-//        let SettingTwoLinesCell           = "settings_twolines"
-//        let SettingDomainsCell            = "setting_domains"
-//        let SettingStorageCell            = "setting_storage_cell"
-//        let SingleTextCell                = "single_text_cell"
-//        let SwitchCell                    = "switch_table_view_cell"
-        
     }
     
     internal var viewModel : SettingsDeviceViewModel!
     internal var coordinator : SettingsDeviceCoordinator?
     
+    ///
+    var cleaning : Bool      = false
+    
+    ///
     func set(viewModel: SettingsDeviceViewModel) {
         self.viewModel = viewModel
     }
@@ -59,28 +53,18 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        //        self.restorationClass = SettingsTableViewController.self
+        //self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
-        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
+        
+        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
+        self.tableView.register(SettingsGeneralCell.self)
+        self.tableView.register(SettingsTwoLinesCell.self)
     }
     
     private func updateTitle() {
         self.title = LocalString._menu_settings_title
     }
 
-    
-//    //TODO:: move to view model
-//    var userManager : UserManager {
-//        get {
-//            let users : UsersManager = sharedServices.get()
-//            return users.firstUser
-//        }
-//    }
-    
-    //
-    var cleaning : Bool      = false
-    
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -127,6 +111,29 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
 //        }
     }
     
+    private func inAppLanguage(_ indexPath: IndexPath) {
+        let current_language = LanguageManager.currentLanguageEnum()
+        let title = LocalString._settings_current_language_is + current_language.nativeDescription
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        for l in self.viewModel.languages {
+            if l != current_language {
+                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
+                    let _ = self.navigationController?.popViewController(animated: true)
+                    LanguageManager.saveLanguage(byCode: l.code)
+                    LocalizedString.reset()
+                    self.updateTitle()
+                    self.tableView.reloadData()
+                }))
+            }
+        }
+        let cell = tableView.cellForRow(at: indexPath)
+        alertController.popoverPresentationController?.sourceView = cell ?? self.view
+        alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    
     ///MARK: -- table view delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
@@ -152,32 +159,37 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         
         switch eSection {
         case .account:
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellKey.oneLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell(self.viewModel.email, right: "")
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTwoLinesCell.CellID, for: indexPath)
+            if let c = cell as? SettingsTwoLinesCell {
+                c.config(top: self.viewModel.name, bottom: self.viewModel.email)
             }
             return cell
         case .app:
             let item = self.viewModel.appSettigns[row]
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellKey.oneLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+            if let c = cell as? SettingsGeneralCell {
+                c.config(left: item.description)
                 switch item {
+                case .push:
+                    c.config(right: "off")
                 case .autolock:
-                    c.configCell(item.description, right: "off")
+                    c.config(right: "off")
                 case .language:
                     let language: ELanguage =  LanguageManager.currentLanguageEnum()
-                    c.configCell(item.description, right: language.nativeDescription)
+                    c.config(right: language.nativeDescription)
                 case .combinContacts:
-                    c.configCell(item.description, right: "off")
+                    c.config(right: "off")
                 case .cleanCache:
-                    c.configCell(item.description, right: "")
+                    c.config(right: "")
                 }
             }
             return cell
         case .info:
-            let cell = tableView.dequeueReusableCell(withIdentifier: CellKey.oneLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell("AppVersion", right: self.viewModel.appVersion())
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+            cell.accessoryType = .none
+            if let c = cell as? SettingsGeneralCell {
+                c.config(left: "AppVersion")
+                c.config(right: self.viewModel.appVersion())
             }
             return cell
         }
@@ -185,7 +197,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         if let headerCell = header {
             headerCell.textLabel?.font = Fonts.h6.regular
             headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
@@ -196,7 +208,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CellKey.headerCellHeight
+        return Key.headerCellHeight
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -209,10 +221,33 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         case .app:
             let item = self.viewModel.appSettigns[row]
             switch item {
+            case .push:
+                guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
+                    return
+                }
+                
+                if UIApplication.shared.canOpenURL(settingsUrl) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(settingsUrl, completionHandler: { (success) in
+                            print("Settings opened: \(success)") // Prints true
+                        })
+                    } else {
+                        UIApplication.shared.openURL(settingsUrl as URL)
+                    }
+                }
             case .autolock:
+                self.coordinator?.go(to: .autoLock)
                 break
             case .language:
-                break
+                #if targetEnvironment(simulator)
+                self.inAppLanguage(indexPath)
+                #else
+                if #available(iOS 13.0, *) {
+                    UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+                } else {
+                    self.inAppLanguage(indexPath)
+                }
+                #endif
             case .combinContacts:
                 break
             case .cleanCache:
@@ -222,8 +257,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                     let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
                     hud.label.text = LocalString._settings_resetting_cache
                     hud.removeFromSuperViewOnHide = true
-                    
-                    
                     self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
                         hud.mode = MBProgressHUDMode.text
                         hud.label.text = LocalString._general_done_button
@@ -237,7 +270,6 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false

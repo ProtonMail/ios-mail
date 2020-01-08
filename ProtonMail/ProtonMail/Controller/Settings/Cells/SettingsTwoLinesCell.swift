@@ -1,5 +1,5 @@
 //
-//  GeneralSettingSinglelineCell.swift
+//  SettingsTwoLinesCell.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //
@@ -23,24 +23,26 @@
 
 import UIKit
 
-class GeneralSettingSinglelineCell: UITableViewCell {
-    @IBOutlet weak var LeftText: UILabel!
-    
+@IBDesignable class SettingsTwoLinesCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
-            LeftText.adjustsFontForContentSizeCategory = true
-        }
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
     }
     
-    func configCell(_ left:String) {
-        LeftText.text = left
-        self.accessibilityLabel = left
+    static var CellID : String  {
+        return "\(self)"
+    }
+    
+    @IBOutlet weak var topLineLabel: UILabel!
+    @IBOutlet weak var bottomLineLabel: UILabel!
+    
+    func config(top tValue: String, bottom bValue: String) {
+        self.topLineLabel.text = tValue
+        self.bottomLineLabel.text = bValue
+    }
+}
+
+extension SettingsTwoLinesCell: IBDesignableLabeled {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
     }
 }

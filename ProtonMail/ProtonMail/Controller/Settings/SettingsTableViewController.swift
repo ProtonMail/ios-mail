@@ -782,30 +782,15 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             case .labels:
                 self.coordinator?.go(to: .lableManager)
             case .language:
+                #if targetEnvironment(simulator)
+                self.inAppLanguage(indexPath)
+                #else
                 if #available(iOS 13.0, *) {
                     UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
                 } else {
-                    let current_language = LanguageManager.currentLanguageEnum()
-                    let title = LocalString._settings_current_language_is + current_language.nativeDescription
-                    let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
-                    alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-                    for l in setting_languages {
-                        if l != current_language {
-                            alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
-                                let _ = self.navigationController?.popViewController(animated: true)
-                                LanguageManager.saveLanguage(byCode: l.code)
-                                LocalizedString.reset()
-                                
-                                self.updateTitle()
-                                //self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
-                            }))
-                        }
-                    }
-                    let cell = tableView.cellForRow(at: indexPath)
-                    alertController.popoverPresentationController?.sourceView = cell ?? self.view
-                    alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-                    present(alertController, animated: true, completion: nil)
+                    self.inAppLanguage(indexPath)
                 }
+                #endif
             case .network:
                 let netItem = setting_network_items[indexPath.row]
                 if netItem == .clear {
@@ -816,6 +801,29 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             }
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    private func inAppLanguage(_ indexPath: IndexPath) {
+        let current_language = LanguageManager.currentLanguageEnum()
+        let title = LocalString._settings_current_language_is + current_language.nativeDescription
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        for l in setting_languages {
+            if l != current_language {
+                alertController.addAction(UIAlertAction(title: l.nativeDescription, style: .default, handler: { (action) -> Void in
+                    let _ = self.navigationController?.popViewController(animated: true)
+                    LanguageManager.saveLanguage(byCode: l.code)
+                    LocalizedString.reset()
+                    
+                    self.updateTitle()
+                    //self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
+                }))
+            }
+        }
+        let cell = tableView.cellForRow(at: indexPath)
+        alertController.popoverPresentationController?.sourceView = cell ?? self.view
+        alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+        present(alertController, animated: true, completion: nil)
     }
     
     

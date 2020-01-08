@@ -1,5 +1,5 @@
 //
-//  SettingsCoordinator.swift
+//  SettingsAccountCoordinator.swift
 //  ProtonMail - Created on 12/12/18.
 //
 //

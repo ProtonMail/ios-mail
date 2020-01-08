@@ -1,5 +1,5 @@
 //
-//  SettingsCoordinator.swift
+//  SettingsDeviceCoordinator.swift
 //  ProtonMail - Created on 12/12/18.
 //
 //
@@ -28,7 +28,9 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     typealias VC = SettingsDeviceViewController
     
     enum Destination : String {
-        case accountSetting    = "settings_account_settings"
+        case accountSetting = "settings_account_settings"
+        case autoLock       = "settings_auto_lock"
+        
 //        case displayName     = "setting_displayname"
 //        case signature       = "setting_signature"
 //        case mobileSignature = "setting_mobile_signature"
@@ -42,7 +44,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     }
     
     let viewModel : SettingsDeviceViewModel
-    var services: ServiceFactory
+    var services : ServiceFactory
     
     internal weak var viewController: SettingsDeviceViewController?
     internal weak var navigation: UIViewController?
@@ -95,15 +97,10 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
-            return false //
+            return false
         }
-        
         switch dest {
         case .accountSetting:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
             let users : UsersManager = sharedServices.get()
             let vm = SettingsAccountViewModelImpl(user: users.firstUser)
             guard let accountSetting = SettingsAccountCoordinator(dest: destination, vm: vm, services: self.services) else {
@@ -111,55 +108,16 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
             }
             accountSetting.start()
             return true
-//        case .displayName:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-//        case .signature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSignature())
-//        case .mobileSignature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-//        case .debugQueue:
-//            break
-//        case .pinCode:
-//            guard let next = destination as? PinCodeViewController else {
-//                return false
-//            }
-//            next.viewModel = SetPinCodeModelImpl()
-//        case .lableManager:
-//            guard let next = destination as? LablesViewController else {
-//                return false
-//            }
-//
-//            let users : UsersManager = services.get()
-//            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
-//        case .loginPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-//        case .mailboxPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-//        case .singlePwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
-//        case .snooze:
-//            break
-        }
 
-        
+        case .autoLock:
+            let users : UsersManager = sharedServices.get()
+            let vm = SettingsLockViewModelImpl(user: users.firstUser)
+            guard let lockSetting = SettingsLockCoordinator(dest: destination, vm: vm, services: self.services) else {
+                return false
+            }
+            lockSetting.start()
+            return true
+        }
         return false
     }
 }

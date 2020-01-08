@@ -1,6 +1,6 @@
 //
-//  GeneralSettingSinglelineCell.swift
-//  ProtonMail - Created on 3/17/15.
+//  TableCellRegister.swift
+//  ProtonMail - Created on 01/01/2020.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -23,24 +23,10 @@
 
 import UIKit
 
-class GeneralSettingSinglelineCell: UITableViewCell {
-    @IBOutlet weak var LeftText: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
-            LeftText.adjustsFontForContentSizeCategory = true
-        }
-    }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-    }
-    
-    func configCell(_ left:String) {
-        LeftText.text = left
-        self.accessibilityLabel = left
+extension UITableView {
+    func register( _ cellClass: AnyClass) {
+        let cellID = "\(cellClass)"
+        let nib = UINib(nibName: cellID, bundle: Bundle.main)
+        self.register(nib, forCellReuseIdentifier: cellID)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewController.swift
+//  SettingsLockViewController.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //
@@ -26,10 +26,10 @@ import MBProgressHUD
 import Keymaker
 
 class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel : SettingsAccountViewModel!
+    internal var viewModel : SettingsLockViewModel!
     internal var coordinator : SettingsLockCoordinator?
     
-    func set(viewModel: SettingsAccountViewModel) {
+    func set(viewModel: SettingsLockViewModel) {
         self.viewModel = viewModel
     }
     
@@ -41,8 +41,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         return self.coordinator
     }
     
-    var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
+    var setting_general_items : [SGItems]                = []
     var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -84,16 +83,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     struct CellKey {
         static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0
-        /// cells
-//        static let oneLineCell         = "settings_device_general"
-        //        let SettingSingalSingleLineCell   = "settings_general_single_line"
-        //        let SettingTwoLinesCell           = "settings_twolines"
-        //        let SettingDomainsCell            = "setting_domains"
-        //        let SettingStorageCell            = "setting_storage_cell"
-        //        let SingleTextCell                = "single_text_cell"
-        //        let SwitchCell                    = "switch_table_view_cell"
-        
+        static let headerCellHeight : CGFloat = 36.0        
     }
     
     //
@@ -112,7 +102,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     }
     
     private func updateTitle() {
-        self.title = LocalString._menu_settings_title
+        self.title = LocalString._auto_lock
     }
     
     override func didReceiveMemoryWarning() {
@@ -166,51 +156,54 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         return self.viewModel.sections.count
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.viewModel.sections.count > section {
-            switch( self.viewModel.sections[section]) {
-            case .account:
-                return self.viewModel.accountItems.count
-            case .addresses:
-                return 1 // self.viewModel.appSettigns.count
-            case .snooze:
-                return 0
-            case .mailbox:
-                return 1
-            }
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .lock:
+            return 1
+        case .type:
+            return self.viewModel.lockItems.count
+        case .timer:
+            return 1
         }
-        return 0
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let section = indexPath.section
         let row = indexPath.row
         let eSection = self.viewModel.sections[section]
-        
         switch eSection {
-        case .account:
+        case .lock:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
             if let c = cell as? GeneralSettingViewCell {
-                let item = self.viewModel.accountItems[row]
-                c.configCell(item.description, right: "")
+                c.configCell(eSection.description, right: "")
             }
             return cell
-        case .addresses:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? GeneralSettingViewCell {
-                let item = self.viewModel.accountItems[row]
-                c.configCell(item.description, right: "")
+        case .type:
+            let item = self.viewModel.lockItems[row]
+            switch item {
+            case .pin:
+                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+                if let c = cell as? GeneralSettingViewCell {
+                    c.configCell(eSection.description, right: "")
+                }
+                return cell
+            case .touchid:
+                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+                if let c = cell as? SettingsDeviceGeneralCell {
+                    c.configCell(eSection.description, right: "")
+                }
+                return cell
+            case .faceid:
+                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+                if let c = cell as? SettingsDeviceGeneralCell {
+                    c.configCell(eSection.description, right: "")
+                }
+                return cell
             }
-            return cell
-        case .snooze:
+        case .timer:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
             if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell("AppVersion", right: "")
-            }
-            return cell
-        case .mailbox:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell("AppVersion", right: "")
+                c.configCell(eSection.description, right: "")
             }
             return cell
         }
@@ -234,25 +227,23 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
-        let row = indexPath.row
-        let eSection = self.viewModel.sections[section]
-        switch eSection {
-        case .account:
-//            self.coordinator?.go(to: .accountSetting)
-            break
-        case .addresses:
-            //            let item = self.viewModel.appSettigns[row]
-            break
-        case .snooze:
-            break
-        case .mailbox:
-            break
-        }
+//        let section = indexPath.section
+//        let row = indexPath.row
+//        let eSection = self.viewModel.sections[section]
+//        switch eSection {
+//        case .account:
+////            self.coordinator?.go(to: .accountSetting)
+//            break
+//        case .addresses:
+//            //            let item = self.viewModel.appSettigns[row]
+//            break
+//        case .snooze:
+//            break
+//        case .mailbox:
+//            break
+//        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
-    
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return false

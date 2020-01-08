@@ -1,5 +1,5 @@
 //
-//  GeneralSettingSinglelineCell.swift
+//  SettingsGeneralCell.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //
@@ -23,24 +23,46 @@
 
 import UIKit
 
-class GeneralSettingSinglelineCell: UITableViewCell {
-    @IBOutlet weak var LeftText: UILabel!
+
+/**
+ settings cell
+ -------------------------
+ | left             right |
+ -------------------------
+**/
+
+@IBDesignable class SettingsGeneralCell: UITableViewCell {
+    @IBOutlet weak var leftText: UILabel!
+    @IBOutlet weak var rightText: UILabel!
+    
+    static var CellID: String {
+        return "\(self)"
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        if #available(iOS 10, *) {
-            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
-            LeftText.adjustsFontForContentSizeCategory = true
-        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-    func configCell(_ left:String) {
-        LeftText.text = left
+
+    func configCell(left:String, right:String) {
+        self.leftText.text = left
+        self.rightText.text = right
         self.accessibilityLabel = left
+    }
+    
+    func config( left: String ) {
+        self.leftText.text = left
+    }
+    func config( right: String ) {
+        self.rightText.text = right
+    }
+}
+
+extension SettingsGeneralCell: IBDesignableLabeled {
+    override func prepareForInterfaceBuilder() {
+        self.labelAtInterfaceBuilder()
     }
 }

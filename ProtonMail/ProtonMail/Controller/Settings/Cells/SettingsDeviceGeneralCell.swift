@@ -1,5 +1,5 @@
 //
-//  GeneralSettingViewCell.swift
+//  SettingsDeviceGeneralCell.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //
@@ -35,7 +35,6 @@ import UIKit
         super.setSelected(selected, animated: animated)
     }
 
-    
     func configCell(_ left:String, right:String) {
         LeftText.text = left
         RightText.text = right

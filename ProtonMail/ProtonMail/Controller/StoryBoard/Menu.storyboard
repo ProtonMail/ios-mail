@@ -33,7 +33,7 @@
         <!--Report Bug Navigation Controller-->
         <scene sceneID="ho3-Du-wUo">
             <objects>
-                <navigationController id="8dN-79-EXg" userLabel="Report Bug Navigation Controller" sceneMemberID="viewController">
+                <navigationController modalPresentationStyle="fullScreen" id="8dN-79-EXg" userLabel="Report Bug Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="0vy-7G-ikU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -49,7 +49,7 @@
         <!--REPORT BUGS-->
         <scene sceneID="zt3-NW-TGc">
             <objects>
-                <viewController storyboardIdentifier="ReportBugsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jNg-ua-VGF" customClass="ReportBugsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReportBugsViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jNg-ua-VGF" customClass="ReportBugsViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="tPy-OC-Itx"/>
                         <viewControllerLayoutGuide type="bottom" id="nEw-IQ-Gzw"/>

@@ -1,5 +1,5 @@
 //
-//  SettingsCoordinator.swift
+//  SettingsGesturesCoordinator.swift
 //  ProtonMail - Created on 12/12/18.
 //
 //

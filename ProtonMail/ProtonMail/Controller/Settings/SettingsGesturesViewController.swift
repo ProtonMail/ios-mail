@@ -1,5 +1,5 @@
 //
-//  SettingsTableViewController.swift
+//  SettingsGesturesViewController.swift
 //  ProtonMail - Created on 3/17/15.
 //
 //

@@ -45,6 +45,7 @@ public enum DeviceSectionItem : Int, CustomStringConvertible {
     case language = 1
     case combinContacts = 2
     case cleanCache = 3
+    case push = 4
     
     public var description : String {
         switch(self){
@@ -56,6 +57,8 @@ public enum DeviceSectionItem : Int, CustomStringConvertible {
             return LocalString._combined_contacts
         case .cleanCache:
             return LocalString._local_cache_management
+        case .push:
+            return LocalString._push_notification
         }
     }
 }
@@ -71,16 +74,22 @@ protocol SettingsDeviceViewModel : AnyObject {
     var userManager: UserManager { get }
     
     var email : String { get }
+    var name : String { get }
+    
+    var languages : [ELanguage] { get }
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     var sections: [SettingDeviceSection] = [ .account, .app, .info]
     
-    var appSettigns: [DeviceSectionItem] = [.autolock, .language, .combinContacts, .cleanCache]
+    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, /*.combinContacts,*/ .cleanCache]
     var userManager: UserManager
     init(user : UserManager) {
         self.userManager = user
     }
+    
+    var languages: [ELanguage] = ELanguage.allItems()
+    
     
     func appVersion() -> String {
         var appVersion = "Unkonw Version"
@@ -94,6 +103,12 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     }
     
     var email : String {
+        get {
+            return self.userManager.defaultEmail
+        }
+    }
+    
+    var name : String {
         get {
             return self.userManager.defaultDisplayName
         }

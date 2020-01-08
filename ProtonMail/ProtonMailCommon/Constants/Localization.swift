@@ -1805,29 +1805,17 @@ class LocalizedString {
     lazy var _password_management = NSLocalizedString("Password management", comment: "cell title in device settings")
     lazy var _mailbox_size = NSLocalizedString("Mailbox size", comment: "cell title in device settings")
     
-    
     lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
     lazy var _snooze = NSLocalizedString("Snooze", comment: "cell title in device settings")
     lazy var _mailbox = NSLocalizedString("MAILBOX", comment: "cell title in device settings")
     
-    
-    
     lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
-    
-    
-    
     lazy var _label_and_folders = NSLocalizedString("Labels & Folders", comment: "cell title in device settings")
     
-    
-    
     lazy var _swiping_gestures = NSLocalizedString("Swiping gestures", comment: "cell title in device settings")
-    
-    
-    
     lazy var _local_storage_limit = NSLocalizedString("Local storage limit", comment: "cell title in device settings")
     
-    
-  
+    lazy var _push_notification = NSLocalizedString("Push Notifications", comment: "cell title in device settings")
     
     
 }

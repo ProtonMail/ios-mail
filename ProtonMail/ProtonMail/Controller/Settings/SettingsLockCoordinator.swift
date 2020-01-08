@@ -1,5 +1,5 @@
 //
-//  SettingsCoordinator.swift
+//  SettingsLockCoordinator.swift
 //  ProtonMail - Created on 12/12/18.
 //
 //
@@ -28,12 +28,10 @@ class SettingsLockCoordinator : DefaultCoordinator {
 
     typealias VC = SettingsLockViewController
     
-    let viewModel : SettingsAccountViewModel
+    let viewModel : SettingsLockViewModel
     var services: ServiceFactory
     
     internal weak var viewController: SettingsLockViewController?
-//    internal weak var navigation: UIViewController?
-//    internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
     lazy internal var configuration: ((SettingsLockViewController) -> ())? = { vc in
@@ -49,19 +47,9 @@ class SettingsLockCoordinator : DefaultCoordinator {
     
     enum Destination : String {
         case notification    = "setting_notification"
-//        case displayName     = "setting_displayname"
-//        case signature       = "setting_signature"
-//        case mobileSignature = "setting_mobile_signature"
-//        case debugQueue      = "setting_debug_queue_segue"
-//        case pinCode         = "setting_setup_pingcode"
-//        case lableManager    = "toManagerLabelsSegue"
-//        case loginPwd        = "setting_login_pwd"
-//        case mailboxPwd      = "setting_mailbox_pwd"
-//        case singlePwd       = "setting_single_password_segue"
-//        case snooze          = "setting_notifications_snooze_segue"
     }
     
-    init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
+    init?(dest: UIViewController, vm: SettingsLockViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = dest as? VC else {
             return nil
         }

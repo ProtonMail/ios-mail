@@ -19,7 +19,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 
 import Foundation
 import Keymaker
@@ -82,7 +82,7 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
-
+            
             if #available(iOS 13.0, *) {
                 // this is done by UISceneDelegate
             } else {
@@ -107,13 +107,13 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     func start() {
-        let placeholder = UIWindow(root: PlaceholderVC(color: .yellow), scene: self.scene)
+        let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
         self.currentWindow = placeholder
         
         //some cache may need user to unlock first. so this need to move to after windows showup
         let usersManager : UsersManager = self.services.get()
         usersManager.launchCleanUpIfNeeded()
-//        usersManager.tryRestore()
+        //        usersManager.tryRestore()
         //sharedUserDataService.delegate = self
         
         //we should not trigger the touch id here. because it also doing in the sign vc. so when need lock. we just go to lock screen first
@@ -126,8 +126,8 @@ class WindowsCoordinator: CoordinatorNew {
             DispatchQueue.main.async {
                 // initiate unlock process which will send .didUnlock or .requestMainKey eventually
                 unlockManager.initiateUnlock(flow: flow,
-                                              requestPin: self.lock,
-                                              requestMailboxPassword: self.lock)
+                                             requestPin: self.lock,
+                                             requestMailboxPassword: self.lock)
             }
         }
     }
@@ -156,10 +156,10 @@ class WindowsCoordinator: CoordinatorNew {
             self.go(dest: .signInWindow)
             return
         }
-//        if sharedUserDataService.isNewUser {
-//            sharedUserDataService.isNewUser = false
-//            self.appWindow = nil
-//        }
+        //        if sharedUserDataService.isNewUser {
+        //            sharedUserDataService.isNewUser = false
+        //            self.appWindow = nil
+        //        }
         
         usersManager.tryRestore()
         if usersManager.count <= 0 {
