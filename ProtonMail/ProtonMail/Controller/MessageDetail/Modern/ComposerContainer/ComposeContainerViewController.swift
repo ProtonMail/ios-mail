@@ -50,10 +50,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        #if !APP_EXTENSION // app extension is not supposed to restore state
-        self.restorationClass = ComposeContainerViewController.self
-        #endif
-        
         if #available(iOS 11.0, *) {
             self.tableView.dropDelegate = self
         }
@@ -242,36 +238,6 @@ extension ComposeContainerViewController: Deeplinkable {
     var deeplinkNode: DeepLink.Node {
         return DeepLink.Node(name: String(describing: ComposeContainerViewController.self),
                              value: self.viewModel.childViewModel.message?.messageID)
-    }
-}
-
-@available(iOS, deprecated: 13.0, message: "iOS 13 restores state via Deeplinkable conformance")
-extension ComposeContainerViewController: UIViewControllerRestoration {
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
-            let viewModel = try? JSONDecoder().decode(ComposeContainerViewModel.self, from: data) else
-        {
-            return nil
-        }
-        
-        let next = UIStoryboard(name: "Composer", bundle: .main).make(ComposeContainerViewController.self)
-        next.set(viewModel: viewModel)
-        next.set(coordinator: .init(controller: next))
-        
-        return next
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let viewModel = try? JSONEncoder().encode(self.viewModel) {
-            coder.encode(viewModel, forKey: "viewModel")
-        }
-        
-        super.encodeRestorableState(with: coder)
-    }
-    
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
     }
 }
 #endif

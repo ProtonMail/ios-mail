@@ -149,7 +149,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.restorationClass = MailboxViewController.self
         
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
@@ -1469,70 +1468,6 @@ extension MailboxViewController: UITableViewDelegate {
         } else {
             self.noResultLabel.frame = CGRect(x: frame.origin.x, y: 0, width: frame.width, height: frame.height)
         }
-    }
-}
-
-@available(iOS, deprecated: 13.0, message: "iOS 13 restores state via Deeplinkable conformance")
-extension MailboxViewController: UIViewControllerRestoration {
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
-            let viewModel = (try? JSONDecoder().decode(MailboxViewModelImpl.self, from: data))
-                ?? (try? JSONDecoder().decode(LabelboxViewModelImpl.self, from: data))
-                ?? (try? JSONDecoder().decode(FolderboxViewModelImpl.self, from: data)) else
-        {
-            return nil
-        }
-
-        let next = UIStoryboard(name: "Menu", bundle: .main).make(MailboxViewController.self)
-        sharedVMService.mailbox(fromMenu: next)
-        next.set(viewModel: viewModel)
-        next.set(coordinator: MailboxCoordinator(vc: next, vm: viewModel, services: sharedServices))
-
-        return next
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let data = try? JSONEncoder().encode(self.viewModel) {
-            coder.encode(data, forKey: "viewModel")
-        }
-        let selection = self.selectedIDs.compactMap { $0 as? String }
-        if let selectionData = try? JSONEncoder().encode(selection) {
-            coder.encode(selectionData, forKey: "selectedIDs")
-        }
-        coder.encode(self.listEditing, forKey: "listEditing")
-        super.encodeRestorableState(with: coder)
-    }
-    
-    override func decodeRestorableState(with coder: NSCoder) {
-        if let selectionData = coder.decodeObject(forKey: "selectedIDs") as? Data,
-            let selection = try? JSONDecoder().decode(Array<String>.self, from: selectionData),
-            !selection.isEmpty
-        {
-            self.selectedIDs.removeAllObjects()
-            self.selectedIDs.addObjects(from: selection)
-        }
-        self.listEditing = coder.decodeBool(forKey: "listEditing")
-        
-        super.decodeRestorableState(with: coder)
-    }
-    
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-        UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
-        
-        self.updateNavigationController(self.listEditing)
-        self.tableView.reloadSections(IndexSet(integer: 0), with: .none)
-    }
-}
-
-// these methods will not get called if UITableView will not have its own restoration identifier in Storyboard
-extension MailboxViewController: UIDataSourceModelAssociation {
-    func modelIdentifierForElement(at idx: IndexPath, in view: UIView) -> String? {
-        return self.viewModel.item(index: idx)?.messageID
-    }
-    
-    func indexPathForElement(withModelIdentifier identifier: String, in view: UIView) -> IndexPath? {
-        return self.viewModel.indexPath(by: identifier)
     }
 }
 

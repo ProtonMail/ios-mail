@@ -39,7 +39,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     }
     
     override func viewDidLoad() {
-        self.restorationClass = MessageContainerViewController.self
         super.viewDidLoad()
         
         // child view controllers
@@ -269,31 +268,6 @@ extension MessageContainerViewController: MessageDetailBottomViewDelegate {
     }
     func forwardAction() {
         self.coordinator.go(to: .composerForward)
-    }
-}
-
-@available(iOS, deprecated: 13.0, message: "iOS 13 restores state via Deeplinkable conformance")
-extension MessageContainerViewController: UIViewControllerRestoration {
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let data = coder.decodeObject(forKey: "viewModel") as? Data,
-            let viewModel = try? JSONDecoder().decode(MessageContainerViewModel.self, from: data) else
-        {
-                return nil
-        }
-        
-        let next = UIStoryboard(name: "Message", bundle: .main).make(MessageContainerViewController.self)
-        next.set(viewModel: viewModel)
-        next.set(coordinator: .init(controller: next))
-        
-        return next
-    }
-    
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let viewModel = try? JSONEncoder().encode(self.viewModel) {
-            coder.encode(viewModel, forKey: "viewModel")
-        }
-        
-        super.encodeRestorableState(with: coder)
     }
 }
 

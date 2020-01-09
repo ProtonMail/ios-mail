@@ -26,28 +26,3 @@ import UIKit
 class ComposerNavigationController: UINavigationController {
     
 }
-
-@available(iOS, deprecated: 13.0, message: "iOS 13 restores state via Deeplinkable conformance")
-extension ComposerNavigationController: UIViewControllerRestoration {
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.restorationIdentifier = String(describing: ComposerNavigationController.self)
-        self.restorationClass = ComposerNavigationController.self
-    }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if self.viewControllers.isEmpty {
-            self.dismiss(animated: false, completion: nil)
-        }
-    }
-    
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        let navigation = ComposerNavigationController()
-        navigation.restorationIdentifier = String(describing: ComposerNavigationController.self)
-        navigation.restorationClass = ComposerNavigationController.self
-        return navigation
-    }
-}
