@@ -210,40 +210,43 @@ public class PushNotificationService: NSObject, Service {
 //            return
 //        }
         
-        let application = UIApplication.shared
-        guard let messageid = messageIDForUserInfo(userInfo) else {
-            completionHandler()
-            return
-        }
-        
+
         // if the app is in the background, then switch to the inbox and load the message detail
+        let application = UIApplication.shared
         guard application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess else {
             completionHandler()
             return
         }
         
-        self.launchOptions = nil
+        guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
+            let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else
+        {
+            completionHandler()
+            return
+        }
         
-        //TODO:: fix me -- look up by userid and message id
-//        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
-//            guard error == nil else {
-//                completionHandler()
-//                return
-//            }
-//
-//
-//            switch userInfo["category"] as? String {
-//            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-//                let link = DeepLink.init(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue)
-//                NotificationCenter.default.post(name: .switchView, object: link)
-//            default:
-//                self.messageService.pushNotificationMessageID = messageid
-//                let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
-//                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
-//                NotificationCenter.default.post(name: .switchView, object: link)
-//            }
-//            completionHandler()
-//        }
+        self.launchOptions = nil
+
+        user.messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+            guard error == nil else {
+                completionHandler()
+                return
+            }
+
+            switch userInfo["category"] as? String {
+            case .some(LocalNotificationService.Categories.failedToSend.rawValue):
+                let link = DeepLink(MenuCoordinatorNew.Setup.switchUser.rawValue, sender: uidFromPush)
+                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue, value: Message.Location.draft.rawValue))
+                NotificationCenter.default.post(name: .switchView, object: link)
+            default:
+                user.messageService.pushNotificationMessageID = messageid
+                let link = DeepLink(MenuCoordinatorNew.Setup.switchUser.rawValue, sender: uidFromPush)
+                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue))
+                link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
+                NotificationCenter.default.post(name: .switchView, object: link)
+            }
+            completionHandler()
+        }
     }
     
     // MARK: - Private methods

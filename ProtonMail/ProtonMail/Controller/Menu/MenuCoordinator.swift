@@ -67,7 +67,16 @@ class MenuCoordinatorNew: DefaultCoordinator {
     let viewModel : MenuViewModel
     var services: ServiceFactory
     
-    
+    enum Setup: String {
+        case switchUser = "USER"
+        
+        init?(rawValue: String) {
+            switch rawValue {
+            case "USER": self = .switchUser
+            default: return nil
+            }
+        }
+    }
     enum Destination : String {
         case mailbox   = "toMailboxSegue"
         case label     = "toLabelboxSegue"
@@ -165,7 +174,23 @@ class MenuCoordinatorNew: DefaultCoordinator {
     }
     
     func follow(_ deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
+        // take first node
+        var start = deepLink.popFirst
+        
+        // do the setup if it's setup
+        if let setup = start, let dest = Setup(rawValue: setup.name) {
+            switch dest {
+            case .switchUser where setup.value != nil:
+                services.get(by: UsersManager.self).active(uid: setup.value!)
+            default: break
+            }
+            // and clear it
+            start = nil
+        }
+        
+        // start will be cleared if it was a setup and then we'll need to take next node
+        // or start will be already that first node if it was not a setup
+        if let path = start ?? deepLink.first, let dest = Destination(rawValue: path.name) {
             switch dest {
             case .plan:
                 self.toPlan()

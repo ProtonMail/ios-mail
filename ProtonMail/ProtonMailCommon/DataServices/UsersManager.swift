@@ -145,6 +145,12 @@ class UsersManager : Service {
         return users.count
     }
     
+    func active(uid: String) {
+        if let index = self.users.enumerated().first(where: { $1.isMatch(sessionID: uid) })?.offset {
+            self.users.swapAt(0, index)
+        }
+    }
+    
     func active(index: Int) {
         guard self.users.count > 0, index < users.count, index != 0 else {
             return
