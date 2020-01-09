@@ -76,7 +76,7 @@ class ComposeContainerViewModel: TableContainerViewModel {
             throw Errors.noUnderlyingMessage
         }
         
-        let users : UsersManager = ServiceFactory.default.get()
+        let users : UsersManager = sharedServices.get()
         let childViewModel = ContainableComposeViewModel(msg: message, action: action, msgService: messageDataService, user: users.firstUser)
         
         self.init(editorViewModel: childViewModel)

@@ -25,27 +25,31 @@ import Foundation
 
 protocol Service: AnyObject {}
 
+/// tempeary here. //device level service
+let sharedServices: ServiceFactory = {
+    let helper = ServiceFactory()
+    // app cache service
+    helper.add(AppCacheService.self, for: AppCacheService())
+    
+    #if !APP_EXTENSION
+    // view model factory
+    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    
+    // push service
+    helper.add(PushNotificationService.self, for: PushNotificationService())
+    
+    // from old ServiceFactory.default
+    helper.add(AddressBookService.self, for: AddressBookService())
+    helper.add(BugDataService.self, for: BugDataService(api: APIService.shared))
+    #endif
+    
+    return helper
+}()
+
 final class ServiceFactory {
     
     ///this is the a tempary.
-    static let `default` : ServiceFactory = {
-        let helper = ServiceFactory()
-        helper.add(AppCacheService.self, for: AppCacheService())
-        helper.add(AddressBookService.self, for: AddressBookService())
-        helper.add(APIService.self, for: APIService.shared)
-        
-        ///TEST
-        let apiService : APIService = helper.get()
-        let addrService: AddressBookService = helper.get()
-//        helper.add(ContactDataService.self, for: ContactDataService(api:apiService))
-        helper.add(BugDataService.self, for: BugDataService(api: apiService))
-        
-        ///
-//        let msgService: MessageDataService = MessageDataService(api: apiService)
-//        helper.add(MessageDataService.self, for: msgService)
-//
-        return helper
-    }()
+    static let `default` : ServiceFactory = sharedServices
     
     private var servicesDictionary: [String: Service] = [:]
     

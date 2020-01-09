@@ -70,16 +70,16 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         
         switch destination {
         case .composerDraft:
-            //TODO:: fix me
-            break
-//            if let messageID = path.value,
-//                let nav = self.navigationController,
-//                let viewModel = ContainableComposeViewModel(msgId: messageID, action: .openDraft)
-//            {
-//                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
-//                composer.start()
-//                composer.follow(deeplink)
-//            }
+            if let messageID = path.value,
+                let nav = self.navigationController,
+                case let user = sharedServices.get(by: UsersManager.self).firstUser,
+                let message = user.messageService.fetchMessages(withIDs: [messageID]).first
+            {
+                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user)
+                let composer = ComposeContainerViewCoordinator(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
         default:
             self.go(to: destination, sender: deeplink)
         }

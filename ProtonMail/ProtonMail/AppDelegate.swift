@@ -36,24 +36,6 @@ import Crashlytics
 
 let sharedUserDataService = UserDataService(api: APIService.shared)
 
-/// tempeary here. //device level service
-let sharedServices: ServiceFactory = {
-    let helper = ServiceFactory()
-    // app cache service
-    helper.add(AppCacheService.self, for: AppCacheService())
-    // view model factory
-    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
-    
-    // push service
-    helper.add(PushNotificationService.self, for: PushNotificationService())
-
-    //    let apiService: APIService = helper.get()
-    //    let addrService: AddressBookService = helper.get()
-    //    helper.add(ContactDataService.self, for: ContactDataService(api: apiService, addressBookService: addrService))
-    //    helper.add(BugDataService.self, for: BugDataService(api: apiService))
-    
-    return helper
-}()
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
