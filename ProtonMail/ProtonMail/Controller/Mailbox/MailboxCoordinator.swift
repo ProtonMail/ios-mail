@@ -246,31 +246,27 @@ class MailboxCoordinator : DefaultCoordinator {
         switch dest {
         case .details:
             if let messageID = path.value,
-                case let msgService = services.get() as MessageDataService,
+                case let user = services.get(by: UsersManager.self).firstUser,
+                case let msgService = user.messageService,
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
             {
-                let users : UsersManager = services.get()
-                let user = users.firstUser
-                
-                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: user.messageService), services: services)
+                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService), services: services)
                 details.start()
                 details.follow(deeplink)
             }
         case .composeShow where path.value != nil:
-            let users : UsersManager = services.get()
-            let user = users.firstUser //TODO:: fix me
-//            if let messageID = path.value,
-//                let nav = self.navigation,
-//                let viewModel = ContainableComposeViewModel(msg: messageID,
-//                                                            action: .openDraft,
-//                                                            msgService: user.messageService,
-//                                                            user: user)
-//            {
-//                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
-//                composer.start()
-//                composer.follow(deeplink)
-//            }
+            if let messageID = path.value,
+                let nav = self.navigation,
+                case let user = services.get(by: UsersManager.self).firstUser,
+                case let msgService = user.messageService,
+                let message = msgService.fetchMessages(withIDs: [messageID]).first
+            {
+                let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: msgService, user: user)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
             
         case .composeShow where path.value == nil:
             if let nav = self.navigation {

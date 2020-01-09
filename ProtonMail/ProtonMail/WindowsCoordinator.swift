@@ -102,9 +102,6 @@ class WindowsCoordinator: CoordinatorNew {
         //let cacheService : AppCacheService = serviceHolder.get()
         //cacheService.restoreCacheAfterAuthorized()
     }
-    func prepareForCoders() {
-        self.currentWindow = self.appWindow
-    }
     
     func start() {
         let placeholder = UIWindow(root: PlaceholderVC(color: .white), scene: self.scene)
@@ -266,11 +263,6 @@ class WindowsCoordinator: CoordinatorNew {
                 coder.encode(data, forKey: "deeplink")
             }
             
-        case .coders:
-            guard let root = self.appWindow?.rootViewController else {
-                return
-            }
-            coder.encodeRootObject(root)
         case .multiwindow:
             assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }
@@ -285,14 +277,6 @@ class WindowsCoordinator: CoordinatorNew {
                 self.followDeeplink(deeplink)
             }
             
-        case .coders:
-            // SWRevealViewController is restorable, but not all of its children are
-            guard let root = coder.decodeObject() as? SWRevealViewController,
-                root.frontViewController != nil else
-            {
-                return
-            }
-            self.appWindow?.rootViewController = root
         case .multiwindow:
             assert(false, "Multiwindow environment should not use NSCoder-based restoration")
         }

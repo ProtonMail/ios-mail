@@ -144,11 +144,7 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
-        
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
-            self.coordinator.prepareForCoders()
-        }
+
         let usersManager = UsersManager(server: Server.live, delegate: self)
         sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
         sharedServices.add(UsersManager.self, for: usersManager)
@@ -391,7 +387,7 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: - State restoration via NSCoders, for iOS 9 - 12 and iOS 13 single window env (iPhone)
+    // MARK: - State restoration
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         if UIDevice.current.stateRestorationPolicy == .multiwindow {
@@ -408,17 +404,7 @@ extension AppDelegate: UIApplicationDelegate {
             self.coordinator.restoreState(coder)
         }
         
-        return UIDevice.current.stateRestorationPolicy == .coders
-    }
-    func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            self.coordinator.saveForRestoration(coder)
-        }
-    }
-    func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            self.coordinator.restoreState(coder)
-        }
+        return false
     }
     
     // MARK: - Multiwindow iOS 13
