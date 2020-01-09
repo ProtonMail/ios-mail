@@ -173,7 +173,8 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                 case .push:
                     c.config(right: "off")
                 case .autolock:
-                    c.config(right: "off")
+                    let status = self.viewModel.lockOn ? "on" : "off"
+                    c.config(right: status)
                 case .language:
                     let language: ELanguage =  LanguageManager.currentLanguageEnum()
                     c.config(right: language.nativeDescription)

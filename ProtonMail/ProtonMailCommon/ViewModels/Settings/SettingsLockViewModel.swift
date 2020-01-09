@@ -38,6 +38,15 @@ enum SettingLockSection : Int, CustomStringConvertible {
             return ""
         }
     }
+    
+    var foot : String {
+        switch self {
+        case .lock:
+            return "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it."
+        default:
+            return ""
+        }
+    }
 }
 
 enum LockTypeItem : Int, CustomStringConvertible {
@@ -67,6 +76,9 @@ protocol SettingsLockViewModel : AnyObject {
     
     var email : String { get }
     var displayName : String { get }
+    
+    var lockOn : Bool { get set }
+    func updateProtectionItems() 
 }
 
 class SettingsLockViewModelImpl : SettingsLockViewModel {
@@ -76,8 +88,12 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
     
     var userManager: UserManager
     
+    var lockOn: Bool = false
+    
     init(user : UserManager) {
         self.userManager = user
+        lockOn = userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
+//        self.updateProtectionItems()
     }
     
     var storageText: String {
@@ -107,6 +123,30 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
     var displayName : String {
         get {
             return self.userManager.defaultDisplayName
+        }
+    }
+    
+    func updateProtectionItems() {
+        sections = [.lock]
+        lockItems = []
+        
+        if lockOn {
+            sections.append(.type)
+            //TODO:: UIDevice is in UIkit. viewmodel should avoid UIKit. need to change this
+            switch UIDevice.current.biometricType {
+            case .none:
+                break
+            case .touchID:
+                lockItems.append(.touchid)
+                break
+            case .faceID:
+                lockItems.append(.faceid)
+                break
+            }
+            lockItems.append(.pin)
+            if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
+                sections.append(.timer)
+            }
         }
     }
 }

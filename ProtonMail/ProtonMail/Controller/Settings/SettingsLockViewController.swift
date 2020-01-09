@@ -29,6 +29,15 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     internal var viewModel : SettingsLockViewModel!
     internal var coordinator : SettingsLockCoordinator?
     
+    struct Key {
+        static let headerCell : String        = "header_cell"
+        static let headerCellHeight : CGFloat = 36.0
+        
+        static let settingSingalLineCell         = "settings_general"
+        static let SwitchCell                    = "switch_table_view_cell"
+        static let SettingTwoLinesCell           = "settings_twolines"
+    }
+    
     func set(viewModel: SettingsLockViewModel) {
         self.viewModel = viewModel
     }
@@ -41,64 +50,42 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         return self.coordinator
     }
     
-    var setting_general_items : [SGItems]                = []
-    var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
-    
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-                                                            .star, .archive, .unread]
-    
-    var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-    var setting_addresses_items : [SAddressItems]        = [.addresses,
-                                                            .displayName,
-                                                            .signature,
-                                                            .defaultMobilSign]
-    
-    var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
-    
-    var setting_languages : [ELanguage]                  = ELanguage.allItems()
+//    var setting_general_items : [SGItems]                = []
+//    var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
+//
+//    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+//    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
+//                                                            .star, .archive, .unread]
+//
+//    var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
+//    var setting_addresses_items : [SAddressItems]        = [.addresses,
+//                                                            .displayName,
+//                                                            .signature,
+//                                                            .defaultMobilSign]
+//
+//    var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
+//
+//    var setting_languages : [ELanguage]                  = ELanguage.allItems()
     
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
-    var multi_domains: [Address]!
-    //TODO:: move to view model
-    var userManager : UserManager {
-        get {
-            let users : UsersManager = sharedServices.get()
-            return users.firstUser
-        }
-    }
-    
     /// cells
-    let SettingSingalLineCell         = "settings_general"
-    let SettingSingalSingleLineCell   = "settings_general_single_line"
-    let SettingTwoLinesCell           = "settings_twolines"
-    let SettingDomainsCell            = "setting_domains"
-    let SettingStorageCell            = "setting_storage_cell"
-    let HeaderCell                    = "header_cell"
-    let SingleTextCell                = "single_text_cell"
-    let SwitchCell                    = "switch_table_view_cell"
+//    let SettingSingalLineCell         = "settings_general"
+//    let SettingSingalSingleLineCell   = "settings_general_single_line"
+//    let SettingTwoLinesCell           = "settings_twolines"
+//    let SettingDomainsCell            = "setting_domains"
+//    let SettingStorageCell            = "setting_storage_cell"
+//    let HeaderCell                    = "header_cell"
+//    let SingleTextCell                = "single_text_cell"
+//    let SwitchCell                    = "switch_table_view_cell"
 
-    
-    struct CellKey {
-        static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0        
-    }
-    
-    //
-    let CellHeight : CGFloat = 30.0
-    var cleaning : Bool      = false
-    
-    //
-    @IBOutlet var settingTableView: UITableView!
-    
     //
     override func viewDidLoad() {
         super.viewDidLoad()
         self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
-        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
+        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
     }
     
     private func updateTitle() {
@@ -111,51 +98,45 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateProtectionItems()
+        self.updateTableProtectionSection()
 //        userManager.userInfo.passwor
-        if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-        } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-        }
-        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
-            setting_general_items.append(.notificationsSnooze)
-        }
-        
-        multi_domains = self.userManager.addresses
+//        if sharedUserDataService.passwordMode == 1 {
+//            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
+//        } else {
+//            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
+//        }
+//        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
+//            setting_general_items.append(.notificationsSnooze)
+//        }
+//
+//  multi_domains = self.userManager.addresses
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
-    internal func updateProtectionItems() {
-        setting_protection_items = []
-        switch UIDevice.current.biometricType {
-        case .none:
-            break
-        case .touchID:
-            setting_protection_items.append(.touchID)
-            break
-        case .faceID:
-            setting_protection_items.append(.faceID)
-            break
-        }
-        setting_protection_items.append(.pinCode)
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            setting_protection_items.append(.enterTime)
-        }
-    }
-    
     internal func updateTableProtectionSection() {
-        self.updateProtectionItems()
-//        if let index = setting_headers.firstIndex(of: SettingSections.protection) {
-//            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
+        self.viewModel.updateProtectionItems()
+        self.tableView.reloadData()
+        
+//        self.tableView.beginUpdates()
+//        for index in 0 ..< self.viewModel.sections.count {
+//            if index >= self.tableView.numberOfSections {
+//                self.tableView.insertSections(IndexSet(integer: index), with: .fade)
+//            } else {
+//                self.tableView.reloadSections(IndexSet(integer: index), with: .fade)
+//            }
 //        }
+//         self.tableView.endUpdates()
     }
     
     ///MARK: -- table view delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard section < self.viewModel.sections.count else {
+            return 0
+        }
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .lock:
@@ -173,75 +154,144 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .lock:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? GeneralSettingViewCell {
-                c.configCell(eSection.description, right: "")
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
+            cell.accessoryType = UITableViewCell.AccessoryType.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            if let c = cell as? SwitchTableViewCell {
+                c.configCell(eSection.description, bottomLine: "", status: self.viewModel.lockOn, complete: { (cell, newStatus, feedback) -> Void in
+                    let ison = self.viewModel.lockOn
+                    self.viewModel.lockOn = !ison
+                    self.updateTableProtectionSection()
+                })
             }
             return cell
         case .type:
             let item = self.viewModel.lockItems[row]
             switch item {
             case .pin:
-                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-                if let c = cell as? GeneralSettingViewCell {
-                    c.configCell(eSection.description, right: "")
+                let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
+                cell.accessoryType = UITableViewCell.AccessoryType.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                if let c = cell as? SwitchTableViewCell {
+                    c.configCell(item.description, bottomLine: "", status: userCachedStatus.isPinCodeEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPath(for: cell!) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isPinCodeEnabled {
+                                    self.coordinator?.go(to: .pinCode)
+                                } else {
+                                    keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+                                    feedback(true)
+                                    self.updateTableProtectionSection()
+                                }
+                            } else {
+                                feedback(false)
+                            }
+                        } else {
+                            feedback(false)
+                        }
+                    })
                 }
                 return cell
-            case .touchid:
-                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-                if let c = cell as? SettingsDeviceGeneralCell {
-                    c.configCell(eSection.description, right: "")
-                }
-                return cell
-            case .faceid:
-                let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-                if let c = cell as? SettingsDeviceGeneralCell {
-                    c.configCell(eSection.description, right: "")
+            case .touchid, .faceid:
+                let cell = tableView.dequeueReusableCell(withIdentifier: Key.SwitchCell, for: indexPath)
+                cell.accessoryType = UITableViewCell.AccessoryType.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                if let c = cell as? SwitchTableViewCell {
+                    c.configCell(eSection.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                        if let indexp = tableView.indexPath(for: cell!) {
+                            if indexPath == indexp {
+                                if !userCachedStatus.isTouchIDEnabled {
+                                    // Enable Bio
+                                    keymaker.activate(BioProtection()) { _ in
+                                        self.updateTableProtectionSection()
+                                    }
+                                } else {
+                                    // Disable Bio
+                                    keymaker.deactivate(BioProtection())
+                                    self.updateTableProtectionSection()
+                                }
+                            } else {
+                                feedback(false)
+                            }
+                        } else {
+                            feedback(false)
+                        }
+                    })
                 }
                 return cell
             }
         case .timer:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell(eSection.description, right: "")
+            let cell = tableView.dequeueReusableCell(withIdentifier: Key.SettingTwoLinesCell, for: indexPath) as! SettingsCell
+            cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
+            
+            let timeIndex = userCachedStatus.lockTime.rawValue
+            var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
+            if timeIndex == -1 {
+                text = LocalString._general_none
+            } else if timeIndex == 0 {
+                text = LocalString._settings_every_time_enter_app
+            } else if timeIndex == 1{
+                text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
             }
+            cell.configCell(leftText: eSection.description,
+                            rightText: text)
             return cell
         }
     }
     
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
         if let headerCell = header {
             headerCell.textLabel?.font = Fonts.h6.regular
+            headerCell.textLabel?.numberOfLines = 0
             headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
             let eSection = self.viewModel.sections[section]
-            headerCell.textLabel?.text = eSection.description
+            headerCell.textLabel?.text = eSection.foot
         }
         return header
     }
     
+    
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CellKey.headerCellHeight
+        return Key.headerCellHeight
     }
     
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 46.0
+    }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let section = indexPath.section
-//        let row = indexPath.row
-//        let eSection = self.viewModel.sections[section]
-//        switch eSection {
-//        case .account:
-////            self.coordinator?.go(to: .accountSetting)
-//            break
-//        case .addresses:
-//            //            let item = self.viewModel.appSettigns[row]
-//            break
-//        case .snooze:
-//            break
-//        case .mailbox:
-//            break
-//        }
+        let section = indexPath.section
+        let eSection = self.viewModel.sections[section]
+        switch eSection {
+        case .lock, .type:
+            break
+        case .timer:
+            let alertController = UIAlertController(title: LocalString._settings_auto_lock_time,
+                                                    message: nil,
+                                                    preferredStyle: .actionSheet)
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            for timeIndex in protection_auto_logout {
+                var text = String(format: LocalString._settings_auto_lock_minutes, timeIndex)
+                if timeIndex == -1 {
+                    text = LocalString._general_none
+                } else if timeIndex == 0 {
+                    text = LocalString._settings_every_time_enter_app
+                } else if timeIndex == 1{
+                    text = String(format: LocalString._settings_auto_lock_minute, timeIndex)
+                }
+                alertController.addAction(UIAlertAction(title: text, style: .default, handler: { (action) -> Void in
+                    userCachedStatus.lockTime = AutolockTimeout(rawValue: timeIndex)
+                    DispatchQueue.main.async {
+                        tableView.reloadRows(at: [indexPath], with: .fade)
+                    }
+                }))
+            }
+            let cell = tableView.cellForRow(at: indexPath)
+            alertController.popoverPresentationController?.sourceView = cell ?? self.view
+            alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+            present(alertController, animated: true, completion: nil)
+        }
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -282,7 +332,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     
 //    // Override to support rearranging the table view.
-//    @objc func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
+//    func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
 
 //    }
     

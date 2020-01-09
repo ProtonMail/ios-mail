@@ -77,6 +77,8 @@ protocol SettingsDeviceViewModel : AnyObject {
     var name : String { get }
     
     var languages : [ELanguage] { get }
+    
+    var lockOn : Bool { get }
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
@@ -84,8 +86,11 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     
     var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, /*.combinContacts,*/ .cleanCache]
     var userManager: UserManager
+    var lockOn : Bool = false
     init(user : UserManager) {
         self.userManager = user
+        
+        lockOn = userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
     }
     
     var languages: [ELanguage] = ELanguage.allItems()

@@ -46,7 +46,7 @@ class SettingsLockCoordinator : DefaultCoordinator {
     }
     
     enum Destination : String {
-        case notification    = "setting_notification"
+        case pinCode         = "setting_setup_pingcode"
     }
     
     init?(dest: UIViewController, vm: SettingsLockViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -88,59 +88,69 @@ class SettingsLockCoordinator : DefaultCoordinator {
         }
         
         switch dest {
-        case .notification:
-            guard let next = destination as? SettingDetailViewController else {
+        case .pinCode:
+            guard let next = destination as? PinCodeViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-//        case .displayName:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-//        case .signature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSignature())
-//        case .mobileSignature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
-//        case .debugQueue:
-//            break
-//        case .pinCode:
-//            guard let next = destination as? PinCodeViewController else {
-//                return false
-//            }
-//            next.viewModel = SetPinCodeModelImpl()
-//        case .lableManager:
-//            guard let next = destination as? LablesViewController else {
-//                return false
-//            }
-//            
-//            let users : UsersManager = services.get()
-//            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
-//        case .loginPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
-//        case .mailboxPwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
-//        case .singlePwd:
-//            guard let next = destination as? ChangePasswordViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
-//        case .snooze:
-//            break
+            next.viewModel = SetPinCodeModelImpl()
         }
-        return false
+        
+        
+        return true
+//        switch dest {
+//        case .notification:
+//            guard let next = destination as? SettingDetailViewController else {
+//                return false
+//            }
+//            next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
+////        case .displayName:
+////            guard let next = destination as? SettingDetailViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
+////        case .signature:
+////            guard let next = destination as? SettingDetailViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeSignature())
+////        case .mobileSignature:
+////            guard let next = destination as? SettingDetailViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
+////        case .debugQueue:
+////            break
+////        case .pinCode:
+////            guard let next = destination as? PinCodeViewController else {
+////                return false
+////            }
+////            next.viewModel = SetPinCodeModelImpl()
+////        case .lableManager:
+////            guard let next = destination as? LablesViewController else {
+////                return false
+////            }
+////
+////            let users : UsersManager = services.get()
+////            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
+////        case .loginPwd:
+////            guard let next = destination as? ChangePasswordViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
+////        case .mailboxPwd:
+////            guard let next = destination as? ChangePasswordViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
+////        case .singlePwd:
+////            guard let next = destination as? ChangePasswordViewController else {
+////                return false
+////            }
+////            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
+////        case .snooze:
+////            break
+//        }
+//        return false
     }
 }
 
