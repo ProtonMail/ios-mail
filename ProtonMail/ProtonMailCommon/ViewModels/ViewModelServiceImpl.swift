@@ -78,7 +78,11 @@ class ViewModelServiceImpl: ViewModelService {
     
     override func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, contact: Contact!) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact))
+        
+        // TODO:: fixme
+        let usersManager : UsersManager = sharedServices.get()
+        let user = usersManager.firstUser
+        vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact, contact: user.contactService))
     }
     
     override func contactAddViewModel(_ vmp: ViewModelProtocolBase) {

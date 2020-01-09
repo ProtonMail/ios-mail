@@ -344,7 +344,7 @@ class MessageDataService : Service {
                     //clean the cache time
                     lastUpdatedStore.removeUpdateTime(by: self.userID)
                     //TODO:: clean user message but not all
-                    //self.contactDataService.clean()
+                    self.contactDataService.clean()
                     self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
                     self.contactDataService.fetchContacts(completion: nil)
                     self.labelDataService.fetchLabels()
@@ -386,7 +386,7 @@ class MessageDataService : Service {
                                 }
                                 //TODO:: fix me
                                 //self.cleanMessage()
-                                //self.contactDataService.clean()
+                                self.contactDataService.clean()
                                 self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                 self.contactDataService.fetchContacts(completion: nil)
                                 self.labelDataService.fetchLabels()

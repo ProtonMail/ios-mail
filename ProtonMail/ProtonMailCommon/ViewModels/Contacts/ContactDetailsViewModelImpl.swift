@@ -44,6 +44,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     var decryptError : Bool = false
     
+    var contactService: ContactDataService
+    
     //default
     var typeSection: [ContactEditSectionType] = [.email_header,
                                                  .emails,
@@ -54,7 +56,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .information,
                                                  .custom_field,
                                                  .notes]
-    init(c : Contact) {
+    init(c : Contact, contact: ContactDataService) {
+        self.contactService = contact
         super.init()
         self.contact = c
         //        if paidUser() {
@@ -458,13 +461,13 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         loading()
         return Promise { seal in
             //Fixme
-//            sharedContactDataService.details(contactID: contact.contactID).then { _ in
-//                self.setupEmails()
-//            }.done {
-//                seal.fulfill(self.contact)
-//            }.catch { (error) in
-//                seal.reject(error)
-//            }
+            self.contactService.details(contactID: contact.contactID).then { _ in
+                self.setupEmails()
+            }.done {
+                seal.fulfill(self.contact)
+            }.catch { (error) in
+                seal.reject(error)
+            }
         }
     }
     
