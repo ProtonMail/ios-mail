@@ -358,6 +358,13 @@ extension UsersManager {
     }
     
     func loggedOutAll() {
+        for user in users {
+            lastUpdatedStore.removeUpdateTime(by: user.userinfo.userId)
+        }
+        
+        
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
+        
+        
     }
 }

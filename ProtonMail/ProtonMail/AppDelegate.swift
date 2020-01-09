@@ -226,6 +226,11 @@ extension AppDelegate: UIApplicationDelegate {
         }
         #endif
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didSignOutNotification(_:)),
+                                               name: NSNotification.Name.didSignOut,
+                                               object: nil)
+        
         if #available(iOS 12.0, *) {
 //            let intent = WipeMainKeyIntent()
 //            let suggestions = [INShortcut(intent: intent)!]
@@ -239,7 +244,11 @@ extension AppDelegate: UIApplicationDelegate {
         }
         return true
     }
-
+    
+    
+    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
+        self.onLogout(animated: false)
+    }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(window?.rootViewController)
