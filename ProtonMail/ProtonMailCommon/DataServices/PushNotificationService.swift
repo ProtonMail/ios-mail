@@ -209,13 +209,6 @@ public class PushNotificationService: NSObject, Service {
             completionHandler()
             return
         }
-
-        // if the app is in the background, then switch to the inbox and load the message detail
-        let application = UIApplication.shared
-        guard application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess else {
-            completionHandler()
-            return
-        }
         
         guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
             let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else
@@ -281,16 +274,15 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        didReceive response: UNNotificationResponse,
                                        withCompletionHandler completionHandler: @escaping () -> Void)
     {
-        //TODO:: fix me
-//        let userInfo = response.notification.request.content.userInfo
-//        if UnlockManager.shared.isUnlocked() { // unlocked
-//            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
-//        } else if UIApplication.shared.applicationState == .inactive { // opened by push
-//            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
-//        } else {
-//            // app is locked and not opened from push - nothing to do here
-//            completionHandler()
-//        }
+        let userInfo = response.notification.request.content.userInfo
+        if UnlockManager.shared.isUnlocked() { // unlocked
+            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: completionHandler)
+        } else if UIApplication.shared.applicationState == .inactive { // opened by push
+            self.setNotificationOptions(userInfo, fetchCompletionHandler: completionHandler)
+        } else {
+            // app is locked and not opened from push - nothing to do here
+            completionHandler()
+        }
     }
     
     public func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -300,12 +292,7 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
         let userInfo = notification.request.content.userInfo
         let options: UNNotificationPresentationOptions = [.alert, .sound]
         
-        //TODO:: fix me
-//        if UnlockManager.shared.isUnlocked() { // foreground
-//            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
-//        } else {
-//            completionHandler(options)
-//        }
+        completionHandler(options)
     }
 }
 

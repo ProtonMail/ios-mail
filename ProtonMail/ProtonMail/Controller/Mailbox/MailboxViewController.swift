@@ -71,7 +71,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     // MARK: - Private attributes
     private lazy var replacingEmails = viewModel.allEmails()
-    private var messageID: String? // this is for when user click the notification email
     private var listEditing: Bool = false
     private var timer : Timer!
     private var timerAutoDismiss : Timer?
@@ -920,16 +919,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //            }
 //        }
     }
-    
-    fileprivate func selectMessageIDIfNeeded() {
-        if let msgID = messageID {
-            if let message = self.viewModel.message(by: msgID) {
-                self.tappedMassage(message)
-            }
-        }
-        self.messageID = nil
-    }
-    
 
     fileprivate func setupLeftButtons(_ editingMode: Bool) {
         var leftButtons: [UIBarButtonItem]
@@ -1312,7 +1301,6 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
         self.showNewMessageCount(self.newMessageCount)
-        selectMessageIDIfNeeded()
     }
     
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
