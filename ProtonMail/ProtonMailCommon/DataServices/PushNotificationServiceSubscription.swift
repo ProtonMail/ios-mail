@@ -47,6 +47,9 @@ extension PushNotificationService {
                 self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
                 
                 let reportedSettings: [SubscriptionSettings] = newValue.compactMap { $0.state == .reported ? $0.settings : nil}
+                reportedSettings.forEach {
+                    assert($0.encryptionKit != nil, "reported settings need encryption kit")
+                }
                 self.encryptionKitSaver.set(newValue: Set(reportedSettings))
             }
         }

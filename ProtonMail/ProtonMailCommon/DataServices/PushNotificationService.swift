@@ -157,9 +157,10 @@ public class PushNotificationService: NSObject, Service {
                 self.currentSubscriptions.update(settings, toState: .reported)
             }
             self.currentSubscriptions.update(settings, toState: .pending)
-            self.deviceRegistrator.device(registerWith: settings,
-                                          authCredential: sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth,
-                                          completion: completion)
+            
+            let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
+            assert(auth != nil, "register call is authenticated one")
+            self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
     }
     
@@ -204,12 +205,10 @@ public class PushNotificationService: NSObject, Service {
     
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
                                              forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
-        //TODO:: fix me
-        //        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
-//            completionHandler()
-//            return
-//        }
-        
+        guard sharedServices.get(by: UsersManager.self).hasUsers(), UnlockManager.shared.isUnlocked() else {
+            completionHandler()
+            return
+        }
 
         // if the app is in the background, then switch to the inbox and load the message detail
         let application = UIApplication.shared

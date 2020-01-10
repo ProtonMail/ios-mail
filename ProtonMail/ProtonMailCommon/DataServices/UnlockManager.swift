@@ -159,6 +159,7 @@ class UnlockManager: Service {
         
         #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()
+        sharedServices.get(by: UsersManager.self).tryRestore()
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
             self.updateUserData(of: $0)

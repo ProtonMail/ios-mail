@@ -158,7 +158,6 @@ class WindowsCoordinator: CoordinatorNew {
         //            self.appWindow = nil
         //        }
         
-        usersManager.tryRestore()
         if usersManager.count <= 0 {
             usersManager.clean()
             self.go(dest: .signInWindow)
