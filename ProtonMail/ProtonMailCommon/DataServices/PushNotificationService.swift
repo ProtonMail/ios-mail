@@ -159,7 +159,6 @@ public class PushNotificationService: NSObject, Service {
             self.currentSubscriptions.update(settings, toState: .pending)
             
             let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
-            assert(auth != nil, "register call is authenticated one")
             self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
     }
