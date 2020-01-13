@@ -162,7 +162,7 @@ class UsersManager : Service {
 //
 //        swap(&cellOrder[0], &cellOrder[1])
     }
-    
+    //TODO:: referance could try to use weak.
     var firstUser : UserManager {
         assert(!users.isEmpty, "no users, you may not have first one")
         return users.first!

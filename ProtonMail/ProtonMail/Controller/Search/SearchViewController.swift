@@ -336,7 +336,7 @@ class SearchViewController: ProtonMailViewController {
                 //TODO:: fix me this need to be improved
                 let users : UsersManager = sharedServices.get()
                 let user = users.firstUser
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService))
+                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user))
                 messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")

@@ -48,7 +48,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     private(set) var messages: [Message] {
         didSet {
             self.thread = messages.map { message in
-                return MessageViewModel.init(message: message, msgService: messageService)
+                return MessageViewModel.init(message: message, msgService: messageService, user: user)
             }
         }
     }
@@ -60,6 +60,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     private var attachmentsObservation: [NSKeyValueObservation] = []
     
     private let messageService : MessageDataService
+    private let user: UserManager
     
     // model - viewModel connections
     @objc private(set) dynamic var thread: [MessageViewModel]
@@ -75,16 +76,17 @@ class MessageContainerViewModel: TableContainerViewModel {
         return self.thread[section].divisionsCount
     }
     
-    init(conversation messages: [Message], msgService: MessageDataService) {
+    init(conversation messages: [Message], msgService: MessageDataService, user: UserManager) {
         self.thread = []
         self.messageService = msgService
         self.messages = messages
+        self.user = user
         
         super.init()
         
         
         self.thread = messages.map { message in
-            return MessageViewModel.init(message: message, msgService: messageService)
+            return MessageViewModel.init(message: message, msgService: messageService, user: user)
         }
         
         NotificationCenter.default.addObserver(forName: .NSManagedObjectContextObjectsDidChange, object: nil, queue: nil) { [weak self] notification in
@@ -113,8 +115,8 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
     }
     
-    convenience init(message: Message, msgService: MessageDataService) {
-        self.init(conversation: [message], msgService: msgService)
+    convenience init(message: Message, msgService: MessageDataService, user: UserManager) {
+        self.init(conversation: [message], msgService: msgService, user: user)
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -122,8 +124,11 @@ class MessageContainerViewModel: TableContainerViewModel {
         let messageIDs = try container.decode(Array<String>.self, forKey: .messageIDs)
         //TODO:: fix me
         let service = MessageDataService(api: APIService.shared, userID: "")
+        //TODO:: fix me
+        let users : UsersManager = sharedServices.get()
+        let user = users.firstUser
         let messages = service.fetchMessages(withIDs: NSMutableSet(array: messageIDs))
-        self.init(conversation: messages, msgService: service)
+        self.init(conversation: messages, msgService: service, user: user)
     }
     
     deinit {

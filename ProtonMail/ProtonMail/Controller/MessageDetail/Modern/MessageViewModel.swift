@@ -61,15 +61,17 @@ class MessageViewModel: NSObject {
     
     
     let messageService : MessageDataService
+    let user : UserManager
     
-    convenience init(message: Message, msgService: MessageDataService) {
+    convenience init(message: Message, msgService: MessageDataService, user: UserManager) {
         //TODO:: fix me
-        self.init(message: message, embeddingImages: true, messageService: msgService)
+        self.init(message: message, embeddingImages: true, messageService: msgService, user: user)
     }
     
-    init(message: Message, embeddingImages: Bool, messageService: MessageDataService) {
+    init(message: Message, embeddingImages: Bool, messageService: MessageDataService, user: UserManager) {
         
         self.messageService = messageService
+        self.user = user
         // 0. expiration
         self.expiration = message.expirationTime
         let expired = (self.expiration ?? .distantFuture).compare(Date()) == .orderedAscending
@@ -130,7 +132,7 @@ class MessageViewModel: NSObject {
     }
     
     internal func reload(from message: Message) {
-        let temp = MessageViewModel(message: message, embeddingImages: false, messageService: self.messageService)
+        let temp = MessageViewModel(message: message, embeddingImages: false, messageService: self.messageService, user: self.user)
 
         self.header = temp.header
         self.attachments = temp.attachments

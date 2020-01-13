@@ -144,7 +144,7 @@ class MailboxCoordinator : DefaultCoordinator {
             let users : UsersManager = services.get()
             let user = users.firstUser
             
-            next.set(viewModel: .init(message: message, msgService: user.messageService))
+            next.set(viewModel: .init(message: message, msgService: user.messageService, user: user))
             next.set(coordinator: .init(controller: next))
         case .detailsFromNotify:
             guard let next = destination as? MessageContainerViewController else {
@@ -159,7 +159,7 @@ class MailboxCoordinator : DefaultCoordinator {
             let users : UsersManager = services.get()
             let user = users.firstUser
             
-            next.set(viewModel: .init(message: message, msgService: user.messageService))
+            next.set(viewModel: .init(message: message, msgService: user.messageService, user: user))
             next.set(coordinator: .init(controller: next))
             self.viewModel.resetNotificationMessage()
             
@@ -251,7 +251,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
             {
-                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService), services: services)
+                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService, user: user), services: services)
                 details.start()
                 details.follow(deeplink)
             }

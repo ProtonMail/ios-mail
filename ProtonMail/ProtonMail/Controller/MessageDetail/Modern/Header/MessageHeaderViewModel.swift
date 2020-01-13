@@ -36,12 +36,14 @@ class MessageHeaderViewModel: NSObject {
     //TODO::fix me
     let apiService = APIService.shared
     let messageService: MessageDataService
+    let user : UserManager
     
     init(parentViewModel: MessageViewModel, message: Message) {
         self.message = message
         self.headerData = parentViewModel.header
         self.parentViewModel = parentViewModel
         self.messageService = parentViewModel.messageService
+        self.user = parentViewModel.user
         super.init()
         
         self.parentObservation = parentViewModel.observe(\.header) { [weak self] parentViewModel, _ in
@@ -94,56 +96,56 @@ extension MessageHeaderViewModel {
                                 return
                             }
                             
-//                            let context = CoreDataService.shared.backgroundManagedObjectContext
-//                            let getEmail = UserEmailPubKeys(email: emial, api: self.apiService).run()
-                            //Fixme
-//                            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
-//                            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-//                                //internal emails
-////                                if keyRes.recipientType == 1 {
-////                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-////                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
-////                                        switch status {
-////                                        case .ok:
-////                                            c.pgpType = .internal_trusted_key
-////                                        case .notSigned:
-////                                            c.pgpType = .internal_normal
-////                                        case .noVerifier:
-////                                            c.pgpType = .internal_normal
-////                                        case .failed:
-////                                            c.pgpType = .internal_trusted_key_verify_failed
-////                                        }
-////                                    }
-////                                } else {
-////                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
-////                                        let status = self.message.verifyBody(verifier: pgpKeys, passphrase: sharedUserDataService.mailboxPassword!)
-////                                        switch status {
-////                                        case .ok:
-////                                            if c.pgpType == .zero_access_store {
-////                                                c.pgpType = .pgp_signed_verified
-////                                            } else {
-////                                                c.pgpType = .pgp_encrypt_trusted_key
-////                                            }
-////                                        case .notSigned, .noVerifier:
-////                                            break
-////                                        case .failed:
-////                                            if c.pgpType == .zero_access_store {
-////                                                c.pgpType = .pgp_signed_verify_failed
-////                                            } else {
-////                                                c.pgpType = .pgp_encrypt_trusted_key_verify_failed
-////                                            }
-////                                        }
-////                                    }
-////                                }
-//                                self.message.pgpType = c.pgpType
-//                                self.message.checkedSign = true
-//                                self.message.checkingSign = false
-//                                complete?(c.lock, c.pgpType.rawValue)
-//                            }.catch({ (error) in
-//                                self.message.checkingSign = false
-//                                PMLog.D(error.localizedDescription)
-//                                complete?(nil, -1)
-//                            })
+                            let context = CoreDataService.shared.backgroundManagedObjectContext
+                            let getEmail = UserEmailPubKeys(email: emial, api: self.apiService).run()
+                            let contactService = self.user.contactService
+                            let getContact = contactService.fetch(byEmails: [emial], context: context)
+                            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                                //internal emails
+                                if keyRes.recipientType == 1 {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.messageService.verifyBody(self.message, verifier: pgpKeys, passphrase: self.user.mailboxPassword)
+                                        switch status {
+                                        case .ok:
+                                            c.pgpType = .internal_trusted_key
+                                        case .notSigned:
+                                            c.pgpType = .internal_normal
+                                        case .noVerifier:
+                                            c.pgpType = .internal_normal
+                                        case .failed:
+                                            c.pgpType = .internal_trusted_key_verify_failed
+                                        }
+                                    }
+                                } else {
+                                    if let contact = contacts.first, let pgpKeys = contact.pgpKeys {
+                                        let status = self.messageService.verifyBody(self.message, verifier: pgpKeys, passphrase: self.user.mailboxPassword)
+                                        switch status {
+                                        case .ok:
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed_verified
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key
+                                            }
+                                        case .notSigned, .noVerifier:
+                                            break
+                                        case .failed:
+                                            if c.pgpType == .zero_access_store {
+                                                c.pgpType = .pgp_signed_verify_failed
+                                            } else {
+                                                c.pgpType = .pgp_encrypt_trusted_key_verify_failed
+                                            }
+                                        }
+                                    }
+                                }
+                                self.message.pgpType = c.pgpType
+                                self.message.checkedSign = true
+                                self.message.checkingSign = false
+                                complete?(c.lock, c.pgpType.rawValue)
+                            }.catch({ (error) in
+                                self.message.checkingSign = false
+                                PMLog.D(error.localizedDescription)
+                                complete?(nil, -1)
+                            })
                             
                         }
                     }
