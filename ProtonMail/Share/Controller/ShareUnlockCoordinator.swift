@@ -75,11 +75,12 @@ class ShareUnlockCoordinator : PushCoordinator {
             return
         }
         
-//        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
-//        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
-//        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
-//        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
-//        navigationController.setViewControllers([next], animated: true)
+        let user = self.services.get(by: UsersManager.self).firstUser
+        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user)
+        let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
+        next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
+        next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
+        navigationController.setViewControllers([next], animated: true)
     }
     
     func go(dest: Destination) {
@@ -98,7 +99,8 @@ extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
     }
     
     func next() {
-        self.viewController?.signInIfRememberedCredentials()
+        UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
+
     }
     
     func failed() {

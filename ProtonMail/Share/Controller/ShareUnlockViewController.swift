@@ -57,8 +57,6 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     private let url_key = kUTTypeURL as String
     private var localized_errors: [String] = []
     
-    let unlockManager = UnlockManager(cacheStatus: userCachedStatus, delegate: nil)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         sharedUserDataService = UserDataService(api: APIService.shared)//TODO:: fix me
@@ -73,6 +71,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.cancel,
                                                                 target: self,
                                                                 action: #selector(ShareUnlockViewController.cancelButtonTapped(sender:)))
+        
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.didUnlock, object: nil, queue: .main) { [weak self] _ in
+            self?.signInIfRememberedCredentials()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -93,7 +95,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
                     self.showErrorAndQuit(errorMsg: self.localized_errors.first ?? LocalString._cant_load_share_content)
                     return
                 }
-                
+                guard sharedServices.get(by: UsersManager.self).hasUsers() else {
+                    self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
+                    return
+                }
                 self.loginCheck()
             }
         }
@@ -143,8 +148,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         }
     }
     
+    // set up UI only
     internal func loginCheck() {
-        switch getViewFlow() {
+        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        switch unlockManager.getUnlockFlow() {
         case .requirePin:
             self.bioCodeView.loginCheck(.requirePin)
 
@@ -153,7 +160,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
             self.authenticateUser()
 
         case .restore:
-            self.signInIfRememberedCredentials()
+            unlockManager.initiateUnlock(flow: .restore, requestPin: { }, requestMailboxPassword: {})
         }
     }
     
@@ -170,19 +177,8 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
         alertController.addAction(action)
         self.present(alertController, animated: true, completion: nil)
     }
-
-    fileprivate func getViewFlow() -> SignInUIFlow {
-        return self.unlockManager.getUnlockFlow()
-    }
     
     func signInIfRememberedCredentials() {
-        
-        //TODO:: fix me
-//        guard SignInManager.shared.isSignedIn(), self.unlockManager.isUnlocked() else {
-//            self.showErrorAndQuit(errorMsg: LocalString._please_use_protonmail_app_login_first)
-//            return
-//        }
-        
         self.coordinator?.go(dest: .composer)
     }
     
@@ -202,7 +198,10 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     }
     
     func authenticateUser() {
-        self.unlockManager.biometricAuthentication(afterBioAuthPassed: { self.coordinator?.go(dest: .composer) })
+        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        unlockManager.biometricAuthentication(afterBioAuthPassed: {
+            unlockManager.unlockIfRememberedCredentials { }
+        })
     }
     
     func hideExtensionWithCompletionHandler(completion:@escaping (Bool) -> Void) {
@@ -246,8 +245,6 @@ extension ShareUnlockViewController: AttachmentController, FileImporter {
 
         self.files.append(fileData)
     }
-
-    
 }
 
 

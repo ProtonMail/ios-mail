@@ -51,11 +51,7 @@ class UnlockManager: Service {
     weak var delegate : UnlockManagerDelegate?
     
     static var shared: UnlockManager {
-        #if !APP_EXTENSION
         return sharedServices.get(by: UnlockManager.self)
-        #else
-        fatalError("FIXME")
-        #endif
     }
     
     init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
@@ -156,10 +152,10 @@ class UnlockManager: Service {
         }
 
         cacheStatus.pinFailedCount = 0
-        
-        #if !APP_EXTENSION
         UserTempCachedStatus.clearFromKeychain()
         sharedServices.get(by: UsersManager.self).tryRestore()
+        
+        #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
             self.updateUserData(of: $0)
