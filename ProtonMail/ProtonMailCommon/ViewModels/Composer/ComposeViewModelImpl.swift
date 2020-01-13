@@ -80,6 +80,11 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
         
     }
+    
+   override func getUser() -> UserManager {
+         return user
+    }
+    
     //TODO:: fix me
 //    convenience init?(msgId: String, action: ComposeMessageAction) {
 //        let msgService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me

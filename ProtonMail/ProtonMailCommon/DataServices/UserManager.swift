@@ -61,6 +61,11 @@ class UserManager : Service {
         return service
     }()
     
+    public lazy var contactGroupService: ContactGroupsDataService = {
+        let service = ContactGroupsDataService(api: self.apiService, userID: self.userinfo.userId)
+        return service
+    }()
+    
     public lazy var messageService: MessageDataService = {
         // can try to reuse the contactService
         let service = MessageDataService(api: self.apiService, userID: self.userinfo.userId)

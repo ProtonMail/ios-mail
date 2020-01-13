@@ -98,14 +98,6 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         picker.dataSource = self
         picker.delegate = self
     }
-    
-    //TODO:: fix me
-//    var contactService : ContactDataService {
-//        get {
-//            let users: UsersManager = sharedServices.get()
-//            return users.firstUser.contactService
-//        }
-//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -132,11 +124,12 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         }.done { [weak self] in
             guard let self = self else { return }
             // get contact groups
-            
+
             // TODO: figure where to put this thing
-//            if sharedUserDataService.isPaidUser() {
-//                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
-//            }
+            if sharedUserDataService.isPaidUser() {
+                let service = self.viewModel.getUser().contactGroupService
+                self.contacts.append(contentsOf: service.getAllContactGroupVOs())
+            }
             
             // Sort contacts and contact groups
             self.contacts.sort {
@@ -200,14 +193,15 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
     private func retrieveAllContacts() -> Promise<Void> {
         return Promise { seal in
-//            contactService.getContactVOs { (contacts, error) in
-//                if let error = error {
-//                    PMLog.D(" error: \(error)")
-//                    // seal.reject(error) // TODO: should I?
-//                }
-//                self.contacts = contacts
-//                seal.fulfill(())
-//            }
+            let service = self.viewModel.getUser().contactService
+            service.getContactVOs { (contacts, error) in
+                if let error = error {
+                    PMLog.D(" error: \(error)")
+                    // seal.reject(error) // TODO: should I?
+                }
+                self.contacts = contacts
+                seal.fulfill(())
+            }
         }
     }
     

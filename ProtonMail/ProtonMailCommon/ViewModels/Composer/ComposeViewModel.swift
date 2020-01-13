@@ -141,6 +141,10 @@ class ComposeViewModel: NSObject {
         
     }
     
+    func getUser() -> UserManager {
+          fatalError("This method must be overridden")
+    }
+    
     ///
     func sendMessage() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
