@@ -172,15 +172,15 @@ class WindowsCoordinator: CoordinatorNew {
             case .signInWindow:
                 self.appWindow = nil
                 let newWindow = UIWindow(storyboard: .signIn, scene: self.scene)
-                let vm = SigninViewModel(usersManager: sharedServices.get())
-                let coordinator = SigninCoordinator(destination: newWindow, vm: vm, services: sharedServices)
+                let vm = SignInViewModel(usersManager: sharedServices.get())
+                let coordinator = SignInCoordinator(destination: newWindow, vm: vm, services: sharedServices)
                 coordinator.start()
                 self.navigate(from: self.currentWindow, to: newWindow)
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
-                    let vm = SigninViewModel(usersManager: sharedServices.get())
-                    let coordinator = SigninCoordinator(destination: lock, vm: vm, services: sharedServices)
+                    let vm = SignInViewModel(usersManager: sharedServices.get())
+                    let coordinator = SignInCoordinator(destination: lock, vm: vm, services: sharedServices)
                     coordinator.start()
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock

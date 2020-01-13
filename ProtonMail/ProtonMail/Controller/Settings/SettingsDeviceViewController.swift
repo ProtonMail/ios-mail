@@ -159,6 +159,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         switch eSection {
         case .account:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsTwoLinesCell.CellID, for: indexPath)
+            cell.accessoryType = .disclosureIndicator
             if let c = cell as? SettingsTwoLinesCell {
                 c.config(top: self.viewModel.name, bottom: self.viewModel.email)
             }
@@ -166,10 +167,30 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         case .app:
             let item = self.viewModel.appSettigns[row]
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+            cell.accessoryType = .disclosureIndicator
             if let c = cell as? SettingsGeneralCell {
                 c.config(left: item.description)
                 switch item {
                 case .push:
+                    let current = UNUserNotificationCenter.current()
+                    current.getNotificationSettings(completionHandler: { (settings) in
+                        if settings.authorizationStatus == .notDetermined {
+                            // Notification permission has not been asked yet, go for it!
+                            print( "1")
+                        } else if settings.authorizationStatus == .denied {
+                            // Notification permission was previously denied, go to settings & privacy to re-enable
+                            print( "2")
+//                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
+//                                guard granted else { return }
+//                                DispatchQueue.main.async {
+//                                    UIApplication.shared.registerForRemoteNotifications()
+//                                }
+//                            }
+                        } else if settings.authorizationStatus == .authorized {
+                            // Notification permission was already granted
+                            print( "3")
+                        }
+                    })
                     c.config(right: "off")
                 case .autolock:
                     let status = self.viewModel.lockOn ? "on" : "off"

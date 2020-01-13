@@ -29,11 +29,9 @@ import PromiseKit
 
 /// Message data service
 class MessageDataService : Service {
-    
     ///
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
-    
     
     //TODO:: those 3 var need to double check to clean up
     private let incrementalUpdateQueue = DispatchQueue(label: "ch.protonmail.incrementalUpdateQueue", attributes: [])

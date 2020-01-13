@@ -27,13 +27,13 @@ import DeviceCheck
 import PromiseKit
 
 class SignInViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
-    private var viewModel : SigninViewModel!
-    private var coordinator : SigninCoordinator?
+    private var viewModel : SignInViewModel!
+    private var coordinator : SignInCoordinator?
     
-    func set(viewModel: SigninViewModel) {
+    func set(viewModel: SignInViewModel) {
         self.viewModel = viewModel
     }
-    func set(coordinator: SigninCoordinator) {
+    func set(coordinator: SignInCoordinator) {
         self.coordinator = coordinator
     }
     func getCoordinator() -> CoordinatorNew? {

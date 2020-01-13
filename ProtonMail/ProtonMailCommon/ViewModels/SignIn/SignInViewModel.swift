@@ -24,9 +24,9 @@
 
 import Foundation
 
-class SigninViewModel : NSObject {
+class SignInViewModel : NSObject {
     
-    enum SigninComplete {
+    enum SignInComplete {
         case ask2fa
         case error(NSError)
         case ok
@@ -43,7 +43,7 @@ class SigninViewModel : NSObject {
         self.unlockManager = sharedServices.get()
     }
     
-    func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SigninComplete)->Void) {
+    func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SignInComplete)->Void) {
         signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, ask2fa: {
             complete(.ask2fa)
         }, onError: { (error) in
@@ -56,9 +56,7 @@ class SigninViewModel : NSObject {
         }, requestMailboxPassword: {
             complete(.mbpwd)
         }) {//require mailbox pwd
-            
             self.unlockManager.unlockIfRememberedCredentials(forUser: username) { }
-            
             complete(.ok)
         }
     }
