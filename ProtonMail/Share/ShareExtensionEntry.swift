@@ -47,9 +47,9 @@ class ShareExtensionEntry : UINavigationController {
     private func setup() {
         TrustKitWrapper.start(delegate: self)
         appCoordinator = ShareAppCoordinator(navigation: self)
+        
+        //TODO:: fix it. this delegate doesn't set user
         APIService.shared.delegate = self
-        //TODO:: fix it later
-//        sharedAPIService.delegate = self
     }
     
     override func viewDidLoad() {

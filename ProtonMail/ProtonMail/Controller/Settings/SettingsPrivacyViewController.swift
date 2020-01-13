@@ -41,65 +41,21 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
         return self.coordinator
     }
     
-    var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-                                                            .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
-    var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
-    
-    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-                                                            .star, .archive, .unread]
-    
-    var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-    var setting_addresses_items : [SAddressItems]        = [.addresses,
-                                                            .displayName,
-                                                            .signature,
-                                                            .defaultMobilSign]
-    
-    var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
-    
-    var setting_languages : [ELanguage]                  = ELanguage.allItems()
-    
-    var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
-                                                            10, 15, 30, 60]
-    
-    var multi_domains: [Address]!
-    //TODO:: move to view model
-    var userManager : UserManager {
-        get {
-            let users : UsersManager = sharedServices.get()
-            return users.firstUser
-        }
+    struct Key {
+        static let headerCell : String        = "header_cell"
+        static let headerCellHeight : CGFloat = 36.0
     }
     
     /// cells
-    let SettingSingalLineCell         = "settings_general"
-    let SettingSingalSingleLineCell   = "settings_general_single_line"
-    let SettingTwoLinesCell           = "settings_twolines"
-    let SettingDomainsCell            = "setting_domains"
-    let SettingStorageCell            = "setting_storage_cell"
-    let HeaderCell                    = "header_cell"
-    let SingleTextCell                = "single_text_cell"
-    let SwitchCell                    = "switch_table_view_cell"
+//    let SettingSingalLineCell         = "settings_general"
+//    let SettingSingalSingleLineCell   = "settings_general_single_line"
+//    let SettingTwoLinesCell           = "settings_twolines"
+//    let SettingDomainsCell            = "setting_domains"
+//    let SettingStorageCell            = "setting_storage_cell"
+//    let HeaderCell                    = "header_cell"
+//    let SingleTextCell                = "single_text_cell"
+//    let SwitchCell                    = "switch_table_view_cell"
 
-    
-    struct CellKey {
-        static let headerCell : String        = "header_cell"
-        static let headerCellHeight : CGFloat = 36.0
-        /// cells
-//        static let oneLineCell         = "settings_device_general"
-        //        let SettingSingalSingleLineCell   = "settings_general_single_line"
-        //        let SettingTwoLinesCell           = "settings_twolines"
-        //        let SettingDomainsCell            = "setting_domains"
-        //        let SettingStorageCell            = "setting_storage_cell"
-        //        let SingleTextCell                = "single_text_cell"
-        //        let SwitchCell                    = "switch_table_view_cell"
-        
-    }
-    
-    //
-    let CellHeight : CGFloat = 30.0
-    var cleaning : Bool      = false
-    
     //
     @IBOutlet var settingTableView: UITableView!
     
@@ -107,7 +63,7 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
-        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
+        self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
     }
     
     private func updateTitle() {
@@ -121,36 +77,13 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateProtectionItems()
-//        userManager.userInfo.passwor
-        if sharedUserDataService.passwordMode == 1 {
-            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-        } else {
-            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-        }
-        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
-            setting_general_items.append(.notificationsSnooze)
-        }
+
         
-        multi_domains = self.userManager.addresses
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     internal func updateProtectionItems() {
-        setting_protection_items = []
-        switch UIDevice.current.biometricType {
-        case .none:
-            break
-        case .touchID:
-            setting_protection_items.append(.touchID)
-            break
-        case .faceID:
-            setting_protection_items.append(.faceID)
-            break
-        }
-        setting_protection_items.append(.pinCode)
-        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-            setting_protection_items.append(.enterTime)
-        }
+        
     }
     
     internal func updateTableProtectionSection() {
@@ -180,55 +113,55 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
         return 0
     }
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let section = indexPath.section
-        let row = indexPath.row
-        let eSection = self.viewModel.sections[section]
-        
-        switch eSection {
-        case .account:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? GeneralSettingViewCell {
-                let item = self.viewModel.accountItems[row]
-                c.configCell(item.description, right: "")
-            }
-            return cell
-        case .addresses:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? GeneralSettingViewCell {
-                let item = self.viewModel.accountItems[row]
-                c.configCell(item.description, right: "")
-            }
-            return cell
-        case .snooze:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell("AppVersion", right: "")
-            }
-            return cell
-        case .mailbox:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-            if let c = cell as? SettingsDeviceGeneralCell {
-                c.configCell("AppVersion", right: "")
-            }
-            return cell
-        }
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
-        if let headerCell = header {
-            headerCell.textLabel?.font = Fonts.h6.regular
-            headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
-            let eSection = self.viewModel.sections[section]
-            headerCell.textLabel?.text = eSection.description
-        }
-        return header
-    }
+//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let section = indexPath.section
+//        let row = indexPath.row
+//        let eSection = self.viewModel.sections[section]
+//
+//        switch eSection {
+//        case .account:
+//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+//            if let c = cell as? GeneralSettingViewCell {
+//                let item = self.viewModel.accountItems[row]
+//                c.configCell(item.description, right: "")
+//            }
+//            return cell
+//        case .addresses:
+//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+//            if let c = cell as? GeneralSettingViewCell {
+//                let item = self.viewModel.accountItems[row]
+//                c.configCell(item.description, right: "")
+//            }
+//            return cell
+//        case .snooze:
+//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+//            if let c = cell as? SettingsDeviceGeneralCell {
+//                c.configCell("AppVersion", right: "")
+//            }
+//            return cell
+//        case .mailbox:
+//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
+//            if let c = cell as? SettingsDeviceGeneralCell {
+//                c.configCell("AppVersion", right: "")
+//            }
+//            return cell
+//        }
+//    }
+//
+//
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
+//        if let headerCell = header {
+//            headerCell.textLabel?.font = Fonts.h6.regular
+//            headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+//            let eSection = self.viewModel.sections[section]
+//            headerCell.textLabel?.text = eSection.description
+//        }
+//        return header
+//    }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CellKey.headerCellHeight
+        return Key.headerCellHeight
     }
     
     

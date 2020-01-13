@@ -27,14 +27,14 @@ import CoreData
 
 // labels and folders manager
 final class LabelManagerViewModelImpl : LabelViewModel {
-    fileprivate var labelMessages : [String : LabelMessageModel]!
+    fileprivate var labelMessages = [String : LabelMessageModel]()
     
+    //label service
     let labelDataService : LabelsDataService
     
     init(labelService: LabelsDataService) {
         self.labelDataService = labelService
         super.init()
-        self.labelMessages = [String : LabelMessageModel]()
     }
     
     override func showArchiveOption() -> Bool {
@@ -109,6 +109,5 @@ final class LabelManagerViewModelImpl : LabelViewModel {
     override func getFetchType() -> LabelFetchType {
         return .all
     }
-    
 }
 
