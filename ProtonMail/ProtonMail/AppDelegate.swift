@@ -34,8 +34,7 @@ import Fabric
 import Crashlytics
 #endif
 
-let sharedUserDataService = UserDataService(api: APIService.shared)
-
+let sharedUserDataService = UserDataService(api: APIService.unauthorized)
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
@@ -153,7 +152,6 @@ extension AppDelegate: UIApplicationDelegate {
         ///TODO::fixme refactor
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
-        APIService.shared.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         

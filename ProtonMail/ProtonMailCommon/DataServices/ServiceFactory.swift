@@ -40,7 +40,7 @@ let sharedServices: ServiceFactory = {
     
     // from old ServiceFactory.default
     helper.add(AddressBookService.self, for: AddressBookService())
-    helper.add(BugDataService.self, for: BugDataService(api: APIService.shared))
+    helper.add(BugDataService.self, for: BugDataService(api: APIService.unauthorized))
     #endif
     
     return helper

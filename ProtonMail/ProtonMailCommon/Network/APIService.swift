@@ -41,8 +41,23 @@ protocol SessionDelegate: class {
 
 class APIService : Service {
     
-    // fix me
-    static var shared = APIService(config: Server.live, sessionUID: "", userID: "")
+    static var unauthorized: APIService = {
+        let unauthorized = APIService(config: Server.live, sessionUID: "", userID: "")
+        #if !APP_EXTENSION
+        unauthorized.delegate = UIApplication.shared.delegate as? AppDelegate
+        #endif
+        return unauthorized
+    }()
+    
+    /// Current APIService - of current user or unauthorized if there is no user available
+    static var shared: APIService {
+        if let user = sharedServices.get(by: UsersManager.self).users.first {
+            return user.apiService
+        }
+        
+        assert(false, "Should we have unauthorized calls here?")
+        return self.unauthorized
+    }
     
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
