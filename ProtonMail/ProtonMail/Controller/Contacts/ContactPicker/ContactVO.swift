@@ -66,8 +66,6 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     @objc public var email: String!
     public var isProtonMailContact: Bool = false
     
-    let apiServic = APIService.shared
-    
     var modelType: ContactPickerModelState {
         get {
             return .contact
@@ -305,10 +303,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
      - Parameter progress: in progress ()-> Void
      - Parameter complete: complete ()-> Void
      **/
-    func lockCheck(progress: () -> Void, complete: LockCheckComplete?) {
+    func lockCheck(api: APIService, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         async {
-            let getEmail = UserEmailPubKeys(email: self.email, api: self.apiServic).run()
+            let getEmail = UserEmailPubKeys(email: self.email, api: api).run()
             //Fixme
 //            let getContact = sharedContactDataService.fetch(byEmails: [self.email], context: nil)
 //            when(fulfilled: getEmail, getContact).done { keyRes, contacts in

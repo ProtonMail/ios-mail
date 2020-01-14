@@ -89,7 +89,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     
     func setType(type: Int) { }
     
-    func lockCheck(progress: () -> Void, complete: LockCheckComplete?) {}
+    func lockCheck(api: APIService, progress: () -> Void, complete: LockCheckComplete?) {}
     
     /*
      contact group subselection
