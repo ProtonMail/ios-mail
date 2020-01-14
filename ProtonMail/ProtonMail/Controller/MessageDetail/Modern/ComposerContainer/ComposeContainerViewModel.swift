@@ -23,32 +23,6 @@
 
 import Foundation
 
-extension ComposeContainerViewModel: Codable {
-    enum CodingKeys: CodingKey {
-        case messageID, messageAction
-    }
-    
-    enum Errors: Error {
-        case noUnderlyingMessage
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        if let message = self.childViewModel.message {
-            try container.encode(message.messageID, forKey: .messageID)
-        }
-        
-        if self.childViewModel.messageAction == .newDraft {
-            // newDraft is an action for cases when there is no corresponding Message object in viewModel
-            // since we already have an existing Message and encoded it a bit earlier, we'll tweak action to openDraft
-            try container.encode(ComposeMessageAction.openDraft.rawValue, forKey: .messageAction)
-        } else {
-            try container.encode(self.childViewModel.messageAction.rawValue, forKey: .messageAction)
-        }
-    }
-}
-
 class ComposeContainerViewModel: TableContainerViewModel {
     internal var childViewModel: ContainableComposeViewModel
     
@@ -61,25 +35,6 @@ class ComposeContainerViewModel: TableContainerViewModel {
     init(editorViewModel: ContainableComposeViewModel) {
         self.childViewModel = editorViewModel
         super.init()
-    }
-    
-    required convenience init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let messageID = try container.decode(String.self, forKey: .messageID)
-        let messageActionRaw = try container.decode(Int.self, forKey: .messageAction)
-        
-        //TODO:: fix me
-        let messageDataService = MessageDataService(api: APIService.shared, userID: "")
-        guard let message = messageDataService.fetchMessages(withIDs: NSMutableSet(array: [messageID])).first,
-            let action =  ComposeMessageAction(rawValue: messageActionRaw) else
-        {
-            throw Errors.noUnderlyingMessage
-        }
-        
-        let users : UsersManager = sharedServices.get()
-        let childViewModel = ContainableComposeViewModel(msg: message, action: action, msgService: messageDataService, user: users.firstUser)
-        
-        self.init(editorViewModel: childViewModel)
     }
     
     override var numberOfSections: Int {

@@ -33,8 +33,6 @@ class MessageHeaderViewModel: NSObject {
     private var messageObservation: NSKeyValueObservation!
     
 
-    //TODO::fix me
-    let apiService = APIService.shared
     let messageService: MessageDataService
     let user : UserManager
     
@@ -97,7 +95,7 @@ extension MessageHeaderViewModel {
                             }
                             
                             let context = CoreDataService.shared.backgroundManagedObjectContext
-                            let getEmail = UserEmailPubKeys(email: emial, api: self.apiService).run()
+                            let getEmail = UserEmailPubKeys(email: emial, api: user.apiService).run()
                             let contactService = self.user.contactService
                             let getContact = contactService.fetch(byEmails: [emial], context: context)
                             when(fulfilled: getEmail, getContact).done { keyRes, contacts in

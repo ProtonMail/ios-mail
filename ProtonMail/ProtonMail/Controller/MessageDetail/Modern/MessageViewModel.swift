@@ -64,7 +64,6 @@ class MessageViewModel: NSObject {
     let user : UserManager
     
     convenience init(message: Message, msgService: MessageDataService, user: UserManager) {
-        //TODO:: fix me
         self.init(message: message, embeddingImages: true, messageService: msgService, user: user)
     }
     
@@ -101,8 +100,7 @@ class MessageViewModel: NSObject {
         self.attachments = atts
         
         // 4. remote content policy
-//        self.remoteContentModeObservable = sharedUserDataService.autoLoadRemoteImages ? WebContents.RemoteContentPolicy.allowed.rawValue : WebContents.RemoteContentPolicy.disallowed.rawValue
-        self.remoteContentModeObservable = WebContents.RemoteContentPolicy.allowed.rawValue //TEMP
+        self.remoteContentModeObservable = user.autoLoadRemoteImages ? WebContents.RemoteContentPolicy.allowed.rawValue : WebContents.RemoteContentPolicy.disallowed.rawValue
         
         
         // 5. divisions
@@ -141,9 +139,9 @@ class MessageViewModel: NSObject {
         DispatchQueue.global().async {
             let hasImage = (temp.body ?? "").hasImage() // this method is slow
             DispatchQueue.main.async {
-//                if hasImage && !sharedUserDataService.autoLoadRemoteImages { // we only care if there is remote content and loading is not allowed
-//                    self.remoteContentMode = .disallowed
-//                }
+                if hasImage && !self.user.autoLoadRemoteImages { // we only care if there is remote content and loading is not allowed
+                    self.remoteContentMode = .disallowed
+                }
             }
         }
         

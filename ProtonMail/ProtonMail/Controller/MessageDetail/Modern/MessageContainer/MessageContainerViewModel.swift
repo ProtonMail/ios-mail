@@ -119,18 +119,6 @@ class MessageContainerViewModel: TableContainerViewModel {
         self.init(conversation: [message], msgService: msgService, user: user)
     }
     
-    required convenience init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let messageIDs = try container.decode(Array<String>.self, forKey: .messageIDs)
-        //TODO:: fix me
-        let service = MessageDataService(api: APIService.shared, userID: "")
-        //TODO:: fix me
-        let users : UsersManager = sharedServices.get()
-        let user = users.firstUser
-        let messages = service.fetchMessages(withIDs: NSMutableSet(array: messageIDs))
-        self.init(conversation: messages, msgService: service, user: user)
-    }
-    
     deinit {
         self.unsubscribeFromUpdatesOfChildren()
         NotificationCenter.default.removeObserver(self)
@@ -233,7 +221,7 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
 
         //TODO:: fix me
-        BugDataService(api: APIService.shared).reportPhishing(messageID: standalone.messageID,
+        BugDataService(api: self.user.apiService).reportPhishing(messageID: standalone.messageID,
                                                               messageBody: standalone.body ?? LocalString._error_no_object) { error in
             completion(error)
         }
@@ -344,22 +332,5 @@ class MessageContainerViewModel: TableContainerViewModel {
                 self?.reload(message: message)
             }
         }
-    }
-}
-
-extension MessageContainerViewModel: Codable {
-    enum CodingKeys: CodingKey {
-        case messageIDs
-    }
-    
-    enum Errors: Error {
-        case decoding
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        
-        let messageIDs = self.thread.map { $0.messageID }
-        try container.encode(messageIDs, forKey: .messageIDs)
     }
 }

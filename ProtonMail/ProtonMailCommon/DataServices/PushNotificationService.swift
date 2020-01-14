@@ -53,7 +53,7 @@ public class PushNotificationService: NSObject, Service {
          encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
-         deviceRegistrator: DeviceRegistrator = APIService.shared, //TODO:: fix me
+         deviceRegistrator: DeviceRegistrator = APIService.shared, // unregister call is unauthorized; register call is authorized one, we will inject auth credentials into the call itself
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
