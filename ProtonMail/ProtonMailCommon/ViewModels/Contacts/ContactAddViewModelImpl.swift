@@ -202,9 +202,10 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
-        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
-            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
-            let authCredential = AuthCredential.fetchFromKeychain() else
+        let user = sharedServices.get(by: UsersManager.self).firstUser
+        guard let mailboxPassword = user.userService.mailboxPassword,
+            let userkey = user.userService.userInfo?.firstUserKey(),
+            case let authCredential = user.authCredential else
         {
             complete(NSError.lockError())
             return

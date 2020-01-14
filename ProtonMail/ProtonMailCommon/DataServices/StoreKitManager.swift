@@ -28,6 +28,10 @@ import AwaitKit
 class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
     
+    var user: UserManager? {
+        return sharedServices.get(by: UsersManager.self).user(at: 0)
+    }
+    
     private override init() {
         super.init()
         
@@ -58,7 +62,7 @@ class StoreKitManager: NSObject {
     }
     private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            guard let currentUsername = sharedServices.get(by: UsersManager.self).user(at: 0)?.userService.username else {
+            guard let currentUsername = self.user?.userService.username else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
@@ -368,7 +372,7 @@ extension StoreKitManager {
             throw Errors.noHashedUsernameArrivedInTransaction
         }
         guard hashedUsername == self.hash(username: currentUsername) ||
-            self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
+            self.hashLegacy(username: self.user?.userService.username ?? "", mayMatch: hashedUsername) else
         {
             throw Errors.haveTransactionOfAnotherUser
         }

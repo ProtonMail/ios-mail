@@ -171,12 +171,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     
     func handleSignOut(_ sender : UIView?) {
         let alertController = UIAlertController(title: LocalString._logout_confirmation, message: nil, preferredStyle: .actionSheet)
-//        alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
-//            self.signingOut = true
-//            UserTempCachedStatus.backup()
-//            //sharedUserDataService.signOut(true)
-//            userCachedStatus.signOut()
-//        }))
         
         alertController.addAction(UIAlertAction(title: LocalString._sign_out_all, style: .destructive, handler: { (action) -> Void in
             self.signingOut = true

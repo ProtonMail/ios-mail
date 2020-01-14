@@ -28,6 +28,10 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
     private var viewModel: MessageBodyViewModel!
     private var contentsObservation: NSKeyValueObservation!
     private var renderObservation: NSKeyValueObservation!
+    
+    var userDataService: UserDataService {
+        return viewModel.parentViewModel.user.userService
+    }
 
     private lazy var loader: WebContentsSecureLoader = {
         if #available(iOS 11.0, *) {
@@ -100,15 +104,14 @@ extension MessageBodyViewController : LinkOpeningValidator {
     
     @available(iOS, introduced: 10.0, obsoleted: 13.0, message: "Will never be called on iOS 13 if webView(:contextMenuConfigurationForElement:completionHandler) is declared")
     override func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKPreviewElementInfo) -> Bool {
-        return false
-//        return sharedUserDataService.linkConfirmation == .openAtWill
+        return self.userDataService.linkConfirmation == .openAtWill
     }
     
     @available(iOS 13.0, *)
     func webView(_ webView: WKWebView, contextMenuConfigurationForElement elementInfo: WKContextMenuElementInfo, completionHandler: @escaping (UIContextMenuConfiguration?) -> Void)
     {
         // This will show default preview and default menu
-        guard sharedUserDataService.linkConfirmation != .openAtWill else {
+        guard self.userDataService.linkConfirmation != .openAtWill else {
             completionHandler(nil)
             return
         }

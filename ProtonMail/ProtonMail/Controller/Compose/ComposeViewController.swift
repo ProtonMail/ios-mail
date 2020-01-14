@@ -126,9 +126,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             // get contact groups
 
             // TODO: figure where to put this thing
-            if sharedUserDataService.isPaidUser() {
-                let service = self.viewModel.getUser().contactGroupService
-                self.contacts.append(contentsOf: service.getAllContactGroupVOs())
+            let user = self.viewModel.getUser()
+            if user.userService.isPaidUser() {
+                self.contacts.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
             }
             
             // Sort contacts and contact groups

@@ -331,7 +331,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-        if let addr = sharedUserDataService.addresses.indexOfAddress(addr_id) {
+        if let addr = self.user.userService.addresses.indexOfAddress(addr_id) {
             return addr.signature
         }
         return nil
@@ -607,10 +607,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func getHtmlBody() -> WebContents {
-        return .init(body: "", remoteContentMode: .disallowed)//remove later
-        let userInfo = self.user.userInfo
-        
+    override func getHtmlBody() -> WebContents {        
         let globalRemoteContentMode: WebContents.RemoteContentPolicy = self.user.autoLoadRemoteImages ? .allowed : .disallowed
         
         var signature = self.getDefaultSendAddress()?.signature ?? self.user.userDefaultSignature
@@ -619,7 +616,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         var mobileSignature = self.user.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
-        let defaultSignature = sharedUserDataService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let defaultSignature = self.user.userService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"

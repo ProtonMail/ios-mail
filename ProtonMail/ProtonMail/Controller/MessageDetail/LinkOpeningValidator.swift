@@ -24,41 +24,42 @@
 import UIKit
 
 protocol LinkOpeningValidator {
+    var userDataService: UserDataService { get }
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void)
 }
 extension LinkOpeningValidator {
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
-//        guard sharedUserDataService.linkConfirmation == .confirmationAlert else {
-//            handler(true)
-//            return
-//        }
-//        
-//        guard url.isOwnedByProton == false else {
-//            handler(true)
-//            return
-//        }
-//        
-//        var tail = url.absoluteString.dropFirst(60)
-//        tail = tail.isEmpty ? "" : ("\n...\n" + tail.suffix(40))
-//        let shortLink = url.absoluteString.prefix(60) + tail
-//        
-//        let alert = UIAlertController(title: LocalString._about_to_open_link,
-//                                      message: String(shortLink),
-//                                      preferredStyle: .alert)
-//        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
-//            handler(true)
-//        }
-//        let doNotShowAgain = UIAlertAction(title: LocalString._genernal_continue_and_dont_ask_again, style: .destructive) { _ in
-//            sharedUserDataService.updateLinkConfirmation(.openAtWill) { _, _, _ in /* nothing */ }
-//            handler(true)
-//        }
-//        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
-//            handler(false)
-//        }
-//        [proceed, doNotShowAgain, cancel].forEach(alert.addAction)
-//
-//        // will deliver to the topmost view controller in responder chain
-//        UIApplication.shared.sendAction(#selector(UIViewController.present(_:animated:completion:)), to: nil, from: alert, for: nil)
+        guard self.userDataService.linkConfirmation == .confirmationAlert else {
+            handler(true)
+            return
+        }
+        
+        guard url.isOwnedByProton == false else {
+            handler(true)
+            return
+        }
+        
+        var tail = url.absoluteString.dropFirst(60)
+        tail = tail.isEmpty ? "" : ("\n...\n" + tail.suffix(40))
+        let shortLink = url.absoluteString.prefix(60) + tail
+        
+        let alert = UIAlertController(title: LocalString._about_to_open_link,
+                                      message: String(shortLink),
+                                      preferredStyle: .alert)
+        let proceed = UIAlertAction(title: LocalString._genernal_continue, style: .destructive) { _ in
+            handler(true)
+        }
+        let doNotShowAgain = UIAlertAction(title: LocalString._genernal_continue_and_dont_ask_again, style: .destructive) { _ in
+            self.userDataService.updateLinkConfirmation(.openAtWill) { _, _, _ in /* nothing */ }
+            handler(true)
+        }
+        let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in
+            handler(false)
+        }
+        [proceed, doNotShowAgain, cancel].forEach(alert.addAction)
+
+        // will deliver to the topmost view controller in responder chain
+        UIApplication.shared.sendAction(#selector(UIViewController.present(_:animated:completion:)), to: nil, from: alert, for: nil)
     }
 }
 

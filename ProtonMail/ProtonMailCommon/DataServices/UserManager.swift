@@ -210,13 +210,13 @@ extension UserManager {
             //TODO:: fix me
             let role = userInfo.role
             if role > 0 || isEnterprise {
-                return sharedUserDataService.switchCacheOff == false
+                return self.userService.switchCacheOff == false
             } else {
-                sharedUserDataService.switchCacheOff = false
+                self.userService.switchCacheOff = false
                 return true
             } }
         set {
-            sharedUserDataService.switchCacheOff = (newValue == false)
+            self.userService.switchCacheOff = (newValue == false)
         }
     }
     

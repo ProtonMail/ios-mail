@@ -42,9 +42,9 @@ class StorefrontCoordinator: PushCoordinator {
     func go(to nextPlan: ServicePlan) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let servicePlanService = self.services.get(by: UsersManager.self).firstUser.sevicePlanService
-            let storefront = Storefront.init(plan: nextPlan, servicePlanService: servicePlanService)
-            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
+            let user = self.services.get(by: UsersManager.self).firstUser
+            let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, userService: user.userService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
         }
         nextCoordinator.start()
     }
@@ -52,9 +52,9 @@ class StorefrontCoordinator: PushCoordinator {
     func goToBuyMoreCredits(for subscription: ServicePlanSubscription) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let servicePlanService = self.services.get(by: UsersManager.self).firstUser.sevicePlanService
-            let storefront = Storefront(creditsFor: subscription, servicePlanService: servicePlanService)
-            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: servicePlanService)
+            let user = self.services.get(by: UsersManager.self).firstUser
+            let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, userService: user.userService)
+            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
         }
         nextCoordinator.start()
     }
