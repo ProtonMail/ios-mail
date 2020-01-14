@@ -145,6 +145,7 @@ class UsersManager : Service {
         if let index = self.users.enumerated().first(where: { $1.isMatch(sessionID: uid) })?.offset {
             self.users.swapAt(0, index)
         }
+        self.save()
     }
     
     func active(index: Int) {
@@ -153,7 +154,7 @@ class UsersManager : Service {
         }
         
         self.users.swapAt(0, index)
-        
+        self.save()
 //        uers.swap(at)
 //
 //        swap(&cellOrder[0], &cellOrder[1])
