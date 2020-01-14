@@ -54,8 +54,7 @@ class APIService : Service {
         if let user = sharedServices.get(by: UsersManager.self).users.first {
             return user.apiService
         }
-        
-        assert(false, "Should we have unauthorized calls here?")
+        // TODO: Should we have unauthorized calls here at all?
         return self.unauthorized
     }
     
