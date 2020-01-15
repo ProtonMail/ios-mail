@@ -212,7 +212,8 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
 
-            next.viewModel = FolderApplyViewModelImpl(msg: messages)
+            let user = self.services.get(by: UsersManager.self).firstUser
+            next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             next.delegate = self.viewController
         case .labels:
             guard let next = destination as? LablesViewController else {
@@ -221,7 +222,9 @@ class MailboxCoordinator : DefaultCoordinator {
             guard let messages = sender as? [Message] else {
                 return false
             }
-            next.viewModel = LabelApplyViewModelImpl(msg: messages)
+            
+            let user = self.services.get(by: UsersManager.self).firstUser
+            next.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             next.delegate = self.viewController
             
         case .troubleShoot:

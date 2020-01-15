@@ -27,11 +27,16 @@ import CoreData
 final class FolderApplyViewModelImpl : LabelViewModel {
     private var messages : [Message]!
     private var labelMessages : [String : LabelMessageModel]!
-    private let apiService = APIService.shared
-    private let labelDataService: LabelsDataService
     
-    init(msg:[Message]!) {
-        self.labelDataService = LabelsDataService(api: apiService, userID: "")
+    private let apiService: APIService
+    private let labelService: LabelsDataService
+    private let messageService : MessageDataService
+    
+    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+        self.labelService = folderService
+        self.apiService = apiService
+        self.messageService = messageService
+        
         super.init()
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
@@ -151,7 +156,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         let hasSent = self.messages.first { $0.contains(label: "2") } != nil // hidden sent, unremovable
-        return labelDataService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
+        return labelService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
     }
     
     

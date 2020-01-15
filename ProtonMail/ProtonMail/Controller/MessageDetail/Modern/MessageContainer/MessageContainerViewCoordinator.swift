@@ -250,7 +250,8 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
-            popup.viewModel = LabelApplyViewModelImpl(msg: messages)
+            let user = self.services.get(by: UsersManager.self).firstUser
+            popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
             
@@ -258,7 +259,8 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
-            popup.viewModel = FolderApplyViewModelImpl(msg: messages)
+            let user = self.services.get(by: UsersManager.self).firstUser
+            popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
         case .some(.toTroubleshoot):
             guard let nav = segue.destination as? UINavigationController else {
