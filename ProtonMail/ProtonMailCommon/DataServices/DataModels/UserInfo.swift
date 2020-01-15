@@ -66,7 +66,6 @@ final class UserInfo : NSObject {
     var swipeRight : Int = 0
     var linkConfirmation: LinkOpeningMode = .confirmationAlert
     
-    
     var attachPublicKey : Int = 0
     var sign : Int = 0
     
@@ -84,6 +83,13 @@ final class UserInfo : NSObject {
  
     //1.9.0 get from addresses route
     var userAddresses: [Address] = [Address]()
+    
+    static func getDefault() -> UserInfo {
+        return .init(maxSpace: 0, usedSpace: 0, language: "",
+                     maxUpload: 0, role: 0, delinquent: 0,
+                     keys: nil, userId: "", linkConfirmation: 0,
+                     credit: 0, currency: "")
+    }
     
     // init from cache
     required init(

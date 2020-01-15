@@ -109,6 +109,10 @@ final class AuthCredential: NSObject, NSCoding {
         //        self.passwordKeySalt = res.keySalt
     }
     
+    static func getDefault() -> AuthCredential {
+        return .init(accessToken: "", refreshToken: "", sessionID: "", expiration: Date.distantPast, key: "", salt: "")
+    }
+    
     required init(res : AuthResponse) {
         self.sessionID = res.sessionID ?? ""
         self.accessToken = res.accessToken ?? ""

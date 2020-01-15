@@ -44,9 +44,10 @@ class UserManager : Service {
     public let apiService : APIService
     public var userinfo : UserInfo
     public var auth : AuthCredential
+    
+    //TODO:: add a user status. logging in, expired, no key etc...
 
     //public let user
-    
     public lazy var reportService: BugDataService = {
         let service = BugDataService(api: self.apiService)
         return service
@@ -84,10 +85,17 @@ class UserManager : Service {
         return service
     }()
     #endif
-
+    
     init(api: APIService, userinfo: UserInfo, auth: AuthCredential) {
         self.userinfo = userinfo
         self.auth = auth
+        self.apiService = api
+        self.apiService.sessionDeleaget = self
+    }
+
+    init(api: APIService) {
+        self.userinfo = UserInfo.getDefault()
+        self.auth = AuthCredential.getDefault()
         self.apiService = api
         self.apiService.sessionDeleaget = self
     }
