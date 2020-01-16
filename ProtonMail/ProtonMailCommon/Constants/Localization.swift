@@ -1816,6 +1816,7 @@ class LocalizedString {
     lazy var _local_storage_limit = NSLocalizedString("Local storage limit", comment: "cell title in device settings")
     
     lazy var _push_notification = NSLocalizedString("Push Notifications", comment: "cell title in device settings")
+    lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
     
     
 }

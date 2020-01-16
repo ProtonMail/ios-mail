@@ -79,37 +79,37 @@ class UserDataService : Service {
         // new one, check if user logged in already
         static let atLeastOneLoggedIn = "UsersManager.AtLeastoneLoggedIn"
     }
-    
+    var userInfo: UserInfo?
     // MARK: - Private variables
-    fileprivate(set) var userInfo: UserInfo? {
-        get {
-            guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
-            {
-                return nil
-            }
-            
-            let locked = Locked<UserInfo>(encryptedValue: cypherData)
-            return try? locked.unlock(with: mainKey)
-        }
-        set {
-            self.saveUserInfo(newValue)
-        }
-    }
-    
-    private func saveUserInfo(_ newValue: UserInfo?, protectedBy cachedKey: Keymaker.Key? = nil) {
-        guard let newValue = newValue else {
-            SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.userInfo)
-            return
-        }
-        guard let mainKey = cachedKey ?? keymaker.mainKey,
-            let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
-        {
-            return
-        }
-        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.userInfo)
-        SharedCacheBase.getDefault().synchronize()
-    }
+//    fileprivate(set) var userInfo: UserInfo? {
+//        get {
+//            guard let mainKey = keymaker.mainKey,
+//                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
+//            {
+//                return nil
+//            }
+//
+//            let locked = Locked<UserInfo>(encryptedValue: cypherData)
+//            return try? locked.unlock(with: mainKey)
+//        }
+//        set {
+//            self.saveUserInfo(newValue)
+//        }
+//    }
+//
+//    private func saveUserInfo(_ newValue: UserInfo?, protectedBy cachedKey: Keymaker.Key? = nil) {
+//        guard let newValue = newValue else {
+//            SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.userInfo)
+//            return
+//        }
+//        guard let mainKey = cachedKey ?? keymaker.mainKey,
+//            let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
+//        {
+//            return
+//        }
+//        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.userInfo)
+//        SharedCacheBase.getDefault().synchronize()
+//    }
     
     //TODO::Fix later fileprivate(set)
     fileprivate(set) var username: String? {
@@ -175,9 +175,9 @@ class UserDataService : Service {
    }
    
     
-    var usedSpace: Int64 {
-        return userInfo?.usedSpace ?? 0
-    }
+//    var usedSpace: Int64 {
+//        return userInfo?.usedSpace ?? 0
+//    }
 //    var firstUserPublicKey: String? {
 //        if let keys = userInfo?.userKeys, keys.count > 0 {
 //            for k in keys {
@@ -224,9 +224,9 @@ class UserDataService : Service {
 //        return self.userInfo?.addressKeys ?? [Key]()
 //    }
   
-    var userPrivateKeys : Data {
-        return self.userInfo?.userPrivateKeys ?? Data()
-    }
+//    var userPrivateKeys : Data {
+//        return self.userInfo?.userPrivateKeys ?? Data()
+//    }
     
     // MARK: - Public variables
     
@@ -244,26 +244,28 @@ class UserDataService : Service {
 //        return displayName
 //    }
     
-    var swiftLeft : MessageSwipeAction {
-        return userInfo?.swipeLeftAction ?? .archive
-    }
-    
-    var swiftRight : MessageSwipeAction {
-        return userInfo?.swipeRightAction ?? .trash
-    }
-    
+//    var swiftLeft : MessageSwipeAction {
+//        return userInfo?.swipeLeftAction ?? .archive
+//    }
+//
+//    var swiftRight : MessageSwipeAction {
+//        return userInfo?.swipeRightAction ?? .trash
+//    }
+//
     var linkConfirmation: LinkOpeningMode {
-        return userInfo?.linkConfirmation ?? .confirmationAlert
+        return .confirmationAlert
+        //TODO:: fix me
+//        return userInfo?.linkConfirmation ?? .confirmationAlert
     }
-    
-    var addresses: [Address] { //never be null
-        return userInfo?.userAddresses ?? [Address]()
-    }
-
-    var displayName: String {
-        return (userInfo?.displayName ?? "").decodeHtml()
-    }
-    
+//
+//    var addresses: [Address] { //never be null
+//        return userInfo?.userAddresses ?? [Address]()
+//    }
+//
+//    var displayName: String {
+//        return (userInfo?.displayName ?? "").decodeHtml()
+//    }
+//
     var isMailboxPasswordStored: Bool {
         return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
@@ -311,22 +313,22 @@ class UserDataService : Service {
 //        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
 //    }
     
-    var maxSpace: Int64 {
-        return userInfo?.maxSpace ?? 0
-    }
-    
-    var notificationEmail: String {
-        return userInfo?.notificationEmail ?? ""
-    }
-    
-    var notify: Bool {
-        return (userInfo?.notify ?? 0 ) == 1
-    }
-    
-
-    var isSet : Bool {
-        return userInfo != nil
-    }
+//    var maxSpace: Int64 {
+//        return userInfo?.maxSpace ?? 0
+//    }
+//
+//    var notificationEmail: String {
+//        return userInfo?.notificationEmail ?? ""
+//    }
+//
+//    var notify: Bool {
+//        return (userInfo?.notify ?? 0 ) == 1
+//    }
+//
+//
+//    var isSet : Bool {
+//        return userInfo != nil
+//    }
     
     // MARK: - methods
     init(check : Bool = true, api: APIService) {  //Add interface for data agent //
@@ -354,106 +356,106 @@ class UserDataService : Service {
             userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
             
-            self.userInfo = userRes.userInfo
+//            self.userInfo = userRes.userInfo
+            //TODO:: fix me
+            //try await(self.activeUserKeys() )
             
-            try await(self.activeUserKeys() )
-            
-            return self.userInfo
+            return userRes.userInfo
         }
     }
     
-    func activeUserKeys() -> Promise<Void> {
-        return async {
-            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
-                return
-            }
-            let addresses = user.userAddresses
-            for addr in addresses {
-                for index in 0 ..< addr.keys.count {
-                    let key = addr.keys[index]
-                    if let activtion = key.activation {
-                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
-                            continue
-                        }
-                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
-                        let keylist : [[String: Any]] = [[
-                            "Fingerprint" :  key.fingerprint,
-                            "Primary" : 1,
-                            "Flags" : 3
-                            ]]
-                        let jsonKeylist = keylist.json()
-                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
-                        let signedKeyList : [String: Any] = [
-                            "Data" : jsonKeylist,
-                            "Signature" : signed
-                        ]
-                        let api = ActivateKey(api: self.apiService, addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
-                        let userSettingsRes = try await(api.run())
-                        if userSettingsRes.code == 1000 {
-                            addr.keys[index].activation = nil
-                            addr.keys[index].private_key = new_private_key
-                            self.userInfo = user
-                        }
-                    }
-                }
-            }
-            return 
-        }
-    }
+//    func activeUserKeys(userInfo: UserInfo) -> Promise<Void> {
+//        return async {
+//            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
+//                return
+//            }
+//            let addresses = user.userAddresses
+//            for addr in addresses {
+//                for index in 0 ..< addr.keys.count {
+//                    let key = addr.keys[index]
+//                    if let activtion = key.activation {
+//                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
+//                            continue
+//                        }
+//                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
+//                        let keylist : [[String: Any]] = [[
+//                            "Fingerprint" :  key.fingerprint,
+//                            "Primary" : 1,
+//                            "Flags" : 3
+//                            ]]
+//                        let jsonKeylist = keylist.json()
+//                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
+//                        let signedKeyList : [String: Any] = [
+//                            "Data" : jsonKeylist,
+//                            "Signature" : signed
+//                        ]
+//                        let api = ActivateKey(api: self.apiService, addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
+//                        let userSettingsRes = try await(api.run())
+//                        if userSettingsRes.code == 1000 {
+//                            addr.keys[index].activation = nil
+//                            addr.keys[index].private_key = new_private_key
+//                            self.userInfo = user
+//                        }
+//                    }
+//                }
+//            }
+//            return
+//        }
+//    }
     enum MyErrorType : Error {
         case SomeError
     }
     //
     func updateFromEvents(userInfo: [String : Any]?) {
-        if let userData = userInfo {
-            let newUserInfo = UserInfo(response: userData)
-            if let user = self.userInfo {
-                user.set(userinfo: newUserInfo)
-                self.userInfo = user
-            }
-        }
+//        if let userData = userInfo {
+//            let newUserInfo = UserInfo(response: userData)
+//            if let user = self.userInfo {
+//                user.set(userinfo: newUserInfo)
+//                self.userInfo = user
+//            }
+//        }
     }
     //
     func updateFromEvents(userSettings: [String : Any]?) {
-        if let user = self.userInfo {
-            user.parse(userSettings: userSettings)
-            self.userInfo = user
-        }
+//        if let user = self.userInfo {
+//            user.parse(userSettings: userSettings)
+//            self.userInfo = user
+//        }
     }
     func updateFromEvents(mailSettings: [String : Any]?) {
-        if let user = self.userInfo {
-            user.parse(mailSettings: mailSettings)
-            self.userInfo = user
-        }
+//        if let user = self.userInfo {
+//            user.parse(mailSettings: mailSettings)
+//            self.userInfo = user
+//        }
     }
     
     func update(usedSpace: Int64) {
-        if let user = self.userInfo {
-            user.usedSpace = usedSpace
-            self.userInfo = user
-        }
+//        if let user = self.userInfo {
+//            user.usedSpace = usedSpace
+//            self.userInfo = user
+//        }
     }
 
     func setFromEvents(address: Address) {
-        if let user = self.userInfo {
-            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
-                user.userAddresses.remove(at: index)
-            }
-            user.userAddresses.append(address)
-            user.userAddresses.sort(by: { (v1, v2) -> Bool in
-                return v1.order < v2.order
-            })
-            self.userInfo = user
-        }
+//        if let user = self.userInfo {
+//            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
+//                user.userAddresses.remove(at: index)
+//            }
+//            user.userAddresses.append(address)
+//            user.userAddresses.sort(by: { (v1, v2) -> Bool in
+//                return v1.order < v2.order
+//            })
+//            self.userInfo = user
+//        }
     }
     
     func deleteFromEvents(addressID: String) {
-        if let user = self.userInfo {
-            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
-                user.userAddresses.remove(at: index)
-                self.userInfo = user
-            }
-        }
+//        if let user = self.userInfo {
+//            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
+//                user.userAddresses.remove(at: index)
+//                self.userInfo = user
+//            }
+//        }
     }
     
     func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
@@ -615,22 +617,22 @@ class UserDataService : Service {
     
     #if !APP_EXTENSION
     func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
-        {
-            completion(nil, nil, NSError.lockError())
-            return
-        }
-        
-        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-        api.call(api: self.apiService) { (task, response, hasError) in
-            if !hasError {
-                userInfo.linkConfirmation = status
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-            }
-            completion(self.userInfo, nil, response?.error)
-        }
+//        guard let authCredential = AuthCredential.fetchFromKeychain(),
+//            let userInfo = self.userInfo,
+//            let cachedMainKey = keymaker.mainKey else
+//        {
+//            completion(nil, nil, NSError.lockError())
+//            return
+//        }
+//
+//        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
+//        api.call(api: self.apiService) { (task, response, hasError) in
+//            if !hasError {
+//                userInfo.linkConfirmation = status
+//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
+//            }
+//            completion(self.userInfo, nil, response?.error)
+//        }
     }
     #endif
 
@@ -1012,9 +1014,8 @@ class UserDataService : Service {
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
-        keymaker.wipeMainKey()
-        FileManager.default.cleanTemporaryDirectory()
         
+        FileManager.default.cleanTemporaryDirectory()
         // some tests are messed up without tmp folder, so let's keep it for consistency
         #if targetEnvironment(simulator)
         try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
@@ -1098,7 +1099,9 @@ class UserDataService : Service {
 
 extension AppCache {
     static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
-        userDataService.userInfo = userInfo
+        
+        
+//        userDataService.userInfo = userInfo
     }
     
     static func inject(username: String, into userDataService: UserDataService) {

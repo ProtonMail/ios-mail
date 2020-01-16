@@ -31,6 +31,7 @@ class SignInViewModel : NSObject {
         case error(NSError)
         case ok
         case mbpwd
+        case exist
     }
 
     let usersManager: UsersManager
@@ -44,6 +45,11 @@ class SignInViewModel : NSObject {
     }
     
     func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SignInComplete)->Void) {
+        //Start checking if the user logged in already
+        if usersManager.isExist(username) {
+            return complete(.exist)
+        }
+        
         signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, ask2fa: {
             complete(.ask2fa)
         }, onError: { (error) in

@@ -105,7 +105,6 @@ class UsersManager : Service {
     }
     
     func update(auth: AuthCredential, user: UserInfo) {
-        
         for i in 0 ..< users.count {
             let usr = users[i]
             if usr.isMatch(sessionID: auth.sessionID) {
@@ -160,9 +159,8 @@ class UsersManager : Service {
 //        swap(&cellOrder[0], &cellOrder[1])
     }
     //TODO:: referance could try to use weak.
-    var firstUser : UserManager {
-        assert(!users.isEmpty, "no users, you may not have first one")
-        return users.first!
+    var firstUser : UserManager? {
+        return users.first
     }
     
     
@@ -190,6 +188,21 @@ class UsersManager : Service {
          }
          return user
      }
+    
+    func isExist(_ userName: String) -> Bool {
+        var check = userName
+        
+        if !userName.contains(check: "@") {
+            check = check + "@"
+        }
+        
+        for user in users {
+            if user.isExist(check) {
+                return true
+            }
+        }
+        return false
+    }
     
     
     private func oldFetch() -> AuthCredential? {
@@ -336,15 +349,30 @@ extension UsersManager {
 //        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
 //    }
     
+    func logout(user: UserManager) {
+        
+    }
+    
+    func remove(user: UserManager) {
+        
+    }
+    
     internal func clean() { //TODO:: fix later
         SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
         KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
         
         UserTempCachedStatus.backup()
+        
+        
         sharedUserDataService.signOut(true)
+        
+        
         userCachedStatus.signOut()
         //sharedMessageDataService.launchCleanUpIfNeeded()
+        
+        //device level service
+        keymaker.wipeMainKey()
     }
     
     func hasUsers() -> Bool {
@@ -364,10 +392,8 @@ extension UsersManager {
         for user in users {
             lastUpdatedStore.removeUpdateTime(by: user.userinfo.userId)
         }
-        
-        
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
         
-        
+        self.users.removeAll()
     }
 }

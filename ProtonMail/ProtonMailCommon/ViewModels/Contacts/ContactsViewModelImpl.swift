@@ -33,7 +33,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
      var contactService : ContactDataService {
         get {
             let users : UsersManager = sharedServices.get()
-            return users.firstUser.contactService
+            return users.firstUser!.contactService
         }
     }
     

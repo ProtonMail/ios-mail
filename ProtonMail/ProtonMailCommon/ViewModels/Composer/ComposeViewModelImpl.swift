@@ -331,9 +331,9 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-        if let addr = self.user.userService.addresses.indexOfAddress(addr_id) {
-            return addr.signature
-        }
+//        if let addr = self.user.userService.addresses.indexOfAddress(addr_id) {
+//            return addr.signature
+//        }
         return nil
     }
     

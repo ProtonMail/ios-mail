@@ -863,12 +863,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     fileprivate func showNoResultLabel() {
-        let count =  self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
-        if (count <= 0 && !fetchingMessage ) {
-            self.noResultLabel.isHidden = false
-        } else {
-            self.noResultLabel.isHidden = true
-        }
+        
+        {
+            let count =  self.viewModel.sectionCount() > 0 ? self.viewModel.rowCount(section: 0) : 0
+            if (count <= 0 && !self.fetchingMessage ) {
+                self.noResultLabel.isHidden = false
+            } else {
+                self.noResultLabel.isHidden = true
+            }
+        } ~> .main
     }
 
     internal func moveMessages(to location: Message.Location) {

@@ -72,9 +72,12 @@ class AccountManagerViewModel {
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
-        self.labelDataService = self.usersManager.firstUser.labelService
+        self.labelDataService = self.usersManager.firstUser!.labelService
     }
     
+    func signOut() {
+         self.usersManager.loggedOutAll()
+    }
 //    func updateMenuItems() {
 //        otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
 //        if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {

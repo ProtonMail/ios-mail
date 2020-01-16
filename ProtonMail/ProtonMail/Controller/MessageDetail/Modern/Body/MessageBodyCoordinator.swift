@@ -60,7 +60,7 @@ class MessageBodyCoordinator {
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
             let users : UsersManager = self.services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -176,13 +176,7 @@
                             <constraint firstItem="Gop-XX-JaS" firstAttribute="top" secondItem="blB-MT-oAg" secondAttribute="bottom" id="deH-Mb-c8u"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="J9F-Xh-oG8">
-                        <barButtonItem key="rightBarButtonItem" image="sent_compose" id="iiy-bz-03S">
-                            <connections>
-                                <action selector="sendAction:" destination="MYS-qk-SMJ" id="8v8-xI-L97"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="J9F-Xh-oG8"/>
                     <connections>
                         <outlet property="tableView" destination="blB-MT-oAg" id="hfT-hZ-c6s"/>
                         <segue destination="JSr-z6-cCy" kind="show" identifier="toAddAccountSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="5NT-FN-6sy"/>
@@ -1323,7 +1317,6 @@
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
-        <image name="sent_compose" width="26.5" height="22"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
         <image name="sign_visiblecharacters" width="14" height="14"/>
         <image name="top_back" width="24" height="24"/>

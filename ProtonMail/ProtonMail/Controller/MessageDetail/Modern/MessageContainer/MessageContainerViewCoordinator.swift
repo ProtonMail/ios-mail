@@ -72,7 +72,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .composerDraft:
             if let messageID = path.value,
                 let nav = self.navigationController,
-                case let user = sharedServices.get(by: UsersManager.self).firstUser,
+                case let user = sharedServices.get(by: UsersManager.self).firstUser!,
                 let message = user.messageService.fetchMessages(withIDs: [messageID]).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user)
@@ -240,7 +240,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
                 return
             }
             let users : UsersManager = services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!,
                                                                                                        action: tapped,
                                                                                                        msgService: user.messageService,
@@ -250,7 +250,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
@@ -259,7 +259,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
         case .some(.toTroubleshoot):

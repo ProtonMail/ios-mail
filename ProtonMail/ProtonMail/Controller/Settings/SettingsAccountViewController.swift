@@ -67,7 +67,7 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
     var userManager : UserManager {
         get {
             let users : UsersManager = sharedServices.get()
-            return users.firstUser
+            return users.firstUser!
         }
     }
     

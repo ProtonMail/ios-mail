@@ -280,7 +280,7 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
                 return
             }
             let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user)

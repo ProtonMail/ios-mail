@@ -70,7 +70,7 @@ class MessageHeaderViewCoordinator {
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
             let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user)

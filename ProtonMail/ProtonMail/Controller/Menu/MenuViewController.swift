@@ -176,8 +176,8 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
             self.signingOut = true
             UserTempCachedStatus.backup()
             userCachedStatus.signOut()
-            self.viewModel.signOut()
             sharedUserDataService.signOut(true)
+            self.viewModel.signOut()
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)

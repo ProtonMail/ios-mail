@@ -102,7 +102,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
         switch dest {
         case .accountSetting:
             let users : UsersManager = sharedServices.get()
-            let vm = SettingsAccountViewModelImpl(user: users.firstUser)
+            let vm = SettingsAccountViewModelImpl(user: users.firstUser!)
             guard let accountSetting = SettingsAccountCoordinator(dest: destination, vm: vm, services: self.services) else {
                 return false
             }
@@ -111,7 +111,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
 
         case .autoLock:
             let users : UsersManager = sharedServices.get()
-            let vm = SettingsLockViewModelImpl(user: users.firstUser)
+            let vm = SettingsLockViewModelImpl(user: users.firstUser!)
             guard let lockSetting = SettingsLockCoordinator(dest: destination, vm: vm, services: self.services) else {
                 return false
             }

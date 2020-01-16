@@ -103,6 +103,13 @@ class UserManager : Service {
     public func isMatch(sessionID uid : String) -> Bool {
         return auth.sessionID == uid
     }
+    
+    func isExist(_ userName: String) -> Bool {
+        for addr in self.userinfo.userAddresses {
+            return addr.email.starts(with: userName)
+        }
+        return false
+    }
 }
 
 extension UserManager : SessionDelegate {

@@ -142,7 +142,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             
             let users : UsersManager = services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             
             next.set(viewModel: .init(message: message, msgService: user.messageService, user: user))
             next.set(coordinator: .init(controller: next))
@@ -157,7 +157,7 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             
             let users : UsersManager = services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             
             next.set(viewModel: .init(message: message, msgService: user.messageService, user: user))
             next.set(coordinator: .init(controller: next))
@@ -170,7 +170,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
             let users : UsersManager = services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
@@ -185,7 +185,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
             let users : UsersManager = services.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user)
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
@@ -212,7 +212,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
 
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             next.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             next.delegate = self.viewController
         case .labels:
@@ -223,7 +223,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 return false
             }
             
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             next.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             next.delegate = self.viewController
             
@@ -249,7 +249,7 @@ class MailboxCoordinator : DefaultCoordinator {
         switch dest {
         case .details:
             if let messageID = path.value,
-                case let user = services.get(by: UsersManager.self).firstUser,
+                case let user = services.get(by: UsersManager.self).firstUser!,
                 case let msgService = user.messageService,
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
@@ -261,7 +261,7 @@ class MailboxCoordinator : DefaultCoordinator {
         case .composeShow where path.value != nil:
             if let messageID = path.value,
                 let nav = self.navigation,
-                case let user = services.get(by: UsersManager.self).firstUser,
+                case let user = services.get(by: UsersManager.self).firstUser!,
                 case let msgService = user.messageService,
                 let message = msgService.fetchMessages(withIDs: [messageID]).first
             {
@@ -274,7 +274,7 @@ class MailboxCoordinator : DefaultCoordinator {
         case .composeShow where path.value == nil:
             if let nav = self.navigation {
                 let users : UsersManager = services.get()
-                let user = users.firstUser
+                let user = users.firstUser!
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()

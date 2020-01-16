@@ -164,7 +164,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         return firstly { () -> Promise<Void> in
             //TODO:: fix me
             let users : UsersManager = sharedServices.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let userInfo = user.userInfo
             
             //  origEmails

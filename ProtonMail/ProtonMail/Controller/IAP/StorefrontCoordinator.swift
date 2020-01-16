@@ -42,7 +42,7 @@ class StorefrontCoordinator: PushCoordinator {
     func go(to nextPlan: ServicePlan) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, userService: user.userService)
             controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
         }
@@ -52,7 +52,7 @@ class StorefrontCoordinator: PushCoordinator {
     func goToBuyMoreCredits(for subscription: ServicePlanSubscription) {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let user = self.services.get(by: UsersManager.self).firstUser
+            let user = self.services.get(by: UsersManager.self).firstUser!
             let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, userService: user.userService)
             controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
         }

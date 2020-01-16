@@ -145,7 +145,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         var nextVM : MailboxViewModel?
         
         let users : UsersManager = self.services.get()
-        let user = users.firstUser
+        let user = users.firstUser!
         let labelService = user.labelService
         
         if let mailbox = Message.Location(rawValue: labelID) {
@@ -234,7 +234,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 label = index
             }
             let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser
+            let user = usersManager.firstUser!
             let viewModel = MailboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
@@ -249,7 +249,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
             sharedVMService.mailbox(fromMenu: next)
             let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser
+            let user = usersManager.firstUser!
             
             var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox, userManager: user, pushService: services.get())
             
@@ -272,7 +272,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser
+            let user = usersManager.firstUser!
             let vm = SettingsDeviceViewModelImpl(user: user)
             guard let settings = SettingsDeviceCoordinator(rvc: rvc, nav: next,
                                                            vm: vm, services: self.services, scene: nil) else {

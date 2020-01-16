@@ -55,6 +55,8 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
 
         let cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = cancelButton
+        let removeAllButton = UIBarButtonItem(title: LocalString._remove_all, style: .plain, target: self, action: #selector(removeAction))
+        self.navigationItem.rightBarButtonItem = removeAllButton
     }
     
     @objc internal func dismiss() {
@@ -67,26 +69,6 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
         self.dismiss()
-//        let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-//                                                message: nil, preferredStyle: .actionSheet)
-//        alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
-//                                                style: .default, handler: { (action) -> Void in
-//
-//        }))
-//
-//        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-//                                                style: .cancel, handler: { (action) -> Void in
-//
-//        }))
-//
-//        alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
-//                                                style: .destructive, handler: { (action) -> Void in
-//                                                    self.dismiss()
-//        }))
-//
-//        alertController.popoverPresentationController?.barButtonItem = sender
-//        alertController.popoverPresentationController?.sourceRect = self.view.frame
-//        present(alertController, animated: true, completion: nil)
     }
     
     
@@ -107,9 +89,28 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     // MARK: Actions
     
-    @IBAction fileprivate func sendAction(_ sender: UIBarButtonItem) {
-
-        self.coordinator?.go(to: .addAccount)
+    @IBAction fileprivate func removeAction(_ sender: UIBarButtonItem) {
+        //remove all
+        let alertController = UIAlertController(title: LocalString._general_confirmation_title,
+                                                message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
+                                                style: .cancel, handler: { (action) -> Void in
+                                                    
+        }))
+        
+        alertController.addAction(UIAlertAction(title: LocalString._remove_all,
+                                                style: .destructive, handler: { (action) -> Void in
+            UserTempCachedStatus.backup()
+            userCachedStatus.signOut()
+            sharedUserDataService.signOut(true)
+            self.viewModel.signOut()
+            self.dismiss()
+        }))
+        
+        alertController.popoverPresentationController?.barButtonItem = sender
+        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        present(alertController, animated: true, completion: nil)
     }
 //
 //    private func send(_ text: String) {

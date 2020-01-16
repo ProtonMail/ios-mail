@@ -195,11 +195,15 @@ class APIService : Service {
             pthread_mutex_lock(&self.mutex)
             let token = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
             
-            if token == nil {
-                PMLog.D("token is empty")
-            }
             
             pthread_mutex_unlock(&self.mutex)
+            
+            
+            if token == nil {
+                PMLog.D("token is empty")
+                completion(nil, nil, NSError(domain: "empty token", code: 0, userInfo: nil))
+                return
+            }
             
             
             completion(token, self.sessionUID, nil)

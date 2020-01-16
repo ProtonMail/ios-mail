@@ -315,7 +315,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         }
         let receipt = try self.readReceipt()
         let planId = try servicePlan(for: transaction.payment.productIdentifier)
-        let user = sharedServices.get(by: UsersManager.self).firstUser
+        let user = sharedServices.get(by: UsersManager.self).firstUser!
         
         do {  // payments/subscription
             let serverUpdateApi = PostRecieptRequest(api: user.apiService, reciept: receipt, andActivatePlanWithId: planId)
@@ -393,7 +393,7 @@ extension StoreKitManager {
     }
     
     func servicePlan(for productId: String) throws -> String {
-        let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser.sevicePlanService
+        let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser!.sevicePlanService
         guard let plan = ServicePlan(storeKitProductId: productId),
             let details = servicePlanService.detailsOfServicePlan(named: plan.rawValue),
             let planId = details.iD else

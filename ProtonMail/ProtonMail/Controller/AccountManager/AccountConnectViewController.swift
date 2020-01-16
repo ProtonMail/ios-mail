@@ -99,26 +99,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
-        let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-                                                message: nil, preferredStyle: .actionSheet)
-        alertController.addAction(UIAlertAction(title: LocalString._composer_save_draft_action,
-                                                style: .default, handler: { (action) -> Void in
-                                                    
-        }))
-        
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                style: .cancel, handler: { (action) -> Void in
-
-        }))
-        
-        alertController.addAction(UIAlertAction(title: LocalString._composer_discard_draft_action,
-                                                style: .destructive, handler: { (action) -> Void in
-                                                    self.dismiss()
-        }))
-        
-        alertController.popoverPresentationController?.barButtonItem = sender
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
-        present(alertController, animated: true, completion: nil)
+        self.dismiss()
     }
 
     override var shouldAutorotate : Bool {
@@ -312,6 +293,11 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 self.dismiss()
             case .mbpwd:
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+            case .exist:
+                MBProgressHUD.hide(for: self.view, animated: true)
+                let alertController = "The user already logged in".alertController()
+                alertController.addOKAction()
+                self.present(alertController, animated: true, completion: nil)
             }
         }
     }

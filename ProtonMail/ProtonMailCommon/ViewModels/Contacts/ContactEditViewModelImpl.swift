@@ -530,7 +530,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             
             //TODO:: fix me
             let users : UsersManager = sharedServices.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let userInfo = user.userInfo
             
             guard let userkey = userInfo.firstUserKey() else {

@@ -373,7 +373,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             }
             //TODO:: fix me
             let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser
+            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)

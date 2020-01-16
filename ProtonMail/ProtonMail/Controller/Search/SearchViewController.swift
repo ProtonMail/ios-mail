@@ -40,7 +40,7 @@ class SearchViewController: ProtonMailViewController {
     
     private lazy var replacingEmails : [Email] = {
         let users : UsersManager = sharedServices.get() //TODO:: fix me
-        return users.firstUser.contactService.allEmails()
+        return users.firstUser!.contactService.allEmails()
     }()
     
     // TODO: need better UI solution for this progress bar
@@ -277,7 +277,7 @@ class SearchViewController: ProtonMailViewController {
         
         //TODO:: move this to viewMdoel
         let users : UsersManager = sharedServices.get()
-        let user = users.firstUser
+        let user = users.firstUser!
         
         
         let service = user.messageService
@@ -335,7 +335,7 @@ class SearchViewController: ProtonMailViewController {
             if let indexPathForSelectedRow = indexPathForSelectedRow {
                 //TODO:: fix me this need to be improved
                 let users : UsersManager = sharedServices.get()
-                let user = users.firstUser
+                let user = users.firstUser!
                 messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user))
                 messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
@@ -388,7 +388,7 @@ extension SearchViewController: UITableViewDelegate {
         }
         
         let users : UsersManager = sharedServices.get()
-        let user = users.firstUser
+        let user = users.firstUser!
         //TODO:: fix me
         // open drafts in Composer
         let viewModel = ContainableComposeViewModel(msg: message,

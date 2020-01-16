@@ -81,7 +81,7 @@ class ViewModelServiceImpl: ViewModelService {
         
         // TODO:: fixme
         let usersManager : UsersManager = sharedServices.get()
-        let user = usersManager.firstUser
+        let user = usersManager.firstUser!
         vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact, contact: user.contactService))
     }
     
@@ -165,7 +165,7 @@ class ViewModelServiceImpl: ViewModelService {
         //TODO:: fix me
         let users : UsersManager = sharedServices.get()
         vmp.setModel(vm: ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
-                                                              contactService: users.firstUser.contactService,
+                                                              contactService: users.firstUser!.contactService,
                                                               refreshHandler: refreshHandler))
     }
     

@@ -86,7 +86,7 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    lazy var labelDataService : LabelsDataService = self.usersManager.firstUser.labelService
+    lazy var labelDataService : LabelsDataService = self.usersManager.firstUser!.labelService
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
@@ -107,7 +107,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.labelDataService = self.usersManager.firstUser.labelService
+        self.labelDataService = self.usersManager.firstUser!.labelService
         self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
@@ -133,7 +133,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func count(by labelID: String, userID: String? = nil) -> Int {
-        return labelDataService.unreadCount(by: labelID)
+        return labelDataService.unreadCount(by: labelID, userID: userID)
     }
 
     func inboxesCount() -> Int {
