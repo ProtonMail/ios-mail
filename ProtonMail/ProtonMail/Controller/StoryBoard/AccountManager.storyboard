@@ -1009,6 +1009,7 @@
                         <outlet property="usernameView" destination="ylN-fl-1oU" id="O0r-sS-wWy"/>
                         <segue destination="u1u-Fp-Fza" kind="show" identifier="mailboxSegue" id="TNN-6G-bfQ"/>
                         <segue destination="oJh-xM-Kmj" kind="presentation" identifier="2fa_code_segue" id="YDC-CN-ilB"/>
+                        <segue destination="yGV-3W-5cU" kind="show" identifier="toAddAccountPasswordSegue" id="pld-1S-gJe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sxf-bg-ntx" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1019,6 +1020,170 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="6124" y="-2066"/>
+        </scene>
+        <!--Account Connect-->
+        <scene sceneID="T0C-mD-VC6">
+            <objects>
+                <viewController title="Sign In" id="yGV-3W-5cU" userLabel="Account Connect" customClass="AccountPasswordViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="nzZ-RC-VrT"/>
+                        <viewControllerLayoutGuide type="bottom" id="FKA-ES-4qK"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qqI-M2-rpc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Een-sJ-xdy">
+                                <rect key="frame" x="16" y="44" width="343" height="623"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mlz-BS-Lyk" userLabel="Content View">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="270.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Enter your mailbox password" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rG3-LU-RgQ">
+                                                <rect key="frame" x="55.5" y="32" width="232.5" height="21.5"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="signInTitle"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8V4-Jp-SJo" userLabel="password_view">
+                                                <rect key="frame" x="16" y="79.5" width="311" height="40"/>
+                                                <subviews>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Kmh-ty-7n3" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="311" height="40"/>
+                                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtUsername"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="yGV-3W-5cU" id="OGz-W6-Bdo"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <button opaque="NO" contentMode="right" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIL-W9-xIp" userLabel="Show PWD">
+                                                        <rect key="frame" x="251" y="0.0" width="60" height="40"/>
+                                                        <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="showLoginPassword"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="60" id="kPq-2X-qIO"/>
+                                                        </constraints>
+                                                        <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="24" maxY="0.0"/>
+                                                        <state key="normal" image="sign_visiblecharacters">
+                                                            <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        </state>
+                                                        <state key="selected" image="sign_invisiblecharacters"/>
+                                                        <connections>
+                                                            <action selector="showPasswordAction:" destination="yGV-3W-5cU" eventType="touchUpInside" id="hbp-Re-5BK"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="zIL-W9-xIp" firstAttribute="top" secondItem="8V4-Jp-SJo" secondAttribute="top" id="JUK-wT-yJn"/>
+                                                    <constraint firstAttribute="bottom" secondItem="zIL-W9-xIp" secondAttribute="bottom" id="QpB-ID-Y5V"/>
+                                                    <constraint firstItem="Kmh-ty-7n3" firstAttribute="leading" secondItem="8V4-Jp-SJo" secondAttribute="leading" id="Uw7-p3-bed"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Kmh-ty-7n3" secondAttribute="bottom" id="dbt-vq-l3M"/>
+                                                    <constraint firstAttribute="height" constant="40" id="fat-29-TOi"/>
+                                                    <constraint firstItem="Kmh-ty-7n3" firstAttribute="top" secondItem="8V4-Jp-SJo" secondAttribute="top" id="hVb-om-StE"/>
+                                                    <constraint firstAttribute="trailing" secondItem="zIL-W9-xIp" secondAttribute="trailing" id="nL8-6t-lGS"/>
+                                                    <constraint firstAttribute="trailing" secondItem="Kmh-ty-7n3" secondAttribute="trailing" id="tc6-KQ-lWW"/>
+                                                </constraints>
+                                            </view>
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EMN-SE-fK1">
+                                                <rect key="frame" x="16" y="167.5" width="311" height="42"/>
+                                                <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="loginButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="42" id="0dh-nx-arN"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                                <state key="normal" title="Decrypt">
+                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="6"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="signInAction:" destination="yGV-3W-5cU" eventType="touchUpInside" id="KJj-4T-xg7"/>
+                                                </connections>
+                                            </button>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8CE-uJ-iOh">
+                                                <rect key="frame" x="31.5" y="225.5" width="280" height="20"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="280" id="8PJ-dP-Xr0"/>
+                                                    <constraint firstAttribute="height" constant="20" id="let-Lq-bRy"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                                <state key="normal" title="FORGOT PASSWORD?">
+                                                    <color key="titleColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="fogorPasswordAction:" destination="yGV-3W-5cU" eventType="touchUpInside" id="dY5-6i-hK2"/>
+                                                    <action selector="resetMBPAction:" destination="u1u-Fp-Fza" eventType="touchUpInside" id="u3G-A9-Dyj"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="EMN-SE-fK1" secondAttribute="trailing" constant="16" id="3AZ-Mu-AoK"/>
+                                            <constraint firstItem="EMN-SE-fK1" firstAttribute="top" secondItem="8V4-Jp-SJo" secondAttribute="bottom" constant="48" id="BPj-Sy-xdj"/>
+                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rG3-LU-RgQ" secondAttribute="trailing" constant="16" id="DVf-dM-LeO"/>
+                                            <constraint firstItem="8CE-uJ-iOh" firstAttribute="top" secondItem="EMN-SE-fK1" secondAttribute="bottom" constant="16" id="WjD-Y9-AYZ"/>
+                                            <constraint firstAttribute="centerX" secondItem="rG3-LU-RgQ" secondAttribute="centerX" id="aNv-6W-1N3"/>
+                                            <constraint firstAttribute="centerX" secondItem="8CE-uJ-iOh" secondAttribute="centerX" id="bke-ED-88R"/>
+                                            <constraint firstItem="rG3-LU-RgQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="mlz-BS-Lyk" secondAttribute="leading" constant="16" id="g8e-jA-kmt"/>
+                                            <constraint firstAttribute="centerX" secondItem="EMN-SE-fK1" secondAttribute="centerX" id="hs4-fv-g9Y"/>
+                                            <constraint firstItem="rG3-LU-RgQ" firstAttribute="top" secondItem="mlz-BS-Lyk" secondAttribute="top" constant="32" id="s9U-VH-gle"/>
+                                            <constraint firstAttribute="trailing" secondItem="8V4-Jp-SJo" secondAttribute="trailing" constant="16" id="sAP-wz-Vd9"/>
+                                            <constraint firstAttribute="bottom" secondItem="8CE-uJ-iOh" secondAttribute="bottom" priority="500" constant="25" id="tsi-hv-tIp"/>
+                                            <constraint firstItem="8V4-Jp-SJo" firstAttribute="top" secondItem="rG3-LU-RgQ" secondAttribute="bottom" constant="26" id="vVk-Ni-jW7"/>
+                                            <constraint firstItem="8V4-Jp-SJo" firstAttribute="leading" secondItem="mlz-BS-Lyk" secondAttribute="leading" constant="16" id="xkY-zu-bY9"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="mlz-BS-Lyk" firstAttribute="width" secondItem="Een-sJ-xdy" secondAttribute="width" id="TjB-GF-uJw"/>
+                                    <constraint firstItem="mlz-BS-Lyk" firstAttribute="top" secondItem="Een-sJ-xdy" secondAttribute="top" id="Ys7-Pj-0rh"/>
+                                    <constraint firstAttribute="trailing" secondItem="mlz-BS-Lyk" secondAttribute="trailing" id="iXv-kY-uvf"/>
+                                    <constraint firstItem="mlz-BS-Lyk" firstAttribute="leading" secondItem="Een-sJ-xdy" secondAttribute="leading" id="itP-8f-4lC"/>
+                                    <constraint firstAttribute="bottom" secondItem="mlz-BS-Lyk" secondAttribute="bottom" id="nCv-l2-jsk"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="Een-sJ-xdy" firstAttribute="top" secondItem="qqI-M2-rpc" secondAttribute="topMargin" id="Mp9-v6-oaH"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Een-sJ-xdy" secondAttribute="trailing" id="N0Y-4W-h09"/>
+                            <constraint firstItem="Een-sJ-xdy" firstAttribute="leading" secondItem="qqI-M2-rpc" secondAttribute="leadingMargin" id="SIE-S5-gwY"/>
+                            <constraint firstAttribute="bottom" secondItem="Een-sJ-xdy" secondAttribute="bottom" id="qf0-MU-j0V"/>
+                        </constraints>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="c4V-70-eSq" appends="YES" id="Fya-mI-cGJ"/>
+                        </connections>
+                    </view>
+                    <navigationItem key="navigationItem" id="MZD-0f-YeK">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Ibx-Ds-SDz"/>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="forgotPwdButton" destination="8CE-uJ-iOh" id="rC5-Od-mRq"/>
+                        <outlet property="loginMidlineConstraint" destination="hs4-fv-g9Y" id="Jzw-ef-Dj3"/>
+                        <outlet property="passwordTextField" destination="Kmh-ty-7n3" id="QMJ-0g-Tha"/>
+                        <outlet property="passwordView" destination="8V4-Jp-SJo" id="PP9-We-2Dc"/>
+                        <outlet property="scrollBottomPaddingConstraint" destination="qf0-MU-j0V" id="w99-I5-BAZ"/>
+                        <outlet property="signInButton" destination="EMN-SE-fK1" id="7I0-jp-bNC"/>
+                        <outlet property="signInTitle" destination="rG3-LU-RgQ" id="1CI-4o-c9P"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WQN-4p-sm1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="c4V-70-eSq">
+                    <connections>
+                        <action selector="tapAction:" destination="yGV-3W-5cU" id="McU-cy-TWp"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="7460" y="-2067"/>
         </scene>
         <!--Mailbox Password View Controller-->
         <scene sceneID="0aP-GS-HzW">
@@ -1254,7 +1419,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="7460" y="-2066"/>
+            <point key="canvasLocation" x="6590" y="-3118"/>
         </scene>
         <!--TwoFA Code View Controller-->
         <scene sceneID="6Bq-Xg-Yi2">

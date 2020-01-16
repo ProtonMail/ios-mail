@@ -1792,6 +1792,9 @@ class LocalizedString {
     lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
     
     
+    lazy var _enter_your_mailbox_password = NSLocalizedString("Enter your mailbox password", comment: "Account manager title")
+    
+    
     /// New Settings
     lazy var _account_settings = NSLocalizedString("Account Settings", comment: "section title in settings")
     lazy var _app_settings = NSLocalizedString("App Settings", comment: "section title in settings")

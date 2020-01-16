@@ -26,14 +26,14 @@ import MBProgressHUD
 import DeviceCheck
 import PromiseKit
 
-class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
+class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
     private var viewModel : SignInViewModel!
-    private var coordinator : AccountConnectCoordinator?
+    private var coordinator : AccountPasswordCoordinator?
     
     func set(viewModel: SignInViewModel) {
         self.viewModel = viewModel
     }
-    func set(coordinator: AccountConnectCoordinator) {
+    func set(coordinator: AccountPasswordCoordinator) {
         self.coordinator = coordinator
     }
     func getCoordinator() -> CoordinatorNew? {
@@ -44,7 +44,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     private let keyboardPadding: CGFloat        = 12
     private let buttonDisabledAlpha: CGFloat    = 0.5
     
-    private let kDecryptMailboxSegue            = "toAddAccountPasswordSegue"
+    private let kDecryptMailboxSegue            = "mailboxSegue"
     private let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
     private let kSegueTo2FACodeSegue            = "2fa_code_segue"
     
@@ -55,9 +55,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     private let showPriority: UILayoutPriority  = UILayoutPriority(rawValue: 750.0)
     
     //views
-    @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
-    @IBOutlet weak var usernameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
     @IBOutlet weak var signInButton: UIButton!
@@ -125,19 +123,13 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
-        
-        let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
-        updateSignInButton(usernameText: uName, passwordText: pwd)
+        updateSignInButton(passwordText: pwd)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
-        if UIDevice.current.isLargeScreen() {
-            usernameTextField.becomeFirstResponder()
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -159,26 +151,13 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     // MARK: - Private methods
-
-//    func showLoginViews() {
-//        UIView.animate(withDuration: 1.0, animations: { () -> Void in
-//            self.usernameView.alpha      = 1.0
-//            self.passwordView.alpha      = 1.0
-//            self.signInButton.alpha      = 1.0
-//        }, completion: { finished in
-//
-//        })
-//    }
     
     func dismissKeyboard() {
-        usernameTextField.resignFirstResponder()
         passwordTextField.resignFirstResponder()
     }
     
     internal func setupTextFields() {
-        signInTitle.text = LocalString._login_to_pm_act
-        usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
-                                                                     attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
+        signInTitle.text = LocalString._enter_your_mailbox_password
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
     }
@@ -187,12 +166,12 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         signInButton.layer.borderColor      = UIColor.ProtonMail.Login_Button_Border_Color.cgColor
         signInButton.alpha                  = buttonDisabledAlpha
         
-        signInButton.setTitle(LocalString._general_login, for: .normal)
+        signInButton.setTitle(LocalString._decrypt, for: .normal)
         forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)        
     }
     
-    func updateSignInButton(usernameText: String, passwordText: String) {
-        signInButton.isEnabled = !usernameText.isEmpty && !passwordText.isEmpty
+    func updateSignInButton(passwordText: String) {
+        signInButton.isEnabled = !passwordText.isEmpty
         
         UIView.animate(withDuration: animationDuration, animations: { () -> Void in
             if self.signInButton.alpha != 0.0 {
@@ -204,9 +183,8 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     // MARK: - Actions
     @IBAction func signInAction(_ sender: UIButton) {
         dismissKeyboard()
-        self.signIn(username: self.usernameTextField.text ?? "",
-                    password: self.passwordTextField.text ?? "",
-                    cachedTwoCode: nil) // FIXME
+
+        self.tryDecrypt()
     }
     
     @IBAction func fogorPasswordAction(_ sender: AnyObject) {
@@ -222,6 +200,31 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         case unsupport
         case empty
         case error
+    }
+    
+    func tryDecrypt() {
+        let signInManager = sharedServices.get(by: SignInManager.self)
+        let unlockManager = sharedServices.get(by: UnlockManager.self)
+        guard let auth = sharedServices.get(by: UsersManager.self).users.last?.auth else {
+            unlockManager.delegate?.cleanAll()
+            return
+        }
+        
+        let password = (passwordTextField.text ?? "")
+        let mailbox_password = signInManager.mailboxPassword(from: password, auth: auth)
+        
+        MBProgressHUD.showAdded(to: view, animated: true)
+        signInManager.proceedWithMailboxPassword(mailbox_password,
+                                                 auth: auth,
+                                                 onError: { error in
+                                    MBProgressHUD.hide(for: self.view, animated: true)
+                                    let alert = error.alertController()
+                                    alert.addAction((UIAlertAction.okAction()))
+                                    self.present(alert, animated: true, completion: nil)
+        }, tryUnlock: {
+            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
+//            self.dismiss()
+        })
     }
     
     func generateToken() -> Promise<String> {
@@ -297,12 +300,10 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
 }
 
-extension AccountConnectViewController : TwoFACodeViewControllerDelegate {
+extension AccountPasswordViewController : TwoFACodeViewControllerDelegate {
     func ConfirmedCode(_ code: String, pwd : String) {
         NotificationCenter.default.addKeyboardObserver(self)
-        self.signIn(username: usernameTextField.text ?? "",
-                    password: passwordTextField.text ?? "",
-                    cachedTwoCode: code)
+        self.tryDecrypt()
     }
 
     func Cancel2FA() {
@@ -314,7 +315,7 @@ extension AccountConnectViewController : TwoFACodeViewControllerDelegate {
 }
 
 // MARK: - NSNotificationCenterKeyboardObserverProtocol
-extension AccountConnectViewController: NSNotificationCenterKeyboardObserverProtocol {
+extension AccountPasswordViewController: NSNotificationCenterKeyboardObserverProtocol {
     func keyboardWillHideNotification(_ notification: Notification) {
         let keyboardInfo = notification.keyboardInfo
         scrollBottomPaddingConstraint.constant = 0.0
@@ -336,9 +337,9 @@ extension AccountConnectViewController: NSNotificationCenterKeyboardObserverProt
 }
 
 // MARK: - UITextFieldDelegate
-extension AccountConnectViewController: UITextFieldDelegate {
+extension AccountPasswordViewController: UITextFieldDelegate {
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        updateSignInButton(usernameText: "", passwordText: "")
+        updateSignInButton(passwordText: "")
         return true
     }
     
@@ -346,28 +347,22 @@ extension AccountConnectViewController: UITextFieldDelegate {
         let text = textField.text! as NSString
         let changedText = text.replacingCharacters(in: range, with: string)
         
-        if textField == usernameTextField {
-            updateSignInButton(usernameText: changedText, passwordText: passwordTextField.text!)
-        } else if textField == passwordTextField {
-            updateSignInButton(usernameText: usernameTextField.text!, passwordText: changedText)
+        if textField == passwordTextField {
+            updateSignInButton(passwordText: changedText)
         }
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == usernameTextField {
-            passwordTextField.becomeFirstResponder()
-        } else {
-            textField.resignFirstResponder()
-        }
+        textField.resignFirstResponder()
         
-        let uName = (usernameTextField.text ?? "").trim()
         let pwd = (passwordTextField.text ?? "")
         
-        if !uName.isEmpty && !pwd.isEmpty {
-            self.signIn(username: self.usernameTextField.text ?? "",
-                        password: self.passwordTextField.text ?? "",
-                        cachedTwoCode: nil) // FIXME
+        if !pwd.isEmpty {
+            
+            
+            self.tryDecrypt()
+            
         }
         
         return true

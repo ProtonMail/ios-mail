@@ -55,10 +55,11 @@ class SignInViewModel : NSObject {
         }, onError: { (error) in
             complete(.error(error))
         }, afterSignIn: {
-            complete(.ok)
-            self.unlockManager.unlockIfRememberedCredentials(forUser: username) {
+            guard !(self.usersManager.users.last?.mailboxPassword ?? "").isEmpty == true else { // this will provoke mainKey obtention
                 complete(.mbpwd)
+                return
             }
+            complete(.ok)
         }, requestMailboxPassword: {
             complete(.mbpwd)
         }) {//require mailbox pwd
