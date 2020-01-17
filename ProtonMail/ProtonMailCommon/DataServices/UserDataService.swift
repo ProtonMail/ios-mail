@@ -509,6 +509,10 @@ class UserDataService : Service {
         
     }
     
+    func signOutFromServer() {
+        // TODO: call AuthDeleteRequest
+    }
+    
     func signOut(_ animated: Bool) {
         sharedVMService.signOut()
 //        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {

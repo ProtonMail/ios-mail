@@ -164,6 +164,21 @@ extension AccountManagerViewController: UITableViewDataSource {
         
     }
     
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        switch self.viewModel.section(at: indexPath.section) {
+        case .users where self.viewModel.usersCount > 1:
+            return [UITableViewRowAction(style: .destructive, title: LocalString._sign_out) { _, indexPath in
+                if let user = self.viewModel.user(at: indexPath.row) {
+                    self.viewModel.usersManager.logout(user: user)
+                    self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .bottom)
+                }
+            }]
+            
+        default:
+            return []
+        }
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let s = self.viewModel.section(at: indexPath.section)
         switch s {
