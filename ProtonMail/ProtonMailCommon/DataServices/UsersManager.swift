@@ -335,26 +335,24 @@ class UsersManager : Service {
 /// cache login check
 extension UsersManager {
     func launchCleanUpIfNeeded() {
-//        if !sharedUserDataService.isUserCredentialStored || !userCachedStatus.isAuthCacheOk() {
-//            cleanUp()
-//            if (!userCachedStatus.isAuthCacheOk()) {
-//                sharedUserDataService.clean()
-//                userCachedStatus.resetAuthCache()
-//            }
-//            //need add not clean the important infomation here.
-//        }
+        self.users.forEach { user in
+            user.messageService.launchCleanUpIfNeeded()
+        }
     }
     
-//    var isUserCredentialStored : Bool {
-//        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
-//    }
-    
     func logout(user: UserManager) {
-        
+        user.messageService.cleanUp()
+        user.labelService.cleanUp()
+        user.contactService.clean()
+        user.localNotificationService.unscheduleAllPendingNotifications()
+        user.userService.signOutFromServer() // TODO: make it work
+        self.remove(user: user)
     }
     
     func remove(user: UserManager) {
-        
+        self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
+        self.save()
+        self.active(index: 0)
     }
     
     internal func clean() { //TODO:: fix later
@@ -366,13 +364,18 @@ extension UsersManager {
         
         
         sharedUserDataService.signOut(true)
-        
-        
+                
         userCachedStatus.signOut()
-        //sharedMessageDataService.launchCleanUpIfNeeded()
+        sharedServices.get(by: UsersManager.self).users.forEach { user in
+            user.userService.signOut(true)
+            user.messageService.launchCleanUpIfNeeded()
+        }
+
         
-        //device level service
+        // device level service
         keymaker.wipeMainKey()
+        // good opportunity to remove all temp folders
+        FileManager.default.cleanTemporaryDirectory()
     }
     
     func hasUsers() -> Bool {

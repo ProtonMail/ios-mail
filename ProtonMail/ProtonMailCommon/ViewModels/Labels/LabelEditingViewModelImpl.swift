@@ -27,10 +27,10 @@ import Foundation
 // label editing
 final public class LabelEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
-    let apiService = APIService.shared
     
-    required public init(label : Label) {
+    internal init(label : Label, apiService: APIService, labelService: LabelsDataService) {
         self.currentLabel = label
+        super.init(apiService: apiService, labelService: labelService)
     }
     
     override public func title() -> String {

@@ -26,13 +26,12 @@ import Foundation
 final public class FolderEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
-    let apiService = APIService.shared
-    
-    required public init(label : Label) {
+    internal init(label: Label, apiService: APIService, labelService: LabelsDataService) {
         self.currentLabel = label
+        super.init(apiService: apiService, labelService: labelService)
     }
     
-     override public func title() -> String {
+    override public func title() -> String {
         return LocalString._labels_edit_folder_title
     }
     

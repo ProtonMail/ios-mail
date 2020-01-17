@@ -25,14 +25,17 @@ import Foundation
 
 
 public class LabelEditViewModel {
+    internal let apiService: APIService
+    internal let labelService : LabelsDataService
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     
     let colors: [String] = ColorManager.forLabel
     
-    public init() {
-        
+    internal init(apiService: APIService, labelService : LabelsDataService) {
+        self.apiService = apiService
+        self.labelService = labelService
     }
     
     public func colorCount() -> Int {

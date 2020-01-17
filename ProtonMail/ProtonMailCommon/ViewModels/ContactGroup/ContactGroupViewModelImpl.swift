@@ -45,10 +45,10 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(contactGroup: ContactGroupsDataService) {
+    init(contactGroup: ContactGroupsDataService, labelDataService: LabelsDataService, messageService: MessageDataService) {
         self.contactGroupService = contactGroup
-        self.labelDataService = LabelsDataService(api: APIService.shared, userID: "")
-        self.messageService = MessageDataService(api: APIService.shared, userID: "")
+        self.labelDataService = labelDataService
+        self.messageService = messageService
     }
     
 

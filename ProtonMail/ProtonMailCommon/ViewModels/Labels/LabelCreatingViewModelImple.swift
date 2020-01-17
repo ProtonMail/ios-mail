@@ -25,13 +25,6 @@ import Foundation
 
 // label creating
 final public class LabelCreatingViewModelImple : LabelEditViewModel {
-    let apiService = APIService.shared
-    let labelService : LabelsDataService
-    
-    override init() {
-        self.labelService = LabelsDataService(api: apiService, userID: "")
-        super.init()
-    }
     
     override public func title() -> String {
         return LocalString._labels_add_new_label_title

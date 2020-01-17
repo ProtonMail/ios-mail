@@ -29,14 +29,12 @@ import PromiseKit
 //let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
 class ContactGroupsDataService {
-    
     private let apiService : API
+    private let labelDataService: LabelsDataService
     
-    private let labelDataService : LabelsDataService
-    
-    init(api: API, userID: String) {
+    init(api: API, labelDataService: LabelsDataService) {
         self.apiService = api
-        self.labelDataService = LabelsDataService(api: api, userID: userID)
+        self.labelDataService = labelDataService
     }
     
     /**

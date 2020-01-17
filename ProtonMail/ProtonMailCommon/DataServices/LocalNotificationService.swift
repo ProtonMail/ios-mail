@@ -46,6 +46,11 @@ class LocalNotificationService: Service {
         }
     }
     
+    private var userID: String
+    init(userID: String) {
+        self.userID = userID
+    }
+    
     func scheduleMessageSendingFailedNotification(_ details: MessageSendingDetails) {
         let content = UNMutableNotificationContent()
         content.title = "⚠️ " + LocalString._message_not_sent_title
@@ -66,6 +71,9 @@ class LocalNotificationService: Service {
     }
     
     func unscheduleAllPendingNotifications() {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().getPendingNotificationRequests { all in
+            let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: belongToUser)
+        }
     }
 }

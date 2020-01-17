@@ -1015,7 +1015,6 @@ class UserDataService : Service {
         twoFactorStatus = 0
         passwordMode = 2
         
-        FileManager.default.cleanTemporaryDirectory()
         // some tests are messed up without tmp folder, so let's keep it for consistency
         #if targetEnvironment(simulator)
         try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:

@@ -28,16 +28,12 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : [String : LabelMessageModel]!
     
-    let apiService: APIService
-    let labelService : LabelsDataService
     let messageService : MessageDataService
     
     init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
-        self.labelService = labelService
-        self.apiService = apiService
         self.messageService = messageService
         
-        super.init()
+        super.init(apiService: apiService, labelService: labelService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }

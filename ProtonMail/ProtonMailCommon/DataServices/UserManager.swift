@@ -53,18 +53,24 @@ class UserManager : Service {
         return service
     }()
     public lazy var contactService: ContactDataService = {
-        let service = ContactDataService(api: self.apiService, userID: self.userinfo.userId)
+        let service = ContactDataService(api: self.apiService,
+                                         labelDataService: self.labelService,
+                                         userID: self.userinfo.userId)
         return service
     }()
     
     public lazy var contactGroupService: ContactGroupsDataService = {
-        let service = ContactGroupsDataService(api: self.apiService, userID: self.userinfo.userId)
+        let service = ContactGroupsDataService(api: self.apiService,
+                                               labelDataService: self.labelService)
         return service
     }()
     
     public lazy var messageService: MessageDataService = {
-        // can try to reuse the contactService
-        let service = MessageDataService(api: self.apiService, userID: self.userinfo.userId)
+        let service = MessageDataService(api: self.apiService,
+                                         userID: self.userinfo.userId,
+                                         labelDataService: self.labelService,
+                                         contactDataService: self.contactService,
+                                         localNotificationService: self.localNotificationService)
         service.userDataSource = self
         return service
     }()
@@ -76,6 +82,12 @@ class UserManager : Service {
     
     public lazy var userService: UserDataService = {
         let service = UserDataService(check: false, api: self.apiService)
+        return service
+    }()
+    
+    
+    public lazy var localNotificationService: LocalNotificationService = {
+        let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
     

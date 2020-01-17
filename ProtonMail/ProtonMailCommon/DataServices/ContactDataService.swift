@@ -46,11 +46,11 @@ class ContactDataService: Service  {
     private let labelDataService: LabelsDataService
     private let apiService : API
     private let userID : String
-    init(api: API, userID : String) {
+    init(api: API, labelDataService: LabelsDataService, userID : String) {
         self.userID = userID
         self.apiService = api
         self.addressBookService = AddressBookService()
-        self.labelDataService = LabelsDataService(api: api, userID: userID)
+        self.labelDataService = labelDataService
     }
     
     /**
@@ -58,9 +58,18 @@ class ContactDataService: Service  {
      **/
     func clean() {
         lastUpdatedStore.contactsCached = 0
+        
         let context = CoreDataService.shared.backgroundManagedObjectContext
-        Contact.deleteAll(inContext: context)
-        Email.deleteAll(inContext: context)
+        
+        let fetch1 = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
+        fetch1.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID)
+        let request1 = NSBatchDeleteRequest(fetchRequest: fetch1)
+        _ = try? context.execute(request1)
+        
+        let fetch2 = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
+        fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
+        let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
+        _ = try? context.execute(request2)
     }
     
     /**

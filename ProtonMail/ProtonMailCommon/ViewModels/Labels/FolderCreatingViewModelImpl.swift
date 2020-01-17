@@ -25,14 +25,6 @@ import Foundation
 
 // label creating
 final public class FolderCreatingViewModelImple : LabelEditViewModel {
-    let apiService = APIService.shared //TODO::fix me
-    private let labelService : LabelsDataService
-    
-    
-    override init() {
-        self.labelService = LabelsDataService(api: apiService, userID: "")
-    }
-    
     
     override public func title() -> String {
         return LocalString._labels_add_new_folder_title

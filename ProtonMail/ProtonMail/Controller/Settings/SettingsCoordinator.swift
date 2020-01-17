@@ -117,8 +117,8 @@ class SettingsCoordinator: SWRevealCoordinator {
                 return false
             }
             
-            let users : UsersManager = services.get()
-            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser!.labelService)
+            let user = services.get(by: UsersManager.self).firstUser!
+            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService)
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false

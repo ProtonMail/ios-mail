@@ -43,17 +43,18 @@ class MessageDataService : Service {
     weak var userDataSource : UserDataSource?
     private let labelDataService: LabelsDataService
     private let contactDataService: ContactDataService
-    private lazy var localNotificationService = LocalNotificationService()
+    private let localNotificationService: LocalNotificationService
     
     private var managedObjectContext: NSManagedObjectContext {
         return CoreDataService.shared.mainManagedObjectContext
     }
     
-    init(api: APIService, userID: String) {
+    init(api: APIService, userID: String, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService) {
         self.apiService = api
         self.userID = userID
-        self.labelDataService = LabelsDataService(api: api, userID: userID)
-        self.contactDataService = ContactDataService(api: api, userID: userID)
+        self.labelDataService = labelDataService
+        self.contactDataService = contactDataService
+        self.localNotificationService = localNotificationService
         setupNotifications()
     }
     
@@ -337,11 +338,9 @@ class MessageDataService : Service {
                         }
                         completion?(task, responseDict, error)
                     }
-                    //TODO:: clean user message but not all
-                    //self.cleanMessage()
-                    //clean the cache time
+                    
+                    self.cleanMessage()
                     lastUpdatedStore.removeUpdateTime(by: self.userID)
-                    //TODO:: clean user message but not all
                     self.contactDataService.clean()
                     self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
                     self.contactDataService.fetchContacts(completion: nil)
@@ -952,16 +951,12 @@ class MessageDataService : Service {
      */
     func cleanUp() {
         self.cleanMessage()
-        
-        self.localNotificationService.unscheduleAllPendingNotifications()
-        
         lastUpdatedStore.clear()
-        sharedMessageQueue.clear()
-        sharedFailedQueue.clear()
+        lastUpdatedStore.removeUpdateTime(by: self.userID)
         
-        //tempary for clean contact cache
-        self.labelDataService.cleanUp()
-        self.contactDataService.clean() //here need move to a general data service manager
+        // FIXME: this will clean the queue for all other users
+        // sharedMessageQueue.clear()
+        // sharedFailedQueue.clear()
     }
     
     fileprivate func cleanMessage() {
@@ -969,22 +964,13 @@ class MessageDataService : Service {
             self.isFirstTimeSaveAttData = true
         }
         
-        Message.deleteAll(inContext: CoreDataService.shared.mainManagedObjectContext) // will cascadely remove appropriate Attacments also
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+        fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        _ = try? CoreDataService.shared.mainManagedObjectContext.execute(request)
+        
         UIApplication.setBadge(badge: 0)
-        // good opportunity to remove all temp folders (they should be empty by this moment)
-        FileManager.default.cleanTemporaryDirectory()
     }
-    
-//    fileprivate func cleanUserMessage() {
-//        if #available(iOS 12, *) {
-//            self.isFirstTimeSaveAttData = true
-//        }
-//
-//        Message.deleteAll(inContext: CoreDataService.shared.mainManagedObjectContext) // will cascadely remove appropriate Attacments also
-//        UIApplication.setBadge(badge: 0)
-//        // good opportunity to remove all temp folders (they should be empty by this moment)
-//        FileManager.default.cleanTemporaryDirectory()
-//    }
     
     func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
         let completionWrapper: CompletionBlock = {task, response, error in

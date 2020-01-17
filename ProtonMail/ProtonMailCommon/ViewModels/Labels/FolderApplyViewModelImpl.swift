@@ -28,16 +28,12 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     private var messages : [Message]!
     private var labelMessages : [String : LabelMessageModel]!
     
-    private let apiService: APIService
-    private let labelService: LabelsDataService
     private let messageService : MessageDataService
     
     init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
-        self.labelService = folderService
-        self.apiService = apiService
         self.messageService = messageService
         
-        super.init()
+        super.init(apiService: apiService, labelService: folderService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }

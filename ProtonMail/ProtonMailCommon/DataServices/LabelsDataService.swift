@@ -36,16 +36,19 @@ enum LabelFetchType : Int {
 
 class LabelsDataService: Service {
     
-    public let apiService: API
+    public let api: API
     private let userID : String
     
     init(api: API, userID: String) {
-        self.apiService = api
+        self.api = api
         self.userID = userID
     }
     
     func cleanUp() {
-        Label.deleteAll(inContext: CoreDataService.shared.backgroundManagedObjectContext)
+        let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
+        fetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID)
+        let request = NSBatchDeleteRequest(fetchRequest: fetch)
+        _ = try? CoreDataService.shared.backgroundManagedObjectContext.execute(request)
     }
     
     /**
@@ -57,7 +60,7 @@ class LabelsDataService: Service {
      */
     func fetchLabels(type: Int = 1) {
         let eventAPI = GetLabelsRequest(type: type)
-        eventAPI.call(api: self.apiService) {
+        eventAPI.call(api: self.api) {
             task, response, hasError in
             
             if response == nil {

@@ -47,12 +47,13 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
     init(contactGroupService:ContactGroupsDataService,
-        groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
+         messageService: MessageDataService,
+         groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
          refreshHandler: ((Set<String>) -> Void)? = nil) {
         
         self.contactGroupService = contactGroupService
-        self.messageService = MessageDataService(api: APIService.shared, userID: "") //TODO:: fix me
+        self.messageService = messageService
         
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation
