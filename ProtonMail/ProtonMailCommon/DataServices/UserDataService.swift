@@ -1018,12 +1018,6 @@ class UserDataService : Service {
         userInfo = nil
         twoFactorStatus = 0
         passwordMode = 2
-        
-        // some tests are messed up without tmp folder, so let's keep it for consistency
-        #if targetEnvironment(simulator)
-        try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
-                nil)
-        #endif
     }
     
     func clearAuthToken() {

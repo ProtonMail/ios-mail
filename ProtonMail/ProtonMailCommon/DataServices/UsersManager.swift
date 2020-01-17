@@ -376,6 +376,11 @@ extension UsersManager {
         keymaker.wipeMainKey()
         // good opportunity to remove all temp folders
         FileManager.default.cleanTemporaryDirectory()
+        // some tests are messed up without tmp folder, so let's keep it for consistency
+        #if targetEnvironment(simulator)
+        try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
+                nil)
+        #endif
     }
     
     func hasUsers() -> Bool {
