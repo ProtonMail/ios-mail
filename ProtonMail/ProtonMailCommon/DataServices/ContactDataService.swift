@@ -70,6 +70,8 @@ class ContactDataService: Service  {
         fetch2.predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
         let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
         _ = try? context.execute(request2)
+        
+        _ = context.saveUpstreamIfNeeded()
     }
     
     /**

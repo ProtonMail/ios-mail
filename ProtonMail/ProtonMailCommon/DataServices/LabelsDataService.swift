@@ -48,7 +48,10 @@ class LabelsDataService: Service {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         fetch.predicate = NSPredicate(format: "%K == %@", Label.Attributes.userID, self.userID)
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        _ = try? CoreDataService.shared.backgroundManagedObjectContext.execute(request)
+        let moc = CoreDataService.shared.mainManagedObjectContext
+        if let _ = try? moc.execute(request) {
+            _ = moc.saveUpstreamIfNeeded()
+        }
     }
     
     /**

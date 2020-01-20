@@ -350,9 +350,11 @@ extension UsersManager {
     }
     
     func remove(user: UserManager) {
+        if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
+            self.active(uid: nextFirst)
+        }
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
-        self.active(index: 0)
     }
     
     internal func clean() { //TODO:: fix later

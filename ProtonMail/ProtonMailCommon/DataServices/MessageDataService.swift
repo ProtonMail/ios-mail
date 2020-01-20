@@ -967,7 +967,10 @@ class MessageDataService : Service {
         let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
         let request = NSBatchDeleteRequest(fetchRequest: fetch)
-        _ = try? CoreDataService.shared.mainManagedObjectContext.execute(request)
+        let moc = CoreDataService.shared.mainManagedObjectContext
+        if let _ = try? moc.execute(request) {
+            _ = moc.saveUpstreamIfNeeded()
+        }
         
         UIApplication.setBadge(badge: 0)
     }
