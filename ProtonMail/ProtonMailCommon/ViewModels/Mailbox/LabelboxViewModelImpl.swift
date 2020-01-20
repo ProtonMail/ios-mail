@@ -30,17 +30,7 @@ class LabelboxViewModelImpl : MailboxViewModel {
         self.label = label
         super.init(labelID: self.label.labelID, userManager: userManager, pushService: pushService)
     }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let labelID = try container.decode(String.self, forKey: .labelID)
-        guard let label = Label.labelForLableID(labelID, inManagedObjectContext: CoreDataService.shared.mainManagedObjectContext) else {
-            throw Errors.decoding
-        }
-        self.label = label
-        try super.init(from: decoder)
-    }
-    
+
     override func showLocation () -> Bool {
         return true
     }
