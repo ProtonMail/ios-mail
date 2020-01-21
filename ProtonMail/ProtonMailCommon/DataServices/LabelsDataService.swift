@@ -70,6 +70,11 @@ class LabelsDataService: Service {
                 //TODO:: error
             } else if var labels = response?.labels {
                 // add prebuild inbox label
+                for (index, _) in labels.enumerated() {
+                    labels[index]["UserID"] = self.userID
+                }
+                
+                // these labels should be created without UserID because they are "native" and shared across all users
                 if type == 1 {
                     labels.append(["ID": "0"]) //case inbox   = "0"
                     labels.append(["ID": "8"]) //case draft   = "8"
@@ -81,10 +86,6 @@ class LabelsDataService: Service {
                     labels.append(["ID": "4"]) //case spam    = "4"
                     labels.append(["ID": "3"]) //case trash   = "3"
                     labels.append(["ID": "5"]) //case allmail = "5"
-                }
-                
-                for (index, _) in labels.enumerated() {
-                    labels[index]["UserID"] = self.userID
                 }
                 
                 //save
