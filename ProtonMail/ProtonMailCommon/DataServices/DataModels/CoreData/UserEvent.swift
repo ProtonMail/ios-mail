@@ -52,4 +52,8 @@ extension UserEvent {
         }
         return event
     }
+    
+    class func deleteAll(inContext context: NSManagedObjectContext) {
+        context.deleteAll(Attributes.entityName)
+    }
 }

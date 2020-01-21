@@ -24,7 +24,7 @@
 import Foundation
 import UserNotifications
 
-class LocalNotificationService: Service {
+class LocalNotificationService: Service, HasLocalStorage {
     enum Categories: String {
         case failedToSend = "LocalNotificationService.Categories.failedToSend"
     }
@@ -70,10 +70,20 @@ class LocalNotificationService: Service {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [details.messageID])
     }
     
-    func unscheduleAllPendingNotifications() {
-        UNUserNotificationCenter.current().getPendingNotificationRequests { all in
+    func cleanUp() {
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { all in
             let belongToUser = all.filter { $0.content.userInfo["user_id"] as? String == self.userID }.map { $0.identifier }
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: belongToUser)
+            center.removePendingNotificationRequests(withIdentifiers: belongToUser)
         }
+        center.getDeliveredNotifications() { all in
+            let belongToUser = all.filter { $0.request.content.userInfo["user_id"] as? String == self.userID }.map { $0.request.identifier }
+            center.removeDeliveredNotifications(withIdentifiers: belongToUser)
+        }
+    }
+    
+    static func cleanUpAll() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        UNUserNotificationCenter.current().removeAllDeliveredNotifications()
     }
 }

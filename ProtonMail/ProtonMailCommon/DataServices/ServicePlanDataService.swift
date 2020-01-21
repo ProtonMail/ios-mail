@@ -31,7 +31,15 @@ protocol ServicePlanDataStorage: class {
     var currentSubscription: ServicePlanSubscription? { get set }
 }
 
-class ServicePlanDataService: NSObject, Service {
+class ServicePlanDataService: NSObject, Service, HasLocalStorage {
+    func cleanUp() {
+        self.currentSubscription = nil
+    }
+    
+    static func cleanUpAll() {
+        // FIXME: how can we cope with this without knowing exact type of localStorage?
+    }
+    
     
     internal init(localStorage: ServicePlanDataStorage, apiService: APIService) {
         self.localStorage = localStorage

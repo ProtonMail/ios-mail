@@ -40,7 +40,7 @@ typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
 
-class ContactDataService: Service  {
+class ContactDataService: Service, HasLocalStorage {
     
     private let addressBookService: AddressBookService
     private let labelDataService: LabelsDataService
@@ -56,7 +56,7 @@ class ContactDataService: Service  {
     /**
      clean contact local cache
      **/
-    func clean() {
+    func cleanUp() {
         lastUpdatedStore.contactsCached = 0
         
         let context = CoreDataService.shared.backgroundManagedObjectContext
@@ -72,6 +72,14 @@ class ContactDataService: Service  {
         _ = try? context.execute(request2)
         
         _ = context.saveUpstreamIfNeeded()
+    }
+    
+    static func cleanUpAll() {
+        let context = CoreDataService.shared.backgroundManagedObjectContext
+        context.performAndWait {
+            Contact.deleteAll(inContext: context)
+            Email.deleteAll(inContext: context)
+        }
     }
     
     /**

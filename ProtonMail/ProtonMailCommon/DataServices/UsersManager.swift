@@ -335,18 +335,16 @@ class UsersManager : Service {
 /// cache login check
 extension UsersManager {
     func launchCleanUpIfNeeded() {
-        self.users.forEach { user in
-            user.messageService.launchCleanUpIfNeeded()
-        }
+        self.users.forEach { $0.launchCleanUpIfNeeded() }
     }
     
     func logout(user: UserManager) {
-        user.messageService.cleanUp()
-        user.labelService.cleanUp()
-        user.contactService.clean()
-        user.localNotificationService.unscheduleAllPendingNotifications()
-        user.userService.signOutFromServer() // TODO: make it work
+        user.cleanUp()
         self.remove(user: user)
+        
+        if self.users.isEmpty {
+            self.clean()
+        }
     }
     
     func remove(user: UserManager) {
@@ -357,7 +355,9 @@ extension UsersManager {
         self.save()
     }
     
-    internal func clean() { //TODO:: fix later
+    internal func clean() { 
+        UserManager.cleanUpAll()
+        
         SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
         KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
@@ -400,10 +400,7 @@ extension UsersManager {
     
     func loggedOutAll() {
         for user in users {
-            lastUpdatedStore.removeUpdateTime(by: user.userinfo.userId)
+            self.logout(user: user)
         }
-        KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
-        
-        self.users.removeAll()
     }
 }

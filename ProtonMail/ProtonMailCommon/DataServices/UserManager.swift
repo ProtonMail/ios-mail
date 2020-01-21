@@ -37,7 +37,36 @@ protocol UserDataSource : class {
 }
 
 ///
-class UserManager : Service {
+class UserManager : Service, HasLocalStorage {
+    func cleanUp() {
+        self.messageService.cleanUp()
+        self.labelService.cleanUp()
+        self.contactService.cleanUp()
+        self.contactGroupService.cleanUp()
+        self.localNotificationService.cleanUp()
+        self.userService.cleanUp()
+        #if !APP_EXTENSION
+        self.sevicePlanService.cleanUp()
+        #endif
+    }
+    
+    static func cleanUpAll() {
+        MessageDataService.cleanUpAll()
+        LabelsDataService.cleanUpAll()
+        ContactDataService.cleanUpAll()
+        ContactGroupsDataService.cleanUpAll()
+        LocalNotificationService.cleanUpAll()
+        UserDataService.cleanUpAll()
+        LastUpdatedStore.cleanUpAll()
+        #if !APP_EXTENSION
+        ServicePlanDataService.cleanUpAll()
+        #endif
+    }
+    
+    func launchCleanUpIfNeeded() {
+        self.messageService.launchCleanUpIfNeeded()
+    }
+    
     
     //weak var delegate : UsersManagerDelegate?
     

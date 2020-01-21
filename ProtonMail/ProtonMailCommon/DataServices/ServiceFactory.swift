@@ -24,6 +24,10 @@
 import Foundation
 
 protocol Service: AnyObject {}
+protocol HasLocalStorage {
+    func cleanUp()
+    static func cleanUpAll()
+}
 
 /// tempeary here. //device level service
 let sharedServices: ServiceFactory = {

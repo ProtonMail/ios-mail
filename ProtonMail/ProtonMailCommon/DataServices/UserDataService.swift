@@ -33,7 +33,7 @@ protocol UserDataServiceDelegate {
 }
 
 /// Stores information related to the user
-class UserDataService : Service {
+class UserDataService : Service, HasLocalStorage {
     enum RuntimeError : String, Error, CustomErrorVar {
         case no_address = "Can't find address key"
         case no_user = "Can't find user info"
@@ -509,8 +509,20 @@ class UserDataService : Service {
         
     }
     
+    func cleanUp() {
+        // TODO: logout one user and remove its stuff from local storage
+        self.signOutFromServer()
+    }
+    
+    static func cleanUpAll() {
+        // TODO: logout all users and clear local storage
+    }
+    
     func signOutFromServer() {
-        // TODO: call AuthDeleteRequest
+        let api = AuthDeleteRequest()
+        api.call(api: self.apiService) { (task, response, hasError) in
+            // probably we want to notify user the session will seem active on website in case of error
+        }
     }
     
     func signOut(_ animated: Bool) {

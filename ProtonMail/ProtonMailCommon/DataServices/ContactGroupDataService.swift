@@ -28,7 +28,22 @@ import PromiseKit
 
 //let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
-class ContactGroupsDataService {
+class ContactGroupsDataService: Service, HasLocalStorage {
+    func cleanUp() {
+        let groups = self.labelDataService.getAllLabels(of: .contactGroup)
+        let context = CoreDataService.shared.mainManagedObjectContext
+        context.performAndWait {
+            groups.forEach {
+                context.delete($0)
+            }
+        }
+    }
+    
+    static func cleanUpAll() {
+        // FIXME: this will remove not only contactGroups but all other labels as well
+        LabelsDataService.cleanUpAll()
+    }
+    
     private let apiService : API
     private let labelDataService: LabelsDataService
     

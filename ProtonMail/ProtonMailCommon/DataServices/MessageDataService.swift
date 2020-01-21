@@ -28,7 +28,7 @@ import AwaitKit
 import PromiseKit
 
 /// Message data service
-class MessageDataService : Service {
+class MessageDataService : Service, HasLocalStorage {
     ///
     typealias CompletionFetchDetail = APIService.CompletionFetchDetail
     typealias ReadBlock = (() -> Void)
@@ -341,7 +341,7 @@ class MessageDataService : Service {
                     
                     self.cleanMessage()
                     lastUpdatedStore.removeUpdateTime(by: self.userID)
-                    self.contactDataService.clean()
+                    self.contactDataService.cleanUp()
                     self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
                     self.contactDataService.fetchContacts(completion: nil)
                     self.labelDataService.fetchLabels()
@@ -383,7 +383,7 @@ class MessageDataService : Service {
                                 }
                                 //TODO:: fix me
                                 //self.cleanMessage()
-                                self.contactDataService.clean()
+                                self.contactDataService.cleanUp()
                                 self.fetchMessages(byLable: labelID, time: 0, forceClean: false, completion: completionWrapper)
                                 self.contactDataService.fetchContacts(completion: nil)
                                 self.labelDataService.fetchLabels()
@@ -392,7 +392,7 @@ class MessageDataService : Service {
                             }
                         }
                     } else if eventsRes.refresh.contains(.contacts) {
-                        self.contactDataService.clean()
+                        self.contactDataService.cleanUp()
                         self.contactDataService.fetchContacts(completion: nil)
                     } else if let messageEvents = eventsRes.messages {
                         self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
@@ -954,9 +954,16 @@ class MessageDataService : Service {
         lastUpdatedStore.clear()
         lastUpdatedStore.removeUpdateTime(by: self.userID)
         
-        // FIXME: this will clean the queue for all other users
-        // sharedMessageQueue.clear()
-        // sharedFailedQueue.clear()
+        // TODO: remove from sharedMessageQueue and sharedFailedQuque stuff related to this user
+    }
+    
+    static func cleanUpAll() {
+        let context = CoreDataService.shared.mainManagedObjectContext
+        context.performAndWait {
+            Message.deleteAll(inContext: context)
+        }
+        sharedMessageQueue.clear()
+        sharedFailedQueue.clear()
     }
     
     fileprivate func cleanMessage() {
@@ -1986,7 +1993,7 @@ class MessageDataService : Service {
                 }
 
                 self.cleanMessage()
-                self.contactDataService.clean()
+                self.contactDataService.cleanUp()
 //                sharedContactDataService.clean()
                 self.labelDataService.fetchLabels()
                 self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)

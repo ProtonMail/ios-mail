@@ -28,8 +28,8 @@ import CoreData
 //TODO::cache this only need to load after login/authed
 let lastUpdatedStore = LastUpdatedStore()
 
-final class LastUpdatedStore : SharedCacheBase {
-    
+final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
+
     fileprivate struct Key {
         
         static let unreadMessageCount  = "unreadMessageCount"  //total unread
@@ -76,6 +76,8 @@ final class LastUpdatedStore : SharedCacheBase {
     clear the last update time cache
     */
     func clear() {
+        
+        
         //in use
         getShared().removeObject(forKey: Key.lastCantactsUpdated)
         getShared().removeObject(forKey: Key.lastLabelsUpdated)
@@ -92,6 +94,18 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().synchronize()
         
         UIApplication.setBadge(badge: 0)
+    }
+    
+    func cleanUp() {
+        // TODO: clean only one specific user
+    }
+    
+    static func cleanUpAll() {
+        let context = CoreDataService.shared.backgroundManagedObjectContext
+        context.perform {
+            UserEvent.deleteAll(inContext: context)
+            LabelUpdate.deleteAll(inContext: context)
+        }
     }
     
     // reset functions

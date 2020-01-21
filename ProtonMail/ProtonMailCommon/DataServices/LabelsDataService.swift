@@ -34,7 +34,7 @@ enum LabelFetchType : Int {
     case folderWithOutbox = 5
 }
 
-class LabelsDataService: Service {
+class LabelsDataService: Service, HasLocalStorage {
     
     public let api: API
     private let userID : String
@@ -51,6 +51,14 @@ class LabelsDataService: Service {
         let moc = CoreDataService.shared.mainManagedObjectContext
         if let _ = try? moc.execute(request) {
             _ = moc.saveUpstreamIfNeeded()
+        }
+    }
+    
+    static func cleanUpAll() {
+        let context = CoreDataService.shared.backgroundManagedObjectContext
+        context.performAndWait {
+            Label.deleteAll(inContext: context)
+            LabelUpdate.deleteAll(inContext: context)
         }
     }
     
