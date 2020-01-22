@@ -70,41 +70,10 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        self.updateProtectionItems()
-////        userManager.userInfo.passwor
-//        if sharedUserDataService.passwordMode == 1 {
-//            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-//        } else {
-//            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-//        }
-//        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
-//            setting_general_items.append(.notificationsSnooze)
-//        }
-//        
-//        multi_domains = self.userManager.addresses
-//        navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    internal func updateProtectionItems() {
-//        setting_protection_items = []
-//        switch UIDevice.current.biometricType {
-//        case .none:
-//            break
-//        case .touchID:
-//            setting_protection_items.append(.touchID)
-//            break
-//        case .faceID:
-//            setting_protection_items.append(.faceID)
-//            break
-//        }
-//        setting_protection_items.append(.pinCode)
-//        if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
-//            setting_protection_items.append(.enterTime)
-//        }
+        navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     internal func updateTableProtectionSection() {
-        self.updateProtectionItems()
 //        if let index = self.viewModel.sections.firstIndex(of: SettingSections.protection) {
 //            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
 //        }
