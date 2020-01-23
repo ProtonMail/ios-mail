@@ -84,6 +84,11 @@ final class UserInfo : NSObject {
     //1.9.0 get from addresses route
     var userAddresses: [Address] = [Address]()
     
+    
+    //1.12.0
+    var passwordMode: Int = 1
+    var twoFactor: Int = 0
+    
     static func getDefault() -> UserInfo {
         return .init(maxSpace: 0, usedSpace: 0, language: "",
                      maxUpload: 0, role: 0, delinquent: 0,
@@ -105,7 +110,9 @@ final class UserInfo : NSObject {
         attachPublicKey: Int?,
         linkConfirmation: String?,
         credit: Int?,
-        currency: String?)
+        currency: String?,
+        pwdMode: Int?,
+        twoFA: Int?)
     {
         self.maxSpace = maxSpace ?? 0
         self.usedSpace = usedSpace ?? 0
@@ -140,6 +147,9 @@ final class UserInfo : NSObject {
         
         self.credit = credit ?? 0
         self.currency = currency ?? "USD"
+        
+        self.passwordMode = pwdMode ?? 1
+        self.twoFactor = twoFA ?? 0
     }
 
     // init from api
@@ -185,6 +195,7 @@ final class UserInfo : NSObject {
         self.userId = userinfo.userId
         self.linkConfirmation = userinfo.linkConfirmation
         self.userKeys = userinfo.userKeys
+        self.passwordMode = userinfo.passwordMode
     }
     
     func parse(userSettings: [String : Any]?) {
@@ -192,6 +203,20 @@ final class UserInfo : NSObject {
             if let email = settings["Email"] as? [String : Any] {
                 self.notificationEmail = email["Value"] as? String ?? ""
                 self.notify = email["Notify"] as? Int ?? 0
+            }
+            
+            if let pwdMode = settings["PasswordMode"] as? Int {
+                self.passwordMode = pwdMode
+            } else {
+                if let pwd = settings["Password"] as? [String : Any] {
+                    if let mode = pwd["Mode"] as? Int {
+                        self.passwordMode = mode
+                    }
+                }
+            }
+            
+            if let twoFA = settings["2FA"]  as? [String : Any] {
+                self.twoFactor = twoFA["Enabled"] as? Int ?? 0
             }
         }
     }
@@ -343,6 +368,9 @@ extension UserInfo: NSCoding {
         
         static let credit = "credit"
         static let currency = "currency"
+        
+        static let pwdMode = "passwordMode"
+        static let twoFA = "2faStatus"
     }
     
     func archive() -> Data {
@@ -384,7 +412,10 @@ extension UserInfo: NSCoding {
             linkConfirmation: aDecoder.decodeStringForKey(CoderKey.linkConfirmation),
             
             credit: aDecoder.decodeInteger(forKey: CoderKey.credit),
-            currency: aDecoder.decodeStringForKey(CoderKey.currency)
+            currency: aDecoder.decodeStringForKey(CoderKey.currency),
+            
+            pwdMode: aDecoder.decodeInteger(forKey: CoderKey.pwdMode),
+            twoFA: aDecoder.decodeInteger(forKey: CoderKey.twoFA)
         )
     }
     
@@ -419,6 +450,9 @@ extension UserInfo: NSCoding {
         
         aCoder.encode(credit, forKey: CoderKey.credit)
         aCoder.encode(currency, forKey: CoderKey.currency)
+        
+        aCoder.encode(passwordMode, forKey: CoderKey.pwdMode)
+        aCoder.encode(twoFactor, forKey: CoderKey.twoFA)
     }
 }
 

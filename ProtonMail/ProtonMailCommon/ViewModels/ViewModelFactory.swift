@@ -36,10 +36,6 @@ class ViewModelFactory {
         fatalError("This method must be overridden")
     }
     
-    func getChangeSinglePassword() -> ChangePWDViewModel {
-        fatalError("This method must be overridden")
-    }
-    
     func getChangeDisplayName() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
@@ -80,10 +76,6 @@ class ViewModelFactoryProduction : ViewModelFactory {
     
     override func getChangeMailboxPassword() -> ChangePWDViewModel {
         return ChangeMailboxPWDViewModel()
-    }
-    
-    override func getChangeSinglePassword() -> ChangePWDViewModel {
-        return ChangeSinglePasswordViewModel()
     }
     
     override func getChangeDisplayName() -> SettingDetailsViewModel {

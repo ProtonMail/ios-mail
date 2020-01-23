@@ -45,14 +45,20 @@ public enum SettingAccountSection : Int, CustomStringConvertible {
 }
 
 public enum AccountItem : Int, CustomStringConvertible {
-    case password = 0
-    case recovery = 1
-    case storage = 2
+    case singlePassword = 0
+    case loginPassword = 1
+    case mailboxPassword = 2
+    case recovery = 3
+    case storage = 4
     
     public var description : String {
         switch(self){
-        case .password:
-            return LocalString._password_management
+        case .singlePassword:
+            return LocalString._single_password
+        case .loginPassword:
+            return LocalString._login_password
+        case .mailboxPassword:
+            return LocalString._mailbox_password
         case .recovery:
             return LocalString._recovery_email
         case .storage:
@@ -134,17 +140,27 @@ protocol SettingsAccountViewModel : AnyObject {
     
     var email : String { get }
     var displayName : String { get }
+    
+    func updateItems()
 }
 
 class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
-    var accountItems: [AccountItem] = [.password, .recovery, .storage]
+    var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature]
-    var mailboxItems :  [MailboxItem] = [.privacy, .search, .labelFolder, .gestures, .storage]
+    var mailboxItems :  [MailboxItem] = [.privacy, .search, .labelFolder, .gestures]
     var userManager: UserManager
     
     init(user : UserManager) {
         self.userManager = user
+    }
+    
+    func updateItems() {
+        if self.userManager.userInfo.passwordMode == 1 {
+            accountItems = [.singlePassword, .recovery, .storage]
+        } else {
+            accountItems = [.loginPassword, .mailboxPassword, .recovery, .storage]
+        }
     }
     
     var storageText: String {

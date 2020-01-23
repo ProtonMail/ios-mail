@@ -143,7 +143,13 @@ class ChangeMailboxPWDViewModel : ChangePWDViewModel{
 }
 
 
-class ChangeSinglePasswordViewModel : ChangePWDViewModel{
+class ChangeSinglePasswordViewModel : ChangePWDViewModel {
+    
+    let userManager : UserManager
+    init(user: UserManager) {
+        self.userManager = user
+    }
+
     func getNavigationTitle() -> String {
         return LocalString._password
     }
@@ -164,8 +170,7 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
     }
     
     func needAsk2FA() -> Bool {
-//        return sharedUserDataService.twoFactorStatus == 1
-        return false
+        return userManager.userInfo.twoFactor > 0
     }
     
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete: @escaping ChangePasswordComplete) {
@@ -173,25 +178,21 @@ class ChangeSinglePasswordViewModel : ChangePWDViewModel{
         let curr_pwd = current
         let newpwd = new_pwd
         let confirmpwd = confirm_new_pwd
-        
-        
         if newpwd == "" || confirmpwd == "" {
             complete(false, UpdatePasswordError.passwordEmpty.error)
         }
         else if newpwd != confirmpwd {
             complete(false, UpdatePasswordError.newNotMatch.error)
-        }
-            //        else if curr_pwd == newpwd {
-            //            complete(true, nil)
-            //        }
-        else {
-//            sharedUserDataService.updateMailboxPassword(curr_pwd, new_password: newpwd, twoFACode: tfaCode, buildAuth: true) { _, _, error in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            }
+        } else {
+            let service = self.userManager.userService
+            service.updateMailboxPassword(auth: userManager.auth, user: userManager.userInfo, loginPassword: curr_pwd, newPassword: newpwd, twoFACode: tfaCode, buildAuth: true) { (_, _, error) in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            }
         }
     }
 }

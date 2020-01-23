@@ -203,8 +203,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     
     override func done(complete : @escaping ContactEditSaveComplete) {
         let user = sharedServices.get(by: UsersManager.self).firstUser!
-        guard let mailboxPassword = user.userService.mailboxPassword,
-            let userkey = user.userInfo.firstUserKey(),
+        let mailboxPassword = user.mailboxPassword
+        guard let userkey = user.userInfo.firstUserKey(),
             case let authCredential = user.authCredential else
         {
             complete(NSError.lockError())
@@ -378,16 +378,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         if isCard3Set {
             cards.append(card3)
         }
-        //Fixme
-//        sharedContactDataService.add(cards: [cards],
-//                                     authCredential: authCredential,
-//                                     completion:  { (contacts : [Contact]?, error : NSError?) in
-//                                        if error == nil {
-//                                            complete(nil)
-//                                        } else {
-//                                            complete(error)
-//                                        }
-//        })
+        //TODO:: can be improved
+        user.contactService.add(cards: [cards], authCredential: authCredential) { (contacts : [Contact]?, error : NSError?) in
+            if error == nil {
+                complete(nil)
+            } else {
+                complete(error)
+            }
+        }
     }
     
     override func delete(complete: @escaping ContactEditViewModel.ContactEditSaveComplete) {

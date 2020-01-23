@@ -36,6 +36,10 @@ protocol UserDataSource : class {
     func getAddressPrivKey(address_id : String) -> String
 }
 
+protocol UserManagerSave : class {
+    func onSave(userManger: UserManager)
+}
+
 ///
 class UserManager : Service, HasLocalStorage {
     func cleanUp() {
@@ -66,6 +70,8 @@ class UserManager : Service, HasLocalStorage {
     func launchCleanUpIfNeeded() {
         self.messageService.launchCleanUpIfNeeded()
     }
+    
+    var delegate : UserManagerSave?
     
     
     //weak var delegate : UsersManagerDelegate?
@@ -150,6 +156,10 @@ class UserManager : Service, HasLocalStorage {
             return addr.email.starts(with: userName)
         }
         return false
+    }
+    
+    func save() {
+        self.delegate?.onSave(userManger: self)
     }
 }
 

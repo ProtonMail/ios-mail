@@ -25,7 +25,7 @@ import Foundation
 
 class Storefront: NSObject {
     private var servicePlanService: ServicePlanDataService
-    private var userService: UserDataService
+    private var user: UserInfo
     
     var plan: ServicePlan
     var details: ServicePlanDetails?
@@ -38,9 +38,9 @@ class Storefront: NSObject {
     
     private var subscriptionObserver: NSKeyValueObservation!
     
-    init(plan: ServicePlan, servicePlanService: ServicePlanDataService, userService: UserDataService) {
+    init(plan: ServicePlan, servicePlanService: ServicePlanDataService, user: UserInfo) {
         self.servicePlanService = servicePlanService
-        self.userService = userService
+        self.user = user
         
         self.plan = plan
         self.details = servicePlanService.detailsOfServicePlan(named: plan.rawValue)
@@ -51,13 +51,13 @@ class Storefront: NSObject {
                                         && servicePlanService.currentSubscription?.plan == .free
                                         && StoreKitManager.default.readyToPurchaseProduct() )
         self.canBuyMoreCredits = false
-        self.credits = userService.userInfo?.credit ?? 0
+        self.credits = self.user.credit
         super.init()
     }
     
-    init(subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, userService: UserDataService) {
+    init(subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, user: UserInfo) {
         self.servicePlanService = servicePlanService
-        self.userService = userService
+        self.user = user
         
         self.subscription = subscription
         self.plan = subscription.plan
@@ -69,7 +69,7 @@ class Storefront: NSObject {
         
         // only plus, payed via apple
         self.canBuyMoreCredits = ( subscription.plan == .plus && !subscription.hadOnlinePayments )
-        self.credits = userService.userInfo?.credit ?? 0
+         self.credits = self.user.credit
         super.init()
 
         self.subscriptionObserver = self.servicePlanService.observe(\.currentSubscription) { [unowned self] shared, change in
@@ -78,15 +78,15 @@ class Storefront: NSObject {
                 self.plan = newSubscription.plan
                 self.details = newSubscription.details
                 self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
-                self.credits = self.userService.userInfo?.credit ?? 0
+                self.credits = user.credit
                 self.subscription = shared.currentSubscription
             }
         }
     }
     
-    init(creditsFor subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, userService: UserDataService) {
+    init(creditsFor subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, user: UserInfo) {
         self.servicePlanService = servicePlanService
-        self.userService = userService
+        self.user = user
         
         self.subscription = subscription
         self.plan = subscription.plan
@@ -97,7 +97,7 @@ class Storefront: NSObject {
         self.isProductPurchasable = ( subscription.plan == .plus
                                         && !subscription.hadOnlinePayments
                                         && StoreKitManager.default.readyToPurchaseProduct() )
-        self.credits = userService.userInfo?.credit ?? 0
+        self.credits = user.credit
         self.canBuyMoreCredits = false
         
         super.init()

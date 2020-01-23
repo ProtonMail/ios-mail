@@ -100,7 +100,7 @@ class UserTempCachedStatus: NSObject, NSCoding {
 //                localMobileSignature: userCachedStatus.mobileSignature)
 //            u.storeInKeychain()
 //        }
-    }
+	    }
     
     class func restore() {
 //        if let cache = UserTempCachedStatus.fetchFromKeychain() {

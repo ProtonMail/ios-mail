@@ -42,6 +42,7 @@ final class AuthCredential: NSObject, NSCoding {
         
         static let userID        = "AuthCredential.UserID"
         static let password      = "AuthCredential.Password"
+        static let userName      = "AuthCredential.UserName"
     }
     
     // user session id, this change in every login
@@ -62,6 +63,8 @@ final class AuthCredential: NSObject, NSCoding {
     
     public var password: String = ""
     
+    var userName: String = ""
+    
     override var description: String {
         return """
         AccessToken: \(accessToken)
@@ -74,14 +77,14 @@ final class AuthCredential: NSObject, NSCoding {
     var isExpired: Bool {
         return Date().compare(expiration) != .orderedAscending
     }
-    
-    class func setupToken (_ password:String) throws {
-        //        try self.fetchFromKeychain()?.setupToken(password)
-    }
-    
+
     func update(salt: String?, privateKey: String?) {
         self.privateKey = privateKey
         self.passwordKeySalt = salt
+    }
+    
+    func update(userName: String) {
+        self.userName = userName
     }
     
     func udpate (password: String) {
@@ -126,6 +129,8 @@ final class AuthCredential: NSObject, NSCoding {
         //        ///TODO:: rmeove this later , when server switch off them
         self.privateKey = res.privateKey
         self.passwordKeySalt = res.keySalt
+        
+        
     }
     
     required init(accessToken: String, refreshToken: String, sessionID: String, expiration: Date, key : String, /*plain: String?, pwd:String?,*/ salt:String?) {
@@ -161,6 +166,7 @@ final class AuthCredential: NSObject, NSCoding {
                   salt: aDecoder.decodeObject(forKey: CoderKey.salt) as? String)
         self.userID = aDecoder.decodeObject(forKey: CoderKey.userID) as? String ?? ""
         self.password = aDecoder.decodeObject(forKey: CoderKey.password) as? String ?? ""
+        self.userName = aDecoder.decodeObject(forKey: CoderKey.userName) as? String ?? ""
     }
     
     fileprivate func expire() {
@@ -177,11 +183,6 @@ final class AuthCredential: NSObject, NSCoding {
     //        }
     ////        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: Key.keychainStore)
     //    }
-    
-//    func getPrivateKey() -> String! {
-//        return ""
-        // return self.fetchFromKeychain()?.privateKey
-//    }
     
     func getKeySalt() -> String? {
         return self.passwordKeySalt
@@ -223,18 +224,18 @@ final class AuthCredential: NSObject, NSCoding {
         //        }
     }
     
-    class func fetchFromKeychain() -> AuthCredential? {
-        guard let mainKey = keymaker.mainKey,
-            let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
-            case let locked = Locked<Data>(encryptedValue: encryptedData),
-            let data = try? locked.unlock(with: mainKey),
-            let authCredential = AuthCredential.unarchive(data: data as NSData) else
-        {
-            return nil
-        }
-        
-        return authCredential
-    }
+//    class func fetchFromKeychain() -> AuthCredential? {
+//        guard let mainKey = keymaker.mainKey,
+//            let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
+//            case let locked = Locked<Data>(encryptedValue: encryptedData),
+//            let data = try? locked.unlock(with: mainKey),
+//            let authCredential = AuthCredential.unarchive(data: data as NSData) else
+//        {
+//            return nil
+//        }
+//
+//        return authCredential
+//    }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(sessionID, forKey:  CoderKey.sessionID)
@@ -245,5 +246,6 @@ final class AuthCredential: NSObject, NSCoding {
         aCoder.encode(privateKey, forKey: CoderKey.key)
         aCoder.encode(password, forKey: CoderKey.password)
         aCoder.encode(passwordKeySalt, forKey: CoderKey.salt)
+        aCoder.encode(userName, forKey: CoderKey.userName)
     }
 }

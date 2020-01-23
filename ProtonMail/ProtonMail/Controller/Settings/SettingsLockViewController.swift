@@ -50,36 +50,9 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
         return self.coordinator
     }
     
-//    var setting_general_items : [SGItems]                = []
-//    var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
-//
-//    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-//    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-//                                                            .star, .archive, .unread]
-//
-//    var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-//    var setting_addresses_items : [SAddressItems]        = [.addresses,
-//                                                            .displayName,
-//                                                            .signature,
-//                                                            .defaultMobilSign]
-//
-//    var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
-//
-//    var setting_languages : [ELanguage]                  = ELanguage.allItems()
-    
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
-    /// cells
-//    let SettingSingalLineCell         = "settings_general"
-//    let SettingSingalSingleLineCell   = "settings_general_single_line"
-//    let SettingTwoLinesCell           = "settings_twolines"
-//    let SettingDomainsCell            = "setting_domains"
-//    let SettingStorageCell            = "setting_storage_cell"
-//    let HeaderCell                    = "header_cell"
-//    let SingleTextCell                = "single_text_cell"
-//    let SwitchCell                    = "switch_table_view_cell"
-
     //
     override func viewDidLoad() {
         super.viewDidLoad()

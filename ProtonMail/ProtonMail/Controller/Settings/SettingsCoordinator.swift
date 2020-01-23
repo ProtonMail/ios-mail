@@ -133,7 +133,7 @@ class SettingsCoordinator: SWRevealCoordinator {
             guard let next = destination as? ChangePasswordViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
+//            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
         case .snooze:
             break
         }

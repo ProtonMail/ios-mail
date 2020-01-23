@@ -90,14 +90,8 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.viewModel.updateItems()
         navigationController?.setNavigationBarHidden(false, animated: true)
-    }
-    
-    internal func updateTableProtectionSection() {
-        //        self.updateProtectionItems()
-        //        if let index = setting_headers.firstIndex(of: SettingSections.protection) {
-        //            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
-        //        }
     }
     
     ///MARK: -- table view delegate
@@ -135,7 +129,7 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
                 let item = self.viewModel.accountItems[row]
                 c.config(left: item.description)
                 switch item {
-                case .password:
+                case .singlePassword, .loginPassword, .mailboxPassword:
                     c.config(right: "****")
                 case .recovery:
                     c.config(right: self.viewModel.recoveryEmail)
@@ -209,8 +203,19 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         let eSection = self.viewModel.sections[section]
         switch eSection {
         case .account:
-            //            self.coordinator?.go(to: .accountSetting)
-            break
+            let item = self.viewModel.accountItems[row]
+            switch item {
+            case .singlePassword:
+                self.coordinator?.go(to: .singlePwd)
+            case .loginPassword:
+                self.coordinator?.go(to: .loginPwd)
+            case .mailboxPassword:
+                self.coordinator?.go(to: .mailboxPwd)
+            case .recovery:
+                break
+            case .storage:
+                break
+            }
         case .addresses:
             //            let item = self.viewModel.appSettigns[row]
             break

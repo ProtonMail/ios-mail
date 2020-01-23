@@ -227,6 +227,20 @@ class UsersManager : Service {
             return
         }
         
+        
+        //    class func fetchFromKeychain() -> AuthCredential? {
+        //        guard let mainKey = keymaker.mainKey,
+        //            let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
+        //            case let locked = Locked<Data>(encryptedValue: encryptedData),
+        //            let data = try? locked.unlock(with: mainKey),
+        //            let authCredential = AuthCredential.unarchive(data: data as NSData) else
+        //        {
+        //            return nil
+        //        }
+        //
+        //        return authCredential
+        //    }
+        
         guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
             return
         }
@@ -259,6 +273,7 @@ class UsersManager : Service {
             let apiConfig = serverConfig
             let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
             let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+            newUser.delegate = self
             users.append(newUser)
         }
         
@@ -329,8 +344,11 @@ class UsersManager : Service {
     }
 }
 
-
-
+extension UsersManager : UserManagerSave {
+    func onSave(userManger: UserManager) {
+        self.save()
+    }
+}
 
 /// cache login check
 extension UsersManager {
