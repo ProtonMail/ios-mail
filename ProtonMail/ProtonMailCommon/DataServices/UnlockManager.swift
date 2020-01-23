@@ -41,7 +41,7 @@ protocol CacheStatusInject {
 protocol UnlockManagerDelegate : class {
     func cleanAll()
     func unlocked()
-    
+    func isUserStored() -> Bool
     var isUserCredentialStored : Bool { get }
     func isMailboxPasswordStored(forUser uid: String?) -> Bool
 }
@@ -141,7 +141,7 @@ class UnlockManager: Service {
     
     internal func unlockIfRememberedCredentials(forUser uid: String? = nil,
                                                 requestMailboxPassword: ()->Void) {
-        guard keymaker.mainKeyExists(), self.delegate?.isUserCredentialStored == true else {
+        guard keymaker.mainKeyExists(), self.delegate?.isUserStored() == true else {
             self.delegate?.cleanAll()
             return
         }

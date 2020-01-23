@@ -438,7 +438,21 @@ extension AppDelegate : UsersManagerDelegate {
 
 extension AppDelegate : UnlockManagerDelegate {
     var isUserCredentialStored: Bool {
-        sharedServices.get(by: UsersManager.self).hasUsers()
+        get {
+            let users = sharedServices.get(by: UsersManager.self)
+            if users.isMailboxPasswordStored || users.hasUsers() {
+                return true
+            }
+            return false
+        }
+    }
+    
+    func isUserStored() -> Bool {
+        let users = sharedServices.get(by: UsersManager.self)
+        if users.isMailboxPasswordStored || users.hasUsers() {
+            return true
+        }
+        return false
     }
     
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {

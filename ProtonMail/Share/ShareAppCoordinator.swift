@@ -61,6 +61,10 @@ extension ShareAppCoordinator: UsersManagerDelegate {
 }
 
 extension ShareAppCoordinator: UnlockManagerDelegate {
+    func isUserStored() -> Bool {
+        return isUserCredentialStored
+    }
+    
     func cleanAll() {
         sharedServices.get(by: UsersManager.self).clean()
         keymaker.wipeMainKey()
