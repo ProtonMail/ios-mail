@@ -203,6 +203,11 @@ class UsersManager : Service {
         return false
     }
     
+    //tempery mirgration. will change this to version check
+    func hasUserName() -> Bool {
+        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
+    }
+    
     private func oldUserInfo() -> UserInfo? {
         guard let mainKey = keymaker.mainKey,
             let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
@@ -272,6 +277,7 @@ class UsersManager : Service {
             users.append(newUser)
             self.save()
             //Then clear lagcy
+            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.username)
         } else {
             guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
                 return

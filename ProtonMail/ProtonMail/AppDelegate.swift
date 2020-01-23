@@ -449,15 +449,16 @@ extension AppDelegate : UnlockManagerDelegate {
     
     func isUserStored() -> Bool {
         let users = sharedServices.get(by: UsersManager.self)
-        if users.isMailboxPasswordStored || users.hasUsers() {
+        if users.hasUserName() || users.hasUsers() {
             return true
         }
         return false
     }
     
     func isMailboxPasswordStored(forUser uid: String?) -> Bool {
+        let users = sharedServices.get(by: UsersManager.self)
         guard let _ = uid else {
-            return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
+            return users.hasUserName() || users.isMailboxPasswordStored
         }
         return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
     }
