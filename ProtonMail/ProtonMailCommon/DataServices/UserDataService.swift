@@ -94,31 +94,31 @@ class UserDataService : Service, HasLocalStorage {
     
     //TODO:: move this into authinfo object
     //TODO::Fix later fileprivate(set)
-    fileprivate(set) var username: String? {
-        get {
-            guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
-            {
-                return nil
-            }
-            
-            let locked = Locked<String>(encryptedValue: cypherData)
-            return try? locked.unlock(with: mainKey)
-        }
-        set {
-            guard let newValue = newValue else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.username)
-                return
-            }
-            guard let mainKey = keymaker.mainKey,
-                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
-            {
-                return
-            }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.username)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
+//    fileprivate(set) var username: String? {
+//        get {
+//            guard let mainKey = keymaker.mainKey,
+//                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
+//            {
+//                return nil
+//            }
+//
+//            let locked = Locked<String>(encryptedValue: cypherData)
+//            return try? locked.unlock(with: mainKey)
+//        }
+//        set {
+//            guard let newValue = newValue else {
+//                SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.username)
+//                return
+//            }
+//            guard let mainKey = keymaker.mainKey,
+//                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
+//            {
+//                return
+//            }
+//            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.username)
+//            SharedCacheBase.getDefault().synchronize()
+//        }
+//    }
     
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
         didSet {
@@ -205,23 +205,6 @@ class UserDataService : Service, HasLocalStorage {
         return isMailboxPasswordStored
 //        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
-    
-    /// Value is only stored in the keychain
-//    var mailboxPassword: String? {
-//        return "" //fix me
-////        get {
-////            guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
-////                let key = keymaker.mainKey else
-////            {
-////                return nil
-////            }
-////            let locked = Locked<String>(encryptedValue: cypherBits)
-////            return try? locked.unlock(with: key)
-////        }
-////        set {
-////            self.saveMailboxPassword(newValue)
-////        }
-//    }
     
     func allLoggedout() {
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
@@ -408,7 +391,7 @@ class UserDataService : Service, HasLocalStorage {
             } else {
                 UserDataService.authResponse = nil
                 if error == nil {
-                    self.username = username
+                    auth?.userName = username
                     self.passwordMode = mpwd != nil ? 1 : 2
                     self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
                     onSuccess(mpwd, auth, userinfo)
@@ -784,10 +767,7 @@ class UserDataService : Service, HasLocalStorage {
                         //update local keys
                         userInfo.userKeys = updated_userlevel_keys
                         userInfo.userAddresses = updated_address_keys
-//                        self.saveUserInfo(user_info, protectedBy: cachedMainKey)
-//                        self.saveMailboxPassword(new_hashed_mpwd, protectedBy: cachedMainKey)
                         oldAuthCredential.password = new_hashed_mpwd
-                        
                         forceRetry = false
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -965,7 +945,6 @@ class UserDataService : Service, HasLocalStorage {
     
     func clearAll() {
         allLoggedout()
-        username = nil
        //mailboxPassword = nil
         twoFactorStatus = 0
         passwordMode = 2
@@ -1051,7 +1030,7 @@ extension AppCache {
     }
     
     static func inject(username: String, into userDataService: UserDataService) {
-        userDataService.username = username
+//        userDataService.username = username
     }
 }
 

@@ -96,6 +96,7 @@ class UsersManager : Service {
     func add(auth: AuthCredential, user: UserInfo) {
         let session = auth.sessionID
         let userID = user.userId
+        auth.userID = userID
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
@@ -154,15 +155,13 @@ class UsersManager : Service {
         
         self.users.swapAt(0, index)
         self.save()
-//        uers.swap(at)
-//
-//        swap(&cellOrder[0], &cellOrder[1])
+        //uers.swap(at)
+        //swap(&cellOrder[0], &cellOrder[1])
     }
     //TODO:: referance could try to use weak.
     var firstUser : UserManager? {
         return users.first
     }
-    
     
 //    lazy var apiService: APIService = {
 //        let service = APIService(config: usersManager.serverConfig, userID: "")
@@ -204,21 +203,48 @@ class UsersManager : Service {
         return false
     }
     
+    private func oldUserInfo() -> UserInfo? {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
+        {
+            return nil
+        }
+        
+        let locked = Locked<UserInfo>(encryptedValue: cypherData)
+        return try? locked.unlock(with: mainKey)
+    }
     
-    private func oldFetch() -> AuthCredential? {
-//        class func fetchFromKeychain() -> AuthCredential? {
-//                       guard let mainKey = keymaker.mainKey,
-//                           let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
-//                           case let locked = Locked<Data>(encryptedValue: encryptedData),
-//                           let data = try? locked.unlock(with: mainKey),
-//                           let authCredential = AuthCredential.unarchive(data: data as NSData) else
-//                       {
-//                           return nil
-//                       }
-//
-//                       return authCredential
-//                   }
-        return nil
+    private func oldAuthFetch() -> AuthCredential? {
+        guard let mainKey = keymaker.mainKey,
+            let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore),
+            case let locked = Locked<Data>(encryptedValue: encryptedData),
+            let data = try? locked.unlock(with: mainKey),
+            let authCredential = AuthCredential.unarchive(data: data as NSData) else
+        {
+            return nil
+        }
+        return authCredential
+    }
+    
+    private func oldMailboxPassword() -> String? {
+        guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
+            let key = keymaker.mainKey else
+        {
+            return nil
+        }
+        let locked = Locked<String>(encryptedValue: cypherBits)
+        return try? locked.unlock(with: key)
+    }
+    
+    private func oldUserName() -> String? {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
+        {
+            return nil
+        }
+        
+        let locked = Locked<String>(encryptedValue: cypherData)
+        return try? locked.unlock(with: mainKey)
     }
     
     func tryRestore() {
@@ -227,54 +253,61 @@ class UsersManager : Service {
             return
         }
         
-        
-        //    class func fetchFromKeychain() -> AuthCredential? {
-        //        guard let mainKey = keymaker.mainKey,
-        //            let encryptedData = KeychainWrapper.keychain.data(forKey: Key.keychainStore),
-        //            case let locked = Locked<Data>(encryptedValue: encryptedData),
-        //            let data = try? locked.unlock(with: mainKey),
-        //            let authCredential = AuthCredential.unarchive(data: data as NSData) else
-        //        {
-        //            return nil
-        //        }
-        //
-        //        return authCredential
-        //    }
-        
-        guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
-            return
-        }
-        let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
-        guard let auths = try? authlocked.unlock(with: mainKey) else {
-            return
-        }
-        
-        guard let encryptedUsersData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.usersInfo) else {
-            return
-        }
-        
-        let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
-        guard let userinfos = try? userslocked.unlock(with: mainKey)  else {
-            return
-        }
-        
-        guard userinfos.count == auths.count else {
-            return
-        }
-        
-        //TODO:: temp
-        if users.count > 0 {
-            return
-        }
-        
-        for (auth, user) in zip(auths, userinfos) {
-            let session = auth.sessionID
+        if let oldAuth = oldAuthFetch(),  let user = oldUserInfo() {
+            let session = oldAuth.sessionID
             let userID = user.userId
             let apiConfig = serverConfig
             let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
-            let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth)
             newUser.delegate = self
+            if let pwd = oldMailboxPassword() {
+                oldAuth.password = pwd
+            }
+            if let userName = oldUserName() {
+                oldAuth.userName = userName
+            }
+            
+            user.twoFactor = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)
+            user.passwordMode = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode)
             users.append(newUser)
+            self.save()
+            //Then clear lagcy
+        } else {
+            guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
+                return
+            }
+            let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
+            guard let auths = try? authlocked.unlock(with: mainKey) else {
+                return
+            }
+            
+            guard let encryptedUsersData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.usersInfo) else {
+                return
+            }
+            
+            let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
+            guard let userinfos = try? userslocked.unlock(with: mainKey)  else {
+                return
+            }
+            
+            guard userinfos.count == auths.count else {
+                return
+            }
+            
+            //TODO:: temp
+            if users.count > 0 {
+                return
+            }
+            
+            for (auth, user) in zip(auths, userinfos) {
+                let session = auth.sessionID
+                let userID = user.userId
+                let apiConfig = serverConfig
+                let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+                let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+                newUser.delegate = self
+                users.append(newUser)
+            }
         }
         
 //        let authList = self.users.compactMap{ $0.auth }
@@ -295,10 +328,7 @@ class UsersManager : Service {
         
         // then try the older version
         
-        
-        
         // clean up
-        
         
 //        // MARK: - Private variables
 //

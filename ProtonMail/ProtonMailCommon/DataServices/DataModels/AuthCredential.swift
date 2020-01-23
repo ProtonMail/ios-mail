@@ -55,7 +55,7 @@ final class AuthCredential: NSObject, NSCoding {
     private var expiration: Date
     
     // userID this will not change
-    private var userID: String = ""
+    var userID: String = ""
     
     // the login private key, ususally it is first userkey
     public var privateKey : String?

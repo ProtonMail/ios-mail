@@ -44,6 +44,7 @@ class SignInManager: Service {
                 onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
                 return
             }
+            auth.userName = username
             self.usersManager.add(auth: auth, user: user)//TODO:: fix me
             guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
                 UserTempCachedStatus.restore()
