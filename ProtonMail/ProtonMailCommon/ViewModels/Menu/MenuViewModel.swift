@@ -55,7 +55,7 @@ protocol MenuViewModel : AnyObject {
     func label(at : Int) -> Label?
     func count(by labelID: String, userID: String?) -> Int
     func user(at : Int) -> UserManager?
-    func currentUser() -> UserManager?
+    var currentUser: UserManager? { get }
     func item(inboxes at: Int ) ->MenuItem
     func item(others at: Int ) ->MenuItem
     

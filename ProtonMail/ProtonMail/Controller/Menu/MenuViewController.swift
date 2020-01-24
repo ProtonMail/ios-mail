@@ -146,14 +146,14 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     // MARK: - Methods
     
     func updateEmailLabel() {
-        guard let user = self.viewModel.currentUser() else {
+        guard let user = self.viewModel.currentUser else {
             return
         }
         emailLabel.text = user.defaultEmail
     }
     
     func updateDisplayNameLabel() {
-        guard let user = self.viewModel.currentUser() else {
+        guard let user = self.viewModel.currentUser else {
             return
         }
         let displayName = user.defaultDisplayName

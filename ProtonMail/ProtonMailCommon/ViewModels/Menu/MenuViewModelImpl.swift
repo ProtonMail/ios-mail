@@ -65,6 +65,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func updateCurrent(row: Int) {
+        self.currentUser = self.usersManager.user(at: row)
         self.usersManager.active(index: row)
     }
     
@@ -86,28 +87,28 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    lazy var labelDataService : LabelsDataService = self.usersManager.firstUser!.labelService
+    lazy var labelDataService : LabelsDataService = self.currentUser!.labelService
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
     }
     
-    func currentUser() -> UserManager? {
+    lazy var currentUser: UserManager? = {
         return self.usersManager.firstUser
-    }
+    }()
     
     func updateMenuItems() {
         otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
-        if let user = self.currentUser(), !user.sevicePlanService.isIAPAvailable {
+        if let user = self.currentUser, !user.sevicePlanService.isIAPAvailable {
             otherItems = otherItems.filter { $0 != .servicePlan }
         }
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.labelDataService = self.usersManager.firstUser!.labelService
+        self.labelDataService = self.currentUser!.labelService
         self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {

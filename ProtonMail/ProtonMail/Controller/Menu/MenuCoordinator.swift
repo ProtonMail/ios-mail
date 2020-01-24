@@ -144,8 +144,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         //Example of deeplink without segue
         var nextVM : MailboxViewModel?
         
-        let users : UsersManager = self.services.get()
-        let user = users.firstUser!
+        let user = self.viewModel.currentUser!
         let labelService = user.labelService
         
         if let mailbox = Message.Location(rawValue: labelID) {
@@ -233,8 +232,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             if let index = sender as? Message.Location {
                 label = index
             }
-            let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser!
+            let user = self.viewModel.currentUser!
             let viewModel = MailboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox
@@ -248,8 +246,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 return false
             }
             sharedVMService.mailbox(fromMenu: next)
-            let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser!
+            let user = self.viewModel.currentUser!
             
             var viewModel : MailboxViewModel = MailboxViewModelImpl(label: Message.Location.inbox, userManager: user, pushService: services.get())
             
@@ -271,8 +268,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             guard let next = navigation else {
                 return false
             }
-            let usersManager : UsersManager = sharedServices.get()
-            let user = usersManager.firstUser!
+            let user = self.viewModel.currentUser!
             let vm = SettingsDeviceViewModelImpl(user: user)
             guard let settings = SettingsDeviceCoordinator(rvc: rvc, nav: next,
                                                            vm: vm, services: self.services, scene: nil) else {
