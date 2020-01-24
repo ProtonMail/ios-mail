@@ -38,9 +38,10 @@ class SearchViewController: ProtonMailViewController {
     fileprivate let kCellIdentifier: String = "SearchedCell"
     fileprivate let kSegueToMessageDetailController: String = "toMessageDetailViewController"
     
+    internal var user: UserManager!
+    
     private lazy var replacingEmails : [Email] = {
-        let users : UsersManager = sharedServices.get() //TODO:: fix me
-        return users.firstUser!.contactService.allEmails()
+        return user.contactService.allEmails()
     }()
     
     // TODO: need better UI solution for this progress bar
@@ -273,13 +274,6 @@ class SearchViewController: ProtonMailViewController {
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
-        
-        
-        //TODO:: move this to viewMdoel
-        let users : UsersManager = sharedServices.get()
-        let user = users.firstUser!
-        
-        
         let service = user.messageService
         service.search(query, page: pageToLoad) { (messageBoxes, error) -> Void in
             DispatchQueue.main.async {
@@ -333,9 +327,6 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageContainerViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                //TODO:: fix me this need to be improved
-                let users : UsersManager = sharedServices.get()
-                let user = users.firstUser!
                 messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user))
                 messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
@@ -387,9 +378,6 @@ extension SearchViewController: UITableViewDelegate {
             return
         }
         
-        let users : UsersManager = sharedServices.get()
-        let user = users.firstUser!
-        //TODO:: fix me
         // open drafts in Composer
         let viewModel = ContainableComposeViewModel(msg: message,
                                                     action: .openDraft,

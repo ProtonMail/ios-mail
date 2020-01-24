@@ -1069,6 +1069,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.setupRightButtons(editingMode)
     }
  
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // TODO: refactor SearchViewController to have Coordinator and properly inject this hunk
+        if let search = (segue.destination as? UINavigationController)?.topViewController as? SearchViewController {
+            search.user = self.viewModel.user
+        }
+        super.prepare(for: segue, sender: sender)
+    }
 }
 
 extension MailboxViewController : LablesViewControllerDelegate {
@@ -1278,8 +1286,7 @@ extension MailboxViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.viewModel.rowCount(section: section)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {        return self.viewModel.rowCount(section: section)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let rIndex = self.viewModel.ratingIndex {
