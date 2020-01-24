@@ -54,7 +54,9 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     internal weak var navigationController: UINavigationController?
     var viewController: MessageContainerViewController?
     var configuration: ((MessageContainerViewController) -> ())?
+    
     var services: ServiceFactory = ServiceFactory.default
+    let user: UserManager
     
     init(nav: UINavigationController, viewModel: MessageContainerViewModel, services: ServiceFactory) {
         self.navigationController = nav
@@ -62,6 +64,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         let vc = UIStoryboard.Storyboard.message.storyboard.make(VC.self)
         self.viewController = vc
         self.controller = vc
+        self.user = viewModel.user
         self.viewController?.set(viewModel: viewModel)
     }
     
@@ -72,7 +75,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .composerDraft:
             if let messageID = path.value,
                 let nav = self.navigationController,
-                case let user = sharedServices.get(by: UsersManager.self).firstUser!,
                 let message = user.messageService.fetchMessages(withIDs: [messageID]).first
             {
                 let viewModel = ContainableComposeViewModel(msg: message, action: .openDraft, msgService: user.messageService, user: user)
@@ -95,6 +97,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     
     init(controller: MessageContainerViewController) {
         self.controller = controller
+        self.user = controller.viewModel.user
     }
     
     deinit {
@@ -155,7 +158,9 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         }
         
         childController.set(viewModel: childViewModel)
-        childController.set(coordinator: .init(controller: childController, enclosingScroller: self.controller, services: self.services) )
+        childController.set(coordinator: .init(controller: childController,
+                                               enclosingScroller: self.controller,
+                                               user: self.controller.viewModel.user) )
         return childController
     }
     
@@ -239,8 +244,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
                 assert(false, "Wrong root view controller in Compose storyboard")
                 return
             }
-            let users : UsersManager = services.get()
-            let user = users.firstUser!
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: ContainableComposeViewModel(msg: messages.first!,
                                                                                                        action: tapped,
                                                                                                        msgService: user.messageService,
@@ -250,7 +253,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case .some(.labels):
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
-            let user = self.services.get(by: UsersManager.self).firstUser!
             popup.viewModel = LabelApplyViewModelImpl(msg: messages, labelService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             popup.delegate = self
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
@@ -259,7 +261,6 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             guard let messages = sender as? [Message] else { return }
             let popup = segue.destination as! LablesViewController
             popup.delegate = self
-            let user = self.services.get(by: UsersManager.self).firstUser!
             popup.viewModel = FolderApplyViewModelImpl(msg: messages, folderService: user.labelService, messageService: user.messageService, apiService: user.apiService)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
         case .some(.toTroubleshoot):

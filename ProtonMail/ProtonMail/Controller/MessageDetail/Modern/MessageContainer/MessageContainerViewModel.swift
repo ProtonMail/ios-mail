@@ -60,7 +60,7 @@ class MessageContainerViewModel: TableContainerViewModel {
     private var attachmentsObservation: [NSKeyValueObservation] = []
     
     private let messageService : MessageDataService
-    private let user: UserManager
+    internal let user: UserManager
     
     // model - viewModel connections
     @objc private(set) dynamic var thread: [MessageViewModel]

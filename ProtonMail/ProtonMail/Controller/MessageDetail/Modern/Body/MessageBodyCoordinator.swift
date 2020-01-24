@@ -28,14 +28,15 @@ class MessageBodyCoordinator {
     private weak var controller: MessageBodyViewController!
     private let kToComposerSegue : String    = "toCompose"
     
-    var services: ServiceFactory
+    let user: UserManager
     
     init(controller: MessageBodyViewController,
-         enclosingScroller: ScrollableContainer, services: ServiceFactory)
+         enclosingScroller: ScrollableContainer,
+         user: UserManager)
     {
         self.controller = controller
         self.controller.enclosingScroller = enclosingScroller
-        self.services = services
+        self.user = user
     }
     
     internal func open(url originalURL: URL) {
@@ -59,8 +60,6 @@ class MessageBodyCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue {
-            let users : UsersManager = self.services.get()
-            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,

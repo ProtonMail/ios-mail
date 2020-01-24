@@ -28,9 +28,11 @@ class MessageHeaderViewCoordinator {
     private let kToAddContactSegue : String  = "toAddContact"
     
     private weak var controller: MessageHeaderViewController!
+    private let user: UserManager
     
     init(controller: MessageHeaderViewController) {
         self.controller = controller
+        self.user = controller.viewModel.user
     }
     
     func recipientView(at cell: RecipientCell, arrowClicked arrow: UIButton, model: ContactPickerModelProtocol) {
@@ -69,11 +71,9 @@ class MessageHeaderViewCoordinator {
     
     internal func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kToComposerSegue, let contact = sender as? ContactVO {
-            let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser!
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
-                                                        msgService: user.messageService,
-                                                        user: user)
+                                                        msgService: self.user.messageService,
+                                                        user: self.user)
             viewModel.addToContacts(contact)
             
             guard let navigator = segue.destination as? UINavigationController,

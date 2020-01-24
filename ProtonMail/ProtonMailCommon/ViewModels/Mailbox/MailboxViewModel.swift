@@ -51,6 +51,7 @@ extension MailboxViewModel {
 class MailboxViewModel {
     internal let labelID : String
     /// message service
+    internal let user: UserManager
     internal let messageService : MessageDataService
     private let pushService : PushNotificationService
     /// fetch controller
@@ -67,6 +68,7 @@ class MailboxViewModel {
     ///   - msgService: service instance
     init(labelID : String, userManager: UserManager, pushService: PushNotificationService) {
         self.labelID = labelID
+        self.user = userManager
         self.messageService = userManager.messageService
         self.contactService = userManager.contactService
         self.pushService = pushService
