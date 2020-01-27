@@ -121,6 +121,15 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         return .lightContent
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // TODO: refactor ReportBugsViewController to have Coordinator and properly inject this hunk
+        if let reporter = (segue.destination as? UINavigationController)?.topViewController as? ReportBugsViewController {
+            reporter.user = self.viewModel.currentUser
+        }
+        super.prepare(for: segue, sender: sender)
+    }
+
+    
     ///
     @IBAction func usersClicked(_ sender: Any) {
         let show = self.viewModel.showUsers()
@@ -243,7 +252,7 @@ extension MenuViewController: UITableViewDelegate {
             } else if item == .settings {
                 self.coordinator?.go(to: .settings)
             } else if item == .bugs {
-                self.coordinator?.go(to: .bugsPop)
+                self.coordinator?.go(to: .bugs)
             } else if item == .contacts {
                 self.coordinator?.go(to: .contacts)
             } else if item == .feedback {

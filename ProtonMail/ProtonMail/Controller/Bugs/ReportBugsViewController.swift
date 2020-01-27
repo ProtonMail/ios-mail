@@ -25,7 +25,7 @@ import Foundation
 import MBProgressHUD
 
 class ReportBugsViewController: ProtonMailViewController {
-    
+    var user: UserManager!
     fileprivate let bottomPadding: CGFloat = 30.0
     
     fileprivate var sendButton: UIBarButtonItem!
@@ -106,8 +106,7 @@ class ReportBugsViewController: ProtonMailViewController {
         let v : UIView = self.navigationController?.view ?? self.view
         MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
-        let users : UsersManager = sharedServices.get()
-        let user = users.firstUser
+
         let bugService = 
         BugDataService(api: APIService.shared).reportBug(text, completion: { error in
             MBProgressHUD.hide(for: self.view, animated: true)
