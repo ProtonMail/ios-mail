@@ -315,7 +315,9 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         }
         let receipt = try self.readReceipt()
         let planId = try servicePlan(for: transaction.payment.productIdentifier)
-        let user = sharedServices.get(by: UsersManager.self).firstUser!
+        guard let user = sharedServices.get(by: UsersManager.self).firstUser else {
+            throw Errors.noActiveUsernameInUserDataService
+        }
         
         do {  // payments/subscription
             let serverUpdateApi = PostRecieptRequest(api: user.apiService, reciept: receipt, andActivatePlanWithId: planId)
@@ -379,8 +381,8 @@ extension StoreKitManager {
     }
     
     func readReceipt() throws -> String {
-        guard let receiptUrl = Bundle.main.appStoreReceiptURL/*,
-            !receiptUrl.lastPathComponent.contains("sandbox") */ else
+        guard let receiptUrl = Bundle.main.appStoreReceiptURL,
+            !receiptUrl.lastPathComponent.contains("sandbox") else
         {
             throw Errors.sandboxReceipt
         }
@@ -393,7 +395,9 @@ extension StoreKitManager {
     }
     
     func servicePlan(for productId: String) throws -> String {
-        let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser!.sevicePlanService
+        guard let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser?.sevicePlanService else {
+            throw Errors.noActiveUsernameInUserDataService
+        }
         guard let plan = ServicePlan(storeKitProductId: productId),
             let details = servicePlanService.detailsOfServicePlan(named: plan.rawValue),
             let planId = details.iD else
