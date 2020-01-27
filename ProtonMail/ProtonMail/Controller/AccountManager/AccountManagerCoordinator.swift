@@ -70,12 +70,6 @@ class AccountManagerCoordinator: DefaultCoordinator {
         self.viewController?.set(coordinator: self)
     }
     
-    private func toPlan() {
-        let coordinator = MenuCoordinator()
-        coordinator.controller = self.viewController
-        coordinator.go(to: .serviceLevel, creating: StorefrontCollectionViewController.self)
-    }
-    
     func follow(_ deepLink: DeepLink) {
         if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
             switch dest {

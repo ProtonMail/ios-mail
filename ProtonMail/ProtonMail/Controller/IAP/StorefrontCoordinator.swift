@@ -22,40 +22,68 @@
     
 
 import UIKit
+import SWRevealViewController
 
 class StorefrontCoordinator: PushCoordinator {
+    var configuration: ((StorefrontCollectionViewController) -> ())?
+    
     var services: ServiceFactory = sharedServices
     
     typealias VC = StorefrontCollectionViewController
     weak var viewController: StorefrontCollectionViewController?
-    weak var navigationController: UINavigationController?
-    var configuration: ((VC)->Void)?
+    var navigationController: UINavigationController?
+    weak var rvc: SWRevealViewController?
+    var user: UserManager
     
-    init(navigation: UINavigationController,
-         config: @escaping (VC)->Void )
-    {
+    init(navigation: UINavigationController, user: UserManager) {
         self.navigationController = navigation
-        self.configuration = config
-        self.viewController = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
+        let vc = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
+        self.viewController = vc
+        self.user = user
+    }
+    
+    init(rvc: SWRevealViewController?, user: UserManager) {
+        self.rvc = rvc
+        let vc = UIStoryboard(name: "ServiceLevel", bundle: .main).make(StorefrontCollectionViewController.self)
+        self.viewController = vc
+        self.user = user
+        self.navigationController = UINavigationController(rootViewController: vc)
     }
     
     func go(to nextPlan: ServicePlan) {
         guard let navigationController = self.navigationController else { return }
-        let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let user = self.services.get(by: UsersManager.self).firstUser!
-            let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, user: user.userInfo)
-            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
-        }
+        let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
+        let user = self.services.get(by: UsersManager.self).firstUser!
+        let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, user: user.userInfo)
+        nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
+
         nextCoordinator.start()
     }
     
     func goToBuyMoreCredits(for subscription: ServicePlanSubscription) {
         guard let navigationController = self.navigationController else { return }
-        let nextCoordinator = StorefrontCoordinator(navigation: navigationController) { controller in
-            let user = self.services.get(by: UsersManager.self).firstUser!
-            let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, user: user.userInfo)
-            controller.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
-        }
+        let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
+        let user = self.services.get(by: UsersManager.self).firstUser!
+        let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, user: user.userInfo)
+        nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
+
         nextCoordinator.start()
+    }
+    
+    private var observation: NSKeyValueObservation!
+    func start() {
+        self.viewController?.set(coordinator: self)
+        if self.navigationController != nil, self.rvc != nil {
+            if let child = self.viewController {
+                let menuButton = UIBarButtonItem(image: UIImage(named: "hamburger")!, style: .plain, target: nil, action: nil)
+                observation = self.navigationController?.observe(\UINavigationController.parent) { (controller, change) in
+                    ProtonMailViewController.setup(child, menuButton, true)
+                    self.observation = nil
+                }
+            }
+            self.rvc?.pushFrontViewController(self.navigationController, animated: true)
+        } else if let vc = self.viewController {
+            navigationController?.pushViewController(vc, animated: animated)
+        }
     }
 }
