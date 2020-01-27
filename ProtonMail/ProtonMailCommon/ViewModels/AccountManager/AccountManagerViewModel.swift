@@ -57,51 +57,21 @@ class AccountManagerViewModel {
     
     //menu sections
     private var sections : [AccountSection] = [.users, .add]
-    
-    
-    //fetch request result
-    private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
-    
+
     private var showingUsers: Bool = false
     
     //
     let usersManager : UsersManager
     
-    //
-    let labelDataService : LabelsDataService
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
-        self.labelDataService = self.usersManager.firstUser!.labelService
     }
     
     func signOut() {
          self.usersManager.loggedOutAll()
     }
-//    func updateMenuItems() {
-//        otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
-//        if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
-//            otherItems = otherItems.filter { $0 != .lockapp }
-//        }
-//        if !ServicePlanDataService.shared.isIAPAvailable {
-//            otherItems = otherItems.filter { $0 != .servicePlan }
-//        }
-//    }
-    
-    func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
-        self.fetchedLabels?.delegate = delegate
-        if let fetchedResultsController = fetchedLabels {
-            do {
-                try fetchedResultsController.performFetch()
-            } catch let ex as NSError {
-                PMLog.D("error: \(ex)")
-            }
-        }
-        ///TODO::fixme not necessary
-        self.labelDataService.fetchLabels()
-    }
-    
+
     func sectionCount() -> Int {
         return self.sections.count
     }
@@ -123,51 +93,5 @@ class AccountManagerViewModel {
             return 1
         }
     }
-//
-//    func othersCount() -> Int {
-//        return self.otherItems.count
-//    }
-    
-    func labelsCount() -> Int {
-        return fetchedLabels?.numberOfRows(in: 0) ?? 0
-    }
-    
-//    func item(inboxes at: Int) -> MenuItem {
-//        if at < self.inboxesCount() {
-//            return inboxItems[at]
-//        }
-//        return .inbox
-//    }
-    
-//    func item(others at: Int) -> MenuItem {
-//        if at < self.othersCount() {
-//            return otherItems[at]
-//        }
-//        return .settings
-//    }
-//
-//    func label(at: Int) -> Label? {
-//        guard let count = self.fetchedLabels?.fetchedObjects?.count else {
-//            return nil
-//        }
-//        if at < count {
-//            return self.fetchedLabels?.object(at: IndexPath(row: at, section: 0)) as? Label
-//        }
-//        return nil
-//    }
-    
-//    func find(section: MenuSection, item: MenuItem) -> IndexPath {
-//        let s = sections.firstIndex(of: section) ?? 0
-//        var r = 0
-//        switch section {
-//        case .inboxes:
-//            r = inboxItems.firstIndex(of: item) ?? 0
-//        case .others:
-//            r = otherItems.firstIndex(of: item) ?? 0
-//        default:
-//            break
-//        }
-//        return IndexPath(row: r, section: s)
-//    }
     
 }
