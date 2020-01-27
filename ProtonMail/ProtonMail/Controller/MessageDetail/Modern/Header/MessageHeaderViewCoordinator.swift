@@ -88,7 +88,7 @@ class MessageHeaderViewCoordinator {
         } else if segue.identifier == kToAddContactSegue {
             if let contact = sender as? ContactVO {
                 let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-                sharedVMService.contactAddViewModel(addContactViewController, contactVO: contact)
+                sharedVMService.contactAddViewModel(addContactViewController, user: self.user, contactVO: contact)
             }
         }
     }

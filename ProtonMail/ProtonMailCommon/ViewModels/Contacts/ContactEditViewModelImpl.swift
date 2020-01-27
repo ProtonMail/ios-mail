@@ -51,8 +51,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
     
-    init(c : Contact?) {
-        super.init()
+    init(c : Contact?, user: UserManager) {
+        super.init(user: user)
         self.contact = c
         self.prepareContactData()
         self.prepareContactGroupData()
@@ -528,10 +528,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 origvCard2 = PMNIVCard.createInstance()
             }
             
-            //TODO:: fix me
-            let users : UsersManager = sharedServices.get()
-            let user = users.firstUser!
-            let userInfo = user.userInfo
+            let userInfo = self.user.userInfo
             
             guard let userkey = userInfo.firstUserKey() else {
                 return; //with error

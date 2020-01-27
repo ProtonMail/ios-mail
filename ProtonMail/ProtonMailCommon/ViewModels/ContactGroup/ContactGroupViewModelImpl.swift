@@ -29,6 +29,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     private var isFetching: Bool = false
     
+    private(set) var user: UserManager
     private let contactGroupService: ContactGroupsDataService
     private let labelDataService: LabelsDataService
     private let messageService: MessageDataService
@@ -45,10 +46,11 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(contactGroup: ContactGroupsDataService, labelDataService: LabelsDataService, messageService: MessageDataService) {
-        self.contactGroupService = contactGroup
-        self.labelDataService = labelDataService
-        self.messageService = messageService
+    init(user: UserManager) {
+        self.user = user
+        self.contactGroupService = user.contactGroupService
+        self.labelDataService = user.labelService
+        self.messageService = user.messageService
     }
     
 

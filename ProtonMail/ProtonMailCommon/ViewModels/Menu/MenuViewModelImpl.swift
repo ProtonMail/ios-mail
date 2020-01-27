@@ -93,6 +93,7 @@ class MenuViewModelImpl : MenuViewModel {
         self.usersManager = usersManager
     }
     
+    // user at the moment of creation of this MenuViewModel instance
     lazy var currentUser: UserManager? = {
         return self.usersManager.firstUser
     }()

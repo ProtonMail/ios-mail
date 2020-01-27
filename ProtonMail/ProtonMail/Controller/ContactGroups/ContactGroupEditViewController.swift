@@ -193,6 +193,7 @@ class ContactGroupEditViewController: ProtonMailViewController, ViewModelProtoco
             let contactGroupSelectEmailViewController = segue.destination as! ContactGroupSelectEmailViewController
             let data = sender as! ContactGroupEditViewController
             sharedVMService.contactGroupSelectEmailViewModel(contactGroupSelectEmailViewController,
+                                                             user: self.viewModel.user,
                                                              selectedEmails: data.viewModel.getEmails(),
                                                              refreshHandler: refreshHandler)
         } else {

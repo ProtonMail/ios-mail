@@ -350,16 +350,17 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
             let contactGroup = sender as! Label
             sharedVMService.contactGroupDetailViewModel(contactGroupDetailViewController,
+                                                        user: self.viewModel.user,
                                                         groupID: contactGroup.labelID,
                                                         name: contactGroup.name,
                                                         color: contactGroup.color,
                                                         emailIDs: (contactGroup.emails as? Set<Email>) ?? Set<Email>())
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController)
+            sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
         } else if (segue.identifier == kAddContactGroupSugue) {
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
             self.setPresentationStyleForSelfController(self,
@@ -371,9 +372,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             {
                 return
             }
-            //TODO:: fix me
-            let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser!
+            let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
             if let result = sender as? (String, String) {
                 let contactGroupVO = ContactGroupVO.init(ID: result.0, name: result.1)

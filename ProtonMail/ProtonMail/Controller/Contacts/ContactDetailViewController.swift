@@ -272,15 +272,14 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let contact = sender as! Contact
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             addContactViewController.delegate = self
-            sharedVMService.contactEditViewModel(addContactViewController, contact: contact)
+            sharedVMService.contactEditViewModel(addContactViewController, user: self.viewModel.user, contact: contact)
         } else if (segue.identifier == kToComposeSegue) {
             guard let nav = segue.destination as? UINavigationController,
                 let next = nav.viewControllers.first as? ComposeContainerViewController else
             {
                 return
             }
-            let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser!
+            let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
                                                         user: user)

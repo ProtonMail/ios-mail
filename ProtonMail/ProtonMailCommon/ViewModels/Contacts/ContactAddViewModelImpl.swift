@@ -43,14 +43,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: true)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var profilePicture: UIImage? = nil
-    
-    override init() {
-        super.init()
+
+    override init(user: UserManager) {
+        super.init(user: user)
         self.contact = nil
     }
     
-    init(contactVO : ContactVO) {
-        super.init()
+    init(contactVO : ContactVO, user: UserManager) {
+        super.init(user: user)
         self.contact = nil
         
         let email = self.newEmail()
@@ -202,7 +202,6 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
-        let user = sharedServices.get(by: UsersManager.self).firstUser!
         let mailboxPassword = user.mailboxPassword
         guard let userkey = user.userInfo.firstUserKey(),
             case let authCredential = user.authCredential else

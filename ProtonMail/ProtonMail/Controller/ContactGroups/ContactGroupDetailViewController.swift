@@ -127,6 +127,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             if let sender = sender as? ContactGroupDetailViewController,
                 let viewModel = sender.viewModel {
                 sharedVMService.contactGroupEditViewModel(contactGroupEditViewController,
+                                                          user: self.viewModel.user,
                                                           state: .edit,
                                                           groupID: viewModel.getGroupID(),
                                                           name: viewModel.getName(),
@@ -143,8 +144,7 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
             {
                 return
             }
-            let users : UsersManager = ServiceFactory.default.get()
-            let user = users.firstUser!
+            let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,

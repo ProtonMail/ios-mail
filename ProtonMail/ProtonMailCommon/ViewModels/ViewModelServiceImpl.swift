@@ -71,33 +71,29 @@ class ViewModelServiceImpl: ViewModelService {
         }
     }
     //contacts
-    override func contactsViewModel(_ vmp: ViewModelProtocolBase) {
+    override func contactsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactsViewModelImpl())
+        vmp.setModel(vm: ContactsViewModelImpl(user: user))
     }
     
-    override func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, contact: Contact!) {
+    override func contactDetailsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
         activeViewControllerNew = vmp
-        
-        // TODO:: fixme
-        let usersManager : UsersManager = sharedServices.get()
-        let user = usersManager.firstUser!
-        vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact, contact: user.contactService))
+        vmp.setModel(vm: ContactDetailsViewModelImpl(c: contact, user: user))
     }
     
-    override func contactAddViewModel(_ vmp: ViewModelProtocolBase) {
+    override func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactAddViewModelImpl())
+        vmp.setModel(vm: ContactAddViewModelImpl(user: user))
     }
     
-    override func contactAddViewModel(_ vmp: ViewModelProtocolBase, contactVO: ContactVO!) {
+    override func contactAddViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contactVO: ContactVO!) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactAddViewModelImpl(contactVO: contactVO))
+        vmp.setModel(vm: ContactAddViewModelImpl(contactVO: contactVO, user: user))
     }
     
-    override func contactEditViewModel(_ vmp: ViewModelProtocolBase, contact: Contact!) {
+    override func contactEditViewModel(_ vmp: ViewModelProtocolBase, user: UserManager, contact: Contact!) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactEditViewModelImpl(c: contact))
+        vmp.setModel(vm: ContactEditViewModelImpl(c: contact, user: user))
     }
     
     override func contactTypeViewModel(_ vmp : ViewModelProtocolBase, type: ContactEditTypeInterface) {
@@ -106,48 +102,51 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactSelectContactGroupsViewModel(_ vmp: ViewModelProtocolBase,
+                                                      user: UserManager,
                                                       groupCountInformation: [(ID: String, name: String, color: String, count: Int)],
                                                       selectedGroupIDs: Set<String>,
                                                       refreshHandler: @escaping (Set<String>) -> Void) {
         activeViewControllerNew = vmp
-        //TODO:: fix me
-//        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(groupCountInformation: groupCountInformation,
-//                                                             selectedGroupIDs: selectedGroupIDs,
-//                                                             refreshHandler: refreshHandler))
+        vmp.setModel(vm: ContactGroupMutiSelectViewModelImpl(user: user,
+                                                             groupCountInformation: groupCountInformation,
+                                                             selectedGroupIDs: selectedGroupIDs,
+                                                             refreshHandler: refreshHandler))
     }
     
     // contact groups
-    override func contactGroupsViewModel(_ vmp: ViewModelProtocolBase) {
-        //activeViewControllerNew = vmp
-        //vmp.setModel(vm: ContactGroupsViewModelImpl())
-        //TODO:: fix me
+    override func contactGroupsViewModel(_ vmp: ViewModelProtocolBase, user: UserManager) {
+        activeViewControllerNew = vmp
+        vmp.setModel(vm: ContactGroupsViewModelImpl(user: user))
     }
     
     override func contactGroupDetailViewModel(_ vmp: ViewModelProtocolBase,
+                                              user: UserManager,
                                               groupID: String,
                                               name: String,
                                               color: String,
                                               emailIDs: Set<Email>) {
         activeViewControllerNew = vmp
-        vmp.setModel(vm: ContactGroupDetailViewModelImpl(groupID: groupID,
+        vmp.setModel(vm: ContactGroupDetailViewModelImpl(user: user,
+                                                         groupID: groupID,
                                                          name: name,
                                                          color: color,
                                                          emailIDs: emailIDs))
     }
     
     override func contactGroupEditViewModel(_ vmp : ViewModelProtocolBase,
+                                            user: UserManager,
                                             state: ContactGroupEditViewControllerState,
                                             groupID: String? = nil,
                                             name: String? = nil,
                                             color: String? = nil,
                                             emailIDs: Set<Email> = Set<Email>()) {
         activeViewControllerNew = vmp
-        //TODO::fix me
-//        vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state, cgroupService: ContactGroupsDataService,
-//                                                       groupID: groupID,
-//                                                       name: name,
-//                                                       color: color,
-//                                                       emailIDs: emailIDs))
+        vmp.setModel(vm: ContactGroupEditViewModelImpl(state: state,
+                                                       user: user,
+                                                       groupID: groupID,
+                                                       name: name,
+                                                       color: color,
+                                                       emailIDs: emailIDs))
     }
     
     override func contactGroupSelectColorViewModel(_ vmp: ViewModelProtocolBase,
@@ -159,13 +158,12 @@ class ViewModelServiceImpl: ViewModelService {
     }
     
     override func contactGroupSelectEmailViewModel(_ vmp: ViewModelProtocolBase,
+                                                   user: UserManager,
                                                    selectedEmails: Set<Email>,
                                                    refreshHandler: @escaping (Set<Email>) -> Void) {
         activeViewControllerNew = vmp
-        //TODO:: fix me
-        let users : UsersManager = sharedServices.get()
         vmp.setModel(vm: ContactGroupSelectEmailViewModelImpl(selectedEmails: selectedEmails,
-                                                              contactService: users.firstUser!.contactService,
+                                                              contactService: user.contactService,
                                                               refreshHandler: refreshHandler))
     }
     

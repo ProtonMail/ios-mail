@@ -56,9 +56,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .information,
                                                  .custom_field,
                                                  .notes]
-    init(c : Contact, contact: ContactDataService) {
-        self.contactService = contact
-        super.init()
+    init(c : Contact, user: UserManager) {
+        self.contactService = user.contactService
+        super.init(user: user)
         self.contact = c
         //        if paidUser() {
         typeSection = [.email_header,
@@ -162,10 +162,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     @discardableResult
     private func setupEmails() -> Promise<Void> {
         return firstly { () -> Promise<Void> in
-            //TODO:: fix me
-            let users : UsersManager = sharedServices.get()
-            let user = users.firstUser!
-            let userInfo = user.userInfo
+            let userInfo = self.user.userInfo
             
             //  origEmails
             let cards = self.contact.getCardData()

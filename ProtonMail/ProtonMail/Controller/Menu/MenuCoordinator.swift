@@ -282,7 +282,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
             guard let tabBarController = destination as? ContactTabBarViewController else {
                 return false
             }
-            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController, services: self.services)
+            let user = self.viewModel.currentUser!
+            let contacts = ContactTabBarCoordinator(rvc: rvc, vc: tabBarController, services: self.services, user: user)
             contacts.start()
         case .bugs, .feedbacks:
             ///those two types use the default segue

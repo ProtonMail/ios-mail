@@ -43,8 +43,10 @@ class ContactGroupDetailViewModelImpl: ContactGroupDetailViewModel {
     
     /// the contact group's email (in Array)
     var emailIDsArray: [Email]
+    private(set) var user: UserManager
     
-    init(groupID: String, name: String, color: String, emailIDs: Set<Email>) {
+    init(user: UserManager, groupID: String, name: String, color: String, emailIDs: Set<Email>) {
+        self.user = user
         self.groupID = groupID
         self.name = name
         self.color = color

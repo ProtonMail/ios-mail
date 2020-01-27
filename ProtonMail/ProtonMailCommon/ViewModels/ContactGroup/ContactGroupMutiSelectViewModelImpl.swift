@@ -39,21 +39,20 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
     
     private let contactGroupService: ContactGroupsDataService
     private let messageService: MessageDataService
-    
+    private(set) var user: UserManager
     /**
      Init the view model with state
      
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(contactGroupService:ContactGroupsDataService,
-         messageService: MessageDataService,
+    init(user: UserManager,
          groupCountInformation: [(ID: String, name: String, color: String, count: Int)]? = nil,
          selectedGroupIDs: Set<String>? = nil,
          refreshHandler: ((Set<String>) -> Void)? = nil) {
-        
-        self.contactGroupService = contactGroupService
-        self.messageService = messageService
+        self.user = user
+        self.contactGroupService = user.contactGroupService
+        self.messageService = user.messageService
         
         if let groupCountInformation = groupCountInformation {
             self.groupCountInformation = groupCountInformation

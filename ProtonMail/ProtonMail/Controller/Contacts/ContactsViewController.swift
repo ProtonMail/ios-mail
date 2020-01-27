@@ -167,14 +167,14 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         if (segue.identifier == kContactDetailsSugue) {
             let contactDetailsViewController = segue.destination as! ContactDetailViewController
             let contact = sender as? Contact
-            sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
+            sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact!)
         } else if (segue.identifier == "toCompose") {
         } else if (segue.identifier == kAddContactSugue) {
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController)
+            sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
         } else if (segue.identifier == kAddContactGroupSugue) {
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
         } else if segue.identifier == kSegueToImportView {
             let popup = segue.destination as! ContactImportViewController
             self.setPresentationStyleForSelfController(self,

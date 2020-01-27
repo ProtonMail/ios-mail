@@ -113,6 +113,7 @@ struct ContactGroupData
 }
 
 protocol ContactGroupEditViewModel {
+    var user: UserManager { get }
     // delegate
     var delegate: ContactGroupEditViewControllerDelegate? { get set }
     

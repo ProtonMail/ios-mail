@@ -29,14 +29,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     fileprivate var isSearching: Bool = false
     
-    //TODO:: fix me
-     var contactService : ContactDataService {
-        get {
-            let users : UsersManager = sharedServices.get()
-            return users.firstUser!.contactService
-        }
-    }
-    
+    lazy var contactService : ContactDataService = self.user.contactService
     
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()

@@ -120,8 +120,10 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
                                             .birthday]
     
     typealias ContactEditSaveComplete = ((_ error: NSError?) -> Void)
-
-    public init() { }
+    private(set) var user: UserManager
+    public init(user: UserManager) {
+        self.user = user
+    }
     
     func paidUser() -> Bool {
 //        if let role = sharedUserDataService.userInfo?.role, role > 0 {

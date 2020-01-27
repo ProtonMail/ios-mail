@@ -53,14 +53,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// for updating the ContactGroupEditViewController
     weak var delegate: ContactGroupEditViewControllerDelegate? = nil
     
-    
+    private(set) var user: UserManager
     var contactGroupService : ContactGroupsDataService
     
     /**
      Setup the view model
      */
     init(state: ContactGroupEditViewControllerState = .create,
-         cgroupService:ContactGroupsDataService,
+         user: UserManager,
          groupID: String? = nil,
          name: String?,
          color: String?,
@@ -73,7 +73,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                              name: name,
                                              color: color,
                                              emailIDs: emailIDs)
-        self.contactGroupService = cgroupService
+        self.user = user
+        self.contactGroupService = user.contactGroupService
         prepareEmails()
     }
     
