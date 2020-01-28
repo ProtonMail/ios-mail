@@ -44,7 +44,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     }
     
     var ID: String
-    var contactTitle: String
+    @objc var contactTitle: String
     var displayName: String?
     var displayEmail: String?
     var contactImage: UIImage?
@@ -70,7 +70,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    var contactSubtitle: String? {
+    @objc var contactSubtitle: String? {
         get {
             let count = self.contactCount
             if count <= 1 {

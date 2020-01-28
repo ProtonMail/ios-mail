@@ -72,12 +72,12 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    var contactTitle : String {
+    @objc var contactTitle : String {
         get {
             return title
         }
     }
-    var contactSubtitle : String? {
+    @objc var contactSubtitle : String? {
         get {
             return subtitle
         }
