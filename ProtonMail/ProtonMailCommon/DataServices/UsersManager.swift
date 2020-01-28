@@ -422,11 +422,12 @@ extension UsersManager {
         sharedUserDataService.signOut(true)
                 
         userCachedStatus.signOut()
-        sharedServices.get(by: UsersManager.self).users.forEach { user in
+        self.users.forEach { user in
             user.userService.signOut(true)
             user.messageService.launchCleanUpIfNeeded()
         }
-
+        self.users = []
+        self.save()
         
         // device level service
         keymaker.wipeMainKey()

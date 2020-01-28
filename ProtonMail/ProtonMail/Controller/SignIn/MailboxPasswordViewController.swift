@@ -169,7 +169,7 @@ class MailboxPasswordViewController: UIViewController {
     func decryptPassword() {
         let signInManager = sharedServices.get(by: SignInManager.self)
         let unlockManager = sharedServices.get(by: UnlockManager.self)
-        guard let auth = sharedServices.get(by: UsersManager.self).users.last?.auth else {
+        guard let auth = signInManager.auth else {
             unlockManager.delegate?.cleanAll()
             return
         }

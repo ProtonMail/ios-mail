@@ -26,6 +26,9 @@ import Keymaker
 
 class SignInManager: Service {
     let usersManager: UsersManager
+    private(set) var userInfo: UserInfo?
+    private(set) var auth: AuthCredential?
+    
     init(usersManager: UsersManager) {
         self.usersManager = usersManager
     }
@@ -45,15 +48,18 @@ class SignInManager: Service {
                 return
             }
             auth.userName = username
-            self.usersManager.add(auth: auth, user: user)//TODO:: fix me
+            self.auth = auth
+            self.userInfo = user
             guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
                 UserTempCachedStatus.restore()
-                afterSignIn()
+                requestMailboxPassword()
                 return
             }
             self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
         }
         
+        self.auth = nil
+        self.userInfo = nil
         // one time api and service
         let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
         let userService = UserDataService(check: false, api: service)
@@ -75,11 +81,14 @@ class SignInManager: Service {
     }
     
     internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
-        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword) else {
+        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }
         auth.udpate(password: mailboxPassword)
+        self.usersManager.add(auth: auth, user: userInfo)
+        self.auth = nil
+        self.userInfo = nil
         
         let user = self.usersManager.getUser(bySessionID: auth.sessionID)!
         let labelService = user.labelService
@@ -108,5 +117,4 @@ class SignInManager: Service {
             self.usersManager.clean() // this will happen if fetchUserInfo fails - maybe because of connectivity issues
         }
     }
-
 }
