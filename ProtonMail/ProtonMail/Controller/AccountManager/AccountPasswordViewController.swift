@@ -273,25 +273,22 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
         MBProgressHUD.showAdded(to: self.view, animated: true)
         SignInViewController.isComeBackFromMailbox = false
         self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode) { (result) in
+            MBProgressHUD.hide(for: self.view, animated: true)
             switch result {
             case .ask2fa:
-                MBProgressHUD.hide(for: self.view, animated: true)
                 self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
             case .error(let error):
                 PMLog.D("error: \(error)")
-                MBProgressHUD.hide(for: self.view, animated: true)
                 if !error.code.forceUpgrade {
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
                 }
             case .ok:
-                MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss()
             case .mbpwd:
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             case .exist:
-                MBProgressHUD.hide(for: self.view, animated: true)
                 let alertController = "The user already logged in".alertController()
                 alertController.addOKAction()
                 self.present(alertController, animated: true, completion: nil)

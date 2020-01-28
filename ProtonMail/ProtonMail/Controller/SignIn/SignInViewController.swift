@@ -476,13 +476,13 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         //                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
         // })
         self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode) { (result) in
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
             switch result {
             case .ask2fa:
-                MBProgressHUD.hide(for: self.view, animated: true)
                 self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
             case .error(let error):
                 PMLog.D("error: \(error)")
-                MBProgressHUD.hide(for: self.view, animated: true)
                 self.showLoginViews()
                 if !error.code.forceUpgrade {
                     let alertController = error.alertController()
@@ -490,12 +490,12 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
                     self.present(alertController, animated: true, completion: nil)
                 }
             case .ok:
-                MBProgressHUD.hide(for: self.view, animated: true)
+                break
             case .mbpwd:
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
             case .exist:
-                MBProgressHUD.hide(for: self.view, animated: true)
+                break
             }
         }
     }
