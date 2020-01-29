@@ -154,7 +154,8 @@ class MenuCoordinatorNew: DefaultCoordinator {
         if let setup = start, let dest = Setup(rawValue: setup.name) {
             switch dest {
             case .switchUser where setup.value != nil:
-                services.get(by: UsersManager.self).active(uid: setup.value!)
+                // this will setup currentUser to this MenuViewModel which will transfer it down the hierarchy
+                self.viewModel.currentUser = services.get(by: UsersManager.self).getUser(bySessionID: setup.value!)
             default: break
             }
             // and clear it
@@ -163,7 +164,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         
         // start will be cleared if it was a setup and then we'll need to take next node
         // or start will be already that first node if it was not a setup
-        if let path = start ?? deepLink.first, let dest = Destination(rawValue: path.name) {
+        if let path = start ?? deepLink.popFirst, let dest = Destination(rawValue: path.name) {
             switch dest {
             case .plan:
                 self.toPlan()

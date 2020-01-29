@@ -29,7 +29,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     typealias viewModelType = MenuViewModel
     typealias coordinatorType = MenuCoordinatorNew
     
-    private var viewModel : MenuViewModel!
+    private(set) var viewModel : MenuViewModel!
     private var coordinator : MenuCoordinatorNew?
     
     func set(viewModel: MenuViewModel) {

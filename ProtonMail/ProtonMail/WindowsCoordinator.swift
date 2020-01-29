@@ -245,7 +245,15 @@ class WindowsCoordinator: CoordinatorNew {
         let deeplink = DeepLink("Root")
         self.appWindow?.enumerateViewControllerHierarchy { controller, _ in
             guard let deeplinkable = controller as? Deeplinkable else { return }
+            
             deeplink.append(deeplinkable.deeplinkNode)
+            
+            // this will let us restore correct user starting from MenuViewModel and transfer it down the hierarchy later
+            // mostly relevant in multiuser environment when two or more windows with defferent users in each one
+            if let menu = controller as? MenuViewController, let user = menu.viewModel.currentUser {
+                let userNode = DeepLink.Node(name: MenuCoordinatorNew.Setup.switchUser.rawValue, value: user.auth.sessionID)
+                deeplink.append(userNode)
+            }
         }
         guard let _ = deeplink.popFirst, let _ = deeplink.head else {
             return nil
