@@ -103,10 +103,9 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
                                                                   isEncrypted: nil)
                 }
             }
-            //Fixme
-//            sharedContactDataService.lockerCheck(model: contactVO,
-//                                                 progress: self.checkingInProgress,
-//                                                 complete: complete)
+            self.delegate.lockerCheck(model: contactVO,
+                                             progress: self.checkingInProgress,
+                                             complete: complete)
         case .Checking:
             self.checkingInProgress()
         case .Checked:

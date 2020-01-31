@@ -94,6 +94,7 @@ class ComposeCoordinator : DefaultCoordinator {
             guard let group = vc.pickedGroup else {
                 return false
             }
+            destination.user = self.viewModel.getUser()
             destination.contactGroupName = group.contactTitle
             destination.selectedEmails = group.getSelectedEmailData()
             destination.callback = vc.pickedCallback

@@ -25,6 +25,11 @@ import Foundation
 
 class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
 {
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?) {
+        self.user.contactService.lockerCheck(model: model, progress: progress, complete: complete)
+    }
+    
+    private let user: UserManager
     private let groupName: String
     private let groupColor: String
     private var emailArray: [ContactGroupSubSelectionViewModelEmailInfomation]
@@ -43,7 +48,9 @@ class ContactGroupSubSelectionViewModelImpl: ContactGroupSubSelectionViewModel
      */
     init(contactGroupName: String,
          selectedEmails: [DraftEmailData],
+         user: UserManager,
          delegate: ContactGroupSubSelectionViewModelDelegate) {
+        self.user = user
         self.groupName = contactGroupName
         self.delegate = delegate
         
