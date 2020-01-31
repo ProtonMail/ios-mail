@@ -105,26 +105,26 @@ extension MessageAttachmentsViewModel {
                                     fail: @escaping (NSError)->Void)
     {
         let totalValue = attachment.fileSize.floatValue
-//        sharedMessageDataService.fetchAttachmentForAttachment(attachment, downloadTask: { taskOne in
-//            setProgress(0.0)
-//            //TODO:: fix me
-//            APIService.shared.getSession().setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
-//                guard taskOne == taskTwo else { return }
-//                let progress = Float(totalBytesWritten) / totalValue
-//                setProgress(progress)
-//            }
-//        }, completion: { _, url, networkingError in
-//            setProgress(1.0)
-//            guard networkingError == nil, let url = url else {
-//                fail(networkingError!)
-//                return
-//            }
-//            do {
-//                try success(attachment, url)
-//            } catch let error {
-//                fail(error as NSError)
-//            }
-//        })
+        let user = self.parentViewModel.user
+        user.messageService.fetchAttachmentForAttachment(attachment, downloadTask: { taskOne in
+            setProgress(0.0)
+            user.apiService.getSession().setDownloadTaskDidWriteDataBlock { _, taskTwo, _, totalBytesWritten, _ in
+                guard taskOne == taskTwo else { return }
+                let progress = Float(totalBytesWritten) / totalValue
+                setProgress(progress)
+            }
+        }, completion: { _, url, networkingError in
+            setProgress(1.0)
+            guard networkingError == nil, let url = url else {
+                fail(networkingError!)
+                return
+            }
+            do {
+                try success(attachment, url)
+            } catch let error {
+                fail(error as NSError)
+            }
+        })
     }
     
     private func decrypt(_ attachment: Attachment,
@@ -145,37 +145,21 @@ extension MessageAttachmentsViewModel {
         // FIXME: no way we should store this file cleartext any longer than absolutely needed
         let tempClearFileURL = FileManager.default.temporaryDirectoryUrl.appendingPathComponent(attachment.fileName.clear)
         
-
-        //         guard let passphrase = sharedUserDataService.mailboxPassword,
-        //     let decryptData =
-        //     sharedUserDataService.newSchema ?
-        //         try data.decryptAttachment(keyPackage: keyPackage,
-        //                                    userKeys: sharedUserDataService.userPrivateKeys,
-        //                                    passphrase: passphrase,
-        //                                    keys: sharedUserDataService.addressKeys) :
-        //         try data.decryptAttachment(keyPackage,
-        //                                    passphrase: passphrase,
-        //                                    privKeys: sharedUserDataService.addressPrivateKeys), //DONE
-        //     let _ = try? decryptData.write(to: tempClearFileURL, options: [.atomic]) else
-        // {
-        //     throw Errors._cant_decrypt_this_attachment
-        // }
-
+        let user = self.parentViewModel.user
+        guard let decryptData =
+            user.newSchema ?
+                try data.decryptAttachment(keyPackage: keyPackage,
+                                           userKeys: user.userPrivateKeys,
+                                           passphrase: user.mailboxPassword,
+                                           keys: user.addressKeys) :
+                try data.decryptAttachment(keyPackage,
+                                           passphrase: user.mailboxPassword,
+                                           privKeys: user.addressPrivateKeys), //DONE
+            let _ = try? decryptData.write(to: tempClearFileURL, options: [.atomic]) else
+        {
+            throw Errors._cant_decrypt_this_attachment
+        }
         
-//        guard let decryptData =
-//            sharedUserDataService.newSchema ?
-//                try data.decryptAttachment(keyPackage: keyPackage,
-//                                           userKeys: sharedUserDataService.userPrivateKeys,
-//                                           passphrase: sharedUserDataService.mailboxPassword!,
-//                                           keys: sharedUserDataService.addressKeys) :
-//                try data.decryptAttachment(keyPackage,
-//                                           passphrase: sharedUserDataService.mailboxPassword!,
-//                                           privKeys: sharedUserDataService.addressPrivateKeys), //DONE
-//            let _ = try? decryptData.write(to: tempClearFileURL, options: [.atomic]) else
-//        {
-//            throw Errors._cant_decrypt_this_attachment
-//        }
-//        
         clearfile(tempClearFileURL)
     }
 }
