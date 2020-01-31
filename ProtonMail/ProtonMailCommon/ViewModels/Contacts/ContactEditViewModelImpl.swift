@@ -59,12 +59,11 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     private func prepareContactGroupData() {
-        //TODO:: fixme
-//        let groups = sharedLabelsDataService.getAllLabels(of: .contactGroup)
-//
-//        for group in groups {
-//            contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
-//        }
+        let groups = self.user.labelService.getAllLabels(of: .contactGroup)
+
+        for group in groups {
+            contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
+        }
     }
     
     private func prepareContactData() {
@@ -776,10 +775,10 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     complete(error)
                 }
             }
-            //Fixme
-//            sharedContactDataService.update(contactID: c.contactID,
-//                                            cards: cards,
-//                                            completion: completion)
+            
+            self.user.contactService.update(contactID: c.contactID,
+                                            cards: cards,
+                                            completion: completion)
         } else {
             // pop error
         }
@@ -790,14 +789,14 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             complete(nil)
         } else {
             let contactID = contact?.contactID
-            //Fixme
-//            sharedContactDataService.delete(contactID: contactID!, completion: { (error) in
-//                if let err = error {
-//                    complete(err)
-//                } else {
-//                    complete(nil)
-//                }
-//            })
+            
+            self.user.contactService.delete(contactID: contactID!, completion: { (error) in
+                if let err = error {
+                    complete(err)
+                } else {
+                    complete(nil)
+                }
+            })
         }
     }
     
