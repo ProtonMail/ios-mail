@@ -48,7 +48,7 @@ protocol ContactPickerModelProtocol: class {
     var hasNonePM : Bool {get}
     func notes(type: Int) -> String
     func setType(type: Int)
-    func lockCheck(api: APIService, progress: LockCheckProgress, complete: LockCheckComplete?)
+    func lockCheck(api: APIService, contactService: ContactDataService, progress: LockCheckProgress, complete: LockCheckComplete?)
     
     
     func equals(_ others: ContactPickerModelProtocol) -> Bool

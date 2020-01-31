@@ -303,34 +303,33 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
      - Parameter progress: in progress ()-> Void
      - Parameter complete: complete ()-> Void
      **/
-    func lockCheck(api: APIService, progress: () -> Void, complete: LockCheckComplete?) {
+    func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         async {
             let getEmail = UserEmailPubKeys(email: self.email, api: api).run()
-            //Fixme
-//            let getContact = sharedContactDataService.fetch(byEmails: [self.email], context: nil)
-//            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-//                //internal emails
-//                if keyRes.recipientType == 1 {
-//                    if let contact = contacts.first, contact.firstPgpKey != nil {
-//                        self.pgpType = .internal_trusted_key
-//                    } else {
-//                        self.pgpType = .internal_normal
-//                    }
-//                } else {
-//                    if let contact = contacts.first, contact.firstPgpKey != nil {
-//                        if contact.encrypt {
-//                            self.pgpType = .pgp_encrypt_trusted_key
-//                        } else if contact.sign {
-//                            self.pgpType = .pgp_signed
-//                        }
-//                    }
-//                }
-//                complete?(nil, -1)
-//            }.catch({ (error) in
-//                PMLog.D(error.localizedDescription)
-//                complete?(nil, -1)
-//            })
+            let getContact = contactService.fetch(byEmails: [self.email], context: nil)
+            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+                //internal emails
+                if keyRes.recipientType == 1 {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        self.pgpType = .internal_trusted_key
+                    } else {
+                        self.pgpType = .internal_normal
+                    }
+                } else {
+                    if let contact = contacts.first, contact.firstPgpKey != nil {
+                        if contact.encrypt {
+                            self.pgpType = .pgp_encrypt_trusted_key
+                        } else if contact.sign {
+                            self.pgpType = .pgp_signed
+                        }
+                    }
+                }
+                complete?(nil, -1)
+            }.catch({ (error) in
+                PMLog.D(error.localizedDescription)
+                complete?(nil, -1)
+            })
         }
         
     }
