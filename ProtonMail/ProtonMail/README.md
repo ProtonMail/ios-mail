@@ -1,4 +1,4 @@
-# ProtnMail
+# ProtonMail
 
 The main app target and it contains UI related code
 
