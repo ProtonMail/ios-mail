@@ -190,7 +190,9 @@ class MenuViewModelImpl : MenuViewModel {
     
     
     func signOut() {
-        self.usersManager.loggedOutAll()
+        if let currentUser = self.currentUser {
+            self.usersManager.logout(user: currentUser)
+        }
     }
     
 }

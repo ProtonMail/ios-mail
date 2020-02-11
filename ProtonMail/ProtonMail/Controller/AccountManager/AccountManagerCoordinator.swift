@@ -94,8 +94,9 @@ class AccountManagerCoordinator: DefaultCoordinator {
         }
         switch dest {
         case .addAccount:
+            let preFilledUsername = (sender as? UsersManager.DisconnectedUserHandle)?.defaultEmail
             guard let account = AccountConnectCoordinator(vc: destination,
-                                                          vm: SignInViewModel(usersManager: self.services.get()),
+                                                          vm: SignInViewModel(usersManager: self.services.get(), username: preFilledUsername),
                                                           services: self.services) else {
                 return false
             }

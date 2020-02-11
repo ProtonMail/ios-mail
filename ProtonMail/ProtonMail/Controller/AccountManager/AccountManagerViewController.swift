@@ -46,6 +46,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         super.viewDidLoad()
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        self.tableView.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
         
         NotificationCenter.default.addObserver(forName: Notification.Name.didObtainMailboxPassword, object: nil, queue: .main) { _ in
             self.navigationController?.popToViewController(self, animated: true)
@@ -83,9 +84,6 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     // MARK: - Private methods
-    fileprivate func updateSendButtonForText(_ text: String?) {
-//        sendButton.isEnabled = (text != nil) && !text!.isEmpty
-    }
     
     // MARK: Actions
     
@@ -101,9 +99,6 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         
         alertController.addAction(UIAlertAction(title: LocalString._remove_all,
                                                 style: .destructive, handler: { (action) -> Void in
-            UserTempCachedStatus.backup()
-            userCachedStatus.signOut()
-            sharedUserDataService.signOut(true)
             self.viewModel.signOut()
             self.dismiss()
         }))
@@ -112,31 +107,6 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         present(alertController, animated: true, completion: nil)
     }
-//
-//    private func send(_ text: String) {
-//        let v : UIView = self.navigationController?.view ?? self.view
-//        MBProgressHUD.showAdded(to: v, animated: true)
-//        sendButton.isEnabled = false
-//        BugDataService(api: APIService.shared).reportBug(text, completion: { error in
-//            MBProgressHUD.hide(for: self.view, animated: true)
-//            self.sendButton.isEnabled = true
-//            if let error = error {
-//                let alert = error.alertController()
-//                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
-//                self.present(alert, animated: true, completion: nil)
-//            } else {
-//                let alert = UIAlertController(title: LocalString._bug_report_received,
-//                                              message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
-//                                              preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
-//                self.present(alert, animated: true, completion: {
-//                    self.reset()
-//                    ///TODO::fixme consider move this after clicked ok button.
-//                    NotificationCenter.default.post(name: .switchView, object: nil)
-//                })
-//            }
-//        })
-//    }
 }
 
 // MARK: - UITableViewDataSource
@@ -157,6 +127,12 @@ extension AccountManagerViewController: UITableViewDataSource {
                 userCell.configCell(name: user.defaultDisplayName, email: user.defaultEmail)
             }
             return cell
+        case .disconnected:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "account_cell", for: indexPath)
+            if let userCell = cell as? AccountManagerUserCell, let user =  self.viewModel.handle(at: indexPath.row) {
+                userCell.configLoggedOutCell(name: user.defaultDisplayName, email: user.defaultEmail)
+            }
+            return cell
         case .add:
             let cell = tableView.dequeueReusableCell(withIdentifier: "add_account_cell", for: indexPath)
             return cell
@@ -168,12 +144,15 @@ extension AccountManagerViewController: UITableViewDataSource {
         switch self.viewModel.section(at: indexPath.section) {
         case .users where self.viewModel.usersCount > 1:
             return [UITableViewRowAction(style: .destructive, title: LocalString._sign_out) { _, indexPath in
-                if let user = self.viewModel.user(at: indexPath.row) {
-                    self.viewModel.usersManager.logout(user: user)
-                    self.tableView.reloadSections(IndexSet(integer: indexPath.section), with: .bottom)
-                }
+                self.viewModel.remove(at: indexPath)
+                self.tableView.reloadData()
             }]
-            
+        case .disconnected:
+            return [UITableViewRowAction(style: .destructive, title: LocalString._general_delete_action) { _, indexPath in
+                self.viewModel.remove(at: indexPath)
+                self.tableView.reloadData()
+            }]
+        
         default:
             return []
         }
@@ -182,7 +161,7 @@ extension AccountManagerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let s = self.viewModel.section(at: indexPath.section)
         switch s {
-        case .users:
+        case .users, .disconnected:
             return 60.0
         case .add:
             return 44.0
@@ -192,23 +171,23 @@ extension AccountManagerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let s = self.viewModel.section(at: section)
         switch s {
-        case .users:
-            return 0.0
+        case .users, .disconnected:
+            return 20.0
         case .add:
-            return 0.0
+            return 20.0
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
         return view
     }
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let s = self.viewModel.section(at: section)
         switch s {
-        case .users:
+        case .users, .disconnected:
             return 0.5
         case .add:
             return 0.5
@@ -218,9 +197,14 @@ extension AccountManagerViewController: UITableViewDataSource {
 
 extension AccountManagerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let s = self.viewModel.section(at: indexPath.section)
-        switch s {
-        case .users: break
+        switch self.viewModel.section(at: indexPath.section) {
+        case .users:
+            self.viewModel.activateUser(at: indexPath)
+            self.dismiss()
+            
+        case .disconnected:
+            self.coordinator?.go(to: .addAccount, sender: self.viewModel.handle(at: indexPath.row))
+            
         case .add:
             self.coordinator?.go(to: .addAccount)
         }

@@ -37,11 +37,13 @@ class SignInViewModel : NSObject {
     let usersManager: UsersManager
     let signinManager: SignInManager
     let unlockManager: UnlockManager
+    var username: String? // value to pre-fill username in the View
     
-    init(usersManager: UsersManager) {
+    init(usersManager: UsersManager, username: String? = nil) {
         self.usersManager = usersManager
         self.signinManager = sharedServices.get()
         self.unlockManager = sharedServices.get()
+        self.username = username
     }
     
     func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SignInComplete)->Void) {

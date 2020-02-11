@@ -29,6 +29,7 @@ import UIKit
 enum AccountSection {
     case users
     case add
+    case disconnected
 }
 
 class AccountManagerViewModel {
@@ -49,23 +50,52 @@ class AccountManagerViewModel {
         return self.usersManager.user(at: at)
     }
     
+    func handle(at index: Int) -> UsersManager.DisconnectedUserHandle? {
+        return self.usersManager.disconnectedUser(at: index)
+    }
+    
+    func remove(at indexPath: IndexPath) {
+        switch self.section(at: indexPath.section) {
+        case .users:
+            if let user = self.user(at: indexPath.row) {
+                self.usersManager.logout(user: user)
+            }
+        case .disconnected:
+            if let handle = self.handle(at: indexPath.row) {
+                self.usersManager.removeDisconnectedUser(handle)
+
+            }
+        default: break
+        }
+    }
+    
     var usersCount: Int {
         get {
             return self.usersManager.count
         }
     }
     
+    var loggedOutCount: Int {
+        get {
+            return self.usersManager.disconnectedUsers.count
+        }
+    }
+    
     //menu sections
-    private var sections : [AccountSection] = [.users, .add]
+    private var sections : [AccountSection] = [.users, .disconnected, .add]
 
     private var showingUsers: Bool = false
     
     //
-    let usersManager : UsersManager
+    private let usersManager : UsersManager
     
     
     init(usersManager : UsersManager) {
         self.usersManager = usersManager
+    }
+    
+    func activateUser(at indexPath: IndexPath) {
+        self.usersManager.active(index: indexPath.row)
     }
     
     func signOut() {
@@ -89,6 +119,8 @@ class AccountManagerViewModel {
         switch s {
         case .users:
             return self.usersCount
+        case .disconnected:
+            return self.loggedOutCount
         case .add:
             return 1
         }

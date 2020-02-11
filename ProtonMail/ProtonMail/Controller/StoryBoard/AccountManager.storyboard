@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16085" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16078.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -50,15 +50,15 @@
                                                         </mask>
                                                     </variation>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Pro (logged out)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-je-Cu0" userLabel="user display name">
-                                                    <rect key="frame" x="60" y="10" width="203" height="19.5"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Pro (logged out)" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-je-Cu0" userLabel="user display name">
+                                                    <rect key="frame" x="60" y="10" width="261" height="19.5"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy@pm.me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZL-dY-GDg" userLabel="user email address">
-                                                    <rect key="frame" x="60" y="34" width="201" height="16"/>
+                                                    <rect key="frame" x="60" y="34" width="259" height="16"/>
                                                     <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                     <nil key="textColor"/>
@@ -76,7 +76,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MvZ-mI-RVr" userLabel="unread label">
-                                                    <rect key="frame" x="271" y="17" width="26" height="26"/>
+                                                    <rect key="frame" x="329" y="17" width="26" height="26"/>
                                                     <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="26" id="ASb-9R-ZaP"/>
@@ -98,7 +98,7 @@
                                                 <constraint firstItem="dfl-cx-7j1" firstAttribute="leading" secondItem="FUA-Nt-GW8" secondAttribute="leading" constant="10" id="PkC-vt-Ixk"/>
                                                 <constraint firstItem="MvZ-mI-RVr" firstAttribute="leading" secondItem="BZL-dY-GDg" secondAttribute="trailing" constant="10" id="Qhu-Xy-WHP"/>
                                                 <constraint firstItem="MvZ-mI-RVr" firstAttribute="leading" secondItem="BZL-dY-GDg" secondAttribute="trailing" constant="10" id="XqP-Ph-rcc"/>
-                                                <constraint firstAttribute="trailing" secondItem="MvZ-mI-RVr" secondAttribute="trailing" constant="78" id="a8y-Ta-gtl"/>
+                                                <constraint firstAttribute="trailing" secondItem="MvZ-mI-RVr" secondAttribute="trailing" constant="20" symbolic="YES" id="a8y-Ta-gtl"/>
                                                 <constraint firstItem="BZL-dY-GDg" firstAttribute="leading" secondItem="dfl-cx-7j1" secondAttribute="trailing" constant="10" id="fH9-fu-Y5x"/>
                                                 <constraint firstItem="dfl-cx-7j1" firstAttribute="centerY" secondItem="FUA-Nt-GW8" secondAttribute="centerY" id="rVN-dw-IP6"/>
                                                 <constraint firstItem="MvZ-mI-RVr" firstAttribute="leading" secondItem="GfF-je-Cu0" secondAttribute="trailing" constant="8" id="vUD-JE-Z3a"/>

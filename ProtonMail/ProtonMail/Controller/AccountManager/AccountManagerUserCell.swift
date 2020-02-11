@@ -46,8 +46,15 @@ class AccountManagerUserCell: UITableViewCell {
         self.selectedBackgroundView = selectedBackgroundView
     }
     
-    func configCell (name: String, email: String) {
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
+        self.backgroundImage.layer.cornerRadius = self.backgroundImage.frame.width / 2
+    }
+    
+    func configCell (name: String, email: String) {
+        diaplayName.textColor = .black
+        emailAddress.textColor = .black
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
@@ -60,6 +67,14 @@ class AccountManagerUserCell: UITableViewCell {
             shortName = String(displayName[name.startIndex])
         }
         self.shortName.text = shortName
+    }
+    
+    func configLoggedOutCell(name: String, email: String) {
+        self.configCell(name: name, email: email)
+        self.diaplayName.text = (diaplayName.text ?? "Unknown") + " (logged out)"
+        
+        self.diaplayName.textColor = .red
+        self.emailAddress.textColor = .red
     }
     
     func configUnreadCount (count: Int) {

@@ -136,7 +136,11 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         super.viewDidAppear(animated)
 
         if UIDevice.current.isLargeScreen() {
-            usernameTextField.becomeFirstResponder()
+            if self.usernameTextField.text?.isEmpty != false {
+                usernameTextField.becomeFirstResponder()
+            } else if self.passwordTextField.text?.isEmpty != false {
+                passwordTextField.becomeFirstResponder()
+            }
         }
     }
     
@@ -177,6 +181,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     
     internal func setupTextFields() {
         signInTitle.text = LocalString._login_to_pm_act
+        usernameTextField.text = self.viewModel.username
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#cecaca")])
         passwordTextField.attributedPlaceholder = NSAttributedString(string: LocalString._password,

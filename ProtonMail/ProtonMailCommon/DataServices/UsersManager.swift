@@ -61,6 +61,7 @@ class UsersManager : Service {
         static let defaultSignatureStatus = "defaultSignatureStatus"
         
         static let firstRunKey = "FirstRunKey"
+        static let disconnectedUsers = "disconnectedUsers"
     }
    
     /// Server's config like url port path etc..
@@ -100,8 +101,11 @@ class UsersManager : Service {
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+        self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
+                          defaultEmail: newUser.defaultEmail,
+                          userID: user.userId))
         users.append(newUser)
-        
+
         self.save()
     }
     
@@ -405,6 +409,9 @@ extension UsersManager {
         if let nextFirst = self.users.first(where: { !$0.isMatch(sessionID: user.auth.sessionID) })?.auth.sessionID {
             self.active(uid: nextFirst)
         }
+        self.disconnectedUsers.append(.init(defaultDisplayName: user.defaultDisplayName,
+                                         defaultEmail: user.defaultEmail,
+                                         userID: user.userInfo.userId))
         self.users.removeAll(where: { $0.isMatch(sessionID: user.auth.sessionID) })
         self.save()
     }
@@ -415,6 +422,7 @@ extension UsersManager {
         SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
         KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
+        KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
         
         UserTempCachedStatus.backup()
         
@@ -456,6 +464,53 @@ extension UsersManager {
     func loggedOutAll() {
         for user in users {
             self.logout(user: user)
+        }
+    }
+}
+
+extension UsersManager {
+    struct DisconnectedUserHandle: Codable, Equatable {
+        var defaultDisplayName: String
+        var defaultEmail: String
+        var userID: String
+        
+        static func ==(lhv: DisconnectedUserHandle, rhv: DisconnectedUserHandle) -> Bool {
+            return lhv.userID == rhv.userID
+        }
+    }
+    
+    func removeDisconnectedUser(_ handle: DisconnectedUserHandle) {
+        self.disconnectedUsers.removeAll(where: { $0 == handle })
+    }
+    
+    func disconnectedUser(at: Int) -> DisconnectedUserHandle? {
+        let all = self.disconnectedUsers
+        return at < all.count ? all[at] : nil
+    }
+    
+    /// logged out users that should be visible in the Account Manager screen for faster log in. Persisted until logout of last user, protected with MainKey.
+    var disconnectedUsers: Array<DisconnectedUserHandle> {
+        get {
+            // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
+            guard let mainKey = keymaker.mainKey,
+                let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
+                case let locked = Locked<Data>(encryptedValue: encryptedData),
+                let data = try? locked.unlock(with: mainKey),
+                let loggedOutUserHandles = try? JSONDecoder().decode(Array<DisconnectedUserHandle>.self, from: data) else
+            {
+                return []
+            }
+            return loggedOutUserHandles
+        }
+        set {
+            guard let mainKey = keymaker.mainKey,
+                let data = try? JSONEncoder().encode(newValue),
+                let locked = try? Locked(clearValue: data, with: mainKey) else
+            {
+                PMLog.D("Failed to save disconnectedUsers to keychain")
+                return
+            }
+            KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
         }
     }
 }
