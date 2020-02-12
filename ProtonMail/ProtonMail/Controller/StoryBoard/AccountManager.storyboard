@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16085" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16078.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -22,7 +23,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="blB-MT-oAg">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="separatorColor" red="0.74117647060000003" green="0.76470588240000004" blue="0.79215686269999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="account_cell" rowHeight="60" id="6T9-mc-I8a" customClass="AccountManagerUserCell" customModule="ProtonMail" customModuleProvider="target">
@@ -138,30 +139,32 @@
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dn-pK-KrN" userLabel="Settings Label">
-                                                    <rect key="frame" x="10" y="12.5" width="355" height="19.5"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="reportBugsLabel"/>
-                                                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
-                                                    <color key="textColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacingType="standard" baselineRelativeArrangement="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QRu-X3-tMH">
+                                                    <rect key="frame" x="10" y="0.0" width="355" height="44"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="plus_compose" translatesAutoresizingMaskIntoConstraints="NO" id="fuU-Vm-rTJ">
+                                                            <rect key="frame" x="0.0" y="11" width="22" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="fuU-Vm-rTJ" secondAttribute="height" multiplier="1:1" id="qvW-0n-mDq"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dn-pK-KrN" userLabel="Settings Label">
+                                                            <rect key="frame" x="30" y="12.5" width="325" height="19.5"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="reportBugsLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                                                            <color key="textColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="0Dn-pK-KrN" firstAttribute="leading" secondItem="KDZ-3D-bkg" secondAttribute="leading" constant="10" id="AGH-Or-M7w"/>
-                                                <constraint firstAttribute="trailing" secondItem="0Dn-pK-KrN" secondAttribute="trailing" constant="10" id="Orq-Us-gcB"/>
-                                                <constraint firstItem="0Dn-pK-KrN" firstAttribute="centerY" secondItem="KDZ-3D-bkg" secondAttribute="centerY" id="dOm-A8-VUp"/>
+                                                <constraint firstAttribute="trailing" secondItem="QRu-X3-tMH" secondAttribute="trailing" constant="10" id="9iw-16-ucd"/>
+                                                <constraint firstItem="QRu-X3-tMH" firstAttribute="leading" secondItem="KDZ-3D-bkg" secondAttribute="leading" constant="10" id="ECc-Z2-vCc"/>
+                                                <constraint firstAttribute="bottom" secondItem="QRu-X3-tMH" secondAttribute="bottom" id="MOu-P6-c9E"/>
+                                                <constraint firstItem="QRu-X3-tMH" firstAttribute="top" secondItem="KDZ-3D-bkg" secondAttribute="top" id="R41-xf-TZx"/>
                                             </constraints>
-                                            <variation key="default">
-                                                <mask key="subviews">
-                                                    <exclude reference="0Dn-pK-KrN"/>
-                                                </mask>
-                                            </variation>
-                                            <variation key="widthClass=compact">
-                                                <mask key="subviews">
-                                                    <include reference="0Dn-pK-KrN"/>
-                                                </mask>
-                                            </variation>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
@@ -1481,6 +1484,7 @@
     <resources>
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
+        <image name="plus_compose" width="22" height="22"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
         <image name="sign_visiblecharacters" width="14" height="14"/>

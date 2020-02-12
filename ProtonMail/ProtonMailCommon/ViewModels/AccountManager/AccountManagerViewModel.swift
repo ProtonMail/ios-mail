@@ -33,17 +33,9 @@ enum AccountSection {
 }
 
 class AccountManagerViewModel {
-    private let kMenuCellHeight: CGFloat = 44.0
-    private let kUserCellHeight: CGFloat = 60.0
     
-    func cellHeight(at: Int) -> CGFloat {
-        let section = self.section(at: at)
-        switch section {
-        case .users:
-            return kUserCellHeight
-        default:
-            return kMenuCellHeight
-        }
+    var textForFooter: String {
+        return "You can be simultaneously logged into an unlimited number of paid ProtonMail accounts and one free account."
     }
     
     func user(at: Int) -> UserManager? {

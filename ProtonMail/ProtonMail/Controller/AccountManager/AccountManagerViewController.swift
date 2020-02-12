@@ -28,6 +28,9 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     private var viewModel : AccountManagerViewModel!
     private var coordinator : AccountManagerCoordinator?
     
+    private let kMenuCellHeight: CGFloat = 44.0
+    private let kUserCellHeight: CGFloat = 60.0
+    
     func set(viewModel: AccountManagerViewModel) {
         self.viewModel = viewModel
     }
@@ -47,6 +50,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         self.tableView.dataSource = self
         self.tableView.delegate = self
         self.tableView.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+        self.tableView.estimatedSectionFooterHeight = kUserCellHeight
         
         NotificationCenter.default.addObserver(forName: Notification.Name.didObtainMailboxPassword, object: nil, queue: .main) { _ in
             self.navigationController?.popToViewController(self, animated: true)
@@ -89,16 +93,11 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     @IBAction fileprivate func removeAction(_ sender: UIBarButtonItem) {
         //remove all
-        let alertController = UIAlertController(title: LocalString._general_confirmation_title,
-                                                message: nil, preferredStyle: .actionSheet)
-        
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button,
-                                                style: .cancel, handler: { (action) -> Void in
-                                                    
-        }))
-        
-        alertController.addAction(UIAlertAction(title: LocalString._remove_all,
-                                                style: .destructive, handler: { (action) -> Void in
+        let title = "Warning!"
+        let message = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\nDo you want to remove all your accounts anyway?"
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        alertController.addAction(.init(title: LocalString._remove_all, style: .destructive, handler: { _ in
             self.viewModel.signOut()
             self.dismiss()
         }))
@@ -144,13 +143,27 @@ extension AccountManagerViewController: UITableViewDataSource {
         switch self.viewModel.section(at: indexPath.section) {
         case .users where self.viewModel.usersCount > 1:
             return [UITableViewRowAction(style: .destructive, title: LocalString._sign_out) { _, indexPath in
-                self.viewModel.remove(at: indexPath)
-                self.tableView.reloadData()
+                let title = "Warning!"
+                let message = LocalString._logout_confirmation
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: { _ in
+                    self.viewModel.remove(at: indexPath)
+                    self.tableView.reloadData()
+                }))
+                self.present(alert, animated: true, completion: nil)
             }]
         case .disconnected:
             return [UITableViewRowAction(style: .destructive, title: LocalString._general_delete_action) { _, indexPath in
-                self.viewModel.remove(at: indexPath)
-                self.tableView.reloadData()
+                let title = "Warning!"
+                let message = "By removing this account , you will no longer be able to access it from this device unless you add it again.\nDo you want to remove this account anyway?"
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                alert.addAction(.init(title: LocalString._general_remove_button, style: .destructive, handler: { _ in
+                    self.viewModel.remove(at: indexPath)
+                    self.tableView.reloadData()
+                }))
+                self.present(alert, animated: true, completion: nil)
             }]
         
         default:
@@ -159,28 +172,48 @@ extension AccountManagerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let s = self.viewModel.section(at: indexPath.section)
-        switch s {
+        switch self.viewModel.section(at: indexPath.section) {
         case .users, .disconnected:
-            return 60.0
+            return kUserCellHeight
         case .add:
-            return 44.0
+            return kMenuCellHeight
         }
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let s = self.viewModel.section(at: section)
-        switch s {
-        case .users, .disconnected:
-            return 20.0
-        case .add:
-            return 20.0
+        switch self.viewModel.section(at: section) {
+        case .users, .add:
+            return kMenuCellHeight / 2
+        default:
+            return 0.0
         }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = UIView()
+        let view = UITableViewHeaderFooterView(reuseIdentifier: "account_spacer")
         view.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+        return view
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        guard self.viewModel.section(at: section) == .add else { return nil }
+        
+        let view = UITableViewHeaderFooterView(reuseIdentifier: "account_footer")
+        view.backgroundColor = UIColor.ProtonMail.TableSeparatorGray
+        
+        let label = UILabel(font: .preferredFont(forTextStyle: .footnote),
+                            text: self.viewModel.textForFooter,
+                            textColor: UIColor.ProtonMail.TableFootnoteTextGray)
+        label.numberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
+        
+        view.contentView.addSubview(label)
+        label.leadingAnchor.constraint(equalTo: view.contentView.leadingAnchor, constant: 10.0).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.contentView.trailingAnchor, constant: 10.0).isActive = true
+        label.topAnchor.constraint(equalTo: view.contentView.topAnchor, constant: 10.0).isActive = true
+        label.bottomAnchor.constraint(equalTo: view.contentView.bottomAnchor, constant: 10.0).isActive = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
         return view
     }
     
@@ -190,7 +223,7 @@ extension AccountManagerViewController: UITableViewDataSource {
         case .users, .disconnected:
             return 0.5
         case .add:
-            return 0.5
+            return UITableView.automaticDimension
         }
     }
 }

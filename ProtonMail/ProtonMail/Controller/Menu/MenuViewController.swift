@@ -96,6 +96,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = false
         self.revealViewController().view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         
+        self.hideUsers()
         self.sectionClicked = false
         
         self.viewModel.updateMenuItems()
@@ -183,9 +184,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         
         alertController.addAction(UIAlertAction(title: LocalString._sign_out_all, style: .destructive, handler: { (action) -> Void in
             self.signingOut = true
-            UserTempCachedStatus.backup()
-            userCachedStatus.signOut()
-            sharedUserDataService.signOut(true)
             self.viewModel.signOut()
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view

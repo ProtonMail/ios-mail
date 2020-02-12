@@ -33,17 +33,9 @@ class AccountManagerUserCell: UITableViewCell {
     @IBOutlet weak var shortName: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
     
-    
-//    fileprivate var item: MenuItem!
-    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
         self.zeroMargin()
-        
-        let selectedBackgroundView = UIView(frame: CGRect.zero)
-        selectedBackgroundView.backgroundColor = UIColor.ProtonMail.Menu_SelectedBackground
-        
-        self.selectedBackgroundView = selectedBackgroundView
     }
     
     override func awakeFromNib() {

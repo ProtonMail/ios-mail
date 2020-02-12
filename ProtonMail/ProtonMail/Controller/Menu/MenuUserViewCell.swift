@@ -46,6 +46,11 @@ class MenuUserViewCell: UITableViewCell {
         self.selectedBackgroundView = selectedBackgroundView
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.backgroundImage.layer.cornerRadius = self.backgroundImage.frame.width / 2
+    }
+    
     func configCell (name: String, email: String) {
         
         unreadLabel.layer.masksToBounds = true;
