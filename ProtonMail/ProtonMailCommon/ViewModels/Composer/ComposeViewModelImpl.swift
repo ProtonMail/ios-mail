@@ -356,7 +356,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     case .contactGroup:
                         if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
+                            self.ccSelectedContacts.append(group)
                         } else {
                             // TODO: error handling
                         }
@@ -376,7 +376,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     case .contactGroup:
                         if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
+                            self.bccSelectedContacts.append(group)
                         } else {
                             // TODO: error handling
                         }
