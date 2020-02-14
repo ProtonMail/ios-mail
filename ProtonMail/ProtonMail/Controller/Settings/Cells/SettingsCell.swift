@@ -30,6 +30,14 @@ class SettingsCell : UITableViewCell {
     @IBOutlet weak var RightText: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if #available(iOS 10, *) {
+            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            LeftText.adjustsFontForContentSizeCategory = true
+            
+            RightText.font = UIFont.preferredFont(forTextStyle: .caption1)
+            RightText.adjustsFontForContentSizeCategory = true
+        }
     }
     
     func configCell(leftText: String, rightText: String) {

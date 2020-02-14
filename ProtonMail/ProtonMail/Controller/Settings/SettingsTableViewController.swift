@@ -486,8 +486,13 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         
         let textLabel = UILabel()
         
-        textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
-        textLabel.adjustsFontForContentSizeCategory = true
+        if #available(iOS 10, *) {
+            textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            textLabel.adjustsFontForContentSizeCategory = true
+        } else {
+            textLabel.font = Fonts.h6.regular
+        }
+        
         textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
         textLabel.numberOfLines = 0
         

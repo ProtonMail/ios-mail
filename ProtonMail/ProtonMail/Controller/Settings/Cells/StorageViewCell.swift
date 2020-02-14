@@ -31,6 +31,11 @@ class StorageViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.accessibilityLabel = "storageCell"
+        
+        if #available(iOS 10, *) {
+            storageUsageDescriptionLable.font = UIFont.preferredFont(forTextStyle: .footnote)
+            storageUsageDescriptionLable.adjustsFontForContentSizeCategory = true
+        }
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
