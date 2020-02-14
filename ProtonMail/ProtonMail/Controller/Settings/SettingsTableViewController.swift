@@ -104,6 +104,12 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
+        
+        self.tableView.estimatedSectionHeaderHeight = CellHeight
+        self.tableView.sectionHeaderHeight = UITableView.automaticDimension
+        
+        self.tableView.estimatedRowHeight = CellHeight
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func updateTitle() {
@@ -476,8 +482,14 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderCell)
-        header?.textLabel?.font = Fonts.h6.regular
-        header?.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+        header?.contentView.subviews.forEach{ $0.removeFromSuperview() }
+        
+        let textLabel = UILabel()
+        
+        textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+        textLabel.adjustsFontForContentSizeCategory = true
+        textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
+        textLabel.numberOfLines = 0
         
         if(setting_headers[section] == SettingSections.version){
             var appVersion = "Unkonw Version"
@@ -492,19 +504,22 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             
             let lib_v = PMNLibVersion.getLibVersion()
             libVersion = "| LibVersion: \(lib_v)"
-            header?.textLabel?.text = appVersion + " " + libVersion
+            textLabel.text = appVersion + " " + libVersion
         }
         else
         {
-            header?.textLabel?.text = setting_headers[section].description
+            textLabel.text = setting_headers[section].description
         }
+        
+        header?.contentView.addSubview(textLabel)
+        textLabel.mas_makeConstraints({ (make) in
+            let _ = make?.top.equalTo()(header?.contentView.mas_top)?.with()?.offset()(8)
+            let _ = make?.bottom.equalTo()(header?.contentView.mas_bottom)?.with()?.offset()(-8)
+            let _ = make?.left.equalTo()(header?.contentView.mas_left)?.with()?.offset()(8)
+            let _ = make?.right.equalTo()(header?.contentView.mas_right)?.with()?.offset()(-8)
+        })
         return header
     }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CellHeight
-    }
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if setting_headers.count > indexPath.section {
