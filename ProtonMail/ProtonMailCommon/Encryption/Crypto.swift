@@ -580,11 +580,7 @@ extension Data {
     //self is public key
     func isPublicKeyExpired() -> Bool? {
         var result: ObjCBool = false
-        do {
-            try CryptoGetGopenPGP()!.isKeyExpired(self, ret0_: &result)
-            return result.boolValue
-        } catch {
-            return nil
-        }
+        try? CryptoGetGopenPGP()!.isKeyExpired(self, ret0_: &result)
+        return result.boolValue
     }
 }
