@@ -27,6 +27,7 @@ import NSDate_Helper
 import Groot
 import PromiseKit
 import AwaitKit
+import Crypto
 
 let sharedContactDataService = ContactDataService(addressBookService: AddressBookService())
 
@@ -409,9 +410,11 @@ class ContactDataService: Service  {
                                             if pubKeys == nil {
                                                 pubKeys = Data()
                                             }
-                                            pubKeys?.append(value)
-                                            if kp == 1 || kp == Int32.min {
-                                                firstKey = value
+                                            if let isExpired = value.isPublicKeyExpired(), !isExpired {
+                                                pubKeys?.append(value)
+                                                if kp == 1 || kp == Int32.min {
+                                                    firstKey = value
+                                                }
                                             }
                                         }
                                     }
