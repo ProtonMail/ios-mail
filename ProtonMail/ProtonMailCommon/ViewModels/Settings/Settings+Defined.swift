@@ -46,7 +46,7 @@ extension ELanguage {
             case .ukrainian:
                 return "Українська"
             case .dutch:
-                return "Nederlands"
+                return "Dutch"
             case .italian:
                 return "Italiano"
             case .portugueseBrazil:
@@ -72,7 +72,7 @@ extension ELanguage {
             case .icelandic:
                 return "íslenska"
             case .kabyle:
-                return "Kabyle"
+                return "Taqbaylit"
             case .swedish:
                 return "Svenska"
             case .japanese:
