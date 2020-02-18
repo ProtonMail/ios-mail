@@ -247,12 +247,12 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return
             }
             
-            guard let emial = model.displayEmail else {
+            guard let email = model.displayEmail else {
                 complete?(nil, -1)
                 return
             }
-            let getEmail = UserEmailPubKeys(email: emial).run()
-            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+            let getEmail = UserEmailPubKeys(email: email).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
@@ -262,8 +262,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                         c.pgpType = .internal_normal
                     }
                 } else {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        if contact.encrypt {
+                    if let contact = contacts.first {
+                        if contact.encrypt, contact.firstPgpKey != nil {
                             c.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
                             c.pgpType = .pgp_signed

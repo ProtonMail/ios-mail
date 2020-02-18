@@ -576,4 +576,11 @@ extension Data {
         let symKey = CryptoCreateSymmetricKey(self.mutable as Data, algo)
         return try symKey?.encrypt(toKeyPacket: pwd)
     }
+    
+    //self is public key
+    func isPublicKeyExpired() -> Bool? {
+        var result: ObjCBool = false
+        try? CryptoGetGopenPGP()!.isKeyExpired(self, ret0_: &result)
+        return result.boolValue
+    }
 }
