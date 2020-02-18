@@ -32,26 +32,7 @@ class AccountConnectCoordinator: DefaultCoordinator {
     var services: ServiceFactory
     
     enum Destination : String {
-        case mailbox   = "toMailboxSegue"
-        case label     = "toLabelboxSegue"
-        case settings  = "toSettingsSegue"
-        case bugs      = "toBugsSegue"
-        case contacts  = "toContactsSegue"
-        case feedbacks = "toFeedbackSegue"
-        case plan      = "toServicePlan"
-        
-        init?(rawValue: String) {
-            switch rawValue {
-            case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
-            case "toLabelboxSegue": self = .label
-            case "toSettingsSegue": self = .settings
-            case "toBugsSegue": self = .bugs
-            case "toContactsSegue": self = .contacts
-            case "toFeedbackSegue": self = .feedbacks
-            case "toServicePlan": self = .plan
-            default: return nil
-            }
-        }
+        case signUp = "toSignUpSegue"
     }
     
     init?(vc: UIViewController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -69,11 +50,8 @@ class AccountConnectCoordinator: DefaultCoordinator {
     }
     
     func follow(_ deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
-            switch dest {
-            default:
-                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
-            }
+        if let path = deepLink.popFirst, let dest = Destination(rawValue: path.name) {
+            self.go(to: dest, sender: deepLink)
         }
     }
     
@@ -87,7 +65,14 @@ class AccountConnectCoordinator: DefaultCoordinator {
     
     ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        
-        return false
+        switch Destination(rawValue: identifier ?? "") {
+        case .some(.signUp):
+            let viewController = destination as! SignUpUserNameViewController
+            let deviceCheckToken = sender as? String ?? ""
+            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
+            return true
+        default:
+            return false
+        }
     }
 }

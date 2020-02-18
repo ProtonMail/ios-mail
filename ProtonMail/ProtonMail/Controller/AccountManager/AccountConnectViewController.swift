@@ -124,6 +124,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
         NotificationCenter.default.addKeyboardObserver(self)
         
         let uName = (usernameTextField.text ?? "").trim()
@@ -257,9 +258,9 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
         firstly {
-            generateToken()
+            self.viewModel.generateToken()
         }.done { (token) in
-            self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
+            self.performSegue(withIdentifier: AccountConnectCoordinator.Destination.signUp.rawValue, sender: token)
         }.catch { (error) in
             let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
             alert.addOKAction()

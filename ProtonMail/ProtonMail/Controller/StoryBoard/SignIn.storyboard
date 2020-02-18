@@ -630,7 +630,7 @@
         <!--Sign Up-->
         <scene sceneID="9Ih-rw-22I">
             <objects>
-                <viewController title="Sign Up" id="5Bg-GM-4IG" customClass="SignUpUserNameViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignUpUserNameViewController" title="Sign Up" id="5Bg-GM-4IG" customClass="SignUpUserNameViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zOP-uM-V0s"/>
                         <viewControllerLayoutGuide type="bottom" id="Hiw-YW-hmd"/>

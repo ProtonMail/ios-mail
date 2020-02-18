@@ -23,7 +23,6 @@
 
 import UIKit
 import MBProgressHUD
-import DeviceCheck
 import PromiseKit
 
 class SignInViewController: ProtonMailViewController, ViewModelProtocol, CoordinatedNew {
@@ -400,41 +399,11 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         self.present(alertController, animated: true, completion: nil)
     }
     
-    enum TokenError : Error {
-        case unsupport
-        case empty
-        case error
-    }
-    
-    func generateToken() -> Promise<String> {
-        if #available(iOS 11.0, *) {
-            let currentDevice = DCDevice.current
-            if currentDevice.isSupported {
-                let deferred = Promise<String>.pending()
-                currentDevice.generateToken(completionHandler: { (data, error) in
-                    if let tokenData = data {
-                        deferred.resolver.fulfill(tokenData.base64EncodedString())
-                    } else if let error = error {
-                        deferred.resolver.reject(error)
-                    } else {
-                        deferred.resolver.reject(TokenError.empty)
-                    }
-                })
-                return deferred.promise
-            }
-        }
-        
-        #if Enterprise
-        return Promise<String>.value("EnterpriseBuildInternalTestOnly".encodeBase64())
-        #else
-        return Promise<String>.init(error: TokenError.unsupport)
-        #endif
-    }
     
     @IBAction func signUpAction(_ sender: UIButton) {
         dismissKeyboard()
         firstly {
-            generateToken()
+            self.viewModel.generateToken()
         }.done { (token) in
             self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
         }.catch { (error) in
