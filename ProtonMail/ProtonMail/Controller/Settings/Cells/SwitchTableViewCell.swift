@@ -30,10 +30,19 @@ typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, 
 @IBDesignable class SwitchTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if #available(iOS 10, *) {
+            topLineLabel.font = UIFont.preferredFont(forTextStyle: .footnote)
+            topLineLabel.adjustsFontForContentSizeCategory = true
+            
+            bottomLineLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+            bottomLineLabel.adjustsFontForContentSizeCategory = true
+        }
     }
     
     var callback : switchActionBlock?
     
+    @IBOutlet weak var topLineBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var centerConstraint: NSLayoutConstraint!
     @IBOutlet weak var topLineLabel: UILabel!
     @IBOutlet weak var bottomLineLabel: UILabel!
@@ -60,6 +69,7 @@ typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, 
         self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
         
         if bottomLine.isEmpty {
+            topLineBottomConstraint.priority = UILayoutPriority(1000.0)
             centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
             bottomLineLabel.isHidden = true
             self.layoutIfNeeded()

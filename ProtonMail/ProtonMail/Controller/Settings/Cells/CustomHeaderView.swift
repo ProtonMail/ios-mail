@@ -28,6 +28,11 @@ class CustomHeaderView: UITableViewCell {
     @IBOutlet weak var headerText: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if #available(iOS 10, *) {
+            headerText.font = UIFont.preferredFont(forTextStyle: .caption1)
+            headerText.adjustsFontForContentSizeCategory = true
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

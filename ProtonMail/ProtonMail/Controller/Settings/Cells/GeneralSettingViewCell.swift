@@ -31,6 +31,14 @@ import UIKit
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        
+        if #available(iOS 10, *) {
+            LeftText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            LeftText.adjustsFontForContentSizeCategory = true
+            
+            RightText.font = UIFont.preferredFont(forTextStyle: .footnote)
+            RightText.adjustsFontForContentSizeCategory = true
+        }
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
