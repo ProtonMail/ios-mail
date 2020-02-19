@@ -31,29 +31,6 @@ class AccountPasswordCoordinator: DefaultCoordinator {
     let viewModel : SignInViewModel
     var services: ServiceFactory
     
-    enum Destination : String {
-        case mailbox   = "toMailboxSegue"
-        case label     = "toLabelboxSegue"
-        case settings  = "toSettingsSegue"
-        case bugs      = "toBugsSegue"
-        case contacts  = "toContactsSegue"
-        case feedbacks = "toFeedbackSegue"
-        case plan      = "toServicePlan"
-        
-        init?(rawValue: String) {
-            switch rawValue {
-            case "toMailboxSegue", String(describing: MailboxViewController.self): self = .mailbox
-            case "toLabelboxSegue": self = .label
-            case "toSettingsSegue": self = .settings
-            case "toBugsSegue": self = .bugs
-            case "toContactsSegue": self = .contacts
-            case "toFeedbackSegue": self = .feedbacks
-            case "toServicePlan": self = .plan
-            default: return nil
-            }
-        }
-    }
-    
     init?(vc: UIViewController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let viewC = vc as? VC else {
             return nil
@@ -66,28 +43,5 @@ class AccountPasswordCoordinator: DefaultCoordinator {
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
-    }
-    
-    func follow(_ deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = MenuCoordinatorNew.Destination(rawValue: path.name) {
-            switch dest {
-            default:
-                self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: deepLink)
-            }
-        }
-    }
-    
-    //old one call from vc
-    func go(to dest: Destination, sender: Any? = nil) {
-        switch dest {
-        default:
-            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
-        }
-    }
-    
-    ///TODO::fixme. add warning or error when return false except the last one.
-    func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
-        
-        return false
     }
 }

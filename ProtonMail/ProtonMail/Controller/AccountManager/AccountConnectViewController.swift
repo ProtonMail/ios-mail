@@ -41,13 +41,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
 
     private let animationDuration: TimeInterval = 0.5
-    private let keyboardPadding: CGFloat        = 12
     private let buttonDisabledAlpha: CGFloat    = 0.5
-    
-    private let kDecryptMailboxSegue            = "toAddAccountPasswordSegue"
-    private let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
-    private let kSegueTo2FACodeSegue            = "2fa_code_segue"
-    
     private var isShowpwd      = false
     
     //define
@@ -110,17 +104,6 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             self.passwordTextField.isSecureTextEntry = true
         }
     }
-        
-    override func didMove(toParent parent: UIViewController?) {
-        
-//        if (!(parent?.isEqual(self.parent) ?? false)) {
-//        }
-//
-//        if SignInViewController.isComeBackFromMailbox {
-//            showLoginViews()
-//            SignInManager.shared.clean()
-//        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -154,26 +137,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         return UIStatusBarStyle.lightContent
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kSegueTo2FACodeSegue {
-            let popup = segue.destination as! TwoFACodeViewController
-            popup.delegate = self
-            popup.mode = .twoFactorCode
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
-        }
-    }
-    
     // MARK: - Private methods
-
-//    func showLoginViews() {
-//        UIView.animate(withDuration: 1.0, animations: { () -> Void in
-//            self.usernameView.alpha      = 1.0
-//            self.passwordView.alpha      = 1.0
-//            self.signInButton.alpha      = 1.0
-//        }, completion: { finished in
-//
-//        })
-//    }
     
     func dismissKeyboard() {
         usernameTextField.resignFirstResponder()
@@ -279,7 +243,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             switch result {
             case .ask2fa:
                 MBProgressHUD.hide(for: self.view, animated: true)
-                self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
+                self.coordinator?.go(to: .twoFACode, sender: self)
             case .error(let error):
                 PMLog.D("error: \(error)")
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -292,7 +256,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.dismiss()
             case .mbpwd:
-                self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+                self.coordinator?.go(to: .decryptMailbox, sender: self)
             case .exist:
                 MBProgressHUD.hide(for: self.view, animated: true)
                 let alertController = "The user already logged in".alertController()

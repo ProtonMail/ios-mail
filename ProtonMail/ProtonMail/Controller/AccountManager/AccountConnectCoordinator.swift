@@ -33,6 +33,8 @@ class AccountConnectCoordinator: DefaultCoordinator {
     
     enum Destination : String {
         case signUp = "toSignUpSegue"
+        case decryptMailbox = "toAddAccountPasswordSegue"
+        case twoFACode = "2fa_code_segue"
     }
     
     init?(vc: UIViewController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -48,14 +50,7 @@ class AccountConnectCoordinator: DefaultCoordinator {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
     }
-    
-    func follow(_ deepLink: DeepLink) {
-        if let path = deepLink.popFirst, let dest = Destination(rawValue: path.name) {
-            self.go(to: dest, sender: deepLink)
-        }
-    }
-    
-    //old one call from vc
+
     func go(to dest: Destination, sender: Any? = nil) {
         switch dest {
         default:
@@ -63,16 +58,21 @@ class AccountConnectCoordinator: DefaultCoordinator {
         }
     }
     
-    ///TODO::fixme. add warning or error when return false except the last one.
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         switch Destination(rawValue: identifier ?? "") {
         case .some(.signUp):
             let viewController = destination as! SignUpUserNameViewController
             let deviceCheckToken = sender as? String ?? ""
             viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
-            return true
+        case .some(.twoFACode) where self.viewController != nil:
+            let popup = destination as! TwoFACodeViewController
+            popup.delegate = self.viewController
+            popup.mode = .twoFactorCode
+            self.viewController?.setPresentationStyleForSelfController(self.viewController!, presentingController: popup)
         default:
-            return false
+            break
         }
+        
+        return true
     }
 }

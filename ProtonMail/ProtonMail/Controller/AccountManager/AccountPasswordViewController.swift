@@ -41,13 +41,8 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
     }
 
     private let animationDuration: TimeInterval = 0.5
-    private let keyboardPadding: CGFloat        = 12
     private let buttonDisabledAlpha: CGFloat    = 0.5
-    
-    private let kDecryptMailboxSegue            = "mailboxSegue"
-    private let kSignUpKeySegue                 = "sign_in_to_sign_up_segue"
-    private let kSegueTo2FACodeSegue            = "2fa_code_segue"
-    
+
     private var isShowpwd      = false
     
     //define
@@ -108,17 +103,6 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
             self.passwordTextField.isSecureTextEntry = true
         }
     }
-        
-    override func didMove(toParent parent: UIViewController?) {
-        
-//        if (!(parent?.isEqual(self.parent) ?? false)) {
-//        }
-//
-//        if SignInViewController.isComeBackFromMailbox {
-//            showLoginViews()
-//            SignInManager.shared.clean()
-//        }
-    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -128,9 +112,6 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
         updateSignInButton(passwordText: pwd)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -139,15 +120,6 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
         return UIStatusBarStyle.lightContent
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == kSegueTo2FACodeSegue {
-            let popup = segue.destination as! TwoFACodeViewController
-            popup.delegate = self
-            popup.mode = .twoFactorCode
-            self.setPresentationStyleForSelfController(self, presentingController: popup)
-        }
     }
     
     // MARK: - Private methods
@@ -196,12 +168,6 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
         self.present(alertController, animated: true, completion: nil)
     }
     
-    enum TokenError : Error {
-        case unsupport
-        case empty
-        case error
-    }
-    
     func tryDecrypt() {
         let signInManager = sharedServices.get(by: SignInManager.self)
         let unlockManager = sharedServices.get(by: UnlockManager.self)
@@ -223,91 +189,11 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
                                     self.present(alert, animated: true, completion: nil)
         }, tryUnlock: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
-//            self.dismiss()
         })
-    }
-    
-    func generateToken() -> Promise<String> {
-        if #available(iOS 11.0, *) {
-            let currentDevice = DCDevice.current
-            if currentDevice.isSupported {
-                let deferred = Promise<String>.pending()
-                currentDevice.generateToken(completionHandler: { (data, error) in
-                    if let tokenData = data {
-                        deferred.resolver.fulfill(tokenData.base64EncodedString())
-                    } else if let error = error {
-                        deferred.resolver.reject(error)
-                    } else {
-                        deferred.resolver.reject(TokenError.empty)
-                    }
-                })
-                return deferred.promise
-            }
-        }
-        
-        #if Enterprise
-        return Promise<String>.value("EnterpriseBuildInternalTestOnly".encodeBase64())
-        #else
-        return Promise<String>.init(error: TokenError.unsupport)
-        #endif
-    }
-    
-    @IBAction func signUpAction(_ sender: UIButton) {
-        dismissKeyboard()
-        firstly {
-            generateToken()
-        }.done { (token) in
-            self.performSegue(withIdentifier: self.kSignUpKeySegue, sender: token)
-        }.catch { (error) in
-            let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
-            alert.addOKAction()
-            self.present(alert, animated: true, completion: nil)
-        }
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
         dismissKeyboard()
-    }
-    
-    internal func signIn(username: String, password: String, cachedTwoCode: String?) {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
-        SignInViewController.isComeBackFromMailbox = false
-        self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode) { (result) in
-            MBProgressHUD.hide(for: self.view, animated: true)
-            switch result {
-            case .ask2fa:
-                self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
-            case .error(let error):
-                PMLog.D("error: \(error)")
-                if !error.code.forceUpgrade {
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                }
-            case .ok:
-                self.dismiss()
-            case .mbpwd:
-                self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            case .exist:
-                let alertController = "The user already logged in".alertController()
-                alertController.addOKAction()
-                self.present(alertController, animated: true, completion: nil)
-            }
-        }
-    }
-}
-
-extension AccountPasswordViewController : TwoFACodeViewControllerDelegate {
-    func ConfirmedCode(_ code: String, pwd : String) {
-        NotificationCenter.default.addKeyboardObserver(self)
-        self.tryDecrypt()
-    }
-
-    func Cancel2FA() {
-        //TODO:: fix me
-//        sharedUserDataService.twoFactorStatus = 0
-//        sharedUserDataService.authResponse = nil
-        NotificationCenter.default.addKeyboardObserver(self)
     }
 }
 

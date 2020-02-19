@@ -63,7 +63,7 @@ class AccountManagerUserCell: UITableViewCell {
     
     func configLoggedOutCell(name: String, email: String) {
         self.configCell(name: name, email: email)
-        self.diaplayName.text = (diaplayName.text ?? "Unknown") + " (logged out)"
+        self.diaplayName.text = (diaplayName.text ?? "Unknown") + " " + LocalString._logged_out
         
         self.diaplayName.textColor = .red
         self.emailAddress.textColor = .red

@@ -1028,7 +1028,7 @@
                         <outlet property="usernameTextField" destination="7DW-yo-ejW" id="0ZX-y6-LwM"/>
                         <outlet property="usernameView" destination="ylN-fl-1oU" id="O0r-sS-wWy"/>
                         <segue destination="u1u-Fp-Fza" kind="show" identifier="mailboxSegue" id="TNN-6G-bfQ"/>
-                        <segue destination="oJh-xM-Kmj" kind="presentation" identifier="2fa_code_segue" id="YDC-CN-ilB"/>
+                        <segue destination="oJh-xM-Kmj" kind="presentation" identifier="2fa_code_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="YDC-CN-ilB"/>
                         <segue destination="yGV-3W-5cU" kind="show" identifier="toAddAccountPasswordSegue" id="pld-1S-gJe"/>
                         <segue destination="DLU-1S-fgo" kind="show" identifier="toSignUpSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="PCF-cM-BWF"/>
                     </connections>

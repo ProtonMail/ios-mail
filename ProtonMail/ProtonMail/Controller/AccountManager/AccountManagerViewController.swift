@@ -93,8 +93,8 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     @IBAction fileprivate func removeAction(_ sender: UIBarButtonItem) {
         //remove all
-        let title = "Warning!"
-        let message = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\nDo you want to remove all your accounts anyway?"
+        let title = LocalString._warning
+        let message = LocalString._you_are_about_to_remove
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         alertController.addAction(.init(title: LocalString._remove_all, style: .destructive, handler: { _ in
@@ -143,7 +143,7 @@ extension AccountManagerViewController: UITableViewDataSource {
         switch self.viewModel.section(at: indexPath.section) {
         case .users where self.viewModel.usersCount > 1:
             return [UITableViewRowAction(style: .destructive, title: LocalString._sign_out) { _, indexPath in
-                let title = "Warning!"
+                let title = LocalString._warning
                 let message = LocalString._logout_confirmation
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
@@ -155,8 +155,8 @@ extension AccountManagerViewController: UITableViewDataSource {
             }]
         case .disconnected:
             return [UITableViewRowAction(style: .destructive, title: LocalString._general_delete_action) { _, indexPath in
-                let title = "Warning!"
-                let message = "By removing this account , you will no longer be able to access it from this device unless you add it again.\nDo you want to remove this account anyway?"
+                let title = LocalString._warning
+                let message = LocalString._by_removing_this_account
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alert.addAction(.init(title: LocalString._general_remove_button, style: .destructive, handler: { _ in
