@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMAuthentication
 
 /// TODO:: this is temp
 protocol UserDataSource : class {
@@ -142,7 +143,7 @@ class UserManager : Service, HasLocalStorage {
 
     init(api: APIService) {
         self.userinfo = UserInfo.getDefault()
-        self.auth = AuthCredential.getDefault()
+        self.auth = AuthCredential.none
         self.apiService = api
         self.apiService.sessionDeleaget = self
     }
@@ -164,9 +165,16 @@ class UserManager : Service, HasLocalStorage {
 }
 
 extension UserManager : SessionDelegate {
-    func getToken(bySessionUID uid: String) -> String? {
-        //TODO:: check session UID later
-        return auth.token
+    func getToken(bySessionUID uid: String) -> AuthCredential? {
+        guard auth.sessionID == uid else {
+            assert(false, "Inadequate crerential requested")
+            return nil
+        }
+        return auth
+    }
+    
+    func updateAuthCredential(_ credential: PMAuthentication.Credential) {
+        self.auth.udpate(sessionID: credential.UID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
     }
 }
 
@@ -200,7 +208,7 @@ extension UserManager : UserDataSource {
     
     var mailboxPassword: String {
         get {
-            return self.auth.password
+            return self.auth.mailboxpassword
         }
     }
     

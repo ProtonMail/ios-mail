@@ -1363,6 +1363,8 @@
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
 		AB98007559F0DBADAE47D9C7014292CE /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */; };
+		ABAA618C2403D76F00529792 /* PMAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABAA61892403D75B00529792 /* PMAuthentication.framework */; };
+		ABAA618D2403D76F00529792 /* PMAuthentication.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABAA61892403D75B00529792 /* PMAuthentication.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D329B904F35B11133082B8BEE4C46C /* App.swift */; };
 		AC07F1813FED65206AAF0CB79AE47EF5 /* EventDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF06CCD1C9E1D501F6E33528F144A226 /* EventDataService.swift */; };
 		AC1F531805973E8279B06947E230FE05 /* ContactGroupSubSelectionEmailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C28C90DB74837B0B5D7315CB68751D34 /* ContactGroupSubSelectionEmailCell.swift */; };
@@ -2098,6 +2100,20 @@
 			remoteGlobalIDString = 5CED50B34D85160179AD11B4A9AC3ADF;
 			remoteInfo = SiriDev;
 		};
+		ABAA61882403D75B00529792 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABAA61832403D75B00529792 /* PMAuthentication.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABAB0F2423FD78FA00383972;
+			remoteInfo = PMAuthentication;
+		};
+		ABAA618A2403D75B00529792 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = ABAA61832403D75B00529792 /* PMAuthentication.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = ABAB0F2D23FD78FA00383972;
+			remoteInfo = PMAuthenticationTests;
+		};
 		B5F4007A060FF256F7F0E3AD5BECC3AB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -2173,6 +2189,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				439AC649AC6D99252FA59E6771AFCCB2 /* Keymaker.framework in Embed Frameworks */,
+				ABAA618D2403D76F00529792 /* PMAuthentication.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2792,6 +2809,7 @@
 		AB4073ED1532665B57D33FB97F10B14C /* ServicePlan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePlan.swift; sourceTree = "<group>"; };
 		AB4A207B966135395353A3E6DC5E907E /* ProtectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtectionStrategy.swift; sourceTree = "<group>"; };
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
+		ABAA61832403D75B00529792 /* PMAuthentication.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = PMAuthentication.xcodeproj; path = ../../PMAuthentication/PMAuthentication.xcodeproj; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
 		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
@@ -3154,6 +3172,7 @@
 				0E85F59431AE555F969B4F49B87BD6A8 /* Social.framework in Frameworks */,
 				BDBD9E992072AAF7C56441B1CF474232 /* StoreKit.framework in Frameworks */,
 				48D5E369E1DD804DC3794800139A18DD /* libc++.tbd in Frameworks */,
+				ABAA618C2403D76F00529792 /* PMAuthentication.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4343,6 +4362,15 @@
 			path = SignIn;
 			sourceTree = "<group>";
 		};
+		ABAA61842403D75B00529792 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ABAA61892403D75B00529792 /* PMAuthentication.framework */,
+				ABAA618B2403D75B00529792 /* PMAuthenticationTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		ABF92807800349CCF2D23F1407BD145B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -4511,6 +4539,7 @@
 		C17EB90EF5076A849C4E2A0A715035BA = {
 			isa = PBXGroup;
 			children = (
+				ABAA61832403D75B00529792 /* PMAuthentication.xcodeproj */,
 				E82E69E71ACE409E41C4CFA61526BB54 /* Frameworks */,
 				04CD0E72FAF478F99B24F4AE3B0C9A5B /* Keymaker */,
 				183D8F62C761FE64DA088CED170E40AF /* KeymakerTests */,
@@ -5413,6 +5442,12 @@
 			mainGroup = C17EB90EF5076A849C4E2A0A715035BA;
 			productRefGroup = 7828F3448BB043564580FD2E6E5D5A54 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = ABAA61842403D75B00529792 /* Products */;
+					ProjectRef = ABAA61832403D75B00529792 /* PMAuthentication.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */,
@@ -5432,6 +5467,23 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		ABAA61892403D75B00529792 /* PMAuthentication.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = PMAuthentication.framework;
+			remoteRef = ABAA61882403D75B00529792 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ABAA618B2403D75B00529792 /* PMAuthenticationTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = PMAuthenticationTests.xctest;
+			remoteRef = ABAA618A2403D75B00529792 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		0909090870FAEBDE0C97F01DC1F09EFA /* Resources */ = {

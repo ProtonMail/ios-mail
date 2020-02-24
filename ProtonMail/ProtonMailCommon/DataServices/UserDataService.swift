@@ -391,7 +391,7 @@ class UserDataService : Service, HasLocalStorage {
             } else {
                 UserDataService.authResponse = nil
                 if error == nil {
-                    auth?.userName = username
+//                    auth?.userName = username
                     self.passwordMode = mpwd != nil ? 1 : 2
                     self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
                     onSuccess(mpwd, auth, userinfo)
@@ -414,7 +414,6 @@ class UserDataService : Service, HasLocalStorage {
     
     func clean() {
         clearAll()
-        clearAuthToken()
     }
     
     func cleanUserInfo() {
@@ -448,7 +447,6 @@ class UserDataService : Service, HasLocalStorage {
 //        }
         NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
-        clearAuthToken()
         delegate?.onLogout(animated: animated)
     }
     
@@ -463,7 +461,6 @@ class UserDataService : Service, HasLocalStorage {
 //        }
         NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
-        clearAuthToken()
     }
     
     @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
@@ -660,8 +657,8 @@ class UserDataService : Service, HasLocalStorage {
                                buildAuth: Bool, completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
         let userInfo = user
-        let old_password = oldAuthCredential.password
-        var _username = oldAuthCredential.userName
+        let old_password = oldAuthCredential.mailboxpassword
+        var _username = "" //oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {
                _username = addr.email
@@ -767,7 +764,7 @@ class UserDataService : Service, HasLocalStorage {
                         //update local keys
                         userInfo.userKeys = updated_userlevel_keys
                         userInfo.userAddresses = updated_address_keys
-                        oldAuthCredential.password = new_hashed_mpwd
+                        oldAuthCredential.udpate(password: new_hashed_mpwd)
                         forceRetry = false
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -950,9 +947,6 @@ class UserDataService : Service, HasLocalStorage {
         passwordMode = 2
     }
     
-    func clearAuthToken() {
-        AuthCredential.clearFromKeychain()
-    }
     
     func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in

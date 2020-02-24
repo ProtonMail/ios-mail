@@ -47,7 +47,7 @@ class SignInManager: Service {
                 onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
                 return
             }
-            auth.userName = username
+
             self.auth = auth
             self.userInfo = user
             guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
@@ -73,7 +73,7 @@ class SignInManager: Service {
     
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
         var mailboxPassword = cleartextPassword
-        if let keysalt = auth.getKeySalt(), !keysalt.isEmpty {
+        if let keysalt = auth.passwordKeySalt, !keysalt.isEmpty {
             let keysalt_byte: Data = keysalt.decodeBase64()
             mailboxPassword = PasswordUtils.getMailboxPassword(cleartextPassword, salt: keysalt_byte)
         }
@@ -81,7 +81,7 @@ class SignInManager: Service {
     }
     
     internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
-        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
+        guard let auth = auth, let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }
@@ -107,7 +107,6 @@ class SignInManager: Service {
             self.usersManager.loggedIn()
             
             self.usersManager.update(auth: auth, user: info )
-            //usersDataService.setMailboxPassword(mailboxPassword, keysalt: nil)
             UserTempCachedStatus.restore()
             NotificationCenter.default.post(name: .didSignIn, object: nil)
             

@@ -22,6 +22,7 @@
 
 
 import Foundation
+import PMAuthentication
 
 extension APIService {
 
@@ -44,7 +45,7 @@ extension APIService {
 
     internal typealias AuthInfo                 = (accessToken: String?, expiresId: TimeInterval?, refreshToken: String?, userID: String?)
     internal typealias AuthComplete             = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ hasError : NSError?) -> Void
-    internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth:AuthCredential?, _ hasError : NSError?) -> Void
+    internal typealias AuthRefreshComplete      = (_ task: URLSessionDataTask?, _ auth: PMAuthentication.Credential?, _ hasError : NSError?) -> Void
 
     
     internal typealias AuthCredentialBlock      = (AuthCredential?, NSError?) -> Void

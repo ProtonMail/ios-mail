@@ -97,7 +97,7 @@ class UsersManager : Service {
     func add(auth: AuthCredential, user: UserInfo) {
         let session = auth.sessionID
         let userID = user.userId
-        auth.userID = userID
+//        auth.userID = userID
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
@@ -270,11 +270,11 @@ class UsersManager : Service {
             let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
-                oldAuth.password = pwd
+                oldAuth.udpate(password: pwd)
             }
-            if let userName = oldUserName() {
-                oldAuth.userName = userName
-            }
+//            if let userName = oldUserName() {
+//                oldAuth.userName = userName
+//            }
             
             user.twoFactor = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)
             user.passwordMode = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode)

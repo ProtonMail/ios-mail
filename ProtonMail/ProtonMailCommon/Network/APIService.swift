@@ -27,6 +27,7 @@ import AFNetworking
 import AFNetworkActivityLogger
 import TrustKit
 import PMNetworking
+import PMAuthentication
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
@@ -36,7 +37,8 @@ protocol APIServiceDelegate: class {
 }
 
 protocol SessionDelegate: class {
-    func getToken(bySessionUID uid: String) -> String?
+    func getToken(bySessionUID uid: String) -> AuthCredential?
+    func updateAuthCredential(_ credential: PMAuthentication.Credential)
 }
 
 class APIService : Service {
@@ -90,6 +92,23 @@ class APIService : Service {
     let userID : String
     
     //
+    lazy var authApi: PMAuthentication.Authenticator = {
+        let trust: Authenticator.TrustChallenge = { session, challenge, completion in
+            if let validator = TrustKitWrapper.current?.pinningValidator {
+                validator.handle(challenge, completionHandler: completion)
+            } else {
+                assert(false, "TrustKit was not initialized properly")
+                completion(.performDefaultHandling, nil)
+            }
+        }
+        
+        let configuration = Authenticator.Configuration(trust: trust,
+                                                        scheme: self.serverConfig.protocol,
+                                                        host: self.serverConfig.host + self.serverConfig.path,
+                                                        clientVersion: "iOS_\(Bundle.main.majorVersion)")
+        return Authenticator(configuration: configuration)
+    }()
+    
     static var sharedSessionManager: AFHTTPSessionManager? = nil
     
     private func initSessionManager(apiHostUrl: String) -> AFHTTPSessionManager {
@@ -193,82 +212,43 @@ class APIService : Service {
     internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
-            let token = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
-            
-            
+            let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
             pthread_mutex_unlock(&self.mutex)
             
-            
-            if token == nil {
+            guard let credential = authCredential else {
                 PMLog.D("token is empty")
                 completion(nil, nil, NSError(domain: "empty token", code: 0, userInfo: nil))
                 return
             }
             
+            guard !credential.isExpired else {
+                self.authRefresh(credential) { _, newCredential, error in
+                    self.debugError(error)
+                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
+                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
+                        DispatchQueue.main.async {
+                            NSError.alertBadTokenToast()
+                            self.fetchAuthCredential(completion)
+                        }
+                    } else {
+                        if let credential = newCredential {
+                            self.sessionDeleaget?.updateAuthCredential(credential)
+                        }
+                        DispatchQueue.main.async {
+                            completion(newCredential?.accessToken, self.sessionUID, error)
+                        }
+                    }
+                }
+                return
+            }
             
-            completion(token, self.sessionUID, nil)
-            
-            return
-            
-            
-            //fetch auth info
-//            guard let credential = AuthCredential.fetchFromKeychain(), // mailbox pwd is empty should show error and logout
-//                !(credential.password ?? "").isEmpty else
-//            {
-//                pthread_mutex_unlock(&self.mutex)
-                //TODO:: UnlockManager
-//                guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
-//                    pthread_mutex_unlock(&self.mutex)
-//                    DispatchQueue.main.async {
-//                        completion(nil, NSError.authCacheLocked())
-//                    }
-//                    return
-//                }
-//
-//                //clean auth cache let user relogin
-//                AuthCredential.clearFromKeychain()
-//                pthread_mutex_unlock(&self.mutex)
-//                DispatchQueue.main.async {
-//                    completion(nil, NSError.AuthCachePassEmpty())
-//                    UserTempCachedStatus.backup()
-//                    sharedUserDataService.signOut(true) //NOTES:signout + errors
-//                    userCachedStatus.signOut()
-//                    NSError.alertBadTokenToast()
-//                }
-//                return
-//            }
-            
-//            guard !credential.isExpired else { // access token time is valid
-//                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
-//                    self.debugError(error)
-//                    pthread_mutex_unlock(&self.mutex)
-//                    if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-//                        AuthCredential.clearFromKeychain()
-//                        DispatchQueue.main.async {
-//                            NSError.alertBadTokenToast()
-//                            self.fetchAuthCredential(completion)
-//                        }
-//                    } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-//                        AuthCredential.clearFromKeychain()
-//                        DispatchQueue.main.async {
-//                            NSError.alertBadTokenToast()
-//                            self.fetchAuthCredential(completion)
-//                        }
-//                    } else {
-//                        DispatchQueue.main.async {
-//                            completion(authCredential, error)
-//                        }
-//                    }
-//                }
-//                return
-//            }
-//
-//            pthread_mutex_unlock(&self.mutex)
-//            DispatchQueue.main.async {
-//                completion(credential, nil)
-//            }
+            // renew
+            completion(credential.accessToken, self.sessionUID, nil)
         }
-        
     }
     
     
@@ -329,7 +309,7 @@ class APIService : Service {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -449,7 +429,7 @@ class APIService : Service {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -614,7 +594,7 @@ class APIService : Service {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential?.token, customAuthCredential?.sessionID, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     

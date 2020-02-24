@@ -23,12 +23,12 @@
 
 import Foundation
 import PromiseKit
+import PMAuthentication
 
 /// Auth extension
 extension APIService {
     func auth2fa(res: AuthResponse, password: String, twoFACode: String?, checkSalt: Bool = true, completion: @escaping AuthCompleteBlock) {
         let credential = AuthCredential(res: res)
-//        credential.storeInKeychain()
         
         func exec() {
             let passwordMode = res.passwordMode
@@ -37,7 +37,6 @@ extension APIService {
             
             func done(userInfo: UserInfo?) {
                 credential.update(salt: keySalt, privateKey: privateKey)
-//                credential.storeInKeychain()
                 if passwordMode == 1 {
                     guard let keysalt : Data = keySalt?.decodeBase64() else {
                         return completion(nil, nil, .resCheck, nil, nil, userInfo, NSError.authInValidKeySalt())
@@ -50,7 +49,6 @@ extension APIService {
             }
             
             if !res.isEncryptedToken {
-//                credential.trySetToken()
                 let saltapi = GetKeysSalts(api: self)
                 ///
                 if !checkSalt {
@@ -87,12 +85,10 @@ extension APIService {
         }
         
         if let code = twoFACode {
-//            credential.trySetToken()
             let tfaapi = TwoFARequest(api: self, code: code)
             tfaapi.authCredential = credential
             firstly {
                 tfaapi.run()
-                // when(resolved: tfaapi.run())
             }.done { (res) in
                 if let error = res.error {
                     return completion(nil, nil, .resCheck, nil, nil, nil, error)
@@ -110,8 +106,6 @@ extension APIService {
         } else {
             exec()
         }
-        
-        
     }
     
     
@@ -122,7 +116,7 @@ extension APIService {
         
         var forceRetry = false
         var forceRetryVersion = 2
-        func tryAuth() {
+        
             AuthInfoRequest(username: username, authCredential: authCredential).call(api: self) { task, res, hasError in
                 if hasError {
                     guard let error = res?.error else {
@@ -172,7 +166,7 @@ extension APIService {
                                     } else {
                                         if forceRetry && forceRetryVersion != 0 {
                                             forceRetryVersion -= 1
-                                            tryAuth()
+                                            self.auth(username, password: password, twoFACode: twoFACode, authCredential: authCredential, completion: completion)
                                         } else {
                                             return completion(task, nil, .resCheck, nil, nil, nil, NSError.authInvalidGrant())
                                         }
@@ -214,63 +208,59 @@ extension APIService {
                     return completion(task, nil, .resCheck, nil, nil, nil, NSError.authUnableToParseToken())
                 }
             }
-        }
-        tryAuth()
+        
     }
     
     
     
-    func authRefresh(_ password:String, completion: AuthRefreshComplete?) {
-        //TODO:: fixme
-//        if let authCredential = AuthCredential.fetchFromKeychain() {
-//            AuthRefreshRequest(resfresh: authCredential.refreshToken, uid: authCredential.sessionID).call(api: self) { task, res , hasError in
-//                if hasError {
-//                    var needsRetry : Bool = false
-//                    if let err = res?.error {
-//                        err.upload(toAnalytics : AuthErrorTitle)
-//                        if err.code == NSURLErrorTimedOut ||
-//                            err.code == NSURLErrorNotConnectedToInternet ||
-//                            err.code == NSURLErrorCannotConnectToHost ||
-//                            err.code == APIErrorCode.API_offline ||
-//                            err.code == APIErrorCode.HTTP503 {
-//                            needsRetry = true
-//                        } else {
-//                            self.refreshTokenFailedCount += 1
-//                        }
-//                    }
-//
-//                    if self.refreshTokenFailedCount > 5 || !needsRetry {
-//                        PMLog.D("self.refreshTokenFailedCount == 5")
-//                        completion?(task, nil, NSError.authInvalidGrant())
-//                    } else {
-//                        completion?(task, nil, NSError.internetError())
-//                    }
-//                }
-//                else if res?.code == 1000 {
-//                    do {
-//                        authCredential.update(res!, updateUID: false)//TODO:: fix me
-//                        try authCredential.setupToken(password)
-//                        //                        authCredential.storeInKeychain()
-//
-//                        PMLog.D("\(authCredential.description)")
-//
-//                        self.refreshTokenFailedCount = 0
-//                    } catch let ex as NSError {
-//                        PMLog.D(any: ex)
-//                    }
-//                    DispatchQueue.main.async {
-//                        completion?(task, authCredential, nil)
-//                    }
-//                }
-//                else {
-//                    completion?(task, nil, NSError.authUnableToParseToken())
-//                }
-//            }
-//        } else {
-//            completion?(nil, nil, NSError.authCredentialInvalid())
-//        }
-        
+    func authRefresh(_ authCredential: AuthCredential, completion: AuthRefreshComplete?) {
+        let oldCredential = PMAuthentication.Credential(authCredential)
+        self.authApi.refreshCredential(oldCredential) { result in
+            switch result {
+            case .success(let status):
+                guard case Authenticator.Status.updatedCredential(let newCredential) = status else {
+                    assert(false, "Was trying to refresh credential but got something else instead")
+                    PMLog.D("Was trying to refresh credential but got something else instead")
+                    completion?(nil, nil, NSError.authInvalidGrant())
+                }
+                self.refreshTokenFailedCount = 0
+                completion?(nil, newCredential, nil)
+                
+            case .failure(let error):
+                var err: NSError = error as NSError
+                if case Authenticator.Errors.serverError(let serverResponse) = error {
+                    err = serverResponse
+                }
+                
+                var needsRetry : Bool = false
+                err.upload(toAnalytics : AuthErrorTitle)
+                if err.code == NSURLErrorTimedOut ||
+                    err.code == NSURLErrorNotConnectedToInternet ||
+                    err.code == NSURLErrorCannotConnectToHost ||
+                    err.code == APIErrorCode.API_offline ||
+                    err.code == APIErrorCode.HTTP503 {
+                    needsRetry = true
+                } else {
+                    self.refreshTokenFailedCount += 1
+                }
+                
+                if self.refreshTokenFailedCount > 5 || !needsRetry {
+                    PMLog.D("self.refreshTokenFailedCount == 5")
+                    completion?(nil, nil, NSError.authInvalidGrant())
+                } else {
+                    completion?(nil, nil, NSError.internetError())
+                }
+            }
+        }
     }
 }
 
-
+extension PMAuthentication.Credential {
+    init(_ authCredential: AuthCredential) {
+        self.init(UID: authCredential.sessionID,
+                  accessToken: authCredential.accessToken,
+                  refreshToken: authCredential.refreshToken,
+                  expiration: authCredential.expiration,
+                  scope: [])
+    }
+}

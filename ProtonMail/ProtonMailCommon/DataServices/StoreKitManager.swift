@@ -62,7 +62,7 @@ class StoreKitManager: NSObject {
     }
     private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            guard let currentUsername = self.user?.auth.userName else {
+            guard let currentUsername = self.user?.defaultEmail else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
@@ -374,7 +374,7 @@ extension StoreKitManager {
             throw Errors.noHashedUsernameArrivedInTransaction
         }
         guard hashedUsername == self.hash(username: currentUsername) ||
-            self.hashLegacy(username: self.user?.auth.userName ?? "", mayMatch: hashedUsername) else
+            self.hashLegacy(username: self.user?.defaultEmail.components(separatedBy: "@").first ?? "", mayMatch: hashedUsername) else
         {
             throw Errors.haveTransactionOfAnotherUser
         }
