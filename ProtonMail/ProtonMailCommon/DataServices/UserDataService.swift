@@ -26,6 +26,7 @@ import AwaitKit
 import PromiseKit
 import Keymaker
 import Crypto
+import PMAuthentication
 
 //TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
@@ -130,13 +131,6 @@ class UserDataService : Service, HasLocalStorage {
     var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {
         didSet {
             SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: CoderKey.defaultSignatureStatus)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)  {
-        didSet {
-            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: CoderKey.twoFAStatus)
             SharedCacheBase.getDefault().synchronize()
         }
     }
@@ -378,25 +372,23 @@ class UserDataService : Service, HasLocalStorage {
         //mailboxPassword = password
     }
     
-    static var authResponse: AuthResponse? = nil
+    
+    static var authResponse: PMAuthentication.TwoFactorContext? = nil
     func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
                 ask2fa: @escaping LoginAsk2FABlock,
                 onError:@escaping LoginErrorBlock,
-                onSuccess: @escaping LoginSuccessBlock) {
-        let completionWrapper: APIService.AuthCompleteBlock = { task, mpwd, status, res, auth, userinfo, error in
+                onSuccess: @escaping LoginSuccessBlock)
+    {
+        let completionWrapper: APIService.AuthCompleteBlockNew = { mpwd, status, credential, context, userinfo, error in
             if status == .ask2FA {
-                self.twoFactorStatus = 1
-                UserDataService.authResponse = res
-                ask2fa()
+                UserDataService.authResponse = context
+                DispatchQueue.main.async(execute: ask2fa)
             } else {
                 UserDataService.authResponse = nil
                 if error == nil {
-//                    auth?.userName = username
                     self.passwordMode = mpwd != nil ? 1 : 2
-                    self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
-                    onSuccess(mpwd, auth, userinfo)
+                    onSuccess(mpwd, credential, userinfo)
                 } else {
-                    self.twoFactorStatus = 0
                     self.signOut(true)
                     onError(error!)
                 }
@@ -404,10 +396,10 @@ class UserDataService : Service, HasLocalStorage {
         }
         
         if let authRes = UserDataService.authResponse {
-            apiService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
+            let code = Int(twoFACode!)!
+            apiService.confirm2FA(code, password: password, context: authRes, completion: completionWrapper)
         } else {
-            // will use standard authCredential
-            apiService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
+            apiService.authenticate(username: username, password: password, completion: completionWrapper)
         }
     }
 
@@ -943,7 +935,6 @@ class UserDataService : Service, HasLocalStorage {
     func clearAll() {
         allLoggedout()
        //mailboxPassword = nil
-        twoFactorStatus = 0
         passwordMode = 2
     }
     
@@ -967,7 +958,6 @@ class UserDataService : Service, HasLocalStorage {
     
     func launchCleanUp() {
         if !self.isUserCredentialStored {
-            twoFactorStatus = 0
             passwordMode = 2
         }
     }

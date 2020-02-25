@@ -52,7 +52,6 @@ extension APIService {
 //    internal typealias AuthCompleteBlock        = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus, _ res: AuthResponse?, _ error : NSError?) -> Void
 
     
-    
-    internal typealias AuthCompleteBlock = (_ task: URLSessionDataTask?, _ mailpassword: String?, _ authStatus: AuthStatus,  _ res: AuthResponse?, _ credential: AuthCredential?, _ userinfo: UserInfo?, _ error : NSError?) -> Void
+    internal typealias AuthCompleteBlockNew = (_ mailpassword: String?, _ authStatus: AuthStatus, _ credential: AuthCredential?, _ context: PMAuthentication.TwoFactorContext?, _ userInfo: UserInfo?, _ error : NSError?) -> Void
 
 }

@@ -24,8 +24,16 @@
 import Foundation
 import Keymaker
 
-//TODO:: refactor required later
 final class AuthCredential: NSObject, NSCoding {
+    internal init(sessionID: String, accessToken: String, refreshToken: String, expiration: Date, privateKey: String?, passwordKeySalt: String?) {
+        self.sessionID = sessionID
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.expiration = expiration
+        self.privateKey = privateKey
+        self.passwordKeySalt = passwordKeySalt
+    }
+    
     struct Key {
         static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
     }
