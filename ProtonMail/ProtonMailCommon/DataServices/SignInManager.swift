@@ -81,7 +81,7 @@ class SignInManager: Service {
     }
     
     internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
-        guard let auth = auth, let userInfo = self.userInfo else {
+        guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }

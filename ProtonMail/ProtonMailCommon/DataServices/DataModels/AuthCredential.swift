@@ -65,7 +65,7 @@ final class AuthCredential: NSObject, NSCoding {
     private(set) var expiration: Date
     
     // the login private key, ususally it is first userkey
-    private var privateKey : String?
+    private(set) var privateKey : String?
     private(set) var passwordKeySalt : String?
     private(set) var mailboxpassword: String = ""
     

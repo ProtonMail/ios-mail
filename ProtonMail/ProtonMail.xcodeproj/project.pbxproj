@@ -1362,6 +1362,7 @@
 		AAF9C4F0FEE27845F1F807E09DFB70A1 /* BioCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215A2C4F86BB7CF8BD48A4132F16CB0E /* BioCodeView.swift */; };
 		AB016886037E9CBFBCB8DFF4AFA7048B /* QueueManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 106ACB7A2B59C01D914676933A23FEFC /* QueueManager.swift */; };
 		AB3BC5E799E688EF6851FC3FB1987DBF /* ExpirationWarningHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6D384A72A76B6E5A58FA263E0D08D2B2 /* ExpirationWarningHeaderCell.xib */; };
+		AB85F3C0240547B600D854DF /* PMAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABAA61892403D75B00529792 /* PMAuthentication.framework */; };
 		AB98007559F0DBADAE47D9C7014292CE /* ContactGroupsViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49C16D33EE4F6C03C5887A1EF07F1711 /* ContactGroupsViewCell.xib */; };
 		ABAA618C2403D76F00529792 /* PMAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABAA61892403D75B00529792 /* PMAuthentication.framework */; };
 		ABAA618D2403D76F00529792 /* PMAuthentication.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ABAA61892403D75B00529792 /* PMAuthentication.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -3240,6 +3241,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB85F3C0240547B600D854DF /* PMAuthentication.framework in Frameworks */,
 				14B45EEEF11C4D7C89ADDD7436652B5D /* Keymaker.framework in Frameworks */,
 				58F4F4F777E23217BF18ED6C75481736 /* Pods_Share.framework in Frameworks */,
 				B15303EDE7A8F7741B7B5E15465ECA65 /* libc++.tbd in Frameworks */,
