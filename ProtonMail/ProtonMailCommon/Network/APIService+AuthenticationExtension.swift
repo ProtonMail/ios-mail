@@ -129,14 +129,14 @@ extension APIService {
         let oldCredential = PMAuthentication.Credential(authCredential)
         self.authApi.refreshCredential(oldCredential) { result in
             switch result {
-            case .success(let status):
-                guard case Authenticator.Status.updatedCredential(let newCredential) = status else {
-                    assert(false, "Was trying to refresh credential but got something else instead")
-                    PMLog.D("Was trying to refresh credential but got something else instead")
-                    completion?(nil, nil, NSError.authInvalidGrant())
-                }
+            case .success(.updatedCredential(let newCredential)):
                 self.refreshTokenFailedCount = 0
                 completion?(nil, newCredential, nil)
+            
+            case .success(.ask2FA), .success(.newCredential):
+                assert(false, "Was trying to refresh credential but got something else instead")
+                PMLog.D("Was trying to refresh credential but got something else instead")
+                completion?(nil, nil, NSError.authInvalidGrant())
                 
             case .failure(let error):
                 var err: NSError = error as NSError

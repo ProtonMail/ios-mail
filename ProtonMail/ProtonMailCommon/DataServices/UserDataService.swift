@@ -380,17 +380,19 @@ class UserDataService : Service, HasLocalStorage {
                 onSuccess: @escaping LoginSuccessBlock)
     {
         let completionWrapper: APIService.AuthCompleteBlockNew = { mpwd, status, credential, context, userinfo, error in
-            if status == .ask2FA {
-                UserDataService.authResponse = context
-                DispatchQueue.main.async(execute: ask2fa)
-            } else {
-                UserDataService.authResponse = nil
-                if error == nil {
-                    self.passwordMode = mpwd != nil ? 1 : 2
-                    onSuccess(mpwd, credential, userinfo)
+            DispatchQueue.main.async {
+                if status == .ask2FA {
+                    UserDataService.authResponse = context
+                    ask2fa()
                 } else {
-                    self.signOut(true)
-                    onError(error!)
+                    UserDataService.authResponse = nil
+                    if error == nil {
+                        self.passwordMode = mpwd != nil ? 1 : 2
+                        onSuccess(mpwd, credential, userinfo)
+                    } else {
+                        self.signOut(true)
+                        onError(error!)
+                    }
                 }
             }
         }

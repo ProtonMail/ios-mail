@@ -104,7 +104,8 @@ class APIService : Service {
         
         let configuration = Authenticator.Configuration(trust: trust,
                                                         scheme: self.serverConfig.protocol,
-                                                        host: self.serverConfig.host + self.serverConfig.path,
+                                                        host: self.serverConfig.host,
+                                                        apiPath: self.serverConfig.path,
                                                         clientVersion: "iOS_\(Bundle.main.majorVersion)")
         return Authenticator(configuration: configuration)
     }()
@@ -536,7 +537,7 @@ class APIService : Service {
                     }
                 }
                 // let url = self.doh.getHostUrl() + path
-                let url = self.serverConfig.hostUrl + path
+                let url = self.serverConfig.hostUrl + self.serverConfig.path + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,
