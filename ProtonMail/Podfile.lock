@@ -79,6 +79,7 @@ PODS:
     - OpenSSL
   - OpenSSL (1.0.210)
   - PMNetworking (1.0.0)
+  - PMAuthentication (1.0.0)
   - PromiseKit (6.8.3):
     - PromiseKit/CorePromise (= 6.8.3)
     - PromiseKit/Foundation (= 6.8.3)
@@ -121,6 +122,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - OpenPGP (from `../OpenPGP`)
   - PMNetworking (from `../Networking`)
+  - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`)
   - PromiseKit (~> 6.0)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
@@ -163,6 +165,8 @@ EXTERNAL SOURCES:
     :path: "../OpenPGP"
   PMNetworking:
     :path: "../Networking"
+  PMAuthentication:
+    :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
@@ -171,6 +175,9 @@ CHECKOUT OPTIONS:
   "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
+  PMAuthentication:
+    :commit: 912827af2a34953ca4df9b9f658b15d6ab55e098
+    :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
@@ -192,6 +199,7 @@ SPEC CHECKSUMS:
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMNetworking: 7c1717a5ae14cc5112c9972a94ae8f2399fc8b4d
+  PMAuthentication: 6d91c9a597e8d6efc38a6ea34102f0712d00fbef
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   SDWebImage: 5fcdb02cc35e05fc35791ec514b191d27189f872
   SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
@@ -203,3 +211,6 @@ SPEC CHECKSUMS:
 PODFILE CHECKSUM: e829aeee5f3eeeea8fa46bf579f2d9c08d682c0e
 
 COCOAPODS: 1.8.4
+PODFILE CHECKSUM: 3dbd1cf8e328c56a6a61e8cd7935ba88a80c9af7
+
+COCOAPODS: 1.8.3

@@ -42,6 +42,7 @@ def common_pods
     pod 'TrustKit', '1.6.2'
     
     pod 'PMNetworking', :path => '../Networking'
+    pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git'
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'

@@ -172,7 +172,11 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
+<<<<<<< HEAD
   install_framework "${BUILT_PRODUCTS_DIR}/PMNetworking/PMNetworking.framework"
+=======
+  install_framework "${BUILT_PRODUCTS_DIR}/PMAuthentication/PMAuthentication.framework"
+>>>>>>> add PMAuthentication as a cocoapod
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework"
@@ -194,7 +198,11 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
+<<<<<<< HEAD
   install_framework "${BUILT_PRODUCTS_DIR}/PMNetworking/PMNetworking.framework"
+=======
+  install_framework "${BUILT_PRODUCTS_DIR}/PMAuthentication/PMAuthentication.framework"
+>>>>>>> add PMAuthentication as a cocoapod
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework"
@@ -216,7 +224,11 @@ if [[ "$CONFIGURATION" == "Distribution" ]]; then
   install_framework "${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/Masonry/Masonry.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/NSDate+Helper/NSDate_Helper.framework"
+<<<<<<< HEAD
   install_framework "${BUILT_PRODUCTS_DIR}/PMNetworking/PMNetworking.framework"
+=======
+  install_framework "${BUILT_PRODUCTS_DIR}/PMAuthentication/PMAuthentication.framework"
+>>>>>>> add PMAuthentication as a cocoapod
   install_framework "${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework"
   install_framework "${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework"
