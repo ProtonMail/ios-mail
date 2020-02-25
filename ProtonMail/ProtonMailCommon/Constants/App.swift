@@ -71,17 +71,17 @@ struct Constants {
         //api options
         //static let API_PATH : String = "/api"
         
-        static var API_HOST_URL : String {
-            get {
-                return URL_Protocol + URL_HOST
-            }
-        }
+//        static var API_HOST_URL : String {
+//            get {
+//                return URL_Protocol + URL_HOST
+//            }
+//        }
         
-        static var API_FULL_URL : String {
-            get {
-                return API_HOST_URL + API_PATH
-            }
-        }
+//        static var API_FULL_URL : String {
+//            get {
+//                return API_HOST_URL + API_PATH
+//            }
+//        }
         
         static var DEBUG_OPTION : String {
             get {

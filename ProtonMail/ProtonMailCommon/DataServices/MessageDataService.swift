@@ -1238,7 +1238,7 @@ class MessageDataService : Service {
         }
         
         PMLog.D("SendAttachmentDebug == start upload att!")
-        sharedAPIService.upload( byUrl: Constants.App.API_HOST_URL + Constants.App.API_PATH + "/attachments",
+        sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
                                  parameters: params,
                                  keyPackets: keyPacket,
                                  dataPacket: dataPacket,

@@ -92,7 +92,7 @@ public struct Header: CustomStringConvertible, CustomDebugStringConvertible {
             if key.contains("boundary") { return value }
         }
         return nil
-    }
+    } 
     
     public var description: String {
         if let kind = self.kind {
