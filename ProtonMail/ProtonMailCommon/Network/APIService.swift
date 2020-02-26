@@ -26,6 +26,7 @@ import Foundation
 import AFNetworking
 import AFNetworkActivityLogger
 import TrustKit
+import PMNetworking
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 

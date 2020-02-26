@@ -22,29 +22,14 @@
 
 
 import Foundation
+import PMNetworking
 
-class DoHMail : DoH {
-    //defind the domain
-    /// let 
-    override func getHostUrl() -> String {
-        if let url = Google().fetch(sync: "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz")?.url {
-            let newurl = URL(string: "https://dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz")!
-            let host = newurl.host
-            let hostUrl = newurl.absoluteString.replacingOccurrences(of: host!, with: (url.preg_replace("\"", replaceto: "")))
-            return hostUrl
-        }
-        return URL_Protocol + URL_HOST
-    }
-    
+
+class DoHMail : DoH, DoHConfig {
+    //defind your default host
+    var defaultHost: String = Constants.App.API_HOST_URL
+    //defind your query host
+    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
     //singleton
-    static let `default` = DoHMail()
-
-    let URL_Protocol : String = Constants.App.URL_Protocol
-    let URL_HOST : String = Constants.App.URL_HOST
-    let API_PATH : String = Constants.App.API_PATH
-    
-    private override init() {
-        // inital default protonmail DNS record in TXT type
-    }
-    
+    static let `default` = try! DoHMail()
 }

@@ -1,0 +1,22 @@
+{
+  "name": "PMNetworking",
+  "version": "1.0.0",
+  "summary": "A short description of PMNetworking.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmnetworking",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "zhj4478": "feng@pm.me"
+  },
+  "source": {
+    "git": "https://gitlab.protontech.ch/apple/shared/pmnetworking.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "PMNetworking/Classes/**/*"
+}
