@@ -13,13 +13,13 @@ enum AuthService {
      See BE discussion in internal ProtonTech docs: /proton/backend-communication/issues/12
     */
     
-    static var trust: Authenticator.TrustChallenge? = nil
+    static var trust: Authenticator.TrustChallenge?
     static var scheme: String = "https"
     static var host: String = "api.protonmail.ch"
     static var apiPath: String = ""
     static var apiVersion: String = "3"
     static var clientVersion: String = ""
-    static var redirectUri: String = "http://protonmail.ch" // TODO: do we really need this thing?
+    static var redirectUri: String = "http://protonmail.ch" // Probably, we do not actually need this thing
     
     static var baseComponents: URLComponents {
         var urlComponents = URLComponents()
@@ -34,7 +34,7 @@ enum AuthService {
             "x-pm-appversion": clientVersion,
             "x-pm-apiversion": apiVersion,
             "Accept": "application/vnd.protonmail.v1+json",
-            "Content-Type":"application/json;charset=utf-8"
+            "Content-Type": "application/json;charset=utf-8"
         ]
     }
 

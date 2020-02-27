@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import Keymaker
+import PMKeymaker
 
 class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsAccountViewModel!

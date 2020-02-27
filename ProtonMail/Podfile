@@ -8,6 +8,12 @@ platform :ios, '10.0'
 inhibit_all_warnings!
 use_frameworks!
 
+def pm_shared_pods
+    pod 'PMCrypto', :git => 'https://gitlab.protontech.ch/apple/shared/pmcrypto.git'
+    pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git'
+    pod 'PMKeymaker', :git => 'https://gitlab.protontech.ch/apple/shared/pmkeymaker.git'
+end
+
 def common_pods
     ##custom
     #going to remove this soon
@@ -43,6 +49,8 @@ def common_pods
     
     pod 'PMNetworking', :path => '../Networking'
     pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git'
+
+    pm_shared_pods
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
@@ -60,6 +68,7 @@ def pm_share
 end
 
 def pm_siri
+    pm_shared_pods
 #    pod 'UICKeyChainStore', '2.1.1'
 end
 
@@ -112,17 +121,6 @@ target 'Siri' do
 end
 target 'SiriDev' do
     pm_siri
-end
-
-
-target 'Keymaker' do
-#    pod 'UICKeyChainStore', '2.1.1'
-    pod 'EllipticCurveKeyPair', '1.0.2'
-end
-
-target 'KeymakerTests' do
-    pod 'CryptoSwift', '0.12.0'
-    inherit! :search_paths
 end
 
 post_install do | installer |

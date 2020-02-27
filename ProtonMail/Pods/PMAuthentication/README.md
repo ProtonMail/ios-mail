@@ -15,3 +15,11 @@ API endpoints participating:
 * /auth/info
 * /auth
 * /auth/2fa
+
+## Dependencies
+ 😎 NO!
+
+ ## Linter
+ We use SwiftLint to enforce consistent styling across codebase.
+ Install (command line): `brew install swiftlint`
+ Configuration: hidden file `.swiftlint.yml`

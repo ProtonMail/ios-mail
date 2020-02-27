@@ -21,16 +21,16 @@ extension AuthService {
             }
             
             var code: Int
-            var accessToken : String
-            var expiresIn : TimeInterval
-            var tokenType : String
-            var refreshToken : String
-            var scope : Scope
-            var UID : String
+            var accessToken: String
+            var expiresIn: TimeInterval
+            var tokenType: String
+            var refreshToken: String
+            var scope: Scope
+            var UID: String
             var userID: String
-            var eventID : String
-            var serverProof : String
-            var passwordMode : PasswordMode
+            var eventID: String
+            var serverProof: String
+            var passwordMode: PasswordMode
             
             var _2FA: TwoFA
         }
@@ -57,8 +57,8 @@ extension AuthService {
             // body
             let body = [
                 "Username": username,
-                "ClientEphemeral" : ephemeral.base64EncodedString(),
-                "ClientProof" : proof.base64EncodedString(),
+                "ClientEphemeral": ephemeral.base64EncodedString(),
+                "ClientProof": proof.base64EncodedString(),
                 "SRPSession": session
             ]
             request.httpBody = try? JSONEncoder().encode(body)

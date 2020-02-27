@@ -22,10 +22,10 @@
 
 
 import Foundation
-#if canImport(Keymaker)
+#if canImport(PMKeymaker)
     // Keymaker framework is not linked with PushService to keep lower memory footprint
     // Keychain class is a member of PushService target alone
-    import Keymaker
+    import PMKeymaker
 #endif
 
 final class KeychainWrapper: Keychain {

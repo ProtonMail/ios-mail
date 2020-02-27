@@ -18,9 +18,8 @@ PODS:
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.1):
     - PromiseKit (~> 6)
-  - Crashlytics (3.12.0):
-    - Fabric (~> 1.9.0)
-  - CryptoSwift (0.12.0)
+  - Crashlytics (3.14.0):
+    - Fabric (~> 1.10.2)
   - DKImagePickerController/Core (4.1.7):
     - DKImagePickerController/ImageDataManager
     - DKImagePickerController/Resource
@@ -53,7 +52,7 @@ PODS:
     - SDWebImage
     - SDWebImageFLPlugin
   - EllipticCurveKeyPair (1.0.2)
-  - Fabric (1.9.0)
+  - Fabric (1.10.2)
   - FLAnimatedImage (1.0.12)
   - Groot (3.0.1):
     - Groot/Swift (= 3.0.1)
@@ -62,22 +61,23 @@ PODS:
   - MBProgressHUD (1.1.0)
   - MCSwipeTableViewCell (2.1.4)
   - "NSDate+Helper (1.0.4)"
-  - OHHTTPStubs/Core (7.0.0)
-  - OHHTTPStubs/Default (7.0.0):
+  - OHHTTPStubs/Core (9.0.0)
+  - OHHTTPStubs/Default (9.0.0):
     - OHHTTPStubs/Core
     - OHHTTPStubs/JSON
     - OHHTTPStubs/NSURLSession
     - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (7.0.0):
+  - OHHTTPStubs/JSON (9.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (7.0.0):
+  - OHHTTPStubs/NSURLSession (9.0.0):
     - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (7.0.0)
-  - OHHTTPStubs/Swift (7.0.0):
+  - OHHTTPStubs/OHPathHelpers (9.0.0)
+  - OHHTTPStubs/Swift (9.0.0):
     - OHHTTPStubs/Default
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
+<<<<<<< HEAD
   - PMNetworking (1.0.0)
   - PMAuthentication (1.0.0)
   - PromiseKit (6.8.3):
@@ -86,12 +86,26 @@ PODS:
     - PromiseKit/UIKit (= 6.8.3)
   - PromiseKit/CorePromise (6.8.3)
   - PromiseKit/Foundation (6.8.3):
+=======
+  - PMAuthentication (1.0.0):
+    - PMCrypto
+  - PMCrypto (1.0.0)
+  - PMKeymaker (1.0.0):
+    - EllipticCurveKeyPair
+    - PMCrypto
+  - PromiseKit (6.13.1):
+    - PromiseKit/CorePromise (= 6.13.1)
+    - PromiseKit/Foundation (= 6.13.1)
+    - PromiseKit/UIKit (= 6.13.1)
+  - PromiseKit/CorePromise (6.13.1)
+  - PromiseKit/Foundation (6.13.1):
+>>>>>>> pod install PMCrypto, PMKeymaker from gitlab
     - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.8.3):
+  - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - SDWebImage (5.2.2):
-    - SDWebImage/Core (= 5.2.2)
-  - SDWebImage/Core (5.2.2)
+  - SDWebImage (5.5.2):
+    - SDWebImage/Core (= 5.5.2)
+  - SDWebImage/Core (5.5.2)
   - SDWebImageFLPlugin (0.3.0):
     - FLAnimatedImage (>= 1.0.11)
     - SDWebImage/Core (~> 5.0)
@@ -110,9 +124,7 @@ DEPENDENCIES:
   - AFNetworking (= 3.2.1)
   - AwaitKit (~> 5.0.0)
   - Crashlytics
-  - CryptoSwift (= 0.12.0)
   - DKImagePickerController/PhotoGallery (~> 4.1.7)
-  - EllipticCurveKeyPair (= 1.0.2)
   - Fabric
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
@@ -123,6 +135,8 @@ DEPENDENCIES:
   - OpenPGP (from `../OpenPGP`)
   - PMNetworking (from `../Networking`)
   - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`)
+  - PMCrypto (from `https://gitlab.protontech.ch/apple/shared/pmcrypto.git`)
+  - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`)
   - PromiseKit (~> 6.0)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
@@ -134,7 +148,6 @@ SPEC REPOS:
     - AFNetworking
     - AwaitKit
     - Crashlytics
-    - CryptoSwift
     - DKImagePickerController
     - DKPhotoGallery
     - EllipticCurveKeyPair
@@ -167,6 +180,10 @@ EXTERNAL SOURCES:
     :path: "../Networking"
   PMAuthentication:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
+  PMCrypto:
+    :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
+  PMKeymaker:
+    :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
@@ -176,26 +193,31 @@ CHECKOUT OPTIONS:
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
   PMAuthentication:
-    :commit: 912827af2a34953ca4df9b9f658b15d6ab55e098
+    :commit: cee815bab9afa5371e54951879d86be36ef4956f
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
+  PMCrypto:
+    :commit: c1b5b95c60cf009579001f42bd0a0c43cfeb2a05
+    :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
+  PMKeymaker:
+    :commit: 09421fc659db8223ce1c1e082467ccc0f8489459
+    :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
   AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
-  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
-  CryptoSwift: 1c07ca50843dd48bc54e6ea53d7a4dba3b645716
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DKImagePickerController: 6ffad961c212b0debf644f3d1aa72d0a2ee03d5f
   DKPhotoGallery: 0290d32343574f06eaa4c26f8f2f8a1035e916be
   EllipticCurveKeyPair: 80c2effda68925851c12562dcfc3fe94489b5eba
-  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
   FLAnimatedImage: 4a0b56255d9b05f18b6dd7ee06871be5d3b89e31
   Groot: a668afbcf0be88d76c0a26c714cfa4638ceaca66
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MCSwipeTableViewCell: 1b303e16c3a26b1982f3a68386e9b8c5fc8344c3
   "NSDate+Helper": 78f517ac1c67914096433466fa7d20b812b9d86c
-  OHHTTPStubs: ef33a2c353110d306bb98f695435ec56ff5a26c3
+  OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMNetworking: 7c1717a5ae14cc5112c9972a94ae8f2399fc8b4d
@@ -211,6 +233,3 @@ SPEC CHECKSUMS:
 PODFILE CHECKSUM: e829aeee5f3eeeea8fa46bf579f2d9c08d682c0e
 
 COCOAPODS: 1.8.4
-PODFILE CHECKSUM: 3dbd1cf8e328c56a6a61e8cd7935ba88a80c9af7
-
-COCOAPODS: 1.8.3

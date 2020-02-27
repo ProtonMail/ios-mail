@@ -24,7 +24,7 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import Keymaker
+import PMKeymaker
 import Crypto
 
 protocol UsersManagerDelegate: class {

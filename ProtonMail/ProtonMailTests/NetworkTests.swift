@@ -30,22 +30,22 @@ class NetworkTests: XCTestCase {
 
     override func setUp() {
         
-        OHHTTPStubs.setEnabled(true)
+        HTTPStubs.setEnabled(true)
         
-        OHHTTPStubs.onStubActivation() { request, descriptor, response in
+        HTTPStubs.onStubActivation() { request, descriptor, response in
             // ...
         }
     }
 
     override func tearDown() {
-        OHHTTPStubs.removeAllStubs()
+        HTTPStubs.removeAllStubs()
     }
 
     func testExample() {
         /*let sub = */stub(condition: isHost("www.example.com") && isPath("/1")) { request in
             let body = "{ \"data\": 1 }".data(using: String.Encoding.utf8)!
             let headers = [ "Content-Type" : "application/json"]
-            return OHHTTPStubsResponse(data: body, statusCode: 200, headers: headers)
+            return HTTPStubsResponse(data: body, statusCode: 200, headers: headers)
         }
         
         let expectation1 = self.expectation(description: "Success completion block called")

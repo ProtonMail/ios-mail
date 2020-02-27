@@ -34,7 +34,7 @@ public struct Credential {
         self.UID = res.UID ?? UID
         self.accessToken = res.accessToken
         self.refreshToken = res.refreshToken
-        self.expiration =  Date(timeIntervalSinceNow: res.expiresIn)
+        self.expiration = Date(timeIntervalSinceNow: res.expiresIn)
         self.scope = res.scope.components(separatedBy: " ")
     }
     
@@ -58,10 +58,8 @@ protocol CredentialConvertible {
 // this will allow us to add UID dynamically when available
 extension CredentialConvertible {
     subscript<T>(dynamicMember name: String) -> T? {
-        get {
-            let mirror = Mirror(reflecting: self)
-            guard let child = mirror.children.first(where: { $0.label == name }) else { return nil }
-            return child.value as? T
-        }
+        let mirror = Mirror(reflecting: self)
+        guard let child = mirror.children.first(where: { $0.label == name }) else { return nil }
+        return child.value as? T
     }
 }

@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import Keymaker
+import PMKeymaker
 
 class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsLockViewModel!

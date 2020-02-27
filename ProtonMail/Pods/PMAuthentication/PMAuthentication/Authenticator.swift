@@ -10,7 +10,7 @@ import Foundation
 import Crypto
 
 public class Authenticator: NSObject {
-    public typealias Completion = (Result<Status, Error>)->Void
+    public typealias Completion = (Result<Status, Error>) -> Void
     public typealias TrustChallenge = (URLSession, URLAuthenticationChallenge, @escaping URLSessionDelegateCompletion) -> Void
     public typealias URLSessionDelegateCompletion = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     
@@ -56,7 +56,6 @@ public class Authenticator: NSObject {
         var clientVersion: String
     }
     
-    
     private weak var trustInterceptor: SessionDelegate? // weak because URLSession holds a strong reference to delegate
     private lazy var session: URLSession = {
         let config = URLSessionConfiguration.default
@@ -72,12 +71,11 @@ public class Authenticator: NSObject {
     }
     
     // we do not want this to be ever used
-    private override init() { }
+    override private init() { }
     
     deinit {
         self.session.finishTasksAndInvalidate()
     }
-    
     
     public func update(configuration: Configuration) {
         AuthService.trust = configuration.trust
@@ -89,8 +87,8 @@ public class Authenticator: NSObject {
     
     /// Clear login, when preiously unauthenticated
     public func authenticate(username: String,
-                       password: String,
-                       completion: @escaping Completion)
+                             password: String,
+                             completion: @escaping Completion)
     {
         // 1. auth info request
         let authInfoEndpoint = AuthService.InfoEndpoint(username: username)
@@ -215,7 +213,6 @@ public class Authenticator: NSObject {
                 var credential = context.credential
                 credential.updateScope(response.scope)
                 completion(.success(.newCredential(credential, context.passwordMode)))
-                
                 
             } catch let parsingError {
                 completion(.failure(parsingError))

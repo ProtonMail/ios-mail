@@ -17,5 +17,10 @@
     "PMAuthentication/*.swift",
     "PMAuthentication/*/*.swift"
   ],
-  "vendored_frameworks": "Crypto.framework"
+  "dependencies": {
+    "PMCrypto": [
+
+    ]
+  },
+  "static_framework": true
 }

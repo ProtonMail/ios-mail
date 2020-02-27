@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import Keymaker
+import PMKeymaker
 
 class SettingsTableViewController: ProtonMailTableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsViewModel!

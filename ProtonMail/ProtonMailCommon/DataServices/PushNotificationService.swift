@@ -24,7 +24,7 @@
 import Foundation
 import UIKit
 import SWRevealViewController
-import Keymaker
+import PMKeymaker
 import UserNotifications
 
 public class PushNotificationService: NSObject, Service {
