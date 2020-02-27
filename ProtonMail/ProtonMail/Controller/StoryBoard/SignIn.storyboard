@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -369,13 +369,27 @@
                                                     <constraint firstItem="kb0-7s-rZ2" firstAttribute="leading" secondItem="VPr-ye-PCJ" secondAttribute="leading" id="vBA-Ki-ZBY"/>
                                                 </constraints>
                                             </view>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hpz-Od-m7V">
+                                                <rect key="frame" x="163" y="133" width="51" height="31"/>
+                                                <connections>
+                                                    <action selector="switchAction:" destination="rb7-9h-TvB" eventType="valueChanged" id="qgK-QX-kiP"/>
+                                                </connections>
+                                            </switch>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="amy-cH-s1Y">
+                                                <rect key="frame" x="224" y="138" width="42" height="21"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="top" secondItem="Os0-Xv-V8f" secondAttribute="bottom" priority="1" constant="40" id="1ag-zt-4JX"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="top" secondItem="B6O-Zu-zTa" secondAttribute="top" constant="-1" id="2GZ-QS-Tkh"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Os0-Xv-V8f" secondAttribute="trailing" constant="28" id="6EM-Dx-kvl"/>
+                                            <constraint firstItem="hpz-Od-m7V" firstAttribute="top" secondItem="Os0-Xv-V8f" secondAttribute="bottom" constant="12" id="9Xb-d5-rGU"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="1" constant="10" id="BsO-XF-yEB"/>
+                                            <constraint firstItem="amy-cH-s1Y" firstAttribute="leading" secondItem="hpz-Od-m7V" secondAttribute="trailing" constant="12" id="DQI-Fx-kjw"/>
                                             <constraint firstItem="BlP-nl-XPC" firstAttribute="top" secondItem="1qu-T6-Tyc" secondAttribute="bottom" priority="500" constant="18" id="GfE-Wi-NrI"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="top" secondItem="bb6-Ns-GPi" secondAttribute="bottom" priority="500" constant="24" id="Kzl-fP-upe"/>
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="top" secondItem="Os0-Xv-V8f" secondAttribute="bottom" priority="500" constant="85" id="LNI-4U-wBn"/>
@@ -384,6 +398,7 @@
                                             <constraint firstItem="bOD-D6-5za" firstAttribute="top" secondItem="2gx-2z-FDL" secondAttribute="bottom" priority="500" constant="20" id="RAF-SO-ThY"/>
                                             <constraint firstItem="2gx-2z-FDL" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="RtP-fB-V18"/>
                                             <constraint firstItem="MgP-0E-i6P" firstAttribute="top" secondItem="bOD-D6-5za" secondAttribute="bottom" constant="48" id="T8K-JS-l1w"/>
+                                            <constraint firstItem="hpz-Od-m7V" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="TEH-n3-EIE"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="500" constant="45" id="Ugn-di-Dly"/>
                                             <constraint firstItem="VPr-ye-PCJ" firstAttribute="centerX" secondItem="ve5-Rb-bXf" secondAttribute="centerX" id="Yv6-H8-b19"/>
                                             <constraint firstItem="Os0-Xv-V8f" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ve5-Rb-bXf" secondAttribute="leading" constant="28" id="bJR-5E-u0P"/>
@@ -398,6 +413,7 @@
                                             <constraint firstAttribute="centerX" secondItem="bb6-Ns-GPi" secondAttribute="centerX" priority="500" id="oJL-6W-8Xi"/>
                                             <constraint firstItem="VPr-ye-PCJ" firstAttribute="top" secondItem="BlP-nl-XPC" secondAttribute="bottom" constant="4" id="oWr-AE-I7w"/>
                                             <constraint firstAttribute="trailing" secondItem="2gx-2z-FDL" secondAttribute="trailing" constant="28" id="pmd-Ff-suq"/>
+                                            <constraint firstItem="amy-cH-s1Y" firstAttribute="centerY" secondItem="hpz-Od-m7V" secondAttribute="centerY" id="r8o-fi-f55"/>
                                             <constraint firstItem="1qu-T6-Tyc" firstAttribute="top" secondItem="MgP-0E-i6P" secondAttribute="bottom" priority="1" constant="24" id="tPr-d6-uFP"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="leading" secondItem="ve5-Rb-bXf" secondAttribute="leading" priority="1" constant="28" id="uel-ce-NZp"/>
                                             <constraint firstItem="bb6-Ns-GPi" firstAttribute="top" secondItem="ve5-Rb-bXf" secondAttribute="top" priority="1" id="uwY-xT-yW3"/>
@@ -433,6 +449,8 @@
                     <navigationItem key="navigationItem" id="UC0-zs-LZ5"/>
                     <connections>
                         <outlet property="backgroundImage" destination="B79-ZV-yWF" id="p2w-gn-VV6"/>
+                        <outlet property="dohLabel" destination="amy-cH-s1Y" id="psM-gO-GU5"/>
+                        <outlet property="dohSwitch" destination="hpz-Od-m7V" id="tRY-xH-fJT"/>
                         <outlet property="forgotPwdButton" destination="BlP-nl-XPC" id="zIN-HW-4nG"/>
                         <outlet property="languagesLabel" destination="2rG-LS-ZyB" id="Dxs-il-StJ"/>
                         <outlet property="loginMidlineConstraint" destination="xtp-kV-X4M" id="rOO-hQ-Hkv"/>
@@ -3137,7 +3155,6 @@ we need to verify that you are human.</string>
         <!--Bio Code View Controller-->
         <scene sceneID="Ky2-6m-anC">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tNb-4t-lud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="dsK-H2-wqM" customClass="BioCodeViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="PAl-y7-ck9"/>
@@ -3165,6 +3182,7 @@ we need to verify that you are human.</string>
                         <outlet property="bioCodeView" destination="jMA-bg-wGS" id="k1i-TA-g8N"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tNb-4t-lud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1407" y="-685"/>
         </scene>
@@ -3174,7 +3192,7 @@ we need to verify that you are human.</string>
         <image name="login_pwdmanager" width="16" height="16"/>
         <image name="mail_attachment-closed" width="14" height="14"/>
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
-        <image name="sign_background_new" width="375" height="667"/>
+        <image name="sign_background_new" width="911" height="911"/>
         <image name="sign_invisiblecharacters" width="14" height="14"/>
         <image name="sign_up_check_user_icon" width="16" height="16"/>
         <image name="sign_up_checked" width="18" height="18"/>

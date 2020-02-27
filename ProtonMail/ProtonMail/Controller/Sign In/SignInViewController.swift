@@ -62,6 +62,7 @@ class SignInViewController: ProtonMailViewController {
     @IBOutlet weak var forgotPwdButton: UIButton!
     @IBOutlet weak var languagesLabel: UILabel!
     
+    @IBOutlet weak var dohSwitch: UISwitch!
     // Constraints
     @IBOutlet weak var userLeftPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var userTopPaddingConstraint: NSLayoutConstraint!
@@ -77,6 +78,13 @@ class SignInViewController: ProtonMailViewController {
         super.init(coder: aDecoder)!
     }
     
+    @IBOutlet weak var dohLabel: UILabel!
+    @IBAction func switchAction(_ sender: Any) {
+        DoHMail.default.status = dohSwitch.isOn ? .on : .off
+        dohLabel.text = "DoH is \(dohSwitch.isOn ? "On" : "Off" )"
+    }
+    
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -84,6 +92,9 @@ class SignInViewController: ProtonMailViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        dohSwitch.isOn = DoHMail.default.status == .on
+        dohLabel.text = "DoH is \(dohSwitch.isOn ? "On" : "Off" )"
+        
         setupTextFields()
         setupButtons()
         setupVersionLabel()
@@ -451,11 +462,7 @@ class SignInViewController: ProtonMailViewController {
                             PMLog.D("error: \(error)")
                             MBProgressHUD.hide(for: self.view, animated: true)
                             self.showLoginViews()
-                            if !error.code.forceUpgrade {
-                                let alertController = error.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            }
+                            self.handleRequestError(error)
         },
                         afterSignIn: {
                             MBProgressHUD.hide(for: self.view, animated: true)
@@ -464,6 +471,44 @@ class SignInViewController: ProtonMailViewController {
                             self.isRemembered = true
                             self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
         })
+    }
+    
+    func handleRequestError (_ error : NSError) {
+        let code = error.code
+        if code == NSURLErrorTimedOut {
+            self.checkDoh()
+        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
+            if code == NSURLErrorCannotConnectToHost {
+                self.checkDoh()
+            }
+        } else if code == APIErrorCode.HTTP404 {
+            self.checkDoh()
+        } else if !code.forceUpgrade {
+            let alertController = error.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
+        }
+        
+        PMLog.D("error: \(error)")
+    }
+    
+    private func checkDoh() {
+        // tempery
+        if DoHMail.default.status == .off {
+            let message = "Enable DoH?"
+            let alertController = UIAlertController(title: LocalString._protonmail,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
+                DoHMail.default.status = .on
+                self.dohSwitch.isOn = true
+                self.dohLabel.text = "DoH is \(self.dohSwitch.isOn ? "On" : "Off" )"
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+                
+            }))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        }
     }
 }
 
