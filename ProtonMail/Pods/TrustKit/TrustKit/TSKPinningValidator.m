@@ -127,7 +127,6 @@
                                                                            serverHostname,
                                                                            domainConfig[kTSKPublicKeyHashes],
                                                                            self.spkiHashCache);
-            
             if (validationResult == TSKTrustEvaluationSuccess)
             {
                 // Pin validation was successful

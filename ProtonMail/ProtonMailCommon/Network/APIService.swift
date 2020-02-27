@@ -72,13 +72,14 @@ class APIService {
         sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
         #if DEBUG
-        sessionManager.securityPolicy.allowInvalidCertificates = true
+        sessionManager.securityPolicy.allowInvalidCertificates = false
         #endif
 
         sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
             var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
             if let validator = TrustKitWrapper.current?.pinningValidator {
-                validator.handle(challenge, completionHandler: { (disposition, credential) in
+                validator.handle(challenge, completionHandler: { (disposition, credentialOut) in
+                    credential?.pointee = credentialOut
                     dispositionToReturn = disposition
                 })
             } else {
