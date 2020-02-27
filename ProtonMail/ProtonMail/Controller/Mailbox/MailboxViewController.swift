@@ -501,6 +501,23 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         return true
     }
     
+    private func checkDoh() {
+        // tempery
+        if DoHMail.default.status == .off {
+            let message = "Enable DoH?"
+            let alertController = UIAlertController(title: LocalString._protonmail,
+                                                    message: message,
+                                                    preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
+                DoHMail.default.status = .on
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+                
+            }))
+            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
     fileprivate var timerInterval : TimeInterval = 30
     fileprivate var failedTimes = 30
     
@@ -747,6 +764,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.showTimeOutErrorMessage()
         } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
             self.showNoInternetErrorMessage()
+            if code == NSURLErrorCannotConnectToHost {
+                //SHOW troubleshooting
+                self.checkDoh()
+            }
         } else if code == APIErrorCode.API_offline {
             self.showOfflineErrorMessage(error)
             offlineTimerReset()
@@ -755,6 +776,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             offlineTimerReset()
         } else if code == APIErrorCode.HTTP504 {
             self.showTimeOutErrorMessage()
+        } else if code == APIErrorCode.HTTP404 {
+            self.showTimeOutErrorMessage()
+            self.checkDoh()
+            //SHOW troubleshooting
         }
         PMLog.D("error: \(error)")
     }

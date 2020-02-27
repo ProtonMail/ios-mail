@@ -64,7 +64,21 @@ final class TrustKitWrapper {
                             "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=",
                             "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw="
                         ]
-                    ]
+                    ],
+                    "ec2-3-124-117-159.eu-central-1.compute.amazonaws.com": [
+                        kTSKEnforcePinning : hardfail,
+                        kTSKIncludeSubdomains : true,
+                        kTSKDisableDefaultReportUri: true,
+                        kTSKReportUris: [
+                            "https://api.protonmail.ch/reports/tls"
+                        ],
+                        kTSKPublicKeyHashes: [
+                            "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=",
+                            "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=",
+                            "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
+                            "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
+                        ]
+                    ],
                 ]
         ]
     }

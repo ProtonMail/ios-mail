@@ -75,17 +75,17 @@ class APIService {
         sessionManager.securityPolicy.allowInvalidCertificates = true
         #endif
 
-//        sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
-//            var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
-//            if let validator = TrustKitWrapper.current?.pinningValidator {
-//                validator.handle(challenge, completionHandler: { (disposition, credential) in
-//                    dispositionToReturn = disposition
-//                })
-//            } else {
-//                assert(false, "TrustKit not initialized correctly")
-//            }
-//            return dispositionToReturn
-//        }
+        sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
+            var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
+            if let validator = TrustKitWrapper.current?.pinningValidator {
+                validator.handle(challenge, completionHandler: { (disposition, credential) in
+                    dispositionToReturn = disposition
+                })
+            } else {
+                assert(false, "TrustKit not initialized correctly")
+            }
+            return dispositionToReturn
+        }
         
         setupValueTransforms()
     }
