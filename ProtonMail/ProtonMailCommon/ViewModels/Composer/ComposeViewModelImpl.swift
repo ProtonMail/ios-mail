@@ -274,6 +274,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                     } else {
                         if let pwd = self.message?.password, pwd != "" {
                             c.pgpType = .eo
+                        } else if let userinfo = sharedUserDataService.userInfo,
+                            userinfo.sign == 1 {
+                            c.pgpType = .pgp_signed
                         } else {
                             c.pgpType = .none
                         }
