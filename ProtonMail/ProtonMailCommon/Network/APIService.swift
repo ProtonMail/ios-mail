@@ -466,6 +466,7 @@ class APIService {
                         if let strData = allheader["Date"] as? String {
                             // create dateFormatter with UTC time format
                             let dateFormatter = DateFormatter()
+                            dateFormatter.calendar = .some(.init(identifier: .gregorian))
                             dateFormatter.dateFormat = "EEE, dd MMM yyyy HH:mm:ss zzz"
                             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
                             if let date = dateFormatter.date(from: strData) {
