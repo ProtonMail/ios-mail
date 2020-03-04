@@ -48,6 +48,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .multiDomain,
                                                             .swipeAction,
                                                             .language,
+                                                            .network,
                                                             .storage,
                                                             .version] //.Debug,
     
@@ -66,6 +67,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .defaultMobilSign]
     
     var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
+    
+    
+    var setting_network_items : [SNetworkItems]            = [.doh]
+    
     
     var setting_languages : [ELanguage]                  = ELanguage.allItems()
     
@@ -188,6 +193,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 return 1
             case .labels:
                 return setting_labels_items.count
+            case .network:
+                return setting_network_items.count
             }
         }
         return 0
@@ -464,6 +471,21 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                 cellout = cell
                 
+            case .network:
+                
+                let itme = setting_network_items[indexPath.row]
+                let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
+                cell.accessoryType = UITableViewCell.AccessoryType.none
+                cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                cell.configCell(itme.description, bottomLine: "", status: DoHMail.default.status == .on) { cell, newStatus, feedback in
+                    if newStatus {
+                        DoHMail.default.status = .on
+                    } else {
+                        DoHMail.default.status = .off
+                    }
+                }
+                cellout = cell
+                
             case .version:
                 break
             }
@@ -487,7 +509,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         let textLabel = UILabel()
         
         if #available(iOS 10, *) {
-            textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
             textLabel.adjustsFontForContentSizeCategory = true
         } else {
             textLabel.font = Fonts.h6.regular

@@ -504,7 +504,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func checkDoh() {
         // tempery
         if DoHMail.default.status == .off {
-            let message = "Enable DoH?"
+            let message = "Enable DoH? You can disable/enable it in the settings!"
             let alertController = UIAlertController(title: LocalString._protonmail,
                                                     message: message,
                                                     preferredStyle: .alert)

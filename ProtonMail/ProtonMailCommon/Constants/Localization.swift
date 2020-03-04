@@ -99,6 +99,9 @@ class LocalizedString {
     /// "Manage in device Settings"
     lazy var _manage_language_in_device_settings = NSLocalizedString("Manage in device Settings", comment: "Settings row")
     
+    lazy var _networking = NSLocalizedString("Networking", comment: "section title ")
+    
+    
     // Mark Menu
     lazy var _menu_button         = NSLocalizedString("Menu", comment: "menu title")
     /// "Report Bugs"

@@ -83,6 +83,10 @@ final class TrustKitWrapper {
         ]
     }
     
+//    static func update(config : Configuration) {
+//        self.current.config
+//    }
+    
     static func start(delegate: Delegate, customConfiguration: Configuration? = nil) {
         let config = customConfiguration ?? self.configuration()
         
