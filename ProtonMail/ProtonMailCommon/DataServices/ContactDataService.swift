@@ -743,7 +743,7 @@ extension ContactDataService {
             }
             
             // merge address book and core data contacts
-            let context = sharedCoreDataService.childBackgroundManagedObjectContext(forUseIn: Thread.current)
+            let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
             context.performAndWait() {
                 let emailsCache = sharedContactDataService.allEmailsInManagedObjectContext(context)
                 var pm_contacts: [ContactVO] = []
