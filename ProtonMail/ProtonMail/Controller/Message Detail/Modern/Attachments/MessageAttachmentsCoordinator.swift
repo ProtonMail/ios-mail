@@ -54,6 +54,9 @@ class MessageAttachmentsCoordinator: NSObject {
             return
         }
         
+        guard self.tempClearFileURL != nil else {
+            return
+        }
         let previewQL = QuickViewViewController()
         previewQL.dataSource = self
         previewQL.delegate = self
