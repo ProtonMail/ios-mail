@@ -1,4 +1,4 @@
-# ProtonMail
+# ProtonMail 
 
 ## Trust Model
 x  | Device Storage | Device Memory | Keychain | SecureEnclave | Transport | iCloud | Inbox | Outbox
