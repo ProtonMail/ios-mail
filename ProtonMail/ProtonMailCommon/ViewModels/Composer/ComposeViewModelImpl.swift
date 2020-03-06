@@ -213,7 +213,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 }
                 
                 if let context = self.message?.managedObjectContext {
-                    context.perform {
+                    context.performAndWait {
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D("error: \(error)")
                         }
