@@ -120,7 +120,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Add Nickname" = "Aggiungi soprannome";
 
 /* new contacts add Organization */
-"Add Organization" = "Aggiungi organizzazine";
+"Add Organization" = "Aggiungi organizzazione";
 
 /* The button text for add profile picture */
 "Add Photo" = "Aggiungi Foto";
@@ -237,7 +237,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Auto Lock Time" = "Tempo di blocco automatico";
 
 /* settings general section title */
-"Auto Show Images" = "Mostrare immagini automaticamente";
+"Auto Show Images" = "Mostra immagini automaticamente";
 
 /* top left back button */
 "Back" = "Indietro";
@@ -385,13 +385,13 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Change Password" = "Modifica della password";
 
 /* settings protection section title */
-"Change Pin" = "Modifica del PIN";
+"Change Pin" = "Modifica PIN";
 
 /* Title */
-"Change Single Password" = "Modifica della password singola";
+"Change Single Password" = "Modifica password singola";
 
 /* Title */
-"Change default address to .." = "Modifica dell'indirizzo predefinito in...";
+"Change default address to .." = "Modifica l'indirizzo predefinito in...";
 
 /* settings swipe actions section action description */
 "Change left swipe action" = "Modifica azione di scorrimento a sinistra";
@@ -400,7 +400,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Change right swipe action" = "Modifica azione di scorrimento a destra";
 
 /* Title */
-"Change sender address to .." = "Modifica dell'indirizzo del mittente in...";
+"Change sender address to .." = "Modifica l'indirizzo del mittente in...";
 
 /* Action */
 "Check Again" = "Controlla di nuovo";
@@ -424,31 +424,31 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Closing" = "Chiusura";
 
 /* Action */
-"Compose" = "Componi";
+"Compose" = "Scrivi";
 
 /* Title */
-"Compose to" = "Comporre a";
+"Compose to" = "Scrivi a";
 
 /* Action */
 "Confirm" = "Conferma";
 
 /* "Login Password" */
-"Confirm Login Password" = "Conferma la password di accesso";
+"Confirm Login Password" = "Conferma password di accesso";
 
 /* "Mailbox Password" */
-"Confirm Mailbox Password" = "Conferma la password della casella email";
+"Confirm Mailbox Password" = "Conferma password della casella email";
 
 /* Placeholder */
 "Confirm Password" = "Conferma password";
 
 /* Title */
-"Confirm new login password" = "Conferma della password di accesso";
+"Confirm new login password" = "Conferma nuova password di accesso";
 
 /* Title */
-"Confirm new mailbox password" = "Conferma della nuova password della casella email";
+"Confirm new mailbox password" = "Conferma nuova password della casella email";
 
 /* Placeholder */
-"Confirm new password" = "Conferma della nuova password";
+"Confirm new password" = "Conferma nuova password";
 
 /* alert title */
 "Confirm phishing report" = "Conferma il report di phishing";
@@ -463,7 +463,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Contact Details" = "Dettagli contatto";
 
 /* Title */
-"Contact the ProtonMail team" = "Contattare il team di ProtonMail";
+"Contact the ProtonMail team" = "Contatta il team di ProtonMail";
 
 /* Action and title
    menu title */
@@ -1066,7 +1066,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Mailbox password doesn't match" = "La password della casella email non corrisponde";
 
 /* The title for the view where user can manage emails in the contact group */
-"Manage Addresses" = "Gestire gli indirizzi";
+"Manage Addresses" = "Gestisci gli indirizzi";
 
 /* Title */
 "Manage Labels/Folders" = "Gestione etichette/cartelle";
@@ -1242,7 +1242,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "OTHER PLANS" = "ALTRI PIANI";
 
 /* Title */
-"On" = "Attivato";
+"On" = "Il giorno";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
 "On EE, MMM d, yyyy at %@" = "Il giorno EE, d MMM yyyy alle %@";
@@ -1533,10 +1533,10 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Scheduled" = "Programmato";
 
 /* Title */
-"Search" = "Cercare";
+"Search" = "Cerca";
 
 /* The title for the popup list, presenting a list of options for creating a contact or creating a contact group */
-"Select An Option" = "Seleziona Un'Opzione";
+"Select An Option" = "Seleziona un'opzione";
 
 /* The title for the view where user can select the color for the group */
 "Select Color" = "Seleziona colore";
@@ -1645,7 +1645,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Srp single password keyslat invalid!" = "Sale della chiave della password unica SRP non valido!";
 
 /* Title */
-"Star" = "Preferito";
+"Star" = "Preferiti";
 
 /* mail location desc
    menu title
@@ -2149,7 +2149,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "get contacts() failed, peopleOrderedByUsersPreference return null!!" = "ottenimento di contacts() fallito, peopleOrderedByUsersPreference ha restituito null!!";
 
 /* None */
-"hours" = "Ore";
+"hours" = "ore";
 
 /* Title */
 "inline attachments" = "allegati inline";
