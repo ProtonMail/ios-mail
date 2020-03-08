@@ -661,7 +661,7 @@ class ClearMimeAddressBuilder : PackageBuilder {
     
     override func build() -> Promise<AddressPackageBase> {
         return async {
-            let addr = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign : 1, plainText: self.preAddress.plainText)
+            let addr = AddressPackageBase(email: self.preAddress.email, type: self.sendType, sign : self.preAddress.sign ? 1 : 0, plainText: self.preAddress.plainText)
             return addr
         }
     }
