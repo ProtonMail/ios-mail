@@ -453,10 +453,9 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func sendMessage(hasExtenal: Bool) {
+    override func sendMessage() {
         //check if has extenral emails and if need attach key
-        if hasExtenal == true,
-            let userinfo = sharedUserDataService.userInfo,
+        if let userinfo = sharedUserDataService.userInfo,
             userinfo.attachPublicKey == 1,
             let msg = message,
             let addr = msg.defaultAddress,
