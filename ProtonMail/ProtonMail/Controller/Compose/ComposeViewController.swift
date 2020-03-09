@@ -366,7 +366,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
     
     func sendMessageStepThree() {
-        self.viewModel.sendMessage(hasExtenal: self.headerView.hasNonePMEmails)
+        self.viewModel.sendMessage()
 
         delay(0.5) {
             NSError.alertMessageSendingToast()
