@@ -509,7 +509,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                     message: message,
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
-                DoHMail.default.status = .on
+//                DoHMail.default.status = .on
+                self.coordinator?.go(to: .troubleShoot)
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
                 

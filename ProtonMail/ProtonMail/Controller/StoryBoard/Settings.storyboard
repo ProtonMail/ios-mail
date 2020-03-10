@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -139,7 +140,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s6A-4r-ESy">
-                                            <rect key="frame" x="337" y="9.6666666666666643" width="51" height="31"/>
+                                            <rect key="frame" x="337" y="9.6666666666666714" width="51" height="31"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="49" id="1Yb-6J-AKu"/>
                                             </constraints>
@@ -148,7 +149,7 @@
                                             </connections>
                                         </switch>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iuJ-l4-JWp">
-                                            <rect key="frame" x="28" y="8" width="301" height="0.0"/>
+                                            <rect key="frame" x="28" y="8" width="301" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -159,6 +160,7 @@
                                         <constraint firstItem="s6A-4r-ESy" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C6u-Y7-O42" secondAttribute="top" constant="8" id="7y6-iC-49Z"/>
                                         <constraint firstItem="s6A-4r-ESy" firstAttribute="leading" secondItem="Z4X-pQ-wmo" secondAttribute="trailing" constant="10" id="Duo-4r-MGQ"/>
                                         <constraint firstItem="s6A-4r-ESy" firstAttribute="leading" secondItem="iuJ-l4-JWp" secondAttribute="trailing" constant="8" id="FwT-At-bfO"/>
+                                        <constraint firstItem="Z4X-pQ-wmo" firstAttribute="top" secondItem="iuJ-l4-JWp" secondAttribute="bottom" constant="8" id="PlH-YA-K0x"/>
                                         <constraint firstItem="iuJ-l4-JWp" firstAttribute="leading" secondItem="C6u-Y7-O42" secondAttribute="leadingMargin" constant="8" id="Ryg-o3-J0m"/>
                                         <constraint firstItem="Z4X-pQ-wmo" firstAttribute="leading" secondItem="C6u-Y7-O42" secondAttribute="leadingMargin" constant="8" id="XfI-jO-cEg"/>
                                         <constraint firstAttribute="bottom" secondItem="Z4X-pQ-wmo" secondAttribute="bottom" constant="12" id="cjb-oW-SKf"/>

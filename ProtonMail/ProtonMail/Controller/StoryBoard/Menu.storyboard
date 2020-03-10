@@ -1163,6 +1163,7 @@
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="dh2-Js-yHz"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="A0a-yx-qTn"/>
+                        <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2528,6 +2529,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DQ6-r4-H0d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="109" y="5813"/>
+        </scene>
+        <!--ref_troubleshoot_nav_controller-->
+        <scene sceneID="kGo-UL-kqf">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="9Tt-Bl-2aN" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q8t-Ng-rYc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2748" y="2087"/>
         </scene>
     </scenes>
     <resources>

@@ -72,8 +72,48 @@ typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, 
             topLineBottomConstraint.priority = UILayoutPriority(1000.0)
             centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
             bottomLineLabel.isHidden = true
-            self.layoutIfNeeded()
+            
+        } else {
+            topLineBottomConstraint.priority = UILayoutPriority(250.0)
+            centerConstraint.priority = UILayoutPriority(rawValue: 1.0);
+            bottomLineLabel.isHidden = false
         }
+        self.layoutIfNeeded()
+    }
+    
+    
+    func configCell(_ topline : String, bottomLine : String, showSwitcher : Bool, status : Bool, complete : switchActionBlock?) {
+        
+        if #available(iOS 10, *) {
+            topLineLabel.font = UIFont.preferredFont(forTextStyle: .title3)
+            topLineLabel.adjustsFontForContentSizeCategory = true
+            
+            bottomLineLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+            bottomLineLabel.adjustsFontForContentSizeCategory = true
+        }
+        
+        topLineLabel.text = topline
+        bottomLineLabel.text = bottomLine
+        switchView.isOn = status
+        callback = complete
+        
+        self.accessibilityLabel = topline
+        self.accessibilityElements = [switchView as Any]
+        self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
+        
+        switchView.isHidden = !showSwitcher
+        
+        if bottomLine.isEmpty {
+            topLineBottomConstraint.priority = UILayoutPriority(1000.0)
+            centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
+            bottomLineLabel.isHidden = true
+            
+        } else {
+            topLineBottomConstraint.priority = UILayoutPriority(250.0)
+            centerConstraint.priority = UILayoutPriority(rawValue: 1.0);
+            bottomLineLabel.isHidden = false
+        }
+        self.layoutIfNeeded()
     }
 }
 
