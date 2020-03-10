@@ -185,6 +185,7 @@
 		1A23FEF39C822E826B9161B3839EE30F /* Data+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64B6ABEC2E603996347C40E51E0189F /* Data+Mime.swift */; };
 		1A95CDEC93C93559493DDBC88007A3A6 /* SystemTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BC9C15E947825267DFF4128053690E3 /* SystemTime.swift */; };
 		1AB0B00BAE5A42C1027FB39614004229 /* VCard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03341659B0BBA12D8FF7BDBEF9C7CEB7 /* VCard+Extension.swift */; };
+		1ADA0F9D0407B40A03B0CA0DE92AAC3A /* Alerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */; };
 		1ADEC986B96A130518595FF2E0C359B4 /* SignupViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E1D2C6642E07C8BB129A67146BE1541 /* SignupViewModelImpl.swift */; };
 		1AE2DD552837DD749DE3DB6AA12BF072 /* Message+SpamScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B35751CF9CE35E80B816BBFBB22B39E3 /* Message+SpamScore.swift */; };
 		1AEBBCD584C000FD35A6D8196CA95A5A /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E5E13AFADBB0364C9E03E546AD572 /* PersistentQueue.swift */; };
@@ -1447,6 +1448,7 @@
 		C46D3753789881DB6A31028E43A9102E /* ContactVO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DB56C83DFD8EA948F5E667BA7D8ECE3 /* ContactVO.swift */; };
 		C478D13095AD68E44EC47329D24B8FA5 /* Test Second Encoding.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3D862595AAE0D77A38550B7D182DA51F /* Test Second Encoding.bundle */; };
 		C4EA101934D0DA1105CE3B237A9BD50B /* PushSubscriptionSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CBA02BF9DB736BD0BEC50861416E0D /* PushSubscriptionSettings.swift */; };
+		C53450AA10C5F34F42C1F3A630019BFC /* Alerts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */; };
 		C598B1CCED44E6732A81E8ECE5BDFDFE /* PersistentQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 624E5E13AFADBB0364C9E03E546AD572 /* PersistentQueue.swift */; };
 		C5A48F0C6013C19C007CA7B2E9F6F814 /* Attachment+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BCA12B7468D74F5D223DA2107280FA /* Attachment+Extension.swift */; };
 		C5D1E1029A2029E2A5A6DEFF1D88A74F /* UInt8+Mime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88611299B9671FB8C9EC5B915B8DD4CC /* UInt8+Mime.swift */; };
@@ -3125,6 +3127,14 @@
 			path = Keymaker;
 			sourceTree = "<group>";
 		};
+		0580D5989D7C857EF7FDB46999A078F1 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				17529B230FA6C6CEA6CD667958536E05 /* NetworkTroubleShootViewModel.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
 		07ACE944AFCAE704BE73448B807606F4 /* Review */ = {
 			isa = PBXGroup;
 			children = (
@@ -3739,14 +3749,6 @@
 				27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		0580D5989D7C857EF7FDB46999A078F1 /* Alert */ = {
-			isa = PBXGroup;
-			children = (
-				17529B230FA6C6CEA6CD667958536E05 /* NetworkTroubleShootViewModel.swift */,
-			);
-			path = Alert;
 			sourceTree = "<group>";
 		};
 		75E2E13B8E037303B40BA64F98DBB702 /* Resource */ = {
@@ -5199,6 +5201,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C53450AA10C5F34F42C1F3A630019BFC /* Alerts.storyboard in Resources */,
 				684A0ECB5E4E40630BAF4C5960742B36 /* AttachmentTableViewCell.xib in Resources */,
 				AA5EE7644EE1EE9DAC9D673594B529FA /* Attachments.storyboard in Resources */,
 				BCC94FAE0B35298695549C0A155237BD /* BannerView.xib in Resources */,
@@ -5446,6 +5449,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ADA0F9D0407B40A03B0CA0DE92AAC3A /* Alerts.storyboard in Resources */,
 				CF597DC1C88A9D05489A9563AF19A523 /* AttachmentTableViewCell.xib in Resources */,
 				E9830A69C0AB30142A16D78268A99286 /* Attachments.storyboard in Resources */,
 				1E60BAA2DDA7B2438A483B6918019E1F /* BannerView.xib in Resources */,

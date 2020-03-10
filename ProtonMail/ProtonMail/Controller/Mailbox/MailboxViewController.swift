@@ -504,12 +504,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private func checkDoh() {
         // tempery
         if DoHMail.default.status == .off {
-            let message = "Enable DoH? You can disable/enable it in the settings!"
+            let message = "Are you facking the network issue?"
             let alertController = UIAlertController(title: LocalString._protonmail,
                                                     message: message,
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
-//                DoHMail.default.status = .on
                 self.coordinator?.go(to: .troubleShoot)
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
