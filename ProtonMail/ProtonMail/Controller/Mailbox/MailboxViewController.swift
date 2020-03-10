@@ -271,7 +271,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        self.refreshControl.addTarget(self, action: #selector(getLatestMessages), for: UIControl.Event.valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
         
@@ -783,6 +783,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             //SHOW troubleshooting
         }
         PMLog.D("error: \(error)")
+    }
+    
+    
+    @objc internal func pullDown() {
+        
+        self.getLatestMessages()
+        
+        //temperay to fix the new messages are not loaded
+        viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+        
     }
     
     @objc internal func getLatestMessages() {
