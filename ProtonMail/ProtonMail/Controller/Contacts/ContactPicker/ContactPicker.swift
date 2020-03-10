@@ -190,7 +190,7 @@ class ContactPicker: UIView {
         }
         
         self.contacts = self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
-        self.contactCollectionView.reloadData()
+//        self.contactCollectionView.reloadData()
         
         self.layoutIfNeeded()
         self.contactCollectionView.layoutIfNeeded()
