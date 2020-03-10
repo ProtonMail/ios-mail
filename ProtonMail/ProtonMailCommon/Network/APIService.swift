@@ -512,6 +512,8 @@ class APIService {
                             }
                         }
                     }
+                    
+                    DoHMail.default.handleError(host: url, error: error)
                     /// parse urlresponse
                     parseBlock(task, res, error)
                 })

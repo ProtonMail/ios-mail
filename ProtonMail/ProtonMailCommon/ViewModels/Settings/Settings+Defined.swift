@@ -391,10 +391,13 @@ public enum SLabelsItems: Int, CustomStringConvertible {
 
 public enum SNetworkItems: Int, CustomStringConvertible {
     case doh = 0
+    case clear = 1
     public var description : String {
         switch(self){
         case .doh:
             return "DNS over Https"
+        case .clear:
+            return "Reset DNS Cache"
         }
     }
 }
