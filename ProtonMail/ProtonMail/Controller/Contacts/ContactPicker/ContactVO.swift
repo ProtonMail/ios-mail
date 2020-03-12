@@ -362,7 +362,7 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     }
     
     override public var hash: Int {
-        return email.hashValue
+        return (name + email).hashValue
     }
 }
 

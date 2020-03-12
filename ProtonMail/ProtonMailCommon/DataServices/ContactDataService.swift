@@ -752,13 +752,12 @@ extension ContactDataService {
                         pm_contacts.append(ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true))
                     }
                 }
-                pm_contacts.distinctMerge(Array(Set(contacts)))
-                contacts = pm_contacts
+                contacts.append(contentsOf: pm_contacts)
             }
-            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ?  $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
+            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ? $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
             
             DispatchQueue.main.async {
-                completion(contacts, lastError)
+                completion(Array(Set(contacts)), lastError)
             }
         }
     }
