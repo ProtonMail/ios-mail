@@ -196,6 +196,9 @@ class ContactPicker: UIView {
         self.contactCollectionView.layoutIfNeeded()
         self.contactCollectionView.scrollToEntryAnimated(animated: false, onComplete: nil)
         self.hideSearchTableView()
+        
+        //Show search result
+        collectionView(at: self.contactCollectionView, entryTextDidChange: self.contactCollectionView.searchText)
     }
     
     
