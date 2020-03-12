@@ -23,6 +23,10 @@
 import Foundation
 
 public struct NoneProtection: ProtectionStrategy {
+    public static var keychainLabel: String {
+        return "NoneProtection"
+    }
+    
     public let keychain: Keychain
     
     public init(keychain: Keychain) {

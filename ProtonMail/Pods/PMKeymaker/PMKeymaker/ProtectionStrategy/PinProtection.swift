@@ -28,6 +28,10 @@ private enum GenericPinProtectionConstants {
 }
 
 public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
+    public static var keychainLabel: String {
+        return "PinProtection"
+    }
+    
     public let keychain: Keychain
     private let pin: String
     

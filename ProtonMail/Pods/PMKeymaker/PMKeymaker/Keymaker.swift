@@ -25,10 +25,10 @@ import UIKit
 import EllipticCurveKeyPair
 
 public enum Constants {
-    public static let removedMainKeyFromMemory: NSNotification.Name = .init(String(describing: "Keymaker") + ".removedMainKeyFromMemory")
-    public static let errorObtainingMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".errorObtainingMainKey")
-    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".obtainedMainKey")
-    public static let requestMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".requestMainKey")
+    public static let removedMainKeyFromMemory: NSNotification.Name = .init("Keymaker" + ".removedMainKeyFromMemory")
+    public static let errorObtainingMainKey: NSNotification.Name = .init("Keymaker" + ".errorObtainingMainKey")
+    public static let obtainedMainKey: NSNotification.Name = .init("Keymaker" + ".obtainedMainKey")
+    public static let requestMainKey: NSNotification.Name = .init("Keymaker" + ".requestMainKey")
 }
 
 public typealias Key = [UInt8]

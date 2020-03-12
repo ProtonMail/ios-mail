@@ -25,12 +25,16 @@ import Security
 import EllipticCurveKeyPair
 
 private enum GenericBioProtectionConstants {
-    static var privateLabelKey = String(describing: "BioProtection") + ".private"
-    static var publicLabelKey = String(describing: "BioProtection") + ".public"
-    static var legacyLabelKey = String(describing: "BioProtection") + ".legacy"
+    static var privateLabelKey = "BioProtection" + ".private"
+    static var publicLabelKey = "BioProtection" + ".public"
+    static var legacyLabelKey = "BioProtection" + ".legacy"
 }
 
 public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
+    public static var keychainLabel: String {
+        return "BioProtection"
+    }
+    
     private typealias Constants = GenericBioProtectionConstants
     public let keychain: Keychain
     

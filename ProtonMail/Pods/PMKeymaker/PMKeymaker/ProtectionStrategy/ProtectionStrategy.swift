@@ -27,22 +27,23 @@ public protocol ProtectionStrategy {
     var keychain: Keychain { get }
     func lock(value: Key) throws
     func unlock(cypherBits: Data) throws -> Key
+    static var keychainLabel: String { get }
 }
 public extension ProtectionStrategy {
     static func saveCyphertext(_ cypher: Data, in keychain: Keychain) {
-        keychain.set(cypher, forKey: String(describing: Self.self))
+        keychain.set(cypher, forKey: self.keychainLabel)
     }
     static func removeCyphertext(from keychain: Keychain) {
-        keychain.remove(forKey: String(describing: Self.self))
+        keychain.remove(forKey: self.keychainLabel)
     }
     func removeCyphertextFromKeychain() {
-        self.keychain.remove(forKey: String(describing: Self.self))
+        self.keychain.remove(forKey: Self.keychainLabel)
     }
     static func getCypherBits(from keychain: Keychain) -> Data? {
-        return keychain.data(forKey: String(describing: Self.self))
+        return keychain.data(forKey: self.keychainLabel)
     }
     func getCypherBits() -> Data? {
-        return self.keychain.data(forKey: String(describing: Self.self))
+        return self.keychain.data(forKey: Self.keychainLabel)
     }
     
     static func generateRandomValue(length: Int) -> Key {

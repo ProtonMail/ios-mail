@@ -193,7 +193,7 @@ CHECKOUT OPTIONS:
     :commit: 06cf9baf7c1338f044a4f8536ac957d8085f9f65
     :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
   PMKeymaker:
-    :commit: 9d88dabe4b8d8ed29274b83f62836e1053c46c0e
+    :commit: d6870499ec291b724f2b529a05faaed550007b80
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
 
 SPEC CHECKSUMS:
