@@ -66,21 +66,21 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
         public var bottom : String {
             switch(self){
             case .allowSwitch:
-                return "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be ujseful for bypassing firewalls or network issues. we recommend keeping this setting on for greater reliability."
+                return "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]"
             case .noInternetNotes:
-                return "Please make sure that your internet connection is working"
+                return "Please make sure that your internet connection is working."
             case .ipsNotes:
-                return "Try connection to Proton from a different network (or use ProtonVPN or Tor)."
+                return "Try connecting to Proton from a different network (or use ProtonVPN or Tor)."
             case .blockNotes:
                 return "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton."
             case .antivirusNotes:
-                return "Temporarily disabfle or remove your antivirus software."
+                return "Temporarily disable or remove your antivirus software."
             case .firewallNotes:
                 return "Disable any proxies or firewalls, or contact your network administrator."
             case .downtimeNotes:
                 return "Check Proton Status for our system status."
             case .otherNotes:
-                return "Contact us dirrectly throujgh our support form, email(support@protonmail.com) or Twitter."
+                return "Contact us directly through our support form, email (support@protonmail.com), or Twitter."
             }
         }
     }

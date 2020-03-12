@@ -503,22 +503,22 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     private func checkDoh() {
         // tempery
-        if DoHMail.default.status == .off && !userCachedStatus.neverShowDohWarning {
-            let message = "Are you facing the network issue? Do you want to go to the troubleshooting screen?"
-            let alertController = UIAlertController(title: LocalString._protonmail,
-                                                    message: message,
-                                                    preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
-                self.coordinator?.go(to: .troubleShoot)
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
-                userCachedStatus.neverShowDohWarning = true
-            }))
-            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
-                
-            }))
-            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
-        }
+//        if DoHMail.default.status == .off && !userCachedStatus.neverShowDohWarning {
+//            let message = "Are you facing the network issue? Do you want to go to the troubleshooting screen?"
+//            let alertController = UIAlertController(title: LocalString._protonmail,
+//                                                    message: message,
+//                                                    preferredStyle: .alert)
+//            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
+//                self.coordinator?.go(to: .troubleShoot)
+//            }))
+//            alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
+//                userCachedStatus.neverShowDohWarning = true
+//            }))
+//            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+//                
+//            }))
+//            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+//        }
     }
     
     fileprivate var timerInterval : TimeInterval = 30
