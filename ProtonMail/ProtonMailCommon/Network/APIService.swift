@@ -441,6 +441,7 @@ class APIService : Service {
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  authRetry: Bool = true,
+                 authRetryRemains: Int = 10,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthTokenBlock = { token, userID, error in
@@ -468,14 +469,19 @@ class APIService : Service {
                                 UserTempCachedStatus.backup()
                                 //sharedUserDataService.signOut(true);
                                 userCachedStatus.signOut()
-                            }else {
-                                self.request(method: method,
-                                             path: path,
-                                             parameters: parameters,
-                                             headers: [HTTPHeader.apiVersion: 3],
-                                             authenticated: authenticated,
-                                             customAuthCredential: customAuthCredential,
-                                             completion: completion)
+                            } else {
+                                if authRetryRemains > 0 {
+                                    self.request(method: method,
+                                    path: path,
+                                    parameters: parameters,
+                                    headers: [HTTPHeader.apiVersion: 3],
+                                    authenticated: authenticated,
+                                    authRetryRemains: authRetryRemains - 1,
+                                    customAuthCredential: customAuthCredential,
+                                    completion: completion)
+                                } else {
+                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                }
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
                             let errorMessage = responseDict["Error"] as? String ?? ""
@@ -511,13 +517,18 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                self.request(method: method,
-                                             path: path,
-                                             parameters: parameters,
-                                             headers: [HTTPHeader.apiVersion: 3],
-                                             authenticated: authenticated,
-                                             customAuthCredential: customAuthCredential,
-                                             completion: completion)
+                                if authRetryRemains > 0 {
+                                    self.request(method: method,
+                                    path: path,
+                                    parameters: parameters,
+                                    headers: [HTTPHeader.apiVersion: 3],
+                                    authenticated: authenticated,
+                                    authRetryRemains: authRetryRemains - 1,
+                                    customAuthCredential: customAuthCredential,
+                                    completion: completion)
+                                } else {
+                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                }
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
                                 let errorMessage = responseDictionary["Error"] as? String

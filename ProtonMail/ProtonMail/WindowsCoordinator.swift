@@ -82,6 +82,11 @@ class WindowsCoordinator: CoordinatorNew {
             NotificationCenter.default.addObserver(self, selector: #selector(performForceUpgrade), name: .forceUpgrade, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(lock), name: Keymaker.Const.requestMainKey, object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(unlock), name: .didUnlock, object: nil)
+            NotificationCenter.default.addObserver(forName: .didReovke, object: nil, queue: .main) { [weak self] (noti) in
+                if let uid = noti.userInfo?["uid"] as? String {
+                    self?.didReceiveTokenRevoke(uid: uid)
+                }
+            }
             
             if #available(iOS 13.0, *) {
                 // this is done by UISceneDelegate
@@ -163,6 +168,13 @@ class WindowsCoordinator: CoordinatorNew {
             self.go(dest: .signInWindow)
         } else {
             self.go(dest: .appWindow)
+        }
+    }
+    
+    @objc func didReceiveTokenRevoke(uid: String) {
+        let usersManager: UsersManager = services.get()
+        if let user = usersManager.getUser(bySessionID: uid) {
+//            usersManager.logout(user: user)
         }
     }
     
