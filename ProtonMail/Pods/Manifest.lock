@@ -114,7 +114,7 @@ DEPENDENCIES:
   - AwaitKit (~> 5.0.0)
   - Crashlytics
   - DKImagePickerController/PhotoGallery (~> 4.1.7)
-  - EllipticCurveKeyPair (from `https://github.com/abjurato/EllipticCurveKeyPair.git`)
+  - EllipticCurveKeyPair (from `https://github.com/abjurato/EllipticCurveKeyPair.git`, tag `1.0.4`)
   - Fabric
   - Groot (= 3.0.1)
   - Masonry (= 1.1.0)
@@ -162,6 +162,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   EllipticCurveKeyPair:
     :git: https://github.com/abjurato/EllipticCurveKeyPair.git
+    :tag: 1.0.4
   "NSDate+Helper":
     :branch: master
     :git: https://github.com/ProtonMail/nsdate-helper.git
@@ -171,30 +172,33 @@ EXTERNAL SOURCES:
     :path: "../Networking"
   PMAuthentication:
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
+    :tag: 1.0.0
   PMCrypto:
     :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
+    :tag: 1.0.0
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
+    :tag: 1.1.0
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
     :commit: b7cce59a369788c409d218e8dab7f381a858cee4
     :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   EllipticCurveKeyPair:
-    :commit: 9dedae5f8d6eb14f261c09db23f1d749b9d2a7a4
     :git: https://github.com/abjurato/EllipticCurveKeyPair.git
+    :tag: 1.0.4
   "NSDate+Helper":
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
   PMAuthentication:
-    :commit: 5ef55b8b30aa0a1905b5ac86be8700172e349252
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
+    :tag: 1.0.0
   PMCrypto:
-    :commit: 06cf9baf7c1338f044a4f8536ac957d8085f9f65
     :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
+    :tag: 1.0.0
   PMKeymaker:
-    :commit: d6870499ec291b724f2b529a05faaed550007b80
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
+    :tag: 1.1.0
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
@@ -225,6 +229,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: ed66eff209eb66efd878929ddd55dacab7d17f55
+PODFILE CHECKSUM: 59345d5959615a33c8cff89d936b84d584c233ca
 
 COCOAPODS: 1.8.4
