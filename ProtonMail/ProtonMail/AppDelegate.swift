@@ -191,13 +191,13 @@ extension AppDelegate: UIApplicationDelegate {
         StoreKitManager.default.updateAvailableProductsList()
         
         #if DEBUG
-        NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.obtainedMainKey, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
             "Obtained main key".alertToastBottom()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
             "Removed main key from memory".alertToastBottom()
         }
         #endif

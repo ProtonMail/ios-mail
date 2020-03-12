@@ -21,15 +21,15 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
 
-public struct Locked<T> {
-    public enum Errors: Error {
-        case failedToTurnValueIntoData
-        case keyDoesNotMatch
-        case failedToEncrypt
-        case failedToDecrypt
-    }
+public enum Errors: Error {
+    case failedToTurnValueIntoData
+    case keyDoesNotMatch
+    case failedToEncrypt
+    case failedToDecrypt
+}
+
+public struct GenericLocked<T, SUBTLE: SubtleProtocol> {
     public private(set) var encryptedValue: Data
     
     public init(encryptedValue: Data) {
@@ -45,37 +45,37 @@ public struct Locked<T> {
     }
 }
 
-extension Locked where T == String {
-    public init(clearValue: T, with key: Keymaker.Key) throws {
-        self.encryptedValue = try Locked<[String]>.init(clearValue: [clearValue], with: key).encryptedValue
+extension GenericLocked where T == String {
+    public init(clearValue: T, with key: Key) throws {
+        self.encryptedValue = try GenericLocked<[String], SUBTLE>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
-    public func unlock(with key: Keymaker.Key) throws -> T {
-        guard let value = try Locked<[String]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+    public func unlock(with key: Key) throws -> T {
+        guard let value = try GenericLocked<[String], SUBTLE>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
 }
 
-extension Locked where T == Data {
-    public init(clearValue: T, with key: Keymaker.Key) throws {
-        self.encryptedValue = try Locked<[Data]>.init(clearValue: [clearValue], with: key).encryptedValue
+extension GenericLocked where T == Data {
+    public init(clearValue: T, with key: Key) throws {
+        self.encryptedValue = try GenericLocked<[Data], SUBTLE>.init(clearValue: [clearValue], with: key).encryptedValue
     }
     
-    public func unlock(with key: Keymaker.Key) throws -> T {
-        guard let value = try Locked<[Data]>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
+    public func unlock(with key: Key) throws -> T {
+        guard let value = try GenericLocked<[Data], SUBTLE>.init(encryptedValue: self.encryptedValue).unlock(with: key).first else {
             throw Errors.failedToDecrypt
         }
         return value
     }
 }
 
-extension Locked where T: Codable {
-    public init(clearValue: T, with key: Keymaker.Key) throws {
+extension GenericLocked where T: Codable {
+    public init(clearValue: T, with key: Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
-        let cypherData = SubtleEncryptWithoutIntegrity(Data(key), data, Data(key.prefix(16)), &error)
+        let cypherData = SUBTLE.EncryptWithoutIntegrity(Data(key), data, Data(key.prefix(16)), &error)
         
         if let error = error {
             throw error
@@ -87,9 +87,9 @@ extension Locked where T: Codable {
         self.encryptedValue = lockedData
     }
     
-    public func unlock(with key: Keymaker.Key) throws -> T {
+    public func unlock(with key: Key) throws -> T {
         var error: NSError?
-        let clearData = SubtleDecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(16)), &error)
+        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(16)), &error)
             
         if let error = error {
             throw error

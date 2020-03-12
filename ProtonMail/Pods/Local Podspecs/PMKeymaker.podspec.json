@@ -1,6 +1,6 @@
 {
   "name": "PMKeymaker",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "summary": "Local data encryption for ProtonMail",
   "description": "Key management flows used to encrypt local cache, db and Keychain items for ProtonMail",
   "homepage": "https://gitlab.protontech.ch/apple/shared/pmkeymaker",

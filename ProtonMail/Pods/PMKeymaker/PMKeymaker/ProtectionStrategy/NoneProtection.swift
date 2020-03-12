@@ -29,11 +29,11 @@ public struct NoneProtection: ProtectionStrategy {
         self.keychain = keychain
     }
     
-    public func lock(value: Keymaker.Key) throws {
+    public func lock(value: Key) throws {
         NoneProtection.saveCyphertext(Data(value), in: self.keychain)
     }
     
-    public func unlock(cypherBits: Data) throws -> Keymaker.Key {
+    public func unlock(cypherBits: Data) throws -> Key {
         return cypherBits.bytes
     }
 }

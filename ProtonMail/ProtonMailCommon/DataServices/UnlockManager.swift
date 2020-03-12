@@ -90,7 +90,7 @@ class UnlockManager: Service {
         }
     }
     
-    private func validate(mainKey: Keymaker.Key?) -> Bool {
+    private func validate(mainKey: PMKeymaker.Key?) -> Bool {
         guard let _ = mainKey else { // currently enough: key is Array and will be nil in case it was unlocked incorrectly
             keymaker.lockTheApp() // remember to remove invalid key in case validation will become more complex
             return false

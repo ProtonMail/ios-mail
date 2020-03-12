@@ -25,13 +25,13 @@ import Foundation
 import PMKeymaker
 
 extension Locked where T == [User] {
-    internal init(clearValue: T, with key: Keymaker.Key) throws {
+    internal init(clearValue: T, with key: PMKeymaker.Key) throws {
         let data = NSKeyedArchiver.archivedData(withRootObject: clearValue)
         let locked = try Locked<Data>(clearValue: data, with: key)
         self.init(encryptedValue: locked.encryptedValue)
     }
     
-    internal func unlock(with key: Keymaker.Key) throws -> T {
+    internal func unlock(with key: PMKeymaker.Key) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
         
@@ -64,7 +64,7 @@ extension Locked where T == [User] {
 //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
         
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
-            throw Locked.Errors.keyDoesNotMatch
+            throw LockedErrors.keyDoesNotMatch
         }
         
         return value

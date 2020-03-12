@@ -21,9 +21,13 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
 
-public struct PinProtection: ProtectionStrategy {
+private enum GenericPinProtectionConstants {
+    static let saltKeychainKey = "PinProtection" + ".salt"
+    static let numberOfIterations: Int = 32768
+}
+
+public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
     public let keychain: Keychain
     private let pin: String
     
@@ -32,35 +36,35 @@ public struct PinProtection: ProtectionStrategy {
         self.keychain = keychain
     }
     
-    private static let saltKeychainKey = String(describing: PinProtection.self) + ".salt"
-    private static let numberOfIterations: Int = 32768
+    private typealias Const = GenericPinProtectionConstants
+    
     enum Errors: Error {
         case saltNotFound
         case failedToDeriveKey
     }
     
-    public func lock(value: Keymaker.Key) throws {
-        let salt = PinProtection.generateRandomValue(length: 8)
+    public func lock(value: Key) throws {
+        let salt = GenericPinProtection<SUBTLE>.generateRandomValue(length: 8)
         var error: NSError?
-        guard let ethemeralKey = SubtleDeriveKey(pin, Data(salt), PinProtection.numberOfIterations, &error) else {
+        guard let ethemeralKey = SUBTLE.DeriveKey(pin, Data(salt), Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
-        let locked = try Locked<Keymaker.Key>(clearValue: value, with: ethemeralKey.bytes)
+        let locked = try GenericLocked<Key, SUBTLE>(clearValue: value, with: ethemeralKey.bytes)
         
-        PinProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
-        self.keychain.set(Data(salt), forKey: PinProtection.saltKeychainKey)
+        GenericPinProtection<SUBTLE>.saveCyphertext(locked.encryptedValue, in: self.keychain)
+        self.keychain.set(Data(salt), forKey: Const.saltKeychainKey)
     }
     
-    public func unlock(cypherBits: Data) throws -> Keymaker.Key {
-        guard let salt = self.keychain.data(forKey: PinProtection.saltKeychainKey) else {
+    public func unlock(cypherBits: Data) throws -> Key {
+        guard let salt = self.keychain.data(forKey: Const.saltKeychainKey) else {
             throw Errors.saltNotFound
         }
         var error: NSError?
-        guard let ethemeralKey = SubtleDeriveKey(pin, salt, PinProtection.numberOfIterations, &error) else {
+        guard let ethemeralKey = SUBTLE.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
         do {
-            let locked = Locked<Keymaker.Key>.init(encryptedValue: cypherBits)
+            let locked = GenericLocked<Key, SUBTLE>.init(encryptedValue: cypherBits)
             return try locked.unlock(with: ethemeralKey.bytes)
         } catch let error {
             throw error
@@ -69,7 +73,7 @@ public struct PinProtection: ProtectionStrategy {
     
     public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
-        keychain.remove(forKey: self.saltKeychainKey)
+        keychain.remove(forKey: Const.saltKeychainKey)
     }
 }
 

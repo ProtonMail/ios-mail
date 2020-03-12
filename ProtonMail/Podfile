@@ -12,6 +12,9 @@ def pm_shared_pods
     pod 'PMCrypto', :git => 'https://gitlab.protontech.ch/apple/shared/pmcrypto.git'
     pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git'
     pod 'PMKeymaker', :git => 'https://gitlab.protontech.ch/apple/shared/pmkeymaker.git'
+    
+    # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
+    pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git'
 end
 
 def common_pods

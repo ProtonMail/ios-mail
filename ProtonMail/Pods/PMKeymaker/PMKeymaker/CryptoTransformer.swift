@@ -21,9 +21,8 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
-import Crypto
 
-public class StringCryptoTransformer: CryptoTransformer {
+public class GenericStringCryptoTransformer<SUBTLE: SubtleProtocol>: CryptoTransformer {
     // String -> Data
     override public func transformedValue(_ value: Any?) -> Any? {
         guard let string = value as? String else {
@@ -31,7 +30,7 @@ public class StringCryptoTransformer: CryptoTransformer {
         }
         
         do {
-            let locked = try Locked<String>(clearValue: string, with: self.key)
+            let locked = try GenericLocked<String, SUBTLE>(clearValue: string, with: self.key)
             let result = locked.encryptedValue as NSData
             return result
         } catch let error {
@@ -47,7 +46,7 @@ public class StringCryptoTransformer: CryptoTransformer {
             return nil
         }
         
-        let locked = Locked<String>(encryptedValue: data)
+        let locked = GenericLocked<String, SUBTLE>(encryptedValue: data)
         do {
             let string = try locked.unlock(with: self.key)
             return string
@@ -60,8 +59,8 @@ public class StringCryptoTransformer: CryptoTransformer {
 }
 
 public class CryptoTransformer: ValueTransformer {
-    fileprivate var key: Keymaker.Key
-    public init(key: Keymaker.Key) {
+    fileprivate var key: Key
+    public init(key: Key) {
         self.key = key
     }
     

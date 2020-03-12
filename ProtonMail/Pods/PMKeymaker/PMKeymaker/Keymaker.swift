@@ -21,15 +21,21 @@
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+import UIKit
 import EllipticCurveKeyPair
 
-public class Keymaker: NSObject {
-    public static let removedMainKeyFromMemory: NSNotification.Name = .init(String(describing: Keymaker.self) + ".removedMainKeyFromMemory")
-    public static let errorObtainingMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".errorObtainingMainKey")
-    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".obtainedMainKey")
-    public static let requestMainKey: NSNotification.Name = .init(String(describing: Keymaker.self) + ".requestMainKey")
-    public typealias Key = [UInt8]
-    
+public enum Constants {
+    public static let removedMainKeyFromMemory: NSNotification.Name = .init(String(describing: "Keymaker") + ".removedMainKeyFromMemory")
+    public static let errorObtainingMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".errorObtainingMainKey")
+    public static let obtainedMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".obtainedMainKey")
+    public static let requestMainKey: NSNotification.Name = .init(String(describing: "Keymaker") + ".requestMainKey")
+}
+
+public typealias Key = [UInt8]
+
+public class GenericKeymaker<SUBTLE: SubtleProtocol>: NSObject {
+    public typealias Const = Constants
+        
     private var autolocker: Autolocker?
     private let keychain: Keychain
     public init(autolocker: Autolocker?, keychain: Keychain) {
@@ -62,7 +68,7 @@ public class Keymaker: NSObject {
                 self.resetAutolock()
                 self.setupCryptoTransformers(key: _mainKey)
             } else {
-                NotificationCenter.default.post(name: Keymaker.removedMainKeyFromMemory, object: self)
+                NotificationCenter.default.post(name: Const.removedMainKeyFromMemory, object: self)
             }
         }
     }
@@ -86,10 +92,10 @@ public class Keymaker: NSObject {
     // if there is any significant Protection active - post message that obtainMainKey(_:_:) is needed
     private func provokeMainKeyObtention() -> Key? {
         // if we have any significant Protector - wait for obtainMainKey(_:_:) method to be called
-        guard !self.isProtectorActive(BioProtection.self),
-            !self.isProtectorActive(PinProtection.self) else
+        guard !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
+            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self) else
         {
-            NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
+            NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return nil
         }
         
@@ -111,8 +117,8 @@ public class Keymaker: NSObject {
     
     public func wipeMainKey() {
         NoneProtection.removeCyphertext(from: self.keychain)
-        BioProtection.removeCyphertext(from: self.keychain)
-        PinProtection.removeCyphertext(from: self.keychain)
+        GenericBioProtection<SUBTLE>.removeCyphertext(from: self.keychain)
+        GenericPinProtection<SUBTLE>.removeCyphertext(from: self.keychain)
         
         self._mainKey = nil
         self.setupCryptoTransformers(key: nil)
@@ -120,12 +126,12 @@ public class Keymaker: NSObject {
     
     @discardableResult @objc
     public func mainKeyExists() -> Bool { // cuz another process can wipe main key from memory while the app is in background
-        if !self.isProtectorActive(BioProtection.self),
-            !self.isProtectorActive(PinProtection.self),
+        if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
+            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self),
             !self.isProtectorActive(NoneProtection.self)
         {
             self._mainKey = nil
-            NotificationCenter.default.post(.init(name: Keymaker.requestMainKey))
+            NotificationCenter.default.post(.init(name: Const.requestMainKey))
             return false
         }
         if self.mainKey != nil {
@@ -160,9 +166,9 @@ public class Keymaker: NSObject {
             do {
                 let mainKeyBytes = try protector.unlock(cypherBits: cypherBits)
                 self._mainKey = mainKeyBytes
-                NotificationCenter.default.post(name: Keymaker.obtainedMainKey, object: self)
+                NotificationCenter.default.post(name: Const.obtainedMainKey, object: self)
             } catch let error {
-                NotificationCenter.default.post(name: Keymaker.errorObtainingMainKey, object: self, userInfo: ["error": error])
+                NotificationCenter.default.post(name: Const.errorObtainingMainKey, object: self, userInfo: ["error": error])
                 
                 // this CFError trows randomly on iOS 13 (up to 13.3 beta 2) on TouchID capable devices
                 // it happens less if auth prompt is invoked with 1 sec delay after app gone foreground but still happens
@@ -215,7 +221,9 @@ public class Keymaker: NSObject {
         protector.removeCyphertextFromKeychain()
         
         // need to keep mainKey in keychain in case user switches off all the significant Protectors
-        if !self.isProtectorActive(BioProtection.self), !self.isProtectorActive(PinProtection.self) {
+        if !self.isProtectorActive(GenericBioProtection<SUBTLE>.self),
+            !self.isProtectorActive(GenericPinProtection<SUBTLE>.self)
+        {
             self.activate(NoneProtection(keychain: self.keychain), completion: { _ in })
         }
         
@@ -235,11 +243,11 @@ public class Keymaker: NSObject {
     
     private func setupCryptoTransformers(key: Key?) {
         guard let key = key else {
-            ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
+            ValueTransformer.setValueTransformer(nil, forName: .init(rawValue: "StringCryptoTransformer"))
             return
         }
-        ValueTransformer.setValueTransformer(StringCryptoTransformer(key: key),
-                                             forName: .init(rawValue: String(describing: StringCryptoTransformer.self)))
+        ValueTransformer.setValueTransformer(GenericStringCryptoTransformer<SUBTLE>(key: key),
+                                             forName: .init(rawValue: "StringCryptoTransformer"))
     }
     
     public func updateAutolockCountdownStart() {

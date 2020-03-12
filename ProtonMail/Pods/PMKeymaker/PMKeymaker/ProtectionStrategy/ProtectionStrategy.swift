@@ -25,8 +25,8 @@ import Security
 
 public protocol ProtectionStrategy {
     var keychain: Keychain { get }
-    func lock(value: Keymaker.Key) throws
-    func unlock(cypherBits: Data) throws -> Keymaker.Key
+    func lock(value: Key) throws
+    func unlock(cypherBits: Data) throws -> Key
 }
 public extension ProtectionStrategy {
     static func saveCyphertext(_ cypher: Data, in keychain: Keychain) {
@@ -45,7 +45,7 @@ public extension ProtectionStrategy {
         return self.keychain.data(forKey: String(describing: Self.self))
     }
     
-    static func generateRandomValue(length: Int) -> Keymaker.Key {
+    static func generateRandomValue(length: Int) -> Key {
         var newKey = [UInt8](repeating: 0, count: length)
         let status = SecRandomCopyBytes(kSecRandomDefault, newKey.count, &newKey)
         guard status == 0 else {
