@@ -167,10 +167,10 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                     //TODO:: remove the focus for now revert later
                     //self.focus()
                 }
-                self.headerView.notifyViewSize(true)
+                self.headerView?.notifyViewSize(true)
             case .forward:
                 if !self.isShowingConfirm {
-                    let _ = self.headerView.toContactPicker.becomeFirstResponder()
+                    let _ = self.headerView?.toContactPicker.becomeFirstResponder()
                 }
             default:
                 if !self.isShowingConfirm {

@@ -479,7 +479,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     cell.accessoryType = UITableViewCell.AccessoryType.none
                     cell.selectionStyle = UITableViewCell.SelectionStyle.none
                     let topline = "Allow alternative routing"
-                    let bottomline = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypossing firewalls or network issues. We recommend keeping this setting on for greater reliability."
+                    let bottomline = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability."
                     cell.configCell(topline, bottomLine: bottomline, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
                         if newStatus {
                             DoHMail.default.status = .on
