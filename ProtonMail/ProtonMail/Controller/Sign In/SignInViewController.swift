@@ -486,13 +486,16 @@ class SignInViewController: ProtonMailViewController {
     }
     
     private func checkDoh() {
-        if DoHMail.default.status == .off {
-            let message = "Are you facking the network issue?"
+        if DoHMail.default.status == .off && !userCachedStatus.neverShowDohWarning {
+            let message = "Are you facing the network issue? Do you want to go to the troubleshooting screen?"
             let alertController = UIAlertController(title: LocalString._protonmail,
                                                     message: message,
                                                     preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
                 self.performSegue(withIdentifier: self.kSegueToAlert, sender: nil)
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
+                userCachedStatus.neverShowDohWarning = true
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
                 

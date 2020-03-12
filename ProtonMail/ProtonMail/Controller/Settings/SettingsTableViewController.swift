@@ -483,8 +483,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     cell.configCell(topline, bottomLine: bottomline, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
                         if newStatus {
                             DoHMail.default.status = .on
+                            userCachedStatus.isDohOn = true
                         } else {
                             DoHMail.default.status = .off
+                            userCachedStatus.isDohOn = false
                         }
                     }
                     cellout = cell

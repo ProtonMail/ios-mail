@@ -58,6 +58,8 @@ class APIService {
     // MARK: - Internal methods
     
     init() {
+        doh.status = userCachedStatus.isDohOn ? .on : .off
+        
         // init lock
         pthread_mutex_init(&mutex, nil)
         URLCache.shared.removeAllCachedResponses()

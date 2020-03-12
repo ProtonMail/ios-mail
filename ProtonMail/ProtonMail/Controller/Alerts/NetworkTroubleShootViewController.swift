@@ -183,8 +183,10 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                     cellout.configCell(item.top, bottomLine: item.bottom, showSwitcher: true, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
                         if newStatus {
                             DoHMail.default.status = .on
+                            userCachedStatus.isDohOn = true
                         } else {
                             DoHMail.default.status = .off
+                            userCachedStatus.isDohOn = false
                         }
                     }
                 }
