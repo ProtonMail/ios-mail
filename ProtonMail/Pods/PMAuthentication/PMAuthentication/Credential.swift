@@ -9,7 +9,7 @@
 import Foundation
 
 /// Blind object to returned to clients in order to continue authentication upon 2FA code input
-public typealias TwoFactorContext = (credential: Credential, passwordMode: Authenticator.PasswordMode)
+public typealias TwoFactorContext = (credential: Credential, passwordMode: PasswordMode)
 
 /// Credential to be used across all authenticated API calls
 public struct Credential {

@@ -30,9 +30,9 @@ FOUNDATION_EXPORT SDWebImageContextOption _Nonnull const SDWebImageContextPredra
 @interface SDFLAnimatedImage : UIImage <SDAnimatedImage>
 
 /**
- The `FLAnimatedImage` instance for GIF representation. This property should be nonnull.
+ The `FLAnimatedImage` instance for GIF representation. This property typically be nonnull if you init the image with the following methods. However, it will be null when you call super method like `initWithCGImage:`
  */
-@property (nonatomic, strong, nonnull, readonly) FLAnimatedImage *animatedImage;
+@property (nonatomic, strong, nullable, readonly) FLAnimatedImage *animatedImage;
 
 /**
  Create the wrapper with specify `FLAnimatedImage` instance. The instance should be nonnull.

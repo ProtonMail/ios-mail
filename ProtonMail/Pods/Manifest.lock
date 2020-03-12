@@ -103,12 +103,12 @@ PODS:
     - PromiseKit/CorePromise
   - PromiseKit/UIKit (6.13.1):
     - PromiseKit/CorePromise
-  - SDWebImage (5.5.2):
-    - SDWebImage/Core (= 5.5.2)
-  - SDWebImage/Core (5.5.2)
-  - SDWebImageFLPlugin (0.3.0):
+  - SDWebImage (5.6.0):
+    - SDWebImage/Core (= 5.6.0)
+  - SDWebImage/Core (5.6.0)
+  - SDWebImageFLPlugin (0.4.0):
     - FLAnimatedImage (>= 1.0.11)
-    - SDWebImage/Core (~> 5.0)
+    - SDWebImage/Core (~> 5.6)
   - Sentry (4.1.0):
     - Sentry/Core (= 4.1.0)
   - Sentry/Core (4.1.0)
@@ -193,13 +193,13 @@ CHECKOUT OPTIONS:
     :commit: 43d1301b1449d9d98f6ae1f3e2c049b158885758
     :git: https://github.com/ProtonMail/nsdate-helper.git
   PMAuthentication:
-    :commit: cee815bab9afa5371e54951879d86be36ef4956f
+    :commit: 5ef55b8b30aa0a1905b5ac86be8700172e349252
     :git: https://gitlab.protontech.ch/apple/shared/pmauthentication.git
   PMCrypto:
-    :commit: c1b5b95c60cf009579001f42bd0a0c43cfeb2a05
+    :commit: 06cf9baf7c1338f044a4f8536ac957d8085f9f65
     :git: https://gitlab.protontech.ch/apple/shared/pmcrypto.git
   PMKeymaker:
-    :commit: 09421fc659db8223ce1c1e082467ccc0f8489459
+    :commit: 77a90b2765d5b249cb3e28b57c567694eb3b10ba
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
 
 SPEC CHECKSUMS:
@@ -220,11 +220,12 @@ SPEC CHECKSUMS:
   OHHTTPStubs: cb29d2a9d09a828ecb93349a2b0c64f99e0db89f
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
-  PMNetworking: 7c1717a5ae14cc5112c9972a94ae8f2399fc8b4d
-  PMAuthentication: 6d91c9a597e8d6efc38a6ea34102f0712d00fbef
-  PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
-  SDWebImage: 5fcdb02cc35e05fc35791ec514b191d27189f872
-  SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
+  PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
+  PMCrypto: e348d868870240d63305609cf06c9dfce423a702
+  PMKeymaker: e470756e784d0e1014760913dac597908a619c4f
+  PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
+  SDWebImage: 21b19f56b4226cdfe3aefe4e6848dc43ed129a86
+  SDWebImageFLPlugin: 6c2295fb1242d44467c6c87dc5db6b0a13228fd8
   Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75

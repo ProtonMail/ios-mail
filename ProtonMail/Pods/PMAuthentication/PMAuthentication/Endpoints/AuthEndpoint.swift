@@ -11,7 +11,6 @@ import Foundation
 extension AuthService {
     struct AuthEndpoint: Endpoint {
         struct Response: Codable, CredentialConvertible {
-            typealias PasswordMode = Authenticator.PasswordMode
             struct TwoFA: Codable {
                 var enabled: State
                 

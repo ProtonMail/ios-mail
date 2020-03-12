@@ -13,7 +13,7 @@ enum AuthService {
      See BE discussion in internal ProtonTech docs: /proton/backend-communication/issues/12
     */
     
-    static var trust: Authenticator.TrustChallenge?
+    static var trust: TrustChallenge?
     static var scheme: String = "https"
     static var host: String = "api.protonmail.ch"
     static var apiPath: String = ""

@@ -7,21 +7,29 @@
 //
 
 import Foundation
-import Crypto
 
-public class Authenticator: NSObject {
+public protocol SrpAuthProtocol: class {
+    init?(_ version: Int, username: String?, password: String?, salt: String?, signedModulus: String?, serverEphemeral: String?)
+    func generateProofs(of length: Int) throws -> AnyObject
+}
+
+public protocol SrpProofsProtocol: class {
+    var clientProof: Data? { get }
+    var clientEphemeral: Data? { get }
+    var expectedServerProof: Data? { get }
+}
+
+public enum PasswordMode: Int, Codable {
+    case one = 1, two = 2
+}
+
+public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol>: NSObject {
     public typealias Completion = (Result<Status, Error>) -> Void
-    public typealias TrustChallenge = (URLSession, URLAuthenticationChallenge, @escaping URLSessionDelegateCompletion) -> Void
-    public typealias URLSessionDelegateCompletion = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
     
     public enum Status {
         case ask2FA(TwoFactorContext)
         case newCredential(Credential, PasswordMode)
         case updatedCredential(Credential)
-    }
-    
-    public enum PasswordMode: Int, Codable {
-        case one = 1, two = 2
     }
     
     public enum Errors: Error {
@@ -36,7 +44,7 @@ public class Authenticator: NSObject {
     }
     
     public struct Configuration {
-        public init(trust: Authenticator.TrustChallenge?,
+        public init(trust: TrustChallenge?,
                     scheme: String,
                     host: String,
                     apiPath: String,
@@ -113,7 +121,7 @@ public class Authenticator: NSObject {
                 
                 // server SRP
                 let response = try decoder.decode(AuthService.InfoEndpoint.Response.self, from: responseData)
-                guard let auth = SrpAuth(response.version,
+                guard let auth = SRP(response.version,
                                          username: username,
                                          password: password,
                                          salt: response.salt,
@@ -124,7 +132,7 @@ public class Authenticator: NSObject {
                 }
                 
                 // client SRP
-                let srpClient = try auth.generateProofs(2048)
+                let srpClient = try auth.generateProofs(of: 2048) as! PROOF
                 guard let clientEphemeral = srpClient.clientEphemeral,
                     let clientProof = srpClient.clientProof,
                     let expectedServerProof = srpClient.expectedServerProof else
@@ -255,18 +263,19 @@ public class Authenticator: NSObject {
     }
 }
 
+public typealias TrustChallenge = (URLSession, URLAuthenticationChallenge, @escaping URLSessionDelegateCompletion) -> Void
+public typealias URLSessionDelegateCompletion = (URLSession.AuthChallengeDisposition, URLCredential?) -> Void
+
 // Point to inject TrustKit
-extension Authenticator {
-    class SessionDelegate: NSObject, URLSessionDelegate {
-        public func urlSession(_ session: URLSession,
-                               didReceive challenge: URLAuthenticationChallenge,
-                               completionHandler: @escaping URLSessionDelegateCompletion)
-        {
-            if let trust = AuthService.trust {
-                trust(session, challenge, completionHandler)
-            } else {
-                completionHandler(.performDefaultHandling, nil)
-            }
+class SessionDelegate: NSObject, URLSessionDelegate {
+    public func urlSession(_ session: URLSession,
+                           didReceive challenge: URLAuthenticationChallenge,
+                           completionHandler: @escaping URLSessionDelegateCompletion)
+    {
+        if let trust = AuthService.trust {
+            trust(session, challenge, completionHandler)
+        } else {
+            completionHandler(.performDefaultHandling, nil)
         }
     }
 }

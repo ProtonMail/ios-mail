@@ -93,7 +93,7 @@ class APIService : Service {
     
     //
     lazy var authApi: PMAuthentication.Authenticator = {
-        let trust: Authenticator.TrustChallenge = { session, challenge, completion in
+        let trust: TrustChallenge = { session, challenge, completion in
             if let validator = TrustKitWrapper.current?.pinningValidator {
                 validator.handle(challenge, completionHandler: completion)
             } else {

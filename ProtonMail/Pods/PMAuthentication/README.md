@@ -17,9 +17,14 @@ API endpoints participating:
 * /auth/2fa
 
 ## Dependencies
- 😎 NO!
+- [PMCrypto](https://gitlab.protontech.ch/apple/shared/pmcrypto)
 
- ## Linter
- We use SwiftLint to enforce consistent styling across codebase.
- Install (command line): `brew install swiftlint`
- Configuration: hidden file `.swiftlint.yml`
+## Linter
+We use SwiftLint to enforce consistent styling across codebase. 
+Linter is installed as cocoapod. 
+Configuration is in a  hidden file `.swiftlint.yml`.
+
+## Unit tests
+This project has number of unit tests, automatically run via Fastlane by GitLab CI.
+Configuration of CI: hidden file `.gitlab-ci.yml`.
+Configuration of fastlane: `/fastlane/Fastfile`.
