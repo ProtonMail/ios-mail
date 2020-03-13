@@ -164,28 +164,45 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
         
-        if (segue.identifier == kContactDetailsSugue) {
-            let contactDetailsViewController = segue.destination as! ContactDetailViewController
+        let viewController = segue.destination
+        
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            if let nav = viewController as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
+        }
+        
+        switch segue.identifier {
+        case kContactDetailsSugue:
+            let contactDetailsViewController = viewController as! ContactDetailViewController
+            
             let contact = sender as? Contact
             sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact!)
-        } else if (segue.identifier == "toCompose") {
-        } else if (segue.identifier == kAddContactSugue) {
+            
+        case "toCompose", kAddContactSugue:
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
             sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
-        } else if (segue.identifier == kAddContactGroupSugue) {
+            
+        case kAddContactGroupSugue:
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
-        } else if segue.identifier == kSegueToImportView {
+            
+        case kSegueToImportView:
             let popup = segue.destination as! ContactImportViewController
             // TODO: inject it via ViewModel when ContactImportViewController will have one
             popup.user = self.viewModel.user
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
+            
+        case kToUpgradeAlertSegue:
+            let popup = viewController as! UpgradeAlertViewController
             popup.delegate = self
             sharedVMService.upgradeAlert(contacts: popup)
+            
+        default:
+            return
         }
     }
     
@@ -437,4 +454,10 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
     }
 }
 
-
+// detect view dismiss above iOS 13
+@available (iOS 13, *)
+extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.isOnMainView = true
+    }
+}
