@@ -185,10 +185,11 @@ class LabelsDataService: Service, HasLocalStorage {
     }
     
     func addNewLabel(_ response : [String : Any]?) {
-        if let label = response {
+        if var label = response {
             let context = CoreDataService.shared.backgroundManagedObjectContext
             context.performAndWait() {
                 do {
+                    label["UserID"] = self.userID
                     try GRTJSONSerialization.object(withEntityName: Label.Attributes.entityName, fromJSONDictionary: label, in: context)
                     if let error = context.saveUpstreamIfNeeded() {
                         PMLog.D("addNewLabel error: \(error)")
