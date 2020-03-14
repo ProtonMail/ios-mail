@@ -114,8 +114,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
                     for mm in self.messages {
                         let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
                         let id = mm.selfSent(labelID: flable)
-                        //TODO:: fix me
-//                        sharedMessageDataService.move(message: mm, from: id ?? flable, to: key, queue: false)
+                        messageService.move(message: mm, from: id ?? flable, to: key, queue: false)
                     }
                 }
             }
