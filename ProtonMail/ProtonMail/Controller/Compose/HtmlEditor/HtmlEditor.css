@@ -44,6 +44,10 @@ body {
 /*    font-size: 1em !important;*/
 /*}*/
 
+div {
+    outline: none
+}
+
 blockquote {
     padding: 0 0 0 0.6rem !important;
     margin: 0 !important;
