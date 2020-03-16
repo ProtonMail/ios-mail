@@ -81,6 +81,9 @@ final class UserCachedStatus : SharedCacheBase {
     
     var isDohOn: Bool {
         get {
+            if getShared()?.object(forKey: Key.dohFlag) == nil {
+                return true
+            }
             return getShared().bool(forKey: Key.dohFlag)
         }
         set {
@@ -88,14 +91,14 @@ final class UserCachedStatus : SharedCacheBase {
         }
     }
     
-    var neverShowDohWarning: Bool {
-        get {
-            return getShared().bool(forKey: Key.dohWarningAsk)
-        }
-        set {
-            setValue(newValue, forKey: Key.dohWarningAsk)
-        }
-    }
+//    var neverShowDohWarning: Bool {
+//        get {
+//            return getShared().bool(forKey: Key.dohWarningAsk)
+//        }
+//        set {
+//            setValue(newValue, forKey: Key.dohWarningAsk)
+//        }
+//    }
 
     var isForcedLogout : Bool = false
     

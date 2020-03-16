@@ -501,24 +501,30 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         return true
     }
     
-    private func checkDoh() {
-        // tempery
-//        if DoHMail.default.status == .off && !userCachedStatus.neverShowDohWarning {
-//            let message = "Are you facing the network issue? Do you want to go to the troubleshooting screen?"
-//            let alertController = UIAlertController(title: LocalString._protonmail,
-//                                                    message: message,
-//                                                    preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { action in
-//                self.coordinator?.go(to: .troubleShoot)
-//            }))
-//            alertController.addAction(UIAlertAction(title: LocalString._dont_show_again, style: .destructive, handler: { action in
-//                userCachedStatus.neverShowDohWarning = true
-//            }))
-//            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
-//                
-//            }))
-//            UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
-//        }
+    private func checkDoh(_ error : NSError) {
+        let code = error.code
+        guard code == NSURLErrorTimedOut ||
+            code == NSURLErrorCannotConnectToHost ||
+            code == NSURLErrorCannotFindHost ||
+            code == -1200 ||
+            code == 451 ||
+            code == 301
+        else {
+            return
+        }
+        
+        let message = error.localizedDescription
+        let alertController = UIAlertController(title: LocalString._protonmail,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
+            self.coordinator?.go(to: .troubleShoot)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
+            
+        }))
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        
     }
     
     fileprivate var timerInterval : TimeInterval = 30
@@ -765,13 +771,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         let code = error.code
         if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
-             self.checkDoh()
         } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
             self.showNoInternetErrorMessage()
-            if code == NSURLErrorCannotConnectToHost {
-                //SHOW troubleshooting
-                self.checkDoh()
-            }
         } else if code == APIErrorCode.API_offline {
             self.showOfflineErrorMessage(error)
             offlineTimerReset()
@@ -782,9 +783,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.showTimeOutErrorMessage()
         } else if code == APIErrorCode.HTTP404 {
             self.showTimeOutErrorMessage()
-            self.checkDoh()
-            //SHOW troubleshooting
         }
+        
+        self.checkDoh(error)
         PMLog.D("error: \(error)")
     }
     

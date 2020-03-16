@@ -83,6 +83,124 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                 return "Contact us directly through our support form, email (support@protonmail.com), or Twitter."
             }
         }
+        
+        public var AttrString : NSMutableAttributedString {
+            switch(self){
+            case .allowSwitch:
+                
+                let holder = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@"
+                let learnMore = "Learn more"
+                
+                let full = String.localizedStringWithFormat(holder, learnMore)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              .foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: learnMore) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link,
+                                                  value: "http://protonmail.com/blog/anti-censorship-alternative-routing",
+                                                  range: nsRange)
+                }
+                return attributedString
+                
+            case .noInternetNotes:
+                let full = "Please make sure that your internet connection is working."
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                return attributedString
+                
+            case .ipsNotes:
+                let holder = "Try connecting to Proton from a different network (or use %1$@ or %2$@)."
+                let field1 = "ProtonVPN"
+                let field2 = "Tor"
+                
+                let full = String.localizedStringWithFormat(holder, field1, field2)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: field1) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link, value: "https://protonvpn.com", range: nsRange)
+                }
+                if let subrange = full.range(of: field2) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link, value: "https://www.torproject.org", range: nsRange)
+                }
+                return attributedString
+                
+            case .blockNotes:
+                let holder = "Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton."
+                let field1 = "ProtonVPN"
+                let field2 = "Tor"
+                
+                let full = String.localizedStringWithFormat(holder, field1, field2)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: field1) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link, value: "https://protonvpn.com", range: nsRange)
+                }
+                if let subrange = full.range(of: field2) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link, value: "https://www.torproject.org", range: nsRange)
+                }
+                return attributedString
+                
+            case .antivirusNotes:
+                let full = "Temporarily disable or remove your antivirus software."
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                return attributedString
+                
+            case .firewallNotes:
+                let full = "Disable any proxies or firewalls, or contact your network administrator."
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                return attributedString
+                
+            case .downtimeNotes:
+                let holder = "Check Proton Status for our system status."
+                let field1 = "Proton Status"
+                let full = String.localizedStringWithFormat(holder, field1)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: field1) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttributes([.link: "http://protonstatus.com"], range: nsRange)
+                }
+                return attributedString
+                
+            case .otherNotes:
+                let holder = "Contact us directly through our support form, email (support@protonmail.com), or Twitter."
+                let field1 = "support form"
+                let field2 = "email"
+                let field3 = "Twitter"
+                
+                let full = String.localizedStringWithFormat(holder, field1, field2, field3)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [NSAttributedString.Key.font : UIFont.preferredFont(forTextStyle: .caption1),
+                                                                              NSAttributedString.Key.foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: field1) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttributes([.link: "https://protonmail.com/support-form"], range: nsRange)
+                }
+                if let subrange = full.range(of: field2) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttributes([.link: "mailto:support@protonmail.com"], range: nsRange)
+                }
+                if let subrange = full.range(of: field3) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttributes([.link: "https://twitter.com/ProtonMail"], range: nsRange)
+                }
+                return attributedString
+                
+            }
+        }
     }
     
     internal var viewModel : NetworkTroubleShootViewModel!
@@ -177,23 +295,21 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath)
         if let cellout = cell as? SwitchTableViewCell {
             if item == .allowSwitch {
-                if let cellout = cell as? SwitchTableViewCell {
-                    cellout.accessoryType = UITableViewCell.AccessoryType.none
-                    cellout.selectionStyle = UITableViewCell.SelectionStyle.none
-                    cellout.configCell(item.top, bottomLine: item.bottom, showSwitcher: true, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
-                        if newStatus {
-                            DoHMail.default.status = .on
-                            userCachedStatus.isDohOn = true
-                        } else {
-                            DoHMail.default.status = .off
-                            userCachedStatus.isDohOn = false
-                        }
+                cellout.accessoryType = UITableViewCell.AccessoryType.none
+                cellout.selectionStyle = UITableViewCell.SelectionStyle.none
+                cellout.configCell(item.top, bottomLine: item.AttrString, showSwitcher: true, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
+                    if newStatus {
+                        DoHMail.default.status = .on
+                        userCachedStatus.isDohOn = true
+                    } else {
+                        DoHMail.default.status = .off
+                        userCachedStatus.isDohOn = false
                     }
                 }
             } else {
                 cellout.accessoryType = UITableViewCell.AccessoryType.none
                 cellout.selectionStyle = UITableViewCell.SelectionStyle.none
-                cellout.configCell(item.top, bottomLine: item.bottom, showSwitcher: false, status: false, complete: nil)
+                cellout.configCell(item.top, bottomLine: item.AttrString, showSwitcher: false, status: false, complete: nil)
             }
         }
         return cell
