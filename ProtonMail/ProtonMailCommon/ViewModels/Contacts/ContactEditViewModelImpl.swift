@@ -741,8 +741,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 vcard3.clearPhotos()
                 if let profilePicture = profilePicture,
                     let compressedImage = UIImage.resize(image: profilePicture,
-                                                         targetSize: CGSize.init(width: 30, height: 30)),
-                    let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+                                                         targetSize: CGSize.init(width: 60, height: 60)),
+                    let jpegData = compressedImage.jpegData(compressionQuality: 0.5) {
                     let image = PMNIPhoto.createInstance(jpegData,
                                                          type: "JPEG",
                                                          isBinary: true)
