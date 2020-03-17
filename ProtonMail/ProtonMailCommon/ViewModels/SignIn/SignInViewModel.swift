@@ -63,7 +63,7 @@ class SignInViewModel : NSObject {
         }, requestMailboxPassword: {
             complete(.mbpwd)
         }) {//require mailbox pwd
-            self.unlockManager.unlockIfRememberedCredentials(forUser: username) { }
+            self.unlockManager.unlockIfRememberedCredentials(forUser: username, requestMailboxPassword: { })
             complete(.ok)
         }
     }

@@ -200,7 +200,7 @@ class ShareUnlockViewController: UIViewController, CoordinatedNew, BioCodeViewDe
     func authenticateUser() {
         let unlockManager = sharedServices.get(by: UnlockManager.self)
         unlockManager.biometricAuthentication(afterBioAuthPassed: {
-            unlockManager.unlockIfRememberedCredentials { }
+            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: { })
         })
     }
     

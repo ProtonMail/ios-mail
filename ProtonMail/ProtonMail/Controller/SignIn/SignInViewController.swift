@@ -251,15 +251,14 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             /// when creating user success the isUserCredentialStored will be true but isTouchIDEnabled and isPinCodeEnabled should be all false
             /// this also fixed the user see the mailbox password view after created the new account and enable the pin/face in the same session.
             if sharedUserDataService.isUserCredentialStored && !userCachedStatus.isTouchIDEnabled && !userCachedStatus.isPinCodeEnabled {
-                UnlockManager.shared.unlockIfRememberedCredentials(forUser: uName) {
+                UnlockManager.shared.unlockIfRememberedCredentials(forUser: uName, requestMailboxPassword: {
                     self.isRemembered = true
                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-                }
-                if isRemembered {
-                    hideLoginViews()
-                } else {
-                    showLoginViews()
-                }
+                }, unlockFailed: { [weak self] in
+                    self?.showLoginViews()
+                }, unlocked: { [weak self] in
+                    self?.hideLoginViews()
+                })
             }
         }
         
@@ -530,8 +529,12 @@ extension SignInViewController : PinCodeViewControllerDelegate {
         UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: {
             self.isRemembered = true
             self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
+        }, unlockFailed: { [weak self] in
+            self?.setupView()
+        }, unlocked: { [weak self] in
+            self?.isRemembered = true
+            self?.hideLoginViews()
         })
-        setupView()
     }
 }
 
