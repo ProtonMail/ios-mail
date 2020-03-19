@@ -24,7 +24,7 @@
 import UIKit
 import MBProgressHUD
 import Keymaker
-
+import MessageUI
 
 class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
 
@@ -222,14 +222,14 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     var items : [Item] = [.allowSwitch,.noInternetNotes,.ipsNotes,.blockNotes,.antivirusNotes,.firewallNotes,.downtimeNotes,.otherNotes]
     
     /// cells
-    let SettingSingalLineCell         = "settings_general"
-    let SettingSingalSingleLineCell   = "settings_general_single_line"
-    let SettingTwoLinesCell           = "settings_twolines"
-    let SettingDomainsCell            = "setting_domains"
-    let SettingStorageCell            = "setting_storage_cell"
+//    let SettingSingalLineCell         = "settings_general"
+//    let SettingSingalSingleLineCell   = "settings_general_single_line"
+//    let SettingTwoLinesCell           = "settings_twolines"
+//    let SettingDomainsCell            = "setting_domains"
+//    let SettingStorageCell            = "setting_storage_cell"
     let HeaderCell                    = "header_cell"
-    let SingleTextCell                = "single_text_cell"
-    let SwitchCell                    = "switch_table_view_cell"
+//    let SingleTextCell                = "single_text_cell"
+    let SwitchTwolineCell             = "switch_two_line_cell"
     
     //
     let CellHeight : CGFloat = 30.0
@@ -292,8 +292,8 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let item = items[indexPath.row]
-        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath)
-        if let cellout = cell as? SwitchTableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTwolineCell, for: indexPath)
+        if let cellout = cell as? SwitchTwolineCell {
             if item == .allowSwitch {
                 cellout.accessoryType = UITableViewCell.AccessoryType.none
                 cellout.selectionStyle = UITableViewCell.SelectionStyle.none
@@ -310,6 +310,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
                 cellout.accessoryType = UITableViewCell.AccessoryType.none
                 cellout.selectionStyle = UITableViewCell.SelectionStyle.none
                 cellout.configCell(item.top, bottomLine: item.AttrString, showSwitcher: false, status: false, complete: nil)
+                cellout.delegate = self
             }
         }
         return cell
@@ -352,5 +353,22 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
         else {
             return proposedDestinationIndexPath
         }
+    }
+}
+
+
+
+extension NetworkTroubleShootViewController : SwitchTwolineCellDelegate, MFMailComposeViewControllerDelegate {
+    func mailto() {
+        openMFMail()
+    }
+    
+    func openMFMail(){
+        let mailComposer = MFMailComposeViewController()
+//        mailComposer.mailComposeDelegate = self
+        mailComposer.setToRecipients(["support@protonmail.com"])
+        mailComposer.setSubject("Subject..")
+        mailComposer.setMessageBody("Please share your problem.", isHTML: false)
+        present(mailComposer, animated: true, completion: nil)
     }
 }

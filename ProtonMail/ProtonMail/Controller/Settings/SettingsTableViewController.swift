@@ -69,7 +69,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
     
     
-    var setting_network_items : [SNetworkItems]            = [.doh, .clear]
+    var setting_network_items : [SNetworkItems]            = [.doh]
     
     
     var setting_languages : [ELanguage]                  = ELanguage.allItems()
@@ -95,6 +95,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     let HeaderCell                    = "header_cell"
     let SingleTextCell                = "single_text_cell"
     let SwitchCell                    = "switch_table_view_cell"
+    let SwitchTwolineCell             = "switch_two_line_cell"
+    
     
     //
     let CellHeight : CGFloat = 30.0
@@ -236,7 +238,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         if let userInfo = userInfo {
-                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                 if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow ?? UIView()
                                     MBProgressHUD.showAdded(to: view, animated: true)
@@ -475,12 +477,24 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 let netItem = setting_network_items[indexPath.row]
                 
                 if netItem == .doh {
-                    let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTwolineCell, for: indexPath) as! SwitchTwolineCell
                     cell.accessoryType = UITableViewCell.AccessoryType.none
                     cell.selectionStyle = UITableViewCell.SelectionStyle.none
                     let topline = "Allow alternative routing"
-                    let bottomline = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability."
-                    cell.configCell(topline, bottomLine: bottomline, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
+                    let holder = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@"
+                    let learnMore = "Learn more"
+                    
+                    let full = String.localizedStringWithFormat(holder, learnMore)
+                    let attributedString = NSMutableAttributedString(string: full,
+                                                                     attributes: [.font : UIFont.preferredFont(forTextStyle: .footnote),
+                                                                                  .foregroundColor : UIColor.darkGray])
+                    if let subrange = full.range(of: learnMore) {
+                        let nsRange = NSRange(subrange, in: full)
+                        attributedString.addAttribute(.link,
+                                                      value: "http://protonmail.com/blog/anti-censorship-alternative-routing",
+                                                      range: nsRange)
+                    }
+                    cell.configCell(topline, bottomLine: attributedString, showSwitcher: true, status: DoHMail.default.status == .on) { (cell, newStatus, feedback) in
                         if newStatus {
                             DoHMail.default.status = .on
                             userCachedStatus.isDohOn = true

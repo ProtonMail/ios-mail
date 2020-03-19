@@ -506,10 +506,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard code == NSURLErrorTimedOut ||
             code == NSURLErrorCannotConnectToHost ||
             code == NSURLErrorCannotFindHost ||
-            code == NSURLErrorNetworkConnectionLost || //this should be -1005
+//            code == NSURLErrorNetworkConnectionLost || //this should be -1005
             code == NSURLErrorDNSLookupFailed ||
             code == -1200 ||
-            code == -1005 ||
+//            code == -1005 ||
             code == 451 ||
             code == 310
         else {
