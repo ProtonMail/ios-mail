@@ -48,6 +48,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .multiDomain,
                                                             .swipeAction,
                                                             .language,
+                                                            .network,
                                                             .storage,
                                                             .version] //.Debug,
     
@@ -66,6 +67,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .defaultMobilSign]
     
     var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
+    
+    
+    var setting_network_items : [SNetworkItems]            = [.doh, .clear]
+    
     
     var setting_languages : [ELanguage]                  = ELanguage.allItems()
     
@@ -188,6 +193,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 return 1
             case .labels:
                 return setting_labels_items.count
+            case .network:
+                return setting_network_items.count
             }
         }
         return 0
@@ -464,6 +471,32 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                 cellout = cell
                 
+            case .network:
+                let netItem = setting_network_items[indexPath.row]
+                
+                if netItem == .doh {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                    cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                    let topline = "Allow alternative routing"
+                    let bottomline = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability."
+                    cell.configCell(topline, bottomLine: bottomline, status: DoHMail.default.status == .on) { cell, newStatus, feedback in
+                        if newStatus {
+                            DoHMail.default.status = .on
+                            userCachedStatus.isDohOn = true
+                        } else {
+                            DoHMail.default.status = .off
+                            userCachedStatus.isDohOn = false
+                        }
+                    }
+                    cellout = cell
+                }
+                if netItem == .clear {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingSinglelineCell
+                    cell.configCell(netItem.description)
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                    cellout = cell
+                }
             case .version:
                 break
             }
@@ -487,7 +520,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         let textLabel = UILabel()
         
         if #available(iOS 10, *) {
-            textLabel.font = UIFont.preferredFont(forTextStyle: .headline)
+            textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
             textLabel.adjustsFontForContentSizeCategory = true
         } else {
             textLabel.font = Fonts.h6.regular
@@ -759,6 +792,11 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     alertController.popoverPresentationController?.sourceView = cell ?? self.view
                     alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
                     present(alertController, animated: true, completion: nil)
+                }
+            case .network:
+                let netItem = setting_network_items[indexPath.row]
+                if netItem == .clear {
+                    DoHMail.default.clearAll()
                 }
             default:
                 break

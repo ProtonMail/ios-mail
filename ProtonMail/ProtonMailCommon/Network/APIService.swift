@@ -26,6 +26,7 @@ import Foundation
 import AFNetworking
 import AFNetworkActivityLogger
 import TrustKit
+import PMNetworking
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
@@ -52,13 +53,18 @@ class APIService {
     
     weak var delegate : APIServiceDelegate?
     
+    let doh : DoH = DoHMail.default
+    
     // MARK: - Internal methods
     
     init() {
+        doh.status = userCachedStatus.isDohOn ? .on : .off
+        
         // init lock
         pthread_mutex_init(&mutex, nil)
         URLCache.shared.removeAllCachedResponses()
-        sessionManager = AFHTTPSessionManager(baseURL: URL(string: Constants.App.API_HOST_URL)!)
+        
+        sessionManager = AFHTTPSessionManager(baseURL: URL(string: doh.getHostUrl())!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
         sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
@@ -68,13 +74,14 @@ class APIService {
         sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
         #if DEBUG
-        sessionManager.securityPolicy.allowInvalidCertificates = true
+        sessionManager.securityPolicy.allowInvalidCertificates = false
         #endif
 
         sessionManager.setSessionDidReceiveAuthenticationChallenge { session, challenge, credential -> URLSession.AuthChallengeDisposition in
             var dispositionToReturn: URLSession.AuthChallengeDisposition = .performDefaultHandling
             if let validator = TrustKitWrapper.current?.pinningValidator {
-                validator.handle(challenge, completionHandler: { (disposition, credential) in
+                validator.handle(challenge, completionHandler: { (disposition, credentialOut) in
+                    credential?.pointee = credentialOut
                     dispositionToReturn = disposition
                 })
             } else {
@@ -84,6 +91,18 @@ class APIService {
         }
         
         setupValueTransforms()
+    }
+    
+    private func enableDoH() {
+        
+    }
+    
+    private func disableDoH() {
+        
+    }
+    
+    private func tryAnotherRecordDoH() {
+        
     }
     
     internal func completionWrapperParseCompletion(_ completion: CompletionBlock?, forKey key: String) -> CompletionBlock? {
@@ -229,6 +248,26 @@ class APIService {
         }
     }
     
+    internal func upload (byPath path: String,
+    parameters: [String:String],
+    keyPackets : Data,
+    dataPacket : Data,
+    signature : Data?,
+    headers: [String : Any]?,
+    authenticated: Bool = true,
+    customAuthCredential: AuthCredential? = nil,
+    completion: @escaping CompletionBlock) {
+        let url = self.doh.getHostUrl() + path
+        self.upload(byUrl: url,
+                    parameters: parameters,
+                    keyPackets: keyPackets,
+                    dataPacket: dataPacket,
+                    signature: signature,
+                    headers: headers,
+                    authenticated: authenticated,
+                    customAuthCredential: customAuthCredential,
+                    completion: completion)
+    }
     
     /**
      this function only for upload attachments for now.
@@ -429,7 +468,7 @@ class APIService {
                     }
                 }
                 
-                let url = Constants.App.API_HOST_URL + path
+                let url = self.doh.getHostUrl() + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,
@@ -475,6 +514,8 @@ class APIService {
                             }
                         }
                     }
+                    
+                    DoHMail.default.handleError(host: url, error: error)
                     /// parse urlresponse
                     parseBlock(task, res, error)
                 })

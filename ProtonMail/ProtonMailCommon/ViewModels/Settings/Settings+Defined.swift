@@ -388,6 +388,21 @@ public enum SLabelsItems: Int, CustomStringConvertible {
     }
 }
 
+
+public enum SNetworkItems: Int, CustomStringConvertible {
+    case doh = 0
+    case clear = 1
+    public var description : String {
+        switch(self){
+        case .doh:
+            return "DNS over Https"
+        case .clear:
+            return "Reset DNS Cache"
+        }
+    }
+}
+
+
 public enum SettingSections: Int, CustomStringConvertible {
     case debug = 0
     case general = 1
@@ -398,6 +413,7 @@ public enum SettingSections: Int, CustomStringConvertible {
     case protection = 6
     case language = 7
     case labels = 8
+    case network = 9
     
     public var description : String {
         switch(self){
@@ -419,6 +435,8 @@ public enum SettingSections: Int, CustomStringConvertible {
             return LocalString._language
         case .labels:
             return LocalString._labels_folders
+        case .network:
+            return LocalString._networking
         }
     }
 }

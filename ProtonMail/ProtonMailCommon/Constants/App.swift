@@ -77,11 +77,11 @@ struct Constants {
             }
         }
         
-        static var API_FULL_URL : String {
-            get {
-                return API_HOST_URL + API_PATH
-            }
-        }
+//        static var API_FULL_URL : String {
+//            get {
+//                return API_HOST_URL + API_PATH
+//            }
+//        }
         
         static var DEBUG_OPTION : String {
             get {

@@ -98,7 +98,9 @@ extension ImageProcessor where Self: AttachmentProvider {
                     fileName = url_filename
                 }
                 
-                if fileName.preg_match(".(heif|heic)") {
+                let UTIstr = dataUTI ?? ""
+                
+                if fileName.preg_match(".(heif|heic)") || UTIstr.preg_match(".(heif|heic)") {
                     if let rawImage = UIImage(data: image_data) {
                         if let newData = rawImage.jpegData(compressionQuality: 1.0), newData.count > 0 {
                             image_data =  newData

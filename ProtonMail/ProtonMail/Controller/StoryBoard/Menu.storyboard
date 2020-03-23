@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1163,6 +1163,7 @@
                         <segue destination="C6e-Un-S8J" kind="presentation" identifier="toMoveToFolderSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="XIN-Jt-JzU"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toCompose" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="dh2-Js-yHz"/>
                         <segue destination="Pr4-fX-gNy" kind="presentation" identifier="toComposeShow" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="A0a-yx-qTn"/>
+                        <segue destination="9Tt-Bl-2aN" kind="presentation" identifier="toTroubleShootSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="LeA-5g-bB1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v5f-i5-kem" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2527,7 +2528,15 @@
                 <viewControllerPlaceholder storyboardIdentifier="UpgradeAlertViewController" storyboardName="Settings" referencedIdentifier="UpgradeAlertViewController" id="Fkc-SV-vIj" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DQ6-r4-H0d" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-106" y="6180"/>
+            <point key="canvasLocation" x="109" y="5813"/>
+        </scene>
+        <!--ref_troubleshoot_nav_controller-->
+        <scene sceneID="kGo-UL-kqf">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="9Tt-Bl-2aN" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="q8t-Ng-rYc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2748" y="2087"/>
         </scene>
     </scenes>
     <resources>

@@ -39,6 +39,7 @@ class SignInViewController: ProtonMailViewController {
     private let kSegueToPinCodeViewNoAnimation  = "pin_code_segue"
     private let kSegueToBioViewNoAnimation      = "bio_code_segue"
     private let kSegueTo2FACodeSegue            = "2fa_code_segue"
+    private let kSegueToAlert = "toTroubleShootSegue"
     
     private var isShowpwd      = false
     private var isRemembered   = false
@@ -451,11 +452,7 @@ class SignInViewController: ProtonMailViewController {
                             PMLog.D("error: \(error)")
                             MBProgressHUD.hide(for: self.view, animated: true)
                             self.showLoginViews()
-                            if !error.code.forceUpgrade {
-                                let alertController = error.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            }
+                            self.handleRequestError(error)
         },
                         afterSignIn: {
                             MBProgressHUD.hide(for: self.view, animated: true)
@@ -464,6 +461,48 @@ class SignInViewController: ProtonMailViewController {
                             self.isRemembered = true
                             self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
         })
+    }
+    
+    func handleRequestError (_ error : NSError) {
+        let code = error.code
+        if code == NSURLErrorTimedOut {
+            
+        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
+ 
+        }
+        else if !self.checkDoh(error) && !code.forceUpgrade {
+            let alertController = error.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
+        }
+        PMLog.D("error: \(error)")
+    }
+    
+    private func checkDoh(_ error : NSError) -> Bool {
+        let code = error.code
+        guard code == NSURLErrorTimedOut ||
+            code == NSURLErrorCannotConnectToHost ||
+            code == NSURLErrorCannotFindHost ||
+            code == -1200 ||
+            code == 451 ||
+            code == 301
+        else {
+            return false
+        }
+        
+        let message = error.localizedDescription
+        let alertController = UIAlertController(title: LocalString._protonmail,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
+            self.performSegue(withIdentifier: self.kSegueToAlert, sender: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
+            
+        }))
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+
+        return true
     }
 }
 

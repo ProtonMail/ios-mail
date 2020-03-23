@@ -28,6 +28,7 @@ public class APIErrorCode {
     
     static public let HTTP503 = 503
     static public let HTTP504 = 504
+    static public let HTTP404 = 404
     
     static public let badParameter = 1
     static public let badPath = 2
@@ -40,7 +41,7 @@ public class APIErrorCode {
         static public let invalidGrant = 30
         static public let unableToParseToken = 40
         static public let localCacheBad = 50
-        static public let networkIusse = 60
+        static public let networkIusse = -1004
         static public let unableToParseAuthInfo = 70
         static public let authServerSRPInValid = 80
         static public let authUnableToGenerateSRP = 90

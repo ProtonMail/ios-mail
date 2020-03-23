@@ -246,7 +246,9 @@ class MessageDataService : Service {
     func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
-                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
+                if error != nil {
+                    completion?(task, responseDict, error)
+                } else if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.backgroundManagedObjectContext
@@ -1238,7 +1240,7 @@ class MessageDataService : Service {
         }
         
         PMLog.D("SendAttachmentDebug == start upload att!")
-        sharedAPIService.upload( byUrl: Constants.App.API_HOST_URL + Constants.App.API_PATH + "/attachments",
+        sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
                                  parameters: params,
                                  keyPackets: keyPacket,
                                  dataPacket: dataPacket,
