@@ -24,6 +24,12 @@
 import Foundation
 
 class BannerView : PMView {
+    
+    let yourAttributes: [NSAttributedString.Key: Any] = [
+        .font: UIFont.preferredFont(forTextStyle: .footnote),
+        .foregroundColor: UIColor.white,
+        .underlineStyle: NSUnderlineStyle.single.rawValue]
+    //.double.rawValue, .thick.rawValue
     private weak var superView: UIView!
     private var animator: UIDynamicAnimator!
     private var springBehavior: UIAttachmentBehavior!
@@ -31,10 +37,12 @@ class BannerView : PMView {
     private var dismissDuration: TimeInterval
     private var timer: Timer?
     private var buttonConfig: ButtonConfiguration?
+    private var secondButtonConfig: ButtonConfiguration?
     
     @IBOutlet private weak var button: UIButton!
     @IBOutlet private var backgroundView: UIView!
     @IBOutlet private weak var messageLabel: UILabel!
+    @IBOutlet weak var secondButton: UIButton!
     
     override func getNibName() -> String {
         return "\(BannerView.self)";
@@ -42,6 +50,9 @@ class BannerView : PMView {
     
     @IBAction func closeAction(_ sender: UIButton) {
         self.buttonConfig?.action?()
+    }
+    @IBAction func secondAction(_ sender: Any) {
+        self.secondButtonConfig?.action?()
     }
     
     enum Appearance {
@@ -65,7 +76,7 @@ class BannerView : PMView {
             return 0.75
         }
     }
-
+    
     enum Base {
         case top, bottom
     }
@@ -78,6 +89,7 @@ class BannerView : PMView {
     init(appearance: Appearance,
          message: String,
          buttons: ButtonConfiguration?,
+         button2: ButtonConfiguration? = nil,
          offset: CGFloat,
          dismissDuration: TimeInterval = 4)
     {
@@ -100,8 +112,16 @@ class BannerView : PMView {
             self.button.isHidden = true
         }
         
+        self.secondButtonConfig = button2
+        let attributeString = NSMutableAttributedString(string: "Troubleshoot",
+                                                        attributes: yourAttributes)
+        secondButton.setAttributedTitle(attributeString, for: .normal)
+        secondButton.isHidden = button2 == nil
+        
         messageLabel.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
+        
+        self.layoutIfNeeded()
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -112,26 +132,33 @@ class BannerView : PMView {
 }
 
 extension BannerView: UIGestureRecognizerDelegate {
-
+    
     func drop(on baseView: UIView, from: Base) {
         self.superView = baseView
         
         // sizing
-        let xPadding: CGFloat = 20.0
-        let yPadding: CGFloat = 8.0
+        let xPadding: CGFloat = 16.0
+        let yPadding: CGFloat = 12.0
+        let space: CGFloat = 2 * 8.0
         let sizeOfText = self.messageLabel.textRect(forBounds: baseView.bounds.insetBy(dx: 3.0 * xPadding + self.button.bounds.width, dy: 0), limitedToNumberOfLines: 0).insetBy(dx: 0, dy: -1.0 * yPadding)
-        let size = CGSize(width: baseView.bounds.insetBy(dx: xPadding, dy: 0).width, height: sizeOfText.height)
+        
+        var buttonHeight = secondButton.frame.height
+        if !secondButton.isHidden {
+            buttonHeight = buttonHeight + space
+        }
+        
+        let size = CGSize(width: baseView.bounds.insetBy(dx: xPadding, dy: 0).width, height: sizeOfText.height + buttonHeight)
         self.frame = CGRect(origin: .zero, size: size)
         let initAnchor = CGPoint(x: (baseView.bounds.width / 2),
                                  y: from == .bottom ? (baseView.bounds.height - self.bounds.height / 2) - offset
-                                                    : (self.bounds.height / 2) + offset)
+                                    : (self.bounds.height / 2) + offset)
         //if directly assign to this value, it could be removed from the other function. looks like it is not thread-safe
         let dyAnimator = UIDynamicAnimator(referenceView: baseView)
         self.animator = dyAnimator
         
         // original location
         self.center = initAnchor.applying(CGAffineTransform(translationX: 0, y: from == .bottom ? (baseView.bounds.height - initAnchor.y)
-                                                                                                : (-initAnchor.y)))
+            : (-initAnchor.y)))
         
         let springBehavior = UIAttachmentBehavior(item: self, attachedToAnchor: initAnchor)
         springBehavior.length = 0
@@ -146,7 +173,7 @@ extension BannerView: UIGestureRecognizerDelegate {
                        initialSpringVelocity: 0.1,
                        options: [.curveEaseIn],
                        animations: {
-                self.center = initAnchor
+                        self.center = initAnchor
         }) { _ in
             self.startTimer()
         }
@@ -172,8 +199,8 @@ extension BannerView: UIGestureRecognizerDelegate {
                 self.center = self.center.applying(CGAffineTransform(translationX: 0,
                                                                      y: superView.bounds.height + self.bounds.height))
             }
-        }, completion: { [weak self] _ in
-            self?.removeFromSuperview()
+            }, completion: { [weak self] _ in
+                self?.removeFromSuperview()
         })
     }
     
@@ -194,11 +221,11 @@ extension BannerView: UIGestureRecognizerDelegate {
         case .began:
             self.invalidateTimer()
             self.animator.removeBehavior(self.springBehavior)
-
+            
         case .changed:
             let anchor = self.springBehavior.anchorPoint
             let translation = gesture.translation(in: referenceView).y
-
+            
             var y: CGFloat
             let left = (self.superView.bounds.height / 2) - self.center.y
             let right = (self.superView.bounds.height / 2) - self.center.y + translation

@@ -46,11 +46,11 @@ struct Constants {
         //static let URL_Protocol : String = "http://"
         
         //live api
-        static let URL_HOST : String = "api.protonmail.ch"
+        static let URL_HOST : String = "api.protonm1ail.ch"
         static let API_PATH : String = ""
         
         ///
-        static let rediectURL = "https://protonmail.ch"
+        static let rediectURL = "https://proto1nmail.ch"
         
         //blue test
         //static let URL_HOST : String = "protonmail.blue"

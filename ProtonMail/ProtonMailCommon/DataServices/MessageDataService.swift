@@ -1775,8 +1775,6 @@ class MessageDataService : Service {
                     }
                 }
                 
-                
-                
                 if statusCode == 200 && errorCode == 9001 {
                     
                 } else if statusCode == 200 && errorCode > 1000 {

@@ -501,32 +501,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         return true
     }
     
-    private func checkDoh(_ error : NSError) {
+    private func checkDoh(_ error : NSError) -> Bool {
         let code = error.code
-        guard code == NSURLErrorTimedOut ||
-            code == NSURLErrorCannotConnectToHost ||
-            code == NSURLErrorCannotFindHost ||
-//            code == NSURLErrorNetworkConnectionLost || //this should be -1005
-            code == NSURLErrorDNSLookupFailed ||
-            code == -1200 ||
-//            code == -1005 ||
-            code == 451 ||
-            code == 310
-        else {
-            return
+        guard DoHMail.default.codeCheck(code: code) else {
+            return false
         }
-        
-        let message = error.localizedDescription
-        let alertController = UIAlertController(title: LocalString._protonmail,
-                                                message: message,
-                                                preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
-            self.coordinator?.go(to: .troubleShoot)
-        }))
-        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .destructive, handler: { action in
-            
-        }))
-        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        self.showError(error)
+        return true
         
     }
     
@@ -771,6 +752,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     func handleRequestError (_ error : NSError) {
+        PMLog.D("error: \(error)")
+        guard checkDoh(error) == false else {
+            return
+        }
         let code = error.code
         if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
@@ -787,9 +772,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         } else if code == APIErrorCode.HTTP404 {
             self.showTimeOutErrorMessage()
         }
-        
-        self.checkDoh(error)
-        PMLog.D("error: \(error)")
+        self.showTimeOutErrorMessage()
     }
     
     
@@ -800,6 +783,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         //temperay to fix the new messages are not loaded
         viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
         
+    }
+    
+    @objc internal func goTroubleshoot() {
+        self.coordinator?.go(to: .troubleShoot)
     }
     
     @objc internal func getLatestMessages() {
@@ -1128,6 +1115,7 @@ extension MailboxViewController {
     private func showBanner(_ message: String,
                             appearance: BannerView.Appearance,
                             buttons: BannerView.ButtonConfiguration? = nil,
+                            button2: BannerView.ButtonConfiguration? = nil,
                             from: BannerView.Base)
     {
         guard let navigationBar = self.navigationController?.navigationBar else { return }
@@ -1136,6 +1124,7 @@ extension MailboxViewController {
         let newMessageView = BannerView(appearance: appearance,
                                             message: message,
                                             buttons: buttons,
+                                            button2: button2,
                                             offset: offset + 8.0)
         if let superview = self.navigationController?.view {
             switch from {
@@ -1160,7 +1149,7 @@ extension MailboxViewController {
     }
     
     internal func showTimeOutErrorMessage() {
-        showBanner(LocalString._general_request_timed_out,
+        showBanner(LocalString._general_request_timed_out,// + " --- this is a extra long error message. test message.",
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
                    from: .top)
@@ -1184,6 +1173,15 @@ extension MailboxViewController {
         showBanner(LocalString._general_api_server_not_reachable,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
+    }
+    
+    internal func showError(_ error : NSError) {
+        let message = error.localizedDescription
+        showBanner(message,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   button2: BannerView.ButtonConfiguration.init(title: LocalString._troubleshoot, action: self.goTroubleshoot),
                    from: .top)
     }
     

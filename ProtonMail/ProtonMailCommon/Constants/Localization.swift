@@ -1772,4 +1772,7 @@ class LocalizedString {
     lazy var _springboard_shortcuts_search = NSLocalizedString("Search", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_starred = NSLocalizedString("Starred", comment: "Springboard (3D Touch) shortcuts action")
     lazy var _springboard_shortcuts_composer = NSLocalizedString("Compose", comment: "Springboard (3D Touch) shortcuts action")
+    
+    
+    lazy var _troubleshoot = NSLocalizedString("Troubleshoot", comment: "troubleshooting view button")
 }
