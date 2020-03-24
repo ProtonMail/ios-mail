@@ -480,16 +480,7 @@ class SignInViewController: ProtonMailViewController {
     
     private func checkDoh(_ error : NSError) -> Bool {
         let code = error.code
-        guard code == NSURLErrorTimedOut ||
-            code == NSURLErrorCannotConnectToHost ||
-            code == NSURLErrorCannotFindHost ||
-            code == NSURLErrorNetworkConnectionLost || //this should be -1005
-            code == NSURLErrorDNSLookupFailed ||
-            code == -1200 ||
-            code == -1005 ||
-            code == 451 ||
-            code == 310
-        else {
+        guard DoHMail.default.codeCheck(code: code) else {
             return false
         }
         
