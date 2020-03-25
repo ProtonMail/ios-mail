@@ -1766,6 +1766,10 @@ class LocalizedString {
     
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
     lazy var _cert_validation_failed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nIf you fully trust your current network connection, select \"Disable Validation\" to continue; otherwise press \"Cancel\" and switch  networks immediately", comment: "Cert pinning failed alert message")
+    
+    lazy var _cert_validation_hardfailed_message = NSLocalizedString("TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n", comment: "Cert pinning failed alert message")
+
+    
     lazy var _cert_validation_failed_continue = NSLocalizedString("Disable Validation", comment: "Cert pinning failed alert message")
     
     // Springboard shortcuts

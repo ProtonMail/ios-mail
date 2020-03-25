@@ -19,7 +19,7 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 
 import TrustKit
 
@@ -35,8 +35,8 @@ final class TrustKitWrapper {
     static private(set) var current: TrustKit?
     
     private static func configuration(hardfail: Bool = true) -> Configuration {
-      return [  kTSKSwizzleNetworkDelegates: false,
-                kTSKPinnedDomains: [
+        return [  kTSKSwizzleNetworkDelegates: false,
+                  kTSKPinnedDomains: [
                     "protonmail.com": [
                         kTSKEnforcePinning : hardfail,
                         kTSKIncludeSubdomains : true,
@@ -66,7 +66,7 @@ final class TrustKitWrapper {
                         ]
                     ],
                     "ec2-3-124-117-159.eu-central-1.compute.amazonaws.com": [
-                        kTSKEnforcePinning : hardfail,
+                        kTSKEnforcePinning : true,
                         kTSKIncludeSubdomains : true,
                         kTSKDisableDefaultReportUri: true,
                         kTSKReportUris: [
@@ -79,13 +79,13 @@ final class TrustKitWrapper {
                             "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
                         ]
                     ],
-                ]
+            ]
         ]
     }
     
-//    static func update(config : Configuration) {
-//        self.current.config
-//    }
+    //    static func update(config : Configuration) {
+    //        self.current.config
+    //    }
     
     static func start(delegate: Delegate, customConfiguration: Configuration? = nil) {
         let config = customConfiguration ?? self.configuration()
@@ -98,16 +98,22 @@ final class TrustKitWrapper {
             #endif
         }()
         
-        instance.pinningValidatorCallback = { validatorResult, _, _ in
+        instance.pinningValidatorCallback = { validatorResult, hostName, policy in
             if validatorResult.evaluationResult != .success,
                 validatorResult.finalTrustDecision != .shouldAllowConnection
             {
-                let alert = UIAlertController(title: LocalString._cert_validation_failed_title, message: LocalString._cert_validation_failed_message, preferredStyle: .alert)
-                alert.addAction(.init(title: LocalString._cert_validation_failed_continue, style: .destructive, handler: { _ in
-                    self.start(delegate: delegate, customConfiguration: self.configuration(hardfail: false))
-                }))
-                alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ }))
-                self.delegate?.onTrustKitValidationError(alert)
+                if hostName.contains(check: ".compute.amazonaws.com") {
+                    let alert = UIAlertController(title: LocalString._cert_validation_failed_title, message: LocalString._cert_validation_hardfailed_message, preferredStyle: .alert)
+                    alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ }))
+                    self.delegate?.onTrustKitValidationError(alert)
+                } else {
+                    let alert = UIAlertController(title: LocalString._cert_validation_failed_title, message: LocalString._cert_validation_failed_message, preferredStyle: .alert)
+                    alert.addAction(.init(title: LocalString._cert_validation_failed_continue, style: .destructive, handler: { _ in
+                        self.start(delegate: delegate, customConfiguration: self.configuration(hardfail: false))
+                    }))
+                    alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: { _ in /* nothing */ }))
+                    self.delegate?.onTrustKitValidationError(alert)
+                }
             }
         }
         
