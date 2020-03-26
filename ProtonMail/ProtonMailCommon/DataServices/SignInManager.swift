@@ -36,6 +36,7 @@ class SignInManager: Service {
     internal func signIn(username: String,
                          password: String,
                          cachedTwoCode: String?,
+                         faillogout : Bool,
                          ask2fa: @escaping ()->Void,
                          onError: @escaping (NSError)->Void,
                          afterSignIn: @escaping ()->Void,
@@ -66,6 +67,7 @@ class SignInManager: Service {
         userService.sign(in: username,
                          password: password,
                          twoFACode: cachedTwoCode,
+                         faillogout: faillogout,
                          ask2fa: ask2fa,
                          onError: onError,
                          onSuccess: success)

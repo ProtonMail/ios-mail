@@ -728,13 +728,13 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                         }
                                         let view = UIApplication.shared.keyWindow ?? UIView()
                                         MBProgressHUD.showAdded(to: view, animated: true)
-                                        sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
-                                            MBProgressHUD.hide(for: view, animated: true)
-                                            if error == nil {
-                                                self.multi_domains = newAddrs
-                                            }
-                                            //self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
-                                        }
+//                                        sharedUserDataService.updateUserDomiansOrder(newAddrs,  newOrder:newOrder) { _, _, error in
+//                                            MBProgressHUD.hide(for: view, animated: true)
+//                                            if error == nil {
+//                                                self.multi_domains = newAddrs
+//                                            }
+//                                            //self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
+//                                        }
                                     }))
                                 }
                             }

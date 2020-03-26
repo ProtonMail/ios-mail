@@ -65,11 +65,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     @objc internal func dismiss() {
-        if self.presentingViewController != nil {
-            self.dismiss(animated: true, completion: nil)
-        } else {
-            let _ = self.navigationController?.popViewController(animated: true)
-        }
+        self.coordinator?.stop()
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {

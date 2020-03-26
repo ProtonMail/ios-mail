@@ -159,8 +159,6 @@ class UsersManager : Service {
         
         self.users.swapAt(0, index)
         self.save()
-        //uers.swap(at)
-        //swap(&cellOrder[0], &cellOrder[1])
     }
     //TODO:: referance could try to use weak.
     var firstUser : UserManager? {
@@ -382,6 +380,7 @@ class UsersManager : Service {
         SharedCacheBase.getDefault()?.set(lockedUsers.encryptedValue, forKey: CoderKey.usersInfo)
         SharedCacheBase.getDefault().synchronize()
     }
+    
 }
 
 extension UsersManager : UserManagerSave {

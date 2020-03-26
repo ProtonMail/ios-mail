@@ -243,7 +243,10 @@ class MenuCoordinatorNew: DefaultCoordinator {
             guard let next = navigation else {
                 return false
             }
-            let user = self.viewModel.currentUser!
+            
+            guard  let user = self.viewModel.currentUser else {
+                return false
+            }
             let vm = SettingsDeviceViewModelImpl(user: user)
             guard let settings = SettingsDeviceCoordinator(rvc: rvc, nav: next,
                                                            vm: vm, services: self.services, scene: nil) else {
@@ -276,10 +279,23 @@ class MenuCoordinatorNew: DefaultCoordinator {
             guard let accoutManager = AccountManagerCoordinator(nav: next, vm: vm, services: self.services, scene: nil) else {
                 return false
             }
+            accoutManager.delegate = self
             accoutManager.start()
             return true
         }
         
         return false
     }
+}
+
+extension MenuCoordinatorNew : CoordinatorDelegate {
+    func willStop(in coordinator: CoordinatorNew) {
+        
+    }
+    
+    func didStop(in coordinator: CoordinatorNew) {
+        self.viewController?.updateUser()
+    }
+    
+    
 }

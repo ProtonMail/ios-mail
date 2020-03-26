@@ -122,6 +122,12 @@ class SettingDetailsViewModelTest : SettingDetailsViewModel{
 
 
 class ChangeDisplayNameViewModel : SettingDetailsViewModel{
+    
+    let userManager : UserManager
+    init(user: UserManager) {
+        self.userManager = user
+    }
+    
     var sectionTitle2: String {
         return ""
     }
@@ -163,31 +169,36 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
-//        if let addr = sharedUserDataService.addresses.defaultAddress() {
-//            return addr.display_name
-//        }
-//        return sharedUserDataService.displayName
-        return ""
+        if let addr = self.userManager.addresses.defaultAddress() {
+            return addr.display_name
+        }
+        return self.userManager.displayName
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-//        if let addr = sharedUserDataService.addresses.defaultAddress() {
-//            sharedUserDataService.updateAddress(addr.address_id, displayName: new_value, signature: addr.signature, completion: { (_, _, error) in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            })
-//        } else {
-//            sharedUserDataService.updateDisplayName(new_value) { _, _, error in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            }
-//        }
+        let userService = self.userManager.userService
+        if let addr = self.userManager.addresses.defaultAddress() {
+            userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
+                                      addressId: addr.address_id, displayName: new_value,
+                                      signature: addr.signature, completion: { (_, _, error) in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            })
+        } else {
+            userService.updateDisplayName(auth: userManager.auth, user: userManager.userInfo,
+                                          displayName: new_value) { _, _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            }
+        }
     }
     
     func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
@@ -211,6 +222,11 @@ class ChangeDisplayNameViewModel : SettingDetailsViewModel{
 
 
 class ChangeSignatureViewModel : SettingDetailsViewModel{
+    let userManager : UserManager
+    init(user: UserManager) {
+        self.userManager = user
+    }
+    
     var sectionTitle2: String {
         return LocalString._edit_signature
     }
@@ -236,8 +252,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchStatus() -> Bool {
-        //return sharedUserDataService.showDefaultSignature
-        return false
+        return userManager.userService.showDefaultSignature
     }
 
     func isShowTextView() -> Bool {
@@ -253,36 +268,42 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getCurrentValue() -> String {
-//        if let addr = sharedUserDataService.addresses.defaultAddress() {
-//            return addr.signature
-//        }
-//        return sharedUserDataService.userDefaultSignature
-        return ""
+        if let addr = userManager.addresses.defaultAddress() {
+            return addr.signature
+        }
+        return userManager.userDefaultSignature
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-//        if let addr = sharedUserDataService.addresses.defaultAddress() {
-//            sharedUserDataService.updateAddress(addr.address_id, displayName: addr.display_name, signature: new_value.ln2br(), completion: { (_, _, error) in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            })
-//        } else {
-//            sharedUserDataService.updateSignature(new_value.ln2br()) { _, _, error in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            }
-//        }
+        let userService = userManager.userService
+        if let addr = userManager.addresses.defaultAddress() {
+            userService.updateAddress(auth: userManager.auth, user: userManager.userInfo,
+                                      addressId: addr.address_id, displayName: addr.display_name,
+                                      signature: new_value.ln2br(), completion: { (_, _, error) in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            })
+        } else {
+            userService.updateSignature(auth: userManager.auth, user: userManager.userInfo,
+                                        new_value.ln2br()) { _, _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            }
+        }
     }
     
     func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
-//        sharedUserDataService.showDefaultSignature = isOn
-//        complete(true, nil)
+        let userService = userManager.userService
+        userService.showDefaultSignature = isOn
+        complete(true, nil)
     }
     
     func isSwitchEnabled() -> Bool {
@@ -395,6 +416,11 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
 
 class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     
+    let userManager : UserManager
+    init(user: UserManager) {
+        self.userManager = user
+    }
+    
     var sectionTitle2: String {
         return ""
     }
@@ -423,10 +449,9 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     func getSwitchStatus() -> Bool {
-//        return sharedUserDataService.notify
-        return false
+        return self.userManager.notify
     }
-  
+    
     func isShowTextView() -> Bool {
         return false
     }
@@ -436,36 +461,45 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
 
     func getCurrentValue() -> String {
-//        return sharedUserDataService.notificationEmail
-        return ""
+        return self.userManager.notificationEmail
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete: @escaping (Bool, NSError?) -> Void) {
-//        if new_value == getCurrentValue() {
-//             complete(true, nil)
-//        } else {
-//            sharedUserDataService.updateNotificationEmail(new_value, login_password: password, twoFACode: tfaCode) { _, _, error in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            }
-//        }
+        if new_value == getCurrentValue() {
+            complete(true, nil)
+        } else {
+            let service = self.userManager.userService
+            service.updateNotificationEmail(auth: userManager.auth,
+                                            user: userManager.userInfo,
+                                            new_notification_email: new_value,
+                                            login_password: password,
+                                            twoFACode: tfaCode) { _, _, error in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            }
+        }
     }
     
     func updateNotification(_ isOn : Bool, complete:@escaping (Bool, NSError?) -> Void) {
-//        if isOn == getSwitchStatus() {
-//            complete(true, nil)
-//        } else {
-//            sharedUserDataService.updateNotify(isOn, completion: { (task, response, error) -> Void in
-//                if let error = error {
-//                    complete(false, error)
-//                } else {
-//                    complete(true, nil)
-//                }
-//            })
-//        }
+        if isOn == getSwitchStatus() {
+            complete(true, nil)
+        } else {
+            let service = self.userManager.userService
+            service.updateNotify(auth: userManager.auth,
+                                 user: userManager.userInfo,
+                                 isOn, completion: { (task, response, error) -> Void in
+                if let error = error {
+                    complete(false, error)
+                } else {
+                    self.userManager.save()
+                    complete(true, nil)
+                }
+            })
+        }
     }
     
     func isSwitchEnabled() -> Bool {
@@ -480,7 +514,6 @@ class ChangeNotificationEmailViewModel : SettingDetailsViewModel {
     }
     
     func needAsk2FA() -> Bool {
-//        return sharedUserDataService.twoFactorStatus == 1
-        return false
+        return self.userManager.userInfo.twoFactor > 0
     }
 }

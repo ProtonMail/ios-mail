@@ -212,17 +212,116 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
             case .mailboxPassword:
                 self.coordinator?.go(to: .mailboxPwd)
             case .recovery:
-                break
+                self.coordinator?.go(to: .recoveryEmail)
             case .storage:
                 break
             }
         case .addresses:
-            //            let item = self.viewModel.appSettigns[row]
+            if self.viewModel.addrItems.count > row{
+                let item = self.viewModel.addrItems[row]
+                switch item {
+                case .addr:
+                    var needsShow : Bool = false
+                    let alertController = UIAlertController(title: LocalString._settings_change_default_address_to, message: nil, preferredStyle: .actionSheet)
+                    alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                    let defaultAddress : Address? = self.userManager.addresses.defaultAddress()
+                    for addr in self.userManager.addresses {
+                        if addr.status == 1 && addr.receive == 1 {
+                            if defaultAddress != addr {
+                                needsShow = true
+                                alertController.addAction(UIAlertAction(title: addr.email, style: .default, handler: { (action) -> Void in
+                                    if addr.send == 0 {
+                                        if addr.email.lowercased().range(of: "@pm.me") != nil {
+                                            let msg = String(format: LocalString._settings_change_paid_address_warning, addr.email)
+                                            let alertController = msg.alertController()
+                                            alertController.addOKAction()
+                                            self.present(alertController, animated: true, completion: nil)
+                                        }
+                                        return
+                                    }
+                                    
+                                    var newAddrs = [Address]()
+                                    var newOrder = [String]()
+                                    newAddrs.append(addr)
+                                    newOrder.append(addr.address_id)
+                                    var order = 1
+                                    addr.order = order
+                                    order += 1
+                                    for oldAddr in self.userManager.addresses {
+                                        if oldAddr != addr {
+                                            newAddrs.append(oldAddr)
+                                            newOrder.append(oldAddr.address_id)
+                                            oldAddr.order = order
+                                            order += 1
+                                        }
+                                    }
+                                    let view = UIApplication.shared.keyWindow ?? UIView()
+                                    MBProgressHUD.showAdded(to: view, animated: true)
+                                    let service = self.userManager.userService
+                                    service.updateUserDomiansOrder(auth: self.userManager.auth, user: self.userManager.userInfo,
+                                                                   newAddrs,  newOrder:newOrder) { _, _, error in
+                                        MBProgressHUD.hide(for: view, animated: true)
+                                        if error == nil {
+                                            self.userManager.save()
+                                        }
+                                    }
+                                }))
+                            }
+                        }
+                    }
+                    if needsShow {
+                        let cell = tableView.cellForRow(at: indexPath)
+                        alertController.popoverPresentationController?.sourceView = cell ?? self.view
+                        alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+                        present(alertController, animated: true, completion: nil)
+                    }
+                case .displayName:
+                    self.coordinator?.go(to: .displayName)
+                case .signature:
+                     self.coordinator?.go(to: .signature)
+//                    case .defaultMobilSign:
+//                        self.coordinator?.go(to: .mobileSignature)
+                }
+            }
             break
         case .snooze:
             break
         case .mailbox:
-            break
+            let item = self.viewModel.mailboxItems[row]
+            switch item {
+            case .privacy:
+                break
+            case .search:
+                break
+            case .labelFolder:
+                self.coordinator?.go(to: .lableManager)	
+            case .gestures:
+//                let action_item = setting_swipe_action_items[indexPath.row]
+//                let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
+//                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+//                let userInfo = self.userManager.userInfo
+//                let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
+//                for swipeAction in setting_swipe_actions {
+//                    if swipeAction != currentAction {
+//                        alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
+//                            let _ = self.navigationController?.popViewController(animated: true)
+//                            let view = UIApplication.shared.keyWindow ?? UIView()
+//                            MBProgressHUD.showAdded(to: view, animated: true)
+//                            sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
+//                                MBProgressHUD.hide(for: view, animated: true)
+//                                //                                    self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
+//                            })
+//                        }))
+//                    }
+//                }
+//                let cell = tableView.cellForRow(at: indexPath)
+//                alertController.popoverPresentationController?.sourceView = cell ?? self.view
+//                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
+//                present(alertController, animated: true, completion: nil)
+                break
+            case .storage:
+                break
+            }
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

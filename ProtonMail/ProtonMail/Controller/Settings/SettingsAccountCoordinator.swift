@@ -45,14 +45,26 @@ class SettingsAccountCoordinator: DefaultCoordinator {
     }
     
     enum Destination : String {
-        case recoveryEmail       = "recoveryEmail"
-        case loginPwd        = "setting_login_pwd"
-        case mailboxPwd      = "setting_mailbox_pwd"
-        case singlePwd       = "setting_single_password_segue"
+        case recoveryEmail = "setting_notification"//"recoveryEmail"
+        case loginPwd      = "setting_login_pwd"
+        case mailboxPwd    = "setting_mailbox_pwd"
+        case singlePwd     = "setting_single_password_segue"
+        case displayName   = "setting_displayname"
+        case signature     = "setting_signature"
+        //        case mobileSignature = "setting_mobile_signature"
+        //        case debugQueue      = "setting_debug_queue_segue"
+        //        case pinCode         = "setting_setup_pingcode"
+        case lableManager    = "toManagerLabelsSegue"
+//        case snooze          = "setting_notifications_snooze_segue"
+        
+//        case notification    = "setting_notification"
 //        case mobileSignature = "setting_mobile_signature"
 //        case debugQueue      = "setting_debug_queue_segue"
 //        case pinCode         = "setting_setup_pingcode"
 //        case lableManager    = "toManagerLabelsSegue"
+//        case loginPwd        = "setting_login_pwd"
+//        case mailboxPwd      = "setting_mailbox_pwd"
+//        case singlePwd       = "setting_single_password_segue"
 //        case snooze          = "setting_notifications_snooze_segue"
     }
     
@@ -84,17 +96,20 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             guard let next = destination as? SettingDetailViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeNotificationEmail())
-//        case .displayName:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeDisplayName())
-//        case .signature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeSignature())
+            let users: UsersManager = services.get()
+            next.setViewModel(ChangeNotificationEmailViewModel(user: users.firstUser!))
+        case .displayName:
+            let users: UsersManager = services.get()
+            guard let next = destination as? SettingDetailViewController else {
+                return false
+            }
+            next.setViewModel(ChangeDisplayNameViewModel(user: users.firstUser!))
+        case .signature:
+            let users: UsersManager = services.get()
+            guard let next = destination as? SettingDetailViewController else {
+                return false
+            }
+            next.setViewModel(ChangeSignatureViewModel(user: users.firstUser!))
 //        case .mobileSignature:
 //            guard let next = destination as? SettingDetailViewController else {
 //                return false
@@ -107,13 +122,14 @@ class SettingsAccountCoordinator: DefaultCoordinator {
 //                return false
 //            }
 //            next.viewModel = SetPinCodeModelImpl()
-//        case .lableManager:
-//            guard let next = destination as? LablesViewController else {
-//                return false
-//            }
-//            
-//            let users : UsersManager = services.get()
-//            next.viewModel = LabelManagerViewModelImpl(labelService: users.firstUser.labelService)
+        case .lableManager:
+            guard let next = destination as? LablesViewController else {
+                return false
+            }
+            
+            let users : UsersManager = services.get()
+            let user = users.firstUser!
+            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService)
 //        case .loginPwd:
 //            guard let next = destination as? ChangePasswordViewController else {
 //                return false

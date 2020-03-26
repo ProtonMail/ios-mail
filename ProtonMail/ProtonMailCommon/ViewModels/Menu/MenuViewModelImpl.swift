@@ -69,6 +69,10 @@ class MenuViewModelImpl : MenuViewModel {
         self.usersManager.active(index: row)
     }
     
+    func updateCurrent() {
+        self.currentUser = self.usersManager.firstUser
+    }
+    
     //menu sections
     private var sections : [MenuSection] = [.inboxes, .others, .labels]
     

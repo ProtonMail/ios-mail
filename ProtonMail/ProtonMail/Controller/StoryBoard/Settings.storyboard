@@ -752,6 +752,10 @@
                         <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_single_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="p2G-Sv-Xy7"/>
                         <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_login_pwd" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="HWt-Ev-5P1"/>
                         <segue destination="MwW-sL-ahJ" kind="show" identifier="setting_mailbox_pwd" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="xyM-Vc-Qfe"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_notification" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="L7j-Tv-LF2"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_signature" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="fg1-oe-9jP"/>
+                        <segue destination="OCS-Qd-wj6" kind="show" identifier="setting_displayname" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="alA-mj-cxL"/>
+                        <segue destination="6QM-tn-VTW" kind="presentation" identifier="toManagerLabelsSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" id="Kuy-7Q-G0X"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4KR-C2-lbE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1105,7 +1109,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Section Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6J-MB-cYe" userLabel="Display Name Label">
-                                <rect key="frame" x="12" y="8" width="390" height="21"/>
+                                <rect key="frame" x="12" y="52" width="390" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="9M9-OK-Tpw"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="N2h-FX-xH9"/>
@@ -1115,7 +1119,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="d8J-r1-ETb">
-                                <rect key="frame" x="4" y="41" width="406" height="44"/>
+                                <rect key="frame" x="4" y="85" width="406" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Switch Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ix-UV-Qx3">
                                         <rect key="frame" x="20" y="12" width="367" height="20"/>
@@ -1145,7 +1149,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xwX-fw-gA4">
-                                <rect key="frame" x="4" y="127" width="406" height="200"/>
+                                <rect key="frame" x="4" y="171" width="406" height="200"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Sent from &lt;a href=&quot;https://protonmail.ch&quot;&gt;ProtonMail&lt;/a&gt;, encrypted email based in Switzerland." translatesAutoresizingMaskIntoConstraints="NO" id="Trf-Y0-Ult">
                                         <rect key="frame" x="8" y="8" width="390" height="184"/>
@@ -1185,13 +1189,13 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QoU-uv-1hU">
-                                <rect key="frame" x="8" y="387" width="398" height="0.0"/>
+                                <rect key="frame" x="8" y="431" width="398" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0BN-uT-yFJ">
-                                <rect key="frame" x="0.0" y="335" width="414" height="44"/>
+                                <rect key="frame" x="0.0" y="379" width="414" height="44"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Login Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="st0-uB-chB">
                                         <rect key="frame" x="8" y="7" width="398" height="30"/>
@@ -1215,7 +1219,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit mobile signature" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPB-Or-Kop" userLabel="Display Name Label">
-                                <rect key="frame" x="8" y="93" width="398" height="21"/>
+                                <rect key="frame" x="8" y="137" width="398" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="63T-uh-ymb"/>
                                     <constraint firstAttribute="height" constant="21" id="BwQ-Ng-fKi"/>
@@ -1268,7 +1272,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7FU-gH-cCp" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-106" y="5382"/>
+            <point key="canvasLocation" x="1886" y="6559"/>
         </scene>
         <!--Setting Debug View Controller-->
         <scene sceneID="LVh-aS-EOZ">
@@ -1520,7 +1524,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2028" y="5275"/>
+            <point key="canvasLocation" x="1783" y="5240"/>
         </scene>
         <!--SettingsMain -->
         <scene sceneID="ueG-Jo-XMf">
@@ -1596,7 +1600,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fJH-uZ-xB0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2028" y="6100"/>
+            <point key="canvasLocation" x="3664" y="5884"/>
         </scene>
         <!--Upgrade Alert View Controller-->
         <scene sceneID="QUA-Pe-gcX">
@@ -1756,15 +1760,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gGY-Y2-bBq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-106" y="6180"/>
+            <point key="canvasLocation" x="3664" y="6558"/>
         </scene>
         <!--ref_labels_view_controller-->
         <scene sceneID="oTi-0b-ebD">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="ref_labels_view_controller" storyboardName="Menu" referencedIdentifier="ref_labels_view_controller" id="6QM-tn-VTW" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardIdentifier="ref_labels_view_controller" storyboardName="Menu" referencedIdentifier="ref_labels_view_controller" id="6QM-tn-VTW" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="ZYF-OR-80Y"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Db3-AV-NmP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1370" y="3871"/>
+            <point key="canvasLocation" x="1783" y="4426"/>
         </scene>
         <!--SettingsAutoLock-->
         <scene sceneID="xgY-t9-Mjq">
@@ -2099,9 +2105,10 @@
         <image name="upgrade_background" width="325.33334350585938" height="437.33334350585938"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gwz-B9-War"/>
+        <segue reference="Kuy-7Q-G0X"/>
+        <segue reference="Yep-Vd-dxY"/>
         <segue reference="xyM-Vc-Qfe"/>
-        <segue reference="sPN-i9-NSa"/>
+        <segue reference="L7j-Tv-LF2"/>
         <segue reference="XGq-2C-ssO"/>
     </inferredMetricsTieBreakers>
 </document>

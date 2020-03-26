@@ -148,7 +148,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature]
-    var mailboxItems :  [MailboxItem] = [.privacy, .search, .labelFolder, .gestures]
+    var mailboxItems :  [MailboxItem] = [/*.privacy, .search,*/ .labelFolder, .gestures]
     var userManager: UserManager
     
     init(user : UserManager) {
@@ -192,4 +192,6 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
             return self.userManager.defaultDisplayName
         }
     }
+    
+//    var addresses : [add]
 }

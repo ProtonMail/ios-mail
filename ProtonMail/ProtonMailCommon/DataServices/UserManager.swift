@@ -231,6 +231,14 @@ extension UserManager : UserDataSource {
             return self.auth
         }
     }
+    
+    var notificationEmail: String {
+        return userInfo.notificationEmail
+    }
+    
+    var notify: Bool {
+        return userInfo.notify == 1
+    }
 }
 
 

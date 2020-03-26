@@ -279,6 +279,18 @@ extension MenuViewController: UITableViewDelegate {
             break
         }
     }
+    
+    func updateUser() {
+        DispatchQueue.main.async(execute: { () -> Void in
+            // pick it as current user
+            self.viewModel.updateCurrent()
+            self.viewModel.setupLabels(delegate: self)
+            self.hideUsers()
+            self.sectionClicked = false
+            self.tableView.reloadData()
+            self.coordinator?.go(to: .mailbox)
+        })
+    }
 }
 
 extension MenuViewController: UITableViewDataSource {

@@ -239,7 +239,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     internal func signIn(username: String, password: String, cachedTwoCode: String?) {
         MBProgressHUD.showAdded(to: self.view, animated: true)
         SignInViewController.isComeBackFromMailbox = false
-        self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode) { (result) in
+        self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, faillogout: false) { (result) in
             switch result {
             case .ask2fa:
                 MBProgressHUD.hide(for: self.view, animated: true)

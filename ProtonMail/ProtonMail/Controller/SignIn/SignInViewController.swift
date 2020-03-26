@@ -421,29 +421,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         self.isRemembered = true
         SignInViewController.isComeBackFromMailbox = false
         
-
-        // SignInManager.shared.signIn(username: username,
-        //                 password: password,
-        //                 cachedTwoCode: cachedTwoCode,
-        //                 ask2fa: {
-        //                     //2fa
-        //                     MBProgressHUD.hide(for: self.view, animated: true)
-        //                     self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
-        // },
-        //                 onError: { error in
-        //                     PMLog.D("error: \(error)")
-        //                     MBProgressHUD.hide(for: self.view, animated: true)
-        //                     self.showLoginViews()
-        //                     self.handleRequestError(error)
-        // },
-        //                 afterSignIn: {
-        //                     MBProgressHUD.hide(for: self.view, animated: true)
-        // },
-        //                 requestMailboxPassword: {
-        //                     self.isRemembered = true
-        //                     self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-        // })
-        self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode) { (result) in
+        self.viewModel.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, faillogout: true) { (result) in
             MBProgressHUD.hide(for: self.view, animated: true)
             
             switch result {
@@ -452,11 +430,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             case .error(let error):
                 PMLog.D("error: \(error)")
                 self.showLoginViews()
-                if !error.code.forceUpgrade {
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
-                }
+                self.handleRequestError(error)
             case .ok:
                 break
             case .mbpwd:

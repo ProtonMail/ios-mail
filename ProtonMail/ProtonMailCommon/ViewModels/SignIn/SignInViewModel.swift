@@ -48,13 +48,13 @@ class SignInViewModel : NSObject {
         self.username = username
     }
     
-    func signIn(username: String, password: String, cachedTwoCode: String?, complete: @escaping (SignInComplete)->Void) {
+    func signIn(username: String, password: String, cachedTwoCode: String?, faillogout: Bool, complete: @escaping (SignInComplete)->Void) {
         //Start checking if the user logged in already
         if usersManager.isExist(username) {
             return complete(.exist)
         }
         
-        signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, ask2fa: {
+        signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, faillogout: faillogout, ask2fa: {
             complete(.ask2fa)
         }, onError: { (error) in
             complete(.error(error))

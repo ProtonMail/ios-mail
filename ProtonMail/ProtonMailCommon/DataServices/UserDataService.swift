@@ -374,7 +374,7 @@ class UserDataService : Service, HasLocalStorage {
     
     
     static var authResponse: PMAuthentication.TwoFactorContext? = nil
-    func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
+    func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,
                 ask2fa: @escaping LoginAsk2FABlock,
                 onError:@escaping LoginErrorBlock,
                 onSuccess: @escaping LoginSuccessBlock)
@@ -390,7 +390,9 @@ class UserDataService : Service, HasLocalStorage {
                         self.passwordMode = mpwd != nil ? 1 : 2
                         onSuccess(mpwd, credential, userinfo)
                     } else {
-                        self.signOut(true)
+                        if faillogout {
+                            self.signOut(true)
+                        }
                         onError(error!)
                     }
                 }
@@ -458,54 +460,58 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
-    func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion?(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let new_displayName = displayName.trim()
-//        let api = UpdateDisplayNameRequest(displayName: new_displayName, authCredential: authCredential)
-//        api.call(api : self.apiService) { task, response, hasError in
-//            if !hasError {
-//                userInfo.displayName = new_displayName
+    func updateDisplayName(auth currentAuth: AuthCredential,
+                           user: UserInfo,
+                           displayName: String, completion: UserInfoBlock?) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion?(nil, nil, NSError.lockError())
+            return
+        }
+        
+        
+        let new_displayName = displayName.trim()
+        let api = UpdateDisplayNameRequest(displayName: new_displayName, authCredential: authCredential)
+        api.call(api : self.apiService) { task, response, hasError in
+            if !hasError {
+                userInfo.displayName = new_displayName
 //                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion?(self.userInfo, nil, nil)
-//        }
+            }
+            completion?(userInfo, nil, nil)
+        }
     }
     
-    func updateAddress(_ addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion?(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let new_displayName = displayName.trim()
-//        let new_signature = signature.trim()
-//
-//        let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
-//        api.call(api: self.apiService) { task, response, hasError in
-//            if !hasError {
-//                let addresses = userInfo.userAddresses
-//                for addr in addresses {
-//                    if addr.address_id == addressId {
-//                        addr.display_name = new_displayName
-//                        addr.signature = new_signature
-//                        break
-//                    }
-//                }
-//                userInfo.userAddresses = addresses
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion?(self.userInfo, nil, nil)
-//        }
+    func updateAddress(auth currentAuth: AuthCredential,
+                       user: UserInfo,
+                       addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion?(nil, nil, NSError.lockError())
+            return
+        }
+        
+        let new_displayName = displayName.trim()
+        let new_signature = signature.trim()
+        
+        let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
+        api.call(api: self.apiService) { task, response, hasError in
+            if !hasError {
+                let addresses = userInfo.userAddresses
+                for addr in addresses {
+                    if addr.address_id == addressId {
+                        addr.display_name = new_displayName
+                        addr.signature = new_signature
+                        break
+                    }
+                }
+                userInfo.userAddresses = addresses
+            }
+            completion?(userInfo, nil, nil)
+        }
     }
     
     func updateAutoLoadImage(remote status: Bool, completion: @escaping UserInfoBlock) {
@@ -783,23 +789,25 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     //TODO:: refactor newOrders. 
-    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
-//        addressOrder.call(api: apiService) { task, response, hasError in
-//            if !hasError {
-//                userInfo.userAddresses = email_domains
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(task, nil, nil)
-//        }
+    func updateUserDomiansOrder(auth currentAuth: AuthCredential,
+                                user: UserInfo,
+                                _ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
+        
+        let authCredential = currentAuth
+        let userInfo = user
+        
+        guard let _ = keymaker.mainKey else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
+        addressOrder.call(api: apiService) { task, response, hasError in
+            if !hasError {
+                userInfo.userAddresses = email_domains
+            }
+            completion(task, nil, nil)
+        }
     }
     
     func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
@@ -822,99 +830,109 @@ class UserDataService : Service, HasLocalStorage {
 //        }
     }
     
-    func updateNotificationEmail(_ new_notification_email: String, login_password : String,
+    func updateNotificationEmail(auth currentAuth: AuthCredential,
+                                 user: UserInfo,
+                                 new_notification_email: String, login_password : String,
                                  twoFACode: String?, completion: @escaping CompletionBlock) {
-//        guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let _username = self.username,
-//            let cachedMainKey = keymaker.mainKey else {
-//
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        {//asyn
-//            do {
-//                //start check exsit srp
-//                var forceRetry = false
-//                var forceRetryVersion = 2
-//
-//                repeat {
-//                    // get auto info
-//                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
-//                    guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
-//                        throw UpdateNotificationEmailError.invalideAuthInfo.error
-//                    }
-//
-//                    if authVersion <= 2 && !forceRetry {
-//                        forceRetry = true
-//                        forceRetryVersion = 2
-//                    }
-//
-//                    //init api calls
-//                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
-//                    guard let auth = try SrpAuth(hashVersion, _username, login_password, salt, modulus, ephemeral) else {
-//                        throw UpdateNotificationEmailError.cantHashPassword.error
-//                    }
-//
-//                    let srpClient = try auth.generateProofs(2048)
-//                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
-//                        throw UpdatePasswordError.cantGenerateSRPClient.error
-//                    }
-//
-//                    do {
-//                        let updatetNotifyEmailRes = try UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
-//                                                                                clientProof: clientProof.encodeBase64(),
-//                                                                                sRPSession: session,
-//                                                                                notificationEmail: new_notification_email,
-//                                                                                tfaCode: twoFACode,
-//                                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
-//                        if updatetNotifyEmailRes?.code == 1000 {
-//                            userInfo.notificationEmail = new_notification_email
-//                            self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//                            forceRetry = false
-//                        } else {
-//                            throw UpdateNotificationEmailError.default.error
-//                        }
-//                    } catch let error as NSError {
-//                        if error.isInternetError() {
-//                            throw error
-//                        } else {
-//                            if forceRetry && forceRetryVersion != 0 {
-//                                forceRetryVersion -= 1
-//                            } else {
-//                                throw error
-//                            }
-//                        }
-//                    }
-//                } while(forceRetry && forceRetryVersion >= 0)
-//                return { completion(nil, nil, nil) } ~> .main
-//            } catch let error as NSError {
-//                error.upload(toAnalytics: "UpdateLoginPassword")
-//                return { completion(nil, nil, error) } ~> .main
-//            }
-//        } ~> .async
+        let oldAuthCredential = currentAuth
+        let userInfo = user
+        let old_password = oldAuthCredential.mailboxpassword
+        var _username = "" //oldAuthCredential.userName
+        if _username.isEmpty {
+            if let addr = userInfo.userAddresses.defaultAddress() {
+               _username = addr.email
+            }
+        }
+        
+        guard let _ = keymaker.mainKey else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        {//asyn
+            do {
+                //start check exsit srp
+                var forceRetry = false
+                var forceRetryVersion = 2
+                
+                repeat {
+                    // get auto info
+                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                    guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
+                        throw UpdateNotificationEmailError.invalideAuthInfo.error
+                    }
+                    
+                    if authVersion <= 2 && !forceRetry {
+                        forceRetry = true
+                        forceRetryVersion = 2
+                    }
+                    
+                    //init api calls
+                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                    guard let auth = try SrpAuth(hashVersion, _username, login_password, salt, modulus, ephemeral) else {
+                        throw UpdateNotificationEmailError.cantHashPassword.error
+                    }
+                    
+                    let srpClient = try auth.generateProofs(2048)
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
+                    
+                    do {
+                        let updatetNotifyEmailRes = try UpdateNotificationEmail(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                                clientProof: clientProof.encodeBase64(),
+                                                                                sRPSession: session,
+                                                                                notificationEmail: new_notification_email,
+                                                                                tfaCode: twoFACode,
+                                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                        if updatetNotifyEmailRes?.code == 1000 {
+                            userInfo.notificationEmail = new_notification_email
+                            forceRetry = false
+                        } else {
+                            throw UpdateNotificationEmailError.default.error
+                        }
+                    } catch let error as NSError {
+                        if error.isInternetError() {
+                            throw error
+                        } else {
+                            if forceRetry && forceRetryVersion != 0 {
+                                forceRetryVersion -= 1
+                            } else {
+                                throw error
+                            }
+                        }
+                    }
+                } while(forceRetry && forceRetryVersion >= 0)
+                return { completion(nil, nil, nil) } ~> .main
+            } catch let error as NSError {
+                error.upload(toAnalytics: "UpdateLoginPassword")
+                return { completion(nil, nil, error) } ~> .main
+            }
+        } ~> .async
     }
     
-    func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: authCredential)
-//        notifySetting.call(api: self.apiService) { task, response, hasError in
-//            if !hasError {
-//                userInfo.notify = (isOn ? 1 : 0)
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(task, nil, response?.error)
-//        }
+    func updateNotify(auth currentAuth: AuthCredential,
+                      user: UserInfo,
+                      _ isOn: Bool, completion: @escaping CompletionBlock) {
+        let oldAuthCredential = currentAuth
+        let userInfo = user
+        
+        guard let _ = keymaker.mainKey else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
+        notifySetting.call(api: self.apiService) { task, response, hasError in
+            if !hasError {
+                userInfo.notify = (isOn ? 1 : 0)
+            }
+            completion(task, nil, response?.error)
+        }
     }
     
-    func updateSignature(_ signature: String, completion: UserInfoBlock?) {
+    func updateSignature(auth currentAuth: AuthCredential,
+                         user: UserInfo,
+                         _ signature: String, completion: UserInfoBlock?) {
 //        guard let authCredential = AuthCredential.fetchFromKeychain() else {
 //            completion?(nil, nil, NSError.lockError())
 //            return

@@ -78,17 +78,12 @@ class ViewModelFactoryProduction : ViewModelFactory {
         return ChangeMailboxPWDViewModel()
     }
     
-    override func getChangeDisplayName() -> SettingDetailsViewModel {
-        return ChangeDisplayNameViewModel()
-    }
-    
-    override func getChangeNotificationEmail() -> SettingDetailsViewModel {
-        return ChangeNotificationEmailViewModel()
-    }
-    
-    override func getChangeSignature() -> SettingDetailsViewModel {
-        return ChangeSignatureViewModel()
-    }
+//    override func getChangeDisplayName() -> SettingDetailsViewModel {
+//        return ChangeDisplayNameViewModel()
+//    }
+//    override func getChangeSignature() -> SettingDetailsViewModel {
+//        return ChangeSignatureViewModel()
+//    }
     
     override func getChangeMobileSignature() -> SettingDetailsViewModel {
         return ChangeMobileSignatureViewModel()

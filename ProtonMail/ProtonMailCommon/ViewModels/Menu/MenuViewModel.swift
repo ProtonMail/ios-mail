@@ -40,6 +40,7 @@ protocol MenuViewModel : AnyObject {
     func showUsers() -> Bool
     func hideUsers()
     func updateCurrent(row: Int)
+    func updateCurrent()
     func cellHeight(at: Int) -> CGFloat
     var usersCount: Int { get }
     
