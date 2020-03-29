@@ -35,50 +35,52 @@ final class TrustKitWrapper {
     static private(set) var current: TrustKit?
     
     private static func configuration(hardfail: Bool = true) -> Configuration {
-        return [  kTSKSwizzleNetworkDelegates: false,
-                  kTSKPinnedDomains: [
-                    "protonmail.com": [
-                        kTSKEnforcePinning : hardfail,
-                        kTSKIncludeSubdomains : true,
-                        kTSKDisableDefaultReportUri: true,
-                        kTSKReportUris: [
-                            "https://api.protonmail.ch/reports/tls"
-                        ],
-                        kTSKPublicKeyHashes: [
-                            "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                            "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=",
-                            "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=",
-                            "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY="
-                        ]
+        return [
+            kTSKSwizzleNetworkDelegates: false,
+            kTSKPinnedDomains: [
+                "protonmail.com": [
+                    kTSKEnforcePinning : hardfail,
+                    kTSKIncludeSubdomains : true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
                     ],
-                    "protonmail.ch": [
-                        kTSKEnforcePinning : hardfail,
-                        kTSKIncludeSubdomains : true,
-                        kTSKDisableDefaultReportUri: true,
-                        kTSKReportUris: [
-                            "https://api.protonmail.ch/reports/tls"
-                        ],
-                        kTSKPublicKeyHashes: [
-                            "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
-                            "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=",
-                            "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=",
-                            "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw="
-                        ]
+                    kTSKPublicKeyHashes: [
+                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
+                        "8joiNBdqaYiQpKskgtkJsqRxF7zN0C0aqfi8DacknnI=",
+                        "JMI8yrbc6jB1FYGyyWRLFTmDNgIszrNEMGlgy972e7w=",
+                        "Iu44zU84EOCZ9vx/vz67/MRVrxF1IO4i4NIa8ETwiIY="
+                    ]
+                ],
+                "protonmail.ch": [
+                    kTSKEnforcePinning : hardfail,
+                    kTSKIncludeSubdomains : true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
                     ],
-                    "ec2-3-124-117-159.eu-central-1.compute.amazonaws.com": [
-                        kTSKEnforcePinning : true,
-                        kTSKIncludeSubdomains : true,
-                        kTSKDisableDefaultReportUri: true,
-                        kTSKReportUris: [
-                            "https://api.protonmail.ch/reports/tls"
-                        ],
-                        kTSKPublicKeyHashes: [
-                            "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=",
-                            "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=",
-                            "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
-                            "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
-                        ]
+                    kTSKPublicKeyHashes: [
+                        "+0dMG0qG2Ga+dNE8uktwMm7dv6RFEXwBoBjQ43GqsQ0=",
+                        "drtmcR2kFkM8qJClsuWgUzxgBkePfRCkRpqUesyDmeE=",
+                        "YRGlaY0jyJ4Jw2/4M8FIftwbDIQfh8Sdro96CeEel54=",
+                        "AfMENBVvOS8MnISprtvyPsjKlPooqh8nMB/pvCrpJpw="
+                    ]
+                ],
+                ".compute.amazonaws.com": [
+                    kTSKEnforcePinning : true,
+                    kTSKIncludeSubdomains : true,
+                    kForceSubdomains : true,
+                    kTSKDisableDefaultReportUri: true,
+                    kTSKReportUris: [
+                        "https://api.protonmail.ch/reports/tls"
                     ],
+                    kTSKPublicKeyHashes: [
+                        "EU6TS9MO0L/GsDHvVc9D5fChYLNy5JdGYpJw0ccgetM=",
+                        "iKPIHPnDNqdkvOnTClQ8zQAIKG0XavaPkcEo0LBAABA=",
+                        "MSlVrBCdL0hKyczvgYVSRNm88RicyY04Q2y5qrBt0xA=",
+                        "C2UxW0T1Ckl9s+8cXfjXxlEqwAfPM4HiW2y3UdtBeCw="
+                    ]
+                ],
             ]
         ]
     }

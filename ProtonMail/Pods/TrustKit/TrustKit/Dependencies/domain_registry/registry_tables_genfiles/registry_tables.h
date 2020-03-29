@@ -2772,6 +2772,7 @@ static const struct TrieNode kNodeTable[] = {
   { 12847,     0,     0, 1 },  /* xz.cn */
   { 12853,     0,     0, 1 },  /* yn.cn */
   { 12856,     0,     0, 1 },  /* zj.cn */
+  {   652,  1809,     4, 0 },  /* amazonaws.com */
   {   652,  1809,     4, 0 },  /* amazonaws.com.cn */
   { 12859,  4284,     1, 0 },  /* cn-north-1.amazonaws.com.cn */
   { 12870,  4048,     1, 0 },  /* compute.amazonaws.com.cn */
@@ -3103,7 +3104,7 @@ static const struct TrieNode kNodeTable[] = {
   { 15528,  2182,     1, 0 },  /* ap-southeast-1.amazonaws.com */
   { 15546,  2183,     1, 0 },  /* ap-southeast-2.amazonaws.com */
   { 15564,  2184,     3, 0 },  /* ca-central-1.amazonaws.com */
-  { 12870,  4048,     1, 0 },  /* compute.amazonaws.com */
+  { 12870,  4048,     1, 1 },  /* compute.amazonaws.com */
   { 15577,  4048,     1, 0 },  /* compute-1.amazonaws.com */
   { 12878,  4048,     1, 0 },  /* elb.amazonaws.com */
   { 15590,  2187,     3, 0 },  /* eu-central-1.amazonaws.com */

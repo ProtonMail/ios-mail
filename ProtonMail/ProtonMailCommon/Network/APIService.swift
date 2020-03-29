@@ -70,9 +70,8 @@ class APIService {
         sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
         
         sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
-        
-        sessionManager.securityPolicy.validatesDomainName = false
         sessionManager.securityPolicy.allowInvalidCertificates = false
+        sessionManager.securityPolicy.validatesDomainName = false
         #if DEBUG
         sessionManager.securityPolicy.allowInvalidCertificates = false
         #endif
