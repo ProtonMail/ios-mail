@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Obligatorisk for fotovedhæftninger til e-mailen.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Obligatorisk for e-mail autofuldførelse.";
+"NSContactsUsageDescription" = "Used to autocomplete email addresses or to manually upload contacts from your device to your account. No contact information is uploaded to our servers unless you do so manually.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Lader dig hurtigt og sikkert oplåse dit program.";
