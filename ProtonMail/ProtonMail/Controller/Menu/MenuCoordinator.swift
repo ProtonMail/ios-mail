@@ -207,7 +207,9 @@ class MenuCoordinatorNew: DefaultCoordinator {
             if let index = sender as? Message.Location {
                 label = index
             }
-            let user = self.viewModel.currentUser!
+            guard let user = self.viewModel.currentUser else {
+                return false
+            }
             let viewModel = MailboxViewModelImpl(label: label, userManager: user, pushService: services.get())
             let mailbox = MailboxCoordinator(rvc: rvc, nav: navigation, vc: next, vm: viewModel, services: self.services)
             self.lastestCoordinator = mailbox

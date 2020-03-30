@@ -113,7 +113,10 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.labelDataService = self.currentUser!.labelService
+        guard let labelService = self.currentUser?.labelService else {
+            return
+        }
+        self.labelDataService = labelService
         self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
