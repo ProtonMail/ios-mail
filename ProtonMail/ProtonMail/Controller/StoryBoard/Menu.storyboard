@@ -93,6 +93,7 @@
                         <outlet property="textView" destination="5sX-Zk-W85" id="CLI-h2-uS2"/>
                         <outlet property="textViewBottomConstraint" destination="F0r-BE-NrT" id="sH4-Q9-Mwl"/>
                         <outlet property="topTitleLabel" destination="K0q-PU-hIm" id="XTI-xE-UyW"/>
+                        <segue destination="KJr-Mu-WLW" kind="presentation" identifier="toTroubleShootSegue" id="Gho-wU-eDO"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trg-Ug-uZy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2537,6 +2538,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="q8t-Ng-rYc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2748" y="2087"/>
+        </scene>
+        <!--ref_troubleshoot_nav_controller-->
+        <scene sceneID="YEn-9r-KPa">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="KJr-Mu-WLW" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gFj-eN-8RO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="367" y="3862"/>
         </scene>
     </scenes>
     <resources>

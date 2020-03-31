@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "E-postaya fotoğraf eklemek için gereklidir.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Otomatik e-posta tamamlaması için gereklidir.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Uygulamanızın kilidini açmak için hızlı ve güvenli bir şekilde izin verir.";

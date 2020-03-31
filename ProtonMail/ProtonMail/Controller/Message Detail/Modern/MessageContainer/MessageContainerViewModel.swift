@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PMNetworking
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageContainerViewModel: TableContainerViewModel {
@@ -49,6 +50,9 @@ class MessageContainerViewModel: TableContainerViewModel {
             self.thread = messages.map(MessageViewModel.init)
         }
     }
+    
+    var secondButtonConfig: BannerView.ButtonConfiguration?
+    
     private var observationsHeader: [NSKeyValueObservation] = []
     private var observationsBody: [NSKeyValueObservation] = []
     private var attachmentsObservation: [NSKeyValueObservation] = []
@@ -218,11 +222,15 @@ class MessageContainerViewModel: TableContainerViewModel {
         }
     }
     
-    private func showErrorBanner(_ title: String) {
-        self.showErrorBanner(title, action: self.downloadThreadDetails)
+    private func showErrorBanner(_ title: String, secondConfig: BannerView.ButtonConfiguration? = nil) {
+        self.showErrorBanner(title, action: self.downloadThreadDetails, secondConfig: secondButtonConfig)
     }
     
     private func errorWhileReloading(message: Message, error: NSError) {
+        guard !checkDoh(message, error) else {
+            return
+        }
+            
         switch error.code {
         case NSURLErrorTimedOut:
             self.showErrorBanner(LocalString._general_request_timed_out)
@@ -245,6 +253,22 @@ class MessageContainerViewModel: TableContainerViewModel {
             self.reload(message: message, with: LocalString._cant_download_message_body_please_try_again)
         }
         PMLog.D("error: \(error)")
+    }
+    
+    private func checkDoh(_ message: Message, _ error : NSError) -> Bool {
+        let code = error.code
+        guard DoHMail.default.codeCheck(code: code) else {
+            return false
+        }
+        self.showError(message, error)
+        return true
+    }
+    
+    internal func showError(_ message: Message, _ error : NSError) {
+        let localized = error.localizedDescription
+        self.showErrorBanner(localized,
+                             secondConfig: secondButtonConfig)
+        self.reload(message: message, with: localized)
     }
     
     typealias ChildViewModelPack = (head: MessageHeaderViewModel, body: MessageBodyViewModel, attachments: MessageAttachmentsViewModel)

@@ -33,6 +33,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
         case composerReplyAll = "toComposeReplyAll"
         case composerForward = "toComposeForward"
         case composerDraft = "toDraft"
+        case toTroubleshoot = "toTroubleShootSegue"
         
         init?(rawValue: String) {
             switch rawValue {
@@ -42,6 +43,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             case "toComposeReplyAll": self = .composerReplyAll
             case "toComposeForward": self = .composerForward
             case "toDraft", String(describing: ComposeContainerViewController.self): self = .composerDraft
+            case "toTroubleShootSegue": self = .toTroubleshoot
             default: return nil
             }
         }
@@ -51,10 +53,7 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
     internal weak var controller: MessageContainerViewController!
     internal weak var navigationController: UINavigationController?
     var viewController: MessageContainerViewController?
-    
     var configuration: ((MessageContainerViewController) -> ())?
-    
-    
     var services: ServiceFactory = ServiceFactory.default
     
     init(nav: UINavigationController, viewModel: MessageContainerViewModel, services: ServiceFactory) {
@@ -253,7 +252,12 @@ class MessageContainerViewCoordinator: TableContainerViewCoordinator {
             popup.delegate = self
             popup.viewModel = FolderApplyViewModelImpl(msg: messages)
             self.controller.setPresentationStyleForSelfController(self.controller, presentingController: popup)
-            
+        case .some(.toTroubleshoot):
+            guard let nav = segue.destination as? UINavigationController else {
+                return
+            }
+            let tsVC = NetworkTroubleShootCoordinator.init(segueNav: nav, vm: NetworkTroubleShootViewModelImpl(), services: services)
+            tsVC.start()
         default: break
         }
     }

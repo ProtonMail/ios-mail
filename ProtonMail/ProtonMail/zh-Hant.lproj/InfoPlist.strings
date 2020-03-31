@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "必需將圖片附加到電子郵件。";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "必需讓電子郵件自動完成。";
+"NSContactsUsageDescription" = "當撰寫郵件時，可以從設備上的聯繫人中選擇電子郵件地址。";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "允許您快速且安全的解鎖應用程式。";

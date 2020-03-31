@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Nauðsynlegt til að hengja myndir við tölvupóst.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Nauðsynlegt fyrir sjálfvirka útfyllingu tölvupósts.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Gerir þér kleift að aflæsa forritinu á fljótlegan og öruggan hátt.";

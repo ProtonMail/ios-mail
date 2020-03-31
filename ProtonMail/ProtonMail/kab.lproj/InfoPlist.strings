@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Ilaq i ucuddu n tewlafin ar yimayl.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Ilaq i ukemmel awurman deg yimal.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Allows you quick and secure to unlock your application.";

@@ -45,6 +45,9 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         // child view controllers
         self.coordinator.createChildControllers(with: self.viewModel)
         
+        self.viewModel.secondButtonConfig = BannerView.ButtonConfiguration.init(title: LocalString._retry,
+                                                                                action: self.goTroubleshoot)
+        
         // navigation bar buttons
         let moreButton = UIBarButtonItem(image: UIImage.Top.more, style: .plain, target: self, action: #selector(topMoreButtonTapped))
         moreButton.accessibilityLabel = LocalString._general_more
@@ -148,6 +151,10 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
     @objc func topUnreadButtonTapped(_ sender: UIBarButtonItem) {
         self.viewModel.markThread(read: false)
         self.coordinator.dismiss()
+    }
+    
+    @objc internal func goTroubleshoot() {
+        self.coordinator?.go(to: .toTroubleshoot)
     }
     
     deinit {

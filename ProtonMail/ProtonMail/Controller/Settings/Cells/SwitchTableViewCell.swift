@@ -23,11 +23,12 @@
 
 import UIKit
 
-
-typealias ActionStatus = (_ isOK: Bool) -> Void
-typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
-
 @IBDesignable class SwitchTableViewCell: UITableViewCell {
+
+    typealias ActionStatus = (_ isOK: Bool) -> Void
+    typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
+
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         

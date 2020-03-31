@@ -25,6 +25,7 @@ const TSKDomainConfigurationKey kTSKEnforcePinning = @"TSKEnforcePinning";
 const TSKDomainConfigurationKey kTSKExcludeSubdomainFromParentPolicy = @"kSKExcludeSubdomainFromParentPolicy";
 
 const TSKDomainConfigurationKey kTSKIncludeSubdomains = @"TSKIncludeSubdomains";
+const TSKDomainConfigurationKey kForceSubdomains = @"TSKForceSubdomains";
 const TSKDomainConfigurationKey kTSKPublicKeyAlgorithms = @"TSKPublicKeyAlgorithms";
 const TSKDomainConfigurationKey kTSKReportUris = @"TSKReportUris";
 const TSKDomainConfigurationKey kTSKDisableDefaultReportUri = @"TSKDisableDefaultReportUri";

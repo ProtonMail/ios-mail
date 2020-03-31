@@ -115,7 +115,7 @@
 	<key>NSCameraUsageDescription</key>
 	<string>Required for attaching photos to the email.</string>
 	<key>NSContactsUsageDescription</key>
-	<string>Required for email autocomplete.</string>
+	<string>Used for accessing email addresses for contacts saved on the device so they can be used when composing a message or when manually uploading the device contacts to your account. Contact information is not uploaded to our servers without an explicit action to do so.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Allows you quick and secure to unlock your application.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
