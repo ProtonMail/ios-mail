@@ -122,20 +122,39 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = UIBarStyle.black
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.tintColor = UIColor.white
-        
         let navigationBarTitleFont = Fonts.h2.light
-        navigationController.navigationBar.titleTextAttributes = [
+        let textAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
+        if #available(iOS 13, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.largeTitleTextAttributes = textAttributes
+            navBarAppearance.titleTextAttributes = textAttributes
+            navBarAppearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+
+            navigationController.navigationBar.standardAppearance = navBarAppearance
+            navigationController.navigationBar.compactAppearance = navBarAppearance
+            navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
+
+            navigationController.navigationBar.tintColor = UIColor.white
+        } else {
+            navigationController.navigationBar.barStyle = UIBarStyle.black
+            navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+            navigationController.navigationBar.isTranslucent = false
+            navigationController.navigationBar.tintColor = UIColor.white
+            
+            navigationController.navigationBar.titleTextAttributes = textAttributes
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentSize()
+        
+        if #available(iOS 13.0, *) { // fix the gap between navigationbar and view
+            navigationController?.navigationBar.setNeedsLayout()
+        }
     }
     
     override var shouldAutorotate : Bool {
