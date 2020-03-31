@@ -2322,20 +2322,21 @@ class MessageDataService : Service, HasLocalStorage {
         guard let userEvent = user else {
             return
         }
-        //sharedUserDataService.updateFromEvents(userInfo: userEvent)
+        self.userDataSource?.updateFromEvents(userInfoRes: userEvent)
     }
     private func processEvents(userSettings: [String : Any]?) {
         guard let userSettingEvent = userSettings else {
             return
         }
-        //sharedUserDataService.updateFromEvents(userSettings: userSettingEvent)
+        self.userDataSource?.updateFromEvents(userSettingsRes: userSettingEvent)
     }
     private func processEvents(mailSettings: [String : Any]?) {
         guard let mailSettingEvent = mailSettings else {
             return
         }
-        //sharedUserDataService.updateFromEvents(mailSettings: mailSettingEvent)
+        self.userDataSource?.updateFromEvents(mailSettingsRes: mailSettingEvent)
     }
+    
     //TODO:: fix me
     private func processEvents(addresses: [[String : Any]]?) {
         guard let addrEvents = addresses else {
@@ -2347,7 +2348,7 @@ class MessageDataService : Service, HasLocalStorage {
                 switch(address.action) {
                 case .delete:
                     if let addrID = address.ID {
-                        //sharedUserDataService.deleteFromEvents(addressID: addrID)
+                        self.userDataSource?.deleteFromEvents(addressIDRes: addrID)
                     }
                 case .insert, .update1:
                     guard let addrID = address.ID, let addrDict = address.address else {
@@ -2359,8 +2360,8 @@ class MessageDataService : Service, HasLocalStorage {
                     guard addrRes.addresses.count == 1, let parsedAddr = addrRes.addresses.first, parsedAddr.address_id == addrID else {
                         break
                     }
-//                    sharedUserDataService.setFromEvents(address: parsedAddr)
-//                    let _ = sharedUserDataService.activeUserKeys().result
+                    self.userDataSource?.setFromEvents(addressRes: parsedAddr)
+                //let _ = sharedUserDataService.activeUserKeys().result
                 default:
                     PMLog.D(" unknown type in message: \(address)")
                 }
@@ -2398,7 +2399,7 @@ class MessageDataService : Service, HasLocalStorage {
         guard let usedSpace = usedSpace else {
             return
         }
-        //sharedUserDataService.update(usedSpace: usedSpace)
+        self.userDataSource?.update(usedSpace: usedSpace)
     }
     
     //const (

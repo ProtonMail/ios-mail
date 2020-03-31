@@ -312,66 +312,66 @@ class UserDataService : Service, HasLocalStorage {
         case SomeError
     }
     //
-    func updateFromEvents(userInfo: [String : Any]?) {
-//        if let userData = userInfo {
-//            let newUserInfo = UserInfo(response: userData)
-//            if let user = self.userInfo {
-//                user.set(userinfo: newUserInfo)
-//                self.userInfo = user
-//            }
-//        }
-    }
-    //
-    func updateFromEvents(userSettings: [String : Any]?) {
-//        if let user = self.userInfo {
-//            user.parse(userSettings: userSettings)
-//            self.userInfo = user
-//        }
-    }
-    func updateFromEvents(mailSettings: [String : Any]?) {
-//        if let user = self.userInfo {
-//            user.parse(mailSettings: mailSettings)
-//            self.userInfo = user
-//        }
-    }
+//    func updateFromEvents(userInfo: [String : Any]?) {
+////        if let userData = userInfo {
+////            let newUserInfo = UserInfo(response: userData)
+////            if let user = self.userInfo {
+////                user.set(userinfo: newUserInfo)
+////                self.userInfo = user
+////            }
+////        }
+//    }
+//    //
+//    func updateFromEvents(userSettings: [String : Any]?) {
+////        if let user = self.userInfo {
+////            user.parse(userSettings: userSettings)
+////            self.userInfo = user
+////        }
+//    }
+//    func updateFromEvents(mailSettings: [String : Any]?) {
+////        if let user = self.userInfo {
+////            user.parse(mailSettings: mailSettings)
+////            self.userInfo = user
+////        }
+//    }
     
-    func update(usedSpace: Int64) {
-//        if let user = self.userInfo {
-//            user.usedSpace = usedSpace
-//            self.userInfo = user
-//        }
-    }
-
-    func setFromEvents(address: Address) {
-//        if let user = self.userInfo {
-//            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
-//                user.userAddresses.remove(at: index)
-//            }
-//            user.userAddresses.append(address)
-//            user.userAddresses.sort(by: { (v1, v2) -> Bool in
-//                return v1.order < v2.order
-//            })
-//            self.userInfo = user
-//        }
-    }
+//    func update(usedSpace: Int64) {
+////        if let user = self.userInfo {
+////            user.usedSpace = usedSpace
+////            self.userInfo = user
+////        }
+//    }
+//
+//    func setFromEvents(address: Address) {
+////        if let user = self.userInfo {
+////            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
+////                user.userAddresses.remove(at: index)
+////            }
+////            user.userAddresses.append(address)
+////            user.userAddresses.sort(by: { (v1, v2) -> Bool in
+////                return v1.order < v2.order
+////            })
+////            self.userInfo = user
+////        }
+//    }
+//    
+//    func deleteFromEvents(addressID: String) {
+////        if let user = self.userInfo {
+////            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
+////                user.userAddresses.remove(at: index)
+////                self.userInfo = user
+////            }
+////        }
+//    }
     
-    func deleteFromEvents(addressID: String) {
-//        if let user = self.userInfo {
-//            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
-//                user.userAddresses.remove(at: index)
-//                self.userInfo = user
-//            }
-//        }
-    }
-    
-    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
-        return privateKey.check(passphrase: password)
-    }
-    
-    func setMailboxPassword(_ password: String, keysalt: String?) {
-        //mailboxPassword = password
-    }
-    
+//    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
+//        return privateKey.check(passphrase: password)
+//    }
+//
+//    func setMailboxPassword(_ password: String, keysalt: String?) {
+//        //mailboxPassword = password
+//    }
+//
     
     static var authResponse: PMAuthentication.TwoFactorContext? = nil
     func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,

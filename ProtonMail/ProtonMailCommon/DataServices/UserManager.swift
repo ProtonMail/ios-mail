@@ -35,6 +35,13 @@ protocol UserDataSource : class {
     var authCredential : AuthCredential { get }
     func getAddressKey(address_id : String) -> Key?
     func getAddressPrivKey(address_id : String) -> String
+    
+    func updateFromEvents(userInfoRes: [String : Any]?)
+    func updateFromEvents(userSettingsRes: [String : Any]?)
+    func updateFromEvents(mailSettingsRes: [String : Any]?)
+    func update(usedSpace: Int64)
+    func setFromEvents(addressRes: Address)
+    func deleteFromEvents(addressIDRes: String)
 }
 
 protocol UserManagerSave : class {
@@ -243,6 +250,51 @@ extension UserManager : UserDataSource {
     var isPaid: Bool {
         return self.userInfo.role > 0 ? true : false
     }
+    
+    func updateFromEvents(userInfoRes: [String : Any]?) {
+        if let userData = userInfoRes {
+            let newUserInfo = UserInfo(response: userData)
+            userInfo.set(userinfo: newUserInfo)
+            self.save()
+        }
+    }
+    
+    func updateFromEvents(userSettingsRes: [String : Any]?) {
+        if let settings = userSettingsRes {
+            userInfo.parse(userSettings: settings)
+            self.save()
+        }
+    }
+    func updateFromEvents(mailSettingsRes: [String : Any]?) {
+        if let settings = mailSettingsRes {
+            userInfo.parse(mailSettings: settings)
+            self.save()
+        }
+    }
+    
+    func update(usedSpace: Int64) {
+        self.userInfo.usedSpace = usedSpace
+        self.save()
+    }
+
+    func setFromEvents(addressRes address: Address) {
+        if let index = self.userInfo.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
+            self.userInfo.userAddresses.remove(at: index)
+        }
+        self.userInfo.userAddresses.append(address)
+        self.userInfo.userAddresses.sort(by: { (v1, v2) -> Bool in
+            return v1.order < v2.order
+        })
+        self.save()
+    }
+    
+    func deleteFromEvents(addressIDRes addressID: String) {
+        if let index = self.userInfo.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
+            self.userInfo.userAddresses.remove(at: index)
+            self.save()
+        }
+    }
+    
 }
 
 
