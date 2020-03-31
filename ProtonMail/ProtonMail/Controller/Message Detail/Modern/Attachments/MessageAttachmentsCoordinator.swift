@@ -67,7 +67,7 @@ class MessageAttachmentsCoordinator: NSObject {
 // delegate, datasource
 extension MessageAttachmentsCoordinator: QLPreviewControllerDataSource, QLPreviewControllerDelegate {
     internal func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
+        return self.tempClearFileURL != nil ? 1 : 0
     }
     
     internal func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
