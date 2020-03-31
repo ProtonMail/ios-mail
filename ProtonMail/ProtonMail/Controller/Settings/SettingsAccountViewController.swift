@@ -92,6 +92,7 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         super.viewWillAppear(animated)
         self.viewModel.updateItems()
         navigationController?.setNavigationBarHidden(false, animated: true)
+        self.tableView.reloadData()
     }
     
     ///MARK: -- table view delegate
@@ -263,6 +264,9 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
                                         MBProgressHUD.hide(for: view, animated: true)
                                         if error == nil {
                                             self.userManager.save()
+                                        }
+                                        DispatchQueue.main.async {
+                                            tableView.reloadData()//reloadSections([indexPath], with: .fade)
                                         }
                                     }
                                 }))
