@@ -70,13 +70,13 @@ class ViewModelFactoryProduction : ViewModelFactory {
         
     }
     
-    override func getChangeLoginPassword() -> ChangePWDViewModel {
-        return ChangeLoginPWDViewModel()
-    }
+//    override func getChangeLoginPassword() -> ChangePWDViewModel {
+//        return ChangeLoginPWDViewModel()
+//    }
     
-    override func getChangeMailboxPassword() -> ChangePWDViewModel {
-        return ChangeMailboxPWDViewModel()
-    }
+//    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+//        return ChangeMailboxPWDViewModel()
+//    }
     
 //    override func getChangeDisplayName() -> SettingDetailsViewModel {
 //        return ChangeDisplayNameViewModel()

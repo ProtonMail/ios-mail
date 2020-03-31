@@ -561,92 +561,99 @@ class UserDataService : Service, HasLocalStorage {
     }
     #endif
 
-    func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
-//        guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
-//            let _username = self.username else {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        {//asyn
-//            do {
-//                //generate new pwd and verifier
-//                let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall(api: self.apiService)
-//                guard let moduls_id = authModuls?.ModulusID else {
-//                    throw UpdatePasswordError.invalidModulusID.error
-//                }
-//                guard let new_moduls = authModuls?.Modulus else {
-//                    throw UpdatePasswordError.invalidModulus.error
-//                }
-//                //generat new verifier
-//                let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-//
-//                guard let auth = try SrpAuthForVerifier(new_password, new_moduls, new_salt) else {
-//                    throw UpdatePasswordError.cantHashPassword.error
-//                }
-//                let verifier = try auth.generateVerifier(2048)
-//
-//                //start check exsit srp
-//                var forceRetry = false
-//                var forceRetryVersion = 2
-//
-//                repeat {
-//                    // get auto info
-//                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
-//                    guard let authVersion = info?.Version, let modulus = info?.Modulus,
-//                        let ephemeral = info?.ServerEphemeral, let salt = info?.Salt,
-//                        let session = info?.SRPSession else {
-//                        throw UpdatePasswordError.invalideAuthInfo.error
-//                    }
-//
-//                    if authVersion <= 2 && !forceRetry {
-//                        forceRetry = true
-//                        forceRetryVersion = 2
-//                    }
-//
-//                    //init api calls
-//                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
-//                    guard let auth = try SrpAuth(hashVersion, _username, login_password, salt, modulus, ephemeral) else {
-//                        throw UpdatePasswordError.cantHashPassword.error
-//                    }
-//
-//                    let srpClient = try auth.generateProofs(2048)
-//                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
-//                        throw UpdatePasswordError.cantGenerateSRPClient.error
-//                    }
-//
-//                    do {
-//                        let updatePwd = try UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
-//                                                                clientProof: clientProof.encodeBase64(),
-//                                                                SRPSession: session,
-//                                                                modulusID: moduls_id,
-//                                                                salt: new_salt.encodeBase64(),
-//                                                                verifer: verifier.encodeBase64(),
-//                                                                tfaCode: twoFACode,
-//                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
-//                        if updatePwd?.code == 1000 {
-//                            forceRetry = false
-//                        } else {
-//                            throw UpdatePasswordError.default.error
-//                        }
-//                    } catch let error as NSError {
-//                        if error.isInternetError() {
-//                            throw error
-//                        } else {
-//                            if forceRetry && forceRetryVersion != 0 {
-//                                forceRetryVersion -= 1
-//                            } else {
-//                                throw error
-//                            }
-//                        }
-//                    }
-//                } while(forceRetry && forceRetryVersion >= 0)
-//                return { completion(nil, nil, nil) } ~> .main
-//            } catch let error as NSError {
-//                error.upload(toAnalytics: "UpdateLoginPassword")
-//                return { completion(nil, nil, error) } ~> .main
-//            }
-//        } ~> .async
+    func updatePassword(auth currentAuth: AuthCredential,
+                        user: UserInfo,
+                        login_password: String,
+                        new_password: String,
+                        twoFACode:String?,
+                        completion: @escaping CompletionBlock) {
+        let oldAuthCredential = currentAuth
+        var _username = "" //oldAuthCredential.userName
+        if _username.isEmpty {
+            if let addr = user.userAddresses.defaultAddress() {
+               _username = addr.email
+            }
+        }
+        
+        {//async
+            do {
+                //generate new pwd and verifier
+                let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                guard let moduls_id = authModuls?.ModulusID else {
+                    throw UpdatePasswordError.invalidModulusID.error
+                }
+                guard let new_moduls = authModuls?.Modulus else {
+                    throw UpdatePasswordError.invalidModulus.error
+                }
+                //generat new verifier
+                let new_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
+                
+                guard let auth = try SrpAuthForVerifier(new_password, new_moduls, new_salt) else {
+                    throw UpdatePasswordError.cantHashPassword.error
+                }
+                let verifier = try auth.generateVerifier(2048)
+                
+                //start check exsit srp
+                var forceRetry = false
+                var forceRetryVersion = 2
+                
+                repeat {
+                    // get auto info
+                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                    guard let authVersion = info?.Version, let modulus = info?.Modulus,
+                        let ephemeral = info?.ServerEphemeral, let salt = info?.Salt,
+                        let session = info?.SRPSession else {
+                            throw UpdatePasswordError.invalideAuthInfo.error
+                    }
+                    
+                    if authVersion <= 2 && !forceRetry {
+                        forceRetry = true
+                        forceRetryVersion = 2
+                    }
+                    
+                    //init api calls
+                    let hashVersion = forceRetry ? forceRetryVersion : authVersion
+                    guard let auth = try SrpAuth(hashVersion, _username, login_password, salt, modulus, ephemeral) else {
+                        throw UpdatePasswordError.cantHashPassword.error
+                    }
+                    
+                    let srpClient = try auth.generateProofs(2048)
+                    guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
+                        throw UpdatePasswordError.cantGenerateSRPClient.error
+                    }
+                    
+                    do {
+                        let updatePwd_res = try UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
+                                                                clientProof: clientProof.encodeBase64(),
+                                                                SRPSession: session,
+                                                                modulusID: moduls_id,
+                                                                salt: new_salt.encodeBase64(),
+                                                                verifer: verifier.encodeBase64(),
+                                                                tfaCode: twoFACode,
+                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                        if updatePwd_res?.code == 1000 {
+                            forceRetry = false
+                        } else {
+                            throw UpdatePasswordError.default.error
+                        }
+                    } catch let error as NSError {
+                        if error.isInternetError() {
+                            throw error
+                        } else {
+                            if forceRetry && forceRetryVersion != 0 {
+                                forceRetryVersion -= 1
+                            } else {
+                                throw error
+                            }
+                        }
+                    }
+                } while(forceRetry && forceRetryVersion >= 0)
+                return { completion(nil, nil, nil) } ~> .main
+            } catch let error as NSError {
+                error.upload(toAnalytics: "UpdateLoginPassword")
+                return { completion(nil, nil, error) } ~> .main
+            }
+        } ~> .async
     }
     
     func updateMailboxPassword(auth currentAuth: AuthCredential,

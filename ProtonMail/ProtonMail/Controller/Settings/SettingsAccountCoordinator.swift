@@ -151,12 +151,14 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             guard let next = destination as? ChangePasswordViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeLoginPassword())
+            let users: UsersManager = services.get()
+            next.setViewModel(ChangeLoginPWDViewModel(user: users.firstUser!))
         case .mailboxPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
+            let users: UsersManager = services.get()
+            next.setViewModel(ChangeMailboxPWDViewModel(user: users.firstUser!))
         case .singlePwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false
