@@ -397,7 +397,13 @@ extension UsersManager {
     
     func logout(user: UserManager) {
         user.cleanUp()
-        self.remove(user: user)
+        
+        if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
+            self.remove(user: user)
+            NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: self)
+        } else {
+            self.remove(user: user)
+        }
         
         if self.users.isEmpty {
             self.clean()

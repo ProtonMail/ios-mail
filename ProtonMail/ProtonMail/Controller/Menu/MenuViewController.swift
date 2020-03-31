@@ -81,6 +81,11 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         
         //setup labels fetch controller
         self.viewModel.setupLabels(delegate: self)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didPrimaryAccountLoggedOut(_:)),
+                                               name: NSNotification.Name.didPrimaryAccountLogout,
+                                               object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -116,6 +121,10 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.revealViewController().frontViewController.view.isUserInteractionEnabled = true
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {
@@ -191,6 +200,14 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
         alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         self.sectionClicked = false
         self.present(alertController, animated: true, completion: nil)
+    }
+    
+    @objc fileprivate func didPrimaryAccountLoggedOut(_ notification: Notification) {
+        self.viewModel.updateCurrent()
+        self.viewModel.setupLabels(delegate: self)
+        self.hideUsers()
+        self.sectionClicked = false
+        self.coordinator?.go(to: .mailbox)
     }
 }
 

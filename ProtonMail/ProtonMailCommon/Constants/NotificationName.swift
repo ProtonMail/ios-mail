@@ -68,4 +68,9 @@ extension Notification.Name {
     static var didReovke: Notification.Name {
         return .init("ApiTokenRevoked")
     }
+    
+    ///notify when primary account is revoked
+    static var didPrimaryAccountLogout: Notification.Name {
+        return .init("didPrimaryAccountLogout")
+    }
 }
