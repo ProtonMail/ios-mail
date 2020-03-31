@@ -90,7 +90,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
         } else {
             prepareRefreshController()
             prepareLongPressGesture()
-            prepareNavigationItemRightDefault()
+            prepareNavigationItemRightDefault(self.viewModel.user)
             updateNavigationBar()
         }
     }

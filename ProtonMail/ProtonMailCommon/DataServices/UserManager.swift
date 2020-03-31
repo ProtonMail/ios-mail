@@ -239,6 +239,10 @@ extension UserManager : UserDataSource {
     var notify: Bool {
         return userInfo.notify == 1
     }
+    
+    var isPaid: Bool {
+        return self.userInfo.role > 0 ? true : false
+    }
 }
 
 

@@ -93,7 +93,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.viewModel.setupFetchedResults(delaget: self)
         self.prepareSearchBar()
         
-        prepareNavigationItemRightDefault()
+        prepareNavigationItemRightDefault(self.viewModel.user)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,15 +163,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
-        
         let viewController = segue.destination
-        
-        if #available(iOS 13, *) { // detect view dismiss above iOS 13
-            if let nav = viewController as? UINavigationController {
-                nav.children[0].presentationController?.delegate = self
-            }
-            segue.destination.presentationController?.delegate = self
-        }
         
         switch segue.identifier {
         case kContactDetailsSugue:
@@ -202,7 +194,14 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
             sharedVMService.upgradeAlert(contacts: popup)
             
         default:
-            return
+            break
+        }
+        
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            if let nav = viewController as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
         }
     }
     

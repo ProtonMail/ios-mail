@@ -46,22 +46,20 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     }
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
-//        if sharedUserDataService.isPaidUser() {
-//            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
-//        } else {
-//            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-//        }
+        if self.viewModel.user.isPaid {
+            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: viewModel.getGroupID(), name: viewModel.getName()))
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
     
     @IBAction func editButtonTapped(_ sender: UIBarButtonItem) {
-//        if sharedUserDataService.isPaidUser() == false {
-//            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-//            
-//            return
-//        }
-//        
-//        performSegue(withIdentifier: kToContactGroupEditSegue,
-//                     sender: self)
+        if self.viewModel.user.isPaid == false {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+            return
+        }
+        performSegue(withIdentifier: kToContactGroupEditSegue,
+                     sender: self)
     }
     
     override func viewDidLoad() {
@@ -73,7 +71,10 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        reload()
+    }
+    
+    private func reload() {
         firstly { () -> Promise<Bool> in
             MBProgressHUD.showAdded(to: self.view, animated: true)
             return self.viewModel.reload()
@@ -89,7 +90,6 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
         }.catch { error in
             //PMLog.D(error)
         }
-        
     }
 
     private func refresh() {
@@ -165,6 +165,13 @@ class ContactGroupDetailViewController: ProtonMailViewController, ViewModelProto
                                                        presentingController: popup,
                                                        style: .overFullScreen)
         }
+        
+        if #available(iOS 13, *) {
+            if let nav = segue.destination as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
+        }
     }
 }
 
@@ -221,5 +228,12 @@ extension ContactGroupDetailViewController: UITableViewDataSource
                     state: .detailView)
         
         return cell
+    }
+}
+
+@available (iOS 13, *)
+extension ContactGroupDetailViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        reload()
     }
 }
