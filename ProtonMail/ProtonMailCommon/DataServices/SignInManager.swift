@@ -109,6 +109,8 @@ class SignInManager: Service {
             self.usersManager.loggedIn()
             
             self.usersManager.update(auth: auth, user: info )
+            self.usersManager.active(uid: auth.sessionID)
+
             UserTempCachedStatus.restore()
             NotificationCenter.default.post(name: .didSignIn, object: nil)
             
