@@ -280,6 +280,8 @@ class UsersManager : Service {
             self.save()
             //Then clear lagcy
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.username)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
+            
         } else {
             guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
                 return
@@ -429,6 +431,7 @@ extension UsersManager {
         UserManager.cleanUpAll()
         
         SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
+        KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
         KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
         KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)

@@ -73,6 +73,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         navigationController?.setNavigationBarHidden(false, animated: true)
         
         updateTableProtectionSection()
+        self.tableView.reloadData()
     }
     
     internal func updateTableProtectionSection() {
