@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Requerido para adjuntar imágenes al correo electrónico.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Se utiliza para autorellenar direcciones de email o para ejecutar un upload manual de contactos desde su dispositivo a su cuenta ProtonMail. En ningun caso se transfieren contactos a no ser que usted ejecute susodicho upload manualmente.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Permite desbloquear la aplicación rápido y seguro.";

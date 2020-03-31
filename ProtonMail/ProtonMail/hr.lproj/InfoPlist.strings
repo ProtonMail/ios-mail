@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Potrebno za pridodavanje slika poruci e-pošte.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Koristi se za automatsko dovršavanje adresa e-pošte ili za ručno učitavanje kontakata s uređaja na račun. Podaci o kontaktima nisu preneseni na naše poslužitelje, osim ako to ne učinite ručno.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Omogućuje brzo i sigurno otključavanje aplikacije.";
