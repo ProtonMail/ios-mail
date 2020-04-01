@@ -488,6 +488,7 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
     }
 
     func Cancel2FA() {
+        UserDataService.authResponse = nil
         NotificationCenter.default.addKeyboardObserver(self)
     }
 }
