@@ -477,6 +477,12 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IIk-hq-6PK">
+                                        <rect key="frame" x="16" y="6" width="234" height="35"/>
+                                        <connections>
+                                            <action selector="usersClicked:" destination="JMB-iY-fYD" eventType="touchUpInside" id="4Gc-af-1BM"/>
+                                        </connections>
+                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zXB-Hr-oB5">
                                         <rect key="frame" x="262" y="9" width="24" height="24"/>
                                         <constraints>
@@ -512,12 +518,16 @@
                                     <constraint firstItem="zXB-Hr-oB5" firstAttribute="centerY" secondItem="UJa-fM-KPk" secondAttribute="firstBaseline" id="KhV-yF-k1I"/>
                                     <constraint firstItem="zXB-Hr-oB5" firstAttribute="leading" secondItem="aXI-g9-7g9" secondAttribute="trailing" constant="12" id="PRE-lE-YNc"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="UJa-fM-KPk" secondAttribute="trailing" id="Qg7-Cn-Otl"/>
+                                    <constraint firstItem="IIk-hq-6PK" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="top" id="Wqg-HD-MbN"/>
+                                    <constraint firstItem="IIk-hq-6PK" firstAttribute="bottom" secondItem="dGF-dy-Rrr" secondAttribute="bottom" id="aBL-D5-8TQ"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="f1b-6I-JKl"/>
+                                    <constraint firstItem="IIk-hq-6PK" firstAttribute="leading" secondItem="dGF-dy-Rrr" secondAttribute="leading" id="fcp-g9-515"/>
                                     <constraint firstAttribute="trailing" secondItem="zXB-Hr-oB5" secondAttribute="trailing" constant="89" id="fxY-e3-vLU"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="dGF-dy-Rrr" secondAttribute="leading" id="jzY-Lg-q3S"/>
                                     <constraint firstItem="aXI-g9-7g9" firstAttribute="centerY" secondItem="E7U-Dc-qS6" secondAttribute="centerY" id="nM4-jj-tJB"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="bottom" constant="2" id="qoy-VF-EUt"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="E7U-Dc-qS6" secondAttribute="leading" constant="16" id="tej-Zq-zyY"/>
+                                    <constraint firstItem="IIk-hq-6PK" firstAttribute="trailing" secondItem="aXI-g9-7g9" secondAttribute="trailing" id="vxM-Pq-bpv"/>
                                     <constraint firstAttribute="bottom" secondItem="dGF-dy-Rrr" secondAttribute="bottom" constant="9" id="xXE-sK-jly"/>
                                 </constraints>
                             </view>
@@ -2570,6 +2580,15 @@
             <point key="canvasLocation" x="367" y="3862"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="udh-Uk-5dd"/>
+        <segue reference="A0a-yx-qTn"/>
+        <segue reference="zcW-AE-icm"/>
+        <segue reference="f3k-3A-WEA"/>
+        <segue reference="zIE-XJ-wkG"/>
+        <segue reference="LdN-DE-nXL"/>
+        <segue reference="0gE-az-sje"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="attached_main" width="14.5" height="16.5"/>
         <image name="encrypted_main" width="15" height="20.5"/>
@@ -2598,13 +2617,4 @@
         <image name="unchecked" width="22" height="22"/>
         <image name="video_camera" width="26" height="15"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="udh-Uk-5dd"/>
-        <segue reference="A0a-yx-qTn"/>
-        <segue reference="zcW-AE-icm"/>
-        <segue reference="f3k-3A-WEA"/>
-        <segue reference="zIE-XJ-wkG"/>
-        <segue reference="LdN-DE-nXL"/>
-        <segue reference="0gE-az-sje"/>
-    </inferredMetricsTieBreakers>
 </document>
