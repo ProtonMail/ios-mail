@@ -137,17 +137,17 @@ class ContactImportViewController: UIViewController {
                 if authorized {
                     self.retrieveContactsWithStore(store: store)
                 } else {
-                    "Contacts access is not authorized".alertToast()
+                    {"Contacts access is not authorized".alertToast()} ~> .main
                 }
             })
         case .authorized:
             self.retrieveContactsWithStore(store: store)
         case .denied:
-            "Contacts access denied, please allow access from settings".alertToast()
+            {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
         case .restricted:
-            "The application is not authorized to access contact data".alertToast()
+            {"The application is not authorized to access contact data".alertToast()} ~> .main
         @unknown default:
-            "Contacts access denied, please allow access from settings".alertToast()
+            {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
         }
     }
     
