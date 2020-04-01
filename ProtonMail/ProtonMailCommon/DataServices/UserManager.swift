@@ -133,6 +133,7 @@ class UserManager : Service, HasLocalStorage {
         let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
+   
     
     #if !APP_EXTENSION
     public lazy var sevicePlanService: ServicePlanDataService = {
