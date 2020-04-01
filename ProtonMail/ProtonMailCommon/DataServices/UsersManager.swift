@@ -400,13 +400,17 @@ extension UsersManager {
         
         if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
             self.remove(user: user)
-            NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: self)
+            NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
         } else {
             self.remove(user: user)
         }
         
         if self.users.isEmpty {
             self.clean()
+        } else {
+            String(format: LocalString._logut_account_switched,
+                   arguments: [user.defaultDisplayName,
+                               self.users.first!.defaultDisplayName]).alertToast()
         }
     }
     

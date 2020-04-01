@@ -1766,6 +1766,8 @@ class LocalizedString {
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
     
+    lazy var _logut_account_switched = NSLocalizedString("Logged out from %@ and signed in with %@", comment: "Alert when logout one account and switch to another")
+    
     // TrustKit
     
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
