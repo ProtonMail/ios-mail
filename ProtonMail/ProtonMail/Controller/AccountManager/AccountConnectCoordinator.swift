@@ -83,10 +83,26 @@ class AccountConnectCoordinator: DefaultCoordinator {
             popup.delegate = self.viewController
             popup.mode = .twoFactorCode
             self.viewController?.setPresentationStyleForSelfController(self.viewController!, presentingController: popup)
+        case .some(.decryptMailbox):
+            let viewController = destination as! AccountPasswordViewController
+            let viewModel = SignInViewModel(usersManager: services.get(by: UsersManager.self))
+            let coordinator = AccountPasswordCoordinator(vc: viewController, vm: viewModel, services: services)!
+            coordinator.delegate = self
+            coordinator.start()
         default:
             break
         }
         
         return true
+    }
+}
+
+extension AccountConnectCoordinator: CoordinatorDelegate {
+    func willStop(in coordinator: CoordinatorNew) {
+        
+    }
+    
+    func didStop(in coordinator: CoordinatorNew) {
+        self.stop()
     }
 }

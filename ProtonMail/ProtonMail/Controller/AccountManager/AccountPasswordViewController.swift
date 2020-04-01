@@ -82,7 +82,7 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
     }
     
     @objc internal func dismiss() {
-        self.navigationController?.popToRootViewController(animated: true)
+        self.coordinator?.stop()
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
@@ -188,7 +188,9 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
                                     alert.addAction((UIAlertAction.okAction()))
                                     self.present(alert, animated: true, completion: nil)
         }, tryUnlock: {
-            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
+            unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {}, unlocked: {
+                self.coordinator?.stop()
+            })
         })
     }
     

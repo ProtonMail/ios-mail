@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -1029,7 +1029,7 @@
                         <outlet property="usernameView" destination="ylN-fl-1oU" id="O0r-sS-wWy"/>
                         <segue destination="u1u-Fp-Fza" kind="show" identifier="mailboxSegue" id="TNN-6G-bfQ"/>
                         <segue destination="oJh-xM-Kmj" kind="presentation" identifier="2fa_code_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="YDC-CN-ilB"/>
-                        <segue destination="yGV-3W-5cU" kind="show" identifier="toAddAccountPasswordSegue" id="pld-1S-gJe"/>
+                        <segue destination="yGV-3W-5cU" kind="show" identifier="toAddAccountPasswordSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="pld-1S-gJe"/>
                         <segue destination="DLU-1S-fgo" kind="show" identifier="toSignUpSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="PCF-cM-BWF"/>
                     </connections>
                 </viewController>

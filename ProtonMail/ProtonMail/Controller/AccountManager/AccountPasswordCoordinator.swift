@@ -31,6 +31,8 @@ class AccountPasswordCoordinator: DefaultCoordinator {
     let viewModel : SignInViewModel
     var services: ServiceFactory
     
+    var delegate: CoordinatorDelegate? = nil
+    
     init?(vc: UIViewController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let viewC = vc as? VC else {
             return nil
@@ -43,5 +45,17 @@ class AccountPasswordCoordinator: DefaultCoordinator {
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
+    }
+    
+    func stop() {
+        delegate?.willStop(in: self)
+        
+        if self.viewController?.presentingViewController != nil {
+            self.viewController?.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.viewController?.navigationController?.popViewController(animated: true)
+        }
+        
+        delegate?.didStop(in: self)
     }
 }
