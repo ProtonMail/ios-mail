@@ -127,7 +127,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
             // TODO: figure where to put this thing
             let user = self.viewModel.getUser()
-            if user.userService.isPaidUser() {
+            if user.isPaid {
                 self.contacts.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
             }
             
