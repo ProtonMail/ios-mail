@@ -31,6 +31,8 @@ class AccountConnectCoordinator: DefaultCoordinator {
     let viewModel : SignInViewModel
     var services: ServiceFactory
     
+    var delegate: CoordinatorDelegate? = nil
+    
     enum Destination : String {
         case signUp = "toSignUpSegue"
         case decryptMailbox = "toAddAccountPasswordSegue"
@@ -49,6 +51,18 @@ class AccountConnectCoordinator: DefaultCoordinator {
     func start() {
         self.viewController?.set(viewModel: self.viewModel)
         self.viewController?.set(coordinator: self)
+    }
+    
+    func stop() {
+        delegate?.willStop(in: self)
+        
+        if self.viewController?.presentingViewController != nil {
+            self.viewController?.dismiss(animated: true, completion: nil)
+        } else {
+            let _ = self.viewController?.navigationController?.popViewController(animated: true)
+        }
+        
+        delegate?.didStop(in: self)
     }
 
     func go(to dest: Destination, sender: Any? = nil) {

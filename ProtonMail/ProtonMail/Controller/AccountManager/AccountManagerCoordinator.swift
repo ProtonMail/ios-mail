@@ -81,12 +81,21 @@ class AccountManagerCoordinator: DefaultCoordinator {
                                                           services: self.services) else {
                 return false
             }
+            account.delegate = self
             account.start()
             return true
         default:
             return false
         }
     }
+}
+
+extension AccountManagerCoordinator: CoordinatorDelegate {
+    func willStop(in coordinator: CoordinatorNew) {
+        
+    }
     
-    
+    func didStop(in coordinator: CoordinatorNew) {
+        self.stop()
+    }
 }

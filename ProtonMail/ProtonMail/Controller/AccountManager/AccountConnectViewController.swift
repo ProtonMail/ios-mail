@@ -83,7 +83,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     @objc internal func dismiss() {
-        self.navigationController?.popToRootViewController(animated: true)
+        self.coordinator?.stop()
     }
     
     @objc func cancelAction(_ sender: UIBarButtonItem) {
