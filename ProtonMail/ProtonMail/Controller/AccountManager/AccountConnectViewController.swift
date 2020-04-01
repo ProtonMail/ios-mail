@@ -276,9 +276,7 @@ extension AccountConnectViewController : TwoFACodeViewControllerDelegate {
     }
 
     func Cancel2FA() {
-        //TODO:: fix me
-//        sharedUserDataService.twoFactorStatus = 0
-//        sharedUserDataService.authResponse = nil
+        UserDataService.authResponse = nil
         NotificationCenter.default.addKeyboardObserver(self)
     }
 }
