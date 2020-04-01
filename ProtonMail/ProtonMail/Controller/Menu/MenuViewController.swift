@@ -191,9 +191,16 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     func handleSignOut(_ sender : UIView?) {
         let alertController = UIAlertController(title: LocalString._logout_confirmation, message: nil, preferredStyle: .actionSheet)
         
-        alertController.addAction(UIAlertAction(title: LocalString._sign_out_all, style: .destructive, handler: { (action) -> Void in
+        alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
             self.signingOut = true
             self.viewModel.signOut()
+            
+            self.viewModel.updateCurrent()
+            self.viewModel.setupLabels(delegate: self)
+            self.hideUsers()
+            self.sectionClicked = false
+            
+            self.signingOut = false
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view
         alertController.popoverPresentationController?.sourceRect = (sender == nil ? self.view.frame : sender!.bounds)
