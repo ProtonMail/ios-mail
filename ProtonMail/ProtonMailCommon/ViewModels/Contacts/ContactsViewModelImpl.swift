@@ -155,17 +155,17 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-            //TODO:: fix me
-//            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue,
-//                                                 notificationMessageID: nil, completion: { (task, res, error) in
-//                self.isFetching = false
-//                self.fetchComplete?(nil, nil)
-//            })
-//            sharedContactDataService.fetchContacts { (_, error) in
-//
-//            }
+            
+            self.user.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
+                                                 notificationMessageID: nil,
+                                                 completion: { (task, res, error) in
+                self.isFetching = false
+                self.fetchComplete?(nil, nil)
+            })
+            self.user.contactService.fetchContacts { (_, error) in
+                
+            }
         }
-        
     }
 
     // MARK: - timer overrride
