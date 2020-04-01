@@ -86,11 +86,11 @@ class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     
     var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, /*.combinContacts,*/ .cleanCache]
     var userManager: UserManager
-    var lockOn : Bool = false
+    var lockOn : Bool {
+        return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
+    }
     init(user : UserManager) {
         self.userManager = user
-        
-        lockOn = userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
     }
     
     var languages: [ELanguage] = ELanguage.allItems()

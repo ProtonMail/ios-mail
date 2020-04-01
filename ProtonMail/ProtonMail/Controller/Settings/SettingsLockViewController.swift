@@ -169,7 +169,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
                 cell.accessoryType = UITableViewCell.AccessoryType.none
                 cell.selectionStyle = UITableViewCell.SelectionStyle.none
                 if let c = cell as? SwitchTableViewCell {
-                    c.configCell(eSection.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
+                    c.configCell(item.description, bottomLine: "", status: userCachedStatus.isTouchIDEnabled, complete: { (cell, newStatus, feedback) -> Void in
                         if let indexp = tableView.indexPath(for: cell!) {
                             if indexPath == indexp {
                                 if !userCachedStatus.isTouchIDEnabled {

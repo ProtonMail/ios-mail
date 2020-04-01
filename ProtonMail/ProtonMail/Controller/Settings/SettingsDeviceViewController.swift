@@ -71,12 +71,14 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        updateTableProtectionSection()
     }
     
     internal func updateTableProtectionSection() {
-//        if let index = self.viewModel.sections.firstIndex(of: SettingSections.protection) {
-//            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
-//        }
+        if let index = self.viewModel.sections.firstIndex(of: SettingDeviceSection.app) {
+            self.tableView.reloadSections(IndexSet(integer: index), with: .fade)
+        }
     }
     
     private func inAppLanguage(_ indexPath: IndexPath) {
