@@ -45,15 +45,15 @@ struct Constants {
 
 //               //
 //         //
-//         static let URL_Protocol : String = "https://"
+         static let URL_Protocol : String = "https://"
 //         //static let URL_Protocol : String = "http://"
         
 //         //live api
-//         static let URL_HOST : String = "api.protonmail.ch"
-//         static let API_PATH : String = ""
+         static let URL_HOST : String = "api.protonmail.ch"
+         static let API_PATH : String = ""
         
 //         ///
-//         static let rediectURL = "https://protonmail.ch"
+         static let rediectURL = "https://protonmail.ch"
         
 //         //blue test
 //         //static let URL_HOST : String = "protonmail.blue"
@@ -74,17 +74,11 @@ struct Constants {
 //         //api options
 //         //static let API_PATH : String = "/api"
         
-//         static var API_HOST_URL : String {
-//             get {
-//                 return URL_Protocol + URL_HOST
-//             }
-//         }
-        
-// //        static var API_FULL_URL : String {
-// //            get {
-// //                return API_HOST_URL + API_PATH
-// //            }
-// //        }
+         static var API_HOST_URL : String {
+               get {
+                   return URL_Protocol + URL_HOST
+               }
+           }
 
         static var DEBUG_OPTION : String {
             get {

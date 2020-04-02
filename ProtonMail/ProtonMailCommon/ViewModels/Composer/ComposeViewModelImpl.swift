@@ -272,9 +272,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                 complete?(nil, -1)
                 return
             }
-            let getEmail = UserEmailPubKeys(email: emial, api: self.user.apiService).run()
+            let getEmail = UserEmailPubKeys(email: email, api: self.user.apiService).run()
             let contactService = self.user.contactService
-            let getContact = contactService.fetch(byEmails: [emial], context: context)
+            let getContact = contactService.fetch(byEmails: [email], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
@@ -296,8 +296,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                     } else {
                         if let pwd = self.message?.password, pwd != "" {
                             c.pgpType = .eo
-                        } else if let userinfo = sharedUserDataService.userInfo,
-                            userinfo.sign == 1 {
+                        } else if self.user.userInfo.sign == 1 {
                             c.pgpType = .pgp_signed
                         } else {
                             c.pgpType = .none
@@ -483,8 +482,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     override func sendMessage() {
         //check if has extenral emails and if need attach key
         let userinfo = self.user.userInfo
-        if hasExtenal == true,
-            userinfo.attachPublicKey == 1,
+        if userinfo.attachPublicKey == 1,
             let msg = message,
             let addr = self.messageService.defaultAddress(msg),
             let key = addr.keys.first,

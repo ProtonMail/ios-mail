@@ -235,27 +235,27 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         let cell = tableView.dequeueReusableCell(withIdentifier: SwitchCell, for: indexPath) as! SwitchTableViewCell
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
-                        if let userInfo = userInfo {
-                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
-                                if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
-                                    let view = UIApplication.shared.keyWindow ?? UIView()
-                                    MBProgressHUD.showAdded(to: view, animated: true)
-                                    sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
-                                        MBProgressHUD.hide(for: view, animated: true)
-                                        if let error = error {
-                                            feedback(false)
-                                            let alertController = error.alertController()
-                                            alertController.addOKAction()
-                                            self.present(alertController, animated: true, completion: nil)
-                                        } else {
-                                            feedback(true)
-                                        }
-                                    })
-                                } else {
-                                    feedback(false)
-                                }
-                            })
-                        }
+//                        if let userInfo = userInfo {
+//                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+//                                if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
+//                                    let view = UIApplication.shared.keyWindow ?? UIView()
+//                                    MBProgressHUD.showAdded(to: view, animated: true)
+//                                    sharedUserDataService.updateAutoLoadImage(remote: newStatus, completion: { (_, _, error) in
+//                                        MBProgressHUD.hide(for: view, animated: true)
+//                                        if let error = error {
+//                                            feedback(false)
+//                                            let alertController = error.alertController()
+//                                            alertController.addOKAction()
+//                                            self.present(alertController, animated: true, completion: nil)
+//                                        } else {
+//                                            feedback(true)
+//                                        }
+//                                    })
+//                                } else {
+//                                    feedback(false)
+//                                }
+//                            })
+//                        }
                         cellout = cell
                     case .browser:
                         let cell = tableView.dequeueReusableCell(withIdentifier: SettingDomainsCell, for: indexPath) as! DomainsTableViewCell

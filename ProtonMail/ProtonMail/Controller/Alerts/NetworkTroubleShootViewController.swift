@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import Keymaker
+import PMKeymaker
 import MessageUI
 
 class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
@@ -241,7 +241,6 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
         

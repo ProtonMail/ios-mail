@@ -1201,7 +1201,7 @@ class MessageDataService : Service, HasLocalStorage {
         let context = CoreDataService.shared.mainManagedObjectContext
         guard let objectID = CoreDataService.shared.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
-            let _ = managedObject as? Attachment else
+            let attachment = managedObject as? Attachment else
         {
             // nothing to send, dequeue request
             let _ = sharedMessageQueue.remove(writeQueueUUID)
@@ -2023,27 +2023,26 @@ class MessageDataService : Service, HasLocalStorage {
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
             let context = CoreDataService.shared.backgroundManagedObjectContext
-            context.perform { () -> Void in
-                var error: NSError?
-                var messagesNoCache : [String] = []
-                for message in messages {
-                    let msg = MessageEvent(event: message)
-                    switch(msg.Action) {
-                    case .some(IncrementalUpdateType.delete):
-                        if let messageID = msg.ID {
-                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                let labelObjs = message.mutableSetValue(forKey: "labels")
-                                labelObjs.removeAllObjects()
-                                message.setValue(labelObjs, forKey: "labels")
-                                context.delete(message)
-                                //in case
+            var error: NSError?
+            var messagesNoCache : [String] = []
+            for message in messages {
+                let msg = MessageEvent(event: message)
+                switch(msg.Action) {
+                case .some(IncrementalUpdateType.delete):
+                    if let messageID = msg.ID {
+                        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                            let labelObjs = message.mutableSetValue(forKey: "labels")
+                            labelObjs.removeAllObjects()
+                            message.setValue(labelObjs, forKey: "labels")
+                            context.delete(message)
+                            //in case
+                            context.performAndWait {
                                 error = context.saveUpstreamIfNeeded()
                                 if error != nil  {
                                     error?.upload(toAnalytics: "GRTJSONSerialization Delete")
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
-                            
                         }
                     }
                 case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
@@ -2163,20 +2162,21 @@ class MessageDataService : Service, HasLocalStorage {
                     }
                 default:
                     PMLog.D(" unknown type in message: \(message)")
+                    
                 }
-            }
-            //TODO:: move this to the loop and to catch the error also put it in noCache queue.
-            context.performAndWait {
-                error = context.saveUpstreamIfNeeded()
-            }
-            if error != nil  {
-                error?.upload(toAnalytics: "GRTJSONSerialization Save")
-                PMLog.D(" error: \(String(describing: error))")
-            }
-            self.fetchMetadata(with: messagesNoCache)
-            DispatchQueue.main.async {
-                completion?(task, nil, error)
-                return
+                //TODO:: move this to the loop and to catch the error also put it in noCache queue.
+                context.performAndWait {
+                    error = context.saveUpstreamIfNeeded()
+                }
+                if error != nil  {
+                    error?.upload(toAnalytics: "GRTJSONSerialization Save")
+                    PMLog.D(" error: \(String(describing: error))")
+                }
+                self.fetchMetadata(with: messagesNoCache)
+                DispatchQueue.main.async {
+                    completion?(task, nil, error)
+                    return
+                }
             }
         }
     }

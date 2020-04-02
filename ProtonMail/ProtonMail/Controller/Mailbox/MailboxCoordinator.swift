@@ -60,13 +60,13 @@ class MailboxCoordinator : DefaultCoordinator {
         self.viewModel = vm
         self.services = services
         
-        let inbox : UIStoryboard = UIStoryboard.Storyboard.inbox.storyboard
-        let vc = inbox.make(VC.self)
-        let nav = UINavigationController(rootViewController: vc)
-        
+//        let inbox : UIStoryboard = UIStoryboard.Storyboard.inbox.storyboard
+//        let vc = inbox.make(VC.self)
+//        let nav = UINavigationController(rootViewController: vc)
+//
         self.viewController = vc
-        self.navBeforeStart = nav
-        self.navigation = nav
+//        self.navBeforeStart = nav
+//        self.navigation = nav
     }
     
     init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {

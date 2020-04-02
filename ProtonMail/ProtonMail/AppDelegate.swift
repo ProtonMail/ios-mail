@@ -59,13 +59,11 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                //    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
-                //     let mailbox = MailboxCoordinator(rvc: self, nav: navigation, vc: mailboxViewController, vm: viewModel, services: sharedServices) 
                     let usersManager : UsersManager = sharedServices.get()
                     let user = usersManager.firstUser!
                     let viewModel = MailboxViewModelImpl(label: .inbox, userManager: user, pushService: sharedServices.get())
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
-                    mailbox.start()                    
+                    mailbox.start()
                 }
             }
         }
