@@ -190,12 +190,15 @@ class ContactPicker: UIView {
         }
         
         self.contacts = self.datasource?.contactModelsForContactPicker(contactPickerView: self) ?? [ContactPickerModelProtocol]()
-        self.contactCollectionView.reloadData()
+//        self.contactCollectionView.reloadData()
         
         self.layoutIfNeeded()
         self.contactCollectionView.layoutIfNeeded()
         self.contactCollectionView.scrollToEntryAnimated(animated: false, onComplete: nil)
         self.hideSearchTableView()
+        
+        //Show search result
+        collectionView(at: self.contactCollectionView, entryTextDidChange: self.contactCollectionView.searchText)
     }
     
     

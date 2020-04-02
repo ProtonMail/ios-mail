@@ -213,7 +213,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                 }
                 
                 if let context = self.message?.managedObjectContext {
-                    context.perform {
+                    context.performAndWait {
                         if let error = context.saveUpstreamIfNeeded() {
                             PMLog.D("error: \(error)")
                         }
@@ -247,12 +247,12 @@ class ComposeViewModelImpl : ComposeViewModel {
                 return
             }
             
-            guard let emial = model.displayEmail else {
+            guard let email = model.displayEmail else {
                 complete?(nil, -1)
                 return
             }
-            let getEmail = UserEmailPubKeys(email: emial).run()
-            let getContact = sharedContactDataService.fetch(byEmails: [emial], context: context)
+            let getEmail = UserEmailPubKeys(email: email).run()
+            let getContact = sharedContactDataService.fetch(byEmails: [email], context: context)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {
@@ -262,8 +262,8 @@ class ComposeViewModelImpl : ComposeViewModel {
                         c.pgpType = .internal_normal
                     }
                 } else {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        if contact.encrypt {
+                    if let contact = contacts.first {
+                        if contact.encrypt, contact.firstPgpKey != nil {
                             c.pgpType = .pgp_encrypt_trusted_key
                         } else if contact.sign {
                             c.pgpType = .pgp_signed
@@ -274,6 +274,9 @@ class ComposeViewModelImpl : ComposeViewModel {
                     } else {
                         if let pwd = self.message?.password, pwd != "" {
                             c.pgpType = .eo
+                        } else if let userinfo = sharedUserDataService.userInfo,
+                            userinfo.sign == 1 {
+                            c.pgpType = .pgp_signed
                         } else {
                             c.pgpType = .none
                         }
@@ -356,7 +359,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     case .contactGroup:
                         if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
+                            self.ccSelectedContacts.append(group)
                         } else {
                             // TODO: error handling
                         }
@@ -376,7 +379,7 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     case .contactGroup:
                         if let group = cont as? ContactGroupVO {
-                            self.toSelectedContacts.append(group)
+                            self.bccSelectedContacts.append(group)
                         } else {
                             // TODO: error handling
                         }
@@ -450,10 +453,9 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
     }
     
-    override func sendMessage(hasExtenal: Bool) {
+    override func sendMessage() {
         //check if has extenral emails and if need attach key
-        if hasExtenal == true,
-            let userinfo = sharedUserDataService.userInfo,
+        if let userinfo = sharedUserDataService.userInfo,
             userinfo.attachPublicKey == 1,
             let msg = message,
             let addr = msg.defaultAddress,

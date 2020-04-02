@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "メールに写真を添付するために必要です。";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "メールアドレスの自動補完のために必要です。";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "アプリの安全なロック解除を許可します。";

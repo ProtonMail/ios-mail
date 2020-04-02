@@ -18,7 +18,7 @@
 
 #pragma mark SSL Pin Verifier
 
-TSKTrustEvaluationResult verifyPublicKeyPin(SecTrustRef serverTrust, NSString *serverHostname, NSSet<NSData *> *knownPins, TSKSPKIHashCache *hashCache)
+TSKTrustEvaluationResult verifyPublicKeyPin(SecTrustRef serverTrust, NSString *serverHostname, NSSet<NSData *> *knownPins, TSKSPKIHashCache *hashCache, BOOL verifyHostname)
 {
     NSCParameterAssert(serverTrust);
     NSCParameterAssert(knownPins);
@@ -47,7 +47,7 @@ TSKTrustEvaluationResult verifyPublicKeyPin(SecTrustRef serverTrust, NSString *s
         return TSKTrustEvaluationErrorInvalidParameters;
     }
     
-    if ((trustResult != kSecTrustResultUnspecified) && (trustResult != kSecTrustResultProceed))
+    if ((trustResult != kSecTrustResultUnspecified) && (trustResult != kSecTrustResultProceed) && verifyHostname)
     {
         // Default SSL validation failed
         CFDictionaryRef evaluationDetails = SecTrustCopyResult(serverTrust);

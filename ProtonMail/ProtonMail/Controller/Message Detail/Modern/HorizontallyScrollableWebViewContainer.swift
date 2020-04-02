@@ -200,7 +200,9 @@ extension HorizontallyScrollableWebViewContainer: WKNavigationDelegate, WKUIDele
     
     func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         if let validator = TrustKitWrapper.current?.pinningValidator {
-            validator.handle(challenge, completionHandler: completionHandler)
+            if !validator.handle(challenge, completionHandler: completionHandler) {
+                completionHandler(.performDefaultHandling, challenge.proposedCredential)
+            }
         } else {
             assert(false, "TrustKit was not correctly initialized")
             completionHandler(.performDefaultHandling, challenge.proposedCredential)

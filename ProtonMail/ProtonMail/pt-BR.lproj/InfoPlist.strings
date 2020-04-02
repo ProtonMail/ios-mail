@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Necessário para anexar fotos ao e-mail.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Necessário para o preenchimento automático de e-mail.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Permite você desbloquear de maneira rápida e segura seu aplicativo.";

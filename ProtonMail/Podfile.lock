@@ -78,6 +78,7 @@ PODS:
   - OpenPGP (1.0.5):
     - OpenSSL
   - OpenSSL (1.0.210)
+  - PMNetworking (1.0.0)
   - PromiseKit (6.8.3):
     - PromiseKit/CorePromise (= 6.8.3)
     - PromiseKit/Foundation (= 6.8.3)
@@ -119,6 +120,7 @@ DEPENDENCIES:
   - "NSDate+Helper (from `https://github.com/ProtonMail/nsdate-helper.git`, branch `master`)"
   - OHHTTPStubs/Swift
   - OpenPGP (from `../OpenPGP`)
+  - PMNetworking (from `../Networking`)
   - PromiseKit (~> 6.0)
   - Sentry (= 4.1.0)
   - SWRevealViewController (= 2.3.0)
@@ -126,7 +128,7 @@ DEPENDENCIES:
   - "UIColor+Hex (= 1.0.1)"
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - AFNetworking
     - AwaitKit
     - Crashlytics
@@ -159,6 +161,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/ProtonMail/nsdate-helper.git
   OpenPGP:
     :path: "../OpenPGP"
+  PMNetworking:
+    :path: "../Networking"
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
@@ -187,6 +191,7 @@ SPEC CHECKSUMS:
   OHHTTPStubs: ef33a2c353110d306bb98f695435ec56ff5a26c3
   OpenPGP: b34d036b76e49bbcfe29f38b61bb5664ce83266a
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
+  PMNetworking: 7c1717a5ae14cc5112c9972a94ae8f2399fc8b4d
   PromiseKit: 94c6e781838c5bf4717677d0d882b0e7250c80fc
   SDWebImage: 5fcdb02cc35e05fc35791ec514b191d27189f872
   SDWebImageFLPlugin: cf3f4ae49f249dd785129346fd61bbc8433a88cf
@@ -195,6 +200,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 6b8f171dfcad7ad90765791eacb7d0972074cd20
+PODFILE CHECKSUM: e829aeee5f3eeeea8fa46bf579f2d9c08d682c0e
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.4

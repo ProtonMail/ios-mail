@@ -127,6 +127,28 @@ NSDictionary *parseTrustKitConfiguration(NSDictionary *trustKitArguments)
             domainFinalConfiguration[kTSKIncludeSubdomains] = shouldIncludeSubdomains;
         }
         
+        // Extract the optional includeSubdomains setting
+        NSNumber *shouldForceSubdomains = domainPinningPolicy[kForceSubdomains];
+        if (shouldForceSubdomains == nil)
+        {
+            // Default setting is NO
+            domainFinalConfiguration[kForceSubdomains] = @(NO);
+        }
+        else
+        {
+            if ([kForceSubdomains boolValue] == YES)
+            {
+                // Prevent pinning on *.com
+                // Ran into this issue with *.appspot.com which is part of the public suffix list
+                if (GetRegistryLength([domainName UTF8String]) == [domainName length])
+                {
+                    [NSException raise:@"TrustKit configuration invalid"
+                                format:@"TrustKit was initialized with includeSubdomains for a domain suffix %@", domainName];
+                }
+            }
+            
+            domainFinalConfiguration[kForceSubdomains] = shouldForceSubdomains;
+        }
         
         // Extract the optional expiration date setting
         NSString *expirationDateStr = domainPinningPolicy[kTSKExpirationDate];

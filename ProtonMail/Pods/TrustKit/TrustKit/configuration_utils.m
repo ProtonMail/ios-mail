@@ -64,6 +64,16 @@ NSString * _Nullable getPinningConfigurationKeyForDomain(NSString * _Nonnull hos
             {
                 // Is the server a subdomain of this pinned server?
                 TSKLog(@"Checking includeSubdomains configuration for %@", pinnedServerName);
+                if ([domainPinningPolicies[pinnedServerName][kForceSubdomains] boolValue])
+                {
+                    TSKLog(@"Checking includeSubdomains by forced configuration for %@", pinnedServerName);
+                    if( [hostname hasSuffix:pinnedServerName] )
+                    {
+                        notedHostname = pinnedServerName;
+                        break;
+                    }
+                }
+                
                 NSUInteger currentMatch = isSubdomain(pinnedServerName, hostname);
                 if (currentMatch > 0 && currentMatch > bestMatch)
                 {

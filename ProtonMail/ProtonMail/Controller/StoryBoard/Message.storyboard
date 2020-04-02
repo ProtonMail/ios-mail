@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14835.7" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14790.5"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -112,6 +112,7 @@
                         <segue destination="W5K-yA-by7" kind="show" identifier="toComposeReplyAll" id="PSA-tt-CEi"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toComposeForward" id="lQf-C0-JMc"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toDraft" id="pf8-3Q-eX5"/>
+                        <segue destination="Euu-JG-ymm" kind="presentation" identifier="toTroubleShootSegue" id="Fjb-FE-hpA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qpt-VD-rqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -220,6 +221,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pY6-6y-A1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4710" y="2536"/>
+        </scene>
+        <!--ref_troubleshoot_nav_controller-->
+        <scene sceneID="FAA-sn-Mt2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Alerts" referencedIdentifier="ref_troubleshoot_nav_controller" id="Euu-JG-ymm" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="tnq-NT-Ymx"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XCi-Tj-EZ4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4709" y="2806"/>
         </scene>
         <!--ref_composer_nav_controller-->
         <scene sceneID="GFB-x8-t7D">

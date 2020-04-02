@@ -27,6 +27,7 @@ import NSDate_Helper
 import Groot
 import PromiseKit
 import AwaitKit
+import Crypto
 
 let sharedContactDataService = ContactDataService(addressBookService: AddressBookService())
 
@@ -409,9 +410,11 @@ class ContactDataService: Service  {
                                             if pubKeys == nil {
                                                 pubKeys = Data()
                                             }
-                                            pubKeys?.append(value)
-                                            if kp == 1 || kp == Int32.min {
-                                                firstKey = value
+                                            if let isExpired = value.isPublicKeyExpired(), !isExpired {
+                                                pubKeys?.append(value)
+                                                if kp == 1 || kp == Int32.min {
+                                                    firstKey = value
+                                                }
                                             }
                                         }
                                     }
@@ -732,7 +735,7 @@ extension ContactDataService {
     }
     
     fileprivate func processContacts(addressBookAccessGranted granted: Bool, lastError: Error?, completion: @escaping ContactVOCompletionBlock) {
-        DispatchQueue.global(qos: DispatchQoS.QoSClass.utility).async {
+        DispatchQueue.global(qos: DispatchQoS.QoSClass.userInitiated).async {
             var contacts: [ContactVO] = []
             if granted {
                 // get contacts from address book
@@ -740,7 +743,7 @@ extension ContactDataService {
             }
             
             // merge address book and core data contacts
-            let context = sharedCoreDataService.backgroundManagedObjectContext // VALIDATE
+            let context = sharedCoreDataService.makeReadonlyBackgroundManagedObjectContext()
             context.performAndWait() {
                 let emailsCache = sharedContactDataService.allEmailsInManagedObjectContext(context)
                 var pm_contacts: [ContactVO] = []
@@ -749,13 +752,12 @@ extension ContactDataService {
                         pm_contacts.append(ContactVO(id: email.contactID, name: email.name, email: email.email, isProtonMailContact: true))
                     }
                 }
-                pm_contacts.distinctMerge(contacts)
-                contacts = pm_contacts
+                contacts.append(contentsOf: pm_contacts)
             }
-            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ?  $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
+            contacts.sort { $0.name.lowercased() == $1.name.lowercased() ? $0.email.lowercased() < $1.email.lowercased() : $0.name.lowercased() < $1.name.lowercased()}
             
             DispatchQueue.main.async {
-                completion(contacts, lastError)
+                completion(Array(Set(contacts)), lastError)
             }
         }
     }

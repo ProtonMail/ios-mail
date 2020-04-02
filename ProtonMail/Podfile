@@ -40,6 +40,8 @@ def common_pods
     pod 'MBProgressHUD' , '1.1.0'
     
     pod 'TrustKit', '1.6.2'
+    
+    pod 'PMNetworking', :path => '../Networking'
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'

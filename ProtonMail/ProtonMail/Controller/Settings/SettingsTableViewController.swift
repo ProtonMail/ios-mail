@@ -48,6 +48,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .multiDomain,
                                                             .swipeAction,
                                                             .language,
+                                                            .network,
                                                             .storage,
                                                             .version] //.Debug,
     
@@ -66,6 +67,10 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                                             .defaultMobilSign]
     
     var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
+    
+    
+    var setting_network_items : [SNetworkItems]            = [.doh]
+    
     
     var setting_languages : [ELanguage]                  = ELanguage.allItems()
     
@@ -90,6 +95,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     let HeaderCell                    = "header_cell"
     let SingleTextCell                = "single_text_cell"
     let SwitchCell                    = "switch_table_view_cell"
+    let SwitchTwolineCell             = "switch_two_line_cell"
+    
     
     //
     let CellHeight : CGFloat = 30.0
@@ -104,6 +111,12 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
         self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
+        
+        self.tableView.estimatedSectionHeaderHeight = CellHeight
+        self.tableView.sectionHeaderHeight = UITableView.automaticDimension
+        
+        self.tableView.estimatedRowHeight = CellHeight
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func updateTitle() {
@@ -182,6 +195,8 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 return 1
             case .labels:
                 return setting_labels_items.count
+            case .network:
+                return setting_network_items.count
             }
         }
         return 0
@@ -223,7 +238,7 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cell.accessoryType = UITableViewCell.AccessoryType.none
                         cell.selectionStyle = UITableViewCell.SelectionStyle.none
                         if let userInfo = userInfo {
-                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping ActionStatus) -> Void in
+                            cell.configCell(itme.description, bottomLine: "", status: userInfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
                                 if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
                                     let view = UIApplication.shared.keyWindow ?? UIView()
                                     MBProgressHUD.showAdded(to: view, animated: true)
@@ -458,6 +473,44 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                 cell.accessoryType = UITableViewCell.AccessoryType.disclosureIndicator
                 cellout = cell
                 
+            case .network:
+                let netItem = setting_network_items[indexPath.row]
+                
+                if netItem == .doh {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTwolineCell, for: indexPath) as! SwitchTwolineCell
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                    cell.selectionStyle = UITableViewCell.SelectionStyle.none
+                    let topline = "Allow alternative routing"
+                    let holder = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@"
+                    let learnMore = "Learn more"
+                    
+                    let full = String.localizedStringWithFormat(holder, learnMore)
+                    let attributedString = NSMutableAttributedString(string: full,
+                                                                     attributes: [.font : UIFont.preferredFont(forTextStyle: .footnote),
+                                                                                  .foregroundColor : UIColor.darkGray])
+                    if let subrange = full.range(of: learnMore) {
+                        let nsRange = NSRange(subrange, in: full)
+                        attributedString.addAttribute(.link,
+                                                      value: "http://protonmail.com/blog/anti-censorship-alternative-routing",
+                                                      range: nsRange)
+                    }
+                    cell.configCell(topline, bottomLine: attributedString, showSwitcher: true, status: DoHMail.default.status == .on) { (cell, newStatus, feedback) in
+                        if newStatus {
+                            DoHMail.default.status = .on
+                            userCachedStatus.isDohOn = true
+                        } else {
+                            DoHMail.default.status = .off
+                            userCachedStatus.isDohOn = false
+                        }
+                    }
+                    cellout = cell
+                }
+                if netItem == .clear {
+                    let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalSingleLineCell, for: indexPath) as! GeneralSettingSinglelineCell
+                    cell.configCell(netItem.description)
+                    cell.accessoryType = UITableViewCell.AccessoryType.none
+                    cellout = cell
+                }
             case .version:
                 break
             }
@@ -476,8 +529,19 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderCell)
-        header?.textLabel?.font = Fonts.h6.regular
-        header?.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+        header?.contentView.subviews.forEach{ $0.removeFromSuperview() }
+        
+        let textLabel = UILabel()
+        
+        if #available(iOS 10, *) {
+            textLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
+            textLabel.adjustsFontForContentSizeCategory = true
+        } else {
+            textLabel.font = Fonts.h6.regular
+        }
+        
+        textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
+        textLabel.numberOfLines = 0
         
         if(setting_headers[section] == SettingSections.version){
             var appVersion = "Unkonw Version"
@@ -492,19 +556,22 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
             
             let lib_v = PMNLibVersion.getLibVersion()
             libVersion = "| LibVersion: \(lib_v)"
-            header?.textLabel?.text = appVersion + " " + libVersion
+            textLabel.text = appVersion + " " + libVersion
         }
         else
         {
-            header?.textLabel?.text = setting_headers[section].description
+            textLabel.text = setting_headers[section].description
         }
+        
+        header?.contentView.addSubview(textLabel)
+        textLabel.mas_makeConstraints({ (make) in
+            let _ = make?.top.equalTo()(header?.contentView.mas_top)?.with()?.offset()(8)
+            let _ = make?.bottom.equalTo()(header?.contentView.mas_bottom)?.with()?.offset()(-8)
+            let _ = make?.left.equalTo()(header?.contentView.mas_left)?.with()?.offset()(8)
+            let _ = make?.right.equalTo()(header?.contentView.mas_right)?.with()?.offset()(-8)
+        })
         return header
     }
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return CellHeight
-    }
-    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if setting_headers.count > indexPath.section {
@@ -739,6 +806,11 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                     alertController.popoverPresentationController?.sourceView = cell ?? self.view
                     alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
                     present(alertController, animated: true, completion: nil)
+                }
+            case .network:
+                let netItem = setting_network_items[indexPath.row]
+                if netItem == .clear {
+                    DoHMail.default.clearAll()
                 }
             default:
                 break

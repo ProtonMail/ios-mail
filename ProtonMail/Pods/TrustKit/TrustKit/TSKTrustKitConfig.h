@@ -138,6 +138,8 @@ FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKEnforcePinning;
  */
 FOUNDATION_EXPORT const TSKDomainConfigurationKey kTSKIncludeSubdomains;
 
+FOUNDATION_EXPORT const TSKDomainConfigurationKey kForceSubdomains;
+
 
 /**
  A boolean. If set to `YES`, TrustKit will not pin this specific domain if `kTSKIncludeSubdomains`

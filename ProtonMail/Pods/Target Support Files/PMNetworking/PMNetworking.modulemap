@@ -1,0 +1,6 @@
+framework module PMNetworking {
+  umbrella header "PMNetworking-umbrella.h"
+
+  export *
+  module * { export * }
+}
