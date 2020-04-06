@@ -1768,7 +1768,15 @@ class LocalizedString {
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
     
-    lazy var _logut_account_switched = NSLocalizedString("Logged out from %@ and signed in with %@", comment: "Alert when logout one account and switch to another")
+    lazy var _logout_account_switched_when_token_revoked = NSLocalizedString("Logged out from %@ and signed in with %@", comment: "Alert when auth token is revoked and switch to another")
+    
+    lazy var _logout_primary_account_from_manager_account_title = NSLocalizedString("Logout", comment: "Alert title when logout primary account from account manager")
+    
+    lazy var _logout_primary_account_from_manager_account = NSLocalizedString("You will be switched to %@", comment: "Alert when logout primary account from account manager")
+    
+    lazy var _logout_secondary_account_from_manager_account_title = NSLocalizedString("Log out %@?", comment: "Alert title when logout non-primary account from account manager")
+    
+    lazy var _logout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to log out?", comment: "Alert when logout non-primary account from account manager")
     
     // TrustKit
     

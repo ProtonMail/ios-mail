@@ -139,8 +139,27 @@ extension AccountManagerViewController: UITableViewDataSource {
         switch self.viewModel.section(at: indexPath.section) {
         case .users where self.viewModel.usersCount > 1:
             return [UITableViewRowAction(style: .destructive, title: LocalString._sign_out) { _, indexPath in
-                let title = LocalString._warning
-                let message = LocalString._logout_confirmation
+                
+                var title = LocalString._warning
+                var message = LocalString._logout_confirmation
+                
+                if let user = self.viewModel.user(at: indexPath) {
+                    if let nextUser = self.viewModel.nextUser(at: indexPath) {
+                        if user.userInfo.userId == self.viewModel.currentUser?.userInfo.userId {
+                            // Primary account logout
+                            title = LocalString._logout_primary_account_from_manager_account_title
+                            message = String(format: LocalString._logout_primary_account_from_manager_account, nextUser.defaultEmail)
+                        } else {
+                            // Secondary account
+                            title = String(format: LocalString._logout_secondary_account_from_manager_account_title, user.defaultEmail)
+                            message = LocalString._logout_secondary_account_from_manager_account
+                        }
+                    } else {
+                        title = String(format: LocalString._logout_secondary_account_from_manager_account_title, user.defaultEmail)
+                        message = LocalString._logout_secondary_account_from_manager_account
+                    }
+                }
+                
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: { _ in
