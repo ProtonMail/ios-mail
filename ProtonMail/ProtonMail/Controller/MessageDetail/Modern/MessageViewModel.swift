@@ -178,19 +178,19 @@ class MessageViewModel: NSObject {
                     queue.async(group: group, execute: work)
                 }
             }
-        }
-        
-        group.notify(queue: .main) {
-            if checkCount == strings.count {
-                var updatedBody = body
-                for (cid, base64) in strings {
-                    updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
-                }
-                
-                self.body = updatedBody
-            } else {
-                if self.body != body {
-                    self.body = body
+            
+            group.notify(queue: .main) {
+                if checkCount == strings.count {
+                    var updatedBody = body
+                    for (cid, base64) in strings {
+                        updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
+                    }
+                    
+                    self.body = updatedBody
+                } else {
+                    if self.body != body {
+                        self.body = body
+                    }
                 }
             }
         }

@@ -490,20 +490,25 @@ class MessageDataService : Service, HasLocalStorage {
     
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
     func base64AttachmentData(att: Attachment, _ complete : @escaping base64AttachmentDataComplete) {
+        guard let user = self.userDataSource else {
+            complete("")
+            return
+        }
+        
         if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-            complete( att.base64DecryptAttachment() )
+            complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
             return
         }
         
         if let data = att.fileData, data.count > 0 {
-            complete( att.base64DecryptAttachment() )
+            complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
             return
         }
         
         att.localURL = nil
         self.fetchAttachmentForAttachment(att, downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in }, completion: { (_, url, error) -> Void in
             att.localURL = url;
-            complete( att.base64DecryptAttachment() )
+            complete( att.base64DecryptAttachment(userInfo: user.userInfo, passphrase: user.mailboxPassword) )
             if error != nil {
                 PMLog.D("\(String(describing: error))")
             }
@@ -1611,7 +1616,9 @@ class MessageDataService : Service, HasLocalStorage {
                                              userKeys: userPrivKeys,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
-                                             msgService: self)
+                                             msgService: self,
+                                             userInfo: userInfo!
+                )
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
                 status.insert(SendStatus.checkPlainText)
