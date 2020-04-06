@@ -163,29 +163,34 @@ class MessageViewModel: NSObject {
         }
         
         let checkCount = atts.count
+        let group: DispatchGroup = DispatchGroup()
         let queue: DispatchQueue = .global(qos: .userInteractive)
         
+        var strings: [String:String] = [:]
         DispatchQueue.global(qos: .userInitiated).async {
-            var strings: [String:String] = [:]
             for att in atts {
-                self.messageService.base64AttachmentData(att: att) { [weak self] based64String in
+                self.messageService.base64AttachmentData(att: att) { based64String in
                     let work = DispatchWorkItem {
                         if !based64String.isEmpty {
                             strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
                         }
-                        
-                        if checkCount == strings.count {
-                            var updatedBody = body
-                            for (cid, base64) in strings {
-                                updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
-                            }
-                            
-                            DispatchQueue.main.async {
-                                self?.body = updatedBody
-                            }
-                        }
                     }
-                    queue.async(execute: work)
+                    queue.async(group: group, execute: work)
+                }
+            }
+        }
+        
+        group.notify(queue: .main) {
+            if checkCount == strings.count {
+                var updatedBody = body
+                for (cid, base64) in strings {
+                    updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
+                }
+                
+                self.body = updatedBody
+            } else {
+                if self.body != body {
+                    self.body = body
                 }
             }
         }
