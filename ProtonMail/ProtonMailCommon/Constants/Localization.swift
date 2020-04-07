@@ -1761,7 +1761,9 @@ class LocalizedString {
     lazy var _message_not_sent_message = NSLocalizedString("We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.", comment: "Local notification text")
     
     /// Logout
-    lazy var _logout_confirmation = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
+    lazy var _logout_title = NSLocalizedString("Logout", comment: "Alert title to confirm logout")
+    lazy var _logout_confirmation = NSLocalizedString("You will be switch to %@", comment: "Alert to confirm logout")
+    lazy var _logout_confirmation_one_account = NSLocalizedString("Are you sure you want to logout %@?", comment: "Alert to confirm logout when only one account logged in")
     
     
     
