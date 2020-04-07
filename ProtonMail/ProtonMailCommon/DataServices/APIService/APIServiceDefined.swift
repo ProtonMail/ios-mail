@@ -344,6 +344,9 @@ struct SettingsAPI {
     
     /// Update login password [PUT]
     static let v_update_link_confirmation : Int = 3
+    
+    /// Update email signature [PUT]
+    static let v_update_email_signature: Int = 3
 }
 
 //Users API

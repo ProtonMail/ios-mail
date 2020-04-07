@@ -150,7 +150,9 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
                 case .displayName:
                     c.config(right: self.viewModel.displayName)
                 case .signature:
-                    c.config(right: "On")
+                    c.config(right: self.viewModel.defaultSignatureStatus)
+                case .mobileSignature:
+                    c.config(right: self.viewModel.defaultMobileSignatureStatus)
                 }
             }
             return cell
@@ -283,8 +285,8 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
                     self.coordinator?.go(to: .displayName)
                 case .signature:
                      self.coordinator?.go(to: .signature)
-//                    case .defaultMobilSign:
-//                        self.coordinator?.go(to: .mobileSignature)
+                case .mobileSignature:
+                    self.coordinator?.go(to: .mobileSignature)
                 }
             }
             break

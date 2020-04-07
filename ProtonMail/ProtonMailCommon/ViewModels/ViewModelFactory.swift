@@ -85,8 +85,8 @@ class ViewModelFactoryProduction : ViewModelFactory {
 //        return ChangeSignatureViewModel()
 //    }
     
-    override func getChangeMobileSignature() -> SettingDetailsViewModel {
-        return ChangeMobileSignatureViewModel()
-    }
+//    override func getChangeMobileSignature() -> SettingDetailsViewModel {
+//        return ChangeMobileSignatureViewModel()
+//    }
 
 }

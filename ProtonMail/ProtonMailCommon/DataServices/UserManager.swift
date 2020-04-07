@@ -57,6 +57,7 @@ class UserManager : Service, HasLocalStorage {
         self.contactGroupService.cleanUp()
         self.localNotificationService.cleanUp()
         self.userService.cleanUp()
+        userCachedStatus.removeMobileSignature(uid: userInfo.userId)
         #if !APP_EXTENSION
         self.sevicePlanService.cleanUp()
         #endif
@@ -338,16 +339,22 @@ extension UserManager {
             #else
             let isEnterprise = false
             #endif
-            //TODO:: fix me
             let role = userInfo.role
             if role > 0 || isEnterprise {
-                return self.userService.switchCacheOff == false
+                if let status = userCachedStatus.getMobileSignatureSwitchStatus(by: userInfo.userId) {
+                    return status
+                } else {
+                    //Migrate from local cache
+                    let status = self.userService.switchCacheOff == false
+                    userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: status)
+                    return status
+                }
             } else {
-                self.userService.switchCacheOff = false
+                userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: true)
                 return true
             } }
         set {
-            self.userService.switchCacheOff = (newValue == false)
+            userCachedStatus.setMobileSignatureSwitchStatus(uid: userInfo.userId, value: newValue)
         }
     }
     
@@ -360,14 +367,14 @@ extension UserManager {
             #endif
             let role = userInfo.role
             if role > 0 || isEnterprise {
-                return userCachedStatus.mobileSignature
+                return userCachedStatus.getMobileSignature(by: userInfo.userId)
             } else {
-                userCachedStatus.resetMobileSignature()
-                return userCachedStatus.mobileSignature
+                userCachedStatus.removeMobileSignature(uid: userInfo.userId)
+                return userCachedStatus.getMobileSignature(by: userInfo.userId)
             }
         }
         set {
-            userCachedStatus.mobileSignature = newValue
+            userCachedStatus.setMobileSignature(uid: userInfo.userId, signature: newValue)
         }
     }
     

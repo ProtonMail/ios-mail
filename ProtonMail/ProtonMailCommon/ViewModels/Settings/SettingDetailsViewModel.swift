@@ -323,6 +323,11 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
 }
 
 class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
+    let userManager : UserManager
+    init(user: UserManager) {
+        self.userManager = user
+    }
+    
     var sectionTitle2: String {
         return LocalString._edit_mobile_signature
     }
@@ -348,8 +353,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getSwitchStatus() -> Bool {
-//        return sharedUserDataService.showMobileSignature
-        return false
+        return self.userManager.showMobileSignature
     }
     
     func isShowTextView() -> Bool {
@@ -365,15 +369,15 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
     }
     
     func getCurrentValue() -> String {
-//        return sharedUserDataService.mobileSignature
-        return ""
+        return self.userManager.mobileSignature
     }
     
     func updateValue(_ new_value: String, password: String, tfaCode: String?, complete:@escaping (Bool, NSError?) -> Void) {
         if new_value == getCurrentValue() {
             complete(true, nil)
         } else {
-           // sharedUserDataService.mobileSignature = new_value.ln2br()
+            self.userManager.mobileSignature = new_value.ln2br()
+            self.userManager.save()
             complete(true, nil)
         }
     }
@@ -382,7 +386,7 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
         if isOn == getSwitchStatus() {
             complete(true, nil)
         } else {
-          //  sharedUserDataService.showMobileSignature = isOn
+            self.userManager.showMobileSignature = isOn
             complete(true, nil)
         }
     }
@@ -403,8 +407,8 @@ class ChangeMobileSignatureViewModel : SettingDetailsViewModel {
             let isEnterprise = true
         #else
             let isEnterprise = false
-        #endif //TODO:: fix me
-        let role = 0 // sharedUserDataService.userInfo?.role ?? 0
+        #endif
+        let role = self.userManager.userInfo.role
         return role > 0 || isEnterprise
     }
     

@@ -934,12 +934,16 @@ class UserDataService : Service, HasLocalStorage {
     
     func updateSignature(auth currentAuth: AuthCredential,
                          user: UserInfo,
-                         _ signature: String, completion: UserInfoBlock?) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain() else {
-//            completion?(nil, nil, NSError.lockError())
-//            return
-//        }
-//        self.apiService.settingUpdateSignature(signature, authCredential: authCredential, completion: completionForUserInfo(completion))
+                         _ signature: String, completion: @escaping CompletionBlock) {
+        guard let _ = keymaker.mainKey else {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
+        signatureSetting.call(api: self.apiService) { (task, response, hasError) in
+            completion(task, nil, response?.error)
+        }
     }
     
     // MARK: - Private methods
