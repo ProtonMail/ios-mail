@@ -397,7 +397,7 @@ extension UsersManager {
         self.users.forEach { $0.launchCleanUpIfNeeded() }
     }
     
-    func logout(user: UserManager) {
+    func logout(user: UserManager, shouldAlert: Bool = false) {
         user.cleanUp()
         
         if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
@@ -409,10 +409,10 @@ extension UsersManager {
         
         if self.users.isEmpty {
             self.clean()
-        } else {
-            String(format: LocalString._logut_account_switched,
-                   arguments: [user.defaultDisplayName,
-                               self.users.first!.defaultDisplayName]).alertToast()
+        } else if shouldAlert {
+            String(format: LocalString._logout_account_switched_when_token_revoked,
+                   arguments: [user.defaultEmail,
+                               self.users.first!.defaultEmail]).alertToast()
         }
     }
     

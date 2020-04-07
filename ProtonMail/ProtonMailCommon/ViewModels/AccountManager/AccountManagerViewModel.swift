@@ -42,6 +42,30 @@ class AccountManagerViewModel {
         return self.usersManager.user(at: at)
     }
     
+    func user(at indexPath: IndexPath) -> UserManager? {
+        switch self.section(at: indexPath.section) {
+        case .users:
+            if let user = self.user(at: indexPath.row) {
+                return user
+            }
+        default:
+            break
+        }
+        return nil
+    }
+    
+    func nextUser(at indexPath: IndexPath) -> UserManager? {
+        switch self.section(at: indexPath.section) {
+        case .users:
+            if let user = self.user(at: indexPath.row + 1) {
+                return user
+            }
+        default:
+            break
+        }
+        return nil
+    }
+    
     func handle(at index: Int) -> UsersManager.DisconnectedUserHandle? {
         return self.usersManager.disconnectedUser(at: index)
     }
@@ -58,6 +82,12 @@ class AccountManagerViewModel {
 
             }
         default: break
+        }
+    }
+    
+    var currentUser: UserManager? {
+        get {
+            return self.usersManager.firstUser
         }
     }
     

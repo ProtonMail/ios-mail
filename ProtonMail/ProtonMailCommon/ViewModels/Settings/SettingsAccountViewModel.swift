@@ -135,6 +135,9 @@ protocol SettingsAccountViewModel : AnyObject {
     var addrItems: [AddressItem] { get set }
     var mailboxItems: [MailboxItem] {get set}
     
+    var setting_swipe_action_items : [SSwipeActionItems] { get set}
+    var setting_swipe_actions : [MessageSwipeAction] { get set }
+    
     var storageText : String { get }
     var recoveryEmail : String { get }
     
@@ -149,6 +152,10 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature]
     var mailboxItems :  [MailboxItem] = [/*.privacy, .search,*/ .labelFolder, .gestures]
+    
+    var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
+    var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
+                                                            .star, .archive, .unread]
     var userManager: UserManager
     
     init(user : UserManager) {

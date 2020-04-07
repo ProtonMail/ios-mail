@@ -201,65 +201,63 @@ extension Attachment {
 //        }
 //    }
     
-    func base64DecryptAttachment() -> String {
-//        let userInfo = self.message.cachedUser ?? sharedUserDataService.userInfo
-//        let userPrivKeys = userInfo?.userPrivateKeys ?? sharedUserDataService.userPrivateKeys
-//        let addrPrivKeys = userInfo?.addressKeys ?? sharedUserDataService.addressKeys
-//        guard let passphrase = self.message.cachedPassphrase ?? sharedUserDataService.mailboxPassword else {
-//            return ""
-//        }
-//        
-//        if let localURL = self.localURL {
-//            if let data : Data = try? Data(contentsOf: localURL as URL) {
-//                do {
-//                    if let key_packet = self.keyPacket {
-//                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-//                            if let decryptData =
-//                                sharedUserDataService.newSchema ?
-//                                    try data.decryptAttachment(keyPackage: keydata,
-//                                                               userKeys: userPrivKeys,
-//                                                               passphrase: passphrase,
-//                                                               keys: addrPrivKeys) :
-//                                    try data.decryptAttachment(keydata,
-//                                                               passphrase: passphrase,
-//                                                               privKeys: addrPrivKeys.binPrivKeys) {
-//                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-//                                return strBase64
-//                            }
-//                        }
-//                    }
-//                } catch let ex as NSError{
-//                    PMLog.D("\(ex)")
-//                }
-//            } else if let data = self.fileData, data.count > 0 {
-//                do {
-//                    if let key_packet = self.keyPacket {
-//                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
-//                            if let decryptData =
-//                                sharedUserDataService.newSchema ?
-//                                    try data.decryptAttachment(keyPackage: keydata,
-//                                                               userKeys: userPrivKeys,
-//                                                               passphrase: passphrase,
-//                                                               keys: addrPrivKeys) :
-//                                    try data.decryptAttachment(keydata,
-//                                                               passphrase: passphrase,
-//                                                               privKeys: addrPrivKeys.binPrivKeys) {
-//                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
-//                                return strBase64
-//                            }
-//                        }
-//                    }
-//                } catch let ex as NSError{
-//                    PMLog.D("\(ex)")
-//                }
-//            }
-//        }
-//        
-//        
-//        if let data = self.fileData {
-//            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
-//            return strBase64
-//        }
+    func base64DecryptAttachment(userInfo: UserInfo, passphrase: String) -> String {
+//        let userInfo = self.message.cachedUser ?? user.userInfo
+        let userPrivKeys = userInfo.userPrivateKeys
+        let addrPrivKeys = userInfo.addressKeys
+//        let passphrase = self.message.cachedPassphrase ?? user.mailboxPassword
+
+        if let localURL = self.localURL {
+            if let data : Data = try? Data(contentsOf: localURL as URL) {
+                do {
+                    if let key_packet = self.keyPacket {
+                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                            if let decryptData =
+                                userInfo.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: userPrivKeys,
+                                                               passphrase: passphrase,
+                                                               keys: addrPrivKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: addrPrivKeys.binPrivKeys) {
+                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+                                return strBase64
+                            }
+                        }
+                    }
+                } catch let ex as NSError{
+                    PMLog.D("\(ex)")
+                }
+            } else if let data = self.fileData, data.count > 0 {
+                do {
+                    if let key_packet = self.keyPacket {
+                        if let keydata: Data = Data(base64Encoded:key_packet, options: NSData.Base64DecodingOptions(rawValue: 0)) {
+                            if let decryptData =
+                                userInfo.newSchema ?
+                                    try data.decryptAttachment(keyPackage: keydata,
+                                                               userKeys: userPrivKeys,
+                                                               passphrase: passphrase,
+                                                               keys: addrPrivKeys) :
+                                    try data.decryptAttachment(keydata,
+                                                               passphrase: passphrase,
+                                                               privKeys: addrPrivKeys.binPrivKeys) {
+                                let strBase64:String = decryptData.base64EncodedString(options: .lineLength64Characters)
+                                return strBase64
+                            }
+                        }
+                    }
+                } catch let ex as NSError{
+                    PMLog.D("\(ex)")
+                }
+            }
+        }
+
+
+        if let data = self.fileData {
+            let strBase64:String = data.base64EncodedString(options: .lineLength64Characters)
+            return strBase64
+        }
         return ""
     }
     

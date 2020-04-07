@@ -277,16 +277,16 @@ class SendBuilder {
     }
     
     
-    func fetchAttachmentBody(att: Attachment, messageDataService: MessageDataService) -> Promise<String> {
+    func fetchAttachmentBody(att: Attachment, messageDataService: MessageDataService, passphrase: String, userInfo: UserInfo) -> Promise<String> {
         return Promise { seal in
             async {
                 if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-                    seal.fulfill(att.base64DecryptAttachment())
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
                     return
                 }
                 
                 if let data = att.fileData, data.count > 0 {
-                    seal.fulfill(att.base64DecryptAttachment())
+                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
                     return
                 }
                 
@@ -296,7 +296,7 @@ class SendBuilder {
                                                                 downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
                                                                 completion: { (_, url, error) -> Void in
                                                                     att.localURL = url;
-                                                                    seal.fulfill(att.base64DecryptAttachment())
+                                                                    seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
                                                                     if error != nil {
                                                                         PMLog.D("\(String(describing: error))")
                                                                     }
@@ -306,7 +306,7 @@ class SendBuilder {
         }
     }
     
-    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool, msgService: MessageDataService) -> Promise<SendBuilder> {
+    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool, msgService: MessageDataService, userInfo: UserInfo) -> Promise<SendBuilder> {
         return Promise { seal in
             async {
                 /// decrypt attachments
@@ -338,7 +338,7 @@ class SendBuilder {
                 
                 var fetchs : [Promise<String>] = [Promise<String>]()
                 for att in self.preAttachments {
-                    fetchs.append(self.fetchAttachmentBody(att: att.att, messageDataService: msgService))
+                    fetchs.append(self.fetchAttachmentBody(att: att.att, messageDataService: msgService, passphrase: passphrase, userInfo: userInfo))
                 }
                 //1. fetch attachment first
                 firstly {

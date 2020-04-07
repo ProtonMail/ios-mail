@@ -110,8 +110,12 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     // MARK: swipactions
     
-    private var leftSwipeAction : MessageSwipeAction  = .archive
-    private var rightSwipeAction : MessageSwipeAction = .trash
+    private var leftSwipeAction : MessageSwipeAction {
+        return self.viewModel.user.userInfo.swipeLeftAction
+    }
+    private var rightSwipeAction : MessageSwipeAction {
+        return self.viewModel.user.userInfo.swipeRightAction
+    }
     
     //
     private var lastNetworkStatus : NetworkStatus? = nil

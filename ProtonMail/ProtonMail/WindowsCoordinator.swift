@@ -174,7 +174,7 @@ class WindowsCoordinator: CoordinatorNew {
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
         if let user = usersManager.getUser(bySessionID: uid) {
-            usersManager.logout(user: user)
+            usersManager.logout(user: user, shouldAlert: true)
         }
     }
     

@@ -766,10 +766,12 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                                 let _ = self.navigationController?.popViewController(animated: true)
                                 let view = UIApplication.shared.keyWindow ?? UIView()
                                 MBProgressHUD.showAdded(to: view, animated: true)
-                                sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
+                                self.userManager.userService.updateUserSwipeAction(auth: self.userManager.auth,
+                                                                                   userInfo: userInfo,
+                                                                                   isLeft: action_item == .left,
+                                                                                   action: swipeAction) { (task, response, error) in
                                     MBProgressHUD.hide(for: view, animated: true)
-//                                    self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
-                                })
+                                }
                             }))
                         }
                     }

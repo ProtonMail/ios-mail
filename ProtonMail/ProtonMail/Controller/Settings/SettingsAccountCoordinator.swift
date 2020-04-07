@@ -66,6 +66,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
 //        case mailboxPwd      = "setting_mailbox_pwd"
 //        case singlePwd       = "setting_single_password_segue"
 //        case snooze          = "setting_notifications_snooze_segue"
+        case swipingGesture = "setting_swiping_gesture"
     }
     
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -83,7 +84,12 @@ class SettingsAccountCoordinator: DefaultCoordinator {
     }
     
     func go(to dest: Destination, sender: Any? = nil) {
-        self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        switch dest {
+        case .swipingGesture:
+            openGesture()
+        default:
+            self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
+        }
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -165,8 +171,19 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             }
             let users: UsersManager = services.get()
             next.setViewModel(ChangeSinglePasswordViewModel(user: users.firstUser!))
+        case .swipingGesture:
+            break
         }
         return true
+    }
+    
+    private func openGesture() {
+        let vc = SettingsGesturesViewController()
+        let users: UsersManager = services.get()
+        let user = users.firstUser!
+        let coordinator = SettingsGesturesCoordinator(dest: vc, vm: SettingsGestureViewModelImpl(user: user), services: self.services)
+        coordinator?.start()
+        self.viewController?.navigationController?.pushViewController(vc, animated: true)
     }
 }
 
