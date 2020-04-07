@@ -2193,4 +2193,11 @@
         <image name="popup_behind_image" width="106.66666412353516" height="153.33332824707031"/>
         <image name="upgrade_background" width="325.33334350585938" height="437.33334350585938"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="GgS-nT-ctf"/>
+        <segue reference="Yep-Vd-dxY"/>
+        <segue reference="V9t-nA-fhw"/>
+        <segue reference="dUE-8e-owj"/>
+        <segue reference="XQx-Pm-sNq"/>
+    </inferredMetricsTieBreakers>
 </document>
