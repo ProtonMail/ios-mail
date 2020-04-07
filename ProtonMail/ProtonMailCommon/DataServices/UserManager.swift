@@ -58,6 +58,7 @@ class UserManager : Service, HasLocalStorage {
         self.localNotificationService.cleanUp()
         self.userService.cleanUp()
         userCachedStatus.removeMobileSignature(uid: userInfo.userId)
+        userCachedStatus.removeMobileSignatureSwitchStatus(uid: userInfo.userId)
         #if !APP_EXTENSION
         self.sevicePlanService.cleanUp()
         #endif
