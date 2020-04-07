@@ -28,7 +28,7 @@ class SettingsGesturesCoordinator : DefaultCoordinator {
 
     typealias VC = SettingsGesturesViewController
     
-    let viewModel : SettingsAccountViewModel
+    let viewModel : SettingsGestureViewModel
     var services: ServiceFactory
     
     internal weak var viewController: SettingsGesturesViewController?
@@ -61,7 +61,7 @@ class SettingsGesturesCoordinator : DefaultCoordinator {
 //        case snooze          = "setting_notifications_snooze_segue"
     }
     
-    init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
+    init?(dest: UIViewController, vm: SettingsGestureViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = dest as? VC else {
             return nil
         }

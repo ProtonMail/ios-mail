@@ -2020,6 +2020,7 @@
 		FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
 		FF2BEC129AA995F5D763F77BF42882C3 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
 		FF574EBFF74DBAF15846CDB94D3AB365 /* ViewModelBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73B47C3DCD77DFACE40B083CBEB41E9C /* ViewModelBase.swift */; };
+		FF65D610243B68E300CB2146 /* SettingsGestureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF65D60F243B68E300CB2146 /* SettingsGestureViewModel.swift */; };
 		FF71F8D04B2D795219315A312AF00251 /* MenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267162BA635F2F55FE71248A41115376 /* MenuTableViewCell.swift */; };
 		FF7200BC99EF9A1772AC9AF90540109B /* SettingsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0329B2D1C050CD483F5A611FC8B4F3CB /* SettingsViewModelImpl.swift */; };
 		FF9485B6BF07BD9F040979B9E7A9BA92 /* SignInViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0ED0222F585298654890FE8BF6620AC /* SignInViewModelImpl.swift */; };
@@ -3000,6 +3001,7 @@
 		FE482702915B1DBA8BB4B4473E61AC73 /* BugDataService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugDataService.swift; sourceTree = "<group>"; };
 		FE8C577A5F3B3CB7F718420FF1C7FCB0 /* UserTempCachedStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTempCachedStatus.swift; sourceTree = "<group>"; };
 		FED5F906B69F8814BD7FF55E4F9C5690 /* MultiLabelDisplayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiLabelDisplayView.swift; sourceTree = "<group>"; };
+		FF65D60F243B68E300CB2146 /* SettingsGestureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsGestureViewModel.swift; sourceTree = "<group>"; };
 		FF8BBCDD4B03C38833E9D72352FED8E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -3256,6 +3258,7 @@
 				34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */,
 				6070AD30387D7CA0B61DDC4BD7CF501D /* SettingsViewModel.swift */,
 				0329B2D1C050CD483F5A611FC8B4F3CB /* SettingsViewModelImpl.swift */,
+				FF65D60F243B68E300CB2146 /* SettingsGestureViewModel.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -6115,6 +6118,7 @@
 				36C9DF29773300A1EE2EBDA7CFA2036B /* ContactCell+Share.swift in Sources */,
 				46788AD27915EB5EB1EC5D6F6492280C /* ContactCollectionView.swift in Sources */,
 				2F09F67CBBD071A6AEEF0FF7E7CC2AE4 /* ContactCollectionViewContactCell.swift in Sources */,
+				FF65D610243B68E300CB2146 /* SettingsGestureViewModel.swift in Sources */,
 				CF593E70929EF96622D405EF532AC4EF /* ContactCollectionViewEntryCell.swift in Sources */,
 				ACE3FC5DC6F54E2E1B97D7D06DEF87E8 /* ContactCollectionViewFlowLayout.swift in Sources */,
 				D898A24A4520D16660C12BB55538FA7E /* ContactCollectionViewPromptCell.swift in Sources */,

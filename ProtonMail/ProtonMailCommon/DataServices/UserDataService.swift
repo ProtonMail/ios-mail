@@ -817,24 +817,19 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let api = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: authCredential) : UpdateSwiftRightAction(action: action, authCredential: authCredential)
-//        api.call(api : apiService) { task, response, hasError in
-//            if !hasError {
-//                userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
-//                userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(task, nil, nil)
-//        }
+    func updateUserSwipeAction(auth currentAuth: AuthCredential,
+                               userInfo: UserInfo,
+                               isLeft : Bool,
+                               action: MessageSwipeAction,
+                               completion: @escaping CompletionBlock) {
+        let api = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: currentAuth) : UpdateSwiftRightAction(action: action, authCredential: currentAuth)
+        api.call(api : apiService) { task, response, hasError in
+            if !hasError {
+                userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
+                userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
+            }
+            completion(task, nil, nil)
+        }
     }
     
     func updateNotificationEmail(auth currentAuth: AuthCredential,

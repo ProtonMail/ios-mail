@@ -299,29 +299,8 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
                 break
             case .labelFolder:
                 self.coordinator?.go(to: .lableManager)	
-            case .gestures:
-//                let action_item = setting_swipe_action_items[indexPath.row]
-//                let alertController = UIAlertController(title: action_item.actionDescription, message: nil, preferredStyle: .actionSheet)
-//                alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
-//                let userInfo = self.userManager.userInfo
-//                let currentAction = action_item == .left ? userInfo.swipeLeftAction : userInfo.swipeRightAction
-//                for swipeAction in setting_swipe_actions {
-//                    if swipeAction != currentAction {
-//                        alertController.addAction(UIAlertAction(title: swipeAction.description, style: .default, handler: { (action) -> Void in
-//                            let _ = self.navigationController?.popViewController(animated: true)
-//                            let view = UIApplication.shared.keyWindow ?? UIView()
-//                            MBProgressHUD.showAdded(to: view, animated: true)
-//                            sharedUserDataService.updateUserSwipeAction(action_item == .left, action: swipeAction, completion: { (task, response, error) -> Void in
-//                                MBProgressHUD.hide(for: view, animated: true)
-//                                //                                    self.userInfo = sharedUserDataService.userInfo ?? self.userInfo
-//                            })
-//                        }))
-//                    }
-//                }
-//                let cell = tableView.cellForRow(at: indexPath)
-//                alertController.popoverPresentationController?.sourceView = cell ?? self.view
-//                alertController.popoverPresentationController?.sourceRect = (cell == nil ? self.view.frame : cell!.bounds)
-//                present(alertController, animated: true, completion: nil)
+            case .gestures:                
+                self.coordinator?.go(to: .swipingGesture)
                 break
             case .storage:
                 break

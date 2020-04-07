@@ -98,6 +98,8 @@ class LocalizedString {
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
     /// "Manage in device Settings"
     lazy var _manage_language_in_device_settings = NSLocalizedString("Manage in device Settings", comment: "Settings row")
+    /// "Swiping gestures"
+    lazy var _settings_swiping_gestures = NSLocalizedString("Swiping gestures", comment: "Swiping gestures")
     
     lazy var _networking = NSLocalizedString("Networking", comment: "section title ")
     
