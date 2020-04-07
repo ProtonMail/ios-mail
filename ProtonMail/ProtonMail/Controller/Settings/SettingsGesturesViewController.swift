@@ -45,6 +45,7 @@ class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, 
         static let headerCell : String        = "header_cell"
         static let headerCellHeight : CGFloat = 36.0
         static let settingCell : String       = "GeneralSettingViewCell"
+        static let cellHeight: CGFloat = 50.0
     }
     
     @IBOutlet var settingTableView: UITableView!
@@ -92,6 +93,10 @@ class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, 
         }
         
         return UITableViewCell()
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return CellKey.cellHeight
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

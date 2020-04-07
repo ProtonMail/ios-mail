@@ -109,15 +109,13 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var menuBarButtonItem: UIBarButtonItem!
     
     // MARK: swipactions
-    
     private var leftSwipeAction : MessageSwipeAction {
-        return self.viewModel.user.userInfo.swipeLeftAction
-    }
-    private var rightSwipeAction : MessageSwipeAction {
         return self.viewModel.user.userInfo.swipeRightAction
     }
+    private var rightSwipeAction : MessageSwipeAction {
+        return self.viewModel.user.userInfo.swipeLeftAction
+    }
     
-    //
     private var lastNetworkStatus : NetworkStatus? = nil
     
     ///
@@ -156,7 +154,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         assert(self.viewModel != nil)
         assert(self.coordinator != nil)
 
-        ///
         self.viewModel.setupFetchController(self)
         
         self.noResultLabel.text = LocalString._messages_no_messages
@@ -178,12 +175,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoButton.isHidden = true
         self.undoView.isHidden = true
         
-        //TODO:: fix me
-        ///set default swipe action
-//        self.leftSwipeAction = sharedUserDataService.swiftLeft
-//        self.rightSwipeAction = sharedUserDataService.swiftRight
-        
-        ///
         self.viewModel.cleanReviewItems()
     }
     
