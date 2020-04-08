@@ -1206,7 +1206,7 @@ class MessageDataService : Service, HasLocalStorage {
         let context = CoreDataService.shared.mainManagedObjectContext
         guard let objectID = CoreDataService.shared.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
-            let attachment = managedObject as? Attachment else
+            let _ = managedObject as? Attachment else
         {
             // nothing to send, dequeue request
             let _ = sharedMessageQueue.remove(writeQueueUUID)
@@ -1215,40 +1215,8 @@ class MessageDataService : Service, HasLocalStorage {
             completion?(nil, nil, NSError.badParameter(managedObjectID))
             return
         }
-        var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
-        let emails = attachment.message.allEmails
-        for email in emails {
-            requests.append(UserEmailPubKeys(email: email, api: self.apiService, authCredential: attachment.message.cachedAuthCredential))
-        }
         
-        firstly { () -> Guarantee<[Result<KeysResponse>]> in
-            when(resolved: requests.promises)
-        }.then { results -> Promise<Bool> in
-            for result in results {
-                switch result {
-                case .fulfilled(let value):
-                    if value.recipientType == 2 {
-                        return .value(true)
-                    }
-                default:
-                    break
-                }
-            }
-           
-            return .value(false)
-        }.done { attach in
-            if attach {
-                self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
-            } else {
-                context.performAndWait {
-                    context.delete( managedObject)
-                    let _ = context.saveUpstreamIfNeeded()
-                }
-                completion?(nil, nil, nil)
-            }
-        }.catch { (error) in
-            completion?(nil, nil, error as NSError)
-        }
+        self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
         return
     }
     
