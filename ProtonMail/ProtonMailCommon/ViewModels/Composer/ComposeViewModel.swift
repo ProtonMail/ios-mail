@@ -223,19 +223,6 @@ class ComposeViewModel: NSObject {
     func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: ((UIImage?, Int) -> Void)?) {
         fatalError("This method must be overridden")
     }
-    
-    typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
-    func base64AttachmentData(att: Attachment, complete : @escaping base64AttachmentDataComplete) {
-        if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
-            complete( att.base64DecryptAttachment(userInfo: self.getUser().userInfo, passphrase: self.getUser().mailboxPassword) )
-            return
-        }
-        
-        if let data = att.fileData, data.count > 0 {
-            complete( att.base64DecryptAttachment(userInfo: self.getUser().userInfo, passphrase: self.getUser().mailboxPassword) )
-            return
-        }
-    }
 }
 
 
