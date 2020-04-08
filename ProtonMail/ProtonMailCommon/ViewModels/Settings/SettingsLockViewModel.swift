@@ -22,6 +22,7 @@
     
 
 import Foundation
+import PMKeymaker
 
 enum SettingLockSection : Int, CustomStringConvertible {
     case lock = 0
@@ -146,6 +147,13 @@ class SettingsLockViewModelImpl : SettingsLockViewModel {
             lockItems.append(.pin)
             if userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled {
                 sections.append(.timer)
+            }
+        } else {
+            if userCachedStatus.isPinCodeEnabled {
+                keymaker.deactivate(PinProtection(pin: "doesnotmatter"))
+            }
+            if userCachedStatus.isTouchIDEnabled {
+                keymaker.deactivate(BioProtection())
             }
         }
     }
