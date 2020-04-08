@@ -148,7 +148,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                     current.getNotificationSettings(completionHandler: { (settings) in
                         if settings.authorizationStatus == .notDetermined {
                             // Notification permission has not been asked yet, go for it!
-                            c.config(right: "off")
+                            { c.config(right: "off") } ~> .main
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
                                 guard granted else { return }
                                 DispatchQueue.main.async {
@@ -158,10 +158,10 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                             }
                         } else if settings.authorizationStatus == .denied {
                             // Notification permission was previously denied, go to settings & privacy to re-enable
-                            c.config(right: "off")
+                            { c.config(right: "off") } ~> .main
                         } else if settings.authorizationStatus == .authorized {
                             // Notification permission was already granted
-                            c.config(right: "on")
+                            { c.config(right: "on") } ~> .main
                         }
                     })
                 case .autolock:

@@ -243,7 +243,7 @@ class SettingDetailViewController: UIViewController {
                             alertController.addOKAction()
                             self.present(alertController, animated: true, completion: nil)
                         } else {
-                            let _ = self.navigationController?.popToRootViewController(animated: true)
+                            let _ = self.navigationController?.popViewController(animated: true)
                         }
                     })
                 }
