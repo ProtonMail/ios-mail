@@ -59,6 +59,7 @@ class UserManager : Service, HasLocalStorage {
         self.userService.cleanUp()
         userCachedStatus.removeMobileSignature(uid: userInfo.userId)
         userCachedStatus.removeMobileSignatureSwitchStatus(uid: userInfo.userId)
+        userCachedStatus.removeDefaultSignatureSwitchStatus(uid: userInfo.userId)
         #if !APP_EXTENSION
         self.sevicePlanService.cleanUp()
         #endif
@@ -331,6 +332,21 @@ extension UserManager {
     
     var userDefaultSignature: String {
         return userInfo.defaultSignature.ln2br()
+    }
+    
+    var defaultSignatureStatus: Bool {
+        get {
+            if let status = userCachedStatus.getDefaultSignaureSwitchStatus(uid: userInfo.userId) {
+                return status
+            } else {
+                let oldStatus = userService.defaultSignatureStauts
+                userCachedStatus.setDefaultSignatureSwitchStatus(uid: userInfo.userId, value: oldStatus)
+                return oldStatus
+            }
+        }
+        set {
+            userCachedStatus.setDefaultSignatureSwitchStatus(uid: userInfo.userId, value: newValue)
+        }
     }
     
     var showMobileSignature : Bool {

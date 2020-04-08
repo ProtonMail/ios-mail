@@ -63,6 +63,7 @@ final class UserCachedStatus : SharedCacheBase {
         static let lastLocalMobileSignature = "last_local_mobile_signature_mainkeyProtected" //user cache but could restore
         static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
         static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
+        static let UserWithDefaultSignatureStatus = "user_with_default_signature_status"
         
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
@@ -212,6 +213,37 @@ final class UserCachedStatus : SharedCacheBase {
     func resetMobileSignature() {
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
         getShared().synchronize()
+    }
+    
+    func getDefaultSignaureSwitchStatus(uid: String) -> Bool? {
+        guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus),
+        let switchStatus = switchData[uid] as? Bool else {
+            return nil
+        }
+        return switchStatus
+    }
+    
+    func setDefaultSignatureSwitchStatus(uid: String, value: Bool) {
+        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
+            var newDictiondary: [String: Bool] = [:]
+            newDictiondary[uid] = true
+            SharedCacheBase.getDefault()?.set(newDictiondary, forKey: Key.UserWithDefaultSignatureStatus)
+            SharedCacheBase.getDefault()?.synchronize()
+            return
+        }
+        switchData[uid] = value
+        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
+        SharedCacheBase.getDefault()?.synchronize()
+    }
+    
+    func removeDefaultSignatureSwitchStatus(uid: String) {
+        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithDefaultSignatureStatus) else {
+            return
+        }
+        
+        switchData.removeValue(forKey: uid)
+        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithDefaultSignatureStatus)
+        SharedCacheBase.getDefault()?.synchronize()
     }
     
     func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {

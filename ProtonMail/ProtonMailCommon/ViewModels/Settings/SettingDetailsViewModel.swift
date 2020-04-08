@@ -252,7 +252,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func getSwitchStatus() -> Bool {
-        return userManager.userService.showDefaultSignature
+        return userManager.defaultSignatureStatus
     }
 
     func isShowTextView() -> Bool {
@@ -301,8 +301,7 @@ class ChangeSignatureViewModel : SettingDetailsViewModel{
     }
     
     func updateNotification(_ isOn : Bool, complete:@escaping(Bool, NSError?) -> Void) {
-        let userService = userManager.userService
-        userService.showDefaultSignature = isOn
+        userManager.defaultSignatureStatus = isOn
         complete(true, nil)
     }
     

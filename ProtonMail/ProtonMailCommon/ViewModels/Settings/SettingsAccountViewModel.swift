@@ -207,7 +207,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     }
     var defaultSignatureStatus: String {
         get {
-            if self.userManager.userService.defaultSignatureStauts {
+            if self.userManager.defaultSignatureStatus {
                 return "On"
             } else {
                 return "Off"
