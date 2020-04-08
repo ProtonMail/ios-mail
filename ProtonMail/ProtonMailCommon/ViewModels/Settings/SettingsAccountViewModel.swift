@@ -71,6 +71,7 @@ public enum AddressItem : Int, CustomStringConvertible {
     case addr = 0
     case displayName = 1
     case signature = 2
+    case mobileSignature = 3
     
     public var description : String {
         switch(self){
@@ -80,6 +81,8 @@ public enum AddressItem : Int, CustomStringConvertible {
             return LocalString._settings_display_name_title
         case .signature:
             return LocalString._settings_signature_title
+        case .mobileSignature:
+            return LocalString._settings_mobile_signature_title
         }
     }
 }
@@ -144,13 +147,16 @@ protocol SettingsAccountViewModel : AnyObject {
     var email : String { get }
     var displayName : String { get }
     
+    var defaultSignatureStatus: String { get }
+    var defaultMobileSignatureStatus: String { get }
+    
     func updateItems()
 }
 
 class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
-    var addrItems: [AddressItem] = [.addr, .displayName, .signature]
+    var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
     var mailboxItems :  [MailboxItem] = [/*.privacy, .search,*/ .labelFolder, .gestures]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
@@ -197,6 +203,24 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var displayName : String {
         get {
             return self.userManager.defaultDisplayName
+        }
+    }
+    var defaultSignatureStatus: String {
+        get {
+            if self.userManager.userService.defaultSignatureStauts {
+                return "On"
+            } else {
+                return "Off"
+            }
+        }
+    }
+    var defaultMobileSignatureStatus: String {
+        get {
+            if self.userManager.showMobileSignature {
+                return "On"
+            } else {
+                return "Off"
+            }
         }
     }
     

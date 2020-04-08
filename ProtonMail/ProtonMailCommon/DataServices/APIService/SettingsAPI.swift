@@ -163,6 +163,33 @@ final class UpdateNotify : ApiRequest<ApiResponse> {
     }
 }
 
+// MARK: update email signature
+final class UpdateSignature: ApiRequest<ApiResponse> {
+    let signature: String
+    init(signature: String, authCredential: AuthCredential?) {
+        self.signature = signature
+        super.init()
+        self.authCredential = authCredential
+    }
+    
+    override func toDictionary() -> [String : Any]? {
+        let out : [String : Any] = ["Signature" : self.signature]
+        return out
+    }
+    
+    override func method() -> HTTPMethod {
+        return .put
+    }
+    
+    override func path() -> String {
+        return SettingsAPI.path + "/signature"
+    }
+    
+    override func apiVersion() -> Int {
+        return SettingsAPI.v_update_email_signature
+    }
+}
+
 // MARK : update notification email
 final class UpdateNotificationEmail : ApiRequest<ApiResponse> {
 

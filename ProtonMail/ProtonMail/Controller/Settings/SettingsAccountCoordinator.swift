@@ -51,14 +51,10 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         case singlePwd     = "setting_single_password_segue"
         case displayName   = "setting_displayname"
         case signature     = "setting_signature"
-        //        case mobileSignature = "setting_mobile_signature"
-        //        case debugQueue      = "setting_debug_queue_segue"
-        //        case pinCode         = "setting_setup_pingcode"
+        case mobileSignature = "setting_mobile_signature"
         case lableManager    = "toManagerLabelsSegue"
-//        case snooze          = "setting_notifications_snooze_segue"
         
 //        case notification    = "setting_notification"
-//        case mobileSignature = "setting_mobile_signature"
 //        case debugQueue      = "setting_debug_queue_segue"
 //        case pinCode         = "setting_setup_pingcode"
 //        case lableManager    = "toManagerLabelsSegue"
@@ -116,11 +112,12 @@ class SettingsAccountCoordinator: DefaultCoordinator {
                 return false
             }
             next.setViewModel(ChangeSignatureViewModel(user: users.firstUser!))
-//        case .mobileSignature:
-//            guard let next = destination as? SettingDetailViewController else {
-//                return false
-//            }
-//            next.setViewModel(shareViewModelFactoy.getChangeMobileSignature())
+        case .mobileSignature:
+            let users: UsersManager = services.get()
+            guard let next = destination as? SettingDetailViewController else {
+                return false
+            }
+            next.setViewModel(ChangeMobileSignatureViewModel(user: users.firstUser!))
 //        case .debugQueue:
 //            break
 //        case .pinCode:

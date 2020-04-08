@@ -61,6 +61,8 @@ final class UserCachedStatus : SharedCacheBase {
         static let lastSplashViersion = "last_splash_viersion" //global cache
         static let lastTourViersion = "last_tour_viersion" //global cache
         static let lastLocalMobileSignature = "last_local_mobile_signature_mainkeyProtected" //user cache but could restore
+        static let UserWithLocalMobileSignature = "user_with_local_mobile_signature_mainKeyProtected"
+        static let UserWithLocalMobileSignatureStatus = "user_with_local_mobile_signature_status"
         
         // Snooze Notifications
         static let snoozeConfiguration = "snoozeConfiguration"
@@ -210,6 +212,89 @@ final class UserCachedStatus : SharedCacheBase {
     func resetMobileSignature() {
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
         getShared().synchronize()
+    }
+    
+    func getMobileSignatureSwitchStatus(by uid: String) -> Bool? {
+        guard let switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus),
+        let switchStatus = switchData[uid] as? Bool else {
+            return nil
+        }
+        return switchStatus
+    }
+    
+    func setMobileSignatureSwitchStatus(uid: String, value: Bool) {
+        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
+            var newDictiondary: [String: Bool] = [:]
+            newDictiondary[uid] = true
+            SharedCacheBase.getDefault()?.set(newDictiondary, forKey: Key.UserWithLocalMobileSignatureStatus)
+            SharedCacheBase.getDefault()?.synchronize()
+            return
+        }
+        switchData[uid] = value
+        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
+        SharedCacheBase.getDefault()?.synchronize()
+    }
+    
+    func removeMobileSignatureSwitchStatus(uid: String) {
+        guard var switchData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignatureStatus) else {
+            return
+        }
+        
+        switchData.removeValue(forKey: uid)
+        SharedCacheBase.getDefault()?.set(switchData, forKey: Key.UserWithLocalMobileSignatureStatus)
+        SharedCacheBase.getDefault()?.synchronize()
+    }
+    
+    func getMobileSignature(by uid: String) -> String {
+        guard let mainKey = keymaker.mainKey,
+            let signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature),
+            let encryptedSignature = signatureData[uid] as? Data ,
+            case let locked = Locked<String>(encryptedValue: encryptedSignature),
+            let customSignature = try? locked.unlock(with: mainKey) else
+        {
+            //Get data from legacy
+            if let mainKey = keymaker.mainKey,
+                let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
+                case let locked = Locked<String>(encryptedValue: cypherData),
+                let customSignature = try? locked.unlock(with: mainKey) {
+                
+                setMobileSignature(uid: uid, signature: customSignature)
+                SharedCacheBase.getDefault()?.synchronize()
+                return customSignature
+            }
+            
+            SharedCacheBase.getDefault()?.removeObject(forKey: Key.lastLocalMobileSignature)
+            removeMobileSignature(uid: uid)
+            return "Sent from ProtonMail Mobile"
+        }
+        return customSignature
+    }
+    
+    func setMobileSignature(uid: String, signature: String) {
+        guard let mainKey = keymaker.mainKey,
+            let locked = try? Locked<String>(clearValue: signature, with: mainKey) else
+        {
+            return
+        }
+        
+        if var signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature) {
+            signatureData[uid] = locked.encryptedValue
+            SharedCacheBase.getDefault()?.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
+            
+        } else {
+            var newDictionary: [String: Data] = [:]
+            newDictionary[uid] = locked.encryptedValue
+            SharedCacheBase.getDefault()?.set(newDictionary, forKey: Key.UserWithLocalMobileSignature)
+        }
+        SharedCacheBase.getDefault().synchronize()
+    }
+    
+    func removeMobileSignature(uid: String) {
+        if var signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature) {
+            signatureData.removeValue(forKey: uid)
+            SharedCacheBase.getDefault()?.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
+            SharedCacheBase.getDefault()?.synchronize()
+        }
     }
     
     func signOut()
