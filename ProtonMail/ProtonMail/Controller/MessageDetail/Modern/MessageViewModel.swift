@@ -164,33 +164,34 @@ class MessageViewModel: NSObject {
         
         let checkCount = atts.count
         let group: DispatchGroup = DispatchGroup()
-        let queue: DispatchQueue = .global(qos: .userInteractive)
+        let queue: DispatchQueue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
         
         var strings: [String:String] = [:]
-        DispatchQueue.global(qos: .userInitiated).async {
             for att in atts {
-                self.messageService.base64AttachmentData(att: att) { based64String in
-                    let work = DispatchWorkItem {
+                group.enter()
+                let work = DispatchWorkItem {
+                    self.messageService.base64AttachmentData(att: att) { based64String in
                         if !based64String.isEmpty {
                             strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
                         }
+                        group.leave()
                     }
-                    queue.async(group: group, execute: work)
                 }
+                queue.async(group: group, execute: work)
             }
-            
-            group.notify(queue: .main) {
-                if checkCount == strings.count {
-                    var updatedBody = body
-                    for (cid, base64) in strings {
-                        updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
-                    }
-                    
-                    self.body = updatedBody
-                } else {
-                    if self.body != body {
-                        self.body = body
-                    }
+        
+        
+        group.notify(queue: .main) {
+            if checkCount == strings.count {
+                var updatedBody = body
+                for (cid, base64) in strings {
+                    updatedBody = updatedBody.stringBySetupInlineImage(cid, to: base64)
+                }
+                
+                self.body = updatedBody
+            } else {
+                if self.body != body {
+                    self.body = body
                 }
             }
         }
