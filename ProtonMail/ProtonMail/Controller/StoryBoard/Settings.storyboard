@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqL-9M-AAl" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="687"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.24604520199999999" green="0.2438791692" blue="0.3070739508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1895,6 +1895,7 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="ydS-fk-Yx5" secondAttribute="bottom" constant="11" id="32C-A0-iAp"/>
                                         <constraint firstAttribute="bottom" secondItem="ZGP-81-n35" secondAttribute="bottom" constant="12" id="3Kl-dk-aSO"/>
+                                        <constraint firstAttribute="bottom" secondItem="60z-qJ-kLc" secondAttribute="bottom" priority="250" constant="8" id="6OH-QF-4xu"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="ZGP-81-n35" secondAttribute="trailing" constant="8" id="7gb-VW-6fR"/>
                                         <constraint firstItem="ZGP-81-n35" firstAttribute="top" secondItem="djQ-98-vRb" secondAttribute="top" constant="12" id="DyA-OA-cQQ"/>
                                         <constraint firstItem="ZGP-81-n35" firstAttribute="leading" secondItem="ydS-fk-Yx5" secondAttribute="trailing" constant="10" id="IaO-hb-ipv"/>
@@ -1909,6 +1910,7 @@
                                     <outlet property="bottomLineLabel" destination="ydS-fk-Yx5" id="6ka-El-UUj"/>
                                     <outlet property="centerConstraint" destination="Jz2-sW-Y8J" id="ele-yk-48u"/>
                                     <outlet property="switchView" destination="ZGP-81-n35" id="F8d-48-YFy"/>
+                                    <outlet property="topLineBottomConstraint" destination="6OH-QF-4xu" id="Wtl-pj-ubs"/>
                                     <outlet property="topLineLabel" destination="60z-qJ-kLc" id="xXD-su-HBA"/>
                                 </connections>
                             </tableViewCell>
@@ -2104,7 +2106,7 @@
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="p2G-Sv-Xy7"/>
         <segue reference="dUE-8e-owj"/>
-        <segue reference="XQx-Pm-sNq"/>
+        <segue reference="XGq-2C-ssO"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.666667938232422"/>
