@@ -69,7 +69,7 @@ import UIKit
         self.switchView.accessibilityLabel = (topLineLabel.text ?? "") + (bottomLineLabel.text ?? "")
         
         if bottomLine.isEmpty {
-            topLineBottomConstraint.priority = UILayoutPriority(999.0)
+            //topLineBottomConstraint.priority = UILayoutPriority(1000.0)
             centerConstraint.priority = UILayoutPriority(rawValue: 750.0);
             bottomLineLabel.isHidden = true
             
