@@ -148,22 +148,22 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
                     current.getNotificationSettings(completionHandler: { (settings) in
                         if settings.authorizationStatus == .notDetermined {
                             // Notification permission has not been asked yet, go for it!
-                            print( "1")
+                            c.config(right: "off")
+                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { [weak self] granted, _ in
+                                guard granted else { return }
+                                DispatchQueue.main.async {
+                                    UIApplication.shared.registerForRemoteNotifications()
+                                    self?.tableView.reloadRows(at: [indexPath], with: .none)
+                                }
+                            }
                         } else if settings.authorizationStatus == .denied {
                             // Notification permission was previously denied, go to settings & privacy to re-enable
-                            print( "2")
-//                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, _ in
-//                                guard granted else { return }
-//                                DispatchQueue.main.async {
-//                                    UIApplication.shared.registerForRemoteNotifications()
-//                                }
-//                            }
+                            c.config(right: "off")
                         } else if settings.authorizationStatus == .authorized {
                             // Notification permission was already granted
-                            print( "3")
+                            c.config(right: "on")
                         }
                     })
-                    c.config(right: "off")
                 case .autolock:
                     let status = self.viewModel.lockOn ? "on" : "off"
                     c.config(right: status)
