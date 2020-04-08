@@ -210,7 +210,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    viewModel.base64AttachmentData(att: att) { (based64String) in
+                    viewModel.getUser().messageService.base64AttachmentData(att: att) { (based64String) in
                         if !based64String.isEmpty {
                             self.htmlEditor.update(embedImage: "cid:\(content_id)", encoded: "data:\(att.mimeType);base64,\(based64String)")
                         }
