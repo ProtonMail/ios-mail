@@ -814,9 +814,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     }
                     
                     if loadMore <= 0 {
-                        //TODO:: fix me
-                        //self.viewModel.
-                        //sharedMessageDataService.updateMessageCount()
+                        self.viewModel.messageService.updateMessageCount()
                     }
                 }
                 
@@ -835,7 +833,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     let _ = self.checkHuman()
                     
                     //temperay to check message status and fetch metadata
-                    //sharedMessageDataService.purgeOldMessages()
+                    self.viewModel.messageService.purgeOldMessages()
                 }
             }
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
