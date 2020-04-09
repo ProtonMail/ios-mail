@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Vyžadováno pro přiložení fotografií k e-mailu.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Vyžadováno pro automatické dokončení e-mailu.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Umožňuje rychlé a bezpečné odemknutí aplikace.";

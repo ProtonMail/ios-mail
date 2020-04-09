@@ -113,22 +113,18 @@ class AddressBookService: Service {
         
         for contact in contacts {
             var name: String = [contact.givenName, contact.middleName, contact.familyName].filter { !$0.isEmpty }.joined(separator: " ")
-            
             let emails = contact.emailAddresses
             for email in emails {
                 let emailAsString = email.value as String
-                DispatchQueue.main.sync {
-                    if (emailAsString.isValidEmail()) {
-                        let email = emailAsString
-                        if (name.isEmpty) {
-                            name = email
-                        }
-                        contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
+                if (emailAsString.isValidEmail()) {
+                    let email = emailAsString
+                    if (name.isEmpty) {
+                        name = email
                     }
+                    contactVOs.append(ContactVO(name: name, email: email, isProtonMailContact: false))
                 }
             }
         }
-
         return contactVOs
     }
 }

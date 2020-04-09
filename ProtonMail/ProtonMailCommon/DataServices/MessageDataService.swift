@@ -246,7 +246,9 @@ class MessageDataService : Service {
     func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
-                if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
+                if error != nil {
+                    completion?(task, responseDict, error)
+                } else if let messagesArray = responseDict?["Messages"] as? [[String : Any]] {
                     PMLog.D("\(messagesArray)")
                     let messcount = responseDict?["Total"] as? Int ?? 0
                     let context = sharedCoreDataService.backgroundManagedObjectContext
@@ -1149,7 +1151,7 @@ class MessageDataService : Service {
         let context = sharedCoreDataService.mainManagedObjectContext
         guard let objectID = sharedCoreDataService.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
-            let attachment = managedObject as? Attachment else
+            let _ = managedObject as? Attachment else
         {
             // nothing to send, dequeue request
             let _ = sharedMessageQueue.remove(writeQueueUUID)
@@ -1159,40 +1161,7 @@ class MessageDataService : Service {
             return
         }
         
-        var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
-        let emails = attachment.message.allEmails
-        for email in emails {
-            requests.append(UserEmailPubKeys(email: email, authCredential: attachment.message.cachedAuthCredential))
-        }
-        
-        firstly { () -> Guarantee<[Result<KeysResponse>]> in
-            when(resolved: requests.promises)
-        }.then { results -> Promise<Bool> in
-            for result in results {
-                switch result {
-                case .fulfilled(let value):
-                    if value.recipientType == 2 {
-                        return .value(true)
-                    }
-                default:
-                    break
-                }
-            }
-           
-            return .value(false)
-        }.done { attach in
-            if attach {
-                self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
-            } else {
-                context.performAndWait {
-                    context.delete( managedObject)
-                    let _ = context.saveUpstreamIfNeeded()
-                }
-                completion?(nil, nil, nil)
-            }
-        }.catch { (error) in
-            completion?(nil, nil, error as NSError)
-        }
+        self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
         return
     }
     
@@ -1271,7 +1240,7 @@ class MessageDataService : Service {
         }
         
         PMLog.D("SendAttachmentDebug == start upload att!")
-        sharedAPIService.upload( byUrl: Constants.App.API_HOST_URL + Constants.App.API_PATH + "/attachments",
+        sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
                                  parameters: params,
                                  keyPackets: keyPacket,
                                  dataPacket: dataPacket,
@@ -1499,7 +1468,11 @@ class MessageDataService : Service {
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: contact.plainText))
                             }
                         } else {
-                            sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
+                            if userInfo?.sign == 1 {
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: true, sign: true, pgpencrypt: false, plainText: false))
+                            } else {
+                                sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
+                            }
                         }
                     case .rejected(let error):
                         throw error
@@ -1802,8 +1775,6 @@ class MessageDataService : Service {
                     }
                 }
                 
-                
-                
                 if statusCode == 200 && errorCode == 9001 {
                     
                 } else if statusCode == 200 && errorCode > 1000 {
@@ -1965,143 +1936,158 @@ class MessageDataService : Service {
         // this serial dispatch queue prevents multiple messages from appearing when an incremental update is triggered while another is in progress
         self.incrementalUpdateQueue.sync {
             let context = sharedCoreDataService.backgroundManagedObjectContext
-            context.perform { () -> Void in
-                var error: NSError?
-                var messagesNoCache : [String] = []
-                for message in messages {
-                    let msg = MessageEvent(event: message)
-                    switch(msg.Action) {
-                    case .some(IncrementalUpdateType.delete):
-                        if let messageID = msg.ID {
-                            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                                let labelObjs = message.mutableSetValue(forKey: "labels")
-                                labelObjs.removeAllObjects()
-                                message.setValue(labelObjs, forKey: "labels")
-                                context.delete(message)
-                                //in case
+            var error: NSError?
+            var messagesNoCache : [String] = []
+            for message in messages {
+                let msg = MessageEvent(event: message)
+                switch(msg.Action) {
+                case .some(IncrementalUpdateType.delete):
+                    if let messageID = msg.ID {
+                        if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
+                            let labelObjs = message.mutableSetValue(forKey: "labels")
+                            labelObjs.removeAllObjects()
+                            message.setValue(labelObjs, forKey: "labels")
+                            context.delete(message)
+                            //in case
+                            context.performAndWait {
                                 error = context.saveUpstreamIfNeeded()
                                 if error != nil  {
                                     error?.upload(toAnalytics: "GRTJSONSerialization Delete")
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
+                            
                         }
-                    case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
-                        if IncrementalUpdateType.insert == msg.Action {
-                            if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                if !cachedMessage.contains(label: .draft) && !cachedMessage.contains(label: .sent) {
+                    }
+                case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
+                    if IncrementalUpdateType.insert == msg.Action {
+                        if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
+                            if !cachedMessage.contains(label: .draft) && !cachedMessage.contains(label: .sent) {
+                                continue
+                            }
+                        }
+                        if let notify_msg_id = notificationMessageID {
+                            if notify_msg_id == msg.ID {
+                                let _ = msg.message?.removeValue(forKey: "Unread")
+                            }
+                        }
+                        msg.message?["messageStatus"] = 1
+                    }
+                    
+                    if let lo = msg.message?["Location"] as? Int {
+                        if lo == 1 { //if it is a draft
+                            if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
+                                if exsitMes.messageStatus == 1 {
+                                    if let subject = msg.message?["Subject"] as? String {
+                                        exsitMes.title = subject
+                                    }
+                                    if let timeValue = msg.message?["Time"] {
+                                        if let timeString = timeValue as? NSString {
+                                            let time = timeString.doubleValue as TimeInterval
+                                            if time != 0 {
+                                                exsitMes.time = time.asDate()
+                                            }
+                                        } else if let dateNumber = timeValue as? NSNumber {
+                                            let time = dateNumber.doubleValue as TimeInterval
+                                            if time != 0 {
+                                                exsitMes.time = time.asDate()
+                                            }
+                                        }
+                                    }
                                     continue
                                 }
                             }
-                            if let notify_msg_id = notificationMessageID {
-                                if notify_msg_id == msg.ID {
-                                    let _ = msg.message?.removeValue(forKey: "Unread")
-                                }
-                            }
-                            msg.message?["messageStatus"] = 1
                         }
-                        
-                        if let lo = msg.message?["Location"] as? Int {
-                            if lo == 1 { //if it is a draft
-                                if let exsitMes = Message.messageForMessageID(msg.ID , inManagedObjectContext: context) {
-                                    if exsitMes.messageStatus == 1 {
-                                        if let subject = msg.message?["Subject"] as? String {
-                                            exsitMes.title = subject
-                                        }
-                                        if let timeValue = msg.message?["Time"] {
-                                            if let timeString = timeValue as? NSString {
-                                                let time = timeString.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            } else if let dateNumber = timeValue as? NSNumber {
-                                                let time = dateNumber.doubleValue as TimeInterval
-                                                if time != 0 {
-                                                    exsitMes.time = time.asDate()
-                                                }
-                                            }
-                                        }
-                                        continue
-                                    }
-                                }
-                            }
-                        }
-                        
-                        do {
-                            if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
-                                // apply the label changes
-                                if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
-                                    for delete in deleted {
-                                        let labelID = delete as! String
-                                        if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            if labelObjs.count > 0 {
-                                                labelObjs.remove(label)
-                                                messageObject.setValue(labelObjs, forKey: "labels")
-                                            }
-                                        }
-                                    }
-                                }
-                                
-                                if let added = msg.message?["LabelIDsAdded"] as? NSArray {
-                                    for add in added {
-                                        if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
-                                            let labelObjs = messageObject.mutableSetValue(forKey: "labels")
-                                            labelObjs.add(label)
+                    }
+                    
+                    do {
+                        if let messageObject = try GRTJSONSerialization.object(withEntityName: Message.Attributes.entityName, fromJSONDictionary: msg.message ?? [String : Any](), in: context) as? Message {
+                            // apply the label changes
+                            if let deleted = msg.message?["LabelIDsRemoved"] as? NSArray {
+                                for delete in deleted {
+                                    let labelID = delete as! String
+                                    if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
+                                        let labelObjs = messageObject.mutableSetValue(forKey: "labels")
+                                        if labelObjs.count > 0 {
+                                            labelObjs.remove(label)
                                             messageObject.setValue(labelObjs, forKey: "labels")
                                         }
                                     }
                                 }
-                                
-                                if let labels = msg.message?["LabelIDs"] as? NSArray {
-                                    PMLog.D("\(labels)")
-                                    //TODO : add later need to know whne it is happending
-                                }
-                                
-                                if messageObject.messageStatus == 0 {
-                                    if messageObject.subject.isEmpty {
-                                        messagesNoCache.append(messageObject.messageID)
-                                    } else {
-                                        messageObject.messageStatus = 1
+                            }
+                            
+                            if let added = msg.message?["LabelIDsAdded"] as? NSArray {
+                                for add in added {
+                                    if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
+                                        let labelObjs = messageObject.mutableSetValue(forKey: "labels")
+                                        labelObjs.add(label)
+                                        messageObject.setValue(labelObjs, forKey: "labels")
                                     }
                                 }
-                                //in case
-                                error = context.saveUpstreamIfNeeded()
+                            }
+                            
+                            if let labels = msg.message?["LabelIDs"] as? NSArray {
+                                PMLog.D("\(labels)")
+                                //TODO : add later need to know whne it is happending
+                            }
+                            
+                            if messageObject.messageStatus == 0 {
+                                if messageObject.subject.isEmpty {
+                                    messagesNoCache.append(messageObject.messageID)
+                                } else {
+                                    messageObject.messageStatus = 1
+                                }
+                            }
+                            //in case
+                            if let context = messageObject.managedObjectContext {
+                                context.performAndWait {
+                                    error = context.saveUpstreamIfNeeded()
+                                }
                                 if error != nil  {
+                                    if let messageid = msg.message?["ID"] as? String {
+                                        messagesNoCache.append(messageid)
+                                    }
                                     error?.upload(toAnalytics: "GRTJSONSerialization Update")
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             } else {
-                                // when GRTJSONSerialization inset returns no thing
                                 if let messageid = msg.message?["ID"] as? String {
                                     messagesNoCache.append(messageid)
                                 }
-                                PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
-                                BugDataService.debugReport("GRTJSONSerialization Insert", "insert empty", completion: nil)
+                                BugDataService.debugReport("GRTJSONSerialization Insert", "context nil", completion: nil)
                             }
-                        } catch let err as NSError {
-                            // when GRTJSONSerialization insert failed
+                        } else {
+                            // when GRTJSONSerialization inset returns no thing
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(messageid)
                             }
-                            err.upload(toAnalytics: "GRTJSONSerialization Insert")
-                            PMLog.D(" error: \(err)")
+                            PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
+                            BugDataService.debugReport("GRTJSONSerialization Insert", "insert empty", completion: nil)
                         }
-                    default:
-                        PMLog.D(" unknown type in message: \(message)")
+                    } catch let err as NSError {
+                        // when GRTJSONSerialization insert failed
+                        if let messageid = msg.message?["ID"] as? String {
+                            messagesNoCache.append(messageid)
+                        }
+                        err.upload(toAnalytics: "GRTJSONSerialization Insert")
+                        PMLog.D(" error: \(err)")
                     }
+                default:
+                    PMLog.D(" unknown type in message: \(message)")
                 }
-                //TODO:: move this to the loop and to catch the error also put it in noCache queue.
+            }
+            //TODO:: move this to the loop and to catch the error also put it in noCache queue.
+            context.performAndWait {
                 error = context.saveUpstreamIfNeeded()
-                if error != nil  {
-                    error?.upload(toAnalytics: "GRTJSONSerialization Save")
-                    PMLog.D(" error: \(String(describing: error))")
-                }
-                self.fetchMetadata(with: messagesNoCache)
-                DispatchQueue.main.async {
-                    completion?(task, nil, error)
-                    return
-                }
+            }
+            if error != nil  {
+                error?.upload(toAnalytics: "GRTJSONSerialization Save")
+                PMLog.D(" error: \(String(describing: error))")
+            }
+            self.fetchMetadata(with: messagesNoCache)
+            DispatchQueue.main.async {
+                completion?(task, nil, error)
+                return
             }
         }
     }

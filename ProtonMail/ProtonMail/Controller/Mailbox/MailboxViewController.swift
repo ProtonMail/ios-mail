@@ -271,7 +271,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         self.refreshControl = UIRefreshControl()
         self.refreshControl.backgroundColor = UIColor(RRGGBB: UInt(0xDADEE8))
-        self.refreshControl.addTarget(self, action: #selector(getLatestMessages), for: UIControl.Event.valueChanged)
+        self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
         
@@ -499,6 +499,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             return false
         }
         return true
+    }
+    
+    private func checkDoh(_ error : NSError) -> Bool {
+        let code = error.code
+        guard DoHMail.default.codeCheck(code: code) else {
+            return false
+        }
+        self.showError(error)
+        return true
+        
     }
     
     fileprivate var timerInterval : TimeInterval = 30
@@ -742,6 +752,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     }
     
     func handleRequestError (_ error : NSError) {
+        PMLog.D("error: \(error)")
+        guard checkDoh(error) == false else {
+            return
+        }
         let code = error.code
         if code == NSURLErrorTimedOut {
             self.showTimeOutErrorMessage()
@@ -755,8 +769,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             offlineTimerReset()
         } else if code == APIErrorCode.HTTP504 {
             self.showTimeOutErrorMessage()
+        } else if code == APIErrorCode.HTTP404 {
+            self.showTimeOutErrorMessage()
         }
-        PMLog.D("error: \(error)")
+        self.showTimeOutErrorMessage()
+    }
+    
+    
+    @objc internal func pullDown() {
+        
+        self.getLatestMessages()
+        
+        //temperay to fix the new messages are not loaded
+        viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+        
+    }
+    
+    @objc internal func goTroubleshoot() {
+        self.coordinator?.go(to: .troubleShoot)
     }
     
     @objc internal func getLatestMessages() {
@@ -1085,6 +1115,7 @@ extension MailboxViewController {
     private func showBanner(_ message: String,
                             appearance: BannerView.Appearance,
                             buttons: BannerView.ButtonConfiguration? = nil,
+                            button2: BannerView.ButtonConfiguration? = nil,
                             from: BannerView.Base)
     {
         guard let navigationBar = self.navigationController?.navigationBar else { return }
@@ -1093,6 +1124,7 @@ extension MailboxViewController {
         let newMessageView = BannerView(appearance: appearance,
                                             message: message,
                                             buttons: buttons,
+                                            button2: button2,
                                             offset: offset + 8.0)
         if let superview = self.navigationController?.view {
             switch from {
@@ -1117,7 +1149,7 @@ extension MailboxViewController {
     }
     
     internal func showTimeOutErrorMessage() {
-        showBanner(LocalString._general_request_timed_out,
+        showBanner(LocalString._general_request_timed_out,// + " --- this is a extra long error message. test message.",
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
                    from: .top)
@@ -1141,6 +1173,15 @@ extension MailboxViewController {
         showBanner(LocalString._general_api_server_not_reachable,
                    appearance: .red,
                    buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   from: .top)
+    }
+    
+    internal func showError(_ error : NSError) {
+        let message = error.localizedDescription
+        showBanner(message,
+                   appearance: .red,
+                   buttons: BannerView.ButtonConfiguration.init(title: LocalString._retry, action: self.getLatestMessages),
+                   button2: BannerView.ButtonConfiguration.init(title: LocalString._troubleshoot, action: self.goTroubleshoot),
                    from: .top)
     }
     

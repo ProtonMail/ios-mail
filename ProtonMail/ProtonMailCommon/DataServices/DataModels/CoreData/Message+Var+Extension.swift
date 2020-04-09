@@ -85,9 +85,9 @@ extension Message {
         set {
             var flag = self.flag
             if newValue {
-                flag.remove(.forwarded)
-            } else {
                 flag.insert(.forwarded)
+            } else {
+                flag.remove(.forwarded)
             }
             self.flag = flag
         }

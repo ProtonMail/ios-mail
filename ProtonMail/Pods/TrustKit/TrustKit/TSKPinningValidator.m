@@ -120,14 +120,16 @@
             finalTrustDecision = TSKTrustDecisionDomainNotPinned;
         }
         else
-        {            
+        {
+            //ignore self signed domain check. will verify the pinned key only
+            BOOL forceSubdomain = [domainConfig[kForceSubdomains] boolValue];
             // The domain has a pinning policy that has not expired
             // Look for one the configured public key pins in the server's evaluated certificate chain
             TSKTrustEvaluationResult validationResult = verifyPublicKeyPin(serverTrust,
                                                                            serverHostname,
                                                                            domainConfig[kTSKPublicKeyHashes],
-                                                                           self.spkiHashCache);
-            
+                                                                           self.spkiHashCache,
+                                                                           forceSubdomain == NO);
             if (validationResult == TSKTrustEvaluationSuccess)
             {
                 // Pin validation was successful

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,7 +13,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="diegosantiviago@gmail.com" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYh-fi-hLy">
@@ -55,14 +53,14 @@
                 <constraints>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="top" secondItem="GKP-Aj-VfK" secondAttribute="bottom" constant="2" id="7nr-oG-8dt"/>
                     <constraint firstItem="GKP-Aj-VfK" firstAttribute="leading" secondItem="S8m-bp-7Jy" secondAttribute="trailing" constant="8" id="8Yd-cq-VOe"/>
+                    <constraint firstAttribute="bottom" secondItem="kYh-fi-hLy" secondAttribute="bottom" constant="11" id="BIP-x6-zya"/>
                     <constraint firstItem="S8m-bp-7Jy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="VVY-HH-AzJ"/>
                     <constraint firstAttribute="trailing" secondItem="kYh-fi-hLy" secondAttribute="trailing" constant="4" id="XPN-zX-PYd"/>
                     <constraint firstItem="nrP-2m-9xa" firstAttribute="leading" secondItem="S8m-bp-7Jy" secondAttribute="leading" id="cQi-C4-qbW"/>
                     <constraint firstItem="S8m-bp-7Jy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="cWO-lG-Ia3"/>
-                    <constraint firstItem="GKP-Aj-VfK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="topMargin" id="chi-gW-BO7"/>
                     <constraint firstItem="kYh-fi-hLy" firstAttribute="leading" secondItem="GKP-Aj-VfK" secondAttribute="leading" id="gUQ-1X-Uo7"/>
                     <constraint firstItem="nrP-2m-9xa" firstAttribute="top" secondItem="S8m-bp-7Jy" secondAttribute="top" id="oYo-6g-Cjd"/>
-                    <constraint firstItem="kYh-fi-hLy" firstAttribute="bottom" secondItem="H2p-sc-9uM" secondAttribute="bottomMargin" id="t6K-Ob-hio"/>
+                    <constraint firstItem="GKP-Aj-VfK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="11" id="vmJ-Ln-5bO"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

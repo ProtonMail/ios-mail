@@ -200,11 +200,12 @@ func signOut() {
 }
 
 func signIn(twoPasswordMode: Bool) {
-    let username = TestConstants.Account.username
-    let password = TestConstants.Account.password
-
-    let username2 = TestConstants.Account.username2
-    let password2 = TestConstants.Account.password2
+    
+    let username = "xcodeui"
+    let password = "xcode12345!"
+    
+    let username2 = "xcodeui.2"
+    let password2 = "Xcode12345!"
     
     // Check if decrypt mailbox view is active
     let elementsQuery = XCUIApplication().scrollViews.otherElements

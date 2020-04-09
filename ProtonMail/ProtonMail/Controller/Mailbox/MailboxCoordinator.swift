@@ -49,10 +49,24 @@ class MailboxCoordinator : DefaultCoordinator {
         self.navigation = nav
     }
     
-    init(vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
+    init(nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
         self.viewModel = vm
         self.viewController = vc
         self.services = services
+        self.navigation = nav
+    }
+    
+    init(vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
+        self.viewModel = vm
+        self.services = services
+        
+        let inbox : UIStoryboard = UIStoryboard.Storyboard.inbox.storyboard
+        let vc = inbox.make(VC.self)
+        let nav = UINavigationController(rootViewController: vc)
+        
+        self.viewController = vc
+        self.navBeforeStart = nav
+        self.navigation = nav
     }
     
     init(rvc: SWRevealViewController?, nav: UINavigationController?, vc: MailboxViewController, vm: MailboxViewModel, services: ServiceFactory) {
@@ -77,6 +91,7 @@ class MailboxCoordinator : DefaultCoordinator {
         case humanCheck        = "toHumanCheckView"
         case folder            = "toMoveToFolderSegue"
         case labels            = "toApplyLabelsSegue"
+        case troubleShoot      = "toTroubleShootSegue"
         
         init?(rawValue: String) {
             switch rawValue {
@@ -91,6 +106,7 @@ class MailboxCoordinator : DefaultCoordinator {
             case "toHumanCheckView": self = .humanCheck
             case "toMoveToFolderSegue": self = .folder
             case "toApplyLabelsSegue": self = .labels
+            case "toTroubleShootSegue": self = .troubleShoot
             default: return nil
             }
         }
@@ -106,7 +122,7 @@ class MailboxCoordinator : DefaultCoordinator {
         }
         self.navBeforeStart = nil
     }
-    
+
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
@@ -196,6 +212,15 @@ class MailboxCoordinator : DefaultCoordinator {
             }
             next.viewModel = LabelApplyViewModelImpl(msg: messages)
             next.delegate = self.viewController
+            
+        case .troubleShoot:
+            guard let nav = destination as? UINavigationController else
+            {
+                return false
+            }
+            
+            let tsVC = NetworkTroubleShootCoordinator.init(segueNav: nav, vm: NetworkTroubleShootViewModelImpl(), services: services)
+            tsVC.start()
         }
         return true
     }   

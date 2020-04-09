@@ -129,9 +129,7 @@ extension Data {
         var ranges: [Range<Data.Index>] = []
         var i = 0
         let count = self.count
-        var checkThese = ["\n", "\r"]
-        
-        if self.contains(string: "\r\n") { checkThese = ["\r\n"] }
+        let checkThese = ["\n", "\r"]
         
         while i < count {
             let index = self.firstIndex(of: checkThese, startingAt: i) ?? count

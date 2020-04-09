@@ -163,7 +163,7 @@ class ComposeViewModel: NSObject {
     }
     
     ///
-    func sendMessage(hasExtenal: Bool) {
+    func sendMessage() {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     

@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Képek e-mailekhez csatolásához szükséges.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "E-mail automatikus kiegészítéséhez szükséges.";
+"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Az alkalmazás gyors és biztonságos feloldását teszi lehetővé.";

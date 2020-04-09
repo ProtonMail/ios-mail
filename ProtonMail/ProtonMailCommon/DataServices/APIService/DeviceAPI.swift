@@ -87,7 +87,11 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
             ver = version
         }
         let parameters : [String : Any] = [
+            "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
+            "DeviceName" : UIDevice.current.name,
+            "DeviceModel" : UIDevice.current.model,
+            "DeviceVersion" : UIDevice.current.systemVersion,
             "AppVersion" : "iOS_\(ver)",
             "Environment" : env
         ]

@@ -280,7 +280,7 @@ class ContactImportViewController: UIViewController {
                                 pre_contacts.append(cards)
                             } catch {
                                 // upload vcardStr when see error
-                                //TODO:: ask user do you want to send the bad contact to protonmail for debugging
+                                BugDataService.debugReport("VCARD", vcardStr, completion: nil)
                             }
                         }
                     }

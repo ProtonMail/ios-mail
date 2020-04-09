@@ -71,7 +71,7 @@ class HeaderedPrintRenderer: UIPrintPageRenderer {
     
     override func drawPrintFormatter(_ printFormatter: UIPrintFormatter, forPageAt pageIndex: Int) {
         if pageIndex == 0 {
-            printFormatter.perPageContentInsets = UIEdgeInsets(top: self.header?.contentSize.height ?? 0, left: 0, bottom: 0, right: 0)
+            printFormatter.perPageContentInsets = UIEdgeInsets(top: (self.header?.contentSize.height ?? 0) * 1.25, left: 0, bottom: 0, right: 0)
             super.drawPrintFormatter(printFormatter, forPageAt: pageIndex)
             printFormatter.perPageContentInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 0, right: 0)
         } else {

@@ -33,6 +33,8 @@ class ReportBugsViewController: ProtonMailViewController {
     @IBOutlet weak var textViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var topTitleLabel: UILabel!
     
+    private var kSegueToTroubleshoot : String = "toTroubleShootSegue"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,6 +109,9 @@ class ReportBugsViewController: ProtonMailViewController {
             MBProgressHUD.hide(for: self.view, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
+                guard !self.checkDoh(error) else {
+                    return
+                }
                 let alert = error.alertController()
                 alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
@@ -122,6 +127,27 @@ class ReportBugsViewController: ProtonMailViewController {
                 })
             }
         })
+    }
+    
+    private func checkDoh(_ error : NSError) -> Bool {
+        let code = error.code
+        guard DoHMail.default.codeCheck(code: code) else {
+            return false
+        }
+        
+        let message = error.localizedDescription
+        let alertController = UIAlertController(title: LocalString._protonmail,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
+            self.performSegue(withIdentifier: self.kSegueToTroubleshoot, sender: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
+            
+        }))
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+
+        return true
     }
 }
 

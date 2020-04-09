@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "用于向邮件中添加图片。";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "用于自动补全收件人地址。";
+"NSContactsUsageDescription" = "当撰写邮件时，可以从设备上的联系人中选择电子邮件地址。";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "能让您快速安全地解锁程序。";

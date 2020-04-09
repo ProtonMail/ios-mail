@@ -150,7 +150,9 @@ public struct Part: CustomStringConvertible {
             self.body = data[contentStart...].convertFromMangledUTF8()
             //self.string = String(data: data[contentStart...], encoding: .utf8) ?? String(malformedUTF8: data[contentStart...])
             var parts: [Part] = []
-            if let boundary = self.headers[.contentType]?.boundaryValue {
+            
+            let boundaries = self.headers.allHeaders(ofKind: .contentType).compactMap{ $0.boundaryValue }
+            if let boundary = boundaries.first {
                 let groups = data.separated(by: "--" + boundary)
                 
                 for i in 0..<groups.count {
@@ -175,7 +177,9 @@ public struct Part: CustomStringConvertible {
         self.headers = components.all.map { Header($0) }
         var parts: [Part] = []
         self.body = header
-        if let boundary = self.headers[.contentType]?.boundaryValue {
+        
+        let boundaries = self.headers.allHeaders(ofKind: .contentType).compactMap{ $0.boundaryValue }
+        if let boundary = boundaries.first {
             let groups = header.separated(by: "--" + boundary)
             
             for i in 0..<groups.count {

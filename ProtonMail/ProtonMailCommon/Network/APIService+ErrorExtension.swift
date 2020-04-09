@@ -40,6 +40,8 @@ extension NSError {
         
         Analytics.shared.logCustomEvent(customAttributes: [
                                         "CustomEventTitle" : title,
+                                        "DeviceModel" : UIDevice.current.model,
+                                        "DeviceVersion" : UIDevice.current.systemVersion,
                                         "AppVersion" : "iOS_\(ver)",
                                         "code" : code,
                                         "error_desc": description,

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,17 +13,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dfs-Re-WoN" id="7r7-GO-cDp">
-                <rect key="frame" x="0.0" y="0.0" width="341" height="49.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="348" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BMp-qM-H75">
-                        <rect key="frame" x="231" y="17" width="102" height="16"/>
+                        <rect key="frame" x="230" y="6" width="111" height="38"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="05A-wZ-9pE">
-                        <rect key="frame" x="23" y="17" width="200" height="16"/>
+                        <rect key="frame" x="22" y="6" width="200" height="38"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="200" id="mfc-Kc-d2G"/>
                         </constraints>
@@ -35,13 +33,13 @@
                     </label>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" secondItem="05A-wZ-9pE" secondAttribute="bottom" constant="6" id="I6c-JD-vci"/>
-                    <constraint firstItem="05A-wZ-9pE" firstAttribute="top" secondItem="7r7-GO-cDp" secondAttribute="topMargin" constant="6" id="KV8-B0-nAW"/>
+                    <constraint firstAttribute="bottom" secondItem="05A-wZ-9pE" secondAttribute="bottom" constant="6" id="6cs-N9-ejC"/>
                     <constraint firstItem="05A-wZ-9pE" firstAttribute="leading" secondItem="7r7-GO-cDp" secondAttribute="leadingMargin" constant="7" id="TKA-kF-ifs"/>
                     <constraint firstItem="BMp-qM-H75" firstAttribute="trailing" secondItem="7r7-GO-cDp" secondAttribute="trailingMargin" id="eZ5-9q-1s2"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="BMp-qM-H75" secondAttribute="bottom" constant="6" id="gLz-wE-brJ"/>
+                    <constraint firstAttribute="bottom" secondItem="BMp-qM-H75" secondAttribute="bottom" constant="6" id="gLz-wE-brJ"/>
                     <constraint firstItem="BMp-qM-H75" firstAttribute="leading" secondItem="05A-wZ-9pE" secondAttribute="trailing" constant="8" id="gyu-Jh-J5p"/>
-                    <constraint firstItem="BMp-qM-H75" firstAttribute="top" secondItem="7r7-GO-cDp" secondAttribute="topMargin" constant="6" id="zpD-JO-kx2"/>
+                    <constraint firstItem="05A-wZ-9pE" firstAttribute="top" secondItem="7r7-GO-cDp" secondAttribute="top" constant="6" id="pfz-C1-7kN"/>
+                    <constraint firstItem="BMp-qM-H75" firstAttribute="top" secondItem="7r7-GO-cDp" secondAttribute="top" constant="6" id="zpD-JO-kx2"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

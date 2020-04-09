@@ -1,6 +1,6 @@
 //
-//  Constants.example.swift
-//  ProtonMail - Created on 9/1/19.
+//  DoHMail.swift
+//  Created by ProtonMail on 2/24/20.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -19,21 +19,17 @@
 //
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
-    
+
 
 import Foundation
+import PMNetworking
 
-struct TestConstants {
-    enum Account {
-        //those are fake, it will be replaced by the real one when compiling
-        static let username = ""
-        static let password = "!"
-        
-        static let username2 = ""
-        static let password2 = ""
-        
-        
-        static let signInUsername = ""
-        static let signInPassword = ""
-    }
+
+class DoHMail : DoH, DoHConfig {
+    //defind your default host
+    var defaultHost: String = Constants.App.API_HOST_URL
+    //defind your query host
+    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
+    //singleton
+    static let `default` = try! DoHMail()
 }

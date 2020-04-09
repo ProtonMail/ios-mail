@@ -360,15 +360,22 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
     func equals(_ other: ContactPickerModelProtocol) -> Bool {
         return self.isEqual(other)
     }
+    
+    override public var hash: Int {
+        return (name + email).hashValue
+    }
 }
 
 //Extension::Array - contact vo
 extension Array where Element: ContactVO {
     mutating func distinctMerge(_ check : [Element]) {
+        var objectToIgnore: [Element] = []
+        for element in self {
+            objectToIgnore.append(contentsOf: check.filter { $0 == element })
+        }
+
         for element in check {
-            if self.contains(element) {
-                
-            } else {
+            if !objectToIgnore.contains(element) {
                 self.append(element)
             }
         }

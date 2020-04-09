@@ -1,6 +1,6 @@
 //
-//  Constants.example.swift
-//  ProtonMail - Created on 9/1/19.
+//  SettingsViewModel.swift
+//  ProtonMail - Created on 12/12/18.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -23,17 +23,13 @@
 
 import Foundation
 
-struct TestConstants {
-    enum Account {
-        //those are fake, it will be replaced by the real one when compiling
-        static let username = ""
-        static let password = ""
-        
-        static let username2 = ""
-        static let password2 = ""
-        
-        
-        static let signInUsername = ""
-        static let signInPassword = ""
-    }
+
+protocol NetworkTroubleShootViewModel : AnyObject, Codable {
+
+
+}
+
+
+class NetworkTroubleShootViewModelImpl : NetworkTroubleShootViewModel {
+    
 }

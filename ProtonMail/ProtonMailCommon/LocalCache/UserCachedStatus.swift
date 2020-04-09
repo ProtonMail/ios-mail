@@ -73,7 +73,32 @@ final class UserCachedStatus : SharedCacheBase {
         
         static let metadataStripping = "metadataStripping"
         static let browser = "browser"
+        
+        
+        static let dohFlag = "doh_flag"
+        static let dohWarningAsk = "doh_warning_ask"
     }
+    
+    var isDohOn: Bool {
+        get {
+            if getShared()?.object(forKey: Key.dohFlag) == nil {
+                return true
+            }
+            return getShared().bool(forKey: Key.dohFlag)
+        }
+        set {
+            setValue(newValue, forKey: Key.dohFlag)
+        }
+    }
+    
+//    var neverShowDohWarning: Bool {
+//        get {
+//            return getShared().bool(forKey: Key.dohWarningAsk)
+//        }
+//        set {
+//            setValue(newValue, forKey: Key.dohWarningAsk)
+//        }
+//    }
 
     var isForcedLogout : Bool = false
     
@@ -214,6 +239,10 @@ final class UserCachedStatus : SharedCacheBase {
         
         KeychainWrapper.keychain.remove(forKey: Key.metadataStripping)
         KeychainWrapper.keychain.remove(forKey: Key.browser)
+        
+        ////
+        getShared().removeObject(forKey: Key.dohFlag)
+        getShared().removeObject(forKey: Key.dohWarningAsk)
                         
         getShared().synchronize()
     }

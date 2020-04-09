@@ -81,8 +81,8 @@ class signinTests: XCTestCase {
     
     func testFailedLogin() {
         
-        let username = TestConstants.Account.signInUsername
-        let password = TestConstants.Account.signInPassword
+        let username = "xcodetest123456"
+        let password = "111"
         
         Thread.sleep(forTimeInterval: 1)
         
