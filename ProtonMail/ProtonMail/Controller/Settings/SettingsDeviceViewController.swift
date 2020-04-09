@@ -58,6 +58,16 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SettingsGeneralCell.self)
         self.tableView.register(SettingsTwoLinesCell.self)
+        
+        if #available(iOS 13.0, *) {
+            NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIScene.willEnterForegroundNotification, object: nil)
+        } else {
+            NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
+        }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     private func updateTitle() {
@@ -104,8 +114,18 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         present(alertController, animated: true, completion: nil)
     }
     
+    @objc private func updateNotificationStatus(_ notification: NSNotification) {
+        if let section = self.viewModel.sections.firstIndex(of: .app),
+            let row = self.viewModel.appSettigns.firstIndex(of: .push) {
+            let indexPath = IndexPath(row: row, section: section)
+            self.tableView.reloadRows(at: [indexPath], with: .fade)
+        }
+    }
+}
+
+//MARK: - table view delegate
+extension SettingsDeviceViewController {
     
-    ///MARK: -- table view delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sections.count
     }
