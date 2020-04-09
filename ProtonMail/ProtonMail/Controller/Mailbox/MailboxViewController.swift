@@ -771,6 +771,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
+        guard refreshControl.isRefreshing == false else {
+            return
+        }
         
         self.getLatestMessages()
         
@@ -794,6 +797,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.fetchingMessage = false
                 
                 if self.fetchingStopped! == true {
+                    self.refreshControl?.endRefreshing()
                     return
                 }
                 
