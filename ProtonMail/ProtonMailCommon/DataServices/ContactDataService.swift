@@ -341,60 +341,58 @@ class ContactDataService: Service, HasLocalStorage {
     func fetch(byEmails emails: [String], context: NSManagedObjectContext?) -> Promise<[PreContact]> {
         let context = context ?? CoreDataService.shared.backgroundManagedObjectContext
         return Promise { seal in
-            async {
-                guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
-                    seal.fulfill([])
-                    return
-                }
-                guard let contactEmails = fetchController.fetchedObjects as? [Email] else {
-                    seal.fulfill([])
-                    return
+            guard let fetchController = Email.findEmailsController(emails, inManagedObjectContext: context) else {
+                seal.fulfill([])
+                return
+            }
+            guard let contactEmails = fetchController.fetchedObjects as? [Email] else {
+                seal.fulfill([])
+                return
+            }
+            
+            let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
+            let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID, inContext: context) }
+            firstly {
+                when(resolved: fetchs)
+            }.then { (result) -> Guarantee<[Result<PreContact>]> in
+                var allEmails = contactEmails
+                if let newFetched = fetchController.fetchedObjects as? [Email] {
+                    allEmails = newFetched
                 }
                 
-                let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
-                let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID, inContext: context) }
-                firstly {
-                    when(resolved: fetchs)
-                }.then { (result) -> Guarantee<[Result<PreContact>]> in
-                    var allEmails = contactEmails
-                    if let newFetched = fetchController.fetchedObjects as? [Email] {
-                        allEmails = newFetched
-                    }
-                    
-                    let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
-                    var parsers : [Promise<PreContact>] = details.map {
-                        return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
-                    }
-                    for r in result {
-                        switch r {
-                        case .fulfilled(let value):
-                            if let fEmail = contactEmails.first(where: { (e) -> Bool in
-                                e.contactID == value.contactID
-                            }) {
-                                PMLog.D(value.cardData)
-                                parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
-                            }
-                        case .rejected(let error):
-                            PMLog.D(error.localizedDescription)
-                        }
-                    }
-                    return when(resolved: parsers)
-                }.then { contacts -> Promise<[PreContact]> in
-                    var sucessed : [PreContact] = [PreContact]()
-                    for c in contacts {
-                        switch c {
-                        case .fulfilled(let value):
-                            sucessed.append(value)
-                        case .rejected(let error):
-                            PMLog.D(error.localizedDescription)
-                        }
-                    }
-                    return .value(sucessed)
-                }.done { result in
-                    seal.fulfill(result)
-                }.catch { error in
-                    seal.reject(error)
+                let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
+                var parsers : [Promise<PreContact>] = details.map {
+                    return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                 }
+                for r in result {
+                    switch r {
+                    case .fulfilled(let value):
+                        if let fEmail = contactEmails.first(where: { (e) -> Bool in
+                            e.contactID == value.contactID
+                        }) {
+                            PMLog.D(value.cardData)
+                            parsers.append(self.parseContact(email: fEmail.email, cards: value.getCardData()))
+                        }
+                    case .rejected(let error):
+                        PMLog.D(error.localizedDescription)
+                    }
+                }
+                return when(resolved: parsers)
+            }.then { contacts -> Promise<[PreContact]> in
+                var sucessed : [PreContact] = [PreContact]()
+                for c in contacts {
+                    switch c {
+                    case .fulfilled(let value):
+                        sucessed.append(value)
+                    case .rejected(let error):
+                        PMLog.D(error.localizedDescription)
+                    }
+                }
+                return .value(sucessed)
+            }.done { result in
+                seal.fulfill(result)
+            }.catch { error in
+                seal.reject(error)
             }
         }
     }
@@ -510,7 +508,6 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        let context = CoreDataService.shared.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
                                 if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -566,7 +563,6 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        let context = CoreDataService.shared.backgroundManagedObjectContext
                         context.performAndWait() {
                             do {
                                 if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
@@ -592,8 +588,13 @@ class ContactDataService: Service, HasLocalStorage {
                 self.isFetching = false
                 self.retries = 0
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    throw error
+                context.performAndWait {
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D(" error: \(error)");
+                        {
+                            error.alertErrorToast()
+                        } ~> .main
+                    }
                 }
             } catch let ex as NSError {
                 lastUpdatedStore.contactsCached = 0

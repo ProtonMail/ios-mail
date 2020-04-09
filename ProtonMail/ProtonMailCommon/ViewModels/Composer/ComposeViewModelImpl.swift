@@ -262,53 +262,51 @@ class ComposeViewModelImpl : ComposeViewModel {
         progress()
         
         let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
-        async {
-            guard let c = model as? ContactVO else {
-                complete?(nil, -1)
-                return
-            }
-            
-            guard let email = model.displayEmail else {
-                complete?(nil, -1)
-                return
-            }
-            let getEmail = UserEmailPubKeys(email: email, api: self.user.apiService).run()
-            let contactService = self.user.contactService
-            let getContact = contactService.fetch(byEmails: [email], context: context)
-            when(fulfilled: getEmail, getContact).done { keyRes, contacts in
-                //internal emails
-                if keyRes.recipientType == 1 {
-                    if let contact = contacts.first, contact.firstPgpKey != nil {
-                        c.pgpType = .internal_trusted_key
-                    } else {
-                        c.pgpType = .internal_normal
-                    }
+        guard let c = model as? ContactVO else {
+            complete?(nil, -1)
+            return
+        }
+        
+        guard let email = model.displayEmail else {
+            complete?(nil, -1)
+            return
+        }
+        let getEmail = UserEmailPubKeys(email: email, api: self.user.apiService).run()
+        let contactService = self.user.contactService
+        let getContact = contactService.fetch(byEmails: [email], context: context)
+        when(fulfilled: getEmail, getContact).done { keyRes, contacts in
+            //internal emails
+            if keyRes.recipientType == 1 {
+                if let contact = contacts.first, contact.firstPgpKey != nil {
+                    c.pgpType = .internal_trusted_key
                 } else {
-                    if let contact = contacts.first {
-                        if contact.encrypt, contact.firstPgpKey != nil {
-                            c.pgpType = .pgp_encrypt_trusted_key
-                        } else if contact.sign {
-                            c.pgpType = .pgp_signed
-                            if let pwd = self.message?.password, pwd != "" {
-                                c.pgpType = .eo
-                            }
-                        }
-                    } else {
+                    c.pgpType = .internal_normal
+                }
+            } else {
+                if let contact = contacts.first {
+                    if contact.encrypt, contact.firstPgpKey != nil {
+                        c.pgpType = .pgp_encrypt_trusted_key
+                    } else if contact.sign {
+                        c.pgpType = .pgp_signed
                         if let pwd = self.message?.password, pwd != "" {
                             c.pgpType = .eo
-                        } else if self.user.userInfo.sign == 1 {
-                            c.pgpType = .pgp_signed
-                        } else {
-                            c.pgpType = .none
                         }
                     }
+                } else {
+                    if let pwd = self.message?.password, pwd != "" {
+                        c.pgpType = .eo
+                    } else if self.user.userInfo.sign == 1 {
+                        c.pgpType = .pgp_signed
+                    } else {
+                        c.pgpType = .none
+                    }
                 }
-                complete?(c.lock, c.pgpType.rawValue)
-            }.catch({ (error) in
-                PMLog.D(error.localizedDescription)
-                complete?(nil, -1)
-            })
-        }
+            }
+            complete?(c.lock, c.pgpType.rawValue)
+        }.catch({ (error) in
+            PMLog.D(error.localizedDescription)
+            complete?(nil, -1)
+        })
     }
     
     override func getDefaultSendAddress() -> Address? {
