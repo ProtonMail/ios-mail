@@ -343,7 +343,7 @@ Bitte besuchen Sie <a href=\"https://protonmail.com/support/knowledge-base/delin
 "Can't load the file" = "Die Datei konnte nicht geladen werden";
 
 /* Description */
-"Can't not find the value from the response body" = "Wert im Nachrichtentext konnte nicht gefunden werden";
+"Can't find the value from the response body" = "Wert im Nachrichtentext konnte nicht gefunden werden";
 
 /* Error */
 "Can't open the file" = "Die Datei konnte nicht geöffnet werden";

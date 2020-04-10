@@ -343,7 +343,7 @@ Besøg <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vi
 "Can't load the file" = "Kan ikke indlæse filen";
 
 /* Description */
-"Can't not find the value from the response body" = "Kan ikke finde værdien fra svarindholdet";
+"Can't find the value from the response body" = "Kan ikke finde værdien fra svarindholdet";
 
 /* Error */
 "Can't open the file" = "Kan ikke åbne filen";

@@ -334,7 +334,7 @@ Bezoek <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">on
 "Can't load the file" = "Kan het bestand niet laden";
 
 /* Description */
-"Can't not find the value from the response body" = "Kan de waarde in de reactietekst niet vinden";
+"Can't find the value from the response body" = "Kan de waarde in de reactietekst niet vinden";
 
 /* Error */
 "Can't open the file" = "Kan het bestand niet openen";

@@ -343,7 +343,7 @@ Kérjük, nézze meg a <a href=\"https://protonmail.com/support/knowledge-base/d
 "Can't load the file" = "Nem tölthető be a fájl";
 
 /* Description */
-"Can't not find the value from the response body" = "A válasz törzsében nem található meg a kívánt érték";
+"Can't find the value from the response body" = "A válasz törzsében nem található meg a kívánt érték";
 
 /* Error */
 "Can't open the file" = "A fájl nem nyitható meg";

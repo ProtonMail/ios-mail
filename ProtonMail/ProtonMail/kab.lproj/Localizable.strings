@@ -343,7 +343,7 @@ Ma ulac aɣilif, rzu ar <a href=\"https://protonmail.com/support/knowledge-base/
 "Can't load the file" = "Ur izmir ara ad ittali afaylu";
 
 /* Description */
-"Can't not find the value from the response body" = "Ur izmir ara ad yaf azal n tfekka n tririt";
+"Can't find the value from the response body" = "Ur izmir ara ad yaf azal n tfekka n tririt";
 
 /* Error */
 "Can't open the file" = "Ur izmir ara ad d-yeldi afaylu";

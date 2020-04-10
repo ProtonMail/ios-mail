@@ -343,7 +343,7 @@ Skoðaðu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\"
 "Can't load the file" = "Get ekki hlaðið inn skránni";
 
 /* Description */
-"Can't not find the value from the response body" = "Ekki er hægt að finna gildið úr meginmáli svars";
+"Can't find the value from the response body" = "Ekki er hægt að finna gildið úr meginmáli svars";
 
 /* Error */
 "Can't open the file" = "Gat ekki opnað skrána";

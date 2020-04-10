@@ -343,7 +343,7 @@
 "Can't load the file" = "無法載入檔案";
 
 /* Description */
-"Can't not find the value from the response body" = "無法找到回覆正文內相對應的值";
+"Can't find the value from the response body" = "無法找到回覆正文內相對應的值";
 
 /* Error */
 "Can't open the file" = "檔案無法打開！";

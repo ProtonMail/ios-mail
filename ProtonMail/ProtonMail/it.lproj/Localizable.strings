@@ -343,7 +343,7 @@ Per favore visita <a href=\"https://protonmail.com/support/knowledge-base/delinq
 "Can't load the file" = "Impossibile caricare il file";
 
 /* Description */
-"Can't not find the value from the response body" = "Impossibile trovare il valore dal corpo della risposta";
+"Can't find the value from the response body" = "Impossibile trovare il valore dal corpo della risposta";
 
 /* Error */
 "Can't open the file" = "Impossibile aprire il file";
