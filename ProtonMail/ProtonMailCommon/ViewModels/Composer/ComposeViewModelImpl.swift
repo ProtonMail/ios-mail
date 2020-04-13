@@ -330,9 +330,9 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func getCurrrentSignature(_ addr_id : String) -> String? {
-//        if let addr = self.user.userService.addresses.indexOfAddress(addr_id) {
-//            return addr.signature
-//        }
+        if let addr = self.user.userInfo.userAddresses.indexOfAddress(addr_id) {
+            return addr.signature
+        }
         return nil
     }
     
@@ -614,7 +614,7 @@ class ComposeViewModelImpl : ComposeViewModel {
         var mobileSignature = self.user.showMobileSignature ? "<div><br></div><div><br></div><div id=\"protonmail_mobile_signature_block\"><div>\(self.user.mobileSignature)</div></div>" : ""
         mobileSignature = mobileSignature.ln2br()
         
-        let defaultSignature = self.user.userService.showDefaultSignature ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
+        let defaultSignature = self.user.defaultSignatureStatus ? "<div><br></div><div><br></div><div id=\"protonmail_signature_block\"  class=\"protonmail_signature_block\"><div>\(signature)</div></div>" : ""
         
         let head = "<html><head></head><body>"
         let foot = "</body></html>"
