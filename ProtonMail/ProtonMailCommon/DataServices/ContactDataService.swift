@@ -136,6 +136,14 @@ class ContactDataService: Service, HasLocalStorage {
                         if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                            fromJSONArray: contacts_json,
                                                                            in: context) as? [Contact] {
+                            contacts.forEach { (c) in
+                                c.userID = self.userID
+                                if let emails = c.emails.allObjects as? [Email] {
+                                    emails.forEach { (e) in
+                                        e.userID = self.userID
+                                    }
+                                }
+                            }
                             if let error = context.saveUpstreamIfNeeded() {
                                 PMLog.D(" error: \(error)")
                                 completion?(nil, error)
@@ -213,7 +221,14 @@ class ContactDataService: Service, HasLocalStorage {
                                     if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
                                                                                        fromJSONArray: contacts_json,
                                                                                        in: context) as? [Contact] {
-                                        
+                                        contacts.forEach { (c) in
+                                            c.userID = self.userID
+                                            if let emails = c.emails.allObjects as? [Email] {
+                                                emails.forEach { (e) in
+                                                    e.userID = self.userID
+                                                }
+                                            }
+                                        }
                                         if let error = context.saveUpstreamIfNeeded() {
                                             PMLog.D(" error: \(error)")
                                         } else {
@@ -350,7 +365,7 @@ class ContactDataService: Service, HasLocalStorage {
                 return
             }
             
-            let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false}
+            let noDetails : [Email] = contactEmails.filter { $0.managedObjectContext != nil && $0.defaults == 0 && $0.contact.isDownloaded == false && $0.userID == self.userID }
             let fetchs : [Promise<Contact>] = noDetails.map { return self.details(contactID: $0.contactID, inContext: context) }
             firstly {
                 when(resolved: fetchs)
@@ -360,7 +375,7 @@ class ContactDataService: Service, HasLocalStorage {
                     allEmails = newFetched
                 }
                 
-                let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded}
+                let details : [Email] = allEmails.filter { $0.defaults == 0 && $0.contact.isDownloaded && $0.userID == self.userID }
                 var parsers : [Promise<PreContact>] = details.map {
                     return self.parseContact(email: $0.email, cards: $0.contact.getCardData())
                 }
@@ -515,6 +530,11 @@ class ContactDataService: Service, HasLocalStorage {
                                                                                    in: context) as? [Contact] {
                                     for c in contacts {
                                         c.userID = self.userID
+                                        if let emails = c.emails.allObjects as? [Email] {
+                                            emails.forEach { (e) in
+                                                e.userID = self.userID
+                                            }
+                                        }
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D(" error: \(error)");
@@ -569,7 +589,13 @@ class ContactDataService: Service, HasLocalStorage {
                                                                                    fromJSONArray: contactsArray,
                                                                                    in: context) as? [Contact] {
                                     for contact in contacts {
+                                        contact.userID = self.userID
                                         let _ = contact.fixName(force: true)
+                                        if let emails = contact.emails.allObjects as? [Email] {
+                                            emails.forEach { (e) in
+                                                e.userID = self.userID
+                                            }
+                                        }
                                     }
                                     try context.save()
                                 }
@@ -656,6 +682,20 @@ class ContactDataService: Service, HasLocalStorage {
     
     private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
+        do {
+            if let emails = try context.fetch(fetchRequest) as? [Email] {
+                return emails
+            }
+        } catch let ex as NSError {
+            PMLog.D(" error: \(ex)")
+        }
+        return []
+    }
+    
+    private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, userId: String) -> [Email] {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
+        let predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userId)
+        fetchRequest.predicate = predicate
         do {
             if let emails = try context.fetch(fetchRequest) as? [Email] {
                 return emails
@@ -779,7 +819,7 @@ extension ContactDataService {
             // merge address book and core data contacts
             let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
             context.performAndWait() {
-                let emailsCache = self.allEmailsInManagedObjectContext(context)
+                let emailsCache = self.allEmailsInManagedObjectContext(context, userId: self.userID)
                 var pm_contacts: [ContactVO] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {

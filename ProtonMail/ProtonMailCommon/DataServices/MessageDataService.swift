@@ -2185,7 +2185,12 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                   in: context) as? [Contact] {
                                 for c in outContacts {
                                     c.isDownloaded = false
-                                    c.userID = self.userID  //TODO:: set relation Email userid
+                                    c.userID = self.userID
+                                    if let emails = c.emails.allObjects as? [Email] {
+                                        emails.forEach { (e) in
+                                            e.userID = self.userID
+                                        }
+                                    }
                                 }
                             }
                         } catch let ex as NSError {
@@ -2230,6 +2235,11 @@ class MessageDataService : Service, HasLocalStorage {
                             for c in outContacts {
                                 c.isDownloaded = false
                                 c.userID = self.userID
+                                if let emails = c.emails.allObjects as? [Email] {
+                                    emails.forEach { (e) in
+                                        e.userID = self.userID
+                                    }
+                                }
                             }
                         }
                         
