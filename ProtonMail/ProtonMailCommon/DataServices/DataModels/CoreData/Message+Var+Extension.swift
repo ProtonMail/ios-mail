@@ -155,9 +155,9 @@ extension Message {
         set {
             var flag = self.flag
             if newValue {
-                flag.remove(.replied)
-            } else {
                 flag.insert(.replied)
+            } else {
+                flag.remove(.replied)
             }
             self.flag = flag
         }
@@ -171,9 +171,9 @@ extension Message {
         set {
             var flag = self.flag
             if newValue {
-                flag.remove(.repliedAll)
-            } else {
                 flag.insert(.repliedAll)
+            } else {
+                flag.remove(.repliedAll)
             }
             self.flag = flag
         }
