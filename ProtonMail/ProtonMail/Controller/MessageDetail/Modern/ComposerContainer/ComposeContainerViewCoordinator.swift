@@ -68,6 +68,7 @@ class ComposeContainerViewCoordinator: TableContainerViewCoordinator {
         guard let viewController = viewController else {
             return
         }
+        viewController.modalPresentationStyle = .fullScreen
         self.controller?.set(coordinator: self)
         navigationController?.present(viewController, animated: true, completion: nil)
     }
