@@ -193,7 +193,7 @@ extension SettingsDeviceViewController {
                 case .combinContacts:
                     c.config(right: "off")
                 case .cleanCache:
-                    c.config(right: "")
+                    c.config(right: LocalString._empty_cache)
                 }
             }
             return cell
