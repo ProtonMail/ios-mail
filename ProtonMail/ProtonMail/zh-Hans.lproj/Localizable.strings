@@ -343,7 +343,7 @@
 "Can't load the file" = "无法加载该文件";
 
 /* Description */
-"Can't not find the value from the response body" = "无法找到相应的返回值";
+"Can't find the value from the response body" = "无法找到相应的返回值";
 
 /* Error */
 "Can't open the file" = "无法打开文件";

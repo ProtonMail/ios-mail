@@ -342,7 +342,7 @@
 "Can't load the file" = "Impossible de charger le fichier";
 
 /* Description */
-"Can't not find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
+"Can't find the value from the response body" = "Impossible de trouver la valeur du corps de la réponse";
 
 /* Error */
 "Can't open the file" = "Impossible d'ouvrir le fichier";

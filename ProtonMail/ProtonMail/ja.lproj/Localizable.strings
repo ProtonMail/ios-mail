@@ -342,7 +342,7 @@
 "Can't load the file" = "ファイルをロードできません。";
 
 /* Description */
-"Can't not find the value from the response body" = "レスポンスボディから値を見つけることができません";
+"Can't find the value from the response body" = "レスポンスボディから値を見つけることができません";
 
 /* Error */
 "Can't open the file" = "ファイルを開くことができません。";

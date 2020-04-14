@@ -339,7 +339,7 @@
 "Bad path" = "Bad path"; //title
 "Unable to construct a valid URL with the following path: %@" = "Unable to construct a valid URL with the following path: %@";
 "Bad response" = "Bad response"; //title
-"Can't not find the value from the response body" = "Can't not find the value from the response body";
+"Can't find the value from the response body" = "Can't find the value from the response body";
 "<no object>" = "<no object>"; //default empty object
 "Unable to parse response" = "Unable to parse response";
 "Unable to parse the response object:

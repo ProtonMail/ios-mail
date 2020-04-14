@@ -256,7 +256,7 @@
 "Can't load the file" = "Не вдалося завантажити файл";
 
 /* Description */
-"Can't not find the value from the response body" = "Неможливо знайти значення з тіла відповіді";
+"Can't find the value from the response body" = "Неможливо знайти значення з тіла відповіді";
 
 /* Error */
 "Can't open the file" = "Не вдалося відкрити файл";

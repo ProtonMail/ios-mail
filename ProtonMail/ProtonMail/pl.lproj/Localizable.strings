@@ -343,7 +343,7 @@ Odwiedź <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">
 "Can't load the file" = "Nie można załadować pliku";
 
 /* Description */
-"Can't not find the value from the response body" = "Nie można odnaleźć wartości z treści odpowiedzi";
+"Can't find the value from the response body" = "Nie można odnaleźć wartości z treści odpowiedzi";
 
 /* Error */
 "Can't open the file" = "Nie można otworzyć pliku";

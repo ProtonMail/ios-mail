@@ -343,7 +343,7 @@ Vă rugăm să vizitați <a href=\"https://protonmail.com/support/knowledge-base
 "Can't load the file" = "Nu se poate încărca fișierul";
 
 /* Description */
-"Can't not find the value from the response body" = "Nu se poate găsi valoarea din corpul de răspuns";
+"Can't find the value from the response body" = "Nu se poate găsi valoarea din corpul de răspuns";
 
 /* Error */
 "Can't open the file" = "Fișierul nu poate fi deschis";

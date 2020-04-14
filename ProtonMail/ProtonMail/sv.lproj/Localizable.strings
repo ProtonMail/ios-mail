@@ -343,7 +343,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Can't load the file" = "Kan inte ladda filen";
 
 /* Description */
-"Can't not find the value from the response body" = "Kan inte hitta värdet från svarstexten";
+"Can't find the value from the response body" = "Kan inte hitta värdet från svarstexten";
 
 /* Error */
 "Can't open the file" = "Kan inte öppna filen";
