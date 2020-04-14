@@ -941,7 +941,7 @@
                                                     <action selector="signInAction:" destination="JSr-z6-cCy" eventType="touchUpInside" id="iNu-dV-pfW"/>
                                                 </connections>
                                             </button>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
                                                 <rect key="frame" x="31.5" y="285.5" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
@@ -957,7 +957,7 @@
                                                     <action selector="resetMBPAction:" destination="u1u-Fp-Fza" eventType="touchUpInside" id="oNZ-pz-wZ5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
                                                 <rect key="frame" x="31.5" y="330.5" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
