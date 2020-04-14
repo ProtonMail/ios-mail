@@ -1804,6 +1804,7 @@ class LocalizedString {
     lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
     
     lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
+    lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
     
     
     lazy var _enter_your_mailbox_password = NSLocalizedString("Enter your mailbox password", comment: "Account manager title")
@@ -1841,5 +1842,5 @@ class LocalizedString {
     
     lazy var _you_are_about_to_remove = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\n\nDo you want to remove all your accounts anyway?"
     
-    lazy var _by_removing_this_account = "By removing this account , you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?"
+    lazy var _by_removing_this_account = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?"
 }
