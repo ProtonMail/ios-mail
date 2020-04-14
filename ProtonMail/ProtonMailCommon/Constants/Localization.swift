@@ -1839,7 +1839,7 @@ class LocalizedString {
     // Account Manager
     lazy var _logged_out = NSLocalizedString("(logged out)", comment: "Comment for disconnected account in Account Manager")
     
-    lazy var _you_are_about_to_remove = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\nDo you want to remove all your accounts anyway?"
+    lazy var _you_are_about_to_remove = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\n\nDo you want to remove all your accounts anyway?"
     
-    lazy var _by_removing_this_account = "By removing this account , you will no longer be able to access it from this device unless you add it again.\nDo you want to remove this account anyway?"
+    lazy var _by_removing_this_account = "By removing this account , you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?"
 }
