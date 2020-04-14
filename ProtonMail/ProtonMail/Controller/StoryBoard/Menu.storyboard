@@ -461,14 +461,14 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJa-fM-KPk">
-                                        <rect key="frame" x="16" y="6" width="351" height="20"/>
+                                        <rect key="frame" x="16" y="6" width="218" height="20"/>
                                         <accessibility key="accessibilityConfiguration" identifier="displayNameLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="abcdefg@protonmail.ch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGF-dy-Rrr">
-                                        <rect key="frame" x="16" y="28" width="351" height="13"/>
+                                        <rect key="frame" x="16" y="28" width="218" height="13"/>
                                         <accessibility key="accessibilityConfiguration" identifier="displayEmailLabel"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="13" id="Qa3-jH-MjH"/>
@@ -496,8 +496,8 @@
                                             <action selector="presentQuickSnoozeOptionsWithSender:" destination="JMB-iY-fYD" eventType="touchUpInside" id="yzE-hl-XFP"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXI-g9-7g9">
-                                        <rect key="frame" x="226" y="13" width="24" height="24"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aXI-g9-7g9" userLabel="Arrow Button">
+                                        <rect key="frame" x="226" y="4" width="24" height="24"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="24" id="8E9-D6-QiP"/>
                                             <constraint firstAttribute="height" constant="24" id="Oo8-Ad-GtC"/>
@@ -514,7 +514,7 @@
                                 <accessibility key="accessibilityConfiguration" identifier="sidebarHeaderView"/>
                                 <constraints>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="top" constant="6" id="4WZ-sS-AqA"/>
-                                    <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="E7U-Dc-qS6" secondAttribute="trailingMargin" id="6gX-aT-a78"/>
+                                    <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="aXI-g9-7g9" secondAttribute="leadingMargin" id="6gX-aT-a78"/>
                                     <constraint firstItem="zXB-Hr-oB5" firstAttribute="centerY" secondItem="UJa-fM-KPk" secondAttribute="firstBaseline" id="KhV-yF-k1I"/>
                                     <constraint firstItem="zXB-Hr-oB5" firstAttribute="leading" secondItem="aXI-g9-7g9" secondAttribute="trailing" constant="12" id="PRE-lE-YNc"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="UJa-fM-KPk" secondAttribute="trailing" id="Qg7-Cn-Otl"/>
@@ -523,8 +523,8 @@
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="f1b-6I-JKl"/>
                                     <constraint firstItem="IIk-hq-6PK" firstAttribute="leading" secondItem="dGF-dy-Rrr" secondAttribute="leading" id="fcp-g9-515"/>
                                     <constraint firstAttribute="trailing" secondItem="zXB-Hr-oB5" secondAttribute="trailing" constant="89" id="fxY-e3-vLU"/>
+                                    <constraint firstItem="aXI-g9-7g9" firstAttribute="centerY" secondItem="UJa-fM-KPk" secondAttribute="centerY" id="iWO-RK-OaL"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="dGF-dy-Rrr" secondAttribute="leading" id="jzY-Lg-q3S"/>
-                                    <constraint firstItem="aXI-g9-7g9" firstAttribute="centerY" secondItem="E7U-Dc-qS6" secondAttribute="centerY" id="nM4-jj-tJB"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="top" secondItem="UJa-fM-KPk" secondAttribute="bottom" constant="2" id="qoy-VF-EUt"/>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="leading" secondItem="E7U-Dc-qS6" secondAttribute="leading" constant="16" id="tej-Zq-zyY"/>
                                     <constraint firstItem="IIk-hq-6PK" firstAttribute="trailing" secondItem="aXI-g9-7g9" secondAttribute="trailing" id="vxM-Pq-bpv"/>
