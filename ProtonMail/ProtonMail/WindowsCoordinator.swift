@@ -263,6 +263,27 @@ class WindowsCoordinator: CoordinatorNew {
         _ = deeplink.popFirst
         self.start()
     }
+
+    // Manages passing through the view heirarchy to open the Composer window and set mailto:
+    // properties. Could potentially be a bit cleaner, open to suggestions.
+    func presentComposer(_ queryItems: [URLQueryItem]?) {
+        let deeplink = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController,
+                let coordinator = menu.getCoordinator() as? MenuCoordinatorNew
+            {
+                coordinator.follow(deeplink)
+                stop = true
+            }
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(2)) {
+            let notification2 = Notification(name: Notification.Name(rawValue: "HandleMailto"),
+                                        object: nil,
+                                        userInfo: ["queryItems": queryItems])
+            NotificationCenter.default.post(notification2)
+        }
+    }
 }
 
 // This logic is taken from AppDelegate as-is, not refactored

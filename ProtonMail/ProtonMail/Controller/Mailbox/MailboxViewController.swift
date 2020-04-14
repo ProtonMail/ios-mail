@@ -182,6 +182,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         ///
         self.viewModel.cleanReviewItems()
+        NotificationCenter.default.addObserver(self, selector:#selector(onMailto), name: NSNotification.Name(rawValue: "HandleMailto"), object: nil)
+    }
+
+    @objc func onMailto(_ notification: Notification) {
+        coordinator?.go(to: .composer, sender: notification.userInfo?["queryItems"] ?? [])
     }
     
     override func viewWillAppear(_ animated: Bool) {
