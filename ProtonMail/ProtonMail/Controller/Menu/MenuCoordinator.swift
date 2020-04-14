@@ -155,7 +155,15 @@ class MenuCoordinatorNew: DefaultCoordinator {
             switch dest {
             case .switchUser where setup.value != nil:
                 // this will setup currentUser to this MenuViewModel which will transfer it down the hierarchy
-                self.viewModel.currentUser = services.get(by: UsersManager.self).getUser(bySessionID: setup.value!)
+                let users = services.get(by: UsersManager.self)
+                let user = users.getUser(bySessionID: setup.value!)
+                
+                users.active(uid: setup.value!)
+                self.viewModel.currentUser = user
+                
+                String(format: LocalString._switch_account_by_click_notification,
+                       self.viewModel.secondUser?.defaultEmail ?? "",
+                    user?.defaultEmail ?? "").alertToastBottom()
             default: break
             }
             // and clear it
