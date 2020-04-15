@@ -23,18 +23,35 @@
 
 import Foundation
 
+protocol MenuUserViewCellDelegate: class {
+    func didClickedSignInButton(cell: MenuUserViewCell)
+}
+
 class MenuUserViewCell: UITableViewCell {
     
+    weak var delegate: MenuUserViewCellDelegate?
     
     @IBOutlet weak var backgroundImage: UIImageView!
     
-    @IBOutlet weak var diaplayName: UILabel!
+    @IBOutlet weak var displayName: UILabel!
     @IBOutlet weak var emailAddress: UILabel!
     @IBOutlet weak var shortName: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
     
+    @IBOutlet weak var signOutBtn: UIButton!
     
-//    fileprivate var item: MenuItem!
+    @IBOutlet weak var displayNameTrailingToUnreadLeading: NSLayoutConstraint!
+    @IBOutlet weak var userEmailTrailingToUnreadLeading: NSLayoutConstraint!
+    
+    
+    //    fileprivate var item: MenuItem!
+    @IBOutlet weak var displayNameToSignIn: NSLayoutConstraint!
+    @IBOutlet weak var userEmailTrailingToSignInLeading: NSLayoutConstraint!
+    
+    enum CellType {
+        case LoggedIn
+        case LoggedOut
+    }
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -49,17 +66,53 @@ class MenuUserViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.backgroundImage.layer.cornerRadius = self.backgroundImage.frame.width / 2
+        self.signOutBtn.layer.cornerRadius = 4.0
+        self.signOutBtn.layer.masksToBounds = true
     }
     
-    func configCell (name: String, email: String) {
+    func configCell(type: CellType, name: String, email: String) {
+        switch type {
+        case .LoggedIn:
+            unreadLabel.isHidden = false
+            signOutBtn.isHidden = true
+            
+            displayNameTrailingToUnreadLeading.priority = .required
+            userEmailTrailingToUnreadLeading.priority = .required
+            
+            displayNameToSignIn.priority = .defaultLow
+            userEmailTrailingToSignInLeading.priority = .defaultLow
+            
+            self.displayName.textColor = .black
+            self.emailAddress.textColor = .black
+            
+            configCell(name: name, email: email)
+            
+        case .LoggedOut:
+            unreadLabel.isHidden = true
+            signOutBtn.isHidden = false
+            
+            displayNameTrailingToUnreadLeading.priority = .defaultLow
+            userEmailTrailingToUnreadLeading.priority = .defaultLow
+            
+            displayNameToSignIn.priority = .required
+            userEmailTrailingToSignInLeading.priority = .required
+            
+            self.displayName.textColor = .red
+            self.emailAddress.textColor = .red
+            
+            configCell(name: name, email: email)
+        }
+    }
+    
+    private func configCell (name: String, email: String) {
         
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
         
         let displayName = name.isEmpty ? email : name
-        diaplayName.text = displayName
-        emailAddress.text = email
+        self.displayName.text = displayName
+        self.emailAddress.text = email
         var shortName = ""
         if displayName.count > 0 {
             shortName = String(displayName[name.startIndex])
@@ -94,5 +147,9 @@ class MenuUserViewCell: UITableViewCell {
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
+    }
+    
+    @IBAction func handleSignIn(_ sender: Any) {
+        self.delegate?.didClickedSignInButton(cell: self)
     }
 }

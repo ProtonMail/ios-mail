@@ -8,6 +8,22 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="iXQ-jH-Flg">
+            <objects>
+                <navigationController storyboardIdentifier="nav_AccountConnectViewController" id="wdd-dZ-3XX" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="i9v-PB-q6M">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="JSr-z6-cCy" kind="relationship" relationship="rootViewController" id="udA-ck-xBM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OQk-Gf-uhk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4834" y="-2876"/>
+        </scene>
         <!--Account Manager View Controller-->
         <scene sceneID="Amn-w9-Un0">
             <objects>
@@ -834,7 +850,7 @@
         <!--Account Connect-->
         <scene sceneID="RMA-IS-TtS">
             <objects>
-                <viewController title="Sign In" id="JSr-z6-cCy" userLabel="Account Connect" customClass="AccountConnectViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AccountConnectViewController" title="Sign In" id="JSr-z6-cCy" userLabel="Account Connect" customClass="AccountConnectViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i10-o1-0DD"/>
                         <viewControllerLayoutGuide type="bottom" id="VLj-8C-6Ra"/>
@@ -1509,6 +1525,9 @@
             <point key="canvasLocation" x="7460" y="-2766"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="udA-ck-xBM"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
