@@ -375,8 +375,7 @@ extension MenuViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
             if let user = self.viewModel.user(at: row) {
                 cell.configCell(name: user.defaultDisplayName, email: user.defaultEmail)
-                //TODO:: fix me Move this to user
-                let count = self.viewModel.count(by: Message.Location.inbox.rawValue, userID: user.userinfo.userId)
+                let count = user.getUnReadCount(by: Message.Location.inbox.rawValue)
                 cell.configUnreadCount(count: count)
             }
             return cell
