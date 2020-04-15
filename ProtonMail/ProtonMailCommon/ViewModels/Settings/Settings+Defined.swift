@@ -282,6 +282,7 @@ public enum SGItems: Int, CustomStringConvertible {
     case linkOpeningMode = 12
     case metadataStripping = 13
     case browser
+    case showArchiveMessageButton = 15
     
     public var description : String {
         switch(self){
@@ -297,6 +298,8 @@ public enum SGItems: Int, CustomStringConvertible {
             return LocalString._clear_local_message_cache
         case .autoLoadImage:
             return LocalString._auto_show_images
+        case .showArchiveMessageButton:
+            return LocalString._show_archive_button
         case .notificationsSnooze:
             return LocalString._snooze_notifications
         case .linkOpeningMode:
