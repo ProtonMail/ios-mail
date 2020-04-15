@@ -1838,6 +1838,7 @@ class LocalizedString {
     
     lazy var _push_notification = NSLocalizedString("Push Notifications", comment: "cell title in device settings")
     lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
+    lazy var _empty_cache = NSLocalizedString("Empty Cache", comment: "cell title in device setting")
     
     
     // Account Manager
