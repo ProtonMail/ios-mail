@@ -224,9 +224,9 @@ extension AccountManagerViewController: UITableViewDataSource {
         
         view.contentView.addSubview(label)
         label.leadingAnchor.constraint(equalTo: view.contentView.leadingAnchor, constant: 10.0).isActive = true
-        label.trailingAnchor.constraint(equalTo: view.contentView.trailingAnchor, constant: 10.0).isActive = true
+        label.trailingAnchor.constraint(equalTo: view.contentView.trailingAnchor, constant: -10.0).isActive = true
         label.topAnchor.constraint(equalTo: view.contentView.topAnchor, constant: 10.0).isActive = true
-        label.bottomAnchor.constraint(equalTo: view.contentView.bottomAnchor, constant: 10.0).isActive = true
+        label.bottomAnchor.constraint(equalTo: view.contentView.bottomAnchor, constant: -10.0).isActive = true
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return view
