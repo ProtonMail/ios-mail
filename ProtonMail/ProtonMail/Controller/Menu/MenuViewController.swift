@@ -390,7 +390,7 @@ extension MenuViewController: UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
             if let disconnectedUser = self.viewModel.disconnectedUser(at: row) {
                 cell.configCell(type: .LoggedOut,
-                                name: disconnectedUser.defaultDisplayName,
+                                name: disconnectedUser.defaultDisplayName + " " + LocalString._logged_out,
                                 email: disconnectedUser.defaultEmail)
             }
             cell.delegate = self
