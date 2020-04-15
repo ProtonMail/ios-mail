@@ -1780,6 +1780,9 @@ class LocalizedString {
     
     lazy var _logout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to log out?", comment: "Alert when logout non-primary account from account manager")
     
+    // Switch Account
+    lazy var _switch_account_by_click_notification = NSLocalizedString("Switching account from %@ to %@", comment: "Alert when switched account by clicking notification of another account")
+    
     // TrustKit
     
     lazy var _cert_validation_failed_title = NSLocalizedString("Insecure connection", comment: "Cert pinning failed alert title")
