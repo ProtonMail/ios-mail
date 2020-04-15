@@ -259,7 +259,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 self.coordinator?.go(to: .decryptMailbox, sender: self)
             case .exist:
                 MBProgressHUD.hide(for: self.view, animated: true)
-                let alertController = "The user already logged in".alertController()
+                let alertController = LocalString._duplicate_logged_in.alertController()
                 alertController.addOKAction()
                 self.present(alertController, animated: true, completion: nil)
             }
