@@ -205,7 +205,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
-        return async {
+        async {
             let userinfo = self.user.userInfo
             guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
                 let key = addr.keys.first else {
@@ -215,6 +215,11 @@ class ComposeViewModelImpl : ComposeViewModel {
             if let atts = self.getAttachments() {
                 for att in atts {
                     do {
+                        //TODO: work around to wait attachment upload completed, need a better way
+                        while att.keyPacket == nil || att.keyPacket == "" {
+                            Thread.sleep(forTimeInterval: 1.0)
+                        }
+                        
                         guard let sessionPack = self.user.newSchema ?
                             try att.getSession(userKey: self.user.userPrivateKeys,
                                                keys: self.user.addressKeys,
@@ -226,8 +231,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                         guard let newKeyPack = try sessionPack.key?.getKeyPackage(publicKey: key.publicKey, algo: sessionPack.algo)?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) else {
                             continue
                         }
-                        att.keyPacket = newKeyPack
-                        att.keyChanged = true
+                        att.managedObjectContext?.performAndWait {
+                            att.keyPacket = newKeyPack
+                            att.keyChanged = true
+                        }
                     } catch let err as NSError{
                         err.upload(toAnalytics: "updateAddressID atts")
                     }
@@ -240,13 +247,20 @@ class ComposeViewModelImpl : ComposeViewModel {
                         }
                     }
                 }
-                
             }
             
-            self.message?.addressID = address_id
+            if let context = self.message?.managedObjectContext {
+                context.performAndWait {
+                    self.message?.addressID = address_id
+                    if let error = context.saveUpstreamIfNeeded() {
+                        PMLog.D("error: \(error)")
+                    }
+                }
+            }
+
             self.updateDraft()
         }
-
+        return Promise()
     }
     
     override func getAddresses() -> [Address] {

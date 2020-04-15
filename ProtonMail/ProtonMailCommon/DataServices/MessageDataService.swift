@@ -1085,6 +1085,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
+        var isAttachmentKeyChanged = false
         context.performAndWait {
             guard let objectID = CoreDataService.shared.managedObjectIDForURIRepresentation(messageID) else {
                 // error: while trying to get objectID
@@ -1131,7 +1132,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 hasTemp = true
                                 context.delete(att)
                             }
-                            att.keyChanged = false
+                            // Prevent flag being overide if current call do not change the key
+                            if isAttachmentKeyChanged {
+                                att.keyChanged = false
+                            }
                         }
                     }
                 
@@ -1172,6 +1176,15 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 
                 PMLog.D("SendAttachmentDebug == start save draft!")
+                
+                if let atts = message.attachments.allObjects as? [Attachment] {
+                    for att in atts {
+                        if att.keyChanged {
+                            isAttachmentKeyChanged = true
+                        }
+                    }
+                }
+                
                 if message.isDetailDownloaded && message.messageID != "0" {
                     let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
