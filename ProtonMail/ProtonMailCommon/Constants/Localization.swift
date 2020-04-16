@@ -1389,6 +1389,9 @@ class LocalizedString {
 
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
+    
+    /// "Create new account"
+    lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
 
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")

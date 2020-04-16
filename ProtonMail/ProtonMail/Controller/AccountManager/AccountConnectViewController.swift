@@ -57,6 +57,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signInTitle: UILabel!
     @IBOutlet weak var forgotPwdButton: UIButton!
+    @IBOutlet weak var createNewUserButton: UIButton!
     
     // Constraints
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
@@ -80,6 +81,10 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
 
         setupTextFields()
         setupButtons()
+        
+        if self.viewModel.username == nil {
+            self.showCreateNewAccountButton()
+        }
     }
     
     @objc internal func dismiss() {
@@ -103,6 +108,10 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         } else {
             self.passwordTextField.isSecureTextEntry = true
         }
+    }
+    
+    func showCreateNewAccountButton() {
+        self.createNewUserButton.isHidden = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -158,7 +167,8 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         signInButton.alpha                  = buttonDisabledAlpha
         
         signInButton.setTitle(LocalString._general_login, for: .normal)
-        forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)        
+        forgotPwdButton.setTitle(LocalString._forgot_password, for: .normal)
+        createNewUserButton.setTitle(LocalString._create_new_account, for: .normal)
     }
     
     func updateSignInButton(usernameText: String, passwordText: String) {
@@ -220,6 +230,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     @IBAction func signUpAction(_ sender: UIButton) {
+        self.createNewUserButton.isEnabled = false
         dismissKeyboard()
         firstly {
             self.viewModel.generateToken()
@@ -229,6 +240,8 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             let alert = LocalString._mobile_signups_are_disabled_pls_later_pm_com.alertController()
             alert.addOKAction()
             self.present(alert, animated: true, completion: nil)
+        }.finally {
+            self.createNewUserButton.isEnabled = true
         }
     }
     
