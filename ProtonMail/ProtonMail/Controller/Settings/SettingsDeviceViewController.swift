@@ -58,6 +58,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
         self.tableView.register(SettingsGeneralCell.self)
         self.tableView.register(SettingsTwoLinesCell.self)
+        self.tableView.register(GeneralSettingActionCell.self)
         
         if #available(iOS 13.0, *) {
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIScene.willEnterForegroundNotification, object: nil)
@@ -121,6 +122,22 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             self.tableView.reloadRows(at: [indexPath], with: .fade)
         }
     }
+    
+    private func cleanCache() {
+        if !cleaning {
+            cleaning = true
+            let nview = self.navigationController?.view ?? UIView()
+            let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
+            hud.label.text = LocalString._settings_resetting_cache
+            hud.removeFromSuperViewOnHide = true
+            self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
+                hud.mode = MBProgressHUDMode.text
+                hud.label.text = LocalString._general_done_button
+                hud.hide(animated: true, afterDelay: 1)
+                self.cleaning = false
+            }
+        }
+    }
 }
 
 //MARK: - table view delegate
@@ -158,6 +175,17 @@ extension SettingsDeviceViewController {
             return cell
         case .app:
             let item = self.viewModel.appSettigns[row]
+            
+            if item == .cleanCache {
+                if let cell = tableView.dequeueReusableCell(withIdentifier: GeneralSettingActionCell.CellID, for: indexPath) as? GeneralSettingActionCell {
+                    cell.configCell(left: item.description, action: LocalString._empty_cache) { [weak self] in
+                        self?.cleanCache()
+                    }
+                    cell.selectionStyle = .none
+                    return cell
+                }
+            }
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
             cell.accessoryType = .disclosureIndicator
             if let c = cell as? SettingsGeneralCell {
@@ -193,7 +221,8 @@ extension SettingsDeviceViewController {
                 case .combinContacts:
                     c.config(right: "off")
                 case .cleanCache:
-                    c.config(right: LocalString._empty_cache)
+//                    c.config(right: LocalString._empty_cache)
+                    break
                 }
             }
             return cell
@@ -264,19 +293,7 @@ extension SettingsDeviceViewController {
             case .combinContacts:
                 break
             case .cleanCache:
-                if !cleaning {
-                    cleaning = true
-                    let nview = self.navigationController?.view ?? UIView()
-                    let hud : MBProgressHUD = MBProgressHUD.showAdded(to: nview, animated: true)
-                    hud.label.text = LocalString._settings_resetting_cache
-                    hud.removeFromSuperViewOnHide = true
-                    self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
-                        hud.mode = MBProgressHUDMode.text
-                        hud.label.text = LocalString._general_done_button
-                        hud.hide(animated: true, afterDelay: 1)
-                        self.cleaning = false
-                    }
-                }
+                break
             }
         case .info:
             break
