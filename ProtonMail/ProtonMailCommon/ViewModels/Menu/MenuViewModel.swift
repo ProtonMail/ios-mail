@@ -32,6 +32,7 @@ enum MenuSection {
     
     /// second screen
     case users    //
+    case disconnectedUsers
     case accountManager //
 }
 
@@ -43,6 +44,7 @@ protocol MenuViewModel : AnyObject {
     func updateCurrent()
     func cellHeight(at: Int) -> CGFloat
     var usersCount: Int { get }
+    var disconnectedUsersCount: Int { get }
     
     
     func updateMenuItems()
@@ -56,6 +58,7 @@ protocol MenuViewModel : AnyObject {
     func label(at : Int) -> Label?
     func count(by labelID: String, userID: String?) -> Int
     func user(at : Int) -> UserManager?
+    func disconnectedUser(at: Int) -> UsersManager.DisconnectedUserHandle?
     var currentUser: UserManager? { get set }
     var secondUser: UserManager? { get set }
     func item(inboxes at: Int ) ->MenuItem

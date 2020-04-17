@@ -299,6 +299,9 @@ extension UserManager : UserDataSource {
         }
     }
     
+    func getUnReadCount(by labelID: String) -> Int {
+        self.labelService.unreadCount(by: labelID)
+    }
 }
 
 

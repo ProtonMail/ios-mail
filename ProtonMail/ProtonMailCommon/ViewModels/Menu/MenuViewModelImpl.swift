@@ -34,6 +34,8 @@ class MenuViewModelImpl : MenuViewModel {
         switch section {
         case .users:
             return kUserCellHeight
+        case .disconnectedUsers:
+            return kUserCellHeight
         default:
             return kMenuCellHeight
         }
@@ -43,16 +45,26 @@ class MenuViewModelImpl : MenuViewModel {
         return self.usersManager.user(at: at)
     }
     
+    func disconnectedUser(at: Int) -> UsersManager.DisconnectedUserHandle? {
+        return self.usersManager.disconnectedUser(at: at)
+    }
+    
     var usersCount: Int {
         get {
             return self.usersManager.count
         }
     }
     
+    var disconnectedUsersCount: Int {
+        get {
+            return self.usersManager.disconnectedUsers.count
+        }
+    }
+    
     func showUsers() -> Bool {
         showingUsers = !showingUsers
         if showingUsers {
-            self.sections = [.users, .accountManager]
+            self.sections = [.users, .disconnectedUsers, .accountManager]
         } else {
             self.sections = [.inboxes, .others, .labels]
         }

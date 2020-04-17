@@ -39,6 +39,15 @@ class AccountConnectCoordinator: DefaultCoordinator {
         case twoFACode = "2fa_code_segue"
     }
     
+    init?(nav: UINavigationController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
+        guard let next = nav.firstViewController() as? VC else {
+            return nil
+        }
+        self.viewController = next
+        self.viewModel = vm
+        self.services = services
+    }
+    
     init?(vc: UIViewController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let viewC = vc as? VC else {
             return nil

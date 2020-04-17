@@ -299,22 +299,41 @@
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wCD-Eg-PlU">
+                                                    <rect key="frame" x="229" y="10" width="68" height="40"/>
+                                                    <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="68" id="K1D-C4-023"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
+                                                    <state key="normal" title="Sign In">
+                                                        <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="handleSignIn:" destination="RFI-HL-zIu" eventType="touchUpInside" id="zph-Co-g6P"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <color key="backgroundColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
                                             <constraints>
                                                 <constraint firstItem="226-FW-fTj" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="B3q-uC-jko"/>
                                                 <constraint firstItem="HBS-Vs-pJD" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="BiZ-ZU-q2l"/>
+                                                <constraint firstAttribute="trailing" secondItem="wCD-Eg-PlU" secondAttribute="trailing" constant="78" id="HHH-C0-PCo"/>
                                                 <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="tMY-R2-RON" secondAttribute="trailing" constant="10" id="IPh-cr-lsh"/>
                                                 <constraint firstItem="tMY-R2-RON" firstAttribute="leading" secondItem="226-FW-fTj" secondAttribute="trailing" constant="10" id="Ild-ma-EcE"/>
                                                 <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="Cvm-Jg-qNv" secondAttribute="trailing" constant="8" id="PHP-Zj-qr1"/>
                                                 <constraint firstItem="Cvm-Jg-qNv" firstAttribute="leading" secondItem="226-FW-fTj" secondAttribute="trailing" constant="10" id="QfN-pN-Ggf"/>
+                                                <constraint firstItem="wCD-Eg-PlU" firstAttribute="bottom" secondItem="HBS-Vs-pJD" secondAttribute="bottom" id="SsK-fa-PNQ"/>
                                                 <constraint firstItem="HBS-Vs-pJD" firstAttribute="leading" secondItem="tAS-ST-IeU" secondAttribute="leading" constant="10" id="TW0-tj-Xbc"/>
                                                 <constraint firstItem="tMY-R2-RON" firstAttribute="bottom" secondItem="HBS-Vs-pJD" secondAttribute="bottom" id="TYf-V5-U3b"/>
                                                 <constraint firstItem="huU-Oz-iYj" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="ZZu-b1-Z8e"/>
                                                 <constraint firstAttribute="trailing" secondItem="huU-Oz-iYj" secondAttribute="trailing" constant="78" id="cF4-Cg-97T"/>
                                                 <constraint firstItem="226-FW-fTj" firstAttribute="leading" secondItem="tAS-ST-IeU" secondAttribute="leading" constant="10" id="iZ1-bp-QJH"/>
-                                                <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="tMY-R2-RON" secondAttribute="trailing" constant="10" id="jhV-G6-OUB"/>
+                                                <constraint firstItem="wCD-Eg-PlU" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="lgo-QH-Ocj"/>
+                                                <constraint firstItem="wCD-Eg-PlU" firstAttribute="leading" secondItem="Cvm-Jg-qNv" secondAttribute="trailing" priority="750" constant="8" id="o4P-zr-PmY"/>
+                                                <constraint firstItem="wCD-Eg-PlU" firstAttribute="leading" secondItem="tMY-R2-RON" secondAttribute="trailing" priority="750" constant="8" id="ohh-Bu-vxk"/>
                                                 <constraint firstItem="Cvm-Jg-qNv" firstAttribute="top" secondItem="HBS-Vs-pJD" secondAttribute="top" id="qg3-Tw-963"/>
+                                                <constraint firstItem="wCD-Eg-PlU" firstAttribute="top" secondItem="HBS-Vs-pJD" secondAttribute="top" id="qlZ-uW-NNJ"/>
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="subviews">
@@ -338,10 +357,15 @@
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <outlet property="backgroundImage" destination="226-FW-fTj" id="cWr-53-hbn"/>
-                                            <outlet property="diaplayName" destination="Cvm-Jg-qNv" id="jJg-Y3-9oD"/>
+                                            <outlet property="displayName" destination="Cvm-Jg-qNv" id="jJg-Y3-9oD"/>
+                                            <outlet property="displayNameToSignIn" destination="o4P-zr-PmY" id="TYZ-88-CzK"/>
+                                            <outlet property="displayNameTrailingToUnreadLeading" destination="PHP-Zj-qr1" id="Y80-w8-6Fh"/>
                                             <outlet property="emailAddress" destination="tMY-R2-RON" id="UUu-xG-q3i"/>
                                             <outlet property="shortName" destination="HBS-Vs-pJD" id="qqC-gt-GGG"/>
+                                            <outlet property="signOutBtn" destination="wCD-Eg-PlU" id="kHa-Ab-9T7"/>
                                             <outlet property="unreadLabel" destination="huU-Oz-iYj" id="Rgz-sr-rGR"/>
+                                            <outlet property="userEmailTrailingToSignInLeading" destination="ohh-Bu-vxk" id="52m-jR-pyR"/>
+                                            <outlet property="userEmailTrailingToUnreadLeading" destination="IPh-cr-lsh" id="HgQ-m0-lYP"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="menu_button_cell" rowHeight="44" id="hpw-gd-GWq" userLabel="menu_button_cell" customClass="MenuButtonViewCell" customModule="ProtonMail" customModuleProvider="target">
@@ -558,6 +582,7 @@
                         <segue destination="vDl-7h-rdD" kind="custom" identifier="toFeedbackSegue" customClass="SWRevealViewControllerSeguePushController" id="iYc-B1-i2P"/>
                         <segue destination="WCq-ve-vYz" kind="presentation" identifier="toAccountManager" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="rET-Tr-Pta"/>
                         <segue destination="8dN-79-EXg" kind="presentation" identifier="toBugPop" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="hak-ZV-HgC"/>
+                        <segue destination="fbW-10-At0" kind="show" identifier="toAddAccountSegue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="Jpe-Jx-ajb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JBp-ua-X1G" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2340,6 +2365,16 @@
             </objects>
             <point key="canvasLocation" x="1849" y="2778"/>
         </scene>
+        <!--nav_AccountConnectViewController-->
+        <scene sceneID="ab2-fb-tgA">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="AccountConnectViewController" storyboardName="AccountManager" referencedIdentifier="nav_AccountConnectViewController" id="fbW-10-At0" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Z2H-nN-wRG"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="khS-0F-svf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1071" y="2480"/>
+        </scene>
         <!--Contact Storyboard-->
         <scene sceneID="lfj-HT-x7A">
             <objects>
@@ -2587,7 +2622,7 @@
         <segue reference="hZj-FM-cPb"/>
         <segue reference="XIN-Jt-JzU"/>
         <segue reference="LdN-DE-nXL"/>
-        <segue reference="0gE-az-sje"/>
+        <segue reference="hak-ZV-HgC"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="attached_main" width="14.5" height="16.5"/>

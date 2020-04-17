@@ -306,6 +306,11 @@ extension MenuViewController: UITableViewDelegate {
             self.hideUsers()
             self.sectionClicked = false
             self.coordinator?.go(to: .mailbox)
+        case .disconnectedUsers:
+            if let disConnectedUser = self.viewModel.disconnectedUser(at: row) {
+                self.coordinator?.go(to: .addAccount, sender: disConnectedUser)
+            }
+            break
         case .accountManager:
             self.coordinator?.go(to: .accountManager)
         default:
@@ -339,6 +344,8 @@ extension MenuViewController: UITableViewDataSource {
             return self.viewModel.labelsCount()
         case .users:
             return self.viewModel.usersCount
+        case .disconnectedUsers:
+            return self.viewModel.disconnectedUsersCount
         case .unknown:
             return 0
         case .accountManager:
@@ -374,11 +381,19 @@ extension MenuViewController: UITableViewDataSource {
         case .users:
             let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
             if let user = self.viewModel.user(at: row) {
-                cell.configCell(name: user.defaultDisplayName, email: user.defaultEmail)
-                //TODO:: fix me Move this to user
-                let count = self.viewModel.count(by: Message.Location.inbox.rawValue, userID: user.userinfo.userId)
+                cell.configCell(type: .LoggedIn, name: user.defaultDisplayName, email: user.defaultEmail)
+                let count = user.getUnReadCount(by: Message.Location.inbox.rawValue)
                 cell.configUnreadCount(count: count)
             }
+            return cell
+        case .disconnectedUsers:
+            let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
+            if let disconnectedUser = self.viewModel.disconnectedUser(at: row) {
+                cell.configCell(type: .LoggedOut,
+                                name: disconnectedUser.defaultDisplayName + " " + LocalString._logged_out,
+                                email: disconnectedUser.defaultEmail)
+            }
+            cell.delegate = self
             return cell
         case .accountManager:
             let cell = tableView.dequeueReusableCell(withIdentifier: kButtonTableCellID, for: indexPath) as! MenuButtonViewCell
@@ -398,6 +413,15 @@ extension MenuViewController: UITableViewDataSource {
             return 0.0
         default:
             return 1.0
+        }
+    }
+}
+
+extension MenuViewController: MenuUserViewCellDelegate {
+    func didClickedSignInButton(cell: MenuUserViewCell) {
+        if let indexPath = self.tableView.indexPath(for: cell),
+            let disConnectedUser = self.viewModel.disconnectedUser(at: indexPath.row) {
+            self.coordinator?.go(to: .addAccount, sender: disConnectedUser)
         }
     }
 }
