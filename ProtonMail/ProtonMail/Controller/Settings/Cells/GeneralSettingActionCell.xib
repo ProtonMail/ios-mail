@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="GeneralSettingActionCell" customModule="ProtonMail" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Right Text" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGg-8e-hyJ">
+                        <rect key="frame" x="27" y="6" width="158" height="32"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0Q-4n-Gtk">
+                        <rect key="frame" x="193" y="6" width="120" height="32"/>
+                        <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="120" id="mdl-IZ-KZQ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
+                        <state key="normal">
+                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </state>
+                        <connections>
+                            <action selector="handleAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="lbC-v3-OLW"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="DGg-8e-hyJ" secondAttribute="bottom" constant="6" id="3So-sZ-Uaf"/>
+                    <constraint firstItem="G0Q-4n-Gtk" firstAttribute="leading" secondItem="DGg-8e-hyJ" secondAttribute="trailing" constant="8" id="8Yu-zq-ty8"/>
+                    <constraint firstAttribute="trailing" secondItem="G0Q-4n-Gtk" secondAttribute="trailing" constant="7" id="AkO-Jw-007"/>
+                    <constraint firstItem="DGg-8e-hyJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="27" id="DEZ-iS-u4E"/>
+                    <constraint firstItem="DGg-8e-hyJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="Hy6-yG-IlJ"/>
+                    <constraint firstItem="G0Q-4n-Gtk" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="6" id="fo1-aQ-QpX"/>
+                    <constraint firstAttribute="bottom" secondItem="G0Q-4n-Gtk" secondAttribute="bottom" constant="6" id="hiy-08-EfL"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="actionButton" destination="G0Q-4n-Gtk" id="13C-CL-6rS"/>
+                <outlet property="leftText" destination="DGg-8e-hyJ" id="FEi-4c-X3n"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="121"/>
+        </tableViewCell>
+    </objects>
+</document>

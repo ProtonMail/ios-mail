@@ -591,15 +591,15 @@ extension ComposeViewController : ComposeViewDelegate {
                             self.htmlEditor.update(signature: signature)
                         }
                         MBProgressHUD.showAdded(to: self.view, animated: true)
-                        self.viewModel.updateAddressID(addr.address_id).done { _ in
-                            self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-                            }.catch { (error ) in
-                                let alertController = error.localizedDescription.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            }.finally {
-                                MBProgressHUD.hide(for: self.view, animated: true)
+                        
+                        self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
+                            let alertController = error.localizedDescription.alertController()
+                            alertController.addOKAction()
+                            self.present(alertController, animated: true, completion: nil)
                         }
+                        
+                        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                     }
                 }
                 selectEmail.accessibilityLabel = selectEmail.title

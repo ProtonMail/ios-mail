@@ -52,6 +52,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         case plan      = "toServicePlan"
         case bugsPop = "toBugPop"
         case accountManager = "toAccountManager"
+        case addAccount = "toAddAccountSegue"
         
         init?(rawValue: String) {
             switch rawValue {
@@ -64,6 +65,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
             case "toServicePlan": self = .plan
             case "toBugPop": self = .bugsPop
             case "toAccountManager": self = .accountManager
+            case "toAddAccountSegue": self = .addAccount
             default: return nil
             }
         }
@@ -291,6 +293,20 @@ class MenuCoordinatorNew: DefaultCoordinator {
             }
             accoutManager.delegate = self
             accoutManager.start()
+            return true
+        case .addAccount:
+            guard let next = navigation else {
+                return false
+            }
+            
+            let preFilledUsername = (sender as? UsersManager.DisconnectedUserHandle)?.defaultEmail
+            guard let account = AccountConnectCoordinator(nav: next,
+                                                          vm: SignInViewModel(usersManager: self.services.get(), username: preFilledUsername),
+                                                          services: self.services) else {
+                return false
+            }
+            account.delegate = self
+            account.start()
             return true
         }
         

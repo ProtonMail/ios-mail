@@ -8,6 +8,22 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="iXQ-jH-Flg">
+            <objects>
+                <navigationController storyboardIdentifier="nav_AccountConnectViewController" id="wdd-dZ-3XX" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="i9v-PB-q6M">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="JSr-z6-cCy" kind="relationship" relationship="rootViewController" id="udA-ck-xBM"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OQk-Gf-uhk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4834" y="-2876"/>
+        </scene>
         <!--Account Manager View Controller-->
         <scene sceneID="Amn-w9-Un0">
             <objects>
@@ -834,7 +850,7 @@
         <!--Account Connect-->
         <scene sceneID="RMA-IS-TtS">
             <objects>
-                <viewController title="Sign In" id="JSr-z6-cCy" userLabel="Account Connect" customClass="AccountConnectViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AccountConnectViewController" title="Sign In" id="JSr-z6-cCy" userLabel="Account Connect" customClass="AccountConnectViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="i10-o1-0DD"/>
                         <viewControllerLayoutGuide type="bottom" id="VLj-8C-6Ra"/>
@@ -847,7 +863,7 @@
                                 <rect key="frame" x="16" y="44" width="343" height="623"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOK-dq-tTv" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="375.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="615"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Log in to your ProtonMail account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7T-Xy-pdh">
                                                 <rect key="frame" x="36" y="32" width="271.5" height="21.5"/>
@@ -941,7 +957,7 @@
                                                     <action selector="signInAction:" destination="JSr-z6-cCy" eventType="touchUpInside" id="iNu-dV-pfW"/>
                                                 </connections>
                                             </button>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
                                                 <rect key="frame" x="31.5" y="285.5" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
@@ -957,8 +973,8 @@
                                                     <action selector="resetMBPAction:" destination="u1u-Fp-Fza" eventType="touchUpInside" id="oNZ-pz-wZ5"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
-                                                <rect key="frame" x="31.5" y="330.5" width="280" height="20"/>
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
+                                                <rect key="frame" x="31.5" y="570" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="a8y-Ug-xRX"/>
@@ -987,10 +1003,9 @@
                                             <constraint firstItem="F7T-Xy-pdh" firstAttribute="top" secondItem="nOK-dq-tTv" secondAttribute="top" constant="32" id="YxO-Lf-yg7"/>
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="F7T-Xy-pdh" secondAttribute="trailing" constant="16" id="ahf-Xq-5PU"/>
                                             <constraint firstItem="PhG-xq-9Ef" firstAttribute="top" secondItem="U54-pf-tLQ" secondAttribute="bottom" constant="16" id="e6a-wr-GX5"/>
-                                            <constraint firstItem="NeA-VN-zIr" firstAttribute="top" secondItem="PhG-xq-9Ef" secondAttribute="bottom" constant="25" id="fD6-Tf-1J2"/>
                                             <constraint firstAttribute="trailing" secondItem="FpM-jA-n2c" secondAttribute="trailing" constant="16" id="jOs-0t-X3N"/>
                                             <constraint firstItem="NeA-VN-zIr" firstAttribute="centerX" secondItem="PhG-xq-9Ef" secondAttribute="centerX" id="nhu-aU-bzA"/>
-                                            <constraint firstAttribute="bottom" secondItem="NeA-VN-zIr" secondAttribute="bottom" priority="500" constant="25" id="t4S-jU-ly7"/>
+                                            <constraint firstAttribute="bottom" secondItem="NeA-VN-zIr" secondAttribute="bottom" constant="25" id="t4S-jU-ly7"/>
                                             <constraint firstAttribute="trailing" secondItem="ylN-fl-1oU" secondAttribute="trailing" constant="16" id="vlB-0h-fqa"/>
                                         </constraints>
                                     </view>
@@ -998,7 +1013,7 @@
                                 <constraints>
                                     <constraint firstItem="nOK-dq-tTv" firstAttribute="top" secondItem="rfQ-gz-NGD" secondAttribute="top" id="dQ6-Fj-X7Z"/>
                                     <constraint firstItem="nOK-dq-tTv" firstAttribute="leading" secondItem="rfQ-gz-NGD" secondAttribute="leading" id="giR-G8-Ay0"/>
-                                    <constraint firstAttribute="bottom" secondItem="nOK-dq-tTv" secondAttribute="bottom" id="uvo-m2-Ku3"/>
+                                    <constraint firstAttribute="bottom" secondItem="nOK-dq-tTv" secondAttribute="bottom" constant="8" id="uvo-m2-Ku3"/>
                                     <constraint firstItem="nOK-dq-tTv" firstAttribute="width" secondItem="rfQ-gz-NGD" secondAttribute="width" id="veB-Jh-YJB"/>
                                     <constraint firstAttribute="trailing" secondItem="nOK-dq-tTv" secondAttribute="trailing" id="yaE-w1-tdY"/>
                                 </constraints>
@@ -1007,17 +1022,25 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="nOK-dq-tTv" firstAttribute="height" secondItem="K8w-RT-AoR" secondAttribute="height" multiplier="0.922039" id="462-KS-C4z"/>
                             <constraint firstItem="rfQ-gz-NGD" firstAttribute="leading" secondItem="K8w-RT-AoR" secondAttribute="leadingMargin" id="5dU-yR-2UD"/>
                             <constraint firstItem="rfQ-gz-NGD" firstAttribute="top" secondItem="K8w-RT-AoR" secondAttribute="topMargin" id="TXf-Wa-c7h"/>
                             <constraint firstAttribute="bottom" secondItem="rfQ-gz-NGD" secondAttribute="bottom" id="Vg1-dU-Kym"/>
+                            <constraint firstItem="nOK-dq-tTv" firstAttribute="height" secondItem="K8w-RT-AoR" secondAttribute="height" id="WoV-dX-CN8"/>
                             <constraint firstAttribute="trailingMargin" secondItem="rfQ-gz-NGD" secondAttribute="trailing" id="bs1-VV-XAE"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="WoV-dX-CN8"/>
+                            </mask>
+                        </variation>
                         <connections>
                             <outletCollection property="gestureRecognizers" destination="lvd-MD-ajx" appends="YES" id="0Zb-W1-laY"/>
                         </connections>
                     </view>
                     <navigationItem key="navigationItem" id="rc5-MF-9cd"/>
                     <connections>
+                        <outlet property="createNewUserButton" destination="NeA-VN-zIr" id="yx5-oU-nbd"/>
                         <outlet property="forgotPwdButton" destination="PhG-xq-9Ef" id="RcO-6v-oVu"/>
                         <outlet property="loginMidlineConstraint" destination="6eU-45-PfD" id="85m-yX-Hts"/>
                         <outlet property="passwordTextField" destination="3vb-Mm-OtJ" id="JlD-G8-51O"/>
@@ -1040,7 +1063,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="6124" y="-2066"/>
+            <point key="canvasLocation" x="6124" y="-2066.7166416791606"/>
         </scene>
         <!--SignUpUserNameViewController-->
         <scene sceneID="hqb-P9-0J6">
@@ -1509,6 +1532,9 @@
             <point key="canvasLocation" x="7460" y="-2766"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="udA-ck-xBM"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
