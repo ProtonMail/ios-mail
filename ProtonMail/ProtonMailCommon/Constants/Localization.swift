@@ -1389,6 +1389,9 @@ class LocalizedString {
 
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
+    
+    /// "Create new account"
+    lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
 
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
@@ -1844,7 +1847,9 @@ class LocalizedString {
     // Account Manager
     lazy var _logged_out = NSLocalizedString("(logged out)", comment: "Comment for disconnected account in Account Manager")
     
-    lazy var _you_are_about_to_remove = "You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\n\nDo you want to remove all your accounts anyway?"
+    lazy var _you_are_about_to_remove = NSLocalizedString("You are about to remove all accounts. You will not be able to access them from is device unless you add them again.\n\nDo you want to remove all your accounts anyway?", comment: "Alert of removing all accounts")
     
-    lazy var _by_removing_this_account = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?"
+    
+    lazy var _by_removing_this_account = NSLocalizedString("By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?", comment: "Alert for removing disconnected accounts")
+    
 }
