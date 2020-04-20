@@ -69,12 +69,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     var inlineAttachments: [Attachment] = []
     var attachmentSections : [AttachmentSection] = []
 
-    var attachments: [Attachment] = [] {
-        didSet {
-            self.buildAttachments()
-            self.updateAttachmentSize()
-            self.tableView?.reloadData()
+    var attachments: [Attachment] {
+        if let atts = self.message.attachments.allObjects as? [Attachment] {
+            return atts
         }
+        return []
     }
     
     lazy var attachmentProviders: Array<AttachmentProvider> = {
@@ -88,6 +87,12 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                     DocumentAttachmentProvider(for: self)]
         #endif
     }()
+    
+    func updateAttachments() {
+        self.buildAttachments()
+        self.updateAttachmentSize()
+        self.tableView?.reloadData()
+    }
     
     func buildAttachments() {
         let attachments = self.attachments.sorted(by: { $0.objectID.uriRepresentation().lastPathComponent > $1.objectID.uriRepresentation().lastPathComponent })
@@ -119,6 +124,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         }
         
         self.clearsSelectionOnViewWillAppear = false
+        
+        updateAttachments()
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
@@ -239,8 +246,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                 }
                 
                 self.delegate?.attachments(self, didDeletedAttachment: att)
-                if let index = self.attachments.firstIndex(of: att) {
-                    self.attachments.remove(at: index)
+                if let _ = self.attachments.firstIndex(of: att) {
+                    self.updateAttachments()
                 }
             }
         }

@@ -52,6 +52,7 @@ class ComposeCoordinator : DefaultCoordinator {
         case password          = "to_eo_password_segue"
         case expirationWarning = "expiration_warning_segue"
         case subSelection      = "toContactGroupSubSelection"
+        case attachment        = "to_attachment"
     }
     
     func navigate(from source: UIViewController, to destination: UIViewController, with identifier: String?, and sender: AnyObject?) -> Bool {
@@ -98,6 +99,18 @@ class ComposeCoordinator : DefaultCoordinator {
             destination.contactGroupName = group.contactTitle
             destination.selectedEmails = group.getSelectedEmailData()
             destination.callback = vc.pickedCallback
+        case .attachment:
+            guard let nav = destination as? UINavigationController else {
+                return false
+            }
+            guard let destination = nav.viewControllers.first as? AttachmentsTableViewController else {
+                return false
+            }
+            
+            destination.delegate = viewController
+            destination.message = viewModel.message
+            
+            break
         }
         return true
     }

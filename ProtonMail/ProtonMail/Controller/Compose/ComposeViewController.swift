@@ -666,16 +666,7 @@ extension ComposeViewController : ComposeViewDelegate {
     func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController) {
         //TODO:: change this to segue
         self.autoSaveTimer()
-        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
-                attachmentsViewController.delegate = self
-                attachmentsViewController.message = viewModel.message
-                if let _ = attachments {
-                    attachmentsViewController.attachments = viewModel.getAttachments() ?? []
-                }
-            }
-            present(viewController, animated: true, completion: nil)
-        }
+        self.coordinator?.go(to: .attachment)
     }
 
     @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
