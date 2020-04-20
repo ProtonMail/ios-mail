@@ -27,6 +27,7 @@ public enum SettingDeviceSection : Int, CustomStringConvertible {
     case account = 0
     case app = 1
     case info = 2
+    case network = 3
     
     public var description : String {
         switch(self){
@@ -36,6 +37,8 @@ public enum SettingDeviceSection : Int, CustomStringConvertible {
             return LocalString._app_settings
         case .info:
             return LocalString._app_information
+        case .network:
+            return LocalString._networking
         }
     }
 }
@@ -69,6 +72,8 @@ protocol SettingsDeviceViewModel : AnyObject {
     
     var appSettigns: [DeviceSectionItem] { get set }
     
+    var networkItems : [SNetworkItems] {get set }
+    
     func appVersion() -> String
     
     var userManager: UserManager { get }
@@ -83,9 +88,10 @@ protocol SettingsDeviceViewModel : AnyObject {
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
-    var sections: [SettingDeviceSection] = [ .account, .app, .info]
+    var sections: [SettingDeviceSection] = [ .account, .app, .network, .info]
     
     var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, .combinContacts, .cleanCache]
+    var networkItems : [SNetworkItems] = [.doh]
     var userManager: UserManager
     var lockOn : Bool {
         return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled

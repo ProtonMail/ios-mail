@@ -78,6 +78,9 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: CellKey.headerCell)
         self.tableView.register(SettingsGeneralCell.self)
         self.tableView.register(SettingsTwoLinesCell.self)
+        
+        self.tableView.estimatedRowHeight = 36.0
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func updateTitle() {

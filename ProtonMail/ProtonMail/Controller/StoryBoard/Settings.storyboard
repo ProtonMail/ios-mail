@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -1072,6 +1072,61 @@
                                     <outlet property="RightText" destination="BrZ-aT-dYX" id="LYq-8I-ktQ"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_two_line_cell" rowHeight="100" id="6Ea-Zs-TLa" userLabel="switch_twoline_cell" customClass="SwitchTwolineCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="505.33333206176758" width="414" height="100"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6Ea-Zs-TLa" id="z3r-AE-ofr">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="awd-Iz-ky5">
+                                            <rect key="frame" x="337" y="34.666666666666664" width="51" height="30.999999999999993"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="49" id="WFh-NK-Pgd"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="switchAction:" destination="6Ea-Zs-TLa" eventType="valueChanged" id="eS4-LN-Kgi"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="ihoihiosdfsfsdfsdfsdf" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LMs-Zg-A14">
+                                            <rect key="frame" x="28" y="8" width="301" height="15.666666666666664"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cgc-8W-rh0">
+                                            <rect key="frame" x="22" y="31.666666666666657" width="309" height="56.333333333333343"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="jf1-ai-KtS"/>
+                                            </constraints>
+                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                            <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                        </textView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="awd-Iz-ky5" firstAttribute="centerY" secondItem="z3r-AE-ofr" secondAttribute="centerY" id="7Mq-vS-2MT"/>
+                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="awd-Iz-ky5" secondAttribute="bottom" constant="8" id="7iP-eQ-qoG"/>
+                                        <constraint firstItem="awd-Iz-ky5" firstAttribute="leading" secondItem="LMs-Zg-A14" secondAttribute="trailing" constant="8" id="9cD-4q-y2H"/>
+                                        <constraint firstItem="LMs-Zg-A14" firstAttribute="top" secondItem="z3r-AE-ofr" secondAttribute="top" constant="8" id="DOQ-bQ-OwH"/>
+                                        <constraint firstItem="LMs-Zg-A14" firstAttribute="leading" secondItem="z3r-AE-ofr" secondAttribute="leadingMargin" constant="8" id="WbQ-9m-QRB"/>
+                                        <constraint firstItem="cgc-8W-rh0" firstAttribute="leading" secondItem="z3r-AE-ofr" secondAttribute="leadingMargin" constant="2" id="Yew-KB-yet"/>
+                                        <constraint firstItem="awd-Iz-ky5" firstAttribute="leading" secondItem="cgc-8W-rh0" secondAttribute="trailing" constant="6" id="Z9v-QF-Hqo"/>
+                                        <constraint firstAttribute="bottom" secondItem="cgc-8W-rh0" secondAttribute="bottom" constant="12" id="hBh-2i-W3U"/>
+                                        <constraint firstItem="cgc-8W-rh0" firstAttribute="top" secondItem="LMs-Zg-A14" secondAttribute="bottom" constant="8" id="rKT-u1-XKY"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="awd-Iz-ky5" secondAttribute="trailing" constant="8" id="vBj-o6-i5Y"/>
+                                        <constraint firstItem="awd-Iz-ky5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="z3r-AE-ofr" secondAttribute="top" constant="8" id="yFh-xB-ZYc"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="bottomTextView" destination="cgc-8W-rh0" id="M6C-4b-fuT"/>
+                                    <outlet property="switchView" destination="awd-Iz-ky5" id="A2l-FK-Kth"/>
+                                    <outlet property="topLineLabel" destination="LMs-Zg-A14" id="ony-ph-R2D"/>
+                                </connections>
+                            </tableViewCell>
                         </prototypes>
                         <sections/>
                     </tableView>
@@ -1623,26 +1678,26 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lgq-Ou-c3G" userLabel="view">
-                                <rect key="frame" x="44.666666666666657" y="107.66666666666669" width="325" height="521"/>
+                                <rect key="frame" x="44.666666666666657" y="-69" width="325" height="874"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upgrade_background" translatesAutoresizingMaskIntoConstraints="NO" id="YLB-Me-Guw">
-                                        <rect key="frame" x="0.0" y="0.0" width="325" height="521"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="325" height="874"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Looking to secure your contact’s details?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R7J-I8-Xgw">
-                                        <rect key="frame" x="16" y="97.999999999999986" width="293" height="57.333333333333329"/>
+                                        <rect key="frame" x="16" y="98" width="293" height="57.333333333333343"/>
                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="24"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KHJ-yB-jUs">
-                                        <rect key="frame" x="30" y="181.33333333333331" width="265" height="107.66666666666669"/>
+                                        <rect key="frame" x="30" y="181.33333333333329" width="265" height="460.66666666666674"/>
                                         <string key="text">ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email. </string>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4f-uF-PgO">
-                                        <rect key="frame" x="62.333333333333343" y="329" width="200.00000000000003" height="48"/>
+                                        <rect key="frame" x="62.333333333333343" y="682" width="200.00000000000003" height="48"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="learnMorePremiumAd"/>
                                         <constraints>
@@ -1659,7 +1714,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xpS-yb-mG5">
-                                        <rect key="frame" x="62.333333333333343" y="381" width="200.00000000000003" height="48"/>
+                                        <rect key="frame" x="62.333333333333343" y="734" width="200.00000000000003" height="48"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="notNowPremiumAd"/>
                                         <constraints>
@@ -1676,7 +1731,7 @@
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="PREMIUM FEATURE" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e6r-RW-O63">
-                                        <rect key="frame" x="87.333333333333329" y="39.999999999999986" width="150.33333333333337" height="18"/>
+                                        <rect key="frame" x="87.333333333333329" y="40" width="150.33333333333337" height="18"/>
                                         <fontDescription key="fontDescription" type="system" weight="black" pointSize="15"/>
                                         <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -1693,7 +1748,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ofJ-y9-98I">
-                                        <rect key="frame" x="62.333333333333343" y="432.99999999999994" width="200.00000000000003" height="48"/>
+                                        <rect key="frame" x="62.333333333333343" y="786" width="200.00000000000003" height="48"/>
                                         <color key="backgroundColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <accessibility key="accessibilityConfiguration" identifier="viewPlansPremiumAd"/>
                                         <constraints>
@@ -2196,7 +2251,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="GgS-nT-ctf"/>
         <segue reference="Yep-Vd-dxY"/>
-        <segue reference="V9t-nA-fhw"/>
+        <segue reference="PpL-SW-U8F"/>
         <segue reference="dUE-8e-owj"/>
         <segue reference="XQx-Pm-sNq"/>
     </inferredMetricsTieBreakers>
