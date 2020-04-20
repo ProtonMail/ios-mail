@@ -26,10 +26,10 @@ import MBProgressHUD
 import PMKeymaker
 
 class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
-    internal var viewModel : SettingsAccountViewModel!
+    internal var viewModel : SettingsPrivacyViewModel!
     internal var coordinator : SettingsPrivacyCoordinator?
     
-    func set(viewModel: SettingsAccountViewModel) {
+    func set(viewModel: SettingsPrivacyViewModel) {
         self.viewModel = viewModel
     }
     
@@ -64,10 +64,18 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
         super.viewDidLoad()
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
+        self.tableView.register(SettingsGeneralCell.self)
+        self.tableView.register(SettingsTwoLinesCell.self)
+        self.tableView.register(SwitchTableViewCell.self)
+        self.tableView.tableFooterView = UIView()
+        self.tableView.backgroundColor = UIColor(hexString: "E2E6E8", alpha: 1.0)
+        
+//        self.tableView.estimatedRowHeight = 36.0
+        self.tableView.rowHeight = 50.0// UITableView.automaticDimension
     }
     
     private func updateTitle() {
-        self.title = LocalString._menu_settings_title
+        self.title = LocalString._privacy
     }
     
     override func didReceiveMemoryWarning() {
@@ -88,77 +96,100 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     
     internal func updateTableProtectionSection() {
         self.updateProtectionItems()
-//        if let index = setting_headers.firstIndex(of: SettingSections.protection) {
-//            self.settingTableView.reloadSections(IndexSet(integer: index), with: .fade)
-//        }
     }
     
     ///MARK: -- table view delegate
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return self.viewModel.sections.count
+        return 1
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if self.viewModel.sections.count > section {
-            switch( self.viewModel.sections[section]) {
-            case .account:
-                return self.viewModel.accountItems.count
-            case .addresses:
-                return 1 // self.viewModel.appSettigns.count
-            case .snooze:
-                return 0
-            case .mailbox:
-                return 1
-            }
-        }
-        return 0
+        return self.viewModel.privacySections.count
     }
     
-//    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let section = indexPath.section
-//        let row = indexPath.row
-//        let eSection = self.viewModel.sections[section]
-//
-//        switch eSection {
-//        case .account:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-//            if let c = cell as? GeneralSettingViewCell {
-//                let item = self.viewModel.accountItems[row]
-//                c.configCell(item.description, right: "")
-//            }
-//            return cell
-//        case .addresses:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-//            if let c = cell as? GeneralSettingViewCell {
-//                let item = self.viewModel.accountItems[row]
-//                c.configCell(item.description, right: "")
-//            }
-//            return cell
-//        case .snooze:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-//            if let c = cell as? SettingsDeviceGeneralCell {
-//                c.configCell("AppVersion", right: "")
-//            }
-//            return cell
-//        case .mailbox:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: SettingSingalLineCell, for: indexPath)
-//            if let c = cell as? SettingsDeviceGeneralCell {
-//                c.configCell("AppVersion", right: "")
-//            }
-//            return cell
-//        }
-//    }
-//
-//
-//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
-//        if let headerCell = header {
-//            headerCell.textLabel?.font = Fonts.h6.regular
-//            headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
-//            let eSection = self.viewModel.sections[section]
-//            headerCell.textLabel?.text = eSection.description
-//        }
-//        return header
-//    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let row = indexPath.row
+        let item = self.viewModel.privacySections[row]
+        switch item {
+        case .autoLoadImage:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+            cell.accessoryType = UITableViewCell.AccessoryType.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            if let c = cell as? SwitchTableViewCell {
+                let userinfo = self.viewModel.userInfo
+                let userService = self.viewModel.user.userService
+                c.configCell(item.description, bottomLine: "", status: userinfo.autoShowRemote, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                    if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
+                        let view = UIApplication.shared.keyWindow ?? UIView()
+                        MBProgressHUD.showAdded(to: view, animated: true)
+                        userService.updateAutoLoadImage(auth: self.viewModel.user.auth, user: userinfo,
+                                                        remote: newStatus, completion: { (_, _, error) in
+                            MBProgressHUD.hide(for: view, animated: true)
+                            if let error = error {
+                                feedback(false)
+                                let alertController = error.alertController()
+                                alertController.addOKAction()
+                                self.present(alertController, animated: true, completion: nil)
+                            } else {
+                                self.viewModel.user.save()
+                                feedback(true)
+                            }
+                        })
+                    } else {
+                        feedback(false)
+                    }
+                })
+            }
+            return cell
+        case .browser:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsGeneralCell.CellID, for: indexPath)
+            if let c = cell as? SettingsGeneralCell {
+                let browser = userCachedStatus.browser
+                c.config(left: item.description)
+                c.config(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
+            }
+            return cell
+        case .linkOpeningMode:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+            cell.accessoryType = UITableViewCell.AccessoryType.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            if let c = cell as? SwitchTableViewCell {
+                let userinfo = self.viewModel.userInfo
+                let userService = self.viewModel.user.userService
+                c.configCell(item.description, bottomLine: "", status: userinfo.linkConfirmation == .confirmationAlert, complete: { (cell, newStatus,  feedback: @escaping SwitchTableViewCell.ActionStatus) -> Void in
+                    if let indexp = tableView.indexPath(for: cell!), indexPath == indexp {
+                        let view = UIApplication.shared.keyWindow ?? UIView()
+                        MBProgressHUD.showAdded(to: view, animated: true)
+                        userService.updateLinkConfirmation(auth: self.viewModel.user.auth, user: userinfo,
+                                                           newStatus ? .confirmationAlert : .openAtWill) { userInfo, _, error in
+                            MBProgressHUD.hide(for: view, animated: true)
+                            if let error = error {
+                                feedback(false)
+                                let alertController = error.alertController()
+                                alertController.addOKAction()
+                                self.present(alertController, animated: true, completion: nil)
+                            } else {
+                                self.viewModel.user.save()
+                                feedback(true)
+                            }
+                        }
+                    } else {
+                        feedback(false)
+                    }
+                })
+            }
+            return cell
+        case .metadataStripping:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTableViewCell.CellID, for: indexPath)
+            cell.accessoryType = UITableViewCell.AccessoryType.none
+            cell.selectionStyle = UITableViewCell.SelectionStyle.none
+            if let c = cell as? SwitchTableViewCell {
+                c.configCell(item.description, bottomLine: "", status: userCachedStatus.metadataStripping == .stripMetadata) { cell, newStatus, feedback in
+                    userCachedStatus.metadataStripping = newStatus ? .stripMetadata : .sendAsIs
+                }
+            }
+            return cell
+        }
+    }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return Key.headerCellHeight
@@ -166,21 +197,37 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let section = indexPath.section
+        
         let row = indexPath.row
-        let eSection = self.viewModel.sections[section]
-        switch eSection {
-        case .account:
-//            self.coordinator?.go(to: .accountSetting)
+        let item = self.viewModel.privacySections[row]
+        switch item {
+        case .autoLoadImage:
             break
-        case .addresses:
-            //            let item = self.viewModel.appSettigns[row]
+        case .browser:
+            let browsers = LinkOpener.allCases.filter {
+                $0.isInstalled
+            }.compactMap { app in
+                return UIAlertAction(title: app.title, style: .default) { [weak self] _ in
+                    userCachedStatus.browser = app
+                    self?.tableView?.reloadRows(at: [indexPath], with: .fade)
+                }
+            }
+            let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
+            if let cell = tableView.cellForRow(at: indexPath) as? DomainsTableViewCell {
+                alert.popoverPresentationController?.sourceView = cell.contentView
+                alert.popoverPresentationController?.sourceRect = cell.defaultMark.frame
+            }
+            browsers.forEach(alert.addAction)
+            alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        case .linkOpeningMode:
             break
-        case .snooze:
-            break
-        case .mailbox:
+        case .metadataStripping:
             break
         }
+        
+        
+        
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
@@ -210,23 +257,6 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
             return proposedDestinationIndexPath
         }
     }
-    
-    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-//        if setting_headers[fromIndexPath.section] == SettingSections.multiDomain {
-//            let val = self.multi_domains.remove(at: fromIndexPath.row)
-//            self.multi_domains.insert(val, at: toIndexPath.row)
-//            //let indexSet = NSIndexSet(index:fromIndexPath.section)
-//            tableView.reloadData()
-//        }
-    }
-    
-    
-    
-//    // Override to support rearranging the table view.
-//    @objc func tableView(_ tableView: UITableView, moveRowAtIndexPath fromIndexPath: IndexPath, toIndexPath: IndexPath) {
-
-//    }
-    
 }
 
 extension SettingsPrivacyViewController: Deeplinkable {

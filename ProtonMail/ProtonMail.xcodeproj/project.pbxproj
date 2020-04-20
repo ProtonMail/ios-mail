@@ -791,6 +791,7 @@
 		62124AA8418DFC30FD6255B67C8120D2 /* Message+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45197333CE217D153E2CB7F49C9449CD /* Message+Location.swift */; };
 		6253F0AE1EF9D7D5AAD8837742FA0353 /* StorefrontCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 44B02B56A82E33F93B3D79E072A10329 /* StorefrontCells.swift */; };
 		626BC3C873B121016E6D88A241313897 /* ViewModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3625E14CB48ED7B24630CE2FDBCBDA /* ViewModelService.swift */; };
+		62956BA6A4F7BAAACF00D87CB206C352 /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */; };
 		62AA2B38B172FE096BC01DC4ED264BE6 /* ProtonMailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCF95B8A9A181622FDD72906F9CDB84 /* ProtonMailViewController.swift */; };
 		62C340121D678DE05D0F22C36FA3383B /* Message+EncryptType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DA3EDD47D591D28907C504F3FF5CBE /* Message+EncryptType.swift */; };
 		6349F11C87EEEE7BDF517E6CC6A131B1 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
@@ -1619,6 +1620,7 @@
 		CEEC1AB99D604C034D4FFA8D3BF231BD /* Hash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153F6534536F0C3BB4E2D2782B5F8674 /* Hash.swift */; };
 		CEEC891DC802B9997F140188695AFA08 /* BioCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A7ECFC98E378B2DDB6FDA1137EC6E35 /* BioCodeView.xib */; };
 		CEFAEA660E6E633AC601B756571D599F /* SpringboardShortcutsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7B219CA0303E87BEBF47C7BE260F39 /* SpringboardShortcutsService.swift */; };
+		CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 27365B353EBA36DFE400C2780A3DF38C /* SwitchTableViewCell.xib */; };
 		CF31D73AC1A95AF58DA6F2B7BC66103F /* ProtonMail_to_1.12.0.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 041C4403845A70163F030E1F1232B426 /* ProtonMail_to_1.12.0.xcmappingmodel */; };
 		CF558E4762636DF0D00E0E633B65235E /* MailboxMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C178973BACB0B6484835660600335F4 /* MailboxMessageCell.swift */; };
 		CF593E70929EF96622D405EF532AC4EF /* ContactCollectionViewEntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E96DF425774FBF5566AC74C2E3EBE83 /* ContactCollectionViewEntryCell.swift */; };
@@ -1658,6 +1660,7 @@
 		D347A4FD324BC0E3982A152A870D59AF /* MailSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78935D907A4A5837283960605A94A31F /* MailSettings.swift */; };
 		D3847DC3D063CCC7CC2CB9C8D6492E24 /* AuthAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 227296580D62465EBB981626C208052D /* AuthAPI.swift */; };
 		D3C357F6C07D7DF0877F6E4A01B925BD /* NotificationCenter+KeyboardExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B924404B24EC8056D1E834431E6614 /* NotificationCenter+KeyboardExtension.swift */; };
+		D3D1FA712B15968A306E15147CDB1C1C /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */; };
 		D408B45EA4F4F6F577D93DFC701BA112 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40AA063DDB34350CC9B431705C5A4D03 /* Contact.swift */; };
 		D41813CD24AF3CB64799B2D49BB7353F /* APIService+AuthenticationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7915305A9078452FD4617B7895B4E803 /* APIService+AuthenticationExtension.swift */; };
 		D436CB80B266144B0099F7E712B59739 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ACDE1DAAB38F6186B5D1B8E877760A4 /* Date+Extension.swift */; };
@@ -1780,6 +1783,7 @@
 		E13883900B32155A4FE32CDEFEE5B9D7 /* AccountConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71418829CECA2EB7F12FAFF261F101B8 /* AccountConnectViewController.swift */; };
 		E1692741094216939715FD12E1EBE727 /* ContactCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C835E09ED80CEF24F9D8FAE4D2F8718E /* ContactCollectionViewFlowLayout.swift */; };
 		E182D9B831F02502401FE2F136179704 /* ContactGroupDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84A90610267786480D43EC567B4FD014 /* ContactGroupDetailViewController.swift */; };
+		E19CDAB3806DCCF685CD6E15F8D2E417 /* SettingsPrivacyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34AF9D982968623754ABB144B312AA6A /* SettingsPrivacyViewModel.swift */; };
 		E1D383604577113DECD6CF979955F136 /* PushService.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 00918B56B68A9926D7490AA22F6B62B4 /* PushService.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E1DD30BFD91383F2851F1902B92CB53E /* FileImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 051047DA144AB4799F2295ACD730D1C6 /* FileImporter.swift */; };
 		E1E3C8C05A6FD34DEAEB47DFD1A255AA /* DoHMail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBB1DF2E92DB1E862ED28D2B2D1C837 /* DoHMail.swift */; };
@@ -5365,6 +5369,7 @@
 				49469BCB497513D7A32FA70630DBBE58 /* ShowImageView.xib in Resources */,
 				81632A2DA06303254710C356D2E56E79 /* SignIn.storyboard in Resources */,
 				63CFEB1E794EF99972DAA0F08A264C28 /* SpamScoreWarningView.xib in Resources */,
+				62956BA6A4F7BAAACF00D87CB206C352 /* SwitchTableViewCell.xib in Resources */,
 				1D5C3D806B156861755D0FC71D26AACC /* TimePickerViewController.xib in Resources */,
 				9FB2B7F49425717BB9D6166C5CCA7EDA /* TwoFACodeView.xib in Resources */,
 				AFFDA993D82E923B0118FC74565F4ECF /* backup.css in Resources */,
@@ -5441,6 +5446,7 @@
 				CE41EFA6EF25A6C5F1370FE6F54B07C5 /* ShowImageView.xib in Resources */,
 				37CC5A7C62FF7FD4DDBA192C62FCBB5F /* SignIn.storyboard in Resources */,
 				F7DD2F15F5009DEA79AA861D8448ADE0 /* SpamScoreWarningView.xib in Resources */,
+				CF047C2027B9CF3488440E0AA16378AE /* SwitchTableViewCell.xib in Resources */,
 				7FB275FD11B3B51AD8ED3725509FFFB7 /* TimePickerViewController.xib in Resources */,
 				6F1E3C588B0AD6D7319DF83EF8237C4C /* TwoFACodeView.xib in Resources */,
 				BC9E1A29B771813A039F8BA83F7E6ED5 /* backup.css in Resources */,
@@ -6499,6 +6505,7 @@
 				4EFE447961DCE5EFA583B3CABA40544A /* SettingsNotificationsSnoozeTableViewController.swift in Sources */,
 				0D36BD69C1EC299FFB5316B73436C42E /* SettingsPrivacyCoordinator.swift in Sources */,
 				94E3257638CD4E3E31354F4131FF6C2D /* SettingsPrivacyViewController.swift in Sources */,
+				E19CDAB3806DCCF685CD6E15F8D2E417 /* SettingsPrivacyViewModel.swift in Sources */,
 				220085D197AF2A60E944FFFA28A9B949 /* SettingsTableViewController.swift in Sources */,
 				4E144454B619E7F2B43B69CB29DBD6CD /* SettingsTwoLinesCell.swift in Sources */,
 				5C66676E9FF29792F2045A1922BE7664 /* SettingsViewModel.swift in Sources */,
@@ -7067,6 +7074,7 @@
 				CFCED06A20CD74A99CA490471659B454 /* SettingsNotificationsSnoozeTableViewController.swift in Sources */,
 				CC7E95598C62ED198568AA2E4752D451 /* SettingsPrivacyCoordinator.swift in Sources */,
 				E6855B21296666143F00B8CD01FD0E19 /* SettingsPrivacyViewController.swift in Sources */,
+				D3D1FA712B15968A306E15147CDB1C1C /* SettingsPrivacyViewModel.swift in Sources */,
 				B86583F9E005FC5B1A723D34A9ACAEB9 /* SettingsTableViewController.swift in Sources */,
 				C68D7F7CF67BD1E7DF5FF90703C07C44 /* SettingsTwoLinesCell.swift in Sources */,
 				A220B4FDC0CAC7B9AB2E626850E7E2DC /* SettingsViewModel.swift in Sources */,

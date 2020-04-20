@@ -273,17 +273,17 @@ class SettingsTableViewController: ProtonMailTableViewController, ViewModelProto
                         cell.configCell(itme.description, bottomLine: "", status: userInfo.linkConfirmation == .confirmationAlert) { cell, newStatus, feedback in
                             let view = UIApplication.shared.keyWindow ?? UIView()
                             MBProgressHUD.showAdded(to: view, animated: true)
-                            sharedUserDataService.updateLinkConfirmation(newStatus ? .confirmationAlert : .openAtWill) { userInfo, _, error in
-                                MBProgressHUD.hide(for: view, animated: true)
-                                if let error = error {
-                                    feedback(false)
-                                    let alertController = error.alertController()
-                                    alertController.addOKAction()
-                                    self.present(alertController, animated: true, completion: nil)
-                                } else {
-                                    feedback(true)
-                                }
-                            }
+//                            sharedUserDataService.updateLinkConfirmation(newStatus ? .confirmationAlert : .openAtWill) { userInfo, _, error in
+//                                MBProgressHUD.hide(for: view, animated: true)
+//                                if let error = error {
+//                                    feedback(false)
+//                                    let alertController = error.alertController()
+//                                    alertController.addOKAction()
+//                                    self.present(alertController, animated: true, completion: nil)
+//                                } else {
+//                                    feedback(true)
+//                                }
+//                            }
                         }
                         cellout = cell
                     case .metadataStripping:

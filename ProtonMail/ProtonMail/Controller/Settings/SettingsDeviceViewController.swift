@@ -69,7 +69,7 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
         }
         
-        self.tableView.estimatedRowHeight = 36.0
+        self.tableView.estimatedRowHeight = 50.0
         self.tableView.rowHeight = UITableView.automaticDimension
     }
     

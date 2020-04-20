@@ -318,14 +318,13 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
             let item = self.viewModel.mailboxItems[row]
             switch item {
             case .privacy:
-                break
+                self.coordinator?.go(to: .privacy)
             case .search:
                 break
             case .labelFolder:
                 self.coordinator?.go(to: .lableManager)	
             case .gestures:                
                 self.coordinator?.go(to: .swipingGesture)
-                break
             case .storage:
                 break
             }

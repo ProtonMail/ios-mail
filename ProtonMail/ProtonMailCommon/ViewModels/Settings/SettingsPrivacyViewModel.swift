@@ -23,119 +23,44 @@
 
 import Foundation
 
-public enum SettingDeviceSection : Int, CustomStringConvertible {
-    case account = 0
-    case app = 1
-    case info = 2
+public enum SettingPrivacyItem : Int, CustomStringConvertible {
+    case autoLoadImage = 0
+    case linkOpeningMode = 1
+    case browser = 2
+    case metadataStripping = 3
     
     public var description : String {
         switch(self){
-        case .account:
-            return LocalString._account_settings
-        case .app:
-            return LocalString._app_settings
-        case .info:
-            return LocalString._app_information
+        case .autoLoadImage:
+            return LocalString._auto_show_images
+        case .linkOpeningMode:
+            return LocalString._request_link_confirmation
+        case .metadataStripping:
+            return LocalString._strip_metadata
+        case .browser:
+            return LocalString._default_browser
         }
     }
 }
 
-public enum DeviceSectionItem : Int, CustomStringConvertible {
-    case autolock = 0
-    case language = 1
-    case combinContacts = 2
-    case cleanCache = 3
+protocol SettingsPrivacyViewModel: AnyObject {
+    var privacySections : [SettingPrivacyItem] { get set}
+    var userInfo: UserInfo { get }
+    var user: UserManager { get }
+}
+
+class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {   
     
-    public var description : String {
-        switch(self){
-        case .autolock:
-            return LocalString._auto_lock
-        case .language:
-            return LocalString._app_language
-        case .combinContacts:
-            return LocalString._combined_contacts
-        case .cleanCache:
-            return LocalString._local_cache_management
+    var privacySections : [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping, .browser]
+    let user: UserManager
+    
+    var userInfo: UserInfo {
+        get {
+            return self.user.userInfo
         }
     }
-}
-
-
-
-
-protocol SettingsDeviceViewModel : AnyObject {
-    var sections: [SettingDeviceSection] { get set }
     
-    var appSettigns: [DeviceSectionItem] { get set }
-    
-    func appVersion() -> String
-
-}
-
-class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
-    var sections: [SettingDeviceSection] = [ .account, .app, .info]
-    
-
-    
-    var appSettigns: [DeviceSectionItem] = [.autolock, .language, .combinContacts, .cleanCache]
-    
-    
-    func appVersion() -> String {
-        
-        var appVersion = "Unkonw Version"
-        //var libVersion = "| LibVersion: 1.0.0"
-//        AppVersion: 
-        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-            appVersion = "\(version)"
-        }
-        if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-            appVersion = appVersion + " (\(build))"
-        }
-        return appVersion
-                
-//        if(setting_headers[section] == SettingSections.version){
-//            var appVersion = "Unkonw Version"
-//            var libVersion = "| LibVersion: 1.0.0"
-//
-//            if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-//                appVersion = "AppVersion: \(version)"
-//            }
-//            if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
-//                appVersion = appVersion + " (\(build))"
-//            }
-//
-//            let lib_v = PMNLibVersion.getLibVersion()
-//            libVersion = "| LibVersion: \(lib_v)"
-//            header?.textLabel?.text = appVersion + " " + libVersion
-//        }
-//        else
-//        {
-//            header?.textLabel?.text =  self.viewModel.sections[section].description
-//        }
+    init(user: UserManager) {
+        self.user = user
     }
 }
-
-
-//
-//var setting_general_items : [SGItems]                = [.notifyEmail, .loginPWD,
-//                                                        .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache, .notificationsSnooze]
-//var setting_debug_items : [SDebugItem]               = [.queue, .errorLogs]
-//
-//var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
-//var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
-//                                                        .star, .archive, .unread]
-//
-//var setting_protection_items : [SProtectionItems]    = [] // [.touchID, .pinCode] // [.TouchID, .PinCode, .UpdatePin, .AutoLogout, .EnterTime]
-//var setting_addresses_items : [SAddressItems]        = [.addresses,
-//                                                        .displayName,
-//                                                        .signature,
-//                                                        .defaultMobilSign]
-//
-//var setting_labels_items : [SLabelsItems]            = [.labelFolderManager]
-//
-//var setting_languages : [ELanguage]                  = ELanguage.allItems()
-//
-//var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
-//                                                        10, 15, 30, 60]
-//
-//var multi_domains: [Address]!

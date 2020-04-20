@@ -24,7 +24,9 @@
 import UIKit
 
 @IBDesignable class SwitchTableViewCell: UITableViewCell {
-
+    static var CellID : String  {
+        return "\(self)"
+    }
     typealias ActionStatus = (_ isOK: Bool) -> Void
     typealias switchActionBlock = (_ cell: SwitchTableViewCell?, _ newStatus: Bool, _ feedback: @escaping ActionStatus) -> Void
 

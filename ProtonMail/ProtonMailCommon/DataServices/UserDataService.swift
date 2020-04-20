@@ -514,50 +514,52 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    func updateAutoLoadImage(remote status: Bool, completion: @escaping UserInfoBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        var newStatus = userInfo.showImages
-//        if status {
-//            newStatus.insert(.remote)
-//        } else {
-//            newStatus.remove(.remote)
-//        }
-//
-//        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-//        api.call(api: self.apiService) { (task, response, hasError) in
-//            if !hasError {
-//                userInfo.showImages = newStatus
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(self.userInfo, nil, response?.error)
-//        }
+    func updateAutoLoadImage(auth currentAuth: AuthCredential,
+                             user: UserInfo,
+                             remote status: Bool, completion: @escaping UserInfoBlock) {
+        
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        var newStatus = userInfo.showImages
+        if status {
+            newStatus.insert(.remote)
+        } else {
+            newStatus.remove(.remote)
+        }
+        
+        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
+        api.call(api: self.apiService) { (task, response, hasError) in
+            if !hasError {
+                userInfo.showImages = newStatus
+            }
+            completion(userInfo, nil, response?.error)
+        }
     }
     
     #if !APP_EXTENSION
-    func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-//        api.call(api: self.apiService) { (task, response, hasError) in
-//            if !hasError {
-//                userInfo.linkConfirmation = status
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(self.userInfo, nil, response?.error)
-//        }
+    func updateLinkConfirmation(auth currentAuth: AuthCredential,
+                                user: UserInfo,
+                                _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
+        api.call(api: self.apiService) { (task, response, hasError) in
+            if !hasError {
+                userInfo.linkConfirmation = status
+            }
+            completion(userInfo, nil, response?.error)
+        }
     }
     #endif
 

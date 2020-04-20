@@ -772,9 +772,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
-        guard refreshControl.isRefreshing == true else {
-            return
-        }
+//        guard refreshControl.isRefreshing == false else {
+//            self.refreshControl?.endRefreshing()
+//            return
+//        }
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
         viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
