@@ -35,6 +35,7 @@ class SignInManager: Service {
     
     internal func signIn(username: String,
                          password: String,
+                         noKeyUser: Bool,
                          cachedTwoCode: String?,
                          faillogout : Bool,
                          ask2fa: @escaping ()->Void,
@@ -66,11 +67,47 @@ class SignInManager: Service {
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
+                         noKeyUser: noKeyUser,
                          twoFACode: cachedTwoCode,
                          faillogout: faillogout,
                          ask2fa: ask2fa,
                          onError: onError,
                          onSuccess: success)
+    }
+    
+    internal func signUpSignIn(username: String,
+                         password: String,
+                         onError: @escaping (NSError)->Void,
+                         onSuccess: @escaping (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void)
+    {
+//        let success: (String?, AuthCredential?, UserInfo?)->Void = { mailboxpwd, auth, userinfo in
+//            guard let auth = auth, let user = userinfo else {
+//                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
+//                return
+//            }
+//
+//            self.auth = auth
+//            self.userInfo = user
+//            guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
+//                UserTempCachedStatus.restore()
+//                requestMailboxPassword()
+//                return
+//            }
+//            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
+//        }
+        self.auth = nil
+        self.userInfo = nil
+        // one time api and service
+        let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
+        let userService = UserDataService(check: false, api: service)
+        userService.sign(in: username,
+                         password: password,
+                         noKeyUser: true,
+                         twoFACode: nil,
+                         faillogout: false,
+                         ask2fa: nil,
+                         onError: onError,
+                         onSuccess: onSuccess)
     }
     
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {

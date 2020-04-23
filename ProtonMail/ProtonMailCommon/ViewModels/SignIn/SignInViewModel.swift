@@ -54,7 +54,7 @@ class SignInViewModel : NSObject {
             return complete(.exist)
         }
         
-        signinManager.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode, faillogout: faillogout, ask2fa: {
+        signinManager.signIn(username: username, password: password, noKeyUser: false, cachedTwoCode: cachedTwoCode, faillogout: faillogout, ask2fa: {
             complete(.ask2fa)
         }, onError: { (error) in
             complete(.error(error))
