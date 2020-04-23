@@ -957,32 +957,48 @@
                                                     <action selector="signInAction:" destination="JSr-z6-cCy" eventType="touchUpInside" id="iNu-dV-pfW"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PhG-xq-9Ef">
                                                 <rect key="frame" x="31.5" y="285.5" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="IF2-Hm-KQf"/>
                                                     <constraint firstAttribute="height" constant="20" id="P6L-LW-V09"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                                <state key="normal" title="FORGOT PASSWORD?">
-                                                    <color key="titleColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal">
+                                                    <attributedString key="attributedTitle">
+                                                        <fragment content="FORGOT PASSWORD?">
+                                                            <attributes>
+                                                                <color key="NSColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <font key="NSFont" size="12" name="SFMono-Bold"/>
+                                                                <font key="NSOriginalFont" metaFont="systemBold" size="12"/>
+                                                                <integer key="NSUnderline" value="1"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
                                                 </state>
                                                 <connections>
                                                     <action selector="fogorPasswordAction:" destination="JSr-z6-cCy" eventType="touchUpInside" id="Q4m-kq-x11"/>
                                                     <action selector="resetMBPAction:" destination="u1u-Fp-Fza" eventType="touchUpInside" id="oNZ-pz-wZ5"/>
                                                 </connections>
                                             </button>
-                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
                                                 <rect key="frame" x="31.5" y="570" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="a8y-Ug-xRX"/>
                                                     <constraint firstAttribute="height" constant="20" id="p9r-rw-vaC"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                                <state key="normal" title="Create new account">
-                                                    <color key="titleColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <state key="normal">
+                                                    <attributedString key="attributedTitle">
+                                                        <fragment content="Create new account">
+                                                            <attributes>
+                                                                <color key="NSColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <font key="NSFont" size="12" name="SFMono-Bold"/>
+                                                                <font key="NSOriginalFont" metaFont="systemBold" size="12"/>
+                                                                <integer key="NSUnderline" value="1"/>
+                                                            </attributes>
+                                                        </fragment>
+                                                    </attributedString>
                                                 </state>
                                                 <connections>
                                                     <action selector="signUpAction:" destination="JSr-z6-cCy" eventType="touchUpInside" id="AIA-dp-bZN"/>
