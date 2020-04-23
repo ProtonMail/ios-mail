@@ -24,6 +24,7 @@
 import UIKit
 import MBProgressHUD
 import PMKeymaker
+import Masonry
 
 class SettingsLockViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
     internal var viewModel : SettingsLockViewModel!
@@ -32,6 +33,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     struct Key {
         static let headerCell : String        = "header_cell"
         static let headerCellHeight : CGFloat = 36.0
+        static let cellHeight: CGFloat = 44.0
         
         static let settingSingalLineCell         = "settings_general"
         static let SwitchCell                    = "switch_table_view_cell"
@@ -53,11 +55,16 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
-    //
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: Key.headerCell)
+        
+        self.tableView.estimatedSectionFooterHeight = Key.headerCellHeight
+        self.tableView.sectionFooterHeight = UITableView.automaticDimension
+        
+        self.tableView.estimatedRowHeight = Key.cellHeight
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     private func updateTitle() {
@@ -213,23 +220,28 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Key.headerCell)
+        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
+        
         if let headerCell = header {
-            headerCell.textLabel?.font = Fonts.h6.regular
-            headerCell.textLabel?.numberOfLines = 0
-            headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+            let textLabel = UILabel()
+            
+            textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+            textLabel.adjustsFontForContentSizeCategory = true
+            textLabel.numberOfLines = 0
+            textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
             let eSection = self.viewModel.sections[section]
-            headerCell.textLabel?.text = eSection.foot
+            textLabel.text = eSection.foot
+            
+            headerCell.contentView.addSubview(textLabel)
+            
+            textLabel.mas_makeConstraints({ (make) in
+                let _ = make?.top.equalTo()(headerCell.contentView.mas_top)?.with()?.offset()(8)
+                let _ = make?.bottom.equalTo()(headerCell.contentView.mas_bottom)?.with()?.offset()(-8)
+                let _ = make?.left.equalTo()(headerCell.contentView.mas_left)?.with()?.offset()(8)
+                let _ = make?.right.equalTo()(headerCell.contentView.mas_right)?.with()?.offset()(-8)
+            })
         }
         return header
-    }
-    
-    
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Key.headerCellHeight
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 46.0
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

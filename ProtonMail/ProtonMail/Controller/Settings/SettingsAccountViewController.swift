@@ -187,17 +187,36 @@ class SettingsAccountViewController: UITableViewController, ViewModelProtocol, C
     
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CellKey.headerCell)
+        header?.contentView.subviews.forEach { $0.removeFromSuperview() }
+        
         if let headerCell = header {
-            headerCell.textLabel?.font = Fonts.h6.regular
-            headerCell.textLabel?.textColor = UIColor.ProtonMail.Gray_8E8E8E
+            let textLabel = UILabel()
+            
+            textLabel.font = UIFont.preferredFont(forTextStyle: .caption1)
+            textLabel.adjustsFontForContentSizeCategory = true
+            textLabel.numberOfLines = 0
+            textLabel.textColor = UIColor.ProtonMail.Gray_8E8E8E
             let eSection = self.viewModel.sections[section]
-            headerCell.textLabel?.text = eSection.description
+            textLabel.text = eSection.description
+            
+            headerCell.contentView.addSubview(textLabel)
+            
+            textLabel.mas_makeConstraints({ (make) in
+                let _ = make?.top.equalTo()(headerCell.contentView.mas_top)?.with()?.offset()(8)
+                let _ = make?.bottom.equalTo()(headerCell.contentView.mas_bottom)?.with()?.offset()(-8)
+                let _ = make?.left.equalTo()(headerCell.contentView.mas_left)?.with()?.offset()(8)
+                let _ = make?.right.equalTo()(headerCell.contentView.mas_right)?.with()?.offset()(-8)
+            })
         }
         return header
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
         return CellKey.headerCellHeight
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

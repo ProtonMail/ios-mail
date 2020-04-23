@@ -20,7 +20,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqL-9M-AAl" customClass="PinCodeView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="687"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
                             </view>
                         </subviews>
                         <color key="backgroundColor" red="0.24604520199999999" green="0.2438791692" blue="0.3070739508" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1780,27 +1780,27 @@
         <scene sceneID="xgY-t9-Mjq">
             <objects>
                 <tableViewController restorationIdentifier="SettingsLockViewController" id="NrC-UK-yO2" userLabel="SettingsAutoLock" customClass="SettingsLockViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="50" sectionHeaderHeight="30" sectionFooterHeight="10" id="Lal-SL-tBv">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="-1" estimatedRowHeight="44" sectionHeaderHeight="30" sectionFooterHeight="10" id="Lal-SL-tBv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_domains" id="NX1-5N-x2A" customClass="DomainsTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NX1-5N-x2A" id="aT7-Ly-Eig">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i1N-vi-OdR">
-                                            <rect key="frame" x="27" y="15.333333333333336" width="315.33333333333331" height="15.666666666666664"/>
+                                            <rect key="frame" x="27" y="12" width="315.33333333333331" height="15.666666666666664"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Default" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Onc-Xr-dpE">
-                                            <rect key="frame" x="343.33333333333331" y="14" width="43.666666666666686" height="18"/>
+                                            <rect key="frame" x="343.33333333333331" y="11" width="43.666666666666686" height="18"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="18" id="dfd-k4-rF5"/>
                                             </constraints>
@@ -1823,20 +1823,20 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general" editingAccessoryType="disclosureIndicator" id="29Z-YC-DhV" customClass="GeneralSettingViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="105.33333206176758" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="99" width="414" height="50.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="29Z-YC-DhV" id="qBn-7E-3rv">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="50.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kca-cM-XAE">
-                                            <rect key="frame" x="235" y="17" width="140" height="16"/>
+                                            <rect key="frame" x="235" y="17" width="140" height="16.666666666666671"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="4sv-u5-P4Z">
-                                            <rect key="frame" x="27" y="17" width="200" height="16"/>
+                                            <rect key="frame" x="27" y="17" width="200" height="16.666666666666671"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="200" id="t7f-GV-FI6"/>
                                             </constraints>
@@ -1861,23 +1861,20 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_table_view_cell" id="X4g-La-6X2" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="155.33333206176758" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="149.66666793823242" width="414" height="55.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X4g-La-6X2" id="djQ-98-vRb">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="55.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ydS-fk-Yx5">
-                                            <rect key="frame" x="28" y="21" width="299" height="18"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="18" id="cc4-Qw-SyJ"/>
-                                            </constraints>
+                                            <rect key="frame" x="28" y="44.333333333333336" width="299" height="0.0"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZGP-81-n35">
-                                            <rect key="frame" x="337" y="12" width="51" height="26"/>
+                                            <rect key="frame" x="337" y="11.999999999999998" width="51" height="31.333333333333329"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="49" id="sRo-ax-xO5"/>
                                             </constraints>
@@ -1886,10 +1883,7 @@
                                             </connections>
                                         </switch>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="60z-qJ-kLc">
-                                            <rect key="frame" x="28" y="6" width="301" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="16" id="Q22-uh-7lh"/>
-                                            </constraints>
+                                            <rect key="frame" x="28" y="6" width="301" height="0.0"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1898,13 +1892,14 @@
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="ydS-fk-Yx5" secondAttribute="bottom" constant="11" id="32C-A0-iAp"/>
                                         <constraint firstAttribute="bottom" secondItem="ZGP-81-n35" secondAttribute="bottom" constant="12" id="3Kl-dk-aSO"/>
-                                        <constraint firstAttribute="bottom" secondItem="60z-qJ-kLc" secondAttribute="bottom" priority="250" constant="8" id="6OH-QF-4xu"/>
+                                        <constraint firstItem="ydS-fk-Yx5" firstAttribute="top" relation="greaterThanOrEqual" secondItem="60z-qJ-kLc" secondAttribute="bottom" constant="4" id="6OH-QF-4xu"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="ZGP-81-n35" secondAttribute="trailing" constant="8" id="7gb-VW-6fR"/>
                                         <constraint firstItem="ZGP-81-n35" firstAttribute="top" secondItem="djQ-98-vRb" secondAttribute="top" constant="12" id="DyA-OA-cQQ"/>
                                         <constraint firstItem="ZGP-81-n35" firstAttribute="leading" secondItem="ydS-fk-Yx5" secondAttribute="trailing" constant="10" id="IaO-hb-ipv"/>
                                         <constraint firstAttribute="centerY" secondItem="60z-qJ-kLc" secondAttribute="centerY" priority="1" id="Jz2-sW-Y8J"/>
                                         <constraint firstItem="ZGP-81-n35" firstAttribute="leading" secondItem="60z-qJ-kLc" secondAttribute="trailing" constant="8" id="aEI-0A-dVP"/>
                                         <constraint firstItem="60z-qJ-kLc" firstAttribute="top" secondItem="djQ-98-vRb" secondAttribute="top" priority="500" constant="6" id="k7l-fL-qEe"/>
+                                        <constraint firstAttribute="bottom" secondItem="60z-qJ-kLc" secondAttribute="bottom" priority="250" constant="8" id="mOL-Ld-frA"/>
                                         <constraint firstItem="60z-qJ-kLc" firstAttribute="leading" secondItem="djQ-98-vRb" secondAttribute="leadingMargin" constant="8" id="sq5-xY-iZc"/>
                                         <constraint firstItem="ydS-fk-Yx5" firstAttribute="leading" secondItem="djQ-98-vRb" secondAttribute="leadingMargin" constant="8" id="yXe-vc-rLS"/>
                                     </constraints>
@@ -1918,14 +1913,14 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="touch_id_switch_table_cell" id="9d2-Pr-6JB" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="205.33333206176758" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="205" width="414" height="55.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9d2-Pr-6JB" id="29Y-NT-lWj">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="55.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cQC-7c-LFn">
-                                            <rect key="frame" x="337" y="12" width="51" height="26"/>
+                                            <rect key="frame" x="337" y="11.999999999999998" width="51" height="31.333333333333329"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="49" id="B3y-uS-6Ej"/>
                                             </constraints>
@@ -1934,7 +1929,7 @@
                                             </connections>
                                         </switch>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable TouchID" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0c5-PL-7Ob">
-                                            <rect key="frame" x="28" y="6" width="301" height="36"/>
+                                            <rect key="frame" x="28" y="6" width="301" height="41.333333333333336"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1956,19 +1951,19 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="cMz-e4-LJx" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="255.33333206176758" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="260.33333206176758" width="414" height="47.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cMz-e4-LJx" id="4Sd-vm-eVf">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="47.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.80000001192092896" trackImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="VFO-ip-uUl">
-                                            <rect key="frame" x="27" y="33" width="360" height="2.6666666666666643"/>
+                                            <rect key="frame" x="27" y="30.666666666666668" width="360" height="2.6666666666666679"/>
                                             <color key="progressTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="trackTintColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5/500 MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjK-Zx-QJD">
-                                            <rect key="frame" x="251" y="6" width="133.66666666666663" height="19"/>
+                                            <rect key="frame" x="251" y="6" width="133.66666666666663" height="16.666666666666668"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="133.5" id="ApE-hZ-BSP"/>
                                             </constraints>
@@ -1998,7 +1993,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="single_text_cell" rowHeight="30" id="wV8-PM-eb9" customClass="CustomHeaderView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="305.33333206176758" width="414" height="30"/>
+                                <rect key="frame" x="0.0" y="308" width="414" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wV8-PM-eb9" id="DdR-ad-47h">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
@@ -2022,7 +2017,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general_single_line" editingAccessoryType="disclosureIndicator" id="5EA-bZ-VTv" customClass="GeneralSettingSinglelineCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="335.33333206176758" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="338" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5EA-bZ-VTv" id="syK-yl-zgj">
                                     <rect key="frame" x="0.0" y="0.0" width="383" height="50"/>
@@ -2047,7 +2042,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="PVC-N8-9EH" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="385.33333206176758" width="414" height="120"/>
+                                <rect key="frame" x="0.0" y="388" width="414" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PVC-N8-9EH" id="obv-bu-qYp">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
@@ -2109,7 +2104,7 @@
         <segue reference="Yep-Vd-dxY"/>
         <segue reference="PpL-SW-U8F"/>
         <segue reference="dUE-8e-owj"/>
-        <segue reference="XQx-Pm-sNq"/>
+        <segue reference="XGq-2C-ssO"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.666667938232422"/>
