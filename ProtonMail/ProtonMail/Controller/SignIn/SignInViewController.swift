@@ -440,7 +440,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             case .mbpwd:
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            case .exist:
+            case .exist, .limit:
                 break
             }
         }

@@ -40,6 +40,7 @@ class SignInManager: Service {
                          faillogout : Bool,
                          ask2fa: @escaping ()->Void,
                          onError: @escaping (NSError)->Void,
+                         reachLimit: @escaping ()->Void,
                          afterSignIn: @escaping ()->Void,
                          requestMailboxPassword: @escaping ()->Void,
                          tryUnlock:@escaping ()->Void )
@@ -57,7 +58,7 @@ class SignInManager: Service {
                 requestMailboxPassword()
                 return
             }
-            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
+            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, reachLimit: reachLimit, tryUnlock: tryUnlock)
         }
         
         self.auth = nil
@@ -80,21 +81,6 @@ class SignInManager: Service {
                          onError: @escaping (NSError)->Void,
                          onSuccess: @escaping (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void)
     {
-//        let success: (String?, AuthCredential?, UserInfo?)->Void = { mailboxpwd, auth, userinfo in
-//            guard let auth = auth, let user = userinfo else {
-//                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
-//                return
-//            }
-//
-//            self.auth = auth
-//            self.userInfo = user
-//            guard let mailboxPassword = mailboxpwd else {//OK but need mailbox pwd
-//                UserTempCachedStatus.restore()
-//                requestMailboxPassword()
-//                return
-//            }
-//            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
-//        }
         self.auth = nil
         self.userInfo = nil
         // one time api and service
@@ -119,12 +105,19 @@ class SignInManager: Service {
         return mailboxPassword
     }
     
-    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
+    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, reachLimit: @escaping ()->Void, tryUnlock:@escaping ()->Void ) {
         guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }
         auth.udpate(password: mailboxPassword)
+        
+        let count = self.usersManager.freeAccountNum()
+        if count > 0 && !userInfo.isPaid {
+            reachLimit()
+            return
+        }
+        
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil

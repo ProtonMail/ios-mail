@@ -229,7 +229,18 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         #endif
     }
     
+    func showAlert() {
+        let alertController = UIAlertController(title: "Limit reached", message: "Only one free account can be added", preferredStyle: .alert)
+        alertController.addOKAction()
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     @IBAction func signUpAction(_ sender: UIButton) {
+        //check free account
+        let count = self.viewModel.usersManager.freeAccountNum()
+        if count >= 1 {
+            return showAlert()
+        }
         self.createNewUserButton.isEnabled = false
         dismissKeyboard()
         firstly {
@@ -275,6 +286,9 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 let alertController = LocalString._duplicate_logged_in.alertController()
                 alertController.addOKAction()
                 self.present(alertController, animated: true, completion: nil)
+            case .limit:
+                MBProgressHUD.hide(for: self.view, animated: true)
+                self.showAlert()
             }
         }
     }

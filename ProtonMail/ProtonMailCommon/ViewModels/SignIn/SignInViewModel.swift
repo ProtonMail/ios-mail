@@ -34,6 +34,7 @@ class SignInViewModel : NSObject {
         case ok
         case mbpwd
         case exist
+        case limit
     }
 
     let usersManager: UsersManager
@@ -58,6 +59,8 @@ class SignInViewModel : NSObject {
             complete(.ask2fa)
         }, onError: { (error) in
             complete(.error(error))
+        }, reachLimit: {
+            complete(.limit)
         }, afterSignIn: {
             complete(.ok)
         }, requestMailboxPassword: {

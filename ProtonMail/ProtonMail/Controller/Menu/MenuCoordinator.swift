@@ -331,6 +331,4 @@ extension MenuCoordinatorNew : CoordinatorDelegate {
     func didStop(in coordinator: CoordinatorNew) {
         self.viewController?.updateUser()
     }
-    
-    
 }
