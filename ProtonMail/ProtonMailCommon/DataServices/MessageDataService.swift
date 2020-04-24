@@ -2097,6 +2097,8 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                 }
                                 
+                                messageObject.userID = self.userID
+                                
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {
                                         if let label = Label.labelForLableID(add as! String, inManagedObjectContext: context) {
