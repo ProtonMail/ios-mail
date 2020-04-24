@@ -165,6 +165,7 @@ class MessageViewModel: NSObject {
         let checkCount = atts.count
         let group: DispatchGroup = DispatchGroup()
         let queue: DispatchQueue = DispatchQueue(label: "AttachmentQueue", qos: .userInitiated)
+        let stringsQueue: DispatchQueue = DispatchQueue(label: "StringsQueue")
         
         var strings: [String:String] = [:]
             for att in atts {
@@ -172,7 +173,9 @@ class MessageViewModel: NSObject {
                 let work = DispatchWorkItem {
                     self.messageService.base64AttachmentData(att: att) { based64String in
                         if !based64String.isEmpty {
-                            strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
+                            stringsQueue.sync {
+                                strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
+                            }
                         }
                         group.leave()
                     }
