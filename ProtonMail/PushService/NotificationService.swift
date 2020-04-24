@@ -49,6 +49,8 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
+        bestAttemptContent.threadIdentifier = UID
+        
         guard let encryptionKit = PushNotificationDecryptor.encryptionKit(forSession: UID) else {
             PushNotificationDecryptor.markForUnsubscribing(uid: UID)
             #if Enterprise
