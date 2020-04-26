@@ -167,9 +167,16 @@ class UserManager : Service, HasLocalStorage {
         return auth.sessionID == uid
     }
     
-    func isExist(_ userName: String) -> Bool {
+    func isExist(userName: String) -> Bool {
         for addr in self.userinfo.userAddresses {
             return addr.email.starts(with: userName)
+        }
+        return false
+    }
+    
+    func isExist(userID: String) -> Bool {
+        if userInfo.userId == userID {
+            return true
         }
         return false
     }

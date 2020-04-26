@@ -204,7 +204,7 @@ class UsersManager : Service {
         return user
     }
     
-    func isExist(_ userName: String) -> Bool {
+    func isExist(userName: String) -> Bool {
         var check = userName
         
         if !userName.contains(check: "@") {
@@ -212,7 +212,16 @@ class UsersManager : Service {
         }
         
         for user in users {
-            if user.isExist(check) {
+            if user.isExist(userID: check) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func isExist(userID: String) -> Bool {
+        for user in users {
+            if user.isExist(userID: userID) {
                 return true
             }
         }

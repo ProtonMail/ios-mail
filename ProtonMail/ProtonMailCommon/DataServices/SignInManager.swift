@@ -41,6 +41,7 @@ class SignInManager: Service {
                          ask2fa: @escaping ()->Void,
                          onError: @escaping (NSError)->Void,
                          reachLimit: @escaping ()->Void,
+                         exist: @escaping ()->Void,
                          afterSignIn: @escaping ()->Void,
                          requestMailboxPassword: @escaping ()->Void,
                          tryUnlock:@escaping ()->Void )
@@ -58,7 +59,7 @@ class SignInManager: Service {
                 requestMailboxPassword()
                 return
             }
-            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, reachLimit: reachLimit, tryUnlock: tryUnlock)
+            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, reachLimit: reachLimit, existError: exist, tryUnlock: tryUnlock)
         }
         
         self.auth = nil
@@ -105,7 +106,11 @@ class SignInManager: Service {
         return mailboxPassword
     }
     
-    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, reachLimit: @escaping ()->Void, tryUnlock:@escaping ()->Void ) {
+    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?,
+                                             onError: @escaping (NSError)->Void,
+                                             reachLimit: @escaping ()->Void,
+                                             existError: @escaping ()->Void,
+                                             tryUnlock:@escaping ()->Void ) {
         guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
@@ -115,6 +120,11 @@ class SignInManager: Service {
         let count = self.usersManager.freeAccountNum()
         if count > 0 && !userInfo.isPaid {
             reachLimit()
+            return
+        }
+        let exist = self.usersManager.isExist(userID: userInfo.userId)
+        if exist == true {
+            existError()
             return
         }
         

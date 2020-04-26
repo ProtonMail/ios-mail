@@ -51,7 +51,7 @@ class SignInViewModel : NSObject {
     
     func signIn(username: String, password: String, cachedTwoCode: String?, faillogout: Bool, complete: @escaping (SignInComplete)->Void) {
         //Start checking if the user logged in already
-        if usersManager.isExist(username) {
+        if usersManager.isExist(userName: username) {
             return complete(.exist)
         }
         
@@ -61,6 +61,8 @@ class SignInViewModel : NSObject {
             complete(.error(error))
         }, reachLimit: {
             complete(.limit)
+        }, exist: {
+            complete(.exist)
         }, afterSignIn: {
             complete(.ok)
         }, requestMailboxPassword: {
