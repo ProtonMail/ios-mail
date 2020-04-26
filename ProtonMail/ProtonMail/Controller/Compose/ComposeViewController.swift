@@ -841,6 +841,7 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
             }
             
             self.viewModel.deleteAtt(attachment)
+            attViewController.updateAttachments()
         }
     }
 
