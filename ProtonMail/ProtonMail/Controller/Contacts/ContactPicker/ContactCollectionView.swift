@@ -348,7 +348,10 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }
         }
         else if self.showPrompt {
-            self.scrollToItem(at: self.entryCellIndexPath, at: .bottom, animated: false)
+            //Check if there's any cell exists on that indexPath
+            if let _ = self.dataSource?.collectionView(self, cellForItemAt: self.entryCellIndexPath) {
+                self.scrollToItem(at: self.entryCellIndexPath, at: .bottom, animated: false)
+            }
         }
     }
     

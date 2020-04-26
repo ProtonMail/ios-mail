@@ -75,7 +75,10 @@ extension MessageAttachmentsCoordinator: QLPreviewControllerDataSource, QLPrevie
     }
     
     func previewControllerDidDismiss(_ controller: QLPreviewController) {
-        try? FileManager.default.removeItem(at: self.tempClearFileURL!)
+        guard let url = self.tempClearFileURL else {
+            return
+        }
+        try? FileManager.default.removeItem(at: url)
         self.tempClearFileURL = nil
     }
 }
