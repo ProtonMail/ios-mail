@@ -137,10 +137,17 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             hud.label.text = LocalString._settings_resetting_cache
             hud.removeFromSuperViewOnHide = true
             self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
-                hud.mode = MBProgressHUDMode.text
-                hud.label.text = LocalString._general_done_button
-                hud.hide(animated: true, afterDelay: 1)
                 self.cleaning = false
+                if let error = error {
+                    hud.hide(animated: true, afterDelay: 0)
+                    let alert = error.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    hud.mode = MBProgressHUDMode.text
+                    hud.label.text = LocalString._general_done_button
+                    hud.hide(animated: true, afterDelay: 1)
+                }
             }
         }
     }

@@ -2048,17 +2048,17 @@ class MessageDataService : Service, HasLocalStorage {
                     if error == nil {
                         lastUpdatedStore.clear()
                         lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID)
-//                        lastUpdatedStore.lastEventID = response!.eventID
                     }
                     completion?(task, nil, error)
                 }
 
                 self.cleanMessage()
                 self.contactDataService.cleanUp()
-//                sharedContactDataService.clean()
                 self.labelDataService.fetchLabels()
                 self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)
                 self.contactDataService.fetchContacts(completion: nil)
+            } else {
+                completion?(task, nil, response?.error)
             }
         }
     }
