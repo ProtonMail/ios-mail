@@ -213,9 +213,9 @@ class SettingsPrivacyViewController: UITableViewController, ViewModelProtocol, C
                 }
             }
             let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
-            if let cell = tableView.cellForRow(at: indexPath) as? DomainsTableViewCell {
-                alert.popoverPresentationController?.sourceView = cell.contentView
-                alert.popoverPresentationController?.sourceRect = cell.defaultMark.frame
+            if let cell = tableView.cellForRow(at: indexPath) {
+                alert.popoverPresentationController?.sourceView = cell
+                alert.popoverPresentationController?.sourceRect = cell.bounds
             }
             browsers.forEach(alert.addAction)
             alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
