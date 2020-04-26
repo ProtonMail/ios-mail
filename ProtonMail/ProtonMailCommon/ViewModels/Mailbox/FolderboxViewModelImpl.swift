@@ -27,9 +27,9 @@ import CoreData
 class FolderboxViewModelImpl : MailboxViewModel {
     private let label : Label
     
-    init(label : Label, userManager: UserManager, pushService: PushNotificationService) {
+    init(label : Label, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: self.label.labelID, userManager: userManager, pushService: pushService)
+        super.init(labelID: self.label.labelID, userManager: userManager, usersManager: usersManager, pushService: pushService)
     }
     
     override func showLocation () -> Bool {

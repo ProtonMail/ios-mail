@@ -856,6 +856,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
             self.checkContact()
         }
+        
+        self.viewModel.getLatestMessagesForOthers()
     }
     
     fileprivate func showNoResultLabel() {

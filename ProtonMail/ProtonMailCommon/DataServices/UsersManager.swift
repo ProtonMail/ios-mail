@@ -138,6 +138,15 @@ class UsersManager : Service {
         
     }
     
+    func get(not userID: String) -> UserManager?  {
+        for user in users {
+            if user.userInfo.userId != userID {
+                return user
+            }
+        }
+        return nil
+    }
+    
     func user(at index: Int) -> UserManager? {
         if users.count > index {
             return users[index]
