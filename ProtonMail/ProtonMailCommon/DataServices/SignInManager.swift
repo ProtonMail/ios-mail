@@ -106,6 +106,7 @@ class SignInManager: Service {
         return mailboxPassword
     }
     
+    /// TODO:: those input delegats need change  to error return
     internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?,
                                              onError: @escaping (NSError)->Void,
                                              reachLimit: @escaping ()->Void,
@@ -125,6 +126,13 @@ class SignInManager: Service {
         let exist = self.usersManager.isExist(userID: userInfo.userId)
         if exist == true {
             existError()
+            return
+        }
+        
+        guard userInfo.delinquent < 3 else {
+            onError(NSError.init(domain: "",
+                                 code: 0,
+                                 localizedDescription: LocalString._general_account_disabled_non_payment))
             return
         }
         

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="iNi-o2-nXB">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -3178,6 +3178,11 @@ we need to verify that you are human.</string>
             <point key="canvasLocation" x="-1438" y="1855"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="BQ1-JS-Xpb"/>
+        <segue reference="gcc-KK-q6e"/>
+        <segue reference="lvd-zK-Trc"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Logo" width="228" height="36.5"/>
         <image name="login_pwdmanager" width="16" height="16"/>
@@ -3194,9 +3199,4 @@ we need to verify that you are human.</string>
         <image name="top_back" width="24" height="24"/>
         <image name="welcome_logo" width="188" height="31"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="BQ1-JS-Xpb"/>
-        <segue reference="gcc-KK-q6e"/>
-        <segue reference="lvd-zK-Trc"/>
-    </inferredMetricsTieBreakers>
 </document>
