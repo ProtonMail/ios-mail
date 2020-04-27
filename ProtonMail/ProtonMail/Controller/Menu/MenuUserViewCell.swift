@@ -76,8 +76,8 @@ class MenuUserViewCell: UITableViewCell {
             unreadLabel.isHidden = false
             signOutBtn.isHidden = true
             
-            displayNameTrailingToUnreadLeading.priority = .required
-            userEmailTrailingToUnreadLeading.priority = .required
+            displayNameTrailingToUnreadLeading.priority = UILayoutPriority(rawValue: 999)
+            userEmailTrailingToUnreadLeading.priority = UILayoutPriority(rawValue: 999)
             
             displayNameToSignIn.priority = .defaultLow
             userEmailTrailingToSignInLeading.priority = .defaultLow
@@ -94,8 +94,8 @@ class MenuUserViewCell: UITableViewCell {
             displayNameTrailingToUnreadLeading.priority = .defaultLow
             userEmailTrailingToUnreadLeading.priority = .defaultLow
             
-            displayNameToSignIn.priority = .required
-            userEmailTrailingToSignInLeading.priority = .required
+            displayNameToSignIn.priority = UILayoutPriority(rawValue: 999)
+            userEmailTrailingToSignInLeading.priority = UILayoutPriority(rawValue: 999)
             
             self.displayName.textColor = .red
             self.emailAddress.textColor = .red
