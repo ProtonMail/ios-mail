@@ -79,15 +79,19 @@ protocol SettingsDeviceViewModel : AnyObject {
     var languages : [ELanguage] { get }
     
     var lockOn : Bool { get }
+    var combineContactOn: Bool { get }
 }
 
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     var sections: [SettingDeviceSection] = [ .account, .app, .info]
     
-    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, /*.combinContacts,*/ .cleanCache]
+    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, .combinContacts, .cleanCache]
     var userManager: UserManager
     var lockOn : Bool {
         return userCachedStatus.isPinCodeEnabled || userCachedStatus.isTouchIDEnabled
+    }
+    var combineContactOn: Bool {
+        return userCachedStatus.isCombineContactOn
     }
     init(user : UserManager) {
         self.userManager = user

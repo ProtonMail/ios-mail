@@ -86,13 +86,17 @@ class ContactDataService: Service, HasLocalStorage {
      get/build fetch results controller for contacts
      
      **/
-    func resultController() -> NSFetchedResultsController<NSFetchRequestResult>? {
+    func resultController(isCombineContact: Bool = false) -> NSFetchedResultsController<NSFetchRequestResult>? {
         let moc = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Contact.Attributes.entityName)
         let strComp = NSSortDescriptor(key: Contact.Attributes.name,
                                        ascending: true,
                                        selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
         fetchRequest.sortDescriptors = [strComp]
+        
+        if !isCombineContact {
+            fetchRequest.predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.userID)
+        }
         
         return NSFetchedResultsController(fetchRequest: fetchRequest,
                                           managedObjectContext: moc,
@@ -692,9 +696,9 @@ class ContactDataService: Service, HasLocalStorage {
         return []
     }
     
-    private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, userId: String) -> [Email] {
+    private func allEmailsInManagedObjectContext(_ context: NSManagedObjectContext, isContactCombine: Bool) -> [Email] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Email.Attributes.entityName)
-        let predicate = NSPredicate(format: "%K == %@", Email.Attributes.userID, userId)
+        let predicate = isContactCombine ? nil : NSPredicate(format: "%K == %@", Email.Attributes.userID, self.userID)
         fetchRequest.predicate = predicate
         do {
             if let emails = try context.fetch(fetchRequest) as? [Email] {
@@ -819,7 +823,8 @@ extension ContactDataService {
             // merge address book and core data contacts
             let context = CoreDataService.shared.backgroundManagedObjectContext // VALIDATE
             context.performAndWait() {
-                let emailsCache = self.allEmailsInManagedObjectContext(context, userId: self.userID)
+                let emailsCache = self.allEmailsInManagedObjectContext(context,
+                                                                       isContactCombine: userCachedStatus.isCombineContactOn)
                 var pm_contacts: [ContactVO] = []
                 for email in emailsCache {
                     if email.managedObjectContext != nil {

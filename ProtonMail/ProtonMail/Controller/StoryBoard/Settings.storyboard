@@ -3,7 +3,7 @@
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -1086,6 +1086,7 @@
                         <outlet property="menuButton" destination="YZe-Qq-U8m" id="HIA-RC-hVc"/>
                         <segue destination="yEb-OG-ZId" kind="show" identifier="settings_account_settings" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="7DE-Oy-NL0"/>
                         <segue destination="NrC-UK-yO2" kind="show" identifier="settings_auto_lock" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="Zrg-Eo-mRV"/>
+                        <segue destination="86C-xq-QTd" kind="show" identifier="settings_combine_contact" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="gpW-K6-0h9"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Qd3-7d-31h" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1823,20 +1824,20 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general" editingAccessoryType="disclosureIndicator" id="29Z-YC-DhV" customClass="GeneralSettingViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="99" width="414" height="50.666667938232422"/>
+                                <rect key="frame" x="0.0" y="99" width="414" height="50.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="29Z-YC-DhV" id="qBn-7E-3rv">
-                                    <rect key="frame" x="0.0" y="0.0" width="383" height="50.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="383" height="50.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kca-cM-XAE">
-                                            <rect key="frame" x="235" y="17" width="140" height="16.666666666666671"/>
+                                            <rect key="frame" x="235" y="17" width="140" height="16.333333333333329"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="4sv-u5-P4Z">
-                                            <rect key="frame" x="27" y="17" width="200" height="16.666666666666671"/>
+                                            <rect key="frame" x="27" y="17" width="200" height="16.333333333333329"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="200" id="t7f-GV-FI6"/>
                                             </constraints>
@@ -1861,7 +1862,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_table_view_cell" id="X4g-La-6X2" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="149.66666793823242" width="414" height="55.333332061767578"/>
+                                <rect key="frame" x="0.0" y="149.33333206176758" width="414" height="55.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X4g-La-6X2" id="djQ-98-vRb">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="55.333332061767578"/>
@@ -1913,7 +1914,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="touch_id_switch_table_cell" id="9d2-Pr-6JB" customClass="TouchIDCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="205" width="414" height="55.333332061767578"/>
+                                <rect key="frame" x="0.0" y="204.66666412353516" width="414" height="55.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9d2-Pr-6JB" id="29Y-NT-lWj">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="55.333332061767578"/>
@@ -1951,19 +1952,19 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="setting_storage_cell" id="cMz-e4-LJx" customClass="StorageViewCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="260.33333206176758" width="414" height="47.666667938232422"/>
+                                <rect key="frame" x="0.0" y="259.99999618530273" width="414" height="47.333332061767578"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cMz-e4-LJx" id="4Sd-vm-eVf">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="47.666667938232422"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="47.333332061767578"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.80000001192092896" trackImage="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="VFO-ip-uUl">
-                                            <rect key="frame" x="27" y="30.666666666666668" width="360" height="2.6666666666666679"/>
+                                            <rect key="frame" x="27" y="30.333333333333332" width="360" height="2.6666666666666679"/>
                                             <color key="progressTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <color key="trackTintColor" red="0.66666666669999997" green="0.66666666669999997" blue="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </progressView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0.5/500 MB" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KjK-Zx-QJD">
-                                            <rect key="frame" x="251" y="6" width="133.66666666666663" height="16.666666666666668"/>
+                                            <rect key="frame" x="251" y="6" width="133.66666666666663" height="16.333333333333332"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="133.5" id="ApE-hZ-BSP"/>
                                             </constraints>
@@ -1993,7 +1994,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="single_text_cell" rowHeight="30" id="wV8-PM-eb9" customClass="CustomHeaderView" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="308" width="414" height="30"/>
+                                <rect key="frame" x="0.0" y="307.33332824707031" width="414" height="30"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="wV8-PM-eb9" id="DdR-ad-47h">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
@@ -2017,7 +2018,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" shouldIndentWhileEditing="NO" reuseIdentifier="settings_general_single_line" editingAccessoryType="disclosureIndicator" id="5EA-bZ-VTv" customClass="GeneralSettingSinglelineCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="338" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="337.33332824707031" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5EA-bZ-VTv" id="syK-yl-zgj">
                                     <rect key="frame" x="0.0" y="0.0" width="383" height="50"/>
@@ -2042,7 +2043,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="settings_twolines" rowHeight="120" id="PVC-N8-9EH" customClass="SettingsCell" customModule="ProtonMail" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="388" width="414" height="120"/>
+                                <rect key="frame" x="0.0" y="387.33332824707031" width="414" height="120"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PVC-N8-9EH" id="obv-bu-qYp">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="120"/>
@@ -2098,12 +2099,92 @@
             </objects>
             <point key="canvasLocation" x="4297" y="3618"/>
         </scene>
+        <!--Settings Combine Contact-->
+        <scene sceneID="sGt-l9-TcS">
+            <objects>
+                <tableViewController restorationIdentifier="SettingsContactCombineViewController" id="86C-xq-QTd" userLabel="Settings Combine Contact" customClass="SettingsContactCombineViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="50" sectionHeaderHeight="30" sectionFooterHeight="10" id="5iW-mV-3K1">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.88801312450000003" green="0.90205764769999996" blue="0.91173589229999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="switch_table_view_cell" id="NcE-EZ-1tm" customClass="SwitchTableViewCell" customModule="ProtonMail" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="55.333332061767578" width="414" height="50"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NcE-EZ-1tm" id="aQg-RY-BkF">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KDg-To-osD">
+                                            <rect key="frame" x="28" y="39" width="299" height="0.0"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JrC-Wo-hwd">
+                                            <rect key="frame" x="337" y="12" width="51" height="26"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="49" id="fuJ-Tl-IPl"/>
+                                            </constraints>
+                                            <connections>
+                                                <action selector="switchAction:" destination="NcE-EZ-1tm" eventType="valueChanged" id="cnL-sk-2Zy"/>
+                                            </connections>
+                                        </switch>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x6e-JZ-epp">
+                                            <rect key="frame" x="28" y="6" width="301" height="0.0"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="KDg-To-osD" firstAttribute="leading" secondItem="aQg-RY-BkF" secondAttribute="leadingMargin" constant="8" id="3d0-uE-JRo"/>
+                                        <constraint firstAttribute="bottom" secondItem="JrC-Wo-hwd" secondAttribute="bottom" constant="12" id="C2r-FH-mbO"/>
+                                        <constraint firstAttribute="bottom" secondItem="KDg-To-osD" secondAttribute="bottom" constant="11" id="KNq-nq-kek"/>
+                                        <constraint firstAttribute="centerY" secondItem="x6e-JZ-epp" secondAttribute="centerY" priority="1" id="LGs-LB-k66"/>
+                                        <constraint firstAttribute="bottom" secondItem="x6e-JZ-epp" secondAttribute="bottom" priority="250" constant="8" id="LiT-2B-RAy"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="JrC-Wo-hwd" secondAttribute="trailing" constant="8" id="bXv-If-uTP"/>
+                                        <constraint firstItem="KDg-To-osD" firstAttribute="top" relation="greaterThanOrEqual" secondItem="x6e-JZ-epp" secondAttribute="bottom" constant="4" id="dzN-wY-VAV"/>
+                                        <constraint firstItem="x6e-JZ-epp" firstAttribute="top" secondItem="aQg-RY-BkF" secondAttribute="top" priority="500" constant="6" id="lXG-ui-mba"/>
+                                        <constraint firstItem="JrC-Wo-hwd" firstAttribute="top" secondItem="aQg-RY-BkF" secondAttribute="top" constant="12" id="mYC-9N-1Ch"/>
+                                        <constraint firstItem="JrC-Wo-hwd" firstAttribute="leading" secondItem="x6e-JZ-epp" secondAttribute="trailing" constant="8" id="nHe-zY-Avi"/>
+                                        <constraint firstItem="x6e-JZ-epp" firstAttribute="leading" secondItem="aQg-RY-BkF" secondAttribute="leadingMargin" constant="8" id="oa7-cA-Wkl"/>
+                                        <constraint firstItem="JrC-Wo-hwd" firstAttribute="leading" secondItem="KDg-To-osD" secondAttribute="trailing" constant="10" id="q6D-4j-ao2"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="bottomLineLabel" destination="KDg-To-osD" id="iYh-Cd-Rkn"/>
+                                    <outlet property="centerConstraint" destination="LGs-LB-k66" id="epB-AK-MtG"/>
+                                    <outlet property="switchView" destination="JrC-Wo-hwd" id="60N-pR-5MZ"/>
+                                    <outlet property="topLineBottomConstraint" destination="dzN-wY-VAV" id="9LE-VJ-uc5"/>
+                                    <outlet property="topLineLabel" destination="x6e-JZ-epp" id="0Aq-5o-WVD"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="86C-xq-QTd" id="wE0-jv-I3k"/>
+                            <outlet property="delegate" destination="86C-xq-QTd" id="w2p-aL-WhM"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Settings" id="zBr-RM-AWG">
+                        <barButtonItem key="backBarButtonItem" title=" " id="MX2-tK-fGH"/>
+                    </navigationItem>
+                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SMq-1d-wlc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4296" y="4456"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="GgS-nT-ctf"/>
         <segue reference="Yep-Vd-dxY"/>
-        <segue reference="PpL-SW-U8F"/>
-        <segue reference="dUE-8e-owj"/>
+        <segue reference="pf5-Mm-LDI"/>
+        <segue reference="A7E-cY-hB0"/>
         <segue reference="XGq-2C-ssO"/>
     </inferredMetricsTieBreakers>
     <resources>
