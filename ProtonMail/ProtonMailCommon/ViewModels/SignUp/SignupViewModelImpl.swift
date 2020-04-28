@@ -58,6 +58,8 @@ class SignupViewModelImpl : SignupViewModel {
     let apiService = APIService.shared
     
     let usersManager: UsersManager
+    
+    weak var userManager: UserManager?
     let signinManager: SignInManager
     
     override func getDirect() -> [String] {
@@ -294,6 +296,7 @@ class SignupViewModelImpl : SignupViewModel {
                                                 
                                                 self.usersManager.add(auth: auth!, user: info!)
                                                 let user = self.usersManager.getUser(bySessionID: auth!.sessionID)!
+                                                self.userManager = user
                                                 let labelService = user.labelService
                                                 labelService.fetchLabels()
                                                 self.usersManager.loggedIn()
@@ -388,32 +391,42 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func setRecovery(_ receiveNews: Bool, email: String, displayName : String) {
-//        self.recoverEmail = email
-//        self.news = receiveNews
-//        self.displayName = displayName
-//        
-//        if !self.displayName.isEmpty {
-//            if let addr = sharedUserDataService.addresses.defaultAddress() {
-//                sharedUserDataService.updateAddress(addr.address_id, displayName: displayName, signature: addr.signature, completion: { (_, _, error) in
-//                    
-//                })
-//            } else {
-//                sharedUserDataService.updateDisplayName(displayName) { _, _, error in
-//                    
-//                }
-//            }
-//        }
-//        
-//        if !self.recoverEmail.isEmpty {
-//            sharedUserDataService.updateNotificationEmail(recoverEmail, login_password: self.plaintext_password, twoFACode: nil) { _, _, error in
-//
-//            }
-//        }
-//        
-//        let newsApi = UpdateNewsRequest(news: self.news)
-//        newsApi.call (api: self.apiService) { (task, response, hasError) -> Void in
-//            
-//        }
+        self.recoverEmail = email
+        self.news = receiveNews
+        self.displayName = displayName
+        
+        guard let user = self.userManager else {
+            return
+        }
+        
+        if !self.displayName.isEmpty {
+            if let addr = user.addresses.defaultAddress() {
+                user.userService.updateAddress(auth: user.auth, user: user.userInfo,
+                                               addressId: addr.address_id, displayName: displayName,
+                                               signature: addr.signature, completion: { (_, _, error) in
+                    
+                })
+            } else {
+                user.userService.updateDisplayName(auth: user.auth, user: user.userInfo,
+                                                   displayName: displayName) { _, _, error in
+                    
+                }
+            }
+        }
+        
+        if !self.recoverEmail.isEmpty {
+            
+            user.userService.updateNotificationEmail(auth: user.auth, user: user.userInfo,
+                                                     new_notification_email: recoverEmail, login_password: self.plaintext_password,
+                                                     twoFACode: nil) { _, _, error in
+
+            }
+        }
+        
+        let newsApi = UpdateNewsRequest(news: self.news)
+        newsApi.call (api: self.apiService) { (task, response, hasError) -> Void in
+            
+        }
     }
     
     override func fetchDirect(_ res : @escaping (_ directs:[String]) -> Void) {
