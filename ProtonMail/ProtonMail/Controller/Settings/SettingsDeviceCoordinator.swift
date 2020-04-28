@@ -30,6 +30,7 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
     enum Destination : String {
         case accountSetting = "settings_account_settings"
         case autoLock       = "settings_auto_lock"
+        case combineContact = "settings_combine_contact"
         
 //        case displayName     = "setting_displayname"
 //        case signature       = "setting_signature"
@@ -117,8 +118,16 @@ class SettingsDeviceCoordinator: SWRevealCoordinator {
             }
             lockSetting.start()
             return true
+        case .combineContact:
+            if let vc = destination as? SettingsContactCombineViewController {
+                let users : UsersManager = sharedServices.get()
+                let vm = SettingsCombineContactViewModel(users: users)
+                vc.set(viewModel: vm)
+                vc.set(coordinator: self)
+                return true
+            }
+            return false
         }
-        return false
     }
 }
 

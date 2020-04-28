@@ -80,6 +80,8 @@ final class UserCachedStatus : SharedCacheBase {
         
         static let dohFlag = "doh_flag"
         static let dohWarningAsk = "doh_warning_ask"
+        
+        static let combineContactFlag = "combine_contact_flag"
     }
     
     var isDohOn: Bool {
@@ -94,6 +96,17 @@ final class UserCachedStatus : SharedCacheBase {
         }
     }
     
+    var isCombineContactOn: Bool {
+        get {
+            if getShared()?.object(forKey: Key.combineContactFlag) == nil {
+                return false
+            }
+            return getShared().bool(forKey: Key.combineContactFlag)
+        }
+        set {
+            setValue(newValue, forKey: Key.combineContactFlag)
+        }
+    }
 //    var neverShowDohWarning: Bool {
 //        get {
 //            return getShared().bool(forKey: Key.dohWarningAsk)

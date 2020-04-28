@@ -219,7 +219,8 @@ extension SettingsDeviceViewController {
                     let language: ELanguage =  LanguageManager.currentLanguageEnum()
                     c.config(right: language.nativeDescription)
                 case .combinContacts:
-                    c.config(right: "off")
+                    let status = self.viewModel.combineContactOn ? "on" : "off"
+                    c.config(right: status)
                 case .cleanCache:
 //                    c.config(right: LocalString._empty_cache)
                     break
@@ -309,6 +310,7 @@ extension SettingsDeviceViewController {
                 }
                 #endif
             case .combinContacts:
+                self.coordinator?.go(to: .combineContact)
                 break
             case .cleanCache:
                 break

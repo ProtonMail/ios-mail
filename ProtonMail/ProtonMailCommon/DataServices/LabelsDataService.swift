@@ -180,7 +180,11 @@ class LabelsDataService: Service, HasLocalStorage {
             return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
         case .contactGroup:
             // in contact group searching, predicate must be consistent with this one
-            return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            if userCachedStatus.isCombineContactOn {
+                return NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+            } else {
+                return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
+            }
         }
     }
     
