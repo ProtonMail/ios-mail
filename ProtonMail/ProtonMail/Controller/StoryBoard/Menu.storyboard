@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -319,9 +319,9 @@
                                                 <constraint firstItem="226-FW-fTj" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="B3q-uC-jko"/>
                                                 <constraint firstItem="HBS-Vs-pJD" firstAttribute="centerY" secondItem="tAS-ST-IeU" secondAttribute="centerY" id="BiZ-ZU-q2l"/>
                                                 <constraint firstAttribute="trailing" secondItem="wCD-Eg-PlU" secondAttribute="trailing" constant="78" id="HHH-C0-PCo"/>
-                                                <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="tMY-R2-RON" secondAttribute="trailing" constant="10" id="IPh-cr-lsh"/>
+                                                <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="tMY-R2-RON" secondAttribute="trailing" priority="999" constant="10" id="IPh-cr-lsh"/>
                                                 <constraint firstItem="tMY-R2-RON" firstAttribute="leading" secondItem="226-FW-fTj" secondAttribute="trailing" constant="10" id="Ild-ma-EcE"/>
-                                                <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="Cvm-Jg-qNv" secondAttribute="trailing" constant="8" id="PHP-Zj-qr1"/>
+                                                <constraint firstItem="huU-Oz-iYj" firstAttribute="leading" secondItem="Cvm-Jg-qNv" secondAttribute="trailing" priority="999" constant="8" id="PHP-Zj-qr1"/>
                                                 <constraint firstItem="Cvm-Jg-qNv" firstAttribute="leading" secondItem="226-FW-fTj" secondAttribute="trailing" constant="10" id="QfN-pN-Ggf"/>
                                                 <constraint firstItem="wCD-Eg-PlU" firstAttribute="bottom" secondItem="HBS-Vs-pJD" secondAttribute="bottom" id="SsK-fa-PNQ"/>
                                                 <constraint firstItem="HBS-Vs-pJD" firstAttribute="leading" secondItem="tAS-ST-IeU" secondAttribute="leading" constant="10" id="TW0-tj-Xbc"/>

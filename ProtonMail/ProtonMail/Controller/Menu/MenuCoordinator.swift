@@ -34,10 +34,12 @@ class MenuCoordinatorNew: DefaultCoordinator {
     
     enum Setup: String {
         case switchUser = "USER"
+        case switchUserFromNotification = "UserFromNotification"
         
         init?(rawValue: String) {
             switch rawValue {
             case "USER": self = .switchUser
+            case "UserFromNotification": self = .switchUserFromNotification
             default: return nil
             }
         }
@@ -159,13 +161,21 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 // this will setup currentUser to this MenuViewModel which will transfer it down the hierarchy
                 let users = services.get(by: UsersManager.self)
                 let user = users.getUser(bySessionID: setup.value!)
+                users.active(uid: setup.value!)
+                self.viewModel.currentUser = user
+                
+            case .switchUserFromNotification where setup.value != nil:
+                let users = services.get(by: UsersManager.self)
+                let user = users.getUser(bySessionID: setup.value!)
                 
                 users.active(uid: setup.value!)
                 self.viewModel.currentUser = user
                 
-                String(format: LocalString._switch_account_by_click_notification,
-                       self.viewModel.secondUser?.defaultEmail ?? "",
-                    user?.defaultEmail ?? "").alertToastBottom()
+                if let user = user, let secondUser = self.viewModel.secondUser {
+                    String(format: LocalString._switch_account_by_click_notification,
+                       secondUser.defaultEmail,
+                    user.defaultEmail).alertToastBottom()
+                }
             default: break
             }
             // and clear it
