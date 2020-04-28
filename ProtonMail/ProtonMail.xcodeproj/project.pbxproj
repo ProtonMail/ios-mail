@@ -2025,6 +2025,12 @@
 		FEDF1EBAA909B9DB90CFA996E7586414 /* MessageAPI+SendType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 79805F58CE1B891A44279FF30CBE677A /* MessageAPI+SendType.swift */; };
 		FEFEFE67385EE1D22A004FA4D8771A71 /* SignInManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2930B0243ED3454ECF3146222630E063 /* SignInManager.swift */; };
 		FF2BEC129AA995F5D763F77BF42882C3 /* WebContentsSecureLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E01F07FD13CAE5F518AE5CDE79CE3F4 /* WebContentsSecureLoader.swift */; };
+		FF4442A22457F8A0006B811F /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
+		FF4442A32457F8A1006B811F /* UserCachedStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D59ABED3CFB1977BE8ED282A2EA2FA /* UserCachedStatus.swift */; };
+		FF4442A42457F8DB006B811F /* Keymaker+SharedKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */; };
+		FF4442A52457F8DC006B811F /* Keymaker+SharedKeychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = D417EB1F92B7B265DC132835677DE58F /* Keymaker+SharedKeychain.swift */; };
+		FF4442A62457F90E006B811F /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
+		FF4442A72457F910006B811F /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		FF4AFE6A245687E90034F5D8 /* SettingsContactCombineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4AFE69245687E90034F5D8 /* SettingsContactCombineViewController.swift */; };
 		FF4AFE6B245687E90034F5D8 /* SettingsContactCombineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4AFE69245687E90034F5D8 /* SettingsContactCombineViewController.swift */; };
 		FF4AFE6D24568C0A0034F5D8 /* SettingsCombineContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4AFE6C24568C0A0034F5D8 /* SettingsCombineContactViewModel.swift */; };
@@ -6016,6 +6022,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABC6EE48AEC5D594D79B13EAC11CBD1F /* App.swift in Sources */,
+				FF4442A22457F8A0006B811F /* UserCachedStatus.swift in Sources */,
 				B250BBE5318E416226D4D1144303F630 /* Crypto.swift in Sources */,
 				6A5FF586DA4AACA25910507A29055BB1 /* EncryptionKit.swift in Sources */,
 				9A664B8B3DBA3B976C9C5D2D80C77C23 /* Key.swift in Sources */,
@@ -6028,11 +6035,13 @@
 				6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */,
 				DD1EFF3B4B4A6ADC8B362E53255E7C62 /* PushNotificationDecryptor.swift in Sources */,
 				84951B6CDBDA98B6C74E39CC3E7360DD /* PushSubscriptionSettings.swift in Sources */,
+				FF4442A62457F90E006B811F /* LinkOpeningMode.swift in Sources */,
 				2ACEF348D0106626EE2C72C840ED5FF7 /* Saver.swift in Sources */,
 				99D837EE7FCABBBB1569730BEB3B79F4 /* Sender.swift in Sources */,
 				A11B2611FE597A0F073EE46629DE0449 /* SharedCacheBase.swift in Sources */,
 				500CDEF98158211428DCDF9A6EF23EE7 /* String+Parse+Extension.swift in Sources */,
 				10648082CC5DE03B114E36E41FD977C6 /* UserDefaultsSaver.swift in Sources */,
+				FF4442A42457F8DB006B811F /* Keymaker+SharedKeychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -7196,6 +7205,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				65049BF1672A1DCC6446D027F7C2BFAE /* App.swift in Sources */,
+				FF4442A32457F8A1006B811F /* UserCachedStatus.swift in Sources */,
 				6E68955FEF07C5F5925C385D46497125 /* Crypto.swift in Sources */,
 				3E82044001396820D1AB44C18F556191 /* EncryptionKit.swift in Sources */,
 				5DC2FADD1235BE606034F241E18CDD38 /* Key.swift in Sources */,
@@ -7208,11 +7218,13 @@
 				79A6618BF1520085B23A22DE625650C8 /* PushData.swift in Sources */,
 				DE4C5249B2A4DFE52DF523D3C357EC9D /* PushNotificationDecryptor.swift in Sources */,
 				C4EA101934D0DA1105CE3B237A9BD50B /* PushSubscriptionSettings.swift in Sources */,
+				FF4442A72457F910006B811F /* LinkOpeningMode.swift in Sources */,
 				815906E09AF1658FFE51A9A57E88FE51 /* Saver.swift in Sources */,
 				D293CC1CEB36E6DE62381940F06F3554 /* Sender.swift in Sources */,
 				E68C562A6D88714C82782BD866B0D6EA /* SharedCacheBase.swift in Sources */,
 				618FDC7159002960A08993A94689C506 /* String+Parse+Extension.swift in Sources */,
 				CED030FCC0CF908F3B36CBA0D265A340 /* UserDefaultsSaver.swift in Sources */,
+				FF4442A52457F8DC006B811F /* Keymaker+SharedKeychain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
