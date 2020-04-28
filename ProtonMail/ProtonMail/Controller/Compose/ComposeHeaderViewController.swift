@@ -846,9 +846,10 @@ extension ContactPicker {
     var contactList: String {
         var contactList = ""
         let contactsSelected = NSArray(array: self.contactsSelected)
-        if let contacts = contactsSelected.value(forKey: ContactVO.Attributes.email) as? [String] {
-            contactList = contacts.joined(separator: ",")
+        let contacts = contactsSelected.compactMap { (contact) -> String? in
+            return (contact as? ContactVO)?.email
         }
+        contactList = contacts.joined(separator: ",")
         return contactList
     }
 
