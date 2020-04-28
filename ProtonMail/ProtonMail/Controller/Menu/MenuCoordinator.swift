@@ -171,10 +171,9 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 users.active(uid: setup.value!)
                 self.viewModel.currentUser = user
                 
-                if let user = user, let secondUser = self.viewModel.secondUser {
+                if let user = user {
                     String(format: LocalString._switch_account_by_click_notification,
-                       secondUser.defaultEmail,
-                    user.defaultEmail).alertToastBottom()
+                           user.defaultEmail).alertToastBottom()
                 }
             default: break
             }
