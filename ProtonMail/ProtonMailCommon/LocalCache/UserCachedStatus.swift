@@ -82,6 +82,20 @@ final class UserCachedStatus : SharedCacheBase {
         static let dohWarningAsk = "doh_warning_ask"
         
         static let combineContactFlag = "combine_contact_flag"
+        
+        static let primaryUserSessionId = "primary_user_session_id"
+    }
+    
+    var primaryUserSessionId: String? {
+        get {
+            if getShared()?.object(forKey: Key.primaryUserSessionId) == nil {
+                return nil
+            }
+            return getShared()?.string(forKey: Key.primaryUserSessionId)
+        }
+        set {
+            setValue(newValue, forKey: Key.primaryUserSessionId)
+        }
     }
     
     var isDohOn: Bool {

@@ -72,7 +72,11 @@ class UsersManager : Service {
     /// Credential
 //    var userCredentials : [AuthCredential] = []
     /// users
-    var users : [UserManager] = []
+    var users : [UserManager] = [] {
+        didSet {
+            userCachedStatus.primaryUserSessionId = users.first?.auth.sessionID
+        }
+    }
 //    var apiServices : [APIService] = []
     
     /// global services
