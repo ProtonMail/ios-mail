@@ -126,10 +126,7 @@ class ContactEditViewModel: ContactEditViewModelContactGroupDelegate {
     }
     
     func paidUser() -> Bool {
-//        if let role = sharedUserDataService.userInfo?.role, role > 0 {
-//            return true
-//        }
-        return false
+        return user.isPaid
     }
     
     

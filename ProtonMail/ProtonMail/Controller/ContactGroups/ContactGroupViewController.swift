@@ -142,11 +142,11 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     @objc private func handleLongPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
         // blocks contact group view from editing
-//        if sharedUserDataService.isPaidUser() == false {
-//            self.performSegue(withIdentifier: kToUpgradeAlertSegue,
-//                              sender: self)
-//            return
-//        }
+        if viewModel.user.isPaid == false {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue,
+                              sender: self)
+            return
+        }
         
         // mark the location that it is on
         markLongPressLocation(longPressGestureRecognizer)
@@ -465,11 +465,11 @@ extension ContactGroupsViewController: ContactGroupsViewCellDelegate
     }
     
     func sendEmailToGroup(ID: String, name: String) {
-//        if sharedUserDataService.isPaidUser() {
-//            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
-//        } else {
-//            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-//        }
+        if viewModel.user.isPaid {
+            self.performSegue(withIdentifier: kToComposerSegue, sender: (ID: ID, name: name))
+        } else {
+            self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+        }
     }
 }
 
@@ -524,19 +524,19 @@ extension ContactGroupsViewController: UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if isEditingState {
             // blocks contact email cell contact group editing
-//            if sharedUserDataService.isPaidUser() == false {
-//                tableView.deselectRow(at: indexPath, animated: true)
-//                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-//                return
-//            }
-//            if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
-//                self.selectRow(at: indexPath, groupID: cell.getLabelID())
-//                if viewModel.initEditing() {
-//                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
-//                }
-//            } else {
-//                PMLog.D("FatalError: Conversion failed")
-//            }
+            if viewModel.user.isPaid == false {
+                tableView.deselectRow(at: indexPath, animated: true)
+                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                return
+            }
+            if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
+                self.selectRow(at: indexPath, groupID: cell.getLabelID())
+                if viewModel.initEditing() {
+                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
+                }
+            } else {
+                PMLog.D("FatalError: Conversion failed")
+            }
         } else {
             tableView.deselectRow(at: indexPath, animated: true)
             if let label = self.viewModel.labelForRow(at: indexPath) {
@@ -546,23 +546,23 @@ extension ContactGroupsViewController: UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-//        if isEditingState {
-//            // blocks contact email cell contact group editing
-//            if sharedUserDataService.isPaidUser() == false {
-//                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-//                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
-//                return
-//            }
-//            
-//            if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
-//                self.deselectRow(at: indexPath, groupID: cell.getLabelID())
-//                if viewModel.initEditing() {
-//                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
-//                }
-//            } else {
-//                PMLog.D("FatalError: Conversion failed")
-//            }
-//        }
+        if isEditingState {
+            // blocks contact email cell contact group editing
+            if viewModel.user.isPaid == false {
+                tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+                self.performSegue(withIdentifier: kToUpgradeAlertSegue, sender: self)
+                return
+            }
+            
+            if let cell = tableView.cellForRow(at: indexPath) as? ContactGroupsViewCell {
+                self.deselectRow(at: indexPath, groupID: cell.getLabelID())
+                if viewModel.initEditing() {
+                    cell.setCount(viewModel.dateForRow(at: indexPath).count)
+                }
+            } else {
+                PMLog.D("FatalError: Conversion failed")
+            }
+        }
     }
 }
 
