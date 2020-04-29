@@ -205,7 +205,7 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func updateAddressID(_ address_id: String) -> Promise<Void> {
-        return async {
+        return Promise { seal in
             let userinfo = self.user.userInfo
             guard let addr = userinfo.userAddresses.indexOfAddress(address_id),
                 let key = addr.keys.first else {
@@ -259,6 +259,8 @@ class ComposeViewModelImpl : ComposeViewModel {
             }
 
             self.updateDraft()
+            
+            seal.resolve(nil)
         }
     }
     
