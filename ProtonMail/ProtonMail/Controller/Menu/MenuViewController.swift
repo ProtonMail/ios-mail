@@ -189,18 +189,28 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     }
     
     func handleSignOut(_ sender : UIView?) {
+        let shouldDeleteMessageInQueue = self.viewModel.isCurrentUserHasQueuedMessage()
         var message = LocalString._logout_confirmation
-        if let user = self.viewModel.currentUser {
-            if let nextUser = self.viewModel.secondUser {
-                message = String(format: LocalString._logout_confirmation, nextUser.defaultEmail)
-            } else {
-                message = String(format: LocalString._logout_confirmation_one_account, user.defaultEmail)
+        
+        if shouldDeleteMessageInQueue {
+            message = LocalString._logout_confirmation_having_pending_message
+        } else {
+            if let user = self.viewModel.currentUser {
+                if let nextUser = self.viewModel.secondUser {
+                    message = String(format: LocalString._logout_confirmation, nextUser.defaultEmail)
+                } else {
+                    message = String(format: LocalString._logout_confirmation_one_account, user.defaultEmail)
+                }
             }
         }
         
         let alertController = UIAlertController(title: LocalString._logout_title, message: message, preferredStyle: .actionSheet)
         
         alertController.addAction(UIAlertAction(title: LocalString._sign_out, style: .destructive, handler: { (action) -> Void in
+            if shouldDeleteMessageInQueue {
+                self.viewModel.removeAllQueuedMessageOfCurrentUser()
+            }
+            
             self.signingOut = true
             self.viewModel.signOut()
             

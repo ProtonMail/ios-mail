@@ -85,6 +85,19 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     // MARK: - Private methods
     
+    private func checkIsMessageInQueue(completion: ((Bool) -> Void)? = nil) {
+        if self.viewModel.isCurrentUserHasQueuedMessage() {
+            let alertController = UIAlertController(title: "Alert", message: "There are still some messages in queue. If you log out, the draft will be deleted.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Delete All", style: .destructive, handler: { (action) in
+                completion?(true)
+            }))
+            alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        } else {
+            completion?(false)
+        }
+    }
+    
     // MARK: Actions
     
     @IBAction fileprivate func removeAction(_ sender: UIBarButtonItem) {
@@ -143,26 +156,40 @@ extension AccountManagerViewController: UITableViewDataSource {
                 var title = LocalString._warning
                 var message = LocalString._logout_confirmation
                 
+                var shouldDeleteMessageInQueue = false
+                
                 if let user = self.viewModel.user(at: indexPath) {
-                    if let nextUser = self.viewModel.nextUser(at: indexPath) {
-                        if user.userInfo.userId == self.viewModel.currentUser?.userInfo.userId {
-                            // Primary account logout
-                            title = LocalString._logout_primary_account_from_manager_account_title
-                            message = String(format: LocalString._logout_primary_account_from_manager_account, nextUser.defaultEmail)
+                    shouldDeleteMessageInQueue = self.viewModel.isUserHasQueuedMessage(userId: user.userInfo.userId)
+                    
+                    if shouldDeleteMessageInQueue {
+                        message = LocalString._logout_confirmation_having_pending_message
+                    } else {
+                        if let nextUser = self.viewModel.nextUser(at: indexPath) {
+                            if user.userInfo.userId == self.viewModel.currentUser?.userInfo.userId {
+                                // Primary account logout
+                                title = LocalString._logout_primary_account_from_manager_account_title
+                                message = String(format: LocalString._logout_primary_account_from_manager_account, nextUser.defaultEmail)
+                            } else {
+                                // Secondary account
+                                title = String(format: LocalString._logout_secondary_account_from_manager_account_title, user.defaultEmail)
+                                message = LocalString._logout_secondary_account_from_manager_account
+                            }
                         } else {
-                            // Secondary account
                             title = String(format: LocalString._logout_secondary_account_from_manager_account_title, user.defaultEmail)
                             message = LocalString._logout_secondary_account_from_manager_account
                         }
-                    } else {
-                        title = String(format: LocalString._logout_secondary_account_from_manager_account_title, user.defaultEmail)
-                        message = LocalString._logout_secondary_account_from_manager_account
                     }
                 }
                 
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: { _ in
+                    if let user = self.viewModel.user(at: indexPath) {
+                        if shouldDeleteMessageInQueue {
+                            self.viewModel.removeAllQueuedMessage(userId: user.userInfo.userId)
+                        }
+                    }
+                    
                     self.viewModel.remove(at: indexPath)
                     self.tableView.reloadData()
                 }))

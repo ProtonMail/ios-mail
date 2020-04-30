@@ -104,7 +104,7 @@ class UsersManager : Service {
 //        auth.userID = userID
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
-        let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+        let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                           defaultEmail: newUser.defaultEmail,
                           userID: user.userId))
@@ -194,6 +194,16 @@ class UsersManager : Service {
          return user
      }
     
+    func getUser(byUserId userId: String) -> UserManager? {
+        let found = users.filter { user -> Bool in
+            return user.userInfo.userId == userId
+        }
+        guard let user = found.first else {
+            return nil
+        }
+        return user
+    }
+    
     func isExist(_ userName: String) -> Bool {
         var check = userName
         
@@ -269,7 +279,7 @@ class UsersManager : Service {
             let userID = user.userId
             let apiConfig = serverConfig
             let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
-            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth)
+            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
             newUser.delegate = self
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
@@ -318,7 +328,7 @@ class UsersManager : Service {
                 let userID = user.userId
                 let apiConfig = serverConfig
                 let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
-                let newUser = UserManager(api: apiService, userinfo: user, auth: auth)
+                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
                 newUser.delegate = self
                 users.append(newUser)
             }

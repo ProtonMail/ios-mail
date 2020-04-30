@@ -33,6 +33,8 @@ import Foundation
     fileprivate var queueURL: URL
     fileprivate let queueName: String
     
+    internal var mutex = pthread_mutex_t()
+    
     dynamic fileprivate(set) var queue: [Any] {
         didSet {
             DispatchQueue.global(qos: DispatchQoS.QoSClass.background).sync { () -> Void in
@@ -71,11 +73,15 @@ import Foundation
         else {
             self.queue = []
         }
-        
+        pthread_mutex_init(&mutex, nil)
         super.init()
     }
     
     func add (_ uuid: UUID, object: NSCoding) -> UUID {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
         let element = [Key.elementID : uuid, Key.object : object] as [String : Any]
         self.queue.append(element)
         return uuid
@@ -102,6 +108,10 @@ import Foundation
     
     /// Removes an element from the persistent queue
     func remove(_ elementID: UUID) -> Bool {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
         for (index, element) in queue.enumerated() {
             if let elementDict = element as? [String : Any], let kID = elementDict[Key.elementID] as? UUID{
                 if kID == elementID {
@@ -115,6 +125,10 @@ import Foundation
     
     
     func removeDuplicated(_ messageID: String, key: String, actionKey: String, actions : [String]) {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
         self.queue.removeAll { (element) -> Bool in
             if let elementDict = element as? [String : Any],
                 let object = elementDict[Key.object] as? [String : Any],
@@ -128,5 +142,19 @@ import Foundation
         }
     }
     
-
+    func remove<T>(key: String, value: T) where T: Equatable {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
+        self.queue.removeAll { (element) -> Bool in
+            if let elementDict = element as? [String : Any],
+                let object = elementDict[Key.object] as? [String : Any],
+                let found = object[key] as? T,
+                found == value {
+                return true
+            }
+            return false
+        }
+    }
 }
