@@ -122,7 +122,13 @@ class LabelsDataService: Service, HasLocalStorage {
     
     func getAllLabels(of type : LabelFetchType) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
-        fetchRequest.predicate = self.fetchRequestPrecidate(type)
+        
+        if type == .contactGroup && userCachedStatus.isCombineContactOn {
+            // in contact group searching, predicate must be consistent with this one
+            fetchRequest.predicate = NSPredicate(format: "(%K == 2)", Label.Attributes.type)
+        } else {
+            fetchRequest.predicate = self.fetchRequestPrecidate(type)
+        }
         
         let context = CoreDataService.shared.mainManagedObjectContext
         do {
@@ -179,12 +185,7 @@ class LabelsDataService: Service, HasLocalStorage {
         case .label:
             return NSPredicate(format: "(labelID MATCHES %@) AND (%K == 1) AND (%K == false) AND (%K == %@)", "(?!^\\d+$)^.+$", Label.Attributes.type, Label.Attributes.exclusive, Label.Attributes.userID, self.userID)
         case .contactGroup:
-            // in contact group searching, predicate must be consistent with this one
-            if userCachedStatus.isCombineContactOn {
-                return NSPredicate(format: "(%K == 2)", Label.Attributes.type)
-            } else {
-                return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
-            }
+            return NSPredicate(format: "(%K == 2) AND (%K == %@)", Label.Attributes.type, Label.Attributes.userID, self.userID)
         }
     }
     
