@@ -33,10 +33,7 @@ class ContactsViewModel : ViewModelTimer {
     }
     
     func paidUser() -> Bool {
-        if user.userInfo.role > 0 {
-            return true
-        }
-        return false
+        return user.isPaid
     }
     
     func resetFetchedController() {

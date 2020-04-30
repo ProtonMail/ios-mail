@@ -988,18 +988,6 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    /**
-     - Returns: true if the user is a paid user, otherwise return false
-     */
-    func isPaidUser() -> Bool {
-//        if let role = sharedUserDataService.userInfo?.role,
-//            role > 0 {
-//            return true
-//        }
-        return false
-    }
-    
-    
     //Login callback blocks
     typealias LoginAsk2FABlock = () -> Void
     typealias LoginErrorBlock = (_ error: NSError) -> Void
