@@ -57,6 +57,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private let kNumberOfDaysInTimePicker: Int    = 30
     private let kNumberOfHoursInTimePicker: Int   = 24
     
+    private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
+    
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
 
@@ -592,10 +594,14 @@ extension ComposeViewController : ComposeViewDelegate {
                         }
                         MBProgressHUD.showAdded(to: self.view, animated: true)
                         
-                        self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
-                            let alertController = error.localizedDescription.alertController()
-                            alertController.addOKAction()
-                            self.present(alertController, animated: true, completion: nil)
+                        _ = self.queue.sync {
+                            self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
+                                {
+                                    let alertController = error.localizedDescription.alertController()
+                                    alertController.addOKAction()
+                                    self.present(alertController, animated: true, completion: nil)
+                                } ~> .main
+                            }
                         }
                         
                         self.headerView.updateFromValue(addr.email, pickerEnabled: true)
