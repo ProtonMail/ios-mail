@@ -179,10 +179,9 @@ class ContactGroupMutiSelectViewModelImpl: ViewModelTimer, ContactGroupsViewMode
                         seal.fulfill(())
                     }
                 })
-                //Fixme
-//                sharedContactDataService.fetchContacts { (_, error) in
-//
-//                }
+                self.user.contactService.fetchContacts { (_, error) in
+                    
+                }
             } else {
                 seal.fulfill(())
             }

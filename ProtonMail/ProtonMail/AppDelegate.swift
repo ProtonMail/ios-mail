@@ -279,9 +279,6 @@ extension AppDelegate: UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
         
-        //TODO:: fixme
-//        sharedMessageDataService.purgeOldMessages()
-        
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
         let delayedCompletion: ()->Void = {
@@ -291,12 +288,16 @@ extension AppDelegate: UIApplicationDelegate {
             }
         }
         
-//        if SignInManager.shared.isSignedIn() {
-//            sharedMessageDataService.updateMessageCount()
-//            sharedMessageDataService.backgroundFetch { delayedCompletion() }
-//        } else {
-//            delayedCompletion()
-//        }
+        let users: UsersManager = sharedServices.get()
+        if let user = users.firstUser {
+            user.messageService.purgeOldMessages()
+            user.messageService.updateMessageCount()
+            user.messageService.backgroundFetch {
+                delayedCompletion()
+            }
+        } else {
+            delayedCompletion()
+        }
         PMLog.D("Enter Background")
     }
     
