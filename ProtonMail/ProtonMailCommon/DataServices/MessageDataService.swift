@@ -1377,6 +1377,13 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
+    private func empty(labelId: String, completion: CompletionBlock?) {
+        if let location = Message.Location(rawValue: labelId) {
+            self.empty(at: location, completion: completion)
+        }
+        completion?(nil, nil, nil)
+    }
+    
     private func empty(at location: Message.Location, completion: CompletionBlock?) {
         //TODO:: check is label valid
         if location != .spam && location != .trash && location != .draft {
@@ -1919,8 +1926,7 @@ class MessageDataService : Service, HasLocalStorage {
                 case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
                     self.empty(at: .spam, completion: completeHandler)
                 case .empty:
-                    //TODO::fixme
-//                    self.empty(labelID: data1, completion: completeHandler)
+                    self.empty(labelId: data1, completion: completeHandler)
                     break
                 case .read, .unread:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
