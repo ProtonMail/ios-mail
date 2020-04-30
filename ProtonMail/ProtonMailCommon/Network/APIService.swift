@@ -144,10 +144,6 @@ class APIService : Service {
         URLCache.shared.removeAllCachedResponses()
         let apiHostUrl = self.serverConfig.hostUrl
         
-//        guard let apiUrl = URL(string: apiHostUrl) else {
-//            //TODO:: need to thorw error or cchange to init?.
-//            return
-//        }
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
