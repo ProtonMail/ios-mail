@@ -114,9 +114,9 @@ class MenuViewModelImpl : MenuViewModel {
         return self.usersManager.firstUser
     }()
     
-    lazy var secondUser: UserManager? = {
+    var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
-    }()
+    }
     
     func updateMenuItems() {
         otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
