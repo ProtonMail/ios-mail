@@ -211,11 +211,22 @@ class MenuViewModelImpl : MenuViewModel {
         return IndexPath(row: r, section: s)
     }
     
-    
     func signOut() {
         if let currentUser = self.currentUser {
             self.usersManager.logout(user: currentUser)
         }
     }
     
+    func isCurrentUserHasQueuedMessage() -> Bool {
+        if let currentUser = self.currentUser {
+            return currentUser.messageService.isAnyQueuedMessage(userId: currentUser.userInfo.userId)
+        }
+        return false
+    }
+    
+    func removeAllQueuedMessageOfCurrentUser() {
+        if let currentUser = self.currentUser {
+            currentUser.messageService.removeQueuedMessage(userId: currentUser.userInfo.userId)
+        }
+    }
 }

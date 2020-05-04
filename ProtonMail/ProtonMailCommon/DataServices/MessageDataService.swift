@@ -49,13 +49,17 @@ class MessageDataService : Service, HasLocalStorage {
         return CoreDataService.shared.mainManagedObjectContext
     }
     
-    init(api: APIService, userID: String, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService) {
+    //FIXME: need to be refracted
+    weak var usersManager: UsersManager?
+    
+    init(api: APIService, userID: String, labelDataService: LabelsDataService, contactDataService: ContactDataService, localNotificationService: LocalNotificationService, usersManager: UsersManager?) {
         self.apiService = api
         self.userID = userID
         self.labelDataService = labelDataService
         self.contactDataService = contactDataService
         self.localNotificationService = localNotificationService
         setupNotifications()
+        self.usersManager = usersManager
     }
     
     deinit {
@@ -484,7 +488,7 @@ class MessageDataService : Service, HasLocalStorage {
         if let error = context.saveUpstreamIfNeeded() {
             PMLog.D(" error: \(error)")
         }
-        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt)
+        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
         dequeueIfNeeded()
     }
     
@@ -590,10 +594,13 @@ class MessageDataService : Service, HasLocalStorage {
     private func cachePropertiesForBackground(in message: Message) {
         // these cached objects will allow us to update the draft, upload attachment and send the message after the mainKey will be locked
         // they are transient and will not be persisted in the db, only in managed object context
-        message.cachedPassphrase = self.userDataSource!.mailboxPassword
-        message.cachedAuthCredential = self.userDataSource!.authCredential
-        message.cachedUser = self.userDataSource!.userInfo
-        message.cachedAddress = self.defaultAddress(message) // computed property depending on current user settings
+        guard let userMsgService = self.usersManager?.getUser(byUserId: message.userID)?.messageService else {
+            return
+        }
+        message.cachedPassphrase = userMsgService.userDataSource!.mailboxPassword
+        message.cachedAuthCredential = userMsgService.userDataSource!.authCredential
+        message.cachedUser = userMsgService.userDataSource!.userInfo
+        message.cachedAddress = userMsgService.defaultAddress(message) // computed property depending on current user settings
     }
     
     
@@ -961,7 +968,8 @@ class MessageDataService : Service, HasLocalStorage {
         lastUpdatedStore.clear()
         lastUpdatedStore.removeUpdateTime(by: self.userID)
         
-        // TODO: remove from sharedMessageQueue and sharedFailedQuque stuff related to this user
+        removeQueuedMessage(userId: self.userID)
+        removeFailedQueuedMessage(userId: self.userID)
     }
     
     static func cleanUpAll() {
@@ -1083,7 +1091,7 @@ class MessageDataService : Service, HasLocalStorage {
         return []
     }
     
-    fileprivate func draft(save messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    fileprivate func draft(save messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
         var isAttachmentKeyChanged = false
         context.performAndWait {
@@ -1092,6 +1100,11 @@ class MessageDataService : Service, HasLocalStorage {
                 let _ = sharedMessageQueue.remove(writeQueueUUID)
                 self.dequeueIfNeeded()
                 completion?(nil, nil, NSError.badParameter(messageID))
+                return
+            }
+            
+            guard let userManager = usersManager?.getUser(byUserId: UID) else {
+                completion?(nil, nil, NSError.userLoggedOut())
                 return
             }
             
@@ -1186,9 +1199,9 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 
                 if message.isDetailDownloaded && message.messageID != "0" {
-                    let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
+                    let addr = userManager.messageService.fromAddress(message) ?? message.cachedAddress ?? userManager.messageService.defaultAddress(message)
                     let api = UpdateDraft(message: message, fromAddr: addr, authCredential: message.cachedAuthCredential)
-                    api.call(api: self.apiService) { (task, response, hasError) -> Void in
+                    api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                         context.perform {
                             if hasError {
                                 completionWrapper(task, nil, response?.error)
@@ -1198,9 +1211,9 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     }
                 } else {
-                    let addr = self.fromAddress(message) ?? message.cachedAddress ?? self.defaultAddress(message)
+                    let addr = userManager.messageService.fromAddress(message) ?? message.cachedAddress ?? userManager.messageService.defaultAddress(message)
                     let api = CreateDraft(message: message, fromAddr: addr)
-                    api.call(api: self.apiService) { (task, response, hasError) -> Void in
+                    api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                         context.perform {
                             if hasError {
                                 completionWrapper(task, nil, response?.error)
@@ -1221,7 +1234,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     
-    private func uploadPubKey(_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func uploadPubKey(_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
         guard let objectID = CoreDataService.shared.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
@@ -1235,11 +1248,11 @@ class MessageDataService : Service, HasLocalStorage {
             return
         }
         
-        self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, completion: completion)
+        self.uploadAttachmentWithAttachmentID(managedObjectID, writeQueueUUID: writeQueueUUID, UID: UID, completion: completion)
         return
     }
     
-    private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func uploadAttachmentWithAttachmentID (_ managedObjectID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
         guard let objectID = CoreDataService.shared.managedObjectIDForURIRepresentation(managedObjectID),
             let managedObject = try? context.existingObject(with: objectID),
@@ -1253,6 +1266,11 @@ class MessageDataService : Service, HasLocalStorage {
             return
         }
         
+        guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+            completion?(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        
         var params = [
             "Filename": attachment.fileName,
             "MIMEType": attachment.mimeType,
@@ -1262,17 +1280,18 @@ class MessageDataService : Service, HasLocalStorage {
         if attachment.inline() {
             params["ContentID"] = attachment.contentID()
         }
-
-        let addressID = attachment.message.cachedAddress?.address_id ?? self.getAddressID(attachment.message)
-        guard let key = attachment.message.cachedAddress?.keys.first ?? self.userDataSource!.getAddressKey(address_id: addressID) else {
+        
+        let addressID = attachment.message.cachedAddress?.address_id ?? userManager.messageService.getAddressID(attachment.message)
+        guard let key = attachment.message.cachedAddress?.keys.first ?? userManager.getAddressKey(address_id: addressID) else {
             completion?(nil, nil, NSError.encryptionError())
             return
         }
         
-        guard let passphrase = attachment.message.cachedPassphrase ?? self.userDataSource?.mailboxPassword else {
-            completion?(nil, nil, NSError.lockError())
-            return
-        }
+//        guard let passphrase = attachment.message.cachedPassphrase ?? self.userDataSource?.mailboxPassword else {
+//            completion?(nil, nil, NSError.lockError())
+//            return
+//        }
+        let passphrase = attachment.message.cachedPassphrase ?? userManager.mailboxPassword
         
         guard let encryptedData = attachment.encrypt(byKey: key, mailbox_pwd: passphrase),
             let keyPacket = encryptedData.keyPacket,
@@ -1283,7 +1302,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? self.userDataSource!.userPrivateKeys,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? userManager.userPrivateKeys,
                                      passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -1315,7 +1334,7 @@ class MessageDataService : Service, HasLocalStorage {
         
         PMLog.D("SendAttachmentDebug == start upload att!")
         ///sharedAPIService.upload( byPath: Constants.App.API_PATH + "/attachments",
-        self.apiService.upload( byPath: "/attachments",
+        userManager.apiService.upload( byPath: "/attachments",
                                  parameters: params,
                                  keyPackets: keyPacket,
                                  dataPacket: dataPacket,
@@ -1326,7 +1345,7 @@ class MessageDataService : Service, HasLocalStorage {
                                  completion: completionWrapper)
     }
     
-    private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func deleteAttachmentWithAttachmentID (_ deleteObject: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
         context.performAndWait {
             var authCredential: AuthCredential?
@@ -1336,15 +1355,21 @@ class MessageDataService : Service, HasLocalStorage {
             {
                 authCredential = attachment.message.cachedAuthCredential
             }
+            
+            guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+                completion?(nil, nil, NSError.userLoggedOut())
+                return
+            }
+            
             let api = DeleteAttachment(attID: deleteObject, authCredential: authCredential)
-            api.call(api: self.apiService) { (task, response, hasError) -> Void in
+            api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
                 completion?(task, nil, nil)
             }
             return
         }
     }
     
-    private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
+    private func messageAction(_ managedObjectIds: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
         let context = CoreDataService.shared.mainManagedObjectContext
         context.performAndWait {
             let messages = managedObjectIds.compactMap { (id: String) -> Message? in
@@ -1355,9 +1380,15 @@ class MessageDataService : Service, HasLocalStorage {
                 }
                 return nil
             }
+            
+            guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+                completion!(nil, nil, NSError.userLoggedOut())
+                return
+            }
+            
             let messageIds = messages.map { $0.messageID }
             let api = MessageActionRequest(action: action, ids: messageIds)
-            api.call(api: self.apiService) { (task, response, hasError) in
+            api.call(api: userManager.apiService) { (task, response, hasError) in
                 completion!(task, nil, nil)
             }
         }
@@ -1370,42 +1401,63 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - writeQueueUUID: queue UID
     ///   - action: action type. should .delete here
     ///   - completion: call back
-    private func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, completion: CompletionBlock?) {
+    private func messageDelete(_ messageIDs: [String], writeQueueUUID: UUID, action: String, UID: String, completion: CompletionBlock?) {
+        guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+            completion!(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        
         let api = MessageActionRequest(action: action, ids: messageIDs)
-        api.call(api: self.apiService) { (task, response, hasError) in
+        api.call(api: userManager.apiService) { (task, response, hasError) in
             completion!(task, nil, nil)
         }
     }
     
-    private func empty(labelId: String, completion: CompletionBlock?) {
+    private func empty(labelId: String, UID: String, completion: CompletionBlock?) {
         if let location = Message.Location(rawValue: labelId) {
-            self.empty(at: location, completion: completion)
+            self.empty(at: location, UID: UID, completion: completion)
         }
         completion?(nil, nil, nil)
     }
     
-    private func empty(at location: Message.Location, completion: CompletionBlock?) {
+    private func empty(at location: Message.Location, UID: String, completion: CompletionBlock?) {
         //TODO:: check is label valid
         if location != .spam && location != .trash && location != .draft {
             completion?(nil, nil, nil)
             return
         }
+        
+        guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+            completion?(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        
         let api = EmptyMessage(labelID: location.rawValue)
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
+        api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
             completion?(task, nil, nil)
         }
     }
 
-    private func labelMessage(_ labelID: String, messageID: String, completion: CompletionBlock?) {
+    private func labelMessage(_ labelID: String, messageID: String, UID: String, completion: CompletionBlock?) {
+        guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+            completion!(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        
         let api = ApplyLabelToMessages(labelID: labelID, messages: [messageID])
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
+        api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
             completion?(task, nil, response?.error)
         }
     }
     
-    private func unLabelMessage(_ labelID: String, messageID: String, completion: CompletionBlock?) {
+    private func unLabelMessage(_ labelID: String, messageID: String, UID: String, completion: CompletionBlock?) {
+        guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+            completion!(nil, nil, NSError.userLoggedOut())
+            return
+        }
+        
         let api = RemoveLabelFromMessages(labelID: labelID, messages: [messageID])
-        api.call(api: self.apiService) { (task, response, hasError) -> Void in
+        api.call(api: userManager.apiService) { (task, response, hasError) -> Void in
             completion?(task, nil, response?.error)
         }
     }
@@ -1436,7 +1488,7 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     
-    private func send(byID messageID: String, writeQueueUUID: UUID, completion: CompletionBlock?) {
+    private func send(byID messageID: String, writeQueueUUID: UUID, UID: String, completion: CompletionBlock?) {
         let errorBlock: CompletionBlock = { task, response, error in
             // nothing to send, dequeue request
             let _ = sharedMessageQueue.remove(writeQueueUUID)
@@ -1450,6 +1502,11 @@ class MessageDataService : Service, HasLocalStorage {
             {
                     errorBlock(nil, nil, NSError.badParameter(messageID))
                     return
+            }
+            
+            guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
+                errorBlock(nil, nil, NSError.userLoggedOut())
+                return
             }
             
             if message.messageID.isEmpty {//
@@ -1468,14 +1525,14 @@ class MessageDataService : Service, HasLocalStorage {
             //start track status here :
             var status = SendStatus.justStart
             
-            let userInfo = message.cachedUser ?? self.userDataSource?.userInfo
-            let userPrivKeys = userInfo?.userPrivateKeys ?? self.userDataSource!.userPrivateKeys
-            let addrPrivKeys = userInfo?.addressKeys ?? self.userDataSource!.addressKeys
+            let userInfo = message.cachedUser ?? userManager.userInfo
+            let userPrivKeys = userInfo.userPrivateKeys
+            let addrPrivKeys = userInfo.addressKeys
             let newSchema = addrPrivKeys.newSchema
             
-            guard let authCredential = message.cachedAuthCredential ?? self.userDataSource?.authCredential,
-                let passphrase = message.cachedPassphrase ?? self.userDataSource?.mailboxPassword,
-                let addressKey = (message.cachedAddress ?? self.defaultAddress(message))?.keys.first else
+            let authCredential = message.cachedAuthCredential ?? userManager.authCredential
+            let passphrase = message.cachedPassphrase ?? userManager.mailboxPassword
+            guard let addressKey = (message.cachedAddress ?? userManager.messageService.defaultAddress(message))?.keys.first else
             {
                 errorBlock(nil, nil, NSError.lockError())
                 return
@@ -1484,7 +1541,7 @@ class MessageDataService : Service, HasLocalStorage {
             var requests : [UserEmailPubKeys] = [UserEmailPubKeys]()
             let emails = message.allEmails
             for email in emails {
-                requests.append(UserEmailPubKeys(email: email, api: self.apiService, authCredential: authCredential))
+                requests.append(UserEmailPubKeys(email: email, api: userManager.apiService, authCredential: authCredential))
             }
             // is encrypt outside
             let isEO = !message.password.isEmpty
@@ -1499,7 +1556,7 @@ class MessageDataService : Service, HasLocalStorage {
             var contacts : [PreContact] = [PreContact]()
             firstly {
                 //fech addresses contact
-                self.contactDataService.fetch(byEmails: emails, context: context)
+                userManager.messageService.contactDataService.fetch(byEmails: emails, context: context)
             }.then { (cs) -> Guarantee<[Result<KeysResponse>]> in
                 //Debug info
                 status.insert(SendStatus.fetchEmailOK)
@@ -1546,7 +1603,7 @@ class MessageDataService : Service, HasLocalStorage {
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: nil, pgpKey: contact.firstPgpKey, recipintType: value.recipientType, eo: isEO, mime: contact.mime, sign: contact.sign, pgpencrypt: contact.encrypt, plainText: contact.plainText))
                             }
                         } else {
-                            if userInfo?.sign == 1 {
+                            if userInfo.sign == 1 {
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: true, sign: true, pgpencrypt: false, plainText: false))
                             } else {
                                 sendBuilder.add(addr: PreAddress(email: req.email, pubKey: value.firstKey(), pgpKey: nil, recipintType: value.recipientType, eo: isEO, mime: false, sign: false, pgpencrypt: false, plainText: false))
@@ -1577,9 +1634,9 @@ class MessageDataService : Service, HasLocalStorage {
                         if let sessionPack = newSchema ?
                             try att.getSession(userKey: userPrivKeys,
                                                keys: addrPrivKeys,
-                                               mailboxPassword: self.userDataSource!.mailboxPassword) :
+                                               mailboxPassword: userManager.mailboxPassword) :
                             try att.getSession(keys: addrPrivKeys.binPrivKeys,
-                                               mailboxPassword: self.userDataSource!.mailboxPassword) {
+                                               mailboxPassword: userManager.mailboxPassword) {
                             guard let key = sessionPack.key else {
                                 continue
                             }
@@ -1611,7 +1668,7 @@ class MessageDataService : Service, HasLocalStorage {
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
                                              msgService: self,
-                                             userInfo: userInfo!
+                                             userInfo: userInfo
                 )
             }.then{ (sendbuilder) -> Promise<SendBuilder> in
                 //Debug info
@@ -1652,7 +1709,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //Debug info
                 status.insert(SendStatus.buildSend)
                 
-                let sendApi = SendMessage(api: self.apiService,
+                let sendApi = SendMessage(api: userManager.apiService,
                                           messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
                                           messagePackage: msgs,
@@ -1905,40 +1962,44 @@ class MessageDataService : Service, HasLocalStorage {
         
         // for label action: data1 is `to`
         // for forder action: data1 is `from`  data2 is `to`
-        if let (uuid, messageID, actionString, data1, data2) = sharedMessageQueue.nextMessage() {
+        if let (uuid, messageID, actionString, data1, data2, userId) = sharedMessageQueue.nextMessage() {
             PMLog.D("SendAttachmentDebug == dequeue --- \(actionString)")
             if let action = MessageAction(rawValue: actionString) {
                 sharedMessageQueue.isInProgress = true
                 let completeHandler = writeQueueCompletionBlockForElementID(uuid, messageID: messageID, actionString: actionString)
+                
+                //Check userId, if it is empty then assign current userId (Object queued in old version)
+                let UID = userId == "" ? self.userID : userId
+                
                 switch action {
                 case .saveDraft:
-                    self.draft(save: messageID, writeQueueUUID: uuid, completion: completeHandler)
+                    self.draft(save: messageID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
                 case .uploadAtt:
-                    self.uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: completeHandler)
+                    self.uploadAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
                 case .uploadPubkey:
-                    self.uploadPubKey(messageID, writeQueueUUID: uuid, completion: completeHandler)
+                    self.uploadPubKey(messageID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
                 case .deleteAtt:
-                    self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, completion: completeHandler)
+                    self.deleteAttachmentWithAttachmentID(messageID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
                 case .send:
-                    self.send(byID: messageID, writeQueueUUID: uuid, completion: completeHandler)
+                    self.send(byID: messageID, writeQueueUUID: uuid, UID: UID, completion: completeHandler)
                 case .emptyTrash:   // keep this as legacy option for 2-3 releases after 1.11.12
-                    self.empty(at: .trash, completion: completeHandler)
+                    self.empty(at: .trash, UID: UID, completion: completeHandler)
                 case .emptySpam:    // keep this as legacy option for 2-3 releases after 1.11.12
-                    self.empty(at: .spam, completion: completeHandler)
+                    self.empty(at: .spam, UID: UID, completion: completeHandler)
                 case .empty:
-                    self.empty(labelId: data1, completion: completeHandler)
+                    self.empty(labelId: data1, UID: UID, completion: completeHandler)
                     break
                 case .read, .unread:
-                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
+                    self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
                 case .delete:
-                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, completion: completeHandler)
+                    self.messageDelete([messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
                 case .label:
-                    self.labelMessage(data1, messageID: messageID, completion: completeHandler)
+                    self.labelMessage(data1, messageID: messageID, UID: UID, completion: completeHandler)
                 case .unlabel:
-                    self.unLabelMessage(data1, messageID: messageID, completion: completeHandler)
+                    self.unLabelMessage(data1, messageID: messageID, UID: UID, completion: completeHandler)
                 case .folder:
                     //later use data 1 to handle the failure
-                    self.labelMessage(data2, messageID: messageID, completion: completeHandler)
+                    self.labelMessage(data2, messageID: messageID, UID: UID, completion: completeHandler)
                 }
             } else {
                 PMLog.D(" Unsupported action \(actionString), removing from queue.")
@@ -1953,23 +2014,23 @@ class MessageDataService : Service, HasLocalStorage {
     func queue(_ message: Message, action: MessageAction, data1: String = "", data2: String = "") {
         self.cachePropertiesForBackground(in: message)
         if action == .saveDraft || action == .send || action == .read || action == .unread {
-            let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2)
+            let _ = sharedMessageQueue.addMessage(message.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2, userId: self.userID)
         } else {
             if message.managedObjectContext != nil && !message.messageID.isEmpty {
-                let _ = sharedMessageQueue.addMessage(message.messageID, action: action, data1: data1, data2: data2)
+                let _ = sharedMessageQueue.addMessage(message.messageID, action: action, data1: data1, data2: data2, userId: self.userID)
             }
         }
         dequeueIfNeeded()
     }
     
     fileprivate func queue(_ action: MessageAction, data1: String = "", data2: String = "") {
-        let _ = sharedMessageQueue.addMessage("", action: action, data1: data1, data2: data2)
+        let _ = sharedMessageQueue.addMessage("", action: action, data1: data1, data2: data2, userId: self.userID)
         dequeueIfNeeded()
     }
     
     fileprivate func queue(_ att: Attachment, action: MessageAction, data1: String = "", data2: String = "") {
         self.cachePropertiesForBackground(in: att.message)
-        let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2)
+        let _ = sharedMessageQueue.addMessage(att.objectID.uriRepresentation().absoluteString, action: action, data1: data1, data2: data2, userId: self.userID)
         dequeueIfNeeded()
     }
     
@@ -2000,6 +2061,18 @@ class MessageDataService : Service, HasLocalStorage {
                 self.contactDataService.fetchContacts(completion: nil)
             }
         }
+    }
+    
+    func isAnyQueuedMessage(userId: String) -> Bool {
+        return sharedMessageQueue.isAnyQueuedMessage(userID: userId)
+    }
+    
+    func removeQueuedMessage(userId: String) {
+        sharedMessageQueue.removeAllQueuedMessage(userId: userId)
+    }
+    
+    func removeFailedQueuedMessage(userId: String) {
+        sharedFailedQueue.removeAllQueuedMessage(userId: userId)
     }
     
     

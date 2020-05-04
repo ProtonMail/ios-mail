@@ -111,12 +111,15 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
+    weak var parentManager: UsersManager?
+    
     public lazy var messageService: MessageDataService = {
         let service = MessageDataService(api: self.apiService,
                                          userID: self.userinfo.userId,
                                          labelDataService: self.labelService,
                                          contactDataService: self.contactService,
-                                         localNotificationService: self.localNotificationService)
+                                         localNotificationService: self.localNotificationService,
+                                         usersManager: self.parentManager)
         service.userDataSource = self
         return service
     }()
@@ -145,11 +148,12 @@ class UserManager : Service, HasLocalStorage {
     }()
     #endif
     
-    init(api: APIService, userinfo: UserInfo, auth: AuthCredential) {
+    init(api: APIService, userinfo: UserInfo, auth: AuthCredential, parent: UsersManager) {
         self.userinfo = userinfo
         self.auth = auth
         self.apiService = api
         self.apiService.sessionDeleaget = self
+        self.parentManager = parent
     }
 
     init(api: APIService) {

@@ -66,5 +66,8 @@ protocol MenuViewModel : AnyObject {
     
     func find( section : MenuSection, item : MenuItem) -> IndexPath
     
+    func isCurrentUserHasQueuedMessage() -> Bool
+    func removeAllQueuedMessageOfCurrentUser()
+    
     func signOut()
 }

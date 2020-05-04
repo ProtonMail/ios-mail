@@ -148,4 +148,23 @@ class AccountManagerViewModel {
         }
     }
     
+    func isCurrentUserHasQueuedMessage() -> Bool {
+        if let currentUser = self.currentUser {
+            return currentUser.messageService.isAnyQueuedMessage(userId: currentUser.userInfo.userId)
+        }
+        return false
+    }
+    
+    func isUserHasQueuedMessage(userId: String) -> Bool {
+        if let currentUser = self.currentUser {
+            return currentUser.messageService.isAnyQueuedMessage(userId: userId)
+        }
+        return false
+    }
+    
+    func removeAllQueuedMessage(userId: String) {
+        if let currentUser = self.currentUser {
+            currentUser.messageService.removeQueuedMessage(userId: userId)
+        }
+    }
 }
