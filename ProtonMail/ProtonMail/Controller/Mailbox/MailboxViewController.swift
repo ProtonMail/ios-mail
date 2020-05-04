@@ -197,6 +197,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                     name: UIApplication.willEnterForegroundNotification,
                                                     object: nil)
         }
+        self.tableView.reloadData()
         self.refreshControl.endRefreshing()
     }
     
