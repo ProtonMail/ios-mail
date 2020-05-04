@@ -27,6 +27,11 @@ import AwaitKit
 
 class StoreKitManager: NSObject {
     static var `default` = StoreKitManager()
+    
+    var user: UserManager? {
+        return sharedServices.get(by: UsersManager.self).user(at: 0)
+    }
+    
     private override init() {
         super.init()
         
@@ -57,11 +62,11 @@ class StoreKitManager: NSObject {
     }
     private lazy var confirmUserValidationBypass: (Error, @escaping ()->Void)->Void = { error, completion in
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
-            guard let currentUsername = sharedUserDataService.username else {
+            guard let currentUsername = self.user?.defaultEmail else {
                 self.errorCompletion(Errors.noActiveUsernameInUserDataService)
                 return
             }
-            
+
             let message = """
             \(error.localizedDescription)
             \(LocalString._do_you_want_to_bypass_validation)\(currentUsername)?
@@ -186,7 +191,7 @@ extension StoreKitManager: SKProductsRequestDelegate {
     }
     
     private func applicationUsername() -> String? {
-        guard let username = sharedUserDataService.userInfo?.userId, !username.isEmpty else {
+        guard let username = sharedServices.get(by: UsersManager.self).user(at: 0)?.userInfo.userId, !username.isEmpty else {
             return nil
         }
         return username
@@ -249,7 +254,7 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             
         case .purchased:
             do {
-                guard SignInManager.shared.isSignedIn() else {
+                guard sharedServices.get(by: UsersManager.self).hasUsers() else {
                     throw Errors.pleaseSignIn
                 }
                 guard UnlockManager.shared.isUnlocked() else {
@@ -310,12 +315,15 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         }
         let receipt = try self.readReceipt()
         let planId = try servicePlan(for: transaction.payment.productIdentifier)
+        guard let user = sharedServices.get(by: UsersManager.self).firstUser else {
+            throw Errors.noActiveUsernameInUserDataService
+        }
         
         do {  // payments/subscription
-            let serverUpdateApi = PostRecieptRequest(reciept: receipt, andActivatePlanWithId: planId)
+            let serverUpdateApi = PostRecieptRequest(api: user.apiService, reciept: receipt, andActivatePlanWithId: planId)
             let serverUpdateRes = try await(serverUpdateApi.run())
             if let newSubscription = serverUpdateRes.newSubscription {
-                ServicePlanDataService.shared.currentSubscription = newSubscription
+                user.sevicePlanService.currentSubscription = newSubscription
                 self.successCompletion?()
                 SKPaymentQueue.default().finishTransaction(transaction)
             } else {
@@ -325,12 +333,12 @@ extension StoreKitManager: SKPaymentTransactionObserver {
         } catch let error as NSError where error.code == 22101 {
             // Amount mismatch - try report only credits without activating the plan
             do {  // payments/credits
-                let serverUpdateApi = PostCreditRequest(reciept: receipt)
+                let serverUpdateApi = PostCreditRequest<PostCreditResponse>(api: user.apiService, reciept: receipt)
                 let _ = try await(serverUpdateApi.run())
                 SKPaymentQueue.default().finishTransaction(transaction)
                 
-                _ = sharedUserDataService.fetchUserInfo().done(on: .main) { _ in
-                    ServicePlanDataService.shared.currentSubscription = ServicePlanDataService.shared.currentSubscription
+                _ = user.userService.fetchUserInfo().done(on: .main) { _ in
+                    user.sevicePlanService.currentSubscription = user.sevicePlanService.currentSubscription
                 }
                 
                 self.successCompletion?()
@@ -366,7 +374,7 @@ extension StoreKitManager {
             throw Errors.noHashedUsernameArrivedInTransaction
         }
         guard hashedUsername == self.hash(username: currentUsername) ||
-            self.hashLegacy(username: sharedUserDataService.username ?? "", mayMatch: hashedUsername) else
+            self.hashLegacy(username: self.user?.defaultEmail.components(separatedBy: "@").first ?? "", mayMatch: hashedUsername) else
         {
             throw Errors.haveTransactionOfAnotherUser
         }
@@ -387,8 +395,11 @@ extension StoreKitManager {
     }
     
     func servicePlan(for productId: String) throws -> String {
+        guard let servicePlanService = sharedServices.get(by: UsersManager.self).firstUser?.sevicePlanService else {
+            throw Errors.noActiveUsernameInUserDataService
+        }
         guard let plan = ServicePlan(storeKitProductId: productId),
-            let details = plan.fetchDetails(),
+            let details = servicePlanService.detailsOfServicePlan(named: plan.rawValue),
             let planId = details.iD else
         {
             throw Errors.alreadyPurchasedPlanDoesNotMatchBackend

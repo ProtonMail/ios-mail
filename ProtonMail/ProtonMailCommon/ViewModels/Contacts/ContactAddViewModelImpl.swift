@@ -43,14 +43,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var notes : ContactEditNote = ContactEditNote(note: "", isNew: true)
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var profilePicture: UIImage? = nil
-    
-    override init() {
-        super.init()
+
+    override init(user: UserManager) {
+        super.init(user: user)
         self.contact = nil
     }
     
-    init(contactVO : ContactVO) {
-        super.init()
+    init(contactVO : ContactVO, user: UserManager) {
+        super.init(user: user)
         self.contact = nil
         
         let email = self.newEmail()
@@ -202,9 +202,9 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     }
     
     override func done(complete : @escaping ContactEditSaveComplete) {
-        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
-            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
-            let authCredential = AuthCredential.fetchFromKeychain() else
+        let mailboxPassword = user.mailboxPassword
+        guard let userkey = user.userInfo.firstUserKey(),
+            case let authCredential = user.authCredential else
         {
             complete(NSError.lockError())
             return
@@ -351,8 +351,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         vcard3.clearPhotos()
         if let profilePicture = profilePicture,
             let compressedImage = UIImage.resize(image: profilePicture,
-                                                 targetSize: CGSize.init(width: 30, height: 30)),
-            let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+                                                 targetSize: CGSize.init(width: 60, height: 60)),
+            let jpegData = compressedImage.jpegData(compressionQuality: 0.5) {
             let image = PMNIPhoto.createInstance(jpegData,
                                                  type: "JPEG",
                                                  isBinary: true)
@@ -377,16 +377,14 @@ class ContactAddViewModelImpl : ContactEditViewModel {
         if isCard3Set {
             cards.append(card3)
         }
-        
-        sharedContactDataService.add(cards: [cards],
-                                     authCredential: authCredential,
-                                     completion:  { (contacts : [Contact]?, error : NSError?) in
-                                        if error == nil {
-                                            complete(nil)
-                                        } else {
-                                            complete(error)
-                                        }
-        })
+        //TODO:: can be improved
+        user.contactService.add(cards: [cards], authCredential: authCredential) { (contacts : [Contact]?, error : NSError?) in
+            if error == nil {
+                complete(nil)
+            } else {
+                complete(error)
+            }
+        }
     }
     
     override func delete(complete: @escaping ContactEditViewModel.ContactEditSaveComplete) {

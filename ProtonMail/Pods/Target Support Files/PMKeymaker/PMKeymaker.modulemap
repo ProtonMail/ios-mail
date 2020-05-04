@@ -1,0 +1,6 @@
+framework module PMKeymaker {
+  umbrella header "PMKeymaker-umbrella.h"
+
+  export *
+  module * { export * }
+}

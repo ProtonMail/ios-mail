@@ -145,3 +145,31 @@ SDWebImageContextOption _Nonnull const SDWebImageContextPredrawingEnabled = @"pr
 }
 
 @end
+
+@implementation SDFLAnimatedImage (Metadata)
+
+- (BOOL)sd_isAnimated {
+    return YES;
+}
+
+- (NSUInteger)sd_imageLoopCount {
+    return self.animatedImageLoopCount;
+}
+
+- (void)setSd_imageLoopCount:(NSUInteger)sd_imageLoopCount {
+    return;
+}
+
+- (SDImageFormat)sd_imageFormat {
+    return SDImageFormatGIF;
+}
+
+- (void)setSd_imageFormat:(SDImageFormat)sd_imageFormat {
+    return;
+}
+
+- (BOOL)sd_isVector {
+    return NO;
+}
+
+@end

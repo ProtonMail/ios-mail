@@ -82,7 +82,7 @@ class ContactEmailsRequest<T: ApiResponse>: ApiRequest<T> {
         return ContactsAPI.v_get_contact_emails
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
 }
@@ -173,7 +173,7 @@ final class ContactDetailRequest<T : ApiResponse> : ApiRequest<T> {
         return ContactsAPI.v_get_details
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
 }
@@ -279,7 +279,7 @@ final class ContactAddRequest<T : ApiResponse> : ApiRequest<T> {
         return ContactsAPI.v_add_contacts
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -348,7 +348,7 @@ final class ContactDeleteRequest<T : ApiResponse> : ApiRequest<T> {
         return ContactsAPI.v_delete_contacts
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -376,7 +376,7 @@ final class ContactUpdateRequest<T : ApiResponse> : ApiRequest<T> {
         return ContactsAPI.v_update_contact
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -413,7 +413,7 @@ final class ContactLabelAnArrayOfContactEmailsRequest: ApiRequest<ContactLabelAn
         return ContactsAPI.v_label_an_array_of_contact_emails
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -462,7 +462,7 @@ final class ContactUnlabelAnArrayOfContactEmailsRequest: ApiRequest<ContactUnlab
         return ContactsAPI.v_unlabel_an_array_of_contact_emails
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     

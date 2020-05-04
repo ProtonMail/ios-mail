@@ -30,6 +30,7 @@ class ContactGroupSubSelectionViewController: UIViewController {
     var selectedEmails: [DraftEmailData] = []
     var callback: (([DraftEmailData]) -> Void)? = nil
     
+    var user: UserManager!
     private var viewModel: ContactGroupSubSelectionViewModel!
     private let kContactGroupSubSelectionHeaderCell = "ContactGroupSubSelectionHeaderCell"
     private let kContactGroupSubSelectionEmailCell  = "ContactGroupSubSelectionEmailCell"
@@ -39,6 +40,7 @@ class ContactGroupSubSelectionViewController: UIViewController {
         
         viewModel = ContactGroupSubSelectionViewModelImpl.init(contactGroupName: contactGroupName,
                                                                selectedEmails: selectedEmails,
+                                                               user: self.user,
                                                                delegate: self)
         
         prepareTableView()

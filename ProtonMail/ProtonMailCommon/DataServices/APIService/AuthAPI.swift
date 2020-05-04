@@ -66,7 +66,7 @@ final class AuthInfoRequest : ApiRequest<AuthInfoResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -89,7 +89,7 @@ final class AuthModulusRequest : ApiRequest<AuthModulusResponse> {
         super.init()
         self.authCredential = authCredential
     }
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -156,7 +156,7 @@ final class AuthRequest : ApiRequest<AuthResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -177,8 +177,9 @@ final class AuthRequest : ApiRequest<AuthResponse> {
 final class TwoFARequest : ApiRequestNew<ApiResponse> {
     
     var tfacode : String
-    init(code : String) {
+    init(api: API, code : String) {
         self.tfacode = code
+        super.init(api: api)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -188,7 +189,7 @@ final class TwoFARequest : ApiRequestNew<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -231,7 +232,7 @@ final class AuthRefreshRequest : ApiRequest<AuthResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -253,7 +254,7 @@ final class AuthRefreshRequest : ApiRequest<AuthResponse> {
 // MARK :delete auth token
 final class AuthDeleteRequest : ApiRequest<ApiResponse> {
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .delete
     }
     
@@ -281,7 +282,7 @@ final class AuthResponse : ApiResponse {
     var accessToken : String?
     var expiresIn : TimeInterval?
     var refreshToken : String?
-    var userID : String?
+    var sessionID : String?
     var eventID : String?
     
     var scope : String?
@@ -303,7 +304,7 @@ final class AuthResponse : ApiResponse {
     }
     
     override func ParseResponse(_ response: [String : Any]!) -> Bool {
-        self.userID = response["UID"] as? String //session id
+        self.sessionID = response["UID"] as? String //session id
         self.accessToken = response["AccessToken"] as? String
         self.expiresIn = response["ExpiresIn"] as? TimeInterval
         self.scope = response["Scope"] as? String

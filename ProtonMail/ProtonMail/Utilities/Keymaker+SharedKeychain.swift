@@ -22,7 +22,7 @@
 
 
 import Foundation
-import Keymaker
+import PMKeymaker
 
 var keymaker = Keymaker(autolocker: Autolocker(lockTimeProvider: userCachedStatus),
                         keychain: KeychainWrapper.keychain)

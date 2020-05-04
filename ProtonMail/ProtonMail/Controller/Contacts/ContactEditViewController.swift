@@ -202,6 +202,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             let groupCountInformation = viewModel.getAllContactGroupCounts()
             let selectedGroupIDs = (sender as! ContactEditEmailCell).getCurrentlySelectedContactGroupsID()
             sharedVMService.contactSelectContactGroupsViewModel(destination,
+                                                                user: self.viewModel.user,
                                                                 groupCountInformation: groupCountInformation,
                                                                 selectedGroupIDs: selectedGroupIDs,
                                                                 refreshHandler: refreshHandler)

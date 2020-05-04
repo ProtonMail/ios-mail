@@ -26,11 +26,18 @@ import XCTest
 
 class ServicePlanDataServiceTests: XCTestCase {
     typealias Subscription = ServicePlanSubscription
-    struct MockDataStorage: ServicePlanDataStorage {
+    class MockDataStorage: ServicePlanDataStorage {
         var servicePlansDetails: [ServicePlanDetails]?
         var isIAPAvailableOnBE: Bool
         var defaultPlanDetails: ServicePlanDetails?
         var currentSubscription: Subscription?
+        
+        init(servicePlansDetails: [ServicePlanDetails]?, isIAPAvailableOnBE: Bool, defaultPlanDetails: ServicePlanDetails?, currentSubscription: Subscription?) {
+            self.servicePlansDetails = servicePlansDetails
+            self.isIAPAvailableOnBE = isIAPAvailableOnBE
+            self.defaultPlanDetails = defaultPlanDetails
+            self.currentSubscription = currentSubscription
+        }
     }
     
     func testDetailsOfServicePlan() {
@@ -38,7 +45,7 @@ class ServicePlanDataServiceTests: XCTestCase {
                                           isIAPAvailableOnBE: true,
                                           defaultPlanDetails: freePlanDetails,
                                           currentSubscription: nil)
-        let service = ServicePlanDataService(localStorage: dataStorage)
+        let service = ServicePlanDataService(localStorage: dataStorage, apiService: APIService.shared)
         
         let proDetails = service.detailsOfServicePlan(named: proName)
         XCTAssertEqual(proDetails, proPlanDetails)

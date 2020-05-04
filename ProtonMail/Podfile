@@ -8,6 +8,15 @@ platform :ios, '10.0'
 inhibit_all_warnings!
 use_frameworks!
 
+def pm_shared_pods
+    pod 'PMCrypto', :git => 'https://gitlab.protontech.ch/apple/shared/pmcrypto.git', :tag => '1.0.0'
+    pod 'PMAuthentication', :git => 'https://gitlab.protontech.ch/apple/shared/pmauthentication.git', :tag => '1.0.0'
+    pod 'PMKeymaker', :git => 'https://gitlab.protontech.ch/apple/shared/pmkeymaker.git', :tag => '1.1.0'
+    
+    # this is needed by PMKeymaker, otherwise will fetch outdated version from cocoapods
+    pod 'EllipticCurveKeyPair', :git => 'https://github.com/abjurato/EllipticCurveKeyPair.git', :tag => '1.0.4'
+end
+
 def common_pods
     ##custom
     #going to remove this soon
@@ -42,6 +51,8 @@ def common_pods
     pod 'TrustKit', '1.6.2'
     
     pod 'PMNetworking', :path => '../Networking'
+
+    pm_shared_pods
 end
 
 #target 'ProtonMail','ProtonMailDev','ProtonMailTests'
@@ -59,6 +70,7 @@ def pm_share
 end
 
 def pm_siri
+    pm_shared_pods
 #    pod 'UICKeyChainStore', '2.1.1'
 end
 
@@ -111,17 +123,6 @@ target 'Siri' do
 end
 target 'SiriDev' do
     pm_siri
-end
-
-
-target 'Keymaker' do
-#    pod 'UICKeyChainStore', '2.1.1'
-    pod 'EllipticCurveKeyPair', '1.0.2'
-end
-
-target 'KeymakerTests' do
-    pod 'CryptoSwift', '0.12.0'
-    inherit! :search_paths
 end
 
 post_install do | installer |

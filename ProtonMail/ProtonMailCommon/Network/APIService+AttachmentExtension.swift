@@ -33,9 +33,11 @@ extension APIService {
                             completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
         
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
-        download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
+        
+        // download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
+        download(byUrl: self.serverConfig.hostUrl + pathForAttachmentID(attachmentID),
                  destinationDirectoryURL: filepath,
-                 headers: ["x-pm-apiversion": 3],
+                 headers: [HTTPHeader.apiVersion: 3],
                  customAuthCredential: customAuthCredential,
                  downloadTask: downloadTask,
                  completion: completion)
@@ -43,12 +45,12 @@ extension APIService {
     
     func attachmentDeleteForAttachmentID(_ attachmentID: String, completion: CompletionBlock?) {
         //setApiVesion(1, appVersion: 1)
-        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: ["x-pm-apiversion": 3], completion: completion)
+        request(method: .delete, path: pathForAttachmentID(attachmentID), parameters: nil, headers: [HTTPHeader.apiVersion: 3], completion: completion)
     }
     
     // MARK: - Private methods
     fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
-        return Constants.App.API_PATH + "/attachments/\(attachmentID)"
+        return self.serverConfig.path + "/attachments/\(attachmentID)"
     }
     
 }

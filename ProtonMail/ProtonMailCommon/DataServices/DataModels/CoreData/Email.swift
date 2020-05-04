@@ -25,7 +25,7 @@ import Foundation
 import CoreData
 
 class Email: NSManagedObject {
-    
+    @NSManaged var userID: String
     @NSManaged var contactID: String
     @NSManaged var emailID: String
     @NSManaged var email: String

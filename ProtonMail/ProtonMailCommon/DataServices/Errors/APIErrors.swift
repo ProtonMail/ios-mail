@@ -80,6 +80,13 @@ extension NSError {
             localizedRecoverySuggestion: localizedRecoverySuggestion)
     }
     
+    //FIXME: fix message content
+    public class func userLoggedOut() -> NSError {
+        return apiServiceError(code: 9999,
+                               localizedDescription: "Sender account has been logged out!",
+                               localizedFailureReason: "Sender account has been logged out!")
+    }
+    
     public class func badParameter(_ parameter: Any?) -> NSError {
         return apiServiceError(
             code: APIErrorCode.badParameter,

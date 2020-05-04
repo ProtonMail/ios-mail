@@ -44,7 +44,7 @@ final class DeleteAttachment : ApiRequest<ApiResponse> {
         return AttachmentAPI.v_del_attachment
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .delete
     }
 }

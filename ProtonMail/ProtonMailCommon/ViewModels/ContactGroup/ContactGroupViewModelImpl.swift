@@ -29,6 +29,10 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     private var isFetching: Bool = false
     
+    private(set) var user: UserManager
+    private let contactGroupService: ContactGroupsDataService
+    private let labelDataService: LabelsDataService
+    private let messageService: MessageDataService
     
     private var selectedGroupIDs: Set<String> = Set<String>()
     
@@ -42,7 +46,11 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    override init() {
+    init(user: UserManager) {
+        self.user = user
+        self.contactGroupService = user.contactGroupService
+        self.labelDataService = user.labelService
+        self.messageService = user.messageService
     }
     
 
@@ -102,7 +110,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         return Promise { seal in
             if self.isFetching == false {
                 self.isFetching = true
-                sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+                self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                     self.isFetching = false
                     if let error = error {
                         seal.reject(error)
@@ -110,7 +118,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
                         seal.fulfill(())
                     }
                 })
-                sharedContactDataService.fetchContacts { (_, error) in
+                self.user.contactService.fetchContacts { (_, error) in
                     
                 }
             } else {
@@ -131,7 +139,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
         if isFetching == false {
             isFetching = true
             
-            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            self.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
                 self.isFetching = false
             })
         }
@@ -142,7 +150,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
     }
     
     func setFetchResultController(delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController<NSFetchRequestResult>? {
-        self.fetchedResultsController = sharedLabelsDataService.fetchedResultsController(.contactGroup)
+        self.fetchedResultsController = self.labelDataService.fetchedResultsController(.contactGroup)
         self.fetchedResultsController?.delegate = delegate
         if let fetchController = self.fetchedResultsController {
             do {
@@ -183,7 +191,7 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
             if selectedGroupIDs.count > 0 {
                 var arrayOfPromises: [Promise<Void>] = []
                 for groupID in selectedGroupIDs {
-                    arrayOfPromises.append(sharedContactGroupsDataService.deleteContactGroup(groupID: groupID))
+                    arrayOfPromises.append(self.contactGroupService.deleteContactGroup(groupID: groupID))
                 }
                 
                 when(fulfilled: arrayOfPromises).done {

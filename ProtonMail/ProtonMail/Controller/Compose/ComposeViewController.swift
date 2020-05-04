@@ -57,6 +57,8 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     private let kNumberOfDaysInTimePicker: Int    = 30
     private let kNumberOfHoursInTimePicker: Int   = 24
     
+    private let queue = DispatchQueue(label: "UpdateAddressIdQueue")
+    
     var pickedGroup: ContactGroupVO?
     var pickedCallback: (([DraftEmailData]) -> Void)?
 
@@ -98,7 +100,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         picker.dataSource = self
         picker.delegate = self
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -119,15 +121,16 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         // load all contacts and groups
         // TODO: move to view model
         firstly { () -> Promise<Void> in
-            self.contacts = sharedContactDataService.allContactVOs() // contacts in core data
-                return retrieveAllContacts() // contacts in phone book
+//            self.contacts = contactService.allContactVOs() // contacts in core data
+            return retrieveAllContacts() // contacts in phone book
         }.done { [weak self] in
             guard let self = self else { return }
             // get contact groups
-            
+
             // TODO: figure where to put this thing
-            if sharedUserDataService.isPaidUser() {
-                self.contacts.append(contentsOf: sharedContactGroupsDataService.getAllContactGroupVOs())
+            let user = self.viewModel.getUser()
+            if user.isPaid {
+                self.contacts.append(contentsOf: user.contactGroupService.getAllContactGroupVOs())
             }
             
             // Sort contacts and contact groups
@@ -191,10 +194,9 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     }
 
     private func retrieveAllContacts() -> Promise<Void> {
-        return Promise {
-            seal in
-            
-            sharedContactDataService.getContactVOs { (contacts, error) in
+        return Promise { seal in
+            let service = self.viewModel.getUser().contactService
+            service.getContactVOs { (contacts, error) in
                 if let error = error {
                     PMLog.D(" error: \(error)")
                     // seal.reject(error) // TODO: should I?
@@ -210,11 +212,11 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
         if let atts = viewModel.getAttachments() {
             for att in atts {
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
-                    att.base64AttachmentData({ (based64String) in
+                    viewModel.getUser().messageService.base64AttachmentData(att: att) { (based64String) in
                         if !based64String.isEmpty {
                             self.htmlEditor.update(embedImage: "cid:\(content_id)", encoded: "data:\(att.mimeType);base64,\(based64String)")
                         }
-                    })
+                    }
                 }
             }
         }
@@ -591,15 +593,19 @@ extension ComposeViewController : ComposeViewDelegate {
                             self.htmlEditor.update(signature: signature)
                         }
                         MBProgressHUD.showAdded(to: self.view, animated: true)
-                        self.viewModel.updateAddressID(addr.address_id).done { _ in
-                            self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-                            }.catch { (error ) in
-                                let alertController = error.localizedDescription.alertController()
-                                alertController.addOKAction()
-                                self.present(alertController, animated: true, completion: nil)
-                            }.finally {
-                                MBProgressHUD.hide(for: self.view, animated: true)
+                        
+                        _ = self.queue.sync {
+                            self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
+                                {
+                                    let alertController = error.localizedDescription.alertController()
+                                    alertController.addOKAction()
+                                    self.present(alertController, animated: true, completion: nil)
+                                } ~> .main
+                            }
                         }
+                        
+                        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+                        MBProgressHUD.hide(for: self.view, animated: true)
                     }
                 }
                 selectEmail.accessibilityLabel = selectEmail.title
@@ -666,16 +672,7 @@ extension ComposeViewController : ComposeViewDelegate {
     func composeViewDidTapAttachmentButton(_ composeView: ComposeHeaderViewController) {
         //TODO:: change this to segue
         self.autoSaveTimer()
-        if let viewController = UIStoryboard.instantiateInitialViewController(storyboard: .attachments) as? UINavigationController {
-            if let attachmentsViewController = viewController.viewControllers.first as? AttachmentsTableViewController {
-                attachmentsViewController.delegate = self
-                attachmentsViewController.message = viewModel.message
-                if let _ = attachments {
-                    attachmentsViewController.attachments = viewModel.getAttachments() ?? []
-                }
-            }
-            present(viewController, animated: true, completion: nil)
-        }
+        self.coordinator?.go(to: .attachment)
     }
 
     @objc func composeViewDidTapExpirationButton(_ composeView: ComposeHeaderViewController) {
@@ -844,6 +841,7 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
             }
             
             self.viewModel.deleteAtt(attachment)
+            attViewController.updateAttachments()
         }
     }
 

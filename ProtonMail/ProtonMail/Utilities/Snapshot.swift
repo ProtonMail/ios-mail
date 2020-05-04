@@ -35,7 +35,7 @@ class Snapshot {
     
     private lazy var view: UIView = self.getFancyView() ?? self.getDefaultView()
     
-    internal func show(at window: UIWindow) {
+    internal func show(at window: UIView) {
         window.addSubview(self.view)
         view.mas_makeConstraints { (make) -> Void in
             make?.top.equalTo()(window)

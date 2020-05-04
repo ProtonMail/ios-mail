@@ -22,11 +22,11 @@
     
 
 import UIKit
-import Keymaker
+import PMKeymaker
 
 extension UIDevice {
     enum StateRestorationPolicy {
-        case coders, deeplink, multiwindow
+        case deeplink, multiwindow
     }
     
     var stateRestorationPolicy: StateRestorationPolicy {
@@ -40,11 +40,11 @@ extension UIDevice {
          
          Such way, we are balancing between these two methods based on iOS version, mainKey availability and iPhone/iPad idiom.
          
-         iOS 9-12   / no protection     / iPhone    - coders
-         iOS 9-12   / no protection     / iPad      - coders
+         iOS 9-12   / no protection     / iPhone    - deeplink
+         iOS 9-12   / no protection     / iPad      - deeplink
          iOS 9-12   / protection        / iPhone    - deeplink
          iOS 9-12   / protection        / iPad      - deeplink
-         iOS 13     / no protection     / iPhone    - coders
+         iOS 13     / no protection     / iPhone    - deeplink
          iOS 13     / no protection     / iPad      - multiwindow
          iOS 13     / protection        / iPhone    - deeplink
          iOS 13     / protection        / iPad      - multiwindow
@@ -52,10 +52,8 @@ extension UIDevice {
          */
         
         switch (iOS13, hasSignificantProtection, self.userInterfaceIdiom) {
-        case (true, false, .phone): return .deeplink
-        case (true, _, .pad):       return .multiwindow
-        case (false, false, _):     return .coders
-        case (_, true, _):          return .deeplink
+        case (_, _, .phone):    return .deeplink
+        case (true, _, .pad):   return .multiwindow
         default:
             assert(false, "All possible combinations should be covered by cases above")
             return .deeplink

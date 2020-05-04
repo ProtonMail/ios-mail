@@ -26,6 +26,7 @@ import CoreData
 
 
 public class Label: NSManagedObject {
+    @NSManaged public var userID: String
     
     @NSManaged public var labelID: String
     @NSManaged public var name: String

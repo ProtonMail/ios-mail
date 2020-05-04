@@ -26,11 +26,7 @@ import Foundation
 
 /// Closure declaration
 enum Block {
-    
-    
-    typealias CompletionBlock = APIService.CompletionBlock
-    
-    
+
     
 //    typealias CompletionBlock = (NSString?) -> Void
 //    // or

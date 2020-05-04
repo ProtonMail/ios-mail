@@ -25,14 +25,15 @@ import Foundation
 import CoreData
 
 class ContactsViewModel : ViewModelTimer {
-
-    override init() { }
+    var user: UserManager
+    
+    init(user: UserManager) {
+        self.user = user
+        super.init()
+    }
     
     func paidUser() -> Bool {
-        if let role = sharedUserDataService.userInfo?.role, role > 0 {
-            return true
-        }
-        return false
+        return user.isPaid
     }
     
     func resetFetchedController() {

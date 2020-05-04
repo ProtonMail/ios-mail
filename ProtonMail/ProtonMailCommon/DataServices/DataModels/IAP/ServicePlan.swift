@@ -29,9 +29,6 @@ enum ServicePlan: String {
     case pro = "professional"
     case visionary = "visionary"
     
-    internal func fetchDetails() -> ServicePlanDetails? {
-        return ServicePlanDataService.shared.detailsOfServicePlan(named: self.rawValue)
-    }
     
     // FIXME: localization
     internal var subheader: (String, UIColor) {

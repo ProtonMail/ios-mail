@@ -98,6 +98,8 @@ class LocalizedString {
     lazy var _default_browser = NSLocalizedString("Default browser", comment: "Settings row")
     /// "Manage in device Settings"
     lazy var _manage_language_in_device_settings = NSLocalizedString("Manage in device Settings", comment: "Settings row")
+    /// "Swiping gestures"
+    lazy var _settings_swiping_gestures = NSLocalizedString("Swiping gestures", comment: "Swiping gestures")
     
     lazy var _networking = NSLocalizedString("Networking", comment: "section title ")
     
@@ -1349,6 +1351,10 @@ class LocalizedString {
 
     /// "Sign Out"
     lazy var _sign_out = NSLocalizedString("Sign Out", comment: "Action")
+    
+    
+    /// "Log  Out all"
+    lazy var _sign_out_all = NSLocalizedString("Log Out All", comment: "Action")
 
     /// "Rate & Review"
     lazy var _rate_review = NSLocalizedString("Rate & Review", comment: "Title")
@@ -1383,6 +1389,9 @@ class LocalizedString {
 
     /// "FORGOT PASSWORD?"
     lazy var _forgot_password = NSLocalizedString("FORGOT PASSWORD?", comment: "login page forgot pwd")
+    
+    /// "Create new account"
+    lazy var _create_new_account = NSLocalizedString("Create new account", comment: "title of button in account connect page")
 
     // "Sending Message"
     lazy var _sending_message = NSLocalizedString("Sending message", comment: "Alert title")
@@ -1755,12 +1764,28 @@ class LocalizedString {
     lazy var _message_not_sent_message = NSLocalizedString("We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app.", comment: "Local notification text")
     
     /// Logout
-    lazy var _logout_confirmation = NSLocalizedString("Are you sure you want to logout?", comment: "Alert to confirm logout")
+    lazy var _logout_title = NSLocalizedString("Logout", comment: "Alert title to confirm logout")
+    lazy var _logout_confirmation = NSLocalizedString("You will be switched to %@", comment: "Alert to confirm logout")
+    lazy var _logout_confirmation_one_account = NSLocalizedString("Are you sure you want to logout %@?", comment: "Alert to confirm logout when only one account logged in")
+    lazy var _logout_confirmation_having_pending_message = NSLocalizedString("There are unsent messages that will be lost if you log out", comment: "Alert to confirm logout with pending message in the queue")
     
     
     
     lazy var _message_list_no_email_selected = NSLocalizedString("Please select at least one email",
                                                                    comment: "The message will show up when the user attempts to apply label/folder in inbox without select any emails")
+    
+    lazy var _logout_account_switched_when_token_revoked = NSLocalizedString("Logged out from %@ and signed in with %@", comment: "Alert when auth token is revoked and switch to another")
+    
+    lazy var _logout_primary_account_from_manager_account_title = NSLocalizedString("Logout", comment: "Alert title when logout primary account from account manager")
+    
+    lazy var _logout_primary_account_from_manager_account = NSLocalizedString("You will be switched to %@", comment: "Alert when logout primary account from account manager")
+    
+    lazy var _logout_secondary_account_from_manager_account_title = NSLocalizedString("Log out %@?", comment: "Alert title when logout non-primary account from account manager")
+    
+    lazy var _logout_secondary_account_from_manager_account = NSLocalizedString("Are you sure you want to log out?", comment: "Alert when logout non-primary account from account manager")
+    
+    // Switch Account
+    lazy var _switch_account_by_click_notification = NSLocalizedString("Switched to account '%@'", comment: "Alert when switched account by clicking notification of another account")
     
     // TrustKit
     
@@ -1779,4 +1804,84 @@ class LocalizedString {
     
     
     lazy var _troubleshoot = NSLocalizedString("Troubleshoot", comment: "troubleshooting view button")
+    
+    /// Account Manger
+    lazy var _account = NSLocalizedString("Account", comment: "Account manager title")
+    
+    lazy var _connect_account = NSLocalizedString("Connect Account", comment: "Account manager title")
+    
+    lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
+    lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
+    
+    
+    lazy var _enter_your_mailbox_password = NSLocalizedString("Enter your mailbox password", comment: "Account manager title")
+    
+    
+    /// New Settings
+    lazy var _account_settings = NSLocalizedString("Account Settings", comment: "section title in settings")
+    lazy var _app_settings = NSLocalizedString("App Settings", comment: "section title in settings")
+    lazy var _app_information = NSLocalizedString("APP INFORMATION", comment: "section title in settings")
+    
+    lazy var _auto_lock = NSLocalizedString("Auto-lock", comment: "section title in settings")
+    lazy var _app_language = NSLocalizedString("App Language", comment: "cell title in device settings")
+    lazy var _combined_contacts = NSLocalizedString("Combined Contacts", comment: "cell title in device settings")
+    lazy var _local_cache_management = NSLocalizedString("Local Cache Management", comment: "cell title in device settings")
+    
+    lazy var _password_management = NSLocalizedString("Password management", comment: "cell title in device settings")
+    lazy var _mailbox_size = NSLocalizedString("Mailbox size", comment: "cell title in device settings")
+    
+    lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
+    lazy var _snooze = NSLocalizedString("Snooze", comment: "cell title in device settings")
+    lazy var _mailbox = NSLocalizedString("MAILBOX", comment: "cell title in device settings")
+    
+    lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
+    lazy var _label_and_folders = NSLocalizedString("Labels & Folders", comment: "cell title in device settings")
+    
+    lazy var _swiping_gestures = NSLocalizedString("Swiping gestures", comment: "cell title in device settings")
+    lazy var _local_storage_limit = NSLocalizedString("Local storage limit", comment: "cell title in device settings")
+    
+    lazy var _push_notification = NSLocalizedString("Push Notifications", comment: "cell title in device settings")
+    lazy var _remove_all = NSLocalizedString("Remove All", comment: "account right bar item title")
+    lazy var _empty_cache = NSLocalizedString("Empty Cache", comment: "cell title in device setting")
+    
+    
+    // Account Manager
+    lazy var _logged_out = NSLocalizedString("(logged out)", comment: "Comment for disconnected account in Account Manager")
+    
+    lazy var _you_are_about_to_remove = NSLocalizedString("You are about to remove all accounts. You will not be able to access them from this device unless you add them again.\n\nDo you want to remove all your accounts anyway?", comment: "Alert of removing all accounts")
+  
+    
+    lazy var _by_removing_this_account = NSLocalizedString("By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?", comment: "Alert for removing disconnected accounts")
+    
+    lazy var _allow_alternative_routing = NSLocalizedString("Allow alternative routing", comment: "network troubleshot cell title")
+    lazy var _no_internet_connection = NSLocalizedString("No internet connection", comment: "network troubleshot cell title")
+    lazy var _internet_service_provider_problem = NSLocalizedString("Internet Service Provider (ISP) problem", comment: "network troubleshot cell title")
+    lazy var _government_block = NSLocalizedString("Government block", comment: "network troubleshot cell title")
+    lazy var _antivirus_interference = NSLocalizedString("Antivirus interference", comment: "network troubleshot cell title")
+    lazy var _proxy_firewall_interference = NSLocalizedString("Proxy/Firewall interference", comment: "network troubleshot cell title")
+    lazy var _proton_is_down = NSLocalizedString("Proton is down", comment: "network troubleshot cell title")
+    lazy var _still_cant_find_a_solution = NSLocalizedString("Still can't find a solution", comment: "network troubleshot cell title")
+    lazy var _trouble_shooting = NSLocalizedString("TroubleShooting", comment: "network troubleshot view title")
+    //lazy var _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]", comment: "network troubleshot cell title")
+    let _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "network troubleshot cell title")
+    lazy var _please_make_sure_that_your_internet_ = NSLocalizedString("Please make sure that your internet connection is working.", comment: "network troubleshot cell title")
+    lazy var _try_connection_to_proton_from_ = NSLocalizedString( "Try connecting to Proton from a different network (or use ProtonVPN or Tor).", comment: "network troubleshot cell title")
+    //    lazy var _your_country_may_be_blocking_ = NSLocalizedString( "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.", comment: "network troubleshot cell title")
+    let _your_country_may_be_blocking_ = NSLocalizedString("Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.", comment: "network troubleshot cell title")
+    lazy var _temporarily_disable_or_remove_your_ = NSLocalizedString( "Temporarily disable or remove your antivirus software.", comment: "network troubleshot cell title")
+    lazy var _disable_any_proxies_or_firewalls_ = NSLocalizedString( "Disable any proxies or firewalls, or contact your network administrator.", comment: "network troubleshot cell title")
+    lazy var _check_proton_status_for_our_ = NSLocalizedString("Check Proton Status for our system status.", comment: "network troubleshot cell title")
+    lazy var _contact_us_dirrectly_through_our_support_ = NSLocalizedString( "Contact us directly through our support form, email (support@protonmail.com), or Twitter.", comment: "network troubleshot cell title")
+    
+    let _learn_more_ = NSLocalizedString("Learn more", comment: "network troubleshot cell title")
+    let _protonvpn = NSLocalizedString("ProtonVPN", comment: "network troubleshot cell title")
+    let _tor = NSLocalizedString("Tor", comment: "network troubleshot cell title")
+
+    let _proton_status = NSLocalizedString("Proton Status", comment: "network troubleshot cell title")
+    let _support_form = NSLocalizedString("support form", comment: "network troubleshot cell title")
+    //this used in n
+    let _emaile_ = NSLocalizedString("email", comment: "network troubleshot cell title")
+    let _twitter = NSLocalizedString("Twitter", comment: "network troubleshot cell title")
+    
+    
 }

@@ -22,7 +22,7 @@
 
 
 import Foundation
-import Keymaker
+import PMKeymaker
 
 class SetPinCodeModelImpl : PinCodeViewModel {
     

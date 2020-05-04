@@ -177,18 +177,21 @@ class LablesViewController : UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let apiService = self.viewModel.apiService
+        let labelService = self.viewModel.labelService
+        
         if segue.identifier == kToCreateFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderCreatingViewModelImple()
+            popup.viewModel = FolderCreatingViewModelImple(apiService: apiService, labelService: labelService)
         } else if segue.identifier == kToCreateLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelCreatingViewModelImple()
+            popup.viewModel = LabelCreatingViewModelImple(apiService: apiService, labelService: labelService)
         } else if segue.identifier == kToEditingLabel {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label)
+            popup.viewModel = LabelEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService)
         } else if segue.identifier == kToEditingFolder {
             let popup = segue.destination as! LableEditViewController
-            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label)
+            popup.viewModel = FolderEditingViewModelImple(label: sender as! Label, apiService: apiService, labelService: labelService)
         }
     }
 }

@@ -118,7 +118,7 @@ class MonitorSavesDataService {
     }
     
     @objc func willSaveNotificationMain(_ notification: Notification) {
-        let updatedObjects = sharedCoreDataService.mainManagedObjectContext.updatedObjects
+        let updatedObjects = CoreDataService.shared.mainManagedObjectContext.updatedObjects
         self.willSaveNotification(notification, updatedObjects: updatedObjects)
     }
     

@@ -87,7 +87,7 @@ class CreateNewUser : ApiRequest<ApiResponse> {
         return false
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -101,8 +101,8 @@ class CreateNewUser : ApiRequest<ApiResponse> {
 }
 
 final class GetUserInfoRequest : ApiRequestNew<GetUserInfoResponse> {
-    
-    override func method() -> APIService.HTTPMethod {
+
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -138,7 +138,7 @@ class GetHumanCheckToken : ApiRequest<GetHumanCheckResponse> {
         return nil
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -175,7 +175,7 @@ class HumanCheckRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -204,7 +204,7 @@ class CheckUserExist : ApiRequest<CheckUserExistResponse> {
         return false
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -275,7 +275,7 @@ class DirectRequest : ApiRequest<DirectResponse> {
         return false
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -348,7 +348,7 @@ class VerificationCodeRequest : ApiRequest<ApiResponse> {
         return false
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     

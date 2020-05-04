@@ -130,7 +130,14 @@ class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtoc
         ProtonMailViewController.configureNavigationBar(self)
     }
     
-
+    override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
+        super.dismiss(animated: flag, completion: completion)
+        if #available(iOS 13.0, *) {
+            if let vc = self.presentationController {
+                self.presentationController?.delegate?.presentationControllerWillDismiss?(vc)
+            }
+        }
+    }
 }
 
 class ProtonMailTableViewController: UITableViewController, ProtonMailViewControllerProtocol {

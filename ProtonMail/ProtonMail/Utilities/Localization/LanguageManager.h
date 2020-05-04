@@ -26,6 +26,7 @@
 //       1. update ELanguage enum
 //       2. update extension ELanguage in viewmodel -- allItemsCode & allItems
 //       3. update .m of this file update the string&code
+/// Map to swift as a service
 typedef NS_ENUM(NSInteger, ELanguage)
 {
     ELanguageEnglish,

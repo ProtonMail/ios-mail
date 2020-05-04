@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="In7-0f-UnN">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Compose Container View Controller-->
         <scene sceneID="Amn-w9-Un0">
             <objects>
-                <viewController storyboardIdentifier="ComposeContainerViewController" modalPresentationStyle="fullScreen" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ComposeContainerViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MYS-qk-SMJ" customClass="ComposeContainerViewController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="AdR-nB-BQy"/>
                         <viewControllerLayoutGuide type="bottom" id="Gop-XX-JaS"/>
@@ -109,6 +109,7 @@
                         <segue destination="Rhr-Kb-Xse" kind="presentation" identifier="toContactGroupSubSelection" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="ptq-KY-KHm"/>
                         <segue destination="iup-Ok-tgO" kind="presentation" identifier="to_eo_password_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="8VI-B0-waP"/>
                         <segue destination="5RO-QY-c50" kind="presentation" identifier="expiration_warning_segue" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="JDD-0U-kJK"/>
+                        <segue destination="F3j-5h-us2" kind="presentation" identifier="to_attachment" customClass="CoordinatorSegue" customModule="ProtonMail" customModuleProvider="target" id="3yI-kR-cuW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVl-II-JA6" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -118,7 +119,7 @@
         <!--Composer Navigation Controller-->
         <scene sceneID="JVY-ut-tHc">
             <objects>
-                <navigationController restorationIdentifier="ComposerNavigationController" storyboardIdentifier="ref_composer_nav_controller" automaticallyAdjustsScrollViewInsets="NO" modalPresentationStyle="fullScreen" id="In7-0f-UnN" customClass="ComposerNavigationController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
+                <navigationController restorationIdentifier="ComposerNavigationController" storyboardIdentifier="ref_composer_nav_controller" automaticallyAdjustsScrollViewInsets="NO" id="In7-0f-UnN" customClass="ComposerNavigationController" customModule="ProtonMail" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ix3-qt-5km">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
@@ -579,6 +580,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jo4-AW-yos" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="10986" y="1450"/>
+        </scene>
+        <!--Attachments-->
+        <scene sceneID="LQx-xx-qnz">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Attachments" id="F3j-5h-us2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YBy-cG-iFR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9811" y="2952"/>
         </scene>
         <!--Expiration Warning View Controller-->
         <scene sceneID="XkO-2C-TUd">

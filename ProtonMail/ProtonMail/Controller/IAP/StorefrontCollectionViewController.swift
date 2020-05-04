@@ -153,11 +153,6 @@ extension StorefrontCollectionViewController: CoordinatedNew {
     }
 }
 
-// is needed for Menu->ServiceLevel scene transition only via ServiceLevelCoordinator
-extension StorefrontCollectionViewController: Coordinated {
-    typealias CoordinatorType = ServiceLevelCoordinator
-}
-
 extension StorefrontCollectionViewController: CAAnimationDelegate {
     func animationDidStop(_ animation: CAAnimation, finished flag: Bool) {
         if let layer = animation.value(forKey: String(describing: ConfettiLayer.self)) as? CALayer {

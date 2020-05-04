@@ -31,6 +31,7 @@ extension Contact {
         static let contactID = "contactID"
         static let name = "name"
         static let emails = "emails"
+        static let userID = "userID"
     }
 
     // MARK: - methods
