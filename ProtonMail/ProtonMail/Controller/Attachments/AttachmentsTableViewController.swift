@@ -69,12 +69,11 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
     var inlineAttachments: [Attachment] = []
     var attachmentSections : [AttachmentSection] = []
 
-    var attachments: [Attachment] = [] {
-        didSet {
-            self.buildAttachments()
-            self.updateAttachmentSize()
-            self.tableView?.reloadData()
+    var attachments: [Attachment] {
+        if let atts = self.message.attachments.allObjects as? [Attachment] {
+            return atts
         }
+        return []
     }
     
     lazy var attachmentProviders: Array<AttachmentProvider> = {
@@ -88,6 +87,12 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                     DocumentAttachmentProvider(for: self)]
         #endif
     }()
+    
+    func updateAttachments() {
+        self.buildAttachments()
+        self.updateAttachmentSize()
+        self.tableView?.reloadData()
+    }
     
     func buildAttachments() {
         let attachments = self.attachments.sorted(by: { $0.objectID.uriRepresentation().lastPathComponent > $1.objectID.uriRepresentation().lastPathComponent })
@@ -119,23 +124,44 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         }
         
         self.clearsSelectionOnViewWillAppear = false
+        
+        updateAttachments()
     }
     
     func configureNavigationBar(_ navigationController: UINavigationController) {
-        navigationController.navigationBar.barStyle = UIBarStyle.black
-        navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
-        navigationController.navigationBar.isTranslucent = false
-        navigationController.navigationBar.tintColor = UIColor.white
-        
         let navigationBarTitleFont = Fonts.h2.light
-        navigationController.navigationBar.titleTextAttributes = [
+        let textAttributes = [
             NSAttributedString.Key.foregroundColor: UIColor.white,
             NSAttributedString.Key.font: navigationBarTitleFont
         ]
+        if #available(iOS 13, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.largeTitleTextAttributes = textAttributes
+            navBarAppearance.titleTextAttributes = textAttributes
+            navBarAppearance.backgroundColor = UIColor.ProtonMail.Nav_Bar_Background
+
+            navigationController.navigationBar.standardAppearance = navBarAppearance
+            navigationController.navigationBar.compactAppearance = navBarAppearance
+            navigationController.navigationBar.scrollEdgeAppearance = navBarAppearance
+
+            navigationController.navigationBar.tintColor = UIColor.white
+        } else {
+            navigationController.navigationBar.barStyle = UIBarStyle.black
+            navigationController.navigationBar.barTintColor = UIColor.ProtonMail.Nav_Bar_Background
+            navigationController.navigationBar.isTranslucent = false
+            navigationController.navigationBar.tintColor = UIColor.white
+            
+            navigationController.navigationBar.titleTextAttributes = textAttributes
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         self.updateAttachmentSize()
+        
+        if #available(iOS 13.0, *) { // fix the gap between navigationbar and view
+            navigationController?.navigationBar.setNeedsLayout()
+        }
     }
     
     override var shouldAutorotate : Bool {
@@ -193,7 +219,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
 
         var attachment: Attachment?
-        switch attachmentSections[indexPath.section] {
+        let secontItem = attachmentSections[indexPath.section]
+        switch secontItem {
         case .normal: attachment = normalAttachments[indexPath.row] as Attachment
         case .inline: attachment = inlineAttachments[indexPath.row] as Attachment
         }
@@ -210,6 +237,9 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                 guard let cell = cell, let indexp = self.tableView.indexPath(for: cell) else {
                     return
                 }
+                guard indexp.section < self.attachmentSections.count else {
+                    return
+                }
                 
                 var att: Attachment!
                 switch self.attachmentSections[indexp.section] {
@@ -220,8 +250,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
                 }
                 
                 self.delegate?.attachments(self, didDeletedAttachment: att)
-                if let index = self.attachments.firstIndex(of: att) {
-                    self.attachments.remove(at: index)
+                if let _ = self.attachments.firstIndex(of: att) {
+                    self.updateAttachments()
                 }
             }
         }

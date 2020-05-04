@@ -1,0 +1,29 @@
+{
+  "name": "PMKeymaker",
+  "version": "1.1.0",
+  "summary": "Local data encryption for ProtonMail",
+  "description": "Key management flows used to encrypt local cache, db and Keychain items for ProtonMail",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmkeymaker",
+  "license": "ProtonMail",
+  "authors": "Anatoly Rosencrantz",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "source_files": [
+    "PMKeymaker/*.swift",
+    "PMKeymaker/*/*.swift"
+  ],
+  "dependencies": {
+    "EllipticCurveKeyPair": [
+
+    ],
+    "PMCrypto": [
+
+    ]
+  },
+  "static_framework": true
+}

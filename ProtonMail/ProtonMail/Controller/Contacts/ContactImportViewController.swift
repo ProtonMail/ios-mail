@@ -31,6 +31,7 @@ protocol ContactImportVCDelegate {
 }
 
 class ContactImportViewController: UIViewController {
+    var user: UserManager!
     
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var messageLabel: UILabel!
@@ -47,7 +48,7 @@ class ContactImportViewController: UIViewController {
     fileprivate var isSearching: Bool = false
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = sharedContactDataService.resultController() {
+        if let fetchedResultsController = self.user.contactService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {
@@ -136,24 +137,26 @@ class ContactImportViewController: UIViewController {
                 if authorized {
                     self.retrieveContactsWithStore(store: store)
                 } else {
-                    "Contacts access is not authorized".alertToast()
+                    {"Contacts access is not authorized".alertToast()} ~> .main
                 }
             })
         case .authorized:
             self.retrieveContactsWithStore(store: store)
         case .denied:
-            "Contacts access denied, please allow access from settings".alertToast()
+            {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
         case .restricted:
-            "The application is not authorized to access contact data".alertToast()
+            {"The application is not authorized to access contact data".alertToast()} ~> .main
+        @unknown default:
+            {"Contacts access denied, please allow access from settings".alertToast()} ~> .main
         }
     }
     
     lazy var contacts: [CNContact] = sharedServices.get(by: AddressBookService.self).getAllContacts()
     
     internal func retrieveContactsWithStore(store: CNContactStore) {
-        guard let mailboxPassword = sharedUserDataService.mailboxPassword,
-            let userkey = sharedUserDataService.userInfo?.firstUserKey(),
-            let authCredential = AuthCredential.fetchFromKeychain() else
+        guard case let mailboxPassword = self.user.mailboxPassword,
+            let userkey = self.user.userInfo.firstUserKey(),
+            case let authCredential = self.user.authCredential else
         {
             NSError.lockError().alertToast()
             return
@@ -303,7 +306,7 @@ class ContactImportViewController: UIViewController {
                     self.messageLabel.text = "Uploading contacts. 0/\(pre_count)"
                 } ~> .main
                 
-                sharedContactDataService.imports(cards: pre_contacts, authCredential: authCredential, cancel: { () -> Bool in
+                self.user.contactService.imports(cards: pre_contacts, authCredential: authCredential, cancel: { () -> Bool in
                     return self.cancelled
                 }, update: { (processed) in
                     {

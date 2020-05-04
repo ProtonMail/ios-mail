@@ -35,6 +35,10 @@ protocol CoordinatedNew : CoordinatedNewBase where coordinatorType: CoordinatorN
     func set(coordinator: coordinatorType)
 }
 
+protocol CoordinatedAlerts {
+    func controller(notFount dest: String)
+}
+
 protocol CoordinatedNewBase : AnyObject {
     func getCoordinator() -> CoordinatorNew?
 }

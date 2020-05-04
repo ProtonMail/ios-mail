@@ -26,7 +26,7 @@ import Foundation
 //MARK : get keys salt
 final class GetOrgKeys : ApiRequest<OrgKeyResponse> {
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     

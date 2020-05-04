@@ -29,7 +29,7 @@ extension APIService {
     public typealias UserInfoBlock = (UserInfo?, String?, NSError?) -> Void
 
     fileprivate struct UserPath {
-        static let base = Constants.App.API_PATH + "/users"
+        static let base = "/users"
     }
     
     //deprecated
@@ -46,7 +46,7 @@ extension APIService {
             if let base64Emails = emails.base64Encoded() {
                 let escapedValue : String? = base64Emails.addingPercentEncoding(withAllowedCharacters: CharacterSet(charactersIn: "/+=\n").inverted)
                 let path = UserPath.base.stringByAppendingPathComponent("pubkeys").stringByAppendingPathComponent(escapedValue ?? base64Emails)
-                request(method: .get, path: path, parameters: nil, headers: ["x-pm-apiversion": 3], completion: { task, response, error in
+                request(method: .get, path: path, parameters: nil, headers: [HTTPHeader.apiVersion: 3], completion: { task, response, error in
                     PMLog.D("userPublicKeysForEmails -- res \(String(describing: response)) || error -- \(String(describing: error))")
                     if let paserError = self.isErrorResponse(response) {
                         completion?(task, response, paserError)
@@ -69,7 +69,7 @@ extension APIService {
             "PrivateKey" : privateKey
         ]
         
-        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], completion: completion)
+        request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], completion: completion)
     }
     
     // MARK: private mothods

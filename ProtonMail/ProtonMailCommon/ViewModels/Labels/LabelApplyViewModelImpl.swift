@@ -28,8 +28,12 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     fileprivate var messages : [Message]!
     fileprivate var labelMessages : [String : LabelMessageModel]!
     
-    init(msg:[Message]!) {
-        super.init()
+    let messageService : MessageDataService
+    
+    init(msg:[Message]!, labelService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+        self.messageService = messageService
+        
+        super.init(apiService: apiService, labelService: labelService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -40,7 +44,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 return false
             }
         }
-        return true;
+        return true
     }
     
     override func getApplyButtonText() -> String {
@@ -55,9 +59,9 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         if let outVar = self.labelMessages[label.labelID] {
             return outVar
         } else {
-            let lmm = LabelMessageModel();
+            let lmm = LabelMessageModel()
             lmm.label = label
-            lmm.totalMessages = self.messages;
+            lmm.totalMessages = self.messages
             for  m  in self.messages {
                 let labels = m.mutableSetValue(forKey: "labels")
                 for lb in labels {
@@ -69,17 +73,17 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 }
             }
             if lmm.originalSelected.count == 0 {
-                lmm.origStatus = 0;
-                lmm.currentStatus = 0;
+                lmm.origStatus = 0
+                lmm.currentStatus = 0
             }
             else if lmm.originalSelected.count > 0 && lmm.originalSelected.count < lmm.totalMessages.count {
-                lmm.origStatus = 1;
-                lmm.currentStatus = 1;
+                lmm.origStatus = 1
+                lmm.currentStatus = 1
             } else {
-                lmm.origStatus = 2;
-                lmm.currentStatus = 2;
+                lmm.origStatus = 2
+                lmm.currentStatus = 2
             }
-            self.labelMessages[label.labelID] = lmm;
+            self.labelMessages[label.labelID] = lmm
             return lmm
         }
     }
@@ -91,7 +95,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
                 plusCount = 2
             }
             
-            var tempStatus = model.currentStatus + plusCount;
+            var tempStatus = model.currentStatus + plusCount
             if tempStatus > 2 {
                 tempStatus = 0
             }
@@ -101,27 +105,27 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = CoreDataService.shared.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 0 { //remove
                 let ids = self.messages.map { ($0).messageID }
                 let api = RemoveLabelFromMessages(labelID: key, messages: ids)
-                api.call(nil)
+                api.call(api: self.apiService, nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
                         if mm.remove(labelID: value.label.labelID) != nil && mm.unRead {
-                            sharedMessageDataService.updateCounter(plus: false, with: value.label.labelID)
+                            messageService.updateCounter(plus: false, with: value.label.labelID)
                         }
                     }
                 }
             } else if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }
                 let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                api.call(nil)
+                api.call(api: self.apiService, nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
                         if mm.add(labelID: value.label.labelID) != nil && mm.unRead {
-                            sharedMessageDataService.updateCounter(plus: true, with: value.label.labelID)
+                            messageService.updateCounter(plus: true, with: value.label.labelID)
                         }
                     }
                 }
@@ -140,7 +144,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
         if archiveMessage {
             for message in self.messages {
                 if let flabel = message.firstValidFolder() {
-                    sharedMessageDataService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
+                    messageService.move(message: message, from: flabel, to: Message.Location.archive.rawValue)
                 }
             }
         }
@@ -157,7 +161,7 @@ final class LabelApplyViewModelImpl : LabelViewModel {
     }
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        return sharedLabelsDataService.fetchedResultsController(.label)
+        return self.labelService.fetchedResultsController(.label)
     }
 
     override func getFetchType() -> LabelFetchType {

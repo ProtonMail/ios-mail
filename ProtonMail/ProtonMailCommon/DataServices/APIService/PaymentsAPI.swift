@@ -47,7 +47,7 @@ extension ApiResponse {
 }
 
 final class GetIAPStatusRequest: ApiRequestNew<GetIAPStatusResponse> {
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -71,7 +71,7 @@ final class GetIAPStatusResponse: ApiResponse {
 }
 
 final class GetPaymentMethodsRequest: ApiRequestNew<GetPaymentMethodsResponse> {
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -104,7 +104,7 @@ final class GetPaymentMethodsResponse: ApiResponse {
 }
 
 final class GetSubscriptionRequest: ApiRequestNew<GetSubscriptionResponse> {
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -121,9 +121,10 @@ final class GetAppleTier : ApiRequestNew<AppleTier> {
     var currency: String
     var country: String
     //TODO:: add tier later
-    init(currency: String, country: String) {
+    init(api: API, currency: String, country: String) {
         self.currency = currency
         self.country = country
+        super.init(api: api)
     }
     override func path() -> String {
         return PaymentsAPI.path + "/apple"
@@ -187,14 +188,14 @@ final class GetSubscriptionResponse: ApiResponse {
         let plans = plansParser.availableServicePlans
         let start = Date(timeIntervalSince1970: Double(startRaw))
         let end = Date(timeIntervalSince1970: Double(endRaw))
-        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, paymentMethods: nil)
+        self.subscription = ServicePlanSubscription(start: start, end: end, planDetails: plans, defaultPlanDetails: nil, paymentMethods: nil)
         
         return true
     }
 }
 
 final class GetDefaultServicePlanRequest: ApiRequestNew<GetDefaultServicePlanResponse> {
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -235,7 +236,7 @@ final class GetDefaultServicePlanResponse: ApiResponse {
 }
 
 final class GetServicePlansRequest: ApiRequestNew<GetServicePlansResponse> {
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -270,16 +271,16 @@ final class GetServicePlansResponse: ApiResponse {
         }
     }
 }
-
-final class PostCreditRequest: ApiRequestNew<PostCreditResponse> {
+//PostCreditResponse
+class PostCreditRequest<T : ApiResponse>: ApiRequestNew<T> {
     private let reciept: String
     
-    init(reciept: String) {
+    init(api: API, reciept: String) {
         self.reciept = reciept
-        super.init()
+        super.init(api: api)
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -314,19 +315,20 @@ final class PostCreditResponse: ApiResponse {
     }
 }
 
-final class PostRecieptRequest: ApiRequestNew<PostRecieptResponse> {
+final class PostRecieptRequest: PostCreditRequest<PostRecieptResponse> {
     private let reciept: String
     private let planId: String
     
-    init(reciept: String,
+    init(api: API,
+         reciept: String,
          andActivatePlanWithId planId: String)
     {
         self.reciept = reciept
         self.planId = planId
-        super.init()
+        super.init(api:api, reciept: self.reciept)
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -339,7 +341,7 @@ final class PostRecieptRequest: ApiRequestNew<PostRecieptResponse> {
     }
     
     override func toDictionary() -> [String : Any]? {
-        var params = PostCreditRequest(reciept: self.reciept).toDictionary()
+        var params = super.toDictionary()
         params?["PlanIDs"] = [planId]
         params?["Cycle"] = 12
         return params

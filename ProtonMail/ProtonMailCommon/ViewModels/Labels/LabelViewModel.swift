@@ -34,12 +34,15 @@ class LabelMessageModel {
 }
 
 class LabelViewModel {
-
+    internal let apiService: APIService
+    internal let labelService: LabelsDataService
+    
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     
-    public init() {
-        
+    internal init(apiService: APIService, labelService: LabelsDataService) {
+        self.apiService = apiService
+        self.labelService = labelService
     }
     
     func getFetchType() -> LabelFetchType {

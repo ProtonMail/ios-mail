@@ -23,253 +23,172 @@
 
 import Foundation
 import PromiseKit
+import PMAuthentication
 
 /// Auth extension
 extension APIService {
-    func auth2fa(res: AuthResponse, password: String, twoFACode: String?, checkSalt: Bool = true, completion: @escaping AuthCompleteBlock) {
-
-        let credential = AuthCredential(res: res)
-        credential.storeInKeychain()
+    private func completeAuthFlow(credential: AuthCredential, password: String, passwordMode: Int, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
+        var keySalt: String?
+        var privateKey: String?
         
-        func exec() {
-            let passwordMode = res.passwordMode
-            var keySalt: String?
-            var privateKey: String?
-            
-            func done() {
-                credential.update(salt: keySalt, privateKey: privateKey)
-                credential.storeInKeychain()
-                if passwordMode == 1 {
-                    guard let keysalt : Data = keySalt?.decodeBase64() else {
-                        return completion(nil, nil, .resCheck, nil, NSError.authInValidKeySalt())
-                    }
-                    let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
-                    return completion(nil, mpwd, .resCheck, nil, nil)
-                } else {
-                    return completion(nil, nil, .resCheck, nil, nil)
+        func done(userInfo: UserInfo?) {
+            credential.update(salt: keySalt, privateKey: privateKey)
+            if passwordMode == 1 {
+                guard let keysalt : Data = keySalt?.decodeBase64() else {
+                    return completion(nil, .resCheck, nil, nil, userInfo, NSError.authInValidKeySalt())
                 }
-            }
-            
-            if !res.isEncryptedToken {
-                credential.trySetToken()
-                let saltapi = GetKeysSalts()
-                ///
-                if !checkSalt {
-                    done()
-                } else {
-                    saltapi.authCredential = credential
-                    let userApi = GetUserInfoRequest()
-                    userApi.authCredential = credential
-                    firstly {
-                        when(fulfilled: saltapi.run(), userApi.run())
-                    }.done { (saltRes, userRes)  in
-                        guard  let salt = saltRes.keySalt,
-                            let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
-                                return completion(nil, nil, .resCheck, nil, NSError.authInvalidGrant())
-                        }
-                        keySalt = salt
-                        privateKey = privatekey
-                        done()
-                    }.catch { err in
-                        let error = err as NSError
-                        if error.isInternetError() {
-                            return completion(nil, nil, .resCheck, nil, NSError.internetError())
-                        } else {
-                            return completion(nil, nil, .resCheck, nil, NSError.authInvalidGrant())
-                        }
-                    }
-                }
-                ///
+                let mpwd = PasswordUtils.getMailboxPassword(password, salt: keysalt)
+                return completion(mpwd, .resCheck, credential, nil, userInfo, nil)
             } else {
-                keySalt = res.keySalt
-                privateKey = res.privateKey
-                done()
+                return completion(nil, .resCheck, credential, nil, userInfo, nil)
             }
         }
         
-        if let code = twoFACode {
-            credential.trySetToken()
-            let tfaapi = TwoFARequest(code: code)
-            tfaapi.authCredential = credential
-            firstly {
-                tfaapi.run()
-               // when(resolved: tfaapi.run())
-            }.done { (res) in
-                if let error = res.error {
-                    return completion(nil, nil, .resCheck, nil, error)
-                } else {
-                    exec()
+        let saltapi = GetKeysSalts(api: self)
+        saltapi.authCredential = credential
+        let userApi = GetUserInfoRequest(api: self)
+        userApi.authCredential = credential
+        firstly {
+            when(fulfilled: saltapi.run(), userApi.run())
+        }.done { (saltRes, userRes)  in
+            if noKey {
+                let salt = saltRes.keySalt
+                keySalt = salt
+                done(userInfo: userRes.userInfo)
+            } else {
+                guard  let salt = saltRes.keySalt,
+                    let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
+                        return completion(nil, .resCheck, nil, nil, userRes.userInfo, NSError.authInvalidGrant())
                 }
-            }.catch { err in
-                let error = err as NSError
-                if error.isInternetError() {
-                    return completion(nil, nil, .resCheck, nil, NSError.internetError())
-                } else {
-                    return completion(nil, nil, .resCheck, nil, NSError.authInvalidGrant())
-                }
+                keySalt = salt
+                privateKey = privatekey
+                done(userInfo: userRes.userInfo)
             }
-        } else {
-            exec()
+        }.catch { err in
+            let error = err as NSError
+            if error.isInternetError() {
+                return completion(nil, .resCheck, nil, nil, nil, NSError.internetError())
+            } else {
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authInvalidGrant())
+            }
         }
-        
-        
     }
     
     
-    
-    func auth(_ username: String, password: String,
-              twoFACode: String?, authCredential: AuthCredential?,
-              checkSalt: Bool = true, completion: AuthCompleteBlock!) {
-        
-        var forceRetry = false
-        var forceRetryVersion = 2
-        func tryAuth() {
-            AuthInfoRequest(username: username, authCredential: authCredential).call() { task, res, hasError in
-                if hasError {
-                    guard let error = res?.error else {
-                        return completion(task, nil, .resCheck, nil, NSError.authInvalidGrant())
-                    }
-                    if error.isInternetError() {
-                        return completion(task, nil, .resCheck, nil, NSError.internetError())
-                    } else {
-                        return completion(task, nil, .resCheck, nil, error)
-                    }
-                } else if res?.code == 1000 {// caculate pwd
-                    guard let authVersion = res?.Version, let modulus = res?.Modulus,
-                        let ephemeral = res?.ServerEphemeral, let salt = res?.Salt, let session = res?.SRPSession else {
-                        return completion(task, nil, .resCheck,nil, NSError.authUnableToParseAuthInfo())
-                    }
- 
-                    do {
-                        if authVersion <= 2 && !forceRetry {
-                            forceRetry = true
-                            forceRetryVersion = 2
-                        }
-
-                        //init api calls
-                        let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                        //move the error to the wrapper
-                        guard let auth = try SrpAuth(hashVersion, username, password, salt, modulus, ephemeral) else {
-                            return completion(task, nil, .resCheck, nil, NSError.authUnableToGeneratePwd())
-                        }
-                        
-                        let srpClient = try auth.generateProofs(2048)
-                        guard let clientEphemeral = srpClient.clientEphemeral,
-                            let clientProof = srpClient.clientProof, let expectedServerProof = srpClient.expectedServerProof else {
-                            return completion(task, nil, .resCheck, nil, NSError.authUnableToGenerateSRP())
-                        }
-                        
-                        let api = AuthRequest(username: username,
-                                              ephemeral: clientEphemeral,
-                                              proof: clientProof,
-                                              session: session,
-                                              serverProof: expectedServerProof,
-                                              code: twoFACode);
-                        let completionWrapper: (_ task: URLSessionDataTask?, _ res: AuthResponse?, _ hasError : Bool) -> Void = { (task, res, hasError) in
-                            if hasError {
-                                if let error = res?.error {
-                                    if error.isInternetError() {
-                                        return completion(task, nil, .resCheck, nil, NSError.internetError())
-                                    } else {
-                                        if forceRetry && forceRetryVersion != 0 {
-                                            forceRetryVersion -= 1
-                                            tryAuth()
-                                        } else {
-                                            return completion(task, nil, .resCheck, nil, NSError.authInvalidGrant())
-                                        }
-                                    }
-                                } else {
-                                    return completion(task, nil, .resCheck, nil, NSError.authInvalidGrant())
-                                }
-                            } else if res?.code == 1000 {
-                                guard let res = res else {
-                                    return completion(task, nil, .resCheck, nil, NSError.authInvalidGrant())
-                                }
-                                
-                                guard let serverProof : Data = res.serverProof?.decodeBase64() else {
-                                    return completion(task, nil, .resCheck, nil, NSError.authServerSRPInValid())
-                                }
-                                
-                                if api.serverProof == serverProof {
-                                    let credential = AuthCredential(res: res)
-                                    credential.storeInKeychain()
-                                    //if 2fa enabled
-                                    if res.twoFactor != 0 {
-                                        return completion(task, nil, .ask2FA, res, nil)
-                                    }
-                                    //if 2fa disabled
-                                    self.auth2fa(res: res, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completion)
-                                } else {
-                                    return completion(task, nil, .resCheck, nil, NSError.authServerSRPInValid())
-                                }
-                            } else {
-                                return completion(task, nil, .resCheck, nil, NSError.authUnableToParseToken())
-                            }
-                        }
-                        api.call(completionWrapper)
-                    } catch let err as NSError {
-                        err.upload(toAnalytics: "tryAuth()")
-                        return completion(task, nil, .resCheck, nil, NSError.authUnableToParseAuthInfo())
-                    }
-                } else {
-                    return completion(task, nil, .resCheck, nil, NSError.authUnableToParseToken())
-                }
+    func confirm2FA(_ code: Int, password: String, context: TwoFactorContext, completion: @escaping AuthCompleteBlockNew) {
+        self.authApi.confirm2FA(code, context: context) { result in
+            switch result {
+            case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
+                return completion(nil, .resCheck, nil, nil, nil, error)
+            
+            case .failure(let error as NSError): // network or parsing error
+                return completion(nil, .resCheck, nil, nil, nil, error.isInternetError() ? NSError.internetError() : NSError.authInvalidGrant())
+                
+            case .success(.newCredential(let credential, let passwordMode)): // success without 2FA
+                let authCredential = AuthCredential(credential)
+                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, noKey: false, completion: completion)
+                
+            case .success(.updatedCredential), .success(.ask2FA):
+                assert(false, "Should never happen in this flow")
             }
         }
-        tryAuth()
     }
     
-    func authRefresh(_ password:String, completion: AuthRefreshComplete?) {
-        if let authCredential = AuthCredential.fetchFromKeychain() {
-            AuthRefreshRequest(resfresh: authCredential.refreshToken,
-                               uid: authCredential.userID).call() { task, res , hasError in
-                if hasError {
-                    var needsRetry : Bool = false
-                    if let err = res?.error {
-                        err.upload(toAnalytics : AuthErrorTitle)
-                        if err.code == NSURLErrorTimedOut ||
-                            err.code == NSURLErrorNotConnectedToInternet ||
-                            err.code == NSURLErrorCannotConnectToHost ||
-                            err.code == APIErrorCode.API_offline ||
-                            err.code == APIErrorCode.HTTP503 {
-                            needsRetry = true
-                        } else {
-                            self.refreshTokenFailedCount += 1
-                        }
-                    }
-                    
-                    if self.refreshTokenFailedCount > 5 || !needsRetry {
-                        PMLog.D("self.refreshTokenFailedCount == 5")
-                        completion?(task, nil, NSError.authInvalidGrant())
-                    } else {
-                        completion?(task, nil, NSError.internetError())
-                    }
+    func authenticate(username: String, password: String, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
+        self.authApi.authenticate(username: username, password: password) { result in
+            switch result {
+            case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
+                return completion(nil, .resCheck, nil, nil, nil, error)
+                
+            case .failure(Authenticator.Errors.emptyServerSrpAuth):
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToGeneratePwd())
+                
+            case .failure(Authenticator.Errors.emptyClientSrpAuth):
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToGenerateSRP())
+                
+            case .failure(Authenticator.Errors.wrongServerProof):
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authServerSRPInValid())
+                
+            case .failure(Authenticator.Errors.emptyAuthResponse):
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToParseToken())
+                
+            case .failure(Authenticator.Errors.emptyAuthInfoResponse):
+                return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToParseAuthInfo())
+            
+            case .failure(_): // network or parsing error
+                return completion(nil, .resCheck, nil, nil, nil, NSError.internetError())
+            
+            case .success(.ask2FA(let context)): // success but need 2FA
+                return completion(nil, .ask2FA, nil, context, nil, nil)
+                
+            case .success(.newCredential(let credential, let passwordMode)): // success without 2FA
+                let authCredential = AuthCredential(credential)
+                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, noKey: noKey, completion: completion)
+            
+            case .success(.updatedCredential):
+                assert(false, "Should never happen in this flow")
+            }
+        }
+    }
+    
+    func authRefresh(_ authCredential: AuthCredential, completion: AuthRefreshComplete?) {
+        let oldCredential = PMAuthentication.Credential(authCredential)
+        self.authApi.refreshCredential(oldCredential) { result in
+            switch result {
+            case .success(.updatedCredential(let newCredential)):
+                self.refreshTokenFailedCount = 0
+                completion?(nil, newCredential, nil)
+            
+            case .success(.ask2FA), .success(.newCredential):
+                assert(false, "Was trying to refresh credential but got something else instead")
+                PMLog.D("Was trying to refresh credential but got something else instead")
+                completion?(nil, nil, NSError.authInvalidGrant())
+                
+            case .failure(let error):
+                var err: NSError = error as NSError
+                if case Authenticator.Errors.serverError(let serverResponse) = error {
+                    err = serverResponse
                 }
-                else if res?.code == 1000 {
-                    do {
-                        authCredential.update(res, updateUID: false)
-                        try authCredential.setupToken(password)
-                        authCredential.storeInKeychain()
-                        
-                        PMLog.D("\(authCredential.description)")
-                        
-                        self.refreshTokenFailedCount = 0
-                    } catch let ex as NSError {
-                        PMLog.D(any: ex)
-                    }
-                    DispatchQueue.main.async {
-                        completion?(task, authCredential, nil)
-                    }
+                
+                var needsRetry : Bool = false
+                err.upload(toAnalytics : AuthErrorTitle)
+                if err.code == NSURLErrorTimedOut ||
+                    err.code == NSURLErrorNotConnectedToInternet ||
+                    err.code == NSURLErrorCannotConnectToHost ||
+                    err.code == APIErrorCode.API_offline ||
+                    err.code == APIErrorCode.HTTP503 {
+                    needsRetry = true
+                } else {
+                    self.refreshTokenFailedCount += 1
                 }
-                else {
-                    completion?(task, nil, NSError.authUnableToParseToken())
+                
+                if self.refreshTokenFailedCount > 5 || !needsRetry {
+                    PMLog.D("self.refreshTokenFailedCount == 5")
+                    completion?(nil, nil, NSError.authInvalidGrant())
+                } else {
+                    completion?(nil, nil, NSError.internetError())
                 }
             }
-        } else {
-            completion?(nil, nil, NSError.authCredentialInvalid())
         }
-        
     }
 }
 
-
+extension PMAuthentication.Credential {
+    init(_ authCredential: AuthCredential) {
+        self.init(UID: authCredential.sessionID,
+                  accessToken: authCredential.accessToken,
+                  refreshToken: authCredential.refreshToken,
+                  expiration: authCredential.expiration,
+                  scope: [])
+    }
+}
+extension AuthCredential {
+    convenience init(_ credential: PMAuthentication.Credential) {
+        self.init(sessionID: credential.UID,
+                  accessToken: credential.accessToken,
+                  refreshToken: credential.refreshToken,
+                  expiration: credential.expiration,
+                  privateKey: nil,
+                  passwordKeySalt: nil)
+    }
+}

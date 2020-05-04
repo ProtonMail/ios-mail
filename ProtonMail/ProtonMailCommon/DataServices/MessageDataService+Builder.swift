@@ -276,79 +276,104 @@ class SendBuilder {
         return .cinln
     }
     
-    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool) -> Promise<SendBuilder> {
+    
+    func fetchAttachmentBody(att: Attachment, messageDataService: MessageDataService, passphrase: String, userInfo: UserInfo) -> Promise<String> {
         return Promise { seal in
-            async {
-                /// decrypt attachments
-                var messageBody = self.clearBody ?? ""
-                messageBody = QuotedPrintable.encode(string: messageBody)
-                var signbody = ""
-                var boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //default
-                do {
-                    let random = try Crypto.random(byte: 20)
-                    if random.count > 0 {
-                        boundaryMsg = HMAC.hexStringFromData(random)
-                    }
-                } catch {
-                    //ignore
-                }
-                
-                let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\""
-                signbody.append(contentsOf: typeMessage + "\r\n")
-                signbody.append(contentsOf: "\r\n")
-                signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-                signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
-                signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
-                signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
-                signbody.append(contentsOf: "\r\n")
-                signbody.append(contentsOf: messageBody +  "\r\n")
-                signbody.append(contentsOf: "\r\n")
-                signbody.append(contentsOf: "\r\n")
-                signbody.append(contentsOf: "\r\n")
-                
-                var fetchs : [Promise<String>] = [Promise<String>]()
-                for att in self.preAttachments {
-                    fetchs.append(att.att.fetchAttachmentBody())
-                }
-                //1. fetch attachment first
-                firstly {
-                    when(resolved: fetchs)
-                }.done { (bodys)  in
-                    for (index, body) in bodys.enumerated() {
-                        switch body {
-                        case .fulfilled(let value):
-                            let att = self.preAttachments[index].att
-                            signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
-                            let attName = QuotedPrintable.encode(string: att.fileName)
-                            signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
-                            signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
-                            signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
-                            signbody.append(contentsOf: "\r\n")
-                            signbody.append(contentsOf: value + "\r\n")
-                        case .rejected(let error):
-                            PMLog.D(error.localizedDescription)
-                            break
-                        }
-                    }
-                    signbody.append(contentsOf: "--\(boundaryMsg)--")
-                    let encrypted = try signbody.encrypt(withKey: senderKey,
-                                                         userKeys: userKeys,
-                                                         mailbox_pwd: passphrase)
-                    let spilted = try encrypted?.split()
-                    let session = newSchema ?
-                        try spilted?.keyPacket?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
-                        try spilted?.keyPacket?.getSessionFromPubKeyPackage(addrPrivKey: senderKey.private_key, passphrase: passphrase)
-                    
-                    self.mimeSession = session?.key
-                    self.mimeSessionAlgo = session?.algo
-                    self.mimeDataPackage = spilted?.dataPacket?.base64EncodedString()
-                    //TODO:: fix the ?
-                    
-                    seal.fulfill(self)
-                }.catch({ error in
-                    seal.reject(error)
-                })
+            if let localURL = att.localURL, FileManager.default.fileExists(atPath: localURL.path, isDirectory: nil) {
+                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                return
             }
+            
+            if let data = att.fileData, data.count > 0 {
+                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                return
+            }
+            
+            att.localURL = nil
+            messageDataService.fetchAttachmentForAttachment(att,
+                                                            customAuthCredential: att.message.cachedAuthCredential,
+                                                            downloadTask: { (taskOne : URLSessionDownloadTask) -> Void in },
+                                                            completion: { (_, url, error) -> Void in
+                                                                att.localURL = url;
+                                                                seal.fulfill(att.base64DecryptAttachment(userInfo: userInfo, passphrase: passphrase))
+                                                                if error != nil {
+                                                                    PMLog.D("\(String(describing: error))")
+                                                                }
+            })
+        }
+    }
+    
+    func buildMime(senderKey: Key, passphrase: String, userKeys: Data, keys: [Key], newSchema: Bool, msgService: MessageDataService, userInfo: UserInfo) -> Promise<SendBuilder> {
+        return Promise { seal in
+            /// decrypt attachments
+            var messageBody = self.clearBody ?? ""
+            messageBody = QuotedPrintable.encode(string: messageBody)
+            var signbody = ""
+            var boundaryMsg : String = "uF5XZWCLa1E8CXCUr2Kg8CSEyuEhhw9WU222" //default
+            do {
+                let random = try Crypto.random(byte: 20)
+                if random.count > 0 {
+                    boundaryMsg = HMAC.hexStringFromData(random)
+                }
+            } catch {
+                //ignore
+            }
+            
+            let typeMessage = "Content-Type: multipart/mixed; boundary=\"\(boundaryMsg)\""
+            signbody.append(contentsOf: typeMessage + "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
+            signbody.append(contentsOf: "Content-Type: text/html; charset=utf-8" + "\r\n")
+            signbody.append(contentsOf: "Content-Transfer-Encoding: quoted-printable" + "\r\n")
+            signbody.append(contentsOf: "Content-Language: en-US" + "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: messageBody +  "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            signbody.append(contentsOf: "\r\n")
+            
+            var fetchs : [Promise<String>] = [Promise<String>]()
+            for att in self.preAttachments {
+                fetchs.append(self.fetchAttachmentBody(att: att.att, messageDataService: msgService, passphrase: passphrase, userInfo: userInfo))
+            }
+            //1. fetch attachment first
+            firstly {
+                when(resolved: fetchs)
+            }.done { (bodys)  in
+                for (index, body) in bodys.enumerated() {
+                    switch body {
+                    case .fulfilled(let value):
+                        let att = self.preAttachments[index].att
+                        signbody.append(contentsOf: "--\(boundaryMsg)" + "\r\n")
+                        let attName = QuotedPrintable.encode(string: att.fileName)
+                        signbody.append(contentsOf: "Content-Type: \(att.mimeType); name=\"\(attName)\"" + "\r\n")
+                        signbody.append(contentsOf: "Content-Transfer-Encoding: base64" + "\r\n")
+                        signbody.append(contentsOf: "Content-Disposition: attachment; filename=\"\(attName)\"" + "\r\n")
+                        signbody.append(contentsOf: "\r\n")
+                        signbody.append(contentsOf: value + "\r\n")
+                    case .rejected(let error):
+                        PMLog.D(error.localizedDescription)
+                        break
+                    }
+                }
+                signbody.append(contentsOf: "--\(boundaryMsg)--")
+                let encrypted = try signbody.encrypt(withKey: senderKey,
+                                                     userKeys: userKeys,
+                                                     mailbox_pwd: passphrase)
+                let spilted = try encrypted?.split()
+                let session = newSchema ?
+                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(userKeys: userKeys, passphrase: passphrase, keys: keys) :
+                    try spilted?.keyPacket?.getSessionFromPubKeyPackage(addrPrivKey: senderKey.private_key, passphrase: passphrase)
+                
+                self.mimeSession = session?.key
+                self.mimeSessionAlgo = session?.algo
+                self.mimeDataPackage = spilted?.dataPacket?.base64EncodedString()
+                //TODO:: fix the ?
+                
+                seal.fulfill(self)
+            }.catch({ error in
+                seal.reject(error)
+            })
         }
     }
     
@@ -532,7 +557,7 @@ class EOAddressBuilder : PackageBuilder {
             
             
             //start build auth package
-            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall() // will use standard auth credential
+            let authModuls = try AuthModulusRequest(authCredential: nil).syncCall(api: APIService.shared) // will use standard auth credential
             guard let moduls_id = authModuls?.ModulusID else {
                 throw UpdatePasswordError.invalidModulusID.error
             }

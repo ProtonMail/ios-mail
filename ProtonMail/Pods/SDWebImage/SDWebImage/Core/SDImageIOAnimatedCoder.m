@@ -12,6 +12,10 @@
 #import "NSData+ImageContentType.h"
 #import "SDImageCoderHelper.h"
 #import "SDAnimatedImageRep.h"
+#import "UIImage+ForceDecode.h"
+
+// Specify DPI for vector format in CGImageSource, like PDF
+static NSString * kSDCGImageSourceRasterizationDPI = @"kCGImageSourceRasterizationDPI";
 
 @interface SDImageIOCoderFrame : NSObject
 
@@ -32,6 +36,8 @@
     NSUInteger _frameCount;
     NSArray<SDImageIOCoderFrame *> *_frames;
     BOOL _finished;
+    BOOL _preserveAspectRatio;
+    CGSize _thumbnailSize;
 }
 
 - (void)dealloc
@@ -145,6 +151,88 @@
     return frameDuration;
 }
 
++ (UIImage *)createFrameAtIndex:(NSUInteger)index source:(CGImageSourceRef)source scale:(CGFloat)scale preserveAspectRatio:(BOOL)preserveAspectRatio thumbnailSize:(CGSize)thumbnailSize {
+    // Parse the image properties
+    NSDictionary *properties = (__bridge_transfer NSDictionary *)CGImageSourceCopyPropertiesAtIndex(source, index, NULL);
+    NSUInteger pixelWidth = [properties[(__bridge NSString *)kCGImagePropertyPixelWidth] unsignedIntegerValue];
+    NSUInteger pixelHeight = [properties[(__bridge NSString *)kCGImagePropertyPixelHeight] unsignedIntegerValue];
+    CGImagePropertyOrientation exifOrientation = (CGImagePropertyOrientation)[properties[(__bridge NSString *)kCGImagePropertyOrientation] unsignedIntegerValue];
+    if (!exifOrientation) {
+        exifOrientation = kCGImagePropertyOrientationUp;
+    }
+    
+    CFStringRef uttype = CGImageSourceGetType(source);
+    // Check vector format
+    BOOL isVector = NO;
+    if ([NSData sd_imageFormatFromUTType:uttype] == SDImageFormatPDF) {
+        isVector = YES;
+    }
+    
+    CGImageRef imageRef;
+    if (thumbnailSize.width == 0 || thumbnailSize.height == 0 || pixelWidth == 0 || pixelHeight == 0 || (pixelWidth <= thumbnailSize.width && pixelHeight <= thumbnailSize.height)) {
+        NSDictionary *options;
+        if (isVector) {
+            if (thumbnailSize.width == 0 || thumbnailSize.height == 0) {
+                // Provide the default pixel count for vector images, simply just use the screen size
+#if SD_WATCH
+                thumbnailSize = WKInterfaceDevice.currentDevice.screenBounds.size;
+#elif SD_UIKIT
+                thumbnailSize = UIScreen.mainScreen.bounds.size;
+#elif SD_MAC
+                thumbnailSize = NSScreen.mainScreen.frame.size;
+#endif
+            }
+            CGFloat maxPixelSize = MAX(thumbnailSize.width, thumbnailSize.height);
+            NSUInteger DPIPerPixel = 2;
+            NSUInteger rasterizationDPI = maxPixelSize * DPIPerPixel;
+            options = @{kSDCGImageSourceRasterizationDPI : @(rasterizationDPI)};
+        }
+        imageRef = CGImageSourceCreateImageAtIndex(source, index, (__bridge CFDictionaryRef)options);
+    } else {
+        NSMutableDictionary *thumbnailOptions = [NSMutableDictionary dictionary];
+        thumbnailOptions[(__bridge NSString *)kCGImageSourceCreateThumbnailWithTransform] = @(preserveAspectRatio);
+        CGFloat maxPixelSize;
+        if (preserveAspectRatio) {
+            CGFloat pixelRatio = pixelWidth / pixelHeight;
+            CGFloat thumbnailRatio = thumbnailSize.width / thumbnailSize.height;
+            if (pixelRatio > thumbnailRatio) {
+                maxPixelSize = thumbnailSize.width;
+            } else {
+                maxPixelSize = thumbnailSize.height;
+            }
+        } else {
+            maxPixelSize = MAX(thumbnailSize.width, thumbnailSize.height);
+        }
+        thumbnailOptions[(__bridge NSString *)kCGImageSourceThumbnailMaxPixelSize] = @(maxPixelSize);
+        thumbnailOptions[(__bridge NSString *)kCGImageSourceCreateThumbnailFromImageIfAbsent] = @(YES);
+        imageRef = CGImageSourceCreateThumbnailAtIndex(source, index, (__bridge CFDictionaryRef)thumbnailOptions);
+    }
+    if (!imageRef) {
+        return nil;
+    }
+    
+    if (thumbnailSize.width > 0 && thumbnailSize.height > 0) {
+        if (preserveAspectRatio) {
+            // kCGImageSourceCreateThumbnailWithTransform will apply EXIF transform as well, we should not apply twice
+            exifOrientation = kCGImagePropertyOrientationUp;
+        } else {
+            // `CGImageSourceCreateThumbnailAtIndex` take only pixel dimension, if not `preserveAspectRatio`, we should manual scale to the target size
+            CGImageRef scaledImageRef = [SDImageCoderHelper CGImageCreateScaled:imageRef size:thumbnailSize];
+            CGImageRelease(imageRef);
+            imageRef = scaledImageRef;
+        }
+    }
+    
+#if SD_UIKIT || SD_WATCH
+    UIImageOrientation imageOrientation = [SDImageCoderHelper imageOrientationFromEXIFOrientation:exifOrientation];
+    UIImage *image = [[UIImage alloc] initWithCGImage:imageRef scale:scale orientation:imageOrientation];
+#else
+    UIImage *image = [[UIImage alloc] initWithCGImage:imageRef scale:scale orientation:exifOrientation];
+#endif
+    CGImageRelease(imageRef);
+    return image;
+}
+
 #pragma mark - Decode
 - (BOOL)canDecodeFromData:(nullable NSData *)data {
     return ([NSData sd_imageFormatForImageData:data] == self.class.imageFormat);
@@ -160,14 +248,34 @@
         scale = MAX([scaleFactor doubleValue], 1);
     }
     
+    CGSize thumbnailSize = CGSizeZero;
+    NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
+    if (thumbnailSizeValue != nil) {
 #if SD_MAC
-    SDAnimatedImageRep *imageRep = [[SDAnimatedImageRep alloc] initWithData:data];
-    NSSize size = NSMakeSize(imageRep.pixelsWide / scale, imageRep.pixelsHigh / scale);
-    imageRep.size = size;
-    NSImage *animatedImage = [[NSImage alloc] initWithSize:size];
-    [animatedImage addRepresentation:imageRep];
-    return animatedImage;
+        thumbnailSize = thumbnailSizeValue.sizeValue;
 #else
+        thumbnailSize = thumbnailSizeValue.CGSizeValue;
+#endif
+    }
+    
+    BOOL preserveAspectRatio = YES;
+    NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
+    if (preserveAspectRatioValue != nil) {
+        preserveAspectRatio = preserveAspectRatioValue.boolValue;
+    }
+    
+#if SD_MAC
+    // If don't use thumbnail, prefers the built-in generation of frames (GIF/APNG)
+    // Which decode frames in time and reduce memory usage
+    if (thumbnailSize.width == 0 || thumbnailSize.height == 0) {
+        SDAnimatedImageRep *imageRep = [[SDAnimatedImageRep alloc] initWithData:data];
+        NSSize size = NSMakeSize(imageRep.pixelsWide / scale, imageRep.pixelsHigh / scale);
+        imageRep.size = size;
+        NSImage *animatedImage = [[NSImage alloc] initWithSize:size];
+        [animatedImage addRepresentation:imageRep];
+        return animatedImage;
+    }
+#endif
     
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
     if (!source) {
@@ -178,19 +286,17 @@
     
     BOOL decodeFirstFrame = [options[SDImageCoderDecodeFirstFrameOnly] boolValue];
     if (decodeFirstFrame || count <= 1) {
-        animatedImage = [[UIImage alloc] initWithData:data scale:scale];
+        animatedImage = [self.class createFrameAtIndex:0 source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize];
     } else {
         NSMutableArray<SDImageFrame *> *frames = [NSMutableArray array];
         
         for (size_t i = 0; i < count; i++) {
-            CGImageRef imageRef = CGImageSourceCreateImageAtIndex(source, i, NULL);
-            if (!imageRef) {
+            UIImage *image = [self.class createFrameAtIndex:i source:source scale:scale preserveAspectRatio:preserveAspectRatio thumbnailSize:thumbnailSize];
+            if (!image) {
                 continue;
             }
             
             NSTimeInterval duration = [self.class frameDurationAtIndex:i source:source];
-            UIImage *image = [[UIImage alloc] initWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
-            CGImageRelease(imageRef);
             
             SDImageFrame *frame = [SDImageFrame frameWithImage:image duration:duration];
             [frames addObject:frame];
@@ -205,7 +311,6 @@
     CFRelease(source);
     
     return animatedImage;
-#endif
 }
 
 #pragma mark - Progressive Decode
@@ -225,6 +330,22 @@
             scale = MAX([scaleFactor doubleValue], 1);
         }
         _scale = scale;
+        CGSize thumbnailSize = CGSizeZero;
+        NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
+        if (thumbnailSizeValue != nil) {
+    #if SD_MAC
+            thumbnailSize = thumbnailSizeValue.sizeValue;
+    #else
+            thumbnailSize = thumbnailSizeValue.CGSizeValue;
+    #endif
+        }
+        _thumbnailSize = thumbnailSize;
+        BOOL preserveAspectRatio = YES;
+        NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
+        if (preserveAspectRatioValue != nil) {
+            preserveAspectRatio = preserveAspectRatioValue.boolValue;
+        }
+        _preserveAspectRatio = preserveAspectRatio;
 #if SD_UIKIT
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
 #endif
@@ -265,20 +386,13 @@
     
     if (_width + _height > 0) {
         // Create the image
-        CGImageRef partialImageRef = CGImageSourceCreateImageAtIndex(_imageSource, 0, NULL);
-        
-        if (partialImageRef) {
-            CGFloat scale = _scale;
-            NSNumber *scaleFactor = options[SDImageCoderDecodeScaleFactor];
-            if (scaleFactor != nil) {
-                scale = MAX([scaleFactor doubleValue], 1);
-            }
-#if SD_UIKIT || SD_WATCH
-            image = [[UIImage alloc] initWithCGImage:partialImageRef scale:scale orientation:UIImageOrientationUp];
-#else
-            image = [[UIImage alloc] initWithCGImage:partialImageRef scale:scale orientation:kCGImagePropertyOrientationUp];
-#endif
-            CGImageRelease(partialImageRef);
+        CGFloat scale = _scale;
+        NSNumber *scaleFactor = options[SDImageCoderDecodeScaleFactor];
+        if (scaleFactor != nil) {
+            scale = MAX([scaleFactor doubleValue], 1);
+        }
+        image = [self.class createFrameAtIndex:0 source:_imageSource scale:scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize];
+        if (image) {
             image.sd_imageFormat = self.class.imageFormat;
         }
     }
@@ -370,6 +484,22 @@
             scale = MAX([scaleFactor doubleValue], 1);
         }
         _scale = scale;
+        CGSize thumbnailSize = CGSizeZero;
+        NSValue *thumbnailSizeValue = options[SDImageCoderDecodeThumbnailPixelSize];
+        if (thumbnailSizeValue != nil) {
+    #if SD_MAC
+            thumbnailSize = thumbnailSizeValue.sizeValue;
+    #else
+            thumbnailSize = thumbnailSizeValue.CGSizeValue;
+    #endif
+        }
+        _thumbnailSize = thumbnailSize;
+        BOOL preserveAspectRatio = YES;
+        NSNumber *preserveAspectRatioValue = options[SDImageCoderDecodePreserveAspectRatio];
+        if (preserveAspectRatioValue != nil) {
+            preserveAspectRatio = preserveAspectRatioValue.boolValue;
+        }
+        _preserveAspectRatio = preserveAspectRatio;
         _imageSource = imageSource;
         _imageData = data;
 #if SD_UIKIT
@@ -421,23 +551,24 @@
 }
 
 - (UIImage *)animatedImageFrameAtIndex:(NSUInteger)index {
-    CGImageRef imageRef = CGImageSourceCreateImageAtIndex(_imageSource, index, NULL);
-    if (!imageRef) {
+    UIImage *image = [self.class createFrameAtIndex:index source:_imageSource scale:_scale preserveAspectRatio:_preserveAspectRatio thumbnailSize:_thumbnailSize];
+    if (!image) {
         return nil;
     }
+    image.sd_imageFormat = self.class.imageFormat;
     // Image/IO create CGImage does not decode, so we do this because this is called background queue, this can avoid main queue block when rendering(especially when one more imageViews use the same image instance)
-    CGImageRef newImageRef = [SDImageCoderHelper CGImageCreateDecoded:imageRef];
-    if (!newImageRef) {
-        newImageRef = imageRef;
-    } else {
-        CGImageRelease(imageRef);
+    CGImageRef imageRef = [SDImageCoderHelper CGImageCreateDecoded:image.CGImage];
+    if (!imageRef) {
+        return image;
     }
 #if SD_MAC
-    UIImage *image = [[UIImage alloc] initWithCGImage:newImageRef scale:_scale orientation:kCGImagePropertyOrientationUp];
+    image = [[UIImage alloc] initWithCGImage:imageRef scale:_scale orientation:kCGImagePropertyOrientationUp];
 #else
-    UIImage *image = [[UIImage alloc] initWithCGImage:newImageRef scale:_scale orientation:UIImageOrientationUp];
+    image = [[UIImage alloc] initWithCGImage:imageRef scale:_scale orientation:image.imageOrientation];
 #endif
-    CGImageRelease(newImageRef);
+    CGImageRelease(imageRef);
+    image.sd_isDecoded = YES;
+    image.sd_imageFormat = self.class.imageFormat;
     return image;
 }
 

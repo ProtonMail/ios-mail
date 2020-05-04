@@ -24,7 +24,7 @@
 import Foundation
 import UIKit
 import SWRevealViewController
-import Keymaker
+import PMKeymaker
 import UserNotifications
 
 public class PushNotificationService: NSObject, Service {
@@ -39,32 +39,27 @@ public class PushNotificationService: NSObject, Service {
 
     
     /// message service
-    private let messageService: MessageDataService
+    private let messageService: MessageDataService?
     
     ///
-    private let subscriptionSaver: Saver<Subscription>
-    private let outdatedSaver: Saver<Set<SubscriptionSettings>>
-    private let encryptionKitSaver: Saver<SubscriptionSettings>
     private let sessionIDProvider: SessionIdProvider
     private let deviceRegistrator: DeviceRegistrator
     private let signInProvider: SignInProvider
     private let unlockProvider: UnlockProvider
     private let deviceTokenSaver: Saver<String>
     
-    init(service: MessageDataService,
-         subscriptionSaver: Saver<Subscription> = KeychainSaver(key: Key.subscription),
-         encryptionKitSaver: Saver<PushSubscriptionSettings> = PushNotificationDecryptor.saver,
+    init(service: MessageDataService? = nil,
+         subscriptionSaver: Saver<Set<SubscriptionWithSettings>> = KeychainSaver(key: Key.subscription),
+         encryptionKitSaver: Saver<Set<PushSubscriptionSettings>> = PushNotificationDecryptor.saver,
          outdatedSaver: Saver<Set<SubscriptionSettings>> = PushNotificationDecryptor.outdater,
          sessionIDProvider: SessionIdProvider = AuthCredentialSessionIDProvider(),
-         deviceRegistrator: DeviceRegistrator = sharedAPIService,
+         deviceRegistrator: DeviceRegistrator = APIService.unauthorized, // unregister call is unauthorized; register call is authorized one, we will inject auth credentials into the call itself
          signInProvider: SignInProvider = SignInManagerProvider(),
          deviceTokenSaver: Saver<String> = PushNotificationDecryptor.deviceTokenSaver,
          unlockProvider: UnlockProvider = UnlockManagerProvider())
     {
         self.messageService = service
-        self.subscriptionSaver = subscriptionSaver
-        self.encryptionKitSaver = encryptionKitSaver
-        self.outdatedSaver = outdatedSaver
+        self.currentSubscriptions = SubscriptionsPack(subscriptionSaver, encryptionKitSaver, outdatedSaver)
         self.sessionIDProvider = sessionIDProvider
         self.deviceRegistrator = deviceRegistrator
         self.signInProvider = signInProvider
@@ -86,21 +81,7 @@ public class PushNotificationService: NSObject, Service {
     fileprivate var latestDeviceToken: String? { // previous device tokens are not relevant for this class
         didSet { self.deviceTokenSaver.set(newValue: latestDeviceToken)} // but we have to save one for PushNotificationDecryptor
     }
-    fileprivate var outdatedSettings: Set<SubscriptionSettings> {
-        get { return self.outdatedSaver.get() ?? [] } // cuz PushNotificationDecryptor can add values to this colletion while app is running
-        set { self.outdatedSaver.set(newValue: newValue) } // in keychain cuz should persist over reinstalls
-    }
-    fileprivate var currentSubscription: Subscription {
-        get { return self.subscriptionSaver.get() ?? .none }
-        set {
-            self.subscriptionSaver.set(newValue: newValue) // in keychain cuz should persist over reinstalls
-            
-            switch newValue { // save encryption kit to userdefaults for PushNotificationDecryptor but not persist over reinstalls
-            case .reported(let settings):   self.encryptionKitSaver.set(newValue: settings)
-            default:                        self.encryptionKitSaver.set(newValue: nil)
-            }
-        }
-    }
+    fileprivate let currentSubscriptions: SubscriptionsPack
     
     // MARK: - register for notificaitons
     
@@ -113,7 +94,7 @@ public class PushNotificationService: NSObject, Service {
             }
         }
         
-        self.outdatedSettings.forEach(self.unreport)
+        self.unreportOutdated()
     }
     
     public func didRegisterForRemoteNotifications(withDeviceToken deviceToken: String) {
@@ -130,88 +111,72 @@ public class PushNotificationService: NSObject, Service {
     }
     
     private func didUnlock() {
-        guard let sessionID = self.sessionIDProvider.sessionID, let deviceToken = self.latestDeviceToken else {
+        guard case let sessionIDs = self.sessionIDProvider.sessionIDs, let deviceToken = self.latestDeviceToken else {
             return
         }
         
-        let newSettings = SubscriptionSettings(token: deviceToken, UID: sessionID)
+        let settingsWeNeedToHave = sessionIDs.map { SubscriptionSettings(token: deviceToken, UID: $0) }
         
-        switch self.currentSubscription {
-        case .none, .notReported:
-            self.currentSubscription = .notReported(newSettings)
-            
-        case .pending(let oldSettings) where oldSettings != newSettings:
-            self.outdatedSettings.insert(oldSettings)
-            self.currentSubscription = .notReported(newSettings)
-            
-        case .reported(let oldSettings) where oldSettings != newSettings:
-            self.outdatedSettings.insert(oldSettings)
-            self.currentSubscription = .notReported(newSettings)
-            
-        default: break
-        }
+        let settingsToUnreport = self.currentSubscriptions.settings().subtracting(Set(settingsWeNeedToHave))
+        self.currentSubscriptions.outdate(settingsToUnreport)
         
-        guard case Subscription.notReported(var newSettingsWithEncryptionKit) = self.currentSubscription else {
-            return // cuz nothing needs to be repoorted
-        }
+        let subscriptionsToKeep = self.currentSubscriptions.subscriptions.filter { $0.state == .reported && !settingsToUnreport.contains($0.settings) }
+        var settingsToReport = Set(settingsWeNeedToHave).subtracting(Set(subscriptionsToKeep.map { $0.settings}))
+        settingsToReport = Set(settingsToReport.map { settings -> SubscriptionSettings in
+            var newSettings = settings
+            do {
+                try newSettings.generateEncryptionKit()
+            } catch let error {
+                assert(false, "failed to generate enryption kit: \(error)")
+            }
+            return newSettings
+        })
         
-        guard let _ = try? newSettingsWithEncryptionKit.generateEncryptionKit() else {
-            assert(false, "failed to generate enryption kit") // will crash only on debug builds
-            return // cuz no sence in subscribing without privateKey
-        }
-        
-        self.currentSubscription = .notReported(newSettingsWithEncryptionKit)
-        self.report(newSettingsWithEncryptionKit)
+        let subcriptionsBeforeReport = Set(settingsToReport.map { SubscriptionWithSettings(settings: $0, state: .notReported) })
+        self.currentSubscriptions.insert(subcriptionsBeforeReport)
+        self.report(settingsToReport)
+        self.unreportOutdated()
     }
     
     @objc private func didSignOut() {
-        switch self.currentSubscription {
-        case .reported(let currentSettings), .pending(let currentSettings):
-            self.unreport(currentSettings)
-            
-        case .none, .notReported:
-            break
+        let settingsToUnreport = self.currentSubscriptions.subscriptions.compactMap { subscription -> SubscriptionSettings? in
+            return subscription.state == .notReported ? nil : subscription.settings
         }
+        self.currentSubscriptions.outdate(Set(settingsToUnreport))
+        self.unreportOutdated()
     }
     
     // register on BE and validate local values
-    private func report(_ settings: SubscriptionSettings) {
-        self.currentSubscription = .pending(settings)
-        let completion: APIService.CompletionBlock = { _, _, error in
-            guard error == nil else {
-                self.currentSubscription = .notReported(settings)
-                return
+    private func report(_ settingsToReport: Set<SubscriptionSettings>) {
+        settingsToReport.forEach { settings in
+            let completion: CompletionBlock = { _, _, error in
+                guard error == nil else {
+                    self.currentSubscriptions.update(settings, toState: .notReported)
+                    return
+                }
+                self.currentSubscriptions.update(settings, toState: .reported)
             }
-            self.currentSubscription = .reported(settings)
-            self.outdatedSettings.remove(settings)
-            self.outdatedSettings.forEach(self.unreport)
+            self.currentSubscriptions.update(settings, toState: .pending)
+            
+            let auth = sharedServices.get(by: UsersManager.self).getUser(bySessionID: settings.UID)?.auth
+            self.deviceRegistrator.device(registerWith: settings, authCredential: auth, completion: completion)
         }
-        
-        self.deviceRegistrator.device(registerWith: settings, completion: completion)
     }
     
     // unregister on BE and validate local values
-    internal func unreport(_ settings: SubscriptionSettings) {
-        let completion: APIService.CompletionBlock = { _, _, error in
-            guard error == nil ||               // no errors
-                error?.code == 11211 ||         // "Device does not exist"
-                error?.code == 11200 else       // "Invalid device token"
-            {
-                self.outdatedSettings.insert(settings)
-                return
-            }
-            self.outdatedSettings.remove(settings)
-            
-            switch self.currentSubscription {
-            case .none: break
-            case .reported(let currentSettings), .pending(let currentSettings), .notReported(let currentSettings):
-                if settings == currentSettings {
-                    self.currentSubscription = .none
+    internal func unreportOutdated() {
+        self.currentSubscriptions.outdatedSettings.forEach { settings in
+            let completion: CompletionBlock = { _, _, error in
+                guard error == nil ||               // no errors
+                    error?.code == 11211 ||         // "Device does not exist"
+                    error?.code == 11200 else       // "Invalid device token"
+                {
+                    return
                 }
+                self.currentSubscriptions.removed(settings)
             }
+            self.deviceRegistrator.deviceUnregister(settings, completion: completion)
         }
-        
-        self.deviceRegistrator.deviceUnregister(settings, completion: completion)
     }
     
     // MARK: - launch options
@@ -237,39 +202,37 @@ public class PushNotificationService: NSObject, Service {
     
     // MARK: - notifications
     
-    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any], forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
-        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else { // FIXME: test locked flow
+    public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],
+                                             forceProcess : Bool = false, fetchCompletionHandler completionHandler: @escaping () -> Void) {
+        guard sharedServices.get(by: UsersManager.self).hasUsers(), UnlockManager.shared.isUnlocked() else {
             completionHandler()
             return
         }
         
-        let application = UIApplication.shared
-        guard let messageid = messageIDForUserInfo(userInfo) else {
-            completionHandler()
-            return
-        }
-        
-        // if the app is in the background, then switch to the inbox and load the message detail
-        guard application.applicationState == UIApplication.State.inactive || application.applicationState == UIApplication.State.background || forceProcess else {
+        guard let messageid = messageIDForUserInfo(userInfo), let uidFromPush = userInfo["UID"] as? String,
+            let user = sharedServices.get(by: UsersManager.self).getUser(bySessionID: uidFromPush) else
+        {
             completionHandler()
             return
         }
         
         self.launchOptions = nil
-        messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
+
+        user.messageService.fetchNotificationMessageDetail(messageid) { (task, response, message, error) -> Void in
             guard error == nil else {
                 completionHandler()
                 return
             }
-            
-            
+
             switch userInfo["category"] as? String {
             case .some(LocalNotificationService.Categories.failedToSend.rawValue):
-                let link = DeepLink.init(MenuCoordinatorNew.Destination.mailbox.rawValue, sender: Message.Location.draft.rawValue)
+                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue, value: Message.Location.draft.rawValue))
                 NotificationCenter.default.post(name: .switchView, object: link)
             default:
-                self.messageService.pushNotificationMessageID = messageid
-                let link = DeepLink(MenuCoordinatorNew.Destination.mailbox.rawValue)
+                user.messageService.pushNotificationMessageID = messageid
+                let link = DeepLink(MenuCoordinatorNew.Setup.switchUserFromNotification.rawValue, sender: uidFromPush)
+                link.append(.init(name: MenuCoordinatorNew.Destination.mailbox.rawValue))
                 link.append(.init(name: MailboxCoordinator.Destination.detailsFromNotify.rawValue))
                 NotificationCenter.default.post(name: .switchView, object: link)
             }
@@ -279,8 +242,10 @@ public class PushNotificationService: NSObject, Service {
     
     // MARK: - Private methods
     private func messageIDForUserInfo(_ userInfo: [AnyHashable: Any]) -> String? {
-        if let encrypted = userInfo["encryptedMessage"] as? String { // new pushes
-            guard let encryptionKit = self.encryptionKitSaver.get()?.encryptionKit else {
+        if let encrypted = userInfo["encryptedMessage"] as? String,
+            let uid = userInfo["UID"] as? String { // new pushes
+            guard let encryptionKit = self.currentSubscriptions.encryptionKit(forUID: uid) else {
+                assert(false, "no encryption kit fround")
                 return nil
             }
             do {
@@ -323,26 +288,20 @@ extension PushNotificationService: UNUserNotificationCenterDelegate {
                                        willPresent notification: UNNotification,
                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
     {
-        let userInfo = notification.request.content.userInfo
-        let options: UNNotificationPresentationOptions = [.alert, .sound]
-        
-        if UnlockManager.shared.isUnlocked() { // foreground
-            self.didReceiveRemoteNotification(userInfo, fetchCompletionHandler: { completionHandler(options) } )
-        } else {
-            completionHandler(options)
-        }
+        let options: UNNotificationPresentationOptions = [.alert, .sound]   
+        completionHandler(options)
     }
 }
 
 // MARK: - Dependency Injection sugar
 
 protocol SessionIdProvider {
-    var sessionID: String? { get }
+    var sessionIDs: Array<String> { get }
 }
 
 struct AuthCredentialSessionIDProvider: SessionIdProvider {
-    var sessionID: String? {
-        return AuthCredential.fetchFromKeychain()?.userID
+    var sessionIDs: Array<String> {
+        return sharedServices.get(by: UsersManager.self).users.map { $0.auth.sessionID }
     }
 }
 
@@ -351,7 +310,7 @@ protocol SignInProvider {
 }
 struct SignInManagerProvider: SignInProvider {
     var isSignedIn: Bool {
-        return SignInManager.shared.isSignedIn()
+        return sharedServices.get(by: UsersManager.self).hasUsers()
     }
 }
 
@@ -360,13 +319,13 @@ protocol UnlockProvider {
 }
 struct UnlockManagerProvider: UnlockProvider {
     var isUnlocked: Bool {
-        return UnlockManager.shared.isUnlocked()
+        return sharedServices.get(by: UnlockManager.self).isUnlocked()
     }
 }
 
 protocol DeviceRegistrator {
-    func device(registerWith settings: PushSubscriptionSettings, completion: APIService.CompletionBlock?)
-    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping APIService.CompletionBlock)
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?)
+    func deviceUnregister(_ settings: PushSubscriptionSettings, completion: @escaping CompletionBlock)
 }
 
 extension APIService: DeviceRegistrator {}

@@ -22,20 +22,18 @@
 
 
 import Foundation
+import CoreData
 
 
 //TODO::cache this only need to load after login/authed
 let lastUpdatedStore = LastUpdatedStore()
 
-final class LastUpdatedStore : SharedCacheBase {
-    
+final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
+
     fileprivate struct Key {
-        static let labelsUnreadCount   = "LabelsUnreadCount"  //for inbox & labels
-        static let lastLabelsUpdated   = "LastLabelsUpdated" //for inbox & labels
         
         static let unreadMessageCount  = "unreadMessageCount"  //total unread
         
-        static let lastEventID         = "lastEventID"  //
         static let lastCantactsUpdated = "LastCantactsUpdated" //
         
         //added 1.8.0 new contacts
@@ -44,38 +42,14 @@ final class LastUpdatedStore : SharedCacheBase {
         //Removed at 1.5.5 still need for cleanup
         static let mailboxUnreadCount  = "MailboxUnreadCount"
         static let lastInboxesUpdated  = "LastInboxesUpdated"
+        //Removed at 1.12.0
+        static let labelsUnreadCount   = "LabelsUnreadCount"
+        static let lastLabelsUpdated   = "LastLabelsUpdated"
+        static let lastEventID         = "lastEventID"
+        
     }
-    
-    private var lastLabelsUpdateds: [String : UpdateTime] {
-        get {
-            return (getShared().customObjectForKey(Key.lastLabelsUpdated) as? [String : UpdateTime]) ?? [:]
-        }
-        set {
-            getShared().setCustomValue(newValue as NSCoding?, forKey: Key.lastLabelsUpdated)
-            getShared().synchronize()
-        }
-    }
-    
-    private var labelsUnreadCounts: [String : Int] {
-        get {
-            return (getShared().customObjectForKey(Key.labelsUnreadCount) as? [String : Int]) ?? [:]
-        }
-        set {
-            getShared().setCustomValue(newValue as NSCoding?, forKey: Key.labelsUnreadCount)
-            getShared().synchronize()
-        }
-    }
-    
-    var lastEventID: String! {
-        get {
-            let eid =  getShared().string(forKey: Key.lastEventID) ?? "0"
-            return eid
-        }
-        set {
-            getShared().setValue(newValue, forKey: Key.lastEventID)
-            getShared().synchronize()
-        }
-    }
+
+
     
     var contactsCached: Int {
         get {
@@ -102,10 +76,11 @@ final class LastUpdatedStore : SharedCacheBase {
     clear the last update time cache
     */
     func clear() {
+        
+        
         //in use
         getShared().removeObject(forKey: Key.lastCantactsUpdated)
         getShared().removeObject(forKey: Key.lastLabelsUpdated)
-        getShared().removeObject(forKey: Key.lastEventID)
         getShared().removeObject(forKey: Key.unreadMessageCount)
         getShared().removeObject(forKey: Key.labelsUnreadCount)
         getShared().removeObject(forKey: Key.isContactsCached)
@@ -113,11 +88,24 @@ final class LastUpdatedStore : SharedCacheBase {
         //removed
         getShared().removeObject(forKey: Key.mailboxUnreadCount)
         getShared().removeObject(forKey: Key.lastInboxesUpdated)
+        getShared().removeObject(forKey: Key.lastEventID)
         
         //sync
         getShared().synchronize()
         
         UIApplication.setBadge(badge: 0)
+    }
+    
+    func cleanUp() {
+        // TODO: clean only one specific user
+    }
+    
+    static func cleanUpAll() {
+        let context = CoreDataService.shared.backgroundManagedObjectContext
+        context.perform {
+            UserEvent.deleteAll(inContext: context)
+            LabelUpdate.deleteAll(inContext: context)
+        }
     }
     
     // reset functions
@@ -130,54 +118,66 @@ final class LastUpdatedStore : SharedCacheBase {
         getShared().synchronize()
     }
     
+    //Mark - new 1.12.0
+    
+    func lastUpdate(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> LabelUpdate? {
+        //TODO:: fix me fetch everytime is expensive
+        return LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+    }
+    
+    func lastUpdateDefault(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> LabelUpdate {
+        if let update = LabelUpdate.lastUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext) {
+            return update
+        }
+        return LabelUpdate.newLabelUpdate(by: labelID, userID: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+    }
     
     // location & label: message unread count
-    func unreadCountForKey(_ labelID : String) -> Int {
-        return labelsUnreadCounts[labelID] ?? 0
+    func unreadCount(by labelID : String, userID: String, context: NSManagedObjectContext? = nil) -> Int {
+        guard let update = lastUpdate(by: labelID, userID: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext) else {
+            return 0
+        }
+        return Int(update.unread)
     }
+
     // update unread count
-    func updateUnreadCountForKey(_ labelID : String, count: Int) {
-        labelsUnreadCounts[labelID] = count
+    func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext? = nil) {
+        let update = lastUpdateDefault(by: labelID, userID: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext)
+        update.unread = Int32(count)
+        
+        let _ = context?.saveUpstreamIfNeeded()
         
         if labelID == Message.Location.inbox.rawValue {
             UIApplication.setBadge(badge: count)
         }
     }
     
-    /// cache time mark part
-    func labelsLastForKey(_ labelID : String) -> UpdateTime {
-        return lastLabelsUpdateds[labelID] ?? UpdateTime.distantPast()
+    //remove all updates for a user
+    func removeUpdateTime(by userID: String, context: NSManagedObjectContext? = nil) {
+        let _ = LabelUpdate.remove(by: userID, inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
     }
     
-    func updateLabelsForKey(_ labelID : String, updateTime: UpdateTime) {
-        lastLabelsUpdateds[labelID] = updateTime
+    
+    // update event id
+    func updateEventID(by userID : String, eventID: String, context: NSManagedObjectContext? = nil) {
+        let event = eventIDDefault(by: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext)
+        event.eventID = eventID;
+        let _ = context?.saveUpstreamIfNeeded()
     }
-
     
-//    // Mailbox unread count change
-//    func UnreadMailboxMessage(_ location : String) {
-//        var currentCount = labelsUnreadCounts[location] ?? 0
-//        currentCount += 1;
-//        labelsUnreadCounts[location] = currentCount
-//    }
-//
-//    func ReadMailboxMessage(_ location : String) {
-//        var currentCount = labelsUnreadCounts[location] ?? 0
-//        currentCount -= 1;
-//        if currentCount < 0 {
-//            currentCount = 0
-//        }
-//        labelsUnreadCounts[location] = currentCount
-//    }
-//
-//    func MoveUnReadMailboxMessage(_ from : String, to : String) {
-//        //TODO:: doesn't right. need to change
-//        UnreadMailboxMessage(from);
-//        ReadMailboxMessage(to)
-//    }
-//
+    private func eventIDDefault(by userID : String, context: NSManagedObjectContext? = nil) -> UserEvent {
+        if let update = UserEvent.userEvent(by: userID,
+                                            inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext) {
+            return update
+        }
+        return UserEvent.newUserEvent(userID: userID,
+                                      inManagedObjectContext: context ?? CoreDataService.shared.mainManagedObjectContext)
+    }
     
-
+    func lastEventID(userID: String) -> String {
+        let event = eventIDDefault(by: userID, context: CoreDataService.shared.mainManagedObjectContext)
+        return event.eventID
+    }
 }
 
 

@@ -35,10 +35,7 @@
                         </connections>
                     </switch>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r9o-Y0-v9M">
-                        <rect key="frame" x="23" y="6" width="272" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="16" id="eLg-rt-6Ov"/>
-                        </constraints>
+                        <rect key="frame" x="23" y="6" width="272" height="38"/>
                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -50,6 +47,7 @@
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="eqg-gq-rnt" secondAttribute="trailing" constant="10" id="Xc2-iP-96e"/>
                     <constraint firstItem="r9o-Y0-v9M" firstAttribute="top" secondItem="cUS-OI-VCK" secondAttribute="top" constant="6" id="acg-4O-u3g"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="leading" secondItem="r9o-Y0-v9M" secondAttribute="trailing" constant="8" id="eB6-09-xEU"/>
+                    <constraint firstAttribute="bottom" secondItem="r9o-Y0-v9M" secondAttribute="bottom" constant="6" id="j6Z-EH-eKl"/>
                     <constraint firstItem="4EK-SM-FCP" firstAttribute="centerY" secondItem="cUS-OI-VCK" secondAttribute="centerY" id="kYL-vp-WNe"/>
                     <constraint firstAttribute="trailingMargin" secondItem="4EK-SM-FCP" secondAttribute="trailing" constant="8" id="mBj-vE-Rd1"/>
                     <constraint firstItem="r9o-Y0-v9M" firstAttribute="leading" secondItem="cUS-OI-VCK" secondAttribute="leadingMargin" constant="8" id="mq7-uy-jBH"/>

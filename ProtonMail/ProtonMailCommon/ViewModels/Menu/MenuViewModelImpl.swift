@@ -26,8 +26,67 @@ import CoreData
 import UIKit
 
 class MenuViewModelImpl : MenuViewModel {
+    private let kMenuCellHeight: CGFloat = 44.0
+    private let kUserCellHeight: CGFloat = 60.0
+    
+    func cellHeight(at: Int) -> CGFloat {
+        let section = self.section(at: at)
+        switch section {
+        case .users:
+            return kUserCellHeight
+        case .disconnectedUsers:
+            return kUserCellHeight
+        default:
+            return kMenuCellHeight
+        }
+    }
+    
+    func user(at: Int) -> UserManager? {
+        return self.usersManager.user(at: at)
+    }
+    
+    func disconnectedUser(at: Int) -> UsersManager.DisconnectedUserHandle? {
+        return self.usersManager.disconnectedUser(at: at)
+    }
+    
+    var usersCount: Int {
+        get {
+            return self.usersManager.count
+        }
+    }
+    
+    var disconnectedUsersCount: Int {
+        get {
+            return self.usersManager.disconnectedUsers.count
+        }
+    }
+    
+    func showUsers() -> Bool {
+        showingUsers = !showingUsers
+        if showingUsers {
+            self.sections = [.users, .disconnectedUsers, .accountManager]
+        } else {
+            self.sections = [.inboxes, .others, .labels]
+        }
+        return showingUsers
+    }
+    
+    func hideUsers() {
+        showingUsers = false
+        self.sections = [.inboxes, .others, .labels]
+    }
+    
+    func updateCurrent(row: Int) {
+        self.currentUser = self.usersManager.user(at: row)
+        self.usersManager.active(index: row)
+    }
+    
+    func updateCurrent() {
+        self.currentUser = self.usersManager.firstUser
+    }
+    
     //menu sections
-    private let sections : [MenuSection] = [.inboxes, .others, .labels]
+    private var sections : [MenuSection] = [.inboxes, .others, .labels]
     
     //menu actions order by index
     private let inboxItems : [MenuItem] = [.inbox, .drafts, .sent, .starred,
@@ -38,19 +97,49 @@ class MenuViewModelImpl : MenuViewModel {
     //fetch request result
     private var fetchedLabels: NSFetchedResultsController<NSFetchRequestResult>?
     
+    private var showingUsers: Bool = false
+    
+    //
+    let usersManager : UsersManager
+    
+    //
+    lazy var labelDataService : LabelsDataService = self.currentUser!.labelService
+    
+    init(usersManager : UsersManager) {
+        self.usersManager = usersManager
+    }
+    
+    // user at the moment of creation of this MenuViewModel instance
+    lazy var currentUser: UserManager? = {
+        return self.usersManager.firstUser
+    }()
+    
+    var users: UsersManager {
+        get {
+            return self.usersManager
+        }
+    }
+    
+    var secondUser: UserManager? {
+        return self.usersManager.user(at: 1)
+    }
     
     func updateMenuItems() {
         otherItems = [.contacts, .settings, .servicePlan, .bugs, .lockapp, .signout]
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
-        if !ServicePlanDataService.shared.isIAPAvailable {
+        if let user = self.currentUser, !user.sevicePlanService.isIAPAvailable {
             otherItems = otherItems.filter { $0 != .servicePlan }
         }
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {
-        self.fetchedLabels = sharedLabelsDataService.fetchedResultsController(.all)
+        guard let labelService = self.currentUser?.labelService else {
+            return
+        }
+        self.labelDataService = labelService
+        self.fetchedLabels = self.labelDataService.fetchedResultsController(.all)
         self.fetchedLabels?.delegate = delegate
         if let fetchedResultsController = fetchedLabels {
             do {
@@ -60,7 +149,7 @@ class MenuViewModelImpl : MenuViewModel {
             }
         }
         ///TODO::fixme not necessary
-        sharedLabelsDataService.fetchLabels()
+        self.labelDataService.fetchLabels()
     }
     
     func sectionCount() -> Int {
@@ -74,7 +163,10 @@ class MenuViewModelImpl : MenuViewModel {
         return .unknown
     }
     
-    
+    func count(by labelID: String, userID: String? = nil) -> Int {
+        return labelDataService.unreadCount(by: labelID, userID: userID)
+    }
+
     func inboxesCount() -> Int {
         return self.inboxItems.count
     }
@@ -125,4 +217,22 @@ class MenuViewModelImpl : MenuViewModel {
         return IndexPath(row: r, section: s)
     }
     
+    func signOut() {
+        if let currentUser = self.currentUser {
+            self.usersManager.logout(user: currentUser)
+        }
+    }
+    
+    func isCurrentUserHasQueuedMessage() -> Bool {
+        if let currentUser = self.currentUser {
+            return currentUser.messageService.isAnyQueuedMessage(userId: currentUser.userInfo.userId)
+        }
+        return false
+    }
+    
+    func removeAllQueuedMessageOfCurrentUser() {
+        if let currentUser = self.currentUser {
+            currentUser.messageService.removeQueuedMessage(userId: currentUser.userInfo.userId)
+        }
+    }
 }

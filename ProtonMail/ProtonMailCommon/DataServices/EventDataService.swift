@@ -25,11 +25,14 @@ import Foundation
 
 //TODO::fixme. keep it in message
 class EventDataService {
-    typealias FetchEventComplete = APIService.CompletionBlock
+    
+    let apiService = APIService.shared
+    
+    typealias FetchEventComplete = CompletionBlock
     func fetchEvents(completion: FetchEventComplete?) {
-        let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
-        eventAPI.call() { task, _eventsRes, _hasEventsError in
-            
-        }
+//        let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID)
+//        eventAPI.call(api: self.apiService) { task, _eventsRes, _hasEventsError in
+//            
+//        }
     }    
 }

@@ -1,0 +1,17 @@
+{
+  "name": "PMCrypto",
+  "version": "1.0.0",
+  "summary": "Cocoapoddable Crypto.framework",
+  "description": "Umbrella above Crypto.framework",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmcrypto",
+  "license": "ProtonMail",
+  "authors": "Anatoly Rosencrantz",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "vendored_frameworks": "Crypto.framework"
+}

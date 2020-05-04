@@ -86,9 +86,9 @@ class SharePinUnlockViewController : UIViewController, CoordinatedNew {
     }
     
     func doEnterForeground(){
-        if userCachedStatus.isTouchIDEnabled {
-            
-        }
+//        if userCachedStatus.isTouchIDEnabled {
+//            
+//        }
     }
 }
 
@@ -130,7 +130,8 @@ extension SharePinUnlockViewController : PinCodeViewDelegate {
                             self.pinCodeView.showAttempError(self.viewModel.getPinFailedError(), low: false)
                         } else if count < 10 {
                             if count <= 0 {
-                                SignInManager.shared.clean()
+                                //TODO:: fix me
+//                                SignInManager.shared.clean()
                                 self.Cancel()
                             } else {
                                 self.pinCodeView.resetPin()

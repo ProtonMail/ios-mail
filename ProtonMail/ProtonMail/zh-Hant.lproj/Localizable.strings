@@ -182,16 +182,16 @@
 "Apple in-app purchase fee" = "Apple應用內購費用";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple通知我們, 他們無法處理購買事宜。";
+"Apple informed us they could not process the purchase." = "Apple 通知我們, 他們無法處理購買事宜。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple 通知我们您已升级了服务计划, 但没有说明您要升级的是 protonmail 帐户中的哪一个.";
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple 通知我們您已升級了服務計劃, 但沒有說明您要升級的是 protonmail 帳戶中的哪一個。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple 通知我们您已升级服务计划, 但却缺少一些技术数据。请填写 bugreport, 我们的客户支持团队将与您联系。";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple 通知我們您已升級服務計劃, 但卻缺少一些技術數據。請填寫 bugreport, 我們的客戶支持團隊將與您聯系。";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "苹果告诉我们你已经升级了服务计划，但我们检测到您自那时以来退出登陆了该帐户。";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple 通知我們你已經升級了服務計劃，但我們檢測到您自那時以來退出登陸了該帳戶。";
 
 /* Apply action */
 "Apply" = "套用";
@@ -659,7 +659,7 @@
 "Email Contact" = "郵件聯絡人";
 
 /* human check option button */
-"Email Verification" = "電子信箱驗證";
+"Email Verification" = "電子郵件驗證";
 
 /* contact placeholder */
 "Email address" = "電子郵件地址";
@@ -811,16 +811,16 @@
 "Folder Name" = "資料夾名稱";
 
 /* Service Plan description */
-"For individuals looking to benefit from secure communication at no cost" = "适合想免费享受加密通信服务的个人";
+"For individuals looking to benefit from secure communication at no cost" = "適合想免費享受加密通信服務的個人";
 
 /* Service Plan description */
-"For individuals that need more capacity, customization and advanced features" = "适合需要更大存储空间、更多功能、更高自由度的个人";
+"For individuals that need more capacity, customization and advanced features" = "適合需要更大存儲空間、更多功能、更高自由度的個人";
 
 /* Service Plan description */
-"For organizations that need multi-user support and additional productivity features" = "适合需要支持多用户和生产力功能的组织";
+"For organizations that need multi-user support and additional productivity features" = "適合需要支持多用戶和生產力功能的組織";
 
 /* Service Plan description */
-"For power users and groups of people that value full anonymity and privacy" = "适合极其注重匿名和隐私的高级用户和组织";
+"For power users and groups of people that value full anonymity and privacy" = "適合極其註重匿名和隱私的高級用戶和組織";
 
 /* forward action */
 "Forward" = "轉發";
@@ -1629,7 +1629,7 @@
 "Snoozed till" = "延遲提醒至";
 
 /* Error message for beta users */
-"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "对不起，我们不接受公测版 iOS 程序的购买请求。感谢您参与公测！";
+"Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!" = "對不起，我們不接受公測版 iOS 程式的購買請求。感謝您參與公測！";
 
 /* None */
 "Space Warning" = "儲存空間不足";
@@ -1776,7 +1776,7 @@
 "The private key update failed." = "私鑰更新失敗。";
 
 /* Title */
-"The request timed out." = "要求癒時。";
+"The request timed out." = "要求逾時。";
 
 /* None */
 "The total attachment size can't be bigger than 25MB" = "附件檔案大小總和不能超過 25MB";
@@ -1786,7 +1786,7 @@
 
 /* 
  & title */
-"The verification email invalid" = "验证邮箱无效";
+"The verification email invalid" = "驗證郵箱無效";
 
 /* Error */
 "The verification failed!" = "驗證失敗！";

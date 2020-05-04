@@ -23,7 +23,7 @@
 
 import UIKit
 import MBProgressHUD
-import Keymaker
+import PMKeymaker
 import MessageUI
 
 class NetworkTroubleShootViewController: UITableViewController, ViewModelProtocol, CoordinatedNew {
@@ -222,13 +222,7 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     var items : [Item] = [.allowSwitch,.noInternetNotes,.ipsNotes,.blockNotes,.antivirusNotes,.firewallNotes,.downtimeNotes,.otherNotes]
     
     /// cells
-//    let SettingSingalLineCell         = "settings_general"
-//    let SettingSingalSingleLineCell   = "settings_general_single_line"
-//    let SettingTwoLinesCell           = "settings_twolines"
-//    let SettingDomainsCell            = "setting_domains"
-//    let SettingStorageCell            = "setting_storage_cell"
     let HeaderCell                    = "header_cell"
-//    let SingleTextCell                = "single_text_cell"
     let SwitchTwolineCell             = "switch_two_line_cell"
     
     //
@@ -241,7 +235,6 @@ class NetworkTroubleShootViewController: UITableViewController, ViewModelProtoco
     //
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.restorationClass = SettingsTableViewController.self
         self.updateTitle()
         self.tableView.register(UITableViewHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: HeaderCell)
         
@@ -365,7 +358,6 @@ extension NetworkTroubleShootViewController : SwitchTwolineCellDelegate, MFMailC
     
     func openMFMail(){
         let mailComposer = MFMailComposeViewController()
-//        mailComposer.mailComposeDelegate = self
         mailComposer.setToRecipients(["support@protonmail.com"])
         mailComposer.setSubject("Subject..")
         mailComposer.setMessageBody("Please share your problem.", isHTML: false)

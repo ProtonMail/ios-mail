@@ -28,10 +28,11 @@ import Crypto
 final class UserEmailPubKeys : ApiRequestNew<KeysResponse> {
     let email : String
     init(email: String,
+         api: API,
          authCredential: AuthCredential? = nil)
     {
         self.email = email
-        super.init()
+        super.init(api: api)
         self.authCredential = authCredential
     }
     
@@ -142,7 +143,7 @@ final class KeysResponse : ApiResponse {
 
 final class GetKeysSalts : ApiRequestNew<KeySaltResponse> {
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .get
     }
     
@@ -272,7 +273,7 @@ final class UpdatePrivateKeyRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -301,12 +302,16 @@ final class SetupKeyRequest : ApiRequest<ApiResponse> {
          private_key : String,
          keysalt : String,
          signedKL : [String: Any],
-         auth : PasswordAuth ) {
+         auth : PasswordAuth,
+         authCredential: AuthCredential?) {
         self.keySalt = keysalt
         self.addressID = address_id
         self.privateKey = private_key
         self.signedKeyList = signedKL
         self.auth = auth
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -328,7 +333,7 @@ final class SetupKeyRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -351,10 +356,11 @@ final class ActivateKey : ApiRequestNew<ApiResponse> {
     let privateKey : String
     let signedKeyList: [String: Any]
     
-    init(addrID: String, privKey : String, signedKL : [String: Any]) {
+    init(api: API, addrID: String, privKey : String, signedKL : [String: Any]) {
         self.addressID = addrID
         self.privateKey = privKey
         self.signedKeyList = signedKL
+        super.init(api: api)
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -366,7 +372,7 @@ final class ActivateKey : ApiRequestNew<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     

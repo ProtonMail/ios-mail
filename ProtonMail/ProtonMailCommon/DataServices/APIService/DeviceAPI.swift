@@ -87,12 +87,12 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
             ver = version
         }
         let parameters : [String : Any] = [
-            "DeviceUID" : DeviceUtil.deviceID,
+//            "DeviceUID" : DeviceUtil.deviceID,
             "DeviceToken" : tokenString,
-            "DeviceName" : UIDevice.current.name,
-            "DeviceModel" : UIDevice.current.model,
-            "DeviceVersion" : UIDevice.current.systemVersion,
-            "AppVersion" : "iOS_\(ver)",
+//            "DeviceName" : UIDevice.current.name,
+//            "DeviceModel" : UIDevice.current.model,
+//            "DeviceVersion" : UIDevice.current.systemVersion,
+//            "AppVersion" : "iOS_\(ver)",
             "Environment" : env
         ]
         return parameters
@@ -102,7 +102,7 @@ final class RegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return false
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     
@@ -133,7 +133,7 @@ final class UnRegisterDeviceRequest<T : ApiResponse> : ApiRequest<T> {
         return nil
     }
 
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .delete
     }
 

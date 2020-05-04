@@ -30,15 +30,12 @@ class ShareAppCoordinator: CoordinatorNew {
     internal weak var navigationController: UINavigationController?
     private var nextCoordinator: CoordinatorNew?
     
-    let serviceHolder: ServiceFactory = {
-        let helper = ServiceFactory()
-        // when singletons will be refactored, create these here:
-        // AddressBookService, ContactDataService, MessageDataService, UserDataService
-        return helper
-    }()
-    
     func start() {
         self.loadUnlockCheckView()
+        
+        let usersManager = UsersManager(server: Server.live, delegate: self)
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UsersManager.self, for: usersManager)
     }
     
     init(navigation: UINavigationController?) {
@@ -48,7 +45,44 @@ class ShareAppCoordinator: CoordinatorNew {
     ///
     private func loadUnlockCheckView() {
         // create next coordinator
-        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: serviceHolder)
+        self.nextCoordinator = ShareUnlockCoordinator(navigation: navigationController, services: sharedServices)
         self.nextCoordinator?.start()
+    }
+}
+
+extension ShareAppCoordinator: UsersManagerDelegate {
+    func migrating() {
+        
+    }
+    
+    func session() {
+        
+    }
+}
+
+extension ShareAppCoordinator: UnlockManagerDelegate {
+    func isUserStored() -> Bool {
+        return isUserCredentialStored
+    }
+    
+    func cleanAll() {
+        sharedServices.get(by: UsersManager.self).clean()
+        keymaker.wipeMainKey()
+        keymaker.mainKeyExists()
+    }
+    
+    func unlocked() {
+        
+    }
+    
+    var isUserCredentialStored: Bool {
+        sharedServices.get(by: UsersManager.self).hasUsers()
+    }
+    
+    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
+        guard let _ = uid else {
+            return sharedServices.get(by: UsersManager.self).isMailboxPasswordStored
+        }
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
     }
 }

@@ -36,10 +36,6 @@ class ViewModelFactory {
         fatalError("This method must be overridden")
     }
     
-    func getChangeSinglePassword() -> ChangePWDViewModel {
-        fatalError("This method must be overridden")
-    }
-    
     func getChangeDisplayName() -> SettingDetailsViewModel {
         fatalError("This method must be overridden")
     }
@@ -74,32 +70,23 @@ class ViewModelFactoryProduction : ViewModelFactory {
         
     }
     
-    override func getChangeLoginPassword() -> ChangePWDViewModel {
-        return ChangeLoginPWDViewModel()
-    }
+//    override func getChangeLoginPassword() -> ChangePWDViewModel {
+//        return ChangeLoginPWDViewModel()
+//    }
     
-    override func getChangeMailboxPassword() -> ChangePWDViewModel {
-        return ChangeMailboxPWDViewModel()
-    }
+//    override func getChangeMailboxPassword() -> ChangePWDViewModel {
+//        return ChangeMailboxPWDViewModel()
+//    }
     
-    override func getChangeSinglePassword() -> ChangePWDViewModel {
-        return ChangeSinglePasswordViewModel()
-    }
+//    override func getChangeDisplayName() -> SettingDetailsViewModel {
+//        return ChangeDisplayNameViewModel()
+//    }
+//    override func getChangeSignature() -> SettingDetailsViewModel {
+//        return ChangeSignatureViewModel()
+//    }
     
-    override func getChangeDisplayName() -> SettingDetailsViewModel {
-        return ChangeDisplayNameViewModel()
-    }
-    
-    override func getChangeNotificationEmail() -> SettingDetailsViewModel {
-        return ChangeNotificationEmailViewModel()
-    }
-    
-    override func getChangeSignature() -> SettingDetailsViewModel {
-        return ChangeSignatureViewModel()
-    }
-    
-    override func getChangeMobileSignature() -> SettingDetailsViewModel {
-        return ChangeMobileSignatureViewModel()
-    }
+//    override func getChangeMobileSignature() -> SettingDetailsViewModel {
+//        return ChangeMobileSignatureViewModel()
+//    }
 
 }

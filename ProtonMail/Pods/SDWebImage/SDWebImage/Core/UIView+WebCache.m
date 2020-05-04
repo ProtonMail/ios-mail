@@ -80,7 +80,6 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
         [self sd_startImageIndicator];
         id<SDWebImageIndicator> imageIndicator = self.sd_imageIndicator;
 #endif
-        
         SDWebImageManager *manager = context[SDWebImageContextCustomManager];
         if (!manager) {
             manager = [SDWebImageManager sharedManager];
@@ -324,9 +323,7 @@ const int64_t SDWebImageProgressUnitCountUnknown = 1LL;
     }
     // Center the indicator view
 #if SD_MAC
-    CGPoint center = CGPointMake(NSMidX(self.bounds), NSMidY(self.bounds));
-    NSRect frame = view.frame;
-    view.frame = NSMakeRect(center.x - NSMidX(frame), center.y - NSMidY(frame), NSWidth(frame), NSHeight(frame));
+    [view setFrameOrigin:CGPointMake(round((NSWidth(self.bounds) - NSWidth(view.frame)) / 2), round((NSHeight(self.bounds) - NSHeight(view.frame)) / 2))];
 #else
     view.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
 #endif

@@ -26,9 +26,32 @@ import CoreData
 import Groot
 import PromiseKit
 
-let sharedContactGroupsDataService = ContactGroupsDataService()
+//let sharedContactGroupsDataService = ContactGroupsDataService(api: APIService.shared)
 
-class ContactGroupsDataService {
+class ContactGroupsDataService: Service, HasLocalStorage {
+    func cleanUp() {
+        let groups = self.labelDataService.getAllLabels(of: .contactGroup)
+        let context = CoreDataService.shared.mainManagedObjectContext
+        context.performAndWait {
+            groups.forEach {
+                context.delete($0)
+            }
+        }
+    }
+    
+    static func cleanUpAll() {
+        // FIXME: this will remove not only contactGroups but all other labels as well
+        LabelsDataService.cleanUpAll()
+    }
+    
+    private let apiService : API
+    private let labelDataService: LabelsDataService
+    
+    init(api: API, labelDataService: LabelsDataService) {
+        self.apiService = api
+        self.labelDataService = labelDataService
+    }
+    
     /**
      Create a new contact group on the server and save it in core data
      
@@ -36,13 +59,12 @@ class ContactGroupsDataService {
      - name: The name of the contact group
      - color: The color of the contact group
      */
-    func createContactGroup(name: String, color: String) -> Promise<String>
-    {
+    func createContactGroup(name: String, color: String) -> Promise<String> {
         return Promise {
             seal in
             
             let api = CreateLabelRequest<CreateLabelRequestResponse>(name: name, color: color, exclusive: false, type: 2)
-            api.call() {
+            api.call(api: self.apiService) {
                 task, response, hasError in
                 if hasError, let error = response?.error {
                     seal.reject(error)
@@ -51,7 +73,7 @@ class ContactGroupsDataService {
                         let ID = newContactGroup["ID"] as? String {
                         // save
                         PMLog.D("[Contact Group addContactGroup API] result = \(newContactGroup)")
-                        sharedLabelsDataService.addNewLabel(newContactGroup)
+                        self.labelDataService.addNewLabel(newContactGroup)
                         seal.fulfill(ID)
                     } else {
                         seal.reject(NSError.unableToParseResponse(response))
@@ -68,21 +90,20 @@ class ContactGroupsDataService {
      - name: The name of the contact group
      - color: The color of the contact group
      */
-    func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void>
-    {
+    func editContactGroup(groupID: String, name: String, color: String) -> Promise<Void> {
         return Promise {
             seal in
             
-            let eventAPI = UpdateLabelRequest<UpdateLabelRequestResponse>(id: groupID, name: name, color: color)
+            let eventAPI = UpdateLabelRequest(id: groupID, name: name, color: color)
             
-            eventAPI.call() {
+            eventAPI.call(api: self.apiService) {
                 task, response, hasError in
                 if hasError, let error = response?.error {
                     seal.reject(error)
                 } else {
                     if let updatedContactGroup = response?.label {
                         PMLog.D("[Contact Group editContactGroup API] result = \(String(describing: updatedContactGroup))")
-                        sharedLabelsDataService.addNewLabel(updatedContactGroup)
+                        self.labelDataService.addNewLabel(updatedContactGroup)
                         seal.fulfill(())
                     } else {
                         seal.reject(NSError.unableToParseResponse(response))
@@ -98,14 +119,13 @@ class ContactGroupsDataService {
      - Parameters:
      - name: The name of the contact group
      */
-    func deleteContactGroup(groupID: String) -> Promise<Void>
-    {
+    func deleteContactGroup(groupID: String) -> Promise<Void> {
         return Promise {
             seal in
             
             let eventAPI = DeleteLabelRequest<DeleteLabelRequestResponse>(lable_id: groupID)
             
-            eventAPI.call() {
+            eventAPI.call(api: self.apiService) {
                 task, response, hasError in
                 
                 if hasError, let error = response?.error {
@@ -115,7 +135,7 @@ class ContactGroupsDataService {
                         PMLog.D("[Contact Group deleteContactGroup API] result = \(String(describing: returnedCode))")
                         
                         // successfully deleted on the server
-                        let context = sharedCoreDataService.mainManagedObjectContext
+                        let context = CoreDataService.shared.mainManagedObjectContext
                         context.performAndWait {
                             () -> Void in
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
@@ -142,9 +162,7 @@ class ContactGroupsDataService {
         }
     }
     
-    func addEmailsToContactGroup(groupID: String,
-                                 emailList: [Email]) -> Promise<Void>
-    {
+    func addEmailsToContactGroup(groupID: String, emailList: [Email]) -> Promise<Void> {
         return Promise {
             seal in
             
@@ -160,7 +178,7 @@ class ContactGroupsDataService {
             })
             
             let eventAPI = ContactLabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
-            eventAPI.call() {
+            eventAPI.call(api: self.apiService) {
                 task, response, hasError in
                 if hasError, let error = response?.error {
                     seal.reject(error)
@@ -169,7 +187,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group addEmailsToContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.mainManagedObjectContext
+                        let context = CoreDataService.shared.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
@@ -207,8 +225,7 @@ class ContactGroupsDataService {
         }
     }
     
-    func removeEmailsFromContactGroup(groupID: String, emailList: [Email]) -> Promise<Void>
-    {
+    func removeEmailsFromContactGroup(groupID: String, emailList: [Email]) -> Promise<Void> {
         return Promise {
             seal in
             
@@ -223,7 +240,7 @@ class ContactGroupsDataService {
             })
             let eventAPI = ContactUnlabelAnArrayOfContactEmailsRequest(labelID: groupID, contactEmailIDs: emails)
             
-            eventAPI.call() {
+            eventAPI.call(api: self.apiService) {
                 task, response, hasError in
                 
                 if hasError, let error = response?.error {
@@ -233,7 +250,7 @@ class ContactGroupsDataService {
                         // save
                         PMLog.D("[Contact Group removeEmailsFromContactGroup API] result = \(String(describing: response))")
                         
-                        let context = sharedCoreDataService.mainManagedObjectContext
+                        let context = CoreDataService.shared.mainManagedObjectContext
                         context.performAndWait {
                             let label = Label.labelForLableID(groupID, inManagedObjectContext: context)
                             
@@ -271,7 +288,7 @@ class ContactGroupsDataService {
     }
     
     func getAllContactGroupVOs() -> [ContactGroupVO] {
-        let labels = sharedLabelsDataService.getAllLabels(of: .contactGroup)
+        let labels = self.labelDataService.getAllLabels(of: .contactGroup)
         
         var result: [ContactGroupVO] = []
         for label in labels {

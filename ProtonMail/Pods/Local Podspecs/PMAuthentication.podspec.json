@@ -1,0 +1,26 @@
+{
+  "name": "PMAuthentication",
+  "version": "1.0.0",
+  "summary": "Authentication for ProtonMail",
+  "description": "Lower level Authentication flow for ProtonMail",
+  "homepage": "https://gitlab.protontech.ch/apple/shared/pmauthentication",
+  "license": "ProtonMail",
+  "authors": "Anatoly Rosencrantz",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": ".",
+    "commit": ""
+  },
+  "source_files": [
+    "PMAuthentication/*.swift",
+    "PMAuthentication/*/*.swift"
+  ],
+  "dependencies": {
+    "PMCrypto": [
+
+    ]
+  },
+  "static_framework": true
+}

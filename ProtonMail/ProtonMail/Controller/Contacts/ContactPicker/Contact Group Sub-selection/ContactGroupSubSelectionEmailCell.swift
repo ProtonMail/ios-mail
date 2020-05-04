@@ -69,6 +69,7 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
                 at indexPath: IndexPath,
                 checkEncryptedStatus: ContactGroupSubSelectionEmailLockCheckingState,
                 delegate: ContactGroupSubSelectionViewModelEmailCellDelegate) {
+        self.delegate = delegate
         // lock check
         switch checkEncryptedStatus {
         case .NotChecked:
@@ -103,10 +104,9 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
                                                                   isEncrypted: nil)
                 }
             }
-            
-            sharedContactDataService.lockerCheck(model: contactVO,
-                                                 progress: self.checkingInProgress,
-                                                 complete: complete)
+            self.delegate.lockerCheck(model: contactVO,
+                                             progress: self.checkingInProgress,
+                                             complete: complete)
         case .Checking:
             self.checkingInProgress()
         case .Checked:
@@ -123,7 +123,6 @@ class ContactGroupSubSelectionEmailCell: UITableViewCell {
         self.indexPath = indexPath
         self.data = DraftEmailData(name: name, email: email)
         emailLabel.text = getDisplayText()
-        self.delegate = delegate
         
         self.isCurrentlySelected = isCurrentlySelected
         

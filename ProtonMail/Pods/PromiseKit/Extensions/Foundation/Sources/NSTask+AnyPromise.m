@@ -4,7 +4,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSError.h>
 
-#if TARGET_OS_MAC && !TARGET_OS_EMBEDDED && !TARGET_OS_SIMULATOR
+#if TARGET_OS_MAC && !TARGET_OS_EMBEDDED && !TARGET_OS_SIMULATOR && !TARGET_OS_UIKITFORMAC
 
 #import "NSTask+AnyPromise.h"
 

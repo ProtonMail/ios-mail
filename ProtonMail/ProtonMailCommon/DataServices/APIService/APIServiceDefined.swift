@@ -33,7 +33,7 @@ import Foundation
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_addresses.md
 struct AddressesAPI {
     /// base message api path
-    static let path :String = Constants.App.API_PATH + "/addresses"
+    static let path :String = "/addresses"
     
     //Create new address [POST /addresses] locked
     
@@ -66,7 +66,7 @@ struct AdminVPNAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_attachments.md
 struct AttachmentAPI {
     /// base message api path
-    static let path :String = Constants.App.API_PATH + "/attachments"
+    static let path :String = "/attachments"
 
     
     /// get attachment by id
@@ -86,7 +86,7 @@ struct AttachmentAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_auth.md
 struct AuthAPI {
     /// base message api path
-    static let path :String = Constants.App.API_PATH + "/auth"
+    static let path :String = "/auth"
     
     /// user auth post
     static let v_auth : Int = 3
@@ -114,7 +114,7 @@ struct AuthAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_contacts_v2.md
 struct ContactsAPI {
     
-    static let path : String = Constants.App.API_PATH + "/contacts"
+    static let path : String = "/contacts"
     
     /// get contact list. no details. only name, email, labels for displaying
     static let v_get_contacts : Int = 3
@@ -145,7 +145,7 @@ struct ContactsAPI {
 //Doc:https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_devices.md
 struct DeviceAPI {
     
-    static let path : String = Constants.App.API_PATH + "/devices"
+    static let path : String = "/devices"
     
     /// register a device POST
     static let v_register_device : Int = 3
@@ -158,7 +158,7 @@ struct DeviceAPI {
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_domains.md
 struct DomainsAPI {
     
-    static let path : String = Constants.App.API_PATH + "/domains"
+    static let path : String = "/domains"
     
     //Get all domains for this user's organization and check their DNS's [GET]
     
@@ -178,7 +178,7 @@ struct DomainsAPI {
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_events_v3.md
 struct EventAPI {
     /// base event api path
-    static let path :String = Constants.App.API_PATH + "/events"
+    static let path :String = "/events"
     
     /// get latest event id
     static let v_get_latest_event_id : Int = 3
@@ -191,7 +191,7 @@ struct EventAPI {
 //Keys API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_keys.md
 struct KeysAPI {
-    static let path : String = Constants.App.API_PATH + "/keys"
+    static let path : String = "/keys"
     
     /// Update private keys only, use for mailbox password/single password updates PUT
     static let v_update_private_key : Int = 3
@@ -212,7 +212,7 @@ struct KeysAPI {
 //Labels API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_labels.md
 struct LabelAPI {
-    static let path :String = Constants.App.API_PATH + "/labels"
+    static let path :String = "/labels"
     
     /// Get user's labels [GET]
     static let v_get_user_labels : Int = 3
@@ -236,7 +236,7 @@ struct LabelAPI {
 //Doc: V3 https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_messages_v3.md
 struct MessageAPI {
     /// base message api path
-    static let path :String = Constants.App.API_PATH + "/messages"
+    static let path :String = "/messages"
     
     //Get a list of message metadata [GET]
     static let v_fetch_messages : Int = 3
@@ -279,7 +279,7 @@ struct MessageAPI {
 //Organization API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_organizations.md
 struct OrganizationsAPI {
-    static let Path : String = Constants.App.API_PATH + "/organizations"
+    static let Path : String = "/organizations"
     
     /// Get organization keys [GET]
     static let v_get_org_keys : Int = 3
@@ -294,7 +294,7 @@ struct OrganizationsAPI {
  - Doc: [ProtonMail Reports API]
  */
 struct ReportsAPI {
-    static let path :String = Constants.App.API_PATH + "/reports"
+    static let path :String = "/reports"
     
     /// Report a bug [POST]
     static let v_reports_bug : Int = 3
@@ -313,7 +313,7 @@ struct ReportsAPI {
  */
 struct SettingsAPI {
     /// base settings api path
-    static let path :String = Constants.App.API_PATH + "/settings"
+    static let path :String = "/settings"
     
     /// Get general settings [GET]
     static let v_get_general_settings : Int = 3
@@ -344,13 +344,16 @@ struct SettingsAPI {
     
     /// Update login password [PUT]
     static let v_update_link_confirmation : Int = 3
+    
+    /// Update email signature [PUT]
+    static let v_update_email_signature: Int = 3
 }
 
 //Users API
 //Doc: https://github.com/ProtonMail/Slim-API/blob/develop/api-spec/pm_api_users.md
 struct UsersAPI {
     //
-    static let path : String = Constants.App.API_PATH + "/users"
+    static let path : String = "/users"
     
     /// Check if username already taken [GET]
     static let v_check_is_user_exist : Int = 3
@@ -377,7 +380,7 @@ struct UsersAPI {
 //Payments API
 //Doc: FIXME
 struct PaymentsAPI {
-    static let path : String = Constants.App.API_PATH + "/payments"
+    static let path : String = "/payments"
     
     static let v_get_status: Int = 3
     static let v_get_plans: Int = 3

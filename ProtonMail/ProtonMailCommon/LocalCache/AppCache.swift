@@ -22,7 +22,7 @@
 
 
 import Foundation
-import Keymaker
+import PMKeymaker
 import Crypto
 import CoreData
 
@@ -139,54 +139,54 @@ extension AppCache {
         keymaker.wipeMainKey()
         
         
-        if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
-             AppCache.inject(userInfo: userInfo, into: sharedUserDataService)
-        }
-        if let username = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserDataService.username) {
-            AppCache.inject(username: username, into: sharedUserDataService)
-        }
-        if let mobileSignature = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature) {
-            userCachedStatus.mobileSignature = mobileSignature
-        }
-        
-        // mailboxPassword
-        if let triviallyProtectedMailboxPassword = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
-            let cleartextMailboxPassword = ((try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)) as String??)
-        {
-            sharedUserDataService.mailboxPassword = cleartextMailboxPassword
-        }
-        
-        // AuthCredential
-        if let credentialRaw = KeychainWrapper.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
-            let credential = AuthCredential.unarchive(data: credentialRaw as NSData)
-        {
-            credential.storeInKeychain()
-        }
-        
-        // MainKey
-        let appLockMigration = DispatchGroup()
-        var appWasLocked = false
-        
-        // via touch id
-        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled) {
-            appWasLocked = true
-            appLockMigration.enter()
-            keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
-        }
-        
-        // via pin
-        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
-            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
-        {
-            appWasLocked = true
-            appLockMigration.enter()
-            keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
-        }
-        
-        // and lock the app afterwards
-        if appWasLocked {
-            appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
-        }
+//        if let userInfo = SharedCacheBase.getDefault().customObjectForKey(DeprecatedKeys.UserDataService.userInfo) as? UserInfo {
+//             AppCache.inject(userInfo: userInfo, into: sharedUserDataService)
+//        }
+//        if let username = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserDataService.username) {
+//            AppCache.inject(username: username, into: sharedUserDataService)
+//        }
+//        if let mobileSignature = SharedCacheBase.getDefault().string(forKey: DeprecatedKeys.UserCachedStatus.lastLocalMobileSignature) {
+//            userCachedStatus.mobileSignature = mobileSignature
+//        }
+//        
+//        // mailboxPassword
+//        if let triviallyProtectedMailboxPassword = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserDataService.mailboxPassword),
+//            let cleartextMailboxPassword = ((try? triviallyProtectedMailboxPassword.decrypt(withPwd: "$Proton$" + DeprecatedKeys.UserDataService.mailboxPassword)) as String??)
+//        {
+//            sharedUserDataService.mailboxPassword = cleartextMailboxPassword
+//        }
+//        
+//        // AuthCredential
+//        if let credentialRaw = KeychainWrapper.keychain.data(forKey: DeprecatedKeys.AuthCredential.keychainStore),
+//            let credential = AuthCredential.unarchive(data: credentialRaw as NSData)
+//        {
+////            credential.storeInKeychain()
+//        }
+//        
+//        // MainKey
+//        let appLockMigration = DispatchGroup()
+//        var appWasLocked = false
+//        
+//        // via touch id
+//        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isTouchIDEnabled) {
+//            appWasLocked = true
+//            appLockMigration.enter()
+//            keymaker.activate(BioProtection()) { _ in appLockMigration.leave() }
+//        }
+//        
+//        // via pin
+//        if userCachedStatus.getShared().bool(forKey: DeprecatedKeys.UserCachedStatus.isPinCodeEnabled),
+//            let pin = KeychainWrapper.keychain.string(forKey: DeprecatedKeys.UserCachedStatus.pinCodeCache)
+//        {
+//            appWasLocked = true
+//            appLockMigration.enter()
+//            keymaker.activate(PinProtection(pin: pin)) { _ in appLockMigration.leave() }
+//        }
+//        
+//        // and lock the app afterwards
+//        if appWasLocked {
+//            appLockMigration.notify(queue: .main) { keymaker.lockTheApp() }
+//        }
         
         return true
     }

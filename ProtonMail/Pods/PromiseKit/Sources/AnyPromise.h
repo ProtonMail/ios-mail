@@ -28,8 +28,8 @@ typedef void (^PMKResolver)(id __nullable) NS_REFINED_FOR_SWIFT;
  - Parameter block: The provided block is immediately executed, inside the block call `resolve` to resolve this promise and cause any attached handlers to execute. If you are wrapping a delegate-based system, we recommend instead to use: initWithResolver:
  - Returns: A new promise.
  - Warning: Resolving a promise with `nil` fulfills it.
- - SeeAlso: http://promisekit.org/sealing-your-own-promises/
- - SeeAlso: http://promisekit.org/wrapping-delegation/
+ - SeeAlso: https://github.com/mxcl/PromiseKit/blob/master/Documentation/GettingStarted.md#making-promises
+ - SeeAlso: https://github.com/mxcl/PromiseKit/blob/master/Documentation/CommonPatterns.md#wrapping-delegate-systems
  */
 + (instancetype __nonnull)promiseWithResolverBlock:(void (^ __nonnull)(__nonnull PMKResolver))resolveBlock NS_REFINED_FOR_SWIFT;
 
@@ -71,7 +71,7 @@ typedef void (^PMKResolver)(id __nullable) NS_REFINED_FOR_SWIFT;
 
 
 /**
- The provided block is executed when its receiver is resolved.
+ The provided block is executed when its receiver is fulfilled.
 
  If you provide a block that takes a parameter, the value of the receiver will be passed as that parameter.
 
@@ -183,6 +183,13 @@ typedef void (^PMKResolver)(id __nullable) NS_REFINED_FOR_SWIFT;
 - (AnyPromise * __nonnull(^ __nonnull)(dispatch_queue_t __nonnull, dispatch_block_t __nonnull))ensureOn NS_REFINED_FOR_SWIFT;
 
 /**
+ Wait until the promise is resolved.
+
+ @return Value if fulfilled or error if rejected.
+ */
+- (id __nullable)wait NS_REFINED_FOR_SWIFT;
+
+/**
  Create a new promise with an associated resolver.
 
  Use this method when wrapping asynchronous code that does *not* use
@@ -232,7 +239,7 @@ typedef void (^PMKBooleanAdapter)(BOOL, NSError * __nullable) NS_REFINED_FOR_SWI
  @warning *Important* If both parameters are nil, the promise fulfills,
  if both are non-nil the promise rejects. This is per the convention.
 
- @see http://promisekit.org/sealing-your-own-promises/
+ @see https://github.com/mxcl/PromiseKit/blob/master/Documentation/GettingStarted.md#making-promises
  */
 + (instancetype __nonnull)promiseWithAdapterBlock:(void (^ __nonnull)(PMKAdapter __nonnull adapter))block NS_REFINED_FOR_SWIFT;
 

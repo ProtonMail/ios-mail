@@ -30,6 +30,8 @@ class StorefrontViewModel: NSObject {
     private var storefrontSubscriptionObserver: NSKeyValueObservation!
     private var storefrontCreditsObserver: NSKeyValueObservation!
     
+    private var servicePlanService: ServicePlanDataService
+    
     internal enum Sections: Int, CaseIterable {
         case logo = 0, detail, annotation, buyLinkHeader, buyLink, othersHeader, others, buyButton, credits, disclaimer
         
@@ -51,8 +53,9 @@ class StorefrontViewModel: NSObject {
     @objc dynamic var creditsItem: AnyStorefrontItem?
     @objc dynamic var disclaimerItem: AnyStorefrontItem?
     
-    init(storefront: Storefront) {
+    init(storefront: Storefront, servicePlanService: ServicePlanDataService) {
         self.storefront = storefront
+        self.servicePlanService = servicePlanService
         
         func setup(with storefront: Storefront) {
             self.title = storefront.title
@@ -276,7 +279,7 @@ extension StorefrontViewModel {
     
     private func extractBuyButton(from storefront: Storefront) -> AnyStorefrontItem? {
         guard storefront.isProductPurchasable,
-            let productId = ServicePlan.plus.storeKitProductId, //storefront.plan.storeKitProductId, FIXME: TEST ONLY
+            let productId = ServicePlan.plus.storeKitProductId,
             let price = StoreKitManager.default.priceLabelForProduct(id: productId) else
         {
             return nil
@@ -287,7 +290,7 @@ extension StorefrontViewModel {
         formatter.locale = price.1
         formatter.maximumFractionDigits = 2
         
-        let tier54 = ServicePlanDataService.shared.proceedTier54
+        let tier54 = self.servicePlanService.proceedTier54
         let total = price.0 as Decimal
         let appleFee = tier54.isZero ? total * 0.75 : total - tier54
         let pmPrice = tier54.isZero ? total * 0.25 : tier54

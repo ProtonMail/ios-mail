@@ -57,6 +57,20 @@ extension Notification.Name {
     
     /// notify did unlock
     static var didUnlock: Notification.Name {
-        return .init(rawValue: "UserDataServiceDidSignInNotification")
+        return .init(rawValue: "UserDataServiceDidUnlockNotification")
+    }
+    
+    static var didObtainMailboxPassword: Notification.Name {
+        return .init(rawValue: "UserDataServiceDidObtainMailboxPasswordNotification")
+    }
+    
+    /// notify token revoke
+    static var didReovke: Notification.Name {
+        return .init("ApiTokenRevoked")
+    }
+    
+    ///notify when primary account is revoked
+    static var didPrimaryAccountLogout: Notification.Name {
+        return .init("didPrimaryAccountLogout")
     }
 }

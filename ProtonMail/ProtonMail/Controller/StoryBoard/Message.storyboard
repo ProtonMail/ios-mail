@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="9Yk-oc-NjC">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -106,11 +106,11 @@
                         <outlet property="backButton" destination="arx-Gv-Wg6" id="Hvn-1D-th3"/>
                         <outlet property="bottomView" destination="MGP-Ug-3HL" id="ZhD-bE-TPG"/>
                         <outlet property="tableView" destination="y1J-7c-viZ" id="FqQ-dJ-1uX"/>
-                        <segue destination="W5K-yA-by7" kind="show" identifier="toComposeReply" id="65G-HP-Tpi"/>
+                        <segue destination="W5K-yA-by7" kind="presentation" identifier="toComposeReply" modalPresentationStyle="fullScreen" id="65G-HP-Tpi"/>
                         <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toApplyLabelsSegue" id="bQe-It-tkY"/>
                         <segue destination="ZN8-hR-meZ" kind="presentation" identifier="toMoveToFolderSegue" id="bvG-si-qmN"/>
-                        <segue destination="W5K-yA-by7" kind="show" identifier="toComposeReplyAll" id="PSA-tt-CEi"/>
-                        <segue destination="W5K-yA-by7" kind="show" identifier="toComposeForward" id="lQf-C0-JMc"/>
+                        <segue destination="W5K-yA-by7" kind="presentation" identifier="toComposeReplyAll" modalPresentationStyle="fullScreen" id="PSA-tt-CEi"/>
+                        <segue destination="W5K-yA-by7" kind="presentation" identifier="toComposeForward" modalPresentationStyle="fullScreen" id="lQf-C0-JMc"/>
                         <segue destination="W5K-yA-by7" kind="show" identifier="toDraft" id="pf8-3Q-eX5"/>
                         <segue destination="Euu-JG-ymm" kind="presentation" identifier="toTroubleShootSegue" id="Fjb-FE-hpA"/>
                     </connections>
@@ -235,7 +235,9 @@
         <!--ref_composer_nav_controller-->
         <scene sceneID="GFB-x8-t7D">
             <objects>
-                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="W5K-yA-by7" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Composer" referencedIdentifier="ref_composer_nav_controller" id="W5K-yA-by7" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="H1K-lo-Bli"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5id-sx-xk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4725" y="3093"/>
