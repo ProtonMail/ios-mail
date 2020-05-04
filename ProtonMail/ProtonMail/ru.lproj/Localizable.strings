@@ -342,7 +342,7 @@
 "Can't load the file" = "Не удаётся загрузить файл";
 
 /* Description */
-"Can't not find the value from the response body" = "Не удаётся найти значение из тела ответа";
+"Can't find the value from the response body" = "Не удаётся найти значение из тела ответа";
 
 /* Error */
 "Can't open the file" = "Не удаётся открыть файл";

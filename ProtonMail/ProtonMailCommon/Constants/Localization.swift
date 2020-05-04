@@ -206,8 +206,8 @@ class LocalizedString {
     lazy var _remove_star = NSLocalizedString("Remove Star", comment: "un star message")
     /// "Delete All"
     lazy var _delete_all = NSLocalizedString("Delete All", comment: "emptify folder/label confirmation alert")
-    /// "Are you sure? This can not be undone"
-    lazy var _are_you_sure_this_cant_be_undone = NSLocalizedString("Are you sure? This can not be undone", comment: "emptify folder/label confirmation alert")
+    /// "Are you sure? This can't be undone."
+    lazy var _are_you_sure_this_cant_be_undone = NSLocalizedString("Are you sure? This can't be undone.", comment: "emptify folder/label confirmation alert")
     
     
     // Mark Messages
@@ -550,7 +550,7 @@ class LocalizedString {
     /// "Bad response"
     lazy var _error_bad_response_title = NSLocalizedString("Bad response", comment: "Error Description")
     /// "Can't find the value from the response body."
-    lazy var _error_cant_parse_response_body = NSLocalizedString("Can't not find the value from the response body", comment: "Description")
+    lazy var _error_cant_parse_response_body = NSLocalizedString("Can't find the value from the response body", comment: "Description")
     /// "no object"
     lazy var _error_no_object = NSLocalizedString("no object", comment: "no object error, local only , this could be not translated!")
     /// "Unable to parse response"

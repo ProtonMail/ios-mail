@@ -342,7 +342,7 @@ Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledg
 "Can't load the file" = "Dosya yüklenemiyor";
 
 /* Description */
-"Can't not find the value from the response body" = "Yanıt gövdesinde değer bulunamıyor";
+"Can't find the value from the response body" = "Yanıt gövdesinde değer bulunamıyor";
 
 /* Error */
 "Can't open the file" = "Dosya açılamıyor";

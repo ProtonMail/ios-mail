@@ -343,7 +343,7 @@ Pro další informace navštivte <a href=\"https://protonmail.com/support/knowle
 "Can't load the file" = "Nelze načíst soubor";
 
 /* Description */
-"Can't not find the value from the response body" = "V těle odpovědi nelze najít hodnotu";
+"Can't find the value from the response body" = "V těle odpovědi nelze najít hodnotu";
 
 /* Error */
 "Can't open the file" = "Soubor nelze otevřít";

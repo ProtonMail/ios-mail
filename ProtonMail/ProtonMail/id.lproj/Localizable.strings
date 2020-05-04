@@ -80,7 +80,7 @@
 "Can't get a Moduls ID!" = "Tidak bisa mendapatkan ID Modulus!";
 
 /* (No Comment) */
-"Can't not find the value from the response body" = "Tidak dapat menemukan nilai dari respon tubuh";
+"Can't find the value from the response body" = "Tidak dapat menemukan nilai dari respon tubuh";
 
 /* (No Comment) */
 "Cancel" = "Membatalkan";

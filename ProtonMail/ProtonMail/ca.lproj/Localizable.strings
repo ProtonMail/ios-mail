@@ -343,7 +343,7 @@ Visiteu <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">l
 "Can't load the file" = "No es pot carregar el fitxer";
 
 /* Description */
-"Can't not find the value from the response body" = "No es pot trobar el valor del cos de resposta";
+"Can't find the value from the response body" = "No es pot trobar el valor del cos de resposta";
 
 /* Error */
 "Can't open the file" = "No es pot obrir el fitxer";
