@@ -1765,7 +1765,7 @@ class LocalizedString {
     
     /// Logout
     lazy var _logout_title = NSLocalizedString("Logout", comment: "Alert title to confirm logout")
-    lazy var _logout_confirmation = NSLocalizedString("You will be switch to %@", comment: "Alert to confirm logout")
+    lazy var _logout_confirmation = NSLocalizedString("You will be switched to %@", comment: "Alert to confirm logout")
     lazy var _logout_confirmation_one_account = NSLocalizedString("Are you sure you want to logout %@?", comment: "Alert to confirm logout when only one account logged in")
     
     
