@@ -114,6 +114,12 @@ class MenuViewModelImpl : MenuViewModel {
         return self.usersManager.firstUser
     }()
     
+    var users: UsersManager {
+        get {
+            return self.usersManager
+        }
+    }
+    
     var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
     }

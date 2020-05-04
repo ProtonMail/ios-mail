@@ -245,14 +245,17 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    func fetchUserInfo() -> Promise<UserInfo?> {
+    func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<UserInfo?> {
         return async {
             
             let addrApi = GetAddressesRequest(api: self.apiService)
+            addrApi.authCredential = auth
             let userApi = GetUserInfoRequest(api: self.apiService)
+            userApi.authCredential = auth
             let userSettingsApi = GetUserSettings(api: self.apiService)
+            userSettingsApi.authCredential = auth
             let mailSettingsApi = GetMailSettings(api: self.apiService)
-            
+            mailSettingsApi.authCredential = auth
             let addrRes = try await(addrApi.run())
             let userRes = try await(userApi.run())
             let userSettingsRes = try await(userSettingsApi.run())
@@ -264,7 +267,7 @@ class UserDataService : Service, HasLocalStorage {
             
 //            self.userInfo = userRes.userInfo
             //TODO:: fix me
-            //try await(self.activeUserKeys() )
+//            try await(self.activeUserKeys() )
             
             return userRes.userInfo
         }
@@ -374,16 +377,16 @@ class UserDataService : Service, HasLocalStorage {
 //
     
     static var authResponse: PMAuthentication.TwoFactorContext? = nil
-    func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,
-                ask2fa: @escaping LoginAsk2FABlock,
-                onError:@escaping LoginErrorBlock,
-                onSuccess: @escaping LoginSuccessBlock)
+    func sign(in username: String, password: String, noKeyUser: Bool, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,
+              ask2fa: LoginAsk2FABlock?,
+              onError:@escaping LoginErrorBlock,
+              onSuccess: @escaping LoginSuccessBlock)
     {
         let completionWrapper: APIService.AuthCompleteBlockNew = { mpwd, status, credential, context, userinfo, error in
             DispatchQueue.main.async {
                 if status == .ask2FA {
                     UserDataService.authResponse = context
-                    ask2fa()
+                    ask2fa?()
                 } else {
                     UserDataService.authResponse = nil
                     if error == nil {
@@ -403,7 +406,7 @@ class UserDataService : Service, HasLocalStorage {
             let code = Int(twoFACode ?? "0") ?? 0
             apiService.confirm2FA(code, password: password, context: authRes, completion: completionWrapper)
         } else {
-            apiService.authenticate(username: username, password: password, completion: completionWrapper)
+            apiService.authenticate(username: username, password: password, noKey: noKeyUser, completion: completionWrapper)
         }
     }
 
@@ -514,50 +517,52 @@ class UserDataService : Service, HasLocalStorage {
         }
     }
     
-    func updateAutoLoadImage(remote status: Bool, completion: @escaping UserInfoBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        var newStatus = userInfo.showImages
-//        if status {
-//            newStatus.insert(.remote)
-//        } else {
-//            newStatus.remove(.remote)
-//        }
-//
-//        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-//        api.call(api: self.apiService) { (task, response, hasError) in
-//            if !hasError {
-//                userInfo.showImages = newStatus
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(self.userInfo, nil, response?.error)
-//        }
+    func updateAutoLoadImage(auth currentAuth: AuthCredential,
+                             user: UserInfo,
+                             remote status: Bool, completion: @escaping UserInfoBlock) {
+        
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        
+        var newStatus = userInfo.showImages
+        if status {
+            newStatus.insert(.remote)
+        } else {
+            newStatus.remove(.remote)
+        }
+        
+        let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
+        api.call(api: self.apiService) { (task, response, hasError) in
+            if !hasError {
+                userInfo.showImages = newStatus
+            }
+            completion(userInfo, nil, response?.error)
+        }
     }
     
     #if !APP_EXTENSION
-    func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
-//        guard let authCredential = AuthCredential.fetchFromKeychain(),
-//            let userInfo = self.userInfo,
-//            let cachedMainKey = keymaker.mainKey else
-//        {
-//            completion(nil, nil, NSError.lockError())
-//            return
-//        }
-//
-//        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-//        api.call(api: self.apiService) { (task, response, hasError) in
-//            if !hasError {
-//                userInfo.linkConfirmation = status
-//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
-//            }
-//            completion(self.userInfo, nil, response?.error)
-//        }
+    func updateLinkConfirmation(auth currentAuth: AuthCredential,
+                                user: UserInfo,
+                                _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
+        {
+            completion(nil, nil, NSError.lockError())
+            return
+        }
+        let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
+        api.call(api: self.apiService) { (task, response, hasError) in
+            if !hasError {
+                userInfo.linkConfirmation = status
+            }
+            completion(userInfo, nil, response?.error)
+        }
     }
     #endif
 

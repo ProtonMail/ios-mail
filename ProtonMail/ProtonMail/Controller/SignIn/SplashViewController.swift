@@ -94,10 +94,11 @@ class SplashViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == kSegueToSignUp {
-            
+            let signInManager = sharedServices.get(by: SignInManager.self)
+            let usersManager = sharedServices.get(by: UsersManager.self)
             let viewController = segue.destination as! SignUpUserNameViewController
              let deviceCheckToken = sender as? String ?? ""
-            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
+            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken, usersManager: usersManager , signinManager: signInManager)
         }
     }
     

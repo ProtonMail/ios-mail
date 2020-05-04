@@ -63,6 +63,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
 //        case singlePwd       = "setting_single_password_segue"
 //        case snooze          = "setting_notifications_snooze_segue"
         case swipingGesture = "setting_swiping_gesture"
+        case privacy = "setting_privacy"
     }
     
     init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -83,6 +84,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         switch dest {
         case .swipingGesture:
             openGesture()
+        case .privacy:
+            openPrivacy()
         default:
             self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
         }
@@ -170,6 +173,8 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             next.setViewModel(ChangeSinglePasswordViewModel(user: users.firstUser!))
         case .swipingGesture:
             break
+        case .privacy:
+            break
         }
         return true
     }
@@ -179,6 +184,16 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         let users: UsersManager = services.get()
         let user = users.firstUser!
         let coordinator = SettingsGesturesCoordinator(dest: vc, vm: SettingsGestureViewModelImpl(user: user), services: self.services)
+        coordinator?.start()
+        self.viewController?.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    private func openPrivacy() {
+        let vc = SettingsPrivacyViewController()
+        let users: UsersManager = services.get()
+        let user = users.firstUser!
+        let coordinator = SettingsPrivacyCoordinator(dest: vc, vm: SettingsPrivacyViewModelImpl(user: user), services: self.services)
         coordinator?.start()
         self.viewController?.navigationController?.pushViewController(vc, animated: true)
     }

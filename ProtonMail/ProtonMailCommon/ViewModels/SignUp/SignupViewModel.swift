@@ -116,4 +116,8 @@ class SignupViewModel : NSObject {
     func getDomains(_ complete : @escaping AvailableDomainsComplete) -> Void {
         fatalError("This method must be overridden")
     }
+    
+    func isAccountManager() -> Bool {
+        return false
+    }
 }

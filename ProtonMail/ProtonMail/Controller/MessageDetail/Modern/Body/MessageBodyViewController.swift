@@ -77,6 +77,10 @@ class MessageBodyViewController: HorizontallyScrollableWebViewContainer {
 }
 
 extension MessageBodyViewController : LinkOpeningValidator {
+    var user: UserManager {
+        return viewModel.parentViewModel.user
+    }
+    
     override func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         switch navigationAction.navigationType {
         case .linkActivated where navigationAction.request.url?.scheme == "mailto":

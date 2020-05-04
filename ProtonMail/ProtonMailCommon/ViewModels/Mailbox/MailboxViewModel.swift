@@ -61,17 +61,21 @@ class MailboxViewModel {
     
     private var contactService : ContactDataService
     
+    ///
+    internal weak var users: UsersManager?
+    
     /// mailbox viewModel
     ///
     /// - Parameters:
     ///   - labelID: location id and labelid
     ///   - msgService: service instance
-    init(labelID : String, userManager: UserManager, pushService: PushNotificationService) {
+    init(labelID : String, userManager: UserManager, usersManager: UsersManager?, pushService: PushNotificationService) {
         self.labelID = labelID
         self.user = userManager
         self.messageService = userManager.messageService
         self.contactService = userManager.contactService
         self.pushService = pushService
+        self.users = usersManager
     }
     
     /// localized navigation title. overrride it or return label name
@@ -92,6 +96,52 @@ class MailboxViewModel {
         }
     }
 
+    private var fetchingMessageForOhters : Bool = false
+    
+    func getLatestMessagesForOthers() {
+        if fetchingMessageForOhters == false {
+            fetchingMessageForOhters = true
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                guard let users = self.users else { return }
+                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
+                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
+                    var loadMore: Int = 0
+                    if error == nil {
+                        if let more = res?["More"] as? Int {
+                            loadMore = more
+                        }
+                        if loadMore <= 0 {
+                            secondUser.messageService.updateMessageCount()
+                        }
+                    }
+                    
+                    if loadMore > 0 {
+                        //self.retry()
+                    } else {
+                        self.fetchingMessageForOhters = false
+                    }
+                }
+                
+                if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId),
+                    updateTime.isNew == false, secondUser.messageService.isEventIDValid() {
+                    secondUser.messageService.fetchEvents(byLable: self.labelID,
+                                                          notificationMessageID: nil,
+                                                          completion: secondComplete)
+                } else {// this new
+                    if !secondUser.messageService.isEventIDValid() { //if event id is not valid reset
+                        secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
+                    }
+                    else {
+                        secondUser.messageService.fetchMessages(byLable: self.labelID,
+                                                                time: 0,
+                                                                forceClean: false,
+                                                                completion: secondComplete)
+                    }
+                }
+            }
+        }
+    }
     
     /// create a fetch controller with labelID
     ///

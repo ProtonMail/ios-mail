@@ -1853,4 +1853,35 @@ class LocalizedString {
     
     lazy var _by_removing_this_account = NSLocalizedString("By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?", comment: "Alert for removing disconnected accounts")
     
+    lazy var _allow_alternative_routing = NSLocalizedString("Allow alternative routing", comment: "network troubleshot cell title")
+    lazy var _no_internet_connection = NSLocalizedString("No internet connection", comment: "network troubleshot cell title")
+    lazy var _internet_service_provider_problem = NSLocalizedString("Internet Service Provider (ISP) problem", comment: "network troubleshot cell title")
+    lazy var _government_block = NSLocalizedString("Government block", comment: "network troubleshot cell title")
+    lazy var _antivirus_interference = NSLocalizedString("Antivirus interference", comment: "network troubleshot cell title")
+    lazy var _proxy_firewall_interference = NSLocalizedString("Proxy/Firewall interference", comment: "network troubleshot cell title")
+    lazy var _proton_is_down = NSLocalizedString("Proton is down", comment: "network troubleshot cell title")
+    lazy var _still_cant_find_a_solution = NSLocalizedString("Still can't find a solution", comment: "network troubleshot cell title")
+    lazy var _trouble_shooting = NSLocalizedString("TroubleShooting", comment: "network troubleshot view title")
+    //lazy var _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]", comment: "network troubleshot cell title")
+    let _incase_proton_sites_are_blocked = NSLocalizedString("In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@", comment: "network troubleshot cell title")
+    lazy var _please_make_sure_that_your_internet_ = NSLocalizedString("Please make sure that your internet connection is working.", comment: "network troubleshot cell title")
+    lazy var _try_connection_to_proton_from_ = NSLocalizedString( "Try connecting to Proton from a different network (or use ProtonVPN or Tor).", comment: "network troubleshot cell title")
+    //    lazy var _your_country_may_be_blocking_ = NSLocalizedString( "Your country may be blocking access to Proton. Try using ProtonVPN (or any other VPN) or Tor to access Proton.", comment: "network troubleshot cell title")
+    let _your_country_may_be_blocking_ = NSLocalizedString("Your country may be blocking access to Proton. Try using %1$@ (or any other VPN) or %2$@ to access Proton.", comment: "network troubleshot cell title")
+    lazy var _temporarily_disable_or_remove_your_ = NSLocalizedString( "Temporarily disable or remove your antivirus software.", comment: "network troubleshot cell title")
+    lazy var _disable_any_proxies_or_firewalls_ = NSLocalizedString( "Disable any proxies or firewalls, or contact your network administrator.", comment: "network troubleshot cell title")
+    lazy var _check_proton_status_for_our_ = NSLocalizedString("Check Proton Status for our system status.", comment: "network troubleshot cell title")
+    lazy var _contact_us_dirrectly_through_our_support_ = NSLocalizedString( "Contact us directly through our support form, email (support@protonmail.com), or Twitter.", comment: "network troubleshot cell title")
+    
+    let _learn_more_ = NSLocalizedString("Learn more", comment: "network troubleshot cell title")
+    let _protonvpn = NSLocalizedString("ProtonVPN", comment: "network troubleshot cell title")
+    let _tor = NSLocalizedString("Tor", comment: "network troubleshot cell title")
+
+    let _proton_status = NSLocalizedString("Proton Status", comment: "network troubleshot cell title")
+    let _support_form = NSLocalizedString("support form", comment: "network troubleshot cell title")
+    //this used in n
+    let _emaile_ = NSLocalizedString("email", comment: "network troubleshot cell title")
+    let _twitter = NSLocalizedString("Twitter", comment: "network troubleshot cell title")
+    
+    
 }

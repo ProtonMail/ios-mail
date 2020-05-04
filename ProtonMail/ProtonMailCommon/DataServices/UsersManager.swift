@@ -138,6 +138,15 @@ class UsersManager : Service {
         
     }
     
+    func get(not userID: String) -> UserManager?  {
+        for user in users {
+            if user.userInfo.userId != userID {
+                return user
+            }
+        }
+        return nil
+    }
+    
     func user(at index: Int) -> UserManager? {
         if users.count > index {
             return users[index]
@@ -204,7 +213,7 @@ class UsersManager : Service {
         return user
     }
     
-    func isExist(_ userName: String) -> Bool {
+    func isExist(userName: String) -> Bool {
         var check = userName
         
         if !userName.contains(check: "@") {
@@ -212,7 +221,16 @@ class UsersManager : Service {
         }
         
         for user in users {
-            if user.isExist(check) {
+            if user.isExist(userID: check) {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func isExist(userID: String) -> Bool {
+        for user in users {
+            if user.isExist(userID: userID) {
                 return true
             }
         }
@@ -491,6 +509,16 @@ extension UsersManager {
         for user in users {
             self.logout(user: user)
         }
+    }
+    
+    func freeAccountNum() -> Int {
+        var count = 0
+        for user in users {
+            if !user.isPaid {
+                count = count + 1
+            }
+        }
+        return count
     }
 }
 

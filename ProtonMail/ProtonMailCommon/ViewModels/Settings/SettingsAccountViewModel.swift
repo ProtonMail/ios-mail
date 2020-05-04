@@ -157,7 +157,7 @@ class SettingsAccountViewModelImpl : SettingsAccountViewModel {
     var sections: [SettingAccountSection] = [ .account, .addresses, .mailbox]
     var accountItems: [AccountItem] = [.singlePassword, .recovery, .storage]
     var addrItems: [AddressItem] = [.addr, .displayName, .signature, .mobileSignature]
-    var mailboxItems :  [MailboxItem] = [/*.privacy, .search,*/ .labelFolder, .gestures]
+    var mailboxItems :  [MailboxItem] = [.privacy, /* .search,*/ .labelFolder, .gestures]
     
     var setting_swipe_action_items : [SSwipeActionItems] = [.left, .right]
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,

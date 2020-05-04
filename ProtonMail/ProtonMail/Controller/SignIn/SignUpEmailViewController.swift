@@ -154,7 +154,12 @@ class SignUpEmailViewController: UIViewController {
             DispatchQueue.main.async(execute: { () -> Void in
                 MBProgressHUD.hide(for: self.view, animated: true)
                 self.doneClicked = false
-                //UnlockManager.shared.unlockIfRememberedCredentials { }
+                if self.viewModel.isAccountManager() {
+                    self.navigationController?.popToRootViewController(animated: true)
+                } else {
+                    NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
+                    NotificationCenter.default.post(name: Notification.Name.didObtainMailboxPassword, object: nil) // needed by 2-password mode
+                }
             })
         }
     }

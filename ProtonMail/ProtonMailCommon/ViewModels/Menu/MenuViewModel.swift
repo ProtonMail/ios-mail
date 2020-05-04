@@ -60,6 +60,7 @@ protocol MenuViewModel : AnyObject {
     func user(at : Int) -> UserManager?
     func disconnectedUser(at: Int) -> UsersManager.DisconnectedUserHandle?
     var currentUser: UserManager? { get set }
+    var users: UsersManager { get }
     var secondUser: UserManager? { get }
     func item(inboxes at: Int ) ->MenuItem
     func item(others at: Int ) ->MenuItem

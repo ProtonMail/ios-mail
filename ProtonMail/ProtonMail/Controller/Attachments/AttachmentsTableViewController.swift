@@ -219,7 +219,8 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         let cell = tableView.dequeueReusableCell(withIdentifier: AttachmentTableViewCell.Constant.identifier, for: indexPath) as! AttachmentTableViewCell
 
         var attachment: Attachment?
-        switch attachmentSections[indexPath.section] {
+        let secontItem = attachmentSections[indexPath.section]
+        switch secontItem {
         case .normal: attachment = normalAttachments[indexPath.row] as Attachment
         case .inline: attachment = inlineAttachments[indexPath.row] as Attachment
         }
@@ -234,6 +235,9 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
             cell.setSwipeGestureWith(crossView, color: .red, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
                 guard let `self` = self else { return }
                 guard let cell = cell, let indexp = self.tableView.indexPath(for: cell) else {
+                    return
+                }
+                guard indexp.section < self.attachmentSections.count else {
                     return
                 }
                 

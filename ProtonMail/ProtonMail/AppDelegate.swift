@@ -61,7 +61,10 @@ extension SWRevealViewController {
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
                     let usersManager : UsersManager = sharedServices.get()
                     let user = usersManager.firstUser!
-                    let viewModel = MailboxViewModelImpl(label: .inbox, userManager: user, pushService: sharedServices.get())
+                    let viewModel = MailboxViewModelImpl(label: .inbox,
+                                                         userManager: user,
+                                                         usersManager: usersManager,
+                                                         pushService: sharedServices.get())
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()
                 }

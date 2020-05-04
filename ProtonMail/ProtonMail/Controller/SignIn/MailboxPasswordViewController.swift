@@ -185,7 +185,7 @@ class MailboxPasswordViewController: UIViewController {
                                     let alert = error.alertController()
                                     alert.addAction((UIAlertAction.okAction()))
                                     self.present(alert, animated: true, completion: nil)
-        }, tryUnlock: {
+        }, reachLimit: {}, existError: {}, tryUnlock: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {})
         })
     }

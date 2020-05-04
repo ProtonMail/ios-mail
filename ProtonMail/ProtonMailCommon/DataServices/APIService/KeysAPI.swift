@@ -302,12 +302,16 @@ final class SetupKeyRequest : ApiRequest<ApiResponse> {
          private_key : String,
          keysalt : String,
          signedKL : [String: Any],
-         auth : PasswordAuth ) {
+         auth : PasswordAuth,
+         authCredential: AuthCredential?) {
         self.keySalt = keysalt
         self.addressID = address_id
         self.privateKey = private_key
         self.signedKeyList = signedKL
         self.auth = auth
+        super.init()
+        
+        self.authCredential = authCredential
     }
     
     override func toDictionary() -> [String : Any]? {

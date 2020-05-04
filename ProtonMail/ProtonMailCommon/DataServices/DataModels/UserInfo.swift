@@ -96,6 +96,10 @@ final class UserInfo : NSObject {
                      credit: 0, currency: "")
     }
     
+    var isPaid: Bool {
+        return self.role > 0 ? true : false
+    }
+    
     // init from cache
     required init(
         displayName: String?, maxSpace: Int64?, notificationEmail: String?, signature: String?,

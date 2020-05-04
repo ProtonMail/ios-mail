@@ -86,7 +86,13 @@ class AccountConnectCoordinator: DefaultCoordinator {
         case .some(.signUp):
             let viewController = destination as! SignUpUserNameViewController
             let deviceCheckToken = sender as? String ?? ""
-            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
+            
+            let signInManager = sharedServices.get(by: SignInManager.self)
+            let usersManager = sharedServices.get(by: UsersManager.self)
+            
+            viewController.viewModel = AccountSignupViewModelImpl(token: deviceCheckToken,
+                                                                  usersManager: usersManager,
+                                                                  signinManager: signInManager)
         case .some(.twoFACode) where self.viewController != nil:
             let popup = destination as! TwoFACodeViewController
             popup.delegate = self.viewController

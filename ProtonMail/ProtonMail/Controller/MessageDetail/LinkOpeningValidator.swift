@@ -24,12 +24,14 @@
 import UIKit
 
 protocol LinkOpeningValidator {
-    var userDataService: UserDataService { get }
+    var user: UserManager { get }
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void)
 }
 extension LinkOpeningValidator {
     func validateNotPhishing(_ url: URL, handler: @escaping (Bool)->Void) {
-        guard self.userDataService.linkConfirmation == .confirmationAlert else {
+        let userDataService = self.user.userService
+        let userInfo = self.user.userInfo
+        guard userInfo.linkConfirmation == .confirmationAlert else {
             handler(true)
             return
         }
@@ -50,7 +52,7 @@ extension LinkOpeningValidator {
             handler(true)
         }
         let doNotShowAgain = UIAlertAction(title: LocalString._genernal_continue_and_dont_ask_again, style: .destructive) { _ in
-            self.userDataService.updateLinkConfirmation(.openAtWill) { _, _, _ in /* nothing */ }
+            userDataService.updateLinkConfirmation(auth: self.user.auth, user: self.user.userInfo, .openAtWill) { _, _, _ in /* nothing */ }
             handler(true)
         }
         let cancel = UIAlertAction(title: LocalString._general_cancel_button, style: .cancel) { _ in

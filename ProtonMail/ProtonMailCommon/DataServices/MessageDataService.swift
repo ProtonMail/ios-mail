@@ -1437,6 +1437,13 @@ class MessageDataService : Service, HasLocalStorage {
             completion?(task, nil, nil)
         }
     }
+    
+    private func empty(labelID: String, completion: CompletionBlock?) {
+        let api = EmptyMessage(labelID: labelID)
+        api.call(api: self.apiService) { (task, response, hasError) -> Void in
+            completion?(task, nil, nil)
+        }
+    }
 
     private func labelMessage(_ labelID: String, messageID: String, UID: String, completion: CompletionBlock?) {
         guard let userManager = self.usersManager?.getUser(byUserId: UID) else {
@@ -1988,7 +1995,6 @@ class MessageDataService : Service, HasLocalStorage {
                     self.empty(at: .spam, UID: UID, completion: completeHandler)
                 case .empty:
                     self.empty(labelId: data1, UID: UID, completion: completeHandler)
-                    break
                 case .read, .unread:
                     self.messageAction([messageID], writeQueueUUID: uuid, action: actionString, UID: UID, completion: completeHandler)
                 case .delete:
@@ -2048,17 +2054,17 @@ class MessageDataService : Service, HasLocalStorage {
                     if error == nil {
                         lastUpdatedStore.clear()
                         lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID)
-//                        lastUpdatedStore.lastEventID = response!.eventID
                     }
                     completion?(task, nil, error)
                 }
 
                 self.cleanMessage()
                 self.contactDataService.cleanUp()
-//                sharedContactDataService.clean()
                 self.labelDataService.fetchLabels()
                 self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)
                 self.contactDataService.fetchContacts(completion: nil)
+            } else {
+                completion?(task, nil, response?.error)
             }
         }
     }

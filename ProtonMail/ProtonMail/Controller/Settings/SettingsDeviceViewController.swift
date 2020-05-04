@@ -34,6 +34,9 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
     internal var viewModel : SettingsDeviceViewModel!
     internal var coordinator : SettingsDeviceCoordinator?
     
+    
+    let SwitchTwolineCell             = "switch_two_line_cell"
+    
     ///
     var cleaning : Bool      = false
     
@@ -65,6 +68,9 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
         } else {
             NotificationCenter.default.addObserver(self, selector: #selector(updateNotificationStatus), name: UIApplication.willEnterForegroundNotification, object: nil)
         }
+        
+        self.tableView.estimatedRowHeight = 50.0
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
     deinit {
@@ -131,10 +137,17 @@ class SettingsDeviceViewController: ProtonMailTableViewController, ViewModelProt
             hud.label.text = LocalString._settings_resetting_cache
             hud.removeFromSuperViewOnHide = true
             self.viewModel.userManager.messageService.cleanLocalMessageCache() { task, res, error in
-                hud.mode = MBProgressHUDMode.text
-                hud.label.text = LocalString._general_done_button
-                hud.hide(animated: true, afterDelay: 1)
                 self.cleaning = false
+                if let error = error {
+                    hud.hide(animated: true, afterDelay: 0)
+                    let alert = error.alertController()
+                    alert.addOKAction()
+                    self.present(alert, animated: true, completion: nil)
+                } else {
+                    hud.mode = MBProgressHUDMode.text
+                    hud.label.text = LocalString._general_done_button
+                    hud.hide(animated: true, afterDelay: 1)
+                }
             }
         }
     }
@@ -154,6 +167,8 @@ extension SettingsDeviceViewController {
             case .app:
                 return self.viewModel.appSettigns.count
             case .info:
+                return 1
+            case .network:
                 return 1
             }
         }
@@ -224,6 +239,38 @@ extension SettingsDeviceViewController {
                 case .cleanCache:
 //                    c.config(right: LocalString._empty_cache)
                     break
+                }
+            }
+            return cell
+            
+        case .network:
+            let netItem = self.viewModel.networkItems[indexPath.row]
+            let cell = tableView.dequeueReusableCell(withIdentifier: SwitchTwolineCell, for: indexPath)
+            if netItem == .doh, let c = cell as? SwitchTwolineCell {
+                c.accessoryType = UITableViewCell.AccessoryType.none
+                c.selectionStyle = UITableViewCell.SelectionStyle.none
+                let topline = "Allow alternative routing"
+                let holder = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@"
+                let learnMore = "Learn more"
+                
+                let full = String.localizedStringWithFormat(holder, learnMore)
+                let attributedString = NSMutableAttributedString(string: full,
+                                                                 attributes: [.font : UIFont.preferredFont(forTextStyle: .footnote),
+                                                                              .foregroundColor : UIColor.darkGray])
+                if let subrange = full.range(of: learnMore) {
+                    let nsRange = NSRange(subrange, in: full)
+                    attributedString.addAttribute(.link,
+                                                  value: "http://protonmail.com/blog/anti-censorship-alternative-routing",
+                                                  range: nsRange)
+                }
+                c.configCell(topline, bottomLine: attributedString, showSwitcher: true, status: DoHMail.default.status == .on) { (cell, newStatus, feedback) in
+                    if newStatus {
+                        DoHMail.default.status = .on
+                        userCachedStatus.isDohOn = true
+                    } else {
+                        DoHMail.default.status = .off
+                        userCachedStatus.isDohOn = false
+                    }
                 }
             }
             return cell
@@ -315,7 +362,7 @@ extension SettingsDeviceViewController {
             case .cleanCache:
                 break
             }
-        case .info:
+        case .info, .network:
             break
         }
         tableView.deselectRow(at: indexPath, animated: true)

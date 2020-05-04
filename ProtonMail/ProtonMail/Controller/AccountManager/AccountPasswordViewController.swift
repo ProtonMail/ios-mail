@@ -187,6 +187,10 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
                                     let alert = error.alertController()
                                     alert.addAction((UIAlertAction.okAction()))
                                     self.present(alert, animated: true, completion: nil)
+        }, reachLimit: {
+            
+        }, existError: {
+            
         }, tryUnlock: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {}, unlocked: {
                 self.coordinator?.stop()

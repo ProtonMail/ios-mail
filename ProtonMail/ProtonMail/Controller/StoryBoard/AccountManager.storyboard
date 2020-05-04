@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -859,11 +859,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rfQ-gz-NGD">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rfQ-gz-NGD">
                                 <rect key="frame" x="16" y="44" width="343" height="623"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nOK-dq-tTv" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="615"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="667"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Log in to your ProtonMail account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F7T-Xy-pdh">
                                                 <rect key="frame" x="36" y="32" width="271.5" height="21.5"/>
@@ -982,7 +982,7 @@
                                                 </connections>
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
-                                                <rect key="frame" x="31.5" y="570" width="280" height="20"/>
+                                                <rect key="frame" x="31.5" y="622" width="280" height="20"/>
                                                 <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="a8y-Ug-xRX"/>
@@ -1008,7 +1008,8 @@
                                         <constraints>
                                             <constraint firstAttribute="centerX" secondItem="U54-pf-tLQ" secondAttribute="centerX" id="6eU-45-PfD"/>
                                             <constraint firstItem="FpM-jA-n2c" firstAttribute="leading" secondItem="nOK-dq-tTv" secondAttribute="leading" constant="16" id="7Vv-kt-3Ss"/>
-                                            <constraint firstItem="FpM-jA-n2c" firstAttribute="top" secondItem="ylN-fl-1oU" secondAttribute="bottom" priority="500" constant="20" id="AmT-yz-PvT"/>
+                                            <constraint firstItem="FpM-jA-n2c" firstAttribute="top" secondItem="ylN-fl-1oU" secondAttribute="bottom" constant="20" id="AmT-yz-PvT"/>
+                                            <constraint firstItem="NeA-VN-zIr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="PhG-xq-9Ef" secondAttribute="bottom" constant="8" id="CEO-M4-urh"/>
                                             <constraint firstItem="F7T-Xy-pdh" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="nOK-dq-tTv" secondAttribute="leading" constant="16" id="Csp-Yg-9zi"/>
                                             <constraint firstAttribute="centerX" secondItem="PhG-xq-9Ef" secondAttribute="centerX" id="HLc-Yl-Naf"/>
                                             <constraint firstItem="U54-pf-tLQ" firstAttribute="top" secondItem="FpM-jA-n2c" secondAttribute="bottom" constant="48" id="IoX-Ny-2mz"/>
@@ -1038,7 +1039,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="nOK-dq-tTv" firstAttribute="height" secondItem="K8w-RT-AoR" secondAttribute="height" multiplier="0.922039" id="462-KS-C4z"/>
+                            <constraint firstItem="nOK-dq-tTv" firstAttribute="height" secondItem="K8w-RT-AoR" secondAttribute="height" id="462-KS-C4z"/>
                             <constraint firstItem="rfQ-gz-NGD" firstAttribute="leading" secondItem="K8w-RT-AoR" secondAttribute="leadingMargin" id="5dU-yR-2UD"/>
                             <constraint firstItem="rfQ-gz-NGD" firstAttribute="top" secondItem="K8w-RT-AoR" secondAttribute="topMargin" id="TXf-Wa-c7h"/>
                             <constraint firstAttribute="bottom" secondItem="rfQ-gz-NGD" secondAttribute="bottom" id="Vg1-dU-Kym"/>

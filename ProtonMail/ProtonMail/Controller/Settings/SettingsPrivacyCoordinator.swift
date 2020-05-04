@@ -28,7 +28,7 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
 
     typealias VC = SettingsPrivacyViewController
     
-    let viewModel : SettingsAccountViewModel
+    let viewModel : SettingsPrivacyViewModel
     var services: ServiceFactory
     
     internal weak var viewController: SettingsPrivacyViewController?
@@ -61,7 +61,7 @@ class SettingsPrivacyCoordinator : DefaultCoordinator {
 //        case snooze          = "setting_notifications_snooze_segue"
     }
     
-    init?(dest: UIViewController, vm: SettingsAccountViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
+    init?(dest: UIViewController, vm: SettingsPrivacyViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
         guard let next = dest as? VC else {
             return nil
         }

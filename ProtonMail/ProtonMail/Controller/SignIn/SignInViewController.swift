@@ -303,7 +303,11 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
         if segue.identifier == kSignUpKeySegue {
             let viewController = segue.destination as! SignUpUserNameViewController
             let deviceCheckToken = sender as? String ?? ""
-            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken)
+            let signInManager = sharedServices.get(by: SignInManager.self)
+            let usersManager = sharedServices.get(by: UsersManager.self)
+            viewController.viewModel = SignupViewModelImpl(token: deviceCheckToken,
+                                                           usersManager: usersManager,
+                                                           signinManager: signInManager)
         } else if segue.identifier == kSegueToPinCodeViewNoAnimation {
             let viewController = segue.destination as! PinCodeViewController
             viewController.viewModel = UnlockPinCodeModelImpl()
@@ -436,7 +440,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             case .mbpwd:
                 self.isRemembered = true
                 self.performSegue(withIdentifier: self.kDecryptMailboxSegue, sender: self)
-            case .exist:
+            case .exist, .limit:
                 break
             }
         }

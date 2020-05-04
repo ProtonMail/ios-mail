@@ -27,7 +27,7 @@ import PMAuthentication
 
 /// Auth extension
 extension APIService {
-    private func completeAuthFlow(credential: AuthCredential, password: String, passwordMode: Int, completion: @escaping AuthCompleteBlockNew) {
+    private func completeAuthFlow(credential: AuthCredential, password: String, passwordMode: Int, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
         var keySalt: String?
         var privateKey: String?
         
@@ -51,13 +51,19 @@ extension APIService {
         firstly {
             when(fulfilled: saltapi.run(), userApi.run())
         }.done { (saltRes, userRes)  in
-            guard  let salt = saltRes.keySalt,
-                let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
-                    return completion(nil, .resCheck, nil, nil, userRes.userInfo, NSError.authInvalidGrant())
+            if noKey {
+                let salt = saltRes.keySalt
+                keySalt = salt
+                done(userInfo: userRes.userInfo)
+            } else {
+                guard  let salt = saltRes.keySalt,
+                    let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
+                        return completion(nil, .resCheck, nil, nil, userRes.userInfo, NSError.authInvalidGrant())
+                }
+                keySalt = salt
+                privateKey = privatekey
+                done(userInfo: userRes.userInfo)
             }
-            keySalt = salt
-            privateKey = privatekey
-            done(userInfo: userRes.userInfo)
         }.catch { err in
             let error = err as NSError
             if error.isInternetError() {
@@ -80,7 +86,7 @@ extension APIService {
                 
             case .success(.newCredential(let credential, let passwordMode)): // success without 2FA
                 let authCredential = AuthCredential(credential)
-                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, completion: completion)
+                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, noKey: false, completion: completion)
                 
             case .success(.updatedCredential), .success(.ask2FA):
                 assert(false, "Should never happen in this flow")
@@ -88,7 +94,7 @@ extension APIService {
         }
     }
     
-    func authenticate(username: String, password: String, completion: @escaping AuthCompleteBlockNew) {
+    func authenticate(username: String, password: String, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
         self.authApi.authenticate(username: username, password: password) { result in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
@@ -117,7 +123,7 @@ extension APIService {
                 
             case .success(.newCredential(let credential, let passwordMode)): // success without 2FA
                 let authCredential = AuthCredential(credential)
-                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, completion: completion)
+                self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, noKey: noKey, completion: completion)
             
             case .success(.updatedCredential):
                 assert(false, "Should never happen in this flow")

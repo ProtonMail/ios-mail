@@ -35,10 +35,13 @@ class SignInManager: Service {
     
     internal func signIn(username: String,
                          password: String,
+                         noKeyUser: Bool,
                          cachedTwoCode: String?,
                          faillogout : Bool,
                          ask2fa: @escaping ()->Void,
                          onError: @escaping (NSError)->Void,
+                         reachLimit: @escaping ()->Void,
+                         exist: @escaping ()->Void,
                          afterSignIn: @escaping ()->Void,
                          requestMailboxPassword: @escaping ()->Void,
                          tryUnlock:@escaping ()->Void )
@@ -56,7 +59,7 @@ class SignInManager: Service {
                 requestMailboxPassword()
                 return
             }
-            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, tryUnlock: tryUnlock)
+            self.proceedWithMailboxPassword(mailboxPassword, auth: auth, onError: onError, reachLimit: reachLimit, existError: exist, tryUnlock: tryUnlock)
         }
         
         self.auth = nil
@@ -66,11 +69,32 @@ class SignInManager: Service {
         let userService = UserDataService(check: false, api: service)
         userService.sign(in: username,
                          password: password,
+                         noKeyUser: noKeyUser,
                          twoFACode: cachedTwoCode,
                          faillogout: faillogout,
                          ask2fa: ask2fa,
                          onError: onError,
                          onSuccess: success)
+    }
+    
+    internal func signUpSignIn(username: String,
+                         password: String,
+                         onError: @escaping (NSError)->Void,
+                         onSuccess: @escaping (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void)
+    {
+        self.auth = nil
+        self.userInfo = nil
+        // one time api and service
+        let service = APIService(config: usersManager.serverConfig, sessionUID: "", userID: "")
+        let userService = UserDataService(check: false, api: service)
+        userService.sign(in: username,
+                         password: password,
+                         noKeyUser: true,
+                         twoFACode: nil,
+                         faillogout: false,
+                         ask2fa: nil,
+                         onError: onError,
+                         onSuccess: onSuccess)
     }
     
     internal func mailboxPassword(from cleartextPassword: String, auth: AuthCredential) -> String {
@@ -82,12 +106,36 @@ class SignInManager: Service {
         return mailboxPassword
     }
     
-    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?, onError: @escaping (NSError)->Void, tryUnlock:@escaping ()->Void ) {
+    /// TODO:: those input delegats need change  to error return
+    internal func proceedWithMailboxPassword(_ mailboxPassword: String, auth: AuthCredential?,
+                                             onError: @escaping (NSError)->Void,
+                                             reachLimit: @escaping ()->Void,
+                                             existError: @escaping ()->Void,
+                                             tryUnlock:@escaping ()->Void ) {
         guard let auth = auth, let privateKey = auth.privateKey, privateKey.check(passphrase: mailboxPassword), let userInfo = self.userInfo else {
             onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._the_mailbox_password_is_incorrect))
             return
         }
         auth.udpate(password: mailboxPassword)
+        
+        let count = self.usersManager.freeAccountNum()
+        if count > 0 && !userInfo.isPaid {
+            reachLimit()
+            return
+        }
+        let exist = self.usersManager.isExist(userID: userInfo.userId)
+        if exist == true {
+            existError()
+            return
+        }
+        
+        guard userInfo.delinquent < 3 else {
+            onError(NSError.init(domain: "",
+                                 code: 0,
+                                 localizedDescription: LocalString._general_account_disabled_non_payment))
+            return
+        }
+        
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
