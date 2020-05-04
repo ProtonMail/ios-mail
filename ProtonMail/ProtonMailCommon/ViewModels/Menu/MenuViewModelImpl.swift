@@ -120,7 +120,7 @@ class MenuViewModelImpl : MenuViewModel {
         }
     }
     
-    lazy var secondUser: UserManager? = {
+    var secondUser: UserManager? {
         return self.usersManager.user(at: 1)
     }
     
