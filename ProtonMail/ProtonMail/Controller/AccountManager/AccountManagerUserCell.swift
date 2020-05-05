@@ -54,9 +54,13 @@ class AccountManagerUserCell: UITableViewCell {
         let displayName = name.isEmpty ? email : name
         diaplayName.text = displayName
         emailAddress.text = email
+        
         var shortName = ""
-        if displayName.count > 0 {
-            shortName = String(displayName[name.startIndex])
+        let splitCharacterOfName = displayName.split(separator: " ").compactMap { $0.first?.uppercased() }
+        for i in 0..<splitCharacterOfName.count {
+            if i < 2 {
+                shortName.append(splitCharacterOfName[i])
+            }
         }
         self.shortName.text = shortName
     }
