@@ -333,14 +333,16 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
-        //TODO:: fix me
-//        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
-//            completionHandler(.noData)
-//            return
-//        }
-//        sharedMessageDataService.backgroundFetch {
-//            completionHandler(.newData)
-//        }
+        let signInManager = SignInManagerProvider()
+        let unlockManager = UnlockManagerProvider()
+        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
+            completionHandler(.noData)
+            return
+        }
+        let usersManager: UsersManager = sharedServices.get()
+        usersManager.firstUser?.messageService.backgroundFetch(notify: {
+            completionHandler(.newData)
+        })
     }
     
     // MARK: Notification methods
