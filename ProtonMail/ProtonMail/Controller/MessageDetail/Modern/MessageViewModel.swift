@@ -172,9 +172,9 @@ class MessageViewModel: NSObject {
                 group.enter()
                 let work = DispatchWorkItem {
                     self.messageService.base64AttachmentData(att: att) { based64String in
-                        if !based64String.isEmpty {
+                        if !based64String.isEmpty, let contentID = att.contentID() {
                             stringsQueue.sync {
-                                strings["src=\"cid:\(att.contentID()!)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
+                                strings["src=\"cid:\(contentID)\""] = "src=\"data:\(att.mimeType);base64,\(based64String)\""
                             }
                         }
                         group.leave()

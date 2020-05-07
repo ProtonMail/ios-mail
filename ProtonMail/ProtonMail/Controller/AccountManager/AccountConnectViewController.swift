@@ -230,7 +230,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     func showAlert() {
-        let alertController = UIAlertController(title: "Limit reached", message: "Only one free account can be added", preferredStyle: .alert)
+        let alertController = UIAlertController(title: LocalString._free_account_limit_reached_title, message: LocalString._free_account_limit_reached, preferredStyle: .alert)
         alertController.addOKAction()
         self.present(alertController, animated: true, completion: nil)
     }

@@ -145,12 +145,13 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     break
                 case .SignAndEncrypt:
                     var pt_contact : String?
-//                    do {
-//                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,//contacts encrypted with UserKey
-//                                                               passphrase: sharedUserDataService.mailboxPassword!)
-//                    } catch {
-//                        //TODO::show error
-//                    }
+                    do {
+                        pt_contact = try c.data.decryptMessage(binKeys:
+                            self.user.userPrivateKeys,//contacts encrypted with UserKey
+                            passphrase: self.user.mailboxPassword)
+                    } catch {
+                        //TODO::show error
+                    }
                     
                     guard let pt_contact_vcard = pt_contact else {
                         break

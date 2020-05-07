@@ -188,9 +188,15 @@ class AccountPasswordViewController: ProtonMailViewController, ViewModelProtocol
                                     alert.addAction((UIAlertAction.okAction()))
                                     self.present(alert, animated: true, completion: nil)
         }, reachLimit: {
-            
+            MBProgressHUD.hide(for: self.view, animated: true)
+            let alertController = UIAlertController(title: LocalString._free_account_limit_reached_title, message: LocalString._free_account_limit_reached, preferredStyle: .alert)
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
         }, existError: {
-            
+            MBProgressHUD.hide(for: self.view, animated: true)
+            let alertController = LocalString._duplicate_logged_in.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
         }, tryUnlock: {
             unlockManager.unlockIfRememberedCredentials(requestMailboxPassword: {}, unlocked: {
                 self.coordinator?.stop()

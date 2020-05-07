@@ -172,6 +172,13 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func didReceiveTokenRevoke(uid: String) {
+        self.appWindow.enumerateViewControllerHierarchy { controller, stop in
+            if let menu = controller as? MenuViewController {
+                //Work Around: trigger viewDidLoad of menu view controller
+                _ = menu.view
+            }
+        }
+        
         let usersManager: UsersManager = services.get()
         if let user = usersManager.getUser(bySessionID: uid) {
             usersManager.logout(user: user, shouldAlert: true)

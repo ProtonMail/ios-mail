@@ -1813,6 +1813,9 @@ class LocalizedString {
     lazy var _login_to_pm_act = NSLocalizedString("Log in to your ProtonMail account", comment: "Account manager title")
     lazy var _duplicate_logged_in = NSLocalizedString("The user is already logged in", comment: "Alert when the account is already logged in")
     
+    lazy var _free_account_limit_reached_title = NSLocalizedString("Limit reached", comment: "Title of alert when the free account limit is reached")
+    lazy var _free_account_limit_reached = NSLocalizedString("Only one free account can be added", comment: "Alert when the free account limit is reached")
+    
     
     lazy var _enter_your_mailbox_password = NSLocalizedString("Enter your mailbox password", comment: "Account manager title")
     
