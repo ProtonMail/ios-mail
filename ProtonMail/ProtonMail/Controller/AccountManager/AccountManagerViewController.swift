@@ -87,8 +87,8 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
     
     private func checkIsMessageInQueue(completion: ((Bool) -> Void)? = nil) {
         if self.viewModel.isCurrentUserHasQueuedMessage() {
-            let alertController = UIAlertController(title: "Alert", message: "There are still some messages in queue. If you log out, the draft will be deleted.", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Delete All", style: .destructive, handler: { (action) in
+            let alertController = UIAlertController(title: LocalString._general_alert_title, message: LocalString._there_are_still_some_messages_in_queue_, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: LocalString._delete_all, style: .destructive, handler: { (action) in
                 completion?(true)
             }))
             alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))

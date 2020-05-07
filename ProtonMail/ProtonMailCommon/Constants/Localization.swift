@@ -204,8 +204,8 @@ class LocalizedString {
     lazy var _mark_read = NSLocalizedString("Mark Read", comment: "mark message as read action")
     /// "Remove Star"
     lazy var _remove_star = NSLocalizedString("Remove Star", comment: "un star message")
-    /// "Delete All"
-    lazy var _delete_all = NSLocalizedString("Delete All", comment: "emptify folder/label confirmation alert")
+    /// "Delete all"
+    lazy var _delete_all = NSLocalizedString("Delete all", comment: "emptify folder/label confirmation alert")
     /// "Are you sure? This can't be undone."
     lazy var _are_you_sure_this_cant_be_undone = NSLocalizedString("Are you sure? This can't be undone.", comment: "emptify folder/label confirmation alert")
     
@@ -1886,5 +1886,5 @@ class LocalizedString {
     let _emaile_ = NSLocalizedString("email", comment: "network troubleshot cell title")
     let _twitter = NSLocalizedString("Twitter", comment: "network troubleshot cell title")
     
-    
+    let _there_are_still_some_messages_in_queue_ = NSLocalizedString("There are still some messages in queue. If you log out, the draft will be deleted.", comment: "alert when logout user if in queue still have tasks")
 }
