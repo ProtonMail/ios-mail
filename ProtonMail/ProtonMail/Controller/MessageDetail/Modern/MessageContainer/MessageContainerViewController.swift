@@ -38,6 +38,12 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.viewModel.userActivity.becomeCurrent()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.viewModel?.userActivity.invalidate()
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -160,7 +166,6 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         self.threadObservation = nil
         self.standalonesObservation = []
         self.coordinator.stop()
-        self.viewModel?.userActivity.invalidate()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
