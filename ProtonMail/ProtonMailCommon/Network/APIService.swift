@@ -207,20 +207,23 @@ class APIService : Service {
     
     internal typealias AuthTokenBlock = (String?, String?, NSError?) -> Void
     internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
+        //TODO:: fix me. this is wrong. concurruncy 
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
             let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
-            pthread_mutex_unlock(&self.mutex)
-            
             guard let credential = authCredential else {
                 PMLog.D("token is empty")
+
+                pthread_mutex_unlock(&self.mutex)
                 completion(nil, nil, NSError(domain: "empty token", code: 0, userInfo: nil))
                 return
             }
             
+            // when local credential expired, should handle the case same as api reuqest error handling
             guard !credential.isExpired else {
                 self.authRefresh(credential) { _, newCredential, error in
                     self.debugError(error)
+                    pthread_mutex_unlock(&self.mutex)
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
@@ -242,7 +245,8 @@ class APIService : Service {
                 }
                 return
             }
-            
+
+            pthread_mutex_unlock(&self.mutex)
             // renew
             completion(credential.accessToken, self.sessionUID, nil)
         }

@@ -75,6 +75,7 @@ class MailboxCoordinator : DefaultCoordinator {
     enum Destination : String {
         case composer          = "toCompose"
         case composeShow       = "toComposeShow"
+        case composeMailto     = "toComposeMailto"
         case search            = "toSearchViewController"
         case details           = "toMessageDetailViewController"
         case detailsFromNotify = "toMessageDetailViewControllerFromNotification"
@@ -90,6 +91,7 @@ class MailboxCoordinator : DefaultCoordinator {
             switch rawValue {
             case "toCompose": self = .composer
             case "toComposeShow", String(describing: ComposeContainerViewController.self): self = .composeShow
+            case "toComposeMailto": self = .composeMailto
             case "toSearchViewController", String(describing: SearchViewController.self): self = .search
             case "toMessageDetailViewController", String(describing: MessageContainerViewController.self): self = .details
             case "toMessageDetailViewControllerFromNotification": self = .detailsFromNotify
@@ -161,7 +163,7 @@ class MailboxCoordinator : DefaultCoordinator {
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
             
-        case .composeShow:
+        case .composeShow, .composeMailto:
             self.viewController?.cancelButtonTapped()
             
             guard let nav = destination as? UINavigationController,
@@ -261,6 +263,73 @@ class MailboxCoordinator : DefaultCoordinator {
             if let nav = self.navigation {
                 let user = self.viewModel.user
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
+                let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
+                composer.start()
+                composer.follow(deeplink)
+            }
+        case .composeMailto where path.value != nil:
+            if let nav = self.navigation, let value = path.value {
+                let user = self.viewModel.user
+                let mailToURL = URL(string: value)!
+                let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
+                if let mailTo : NSURL = mailToURL as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
+                    let rawURLparts = resSpecifier.components(separatedBy: "?")
+                    if (rawURLparts.count > 2) {
+                        
+                    } else {
+                        let defaultRecipient = rawURLparts[0]
+                        if defaultRecipient.count > 0 { //default to
+                            if defaultRecipient.isValidEmail() {
+                                viewModel.addToContacts(ContactVO(name: defaultRecipient, email: defaultRecipient))
+                            }
+                            PMLog.D("to: \(defaultRecipient)")
+                        }
+                        
+                        if (rawURLparts.count == 2) {
+                            let queryString = rawURLparts[1]
+                            let params = queryString.components(separatedBy: "&")
+                            for param in params {
+                                let keyValue = param.components(separatedBy: "=")
+                                if (keyValue.count != 2) {
+                                    continue
+                                }
+                                let key = keyValue[0].lowercased()
+                                var value = keyValue[1]
+                                value = value.removingPercentEncoding ?? ""
+                                if key == "subject" {
+                                    PMLog.D("subject: \(value)")
+                                    viewModel.setSubject(value)
+                                }
+                                
+                                if key == "body" {
+                                    PMLog.D("body: \(value)")
+                                    viewModel.setBody(value)
+                                }
+                                
+                                if key == "to" {
+                                    PMLog.D("to: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addToContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "cc" {
+                                    PMLog.D("cc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addCcContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                                
+                                if key == "bcc" {
+                                    PMLog.D("bcc: \(value)")
+                                    if value.isValidEmail() {
+                                        viewModel.addBccContacts(ContactVO(name: value, email: value))
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
                 composer.follow(deeplink)

@@ -310,8 +310,14 @@ class WindowsCoordinator: CoordinatorNew {
     
     internal func followDeeplink(_ deeplink: DeepLink) {
         self.deeplink = deeplink
-        _ = deeplink.popFirst
+//        _ = deeplink.popFirst
         self.start()
+    }
+    
+    internal func setDeepDeeplink(_ deeplink: DeepLink) {
+        self.deeplink = deeplink
+        _ = deeplink.popFirst
+        
     }
 }
 

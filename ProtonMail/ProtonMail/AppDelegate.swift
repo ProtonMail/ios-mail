@@ -258,10 +258,23 @@ extension AppDelegate: UIApplicationDelegate {
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return false
         }
         
+        
+        if urlComponents.scheme == "protonmail" {
+            let path = url.absoluteString.preg_replace("protonmail://", replaceto: "")
+            let deeplink = DeepLink(String(describing: MenuViewController.self))
+            deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+            deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
+            self.coordinator.setDeepDeeplink(deeplink)
+            return true
+        }
+        
+        guard urlComponents.host == "signup" else {
+            return false
+        }
         guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
             return false
         }
@@ -275,6 +288,7 @@ extension AppDelegate: UIApplicationDelegate {
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
+                
         return true
     }
     

@@ -199,7 +199,7 @@ class LocalizedString {
     /// "Empty Folder"
     lazy var _empty_folder = NSLocalizedString("Empty Folder", comment: "empty folder, for spam and trash and drafts")
     /// "Empty label"
-    lazy var _empty_label = NSLocalizedString("Empty Label", comment: "empty label")
+    lazy var _empty_label = NSLocalizedString("Empty Label", comment: "it is an option to empty the label")
     /// "Mark Read"
     lazy var _mark_read = NSLocalizedString("Mark Read", comment: "mark message as read action")
     /// "Remove Star"
