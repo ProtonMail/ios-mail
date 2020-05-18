@@ -509,65 +509,66 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     }
     
     override func export() -> String {
-        return ""
-//        let cards = self.contact.getCardData()
-//        var vcard : PMNIVCard? = nil
-//        for c in cards {
-//            if c.type == .SignAndEncrypt {
-//                var pt_contact : String?
-//                if let userkeys = sharedUserDataService.userInfo?.userKeys {
-//                    for key in userkeys {
-//                        do {
-//                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-//                            break
-//                        } catch {
-//                        }
-//                    }
-//                }
-//
-//                guard let pt_contact_vcard = pt_contact else {
-//                    break
-//                }
-//                vcard = PMNIEzvcard.parseFirst(pt_contact_vcard)
-//            }
-//        }
-//
-//        for c in cards {
-//            if c.type == .PlainText {
-//                if let card = PMNIEzvcard.parseFirst(c.data) {
-//                    let emails = card.getEmails()
-//                    let fn = card.getFormattedName()
-//                    if vcard != nil {
-//                        vcard!.setEmails(emails)
-//                        vcard!.setFormattedName(fn)
-//                    } else {
-//                        vcard = card
-//                    }
-//                }
-//            }
-//        }
-//
-//        for c in cards {
-//            if c.type == .SignedOnly {
-//                if let card = PMNIEzvcard.parseFirst(c.data) {
-//                    let emails = card.getEmails()
-//                    let fn = card.getFormattedName()
-//                    if vcard != nil {
-//                        vcard!.setEmails(emails)
-//                        vcard!.setFormattedName(fn)
-//                    } else {
-//                        vcard = card
-//                    }
-//                }
-//            }
-//        }
-//
-//
-//        guard let outVCard = vcard else {
-//            return ""
-//        }
-//
-//        return PMNIEzvcard.write(outVCard)
+        let cards = self.contact.getCardData()
+        var vcard : PMNIVCard? = nil
+        let userInfo = self.user.userInfo
+        for c in cards {
+            if c.type == .SignAndEncrypt {
+                var pt_contact : String?
+                let userkeys = userInfo.userKeys
+                for key in userkeys {
+                    do {
+                        pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key,
+                                                                           passphrase: user.mailboxPassword)
+                        break
+                    } catch {
+                    }
+                }
+                
+
+                guard let pt_contact_vcard = pt_contact else {
+                    break
+                }
+                vcard = PMNIEzvcard.parseFirst(pt_contact_vcard)
+            }
+        }
+
+        for c in cards {
+            if c.type == .PlainText {
+                if let card = PMNIEzvcard.parseFirst(c.data) {
+                    let emails = card.getEmails()
+                    let fn = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(fn)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+
+        for c in cards {
+            if c.type == .SignedOnly {
+                if let card = PMNIEzvcard.parseFirst(c.data) {
+                    let emails = card.getEmails()
+                    let fn = card.getFormattedName()
+                    if vcard != nil {
+                        vcard!.setEmails(emails)
+                        vcard!.setFormattedName(fn)
+                    } else {
+                        vcard = card
+                    }
+                }
+            }
+        }
+
+
+        guard let outVCard = vcard else {
+            return ""
+        }
+
+        return PMNIEzvcard.write(outVCard)
     }
     
     override func exportName() -> String {
