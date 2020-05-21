@@ -156,6 +156,7 @@ class WindowsCoordinator: CoordinatorNew {
                 if #available(iOS 13.0, *), self.appWindow.windowScene == nil {
                     self.appWindow.windowScene = self.scene as? UIWindowScene
                 }
+                self.appWindow.windowLevel = self.currentWindow.windowLevel + 1
                 if self.navigate(from: self.currentWindow, to: self.appWindow),
                     let deeplink = self.deeplink
                 {
