@@ -37,6 +37,7 @@ class MenuUserViewCell: UITableViewCell {
     @IBOutlet weak var emailAddress: UILabel!
     @IBOutlet weak var shortName: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
+    @IBOutlet weak var separtor: UIView!
     
     @IBOutlet weak var signOutBtn: UIButton!
     
@@ -135,6 +136,10 @@ class MenuUserViewCell: UITableViewCell {
         }
     }
     
+    func hideSepartor(_ hideSepartor: Bool) {
+        separtor.isHidden = hideSepartor
+    }
+    
     func hideCount () {
         unreadLabel.text = "0";
         unreadLabel.isHidden = true;
@@ -152,6 +157,11 @@ class MenuUserViewCell: UITableViewCell {
         if selected {
             unreadLabel.backgroundColor = UIColor.ProtonMail.Menu_UnreadCountBackground
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        separtor.isHidden = true
     }
     
     @IBAction func handleSignIn(_ sender: Any) {
