@@ -33,4 +33,24 @@ class TextInsetTextField: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return super.textRect(forBounds: bounds).insetBy(dx: inset, dy: 0)
     }
+    
+    override var isSecureTextEntry: Bool {
+        didSet {
+            if isFirstResponder {
+                _ = becomeFirstResponder()
+            }
+        }
+    }
+
+    override func becomeFirstResponder() -> Bool {
+        // TextField will clear text when
+        // 1. beginEditing when `isSecureTextEntry` is `true`
+        // 2. state of `isSecureTextEntry` change from `false` to `true`
+        // below code can prevent text disappear issue
+        if isSecureTextEntry, let text = self.text {
+            self.text?.removeAll()
+            insertText(text)
+        }
+        return super.becomeFirstResponder()
+    }
 }
