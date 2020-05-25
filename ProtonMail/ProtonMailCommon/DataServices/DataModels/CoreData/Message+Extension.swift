@@ -293,7 +293,7 @@ extension Message {
         let mContext = sharedCoreDataService.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(labelID)")
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@)", "\(labelID)")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         do {
             if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
