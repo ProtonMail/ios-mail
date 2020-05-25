@@ -367,24 +367,29 @@ extension MenuViewController: UITableViewDataSource {
         let s = indexPath.section
         let row = indexPath.row
         let section = self.viewModel.section(at: s)
+        
+        let isLastSection = s == self.viewModel.sectionCount() - 1
+        let isLastCell = row == self.tableView(tableView, numberOfRowsInSection: s) - 1
+        let hideSepartor = isLastSection || !isLastCell
+        
         switch section {
         case .inboxes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             let data = self.viewModel.item(inboxes: row)
             let count = self.viewModel.count(by: data.menuToLabel.rawValue, userID: nil)
-            cell.configCell(data)
+            cell.configCell(data, hideSepartor: hideSepartor)
             cell.configUnreadCount(count: count)
             return cell
         case .others:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
-            cell.configCell(self.viewModel.item(others: row))
+            cell.configCell(self.viewModel.item(others: row), hideSepartor: hideSepartor)
             cell.hideCount()
             return cell
         case .labels:
             let cell = tableView.dequeueReusableCell(withIdentifier: kLabelTableCellId, for: indexPath) as! MenuLabelViewCell
             if let data = self.viewModel.label(at: row) {
                 let count = self.viewModel.count(by: data.labelID, userID: data.userID)
-                cell.configCell(data)
+                cell.configCell(data, hideSepartor: hideSepartor)
                 cell.configUnreadCount(count: count)
             }
             return cell
@@ -395,6 +400,7 @@ extension MenuViewController: UITableViewDataSource {
                 let count = user.getUnReadCount(by: Message.Location.inbox.rawValue)
                 cell.configUnreadCount(count: count)
             }
+            cell.hideSepartor(hideSepartor)
             return cell
         case .disconnectedUsers:
             let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
@@ -405,6 +411,7 @@ extension MenuViewController: UITableViewDataSource {
                                 email: disconnectedUser.defaultEmail)
             }
             cell.delegate = self
+            cell.hideSepartor(hideSepartor)
             return cell
         case .accountManager:
             let cell = tableView.dequeueReusableCell(withIdentifier: kButtonTableCellID, for: indexPath) as! MenuButtonViewCell
@@ -423,7 +430,7 @@ extension MenuViewController: UITableViewDataSource {
         case .labels:
             return 0.0
         default:
-            return 1.0
+            return 0.0
         }
     }
 }
@@ -487,7 +494,7 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                     let index = IndexPath(row: indexPath.row, section: 2)
                     if let cell = tableView.cellForRow(at: index) as? MenuLabelViewCell {
                         if let data = self.viewModel.label(at: index.row) {
-                            cell.configCell(data)
+                            cell.configCell(data, hideSepartor: cell.separtor.isHidden)
                             let count = self.viewModel.count(by: data.labelID, userID: nil)
                             cell.configUnreadCount(count: count)
                         }

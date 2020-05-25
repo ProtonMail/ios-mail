@@ -25,6 +25,7 @@ import Foundation
 
 class MenuButtonViewCell: UITableViewCell {
     @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var separtor: UIView!
     
     fileprivate var item: MenuItem!
     
@@ -38,8 +39,9 @@ class MenuButtonViewCell: UITableViewCell {
         self.selectedBackgroundView = selectedBackgroundView
     }
     
-    func configCell (_ item : MenuItem!) {
+    func configCell (_ item : MenuItem!, hideSepartor: Bool) {
         self.item = item;
+        self.separtor.isHidden = hideSepartor
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
@@ -48,5 +50,10 @@ class MenuButtonViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        separtor.isHidden = true
     }
 }
