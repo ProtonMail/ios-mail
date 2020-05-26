@@ -434,7 +434,11 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             case .error(let error):
                 PMLog.D("error: \(error)")
                 self.showLoginViews()
-                self.handleRequestError(error)
+                if let _ = cachedTwoCode {
+                    self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
+                } else {
+                    self.handleRequestError(error)
+                }
             case .ok:
                 break
             case .mbpwd:
