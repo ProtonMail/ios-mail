@@ -151,7 +151,6 @@ class WindowsCoordinator: CoordinatorNew {
     }
     
     @objc func unlock() {
-        self.lockWindow = nil
         let usersManager : UsersManager = self.services.get()
         
         guard usersManager.hasUsers() else {
@@ -196,14 +195,13 @@ class WindowsCoordinator: CoordinatorNew {
                 coordinator.start()
                 self.navigate(from: self.currentWindow, to: newWindow)
             case .lockWindow:
-                if self.lockWindow == nil {
-                    let lock = UIWindow(storyboard: .signIn, scene: self.scene)
-                    let vm = SignInViewModel(usersManager: sharedServices.get())
-                    let coordinator = SignInCoordinator(destination: lock, vm: vm, services: sharedServices)
-                    coordinator.start()
-                    self.navigate(from: self.currentWindow, to: lock)
-                    self.lockWindow = lock
-                }
+                let lock = self.lockWindow ?? UIWindow(storyboard: .signIn, scene: self.scene)
+                let vm = SignInViewModel(usersManager: sharedServices.get())
+                let coordinator = SignInCoordinator(destination: lock, vm: vm, services: sharedServices)
+                coordinator.start()
+                self.navigate(from: self.currentWindow, to: lock)
+                self.lockWindow = lock
+                
             case .appWindow:
                 if self.appWindow == nil || self.appWindow.rootViewController is PlaceholderVC {
                     self.appWindow = UIWindow(storyboard: .inbox, scene: self.scene)
