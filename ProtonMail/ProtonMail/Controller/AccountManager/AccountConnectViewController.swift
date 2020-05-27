@@ -52,7 +52,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     @IBOutlet weak var usernameView: UIView!
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var usernameTextField: UITextField!
-    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordTextField: TextInsetTextField!
     
     @IBOutlet weak var signInButton: UIButton!
     @IBOutlet weak var signInTitle: UILabel!
