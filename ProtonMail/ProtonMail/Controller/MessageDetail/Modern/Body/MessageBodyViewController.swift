@@ -89,7 +89,8 @@ extension MessageBodyViewController : LinkOpeningValidator {
             
         case .linkActivated where navigationAction.request.url != nil:
             let url = navigationAction.request.url!
-            self.validateNotPhishing(url) { allowedToOpen in
+            self.validateNotPhishing(url) { [weak self] allowedToOpen in
+                guard let self = self else { return }
                 if allowedToOpen {
                     self.coordinator?.open(url: url)
                 }
