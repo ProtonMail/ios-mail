@@ -168,7 +168,6 @@ class UnlockManager: Service {
         #endif
         
         NotificationCenter.default.post(name: Notification.Name.didUnlock, object: nil) // needed for app unlock
-        NotificationCenter.default.post(name: Notification.Name.didObtainMailboxPassword, object: nil) // needed by 2-password mode AccountConnectViewController
         
         unlocked?()
     }
