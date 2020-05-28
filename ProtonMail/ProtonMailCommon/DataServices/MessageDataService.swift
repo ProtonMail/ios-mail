@@ -862,7 +862,7 @@ class MessageDataService : Service {
 //        }
         
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@) AND (%K > %d)",
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@) AND (%K > %d)",
                                              labelID, Message.Attributes.messageStatus, 0)
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: #keyPath(Message.time), ascending: false)]
         fetchRequest.fetchBatchSize = 30
