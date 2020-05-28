@@ -144,6 +144,7 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func lock() {
         guard sharedServices.get(by: UsersManager.self).hasUsers() else {
+            keymaker.wipeMainKey()
             self.go(dest: .signInWindow)
             return
         }
