@@ -43,7 +43,12 @@ enum SettingLockSection : Int, CustomStringConvertible {
     var foot : String {
         switch self {
         case .lock:
-            return "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it."
+            switch UIDevice.current.biometricType {
+            case .faceID:
+                return "Turn this feature on to auto-lock your app and use a PIN code or FaceID to unlock it."
+            default:
+                return "Turn this feature on to auto-lock your app and use a PIN code or fingerprint to unlock it."
+            }
         default:
             return ""
         }
