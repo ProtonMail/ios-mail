@@ -271,7 +271,10 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             case .error(let error):
                 PMLog.D("error: \(error)")
                 MBProgressHUD.hide(for: self.view, animated: true)
-                if !error.code.forceUpgrade {
+                
+                if cachedTwoCode != nil {
+                    self.coordinator?.go(to: .twoFACode, sender: self)
+                } else if !error.code.forceUpgrade {
                     let alertController = error.alertController()
                     alertController.addOKAction()
                     self.present(alertController, animated: true, completion: nil)
