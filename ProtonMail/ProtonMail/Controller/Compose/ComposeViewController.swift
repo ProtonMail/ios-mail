@@ -592,6 +592,7 @@ extension ComposeViewController : ComposeViewDelegate {
                         if let signature = self.viewModel.getCurrrentSignature(addr.address_id) {
                             self.htmlEditor.update(signature: signature)
                         }
+                        MBProgressHUD.showAdded(to: self.view, animated: true)
                         self.updateSenderMail(addr: addr)
                     }
                 }
@@ -617,8 +618,6 @@ extension ComposeViewController : ComposeViewDelegate {
                 return
             }
         }
-        
-        MBProgressHUD.showAdded(to: self.view, animated: true)
         
         _ = self.queue.sync {
             self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
