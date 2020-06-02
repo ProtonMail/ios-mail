@@ -195,7 +195,7 @@ class LocalizedString {
     /// "Move to Trash"
     lazy var _locations_move_trash_action   = NSLocalizedString("Move to Trash", comment: "move action")
     /// "Move to AllMail"
-    lazy var _locations_move_allmail_action = NSLocalizedString("Move to AllMail", comment: "move action")
+    lazy var _locations_move_allmail_action = NSLocalizedString("Move to All Mail", comment: "move action")
     /// "Empty Folder"
     lazy var _empty_folder = NSLocalizedString("Empty Folder", comment: "empty folder, for spam and trash and drafts")
     /// "Empty label"
@@ -529,7 +529,7 @@ class LocalizedString {
     /// "No connectivity detected..."
     lazy var _general_no_connectivity_detected = NSLocalizedString("No connectivity detected...", comment: "Title")
     /// "The ProtonMail current offline..."
-    lazy var _general_pm_offline = NSLocalizedString("The ProtonMail current offline...", comment: "Title")
+    lazy var _general_pm_offline = NSLocalizedString("ProtonMail is currently offline...", comment: "Title")
     /// "Save"
     lazy var _general_save_action = NSLocalizedString("Save", comment: "Title")
     /// "Edit"
@@ -997,7 +997,7 @@ class LocalizedString {
     lazy var _discard_changes = NSLocalizedString("Discard changes", comment: "Action")
 
     /// "Add new url"
-    lazy var _add_new_url = NSLocalizedString("Add new url", comment: "action")
+    lazy var _add_new_url = NSLocalizedString("Add new URL", comment: "action")
 
     /// "Message Queue"
     lazy var _message_queue = NSLocalizedString("Message Queue", comment: "settings debug section title")
@@ -1113,10 +1113,10 @@ class LocalizedString {
     lazy var _the_password_is_wrong = NSLocalizedString("The Password is wrong.", comment: "update password error")
 
     /// "The new password does not match."
-    lazy var _the_new_password_not_match = NSLocalizedString("The new password not match.", comment: "update password error")
+    lazy var _the_new_password_not_match = NSLocalizedString("The new password does not match.", comment: "update password error")
 
     /// "The new password is required."
-    lazy var _the_new_password_cant_empty = NSLocalizedString("The new password can't empty.", comment: "update password error")
+    lazy var _the_new_password_cant_empty = NSLocalizedString("The new password can't be empty.", comment: "update password error")
 
     /// "The private key update failed."
     lazy var _the_private_key_update_failed = NSLocalizedString("The private key update failed.", comment: "update password error")
@@ -1126,7 +1126,6 @@ class LocalizedString {
 
     /// "Update Notification Email"
     lazy var _update_notification_email = NSLocalizedString("Update Notification Email", comment: "update notification email error title")
-
 
     /// "Unable to get contacts"
     lazy var _unable_to_get_contacts = NSLocalizedString("Unable to get contacts", comment: "Error")
@@ -1648,7 +1647,7 @@ class LocalizedString {
     lazy var _sandbox_receipt = NSLocalizedString("Sorry, we cannot process purchases in the beta version of the iOS app. Thank you for participating in our public beta!", comment: "Error message for beta users")
     
     
-    lazy var _reciept_lost = NSLocalizedString("Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you.", comment: "Error message")
+    lazy var _reciept_lost = NSLocalizedString("Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.", comment: "Error message")
     
     lazy var _another_user_transaction = NSLocalizedString("Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." , comment: "Error message")
     
@@ -1834,7 +1833,7 @@ class LocalizedString {
     lazy var _mailbox_size = NSLocalizedString("Mailbox size", comment: "cell title in device settings")
     
     lazy var _addresses = NSLocalizedString("Addresses", comment: "cell title in device settings")
-    lazy var _snooze = NSLocalizedString("Snooze", comment: "cell title in device settings")
+    lazy var _snooze = NSLocalizedString("Snooze", comment: "Cell title in device settings - mute notification until a later time.")
     lazy var _mailbox = NSLocalizedString("MAILBOX", comment: "cell title in device settings")
     
     lazy var _privacy = NSLocalizedString("Privacy", comment: "cell title in device settings")
