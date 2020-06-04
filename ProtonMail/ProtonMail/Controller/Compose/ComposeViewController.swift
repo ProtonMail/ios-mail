@@ -593,19 +593,7 @@ extension ComposeViewController : ComposeViewDelegate {
                             self.htmlEditor.update(signature: signature)
                         }
                         MBProgressHUD.showAdded(to: self.view, animated: true)
-                        
-                        _ = self.queue.sync {
-                            self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
-                                {
-                                    let alertController = error.localizedDescription.alertController()
-                                    alertController.addOKAction()
-                                    self.present(alertController, animated: true, completion: nil)
-                                } ~> .main
-                            }
-                        }
-                        
-                        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
-                        MBProgressHUD.hide(for: self.view, animated: true)
+                        self.updateSenderMail(addr: addr)
                     }
                 }
                 selectEmail.accessibilityLabel = selectEmail.title
@@ -617,6 +605,32 @@ extension ComposeViewController : ComposeViewDelegate {
             alertController.popoverPresentationController?.sourceRect = self.headerView.fromView.frame
             present(alertController, animated: true, completion: nil)
         }
+    }
+    
+    private func updateSenderMail(addr: Address) {
+        let atts = self.viewModel.getAttachments() ?? []
+        for att in atts {
+            if att.keyPacket == nil || att.keyPacket == "" {
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: false) { [weak self](_) in
+                    guard let _self = self else {return}
+                    _self.updateSenderMail(addr: addr)
+                }
+                return
+            }
+        }
+        
+        _ = self.queue.sync {
+            self.viewModel.updateAddressID(addr.address_id).catch { (error ) in
+                {
+                    let alertController = error.localizedDescription.alertController()
+                    alertController.addOKAction()
+                    self.present(alertController, animated: true, completion: nil)
+                } ~> .main
+            }
+        }
+        
+        self.headerView.updateFromValue(addr.email, pickerEnabled: true)
+        MBProgressHUD.hide(for: self.view, animated: true)
     }
     
     func ComposeViewDidSizeChanged(_ size: CGSize, showPicker: Bool) {
