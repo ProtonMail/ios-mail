@@ -785,6 +785,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.coordinator?.go(to: .troubleShoot)
     }
     
+    
+    var retryCounter = 0
     @objc internal func getLatestMessages() {
         self.hideTopMessage()
         if !fetchingMessage {
@@ -822,13 +824,21 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 }
                 
                 if loadMore > 0 {
-                     self.retry()
+                    if self.retryCounter >= 10 {
+                        delay(1.0) {
+                            self.retry()
+                            self.retryCounter += 1
+                        }
+                    } else {
+                        self.retry()
+                        self.retryCounter += 1
+                    }
                 } else {
                     // artificial delay to make refreshControl animation roll longer when Internet is too fast
                     DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) { [weak self] in
                         self?.refreshControl?.endRefreshing()
                     }
-                    
+                    self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
                     }
