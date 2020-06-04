@@ -175,11 +175,12 @@ class MenuCoordinatorNew: DefaultCoordinator {
                 let user = users.getUser(bySessionID: setup.value!)
                 
                 users.active(uid: setup.value!)
+                let isSameUser = self.viewModel.currentUser?.userinfo.userId ?? "" == user?.userinfo.userId ?? ""
                 self.viewModel.currentUser = user
                 
-                if let user = user {
+                if user != nil && !isSameUser {
                     String(format: LocalString._switch_account_by_click_notification,
-                           user.defaultEmail).alertToastBottom()
+                           user!.defaultEmail).alertToastBottom()
                 }
             default: break
             }
