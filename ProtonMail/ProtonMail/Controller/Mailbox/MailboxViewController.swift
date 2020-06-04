@@ -837,6 +837,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     
                     //temperay to check message status and fetch metadata
                     self.viewModel.messageService.purgeOldMessages()
+                    
+                    if userCachedStatus.hasMessageFromNotification {
+                        userCachedStatus.hasMessageFromNotification = false
+                        self.viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+                    }
                 }
             }
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {

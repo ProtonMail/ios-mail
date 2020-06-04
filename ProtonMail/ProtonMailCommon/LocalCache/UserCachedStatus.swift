@@ -84,6 +84,9 @@ final class UserCachedStatus : SharedCacheBase {
         static let combineContactFlag = "combine_contact_flag"
         
         static let primaryUserSessionId = "primary_user_session_id"
+        
+        //new value to check new messages
+        static let newMessageFromNotification = "new_message_from_notification"
     }
     
     var primaryUserSessionId: String? {
@@ -95,6 +98,18 @@ final class UserCachedStatus : SharedCacheBase {
         }
         set {
             setValue(newValue, forKey: Key.primaryUserSessionId)
+        }
+    }
+    
+    var hasMessageFromNotification: Bool {
+        get {
+            if getShared()?.object(forKey: Key.newMessageFromNotification) == nil {
+                return true
+            }
+            return getShared().bool(forKey: Key.newMessageFromNotification)
+        }
+        set {
+            setValue(newValue, forKey: Key.newMessageFromNotification)
         }
     }
     
