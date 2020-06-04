@@ -99,6 +99,8 @@ final class ContactsTableViewCell: MCSwipeTableViewCell {
         super.setHighlighted(highlighted, animated: animated)
         if highlighted {
             shortName.backgroundColor = UIColor(hexColorCode: "#BFBFBF")
+        } else {
+            shortName.backgroundColor = UIColor(hexColorCode: "#9497CE")
         }
     }
     
