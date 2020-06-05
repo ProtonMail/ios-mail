@@ -53,11 +53,21 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
             }
             return $0.name < $1.name
         }
-        self.emailsForDisplay = self.allEmails
+        let usersManager : UsersManager = sharedServices.get()
+        if let currentUser = usersManager.firstUser {
+            self.emailsForDisplay = self.allEmails
+                .filter({$0.userID == currentUser.userinfo.userId})
+        } else {
+            self.emailsForDisplay = self.allEmails
+        }
+        
+        self.emailsForDisplay = self.emailsForDisplay
+            .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
         
         self.selectedEmails = selectedEmails
         self.refreshHandler = refreshHandler
     }
+    
     
     /**
      For the given indexPath, returns if it is in the email list or not
