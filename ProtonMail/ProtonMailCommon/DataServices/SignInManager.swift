@@ -129,13 +129,6 @@ class SignInManager: Service {
             return
         }
         
-        guard userInfo.delinquent < 3 else {
-            onError(NSError.init(domain: "",
-                                 code: 0,
-                                 localizedDescription: LocalString._general_account_disabled_non_payment))
-            return
-        }
-        
         self.usersManager.add(auth: auth, user: userInfo)
         self.auth = nil
         self.userInfo = nil
@@ -149,14 +142,15 @@ class SignInManager: Service {
                 onError(NSError.unknowError())
                 return
             }
+            self.usersManager.update(auth: auth, user: info)
+            
             guard info.delinquent < 3 else {
+                self.usersManager.logout(user: user, shouldAlert: false)
                 onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
                 return
             }
             
             self.usersManager.loggedIn()
-            
-            self.usersManager.update(auth: auth, user: info )
             self.usersManager.active(uid: auth.sessionID)
 
             UserTempCachedStatus.restore()
