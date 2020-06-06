@@ -497,7 +497,7 @@ extension UsersManager {
         let hasUsersInfo = SharedCacheBase.getDefault()?.value(forKey: CoderKey.usersInfo) != nil
         
         // Workaround to fix MAILIOS-150
-        // Method that checks signin or not before 1.17.0
+        // Method that checks signin or not before 1.11.17
         let users = sharedServices.get(by: UsersManager.self)
         let isMailboxPasswordStored = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
         let isSignIn = users.hasUserName() && isMailboxPasswordStored
