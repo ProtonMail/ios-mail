@@ -80,15 +80,9 @@ final class ContactsViewModelImpl : ContactsViewModel {
     override func search(text: String) {
         var predicate: NSPredicate?
         if text.isEmpty {
-            if !userCachedStatus.isCombineContactOn {
-                predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.user.userInfo.userId)
-            }
+            predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.user.userInfo.userId)
         } else {
-            if !userCachedStatus.isCombineContactOn {
-                predicate = NSPredicate(format: "(name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@) AND %K == %@", argumentArray: [text, text, Contact.Attributes.userID, self.user.userInfo.userId])
-            } else {
-                predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
-            }
+            predicate = NSPredicate(format: "(name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@) AND %K == %@", argumentArray: [text, text, Contact.Attributes.userID, self.user.userInfo.userId])
         }
         fetchedResultsController?.fetchRequest.predicate = predicate
         
