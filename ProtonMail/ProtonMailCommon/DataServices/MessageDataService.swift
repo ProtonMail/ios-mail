@@ -1794,6 +1794,13 @@ class MessageDataService : Service, HasLocalStorage {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 } else if err.code == 15198 {
                     NSError.alertMessageSentError(details: err.localizedDescription)
+                } else if err.code == 15004 {
+                    // this error means the message has already been sent
+                    // so don't need to show this error to user
+                    self.localNotificationService.unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
+                    NSError.alertMessageSentToast()
+                    completion?(nil, nil, nil)
+                    return
                 }  else {
                     NSError.alertMessageSentError(details: err.localizedDescription)
                 }
