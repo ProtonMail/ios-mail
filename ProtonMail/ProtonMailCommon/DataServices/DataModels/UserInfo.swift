@@ -199,7 +199,6 @@ final class UserInfo : NSObject {
         self.userId = userinfo.userId
         self.linkConfirmation = userinfo.linkConfirmation
         self.userKeys = userinfo.userKeys
-        self.passwordMode = userinfo.passwordMode
     }
     
     func parse(userSettings: [String : Any]?) {
