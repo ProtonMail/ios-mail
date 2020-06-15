@@ -76,6 +76,7 @@ final public class Message: NSManagedObject {
     ///"MIMEType": "text/html",
     @NSManaged public var mimeType : String?
     ///"NumAttachments":0,
+    @available(*, deprecated, message: "Use attachments.count")
     @NSManaged public var numAttachments: NSNumber
     ///local use, only when send/draft/reply/forward. to track the orginal message id
     @NSManaged public var orginalMessageID: String?

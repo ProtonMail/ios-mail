@@ -536,7 +536,7 @@ extension ComposeViewController: HtmlEditorBehaviourDelegate {
         guard let attachment = self.viewModel.getAttachments()?.first(where: { $0.fileName.hasPrefix(sid) }) else { return}
         
         // decrement number of attachments in message manually
-        if let number = self.viewModel.message?.numAttachments.int32Value {
+        if let number = self.viewModel.message?.attachments.count {
             let newNum = number > 0 ? number - 1 : 0
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
@@ -849,7 +849,7 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
             }
             
             // decrement number of attachments in message manually
-            if let number = self.viewModel.message?.numAttachments.int32Value {
+            if let number = self.viewModel.message?.attachments.count {
                 let newNum = number > 0 ? number - 1 : 0
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
             }
