@@ -178,7 +178,7 @@ class MailboxMessageCell: MCSwipeTableViewCell {
             loctionRightSpace.constant = 0.0
         }
         
-        if message.numAttachments.int32Value > 0 {
+        if message.attachments.count > 0 {
             self.attachmentImage.isHidden = false
             self.attachmentWidth.constant = kIconsWidth
         } else {
