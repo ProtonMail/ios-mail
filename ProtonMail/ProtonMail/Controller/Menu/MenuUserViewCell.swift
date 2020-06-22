@@ -114,16 +114,27 @@ class MenuUserViewCell: UITableViewCell {
         let displayName = name.isEmpty ? email : name
         self.displayName.text = displayName
         self.emailAddress.text = email
+        self.setupShortName(displayName: displayName)
+    }
+    
+    private func setupShortName(displayName: String) {
         var shortName = ""
-        if displayName.count > 0 {
-            let splitCharacterOfName = displayName.split(separator: " ").compactMap { $0.first?.uppercased() }
-            for i in 0..<splitCharacterOfName.count {
-                if i < 2 {
-                    shortName.append(splitCharacterOfName[i])
-                }
-            }
+        let splitCharacterOfName = displayName
+                                    .split(separator: " ")
+                                    .compactMap { $0.first?.uppercased() }
+        let upperbound = min(2, splitCharacterOfName.count)
+        for i in 0..<upperbound {
+            shortName.append(splitCharacterOfName[i])
         }
+        
         self.shortName.text = shortName
+        if shortName.containsEmoji {
+            self.shortName.font = .systemFont(ofSize: 14)
+            self.shortName.baselineAdjustment = .alignCenters
+        } else {
+            self.shortName.font = .systemFont(ofSize: 18)
+            self.shortName.baselineAdjustment = .alignBaselines
+        }
     }
     
     func configUnreadCount (count: Int) {

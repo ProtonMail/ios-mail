@@ -54,15 +54,26 @@ class AccountManagerUserCell: UITableViewCell {
         let displayName = name.isEmpty ? email : name
         diaplayName.text = displayName
         emailAddress.text = email
-        
+        self.setupShortName(displayName: displayName)
+    }
+    
+    private func setupShortName(displayName: String) {
         var shortName = ""
-        let splitCharacterOfName = displayName.split(separator: " ").compactMap { $0.first?.uppercased() }
-        for i in 0..<splitCharacterOfName.count {
-            if i < 2 {
-                shortName.append(splitCharacterOfName[i])
-            }
+        let splitCharacterOfName = displayName
+                                    .split(separator: " ")
+                                    .compactMap { $0.first?.uppercased() }
+        let upperbound = min(splitCharacterOfName.count, 2)
+        for i in 0..<upperbound {
+            shortName.append(splitCharacterOfName[i])
         }
         self.shortName.text = shortName
+        if shortName.containsEmoji {
+            self.shortName.font = .systemFont(ofSize: 14)
+            self.shortName.baselineAdjustment = .alignCenters
+        } else {
+            self.shortName.font = .systemFont(ofSize: 18)
+            self.shortName.baselineAdjustment = .alignBaselines
+        }
     }
     
     func configLoggedOutCell(name: String, email: String) {
