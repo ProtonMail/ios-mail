@@ -382,6 +382,7 @@ final class UserCachedStatus : SharedCacheBase {
         getShared().removeObject(forKey: Key.showServerNoticesNextTime)
         getShared().removeObject(forKey: Key.lastAuthCacheVersion)
         getShared().removeObject(forKey: Key.isPM_MEWarningDisabled)
+        getShared().removeObject(forKey: Key.combineContactFlag)
         
         //pin code
         getShared().removeObject(forKey: Key.lastPinFailedTimes)
