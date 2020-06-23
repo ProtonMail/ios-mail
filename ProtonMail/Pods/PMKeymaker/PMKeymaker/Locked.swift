@@ -29,9 +29,9 @@ public enum Errors: Error {
     case failedToDecrypt
 }
 
+fileprivate let IVsize : Int = 16
 public struct GenericLocked<T, SUBTLE: SubtleProtocol> {
     public private(set) var encryptedValue: Data
-    
     public init(encryptedValue: Data) {
         self.encryptedValue = encryptedValue
     }
@@ -56,6 +56,13 @@ extension GenericLocked where T == String {
         }
         return value
     }
+    
+    public func lagcyUnlock(with key: Key) throws -> T {
+        guard let value = try GenericLocked<[String], SUBTLE>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
+            throw Errors.failedToDecrypt
+        }
+        return value
+    }
 }
 
 extension GenericLocked where T == Data {
@@ -69,13 +76,23 @@ extension GenericLocked where T == Data {
         }
         return value
     }
+    
+    public func lagcyUnlock(with key: Key) throws -> T {
+        guard let value = try GenericLocked<[Data], SUBTLE>.init(encryptedValue: self.encryptedValue).lagcyUnlock(with: key).first else {
+            throw Errors.failedToDecrypt
+        }
+        return value
+    }
 }
 
 extension GenericLocked where T: Codable {
     public init(clearValue: T, with key: Key) throws {
         let data = try PropertyListEncoder().encode(clearValue)
         var error: NSError?
-        let cypherData = SUBTLE.EncryptWithoutIntegrity(Data(key), data, Data(key.prefix(16)), &error)
+        
+        var random = SUBTLE.Random(IVsize) ?? Data(key.prefix(IVsize))
+        
+        let cypherData = SUBTLE.EncryptWithoutIntegrity(Data(key), data, random, &error)
         
         if let error = error {
             throw error
@@ -83,14 +100,35 @@ extension GenericLocked where T: Codable {
         guard let lockedData = cypherData else {
             throw Errors.failedToEncrypt
         }
-        
-        self.encryptedValue = lockedData
+        var enData = NSMutableData()
+        enData.append(random)
+        enData.append(lockedData)
+        self.encryptedValue = enData as Data
     }
     
     public func unlock(with key: Key) throws -> T {
         var error: NSError?
-        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(16)), &error)
-            
+        let randomIV = self.encryptedValue.prefix(IVsize)
+
+        let mutableData = NSMutableData(data: self.encryptedValue)
+        mutableData.replaceBytes(in: NSMakeRange(0,IVsize), withBytes: nil, length: 0)
+        let valu1e = mutableData as Data
+        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), valu1e, randomIV, &error)
+
+        if let error = error {
+            throw error
+        }
+        guard let unlockedData = clearData else {
+            throw Errors.failedToDecrypt
+        }
+        let value = try PropertyListDecoder().decode(T.self, from: unlockedData)
+        return value
+    }
+    
+    public func lagcyUnlock(with key: Key) throws -> T {
+        var error: NSError?
+        let clearData = SUBTLE.DecryptWithoutIntegrity(Data(key), self.encryptedValue, Data(key.prefix(IVsize)), &error)
+        
         if let error = error {
             throw error
         }

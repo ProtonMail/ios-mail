@@ -11,4 +11,5 @@ public protocol SubtleProtocol {
     static func DeriveKey(_ one: String, _ salt: Data, _ three: Int, _ four: inout NSError?) -> Data?
     static func EncryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data?
     static func DecryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data?
+    static func Random(_ bitlen : Int) -> Data?
 }

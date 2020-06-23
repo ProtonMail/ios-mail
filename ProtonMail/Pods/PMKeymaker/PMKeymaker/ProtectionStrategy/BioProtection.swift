@@ -25,9 +25,10 @@ import Security
 import EllipticCurveKeyPair
 
 private enum GenericBioProtectionConstants {
-    static var privateLabelKey = "BioProtection" + ".private"
-    static var publicLabelKey = "BioProtection" + ".public"
-    static var legacyLabelKey = "BioProtection" + ".legacy"
+    static let privateLabelKey = "BioProtection" + ".private"
+    static let publicLabelKey  = "BioProtection" + ".public"
+    static let legacyLabelKey  = "BioProtection" + ".legacy"
+    static let versionKey      = "BioProtection" + ".version"
 }
 
 public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
@@ -37,6 +38,22 @@ public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
     
     private typealias Constants = GenericBioProtectionConstants
     public let keychain: Keychain
+    private let version : Version = .v1
+    
+    enum Version : String {
+        case lagcy = "0"
+        case v1 = "1"
+        init(raw: String?) {
+            let rawValue = raw ?? "0"
+            switch rawValue {
+            case "1":
+                self = .v1
+            default:
+                self = .lagcy
+            }
+        }
+    }
+    
     
     public init(keychain: Keychain) {
         self.keychain = keychain
@@ -84,8 +101,8 @@ public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
                 return locked.encryptedValue
             }
         }
-        
         GenericBioProtection.saveCyphertext(locked.encryptedValue, in: self.keychain)
+        self.keychain.set(self.version.rawValue, forKey: Constants.versionKey)
     }
     
     public func unlock(cypherBits: Data) throws -> Key {
@@ -95,11 +112,23 @@ public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
                 let encryptor = GenericBioProtection.makeAsymmetricEncryptor(in: self.keychain)
                 return try encryptor.decrypt(cyphertext).bytes
             } else {
-                let ethemeral = GenericBioProtection.makeSymmetricEncryptor(in: self.keychain)
-                return try locked.unlock(with: ethemeral)
+                let curVer : Version = Version.init(raw: self.keychain.string(forKey: Constants.versionKey))
+                do {
+                    switch curVer {
+                    case .lagcy:
+                        let ethemeral = GenericBioProtection.makeSymmetricEncryptor(in: self.keychain)
+                        let key = try locked.lagcyUnlock(with: ethemeral)
+                        try self.lock(value: key)
+                        return key
+                    default:
+                        let ethemeral = GenericBioProtection.makeSymmetricEncryptor(in: self.keychain)
+                        return try locked.unlock(with: ethemeral)
+                    }
+                } catch let error {
+                    throw error
+                }
             }
         }
-        
         return cleardata
     }
     
@@ -107,5 +136,6 @@ public struct GenericBioProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
         try? GenericBioProtection.makeAsymmetricEncryptor(in: keychain).deleteKeyPair()
         keychain.remove(forKey: Constants.legacyLabelKey)
+        keychain.remove(forKey: Constants.versionKey)
     }
 }

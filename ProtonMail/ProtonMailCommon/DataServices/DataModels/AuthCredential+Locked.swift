@@ -24,7 +24,6 @@
 import Foundation
 import PMKeymaker
 
-
 extension Locked where T == [AuthCredential] {
     internal init(clearValue: T, with key: PMKeymaker.Key) throws {
         let data = NSKeyedArchiver.archivedData(withRootObject: clearValue)
@@ -32,9 +31,19 @@ extension Locked where T == [AuthCredential] {
         self.init(encryptedValue: locked.encryptedValue)
     }
     
+    internal func lagcyUnlock(with key: PMKeymaker.Key) throws -> T {
+        let locked = Locked<Data>(encryptedValue: self.encryptedValue)
+        let data = try locked.lagcyUnlock(with: key)
+        return try self.parse(data: data)
+    }
+    
     internal func unlock(with key: PMKeymaker.Key) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
+        return try self.parse(data: data)
+    }
+    
+    internal func parse(data: Data) throws -> T  {
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMail.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.AuthCredential")
         NSKeyedUnarchiver.setClass(AuthCredential.classForKeyedUnarchiver(), forClassName: "Share.AuthCredential")

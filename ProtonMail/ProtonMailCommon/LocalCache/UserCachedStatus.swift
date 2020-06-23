@@ -252,6 +252,35 @@ final class UserCachedStatus : SharedCacheBase {
         }
     }
     
+    func migrateLagcy() {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: Key.lastLocalMobileSignature),
+            case let locked = Locked<String>(encryptedValue: cypherData),
+            let customSignature = try? locked.lagcyUnlock(with: mainKey) else
+        {
+            return
+        }
+        guard let lockedNew = try? Locked<String>(clearValue: customSignature, with: mainKey) else
+        {
+            return
+        }
+        SharedCacheBase.getDefault()?.set(lockedNew.encryptedValue, forKey: Key.lastLocalMobileSignature)
+        SharedCacheBase.getDefault().synchronize()
+        
+        if var signatureData = SharedCacheBase.getDefault()?.dictionary(forKey: Key.UserWithLocalMobileSignature) {
+            signatureData.keys.forEach {
+                if let encryptedSignature = signatureData[$0] as? Data, case let locked = Locked<String>(encryptedValue: encryptedSignature),
+                    let customSignature = try? locked.lagcyUnlock(with: mainKey) {
+                    if let lockedSign = try? Locked<String>(clearValue: customSignature, with: mainKey) {
+                        signatureData[$0] = lockedSign.encryptedValue
+                    }
+                }
+            }
+            SharedCacheBase.getDefault()?.set(signatureData, forKey: Key.UserWithLocalMobileSignature)
+            SharedCacheBase.getDefault().synchronize()
+        }
+    }
+    
     func resetMobileSignature() {
         getShared().removeObject(forKey: Key.lastLocalMobileSignature)
         getShared().synchronize()
