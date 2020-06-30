@@ -263,12 +263,15 @@ extension AppDelegate: UIApplicationDelegate {
         }
         
         
-        if urlComponents.scheme == "protonmail" {
-            let path = url.absoluteString.preg_replace("protonmail://", replaceto: "")
-            let deeplink = DeepLink(String(describing: MenuViewController.self))
-            deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.inbox))
+        if ["protonmail", "mailto"].contains(urlComponents.scheme) {
+            var path = url.absoluteString
+            if urlComponents.scheme == "protonmail" {
+                path = path.preg_replace("protonmail://", replaceto: "")
+            }
+            
+            let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
-            self.coordinator.setDeepDeeplink(deeplink)
+            self.coordinator.followDeeplink(deeplink)
             return true
         }
         
