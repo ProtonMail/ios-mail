@@ -90,6 +90,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                 print("User do not have access to photo album.")
             case .denied:
                 print("User has denied the permission.")
+            default: break
             }
         }
         checkPermission()
