@@ -41,6 +41,10 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
         
         self.setUpView(true)
         self.subscribeToWillEnterForegroundMessage()
+
+        NotificationCenter.default.addObserver(forName:  UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.pinCodeView.resetPin()
+        }
     }
     
     deinit {
