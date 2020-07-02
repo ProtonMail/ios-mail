@@ -122,7 +122,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
         //Example of deeplink without segue
         var nextVM : MailboxViewModel?
         
-        let user = self.viewModel.currentUser!
+        guard let user = self.viewModel.currentUser else {return}
         let labelService = user.labelService
         
         if let mailbox = Message.Location(rawValue: labelID) {
