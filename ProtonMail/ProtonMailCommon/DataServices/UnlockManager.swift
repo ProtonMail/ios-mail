@@ -156,7 +156,11 @@ class UnlockManager: Service {
 
         cacheStatus.pinFailedCount = 0
         UserTempCachedStatus.clearFromKeychain()
-        sharedServices.get(by: UsersManager.self).tryRestore()
+        
+        //need move to delegation
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        usersManager.run()
+        usersManager.tryRestore()
         
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {

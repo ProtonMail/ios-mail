@@ -24,6 +24,7 @@ import Foundation
 
 private enum GenericPinProtectionConstants {
     static let saltKeychainKey = "PinProtection" + ".salt"
+    static let versionKey = "PinProtection" + ".version"
     static let numberOfIterations: Int = 32768
 }
 
@@ -34,6 +35,21 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
     
     public let keychain: Keychain
     private let pin: String
+    private let version : Version = .v1
+    
+    enum Version : String {
+        case lagcy = "0"
+        case v1 = "1"
+        init(raw: String?) {
+            let rawValue = raw ?? "0"
+            switch rawValue {
+            case "1":
+                self = .v1
+            default:
+                self = .lagcy
+            }
+        }
+    }
     
     public init(pin: String, keychain: Keychain) {
         self.pin = pin
@@ -54,9 +70,9 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
             throw error ?? Errors.failedToDeriveKey
         }
         let locked = try GenericLocked<Key, SUBTLE>(clearValue: value, with: ethemeralKey.bytes)
-        
         GenericPinProtection<SUBTLE>.saveCyphertext(locked.encryptedValue, in: self.keychain)
         self.keychain.set(Data(salt), forKey: Const.saltKeychainKey)
+        self.keychain.set(self.version.rawValue, forKey: Const.versionKey)
     }
     
     public func unlock(cypherBits: Data) throws -> Key {
@@ -67,9 +83,19 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
         guard let ethemeralKey = SUBTLE.DeriveKey(pin, salt, Const.numberOfIterations, &error) else {
             throw error ?? Errors.failedToDeriveKey
         }
+        
+        let curVer : Version = Version.init(raw: self.keychain.string(forKey: Const.versionKey))
         do {
-            let locked = GenericLocked<Key, SUBTLE>.init(encryptedValue: cypherBits)
-            return try locked.unlock(with: ethemeralKey.bytes)
+            switch curVer {
+            case .lagcy:
+                let locked = GenericLocked<Key, SUBTLE>.init(encryptedValue: cypherBits)
+                let key = try locked.lagcyUnlock(with: ethemeralKey.bytes)
+                try self.lock(value: key)
+                return key
+            default:
+                let locked = GenericLocked<Key, SUBTLE>.init(encryptedValue: cypherBits)
+                return try locked.unlock(with: ethemeralKey.bytes)
+            }
         } catch let error {
             throw error
         }
@@ -78,6 +104,7 @@ public struct GenericPinProtection<SUBTLE: SubtleProtocol>: ProtectionStrategy {
     public static func removeCyphertext(from keychain: Keychain) {
         (self as ProtectionStrategy.Type).removeCyphertext(from: keychain)
         keychain.remove(forKey: Const.saltKeychainKey)
+        keychain.remove(forKey: Const.versionKey)
     }
 }
 

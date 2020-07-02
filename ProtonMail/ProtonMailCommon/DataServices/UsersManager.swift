@@ -33,10 +33,65 @@ protocol UsersManagerDelegate: class {
 }
 
 /// manager all the users and there services
-class UsersManager : Service {
+class UsersManager : Service, Migrate {
+    
+    enum Version : Int {
+        static let version : Int = 1 // this is app cache version
+        case v0 = 0
+        case v1 = 1
+    }
+    
+    /// saver for versioning
+    private let versionSaver: Saver<Int>
+    internal var latestVersion: Int
+    internal var currentVersion: Int {
+        get {
+            return self.versionSaver.get() ?? 0
+        }
+        set {
+            self.versionSaver.set(newValue: newValue)
+        }
+    }
+        
+    internal var supportedVersions: [Int] = [Version.v0.rawValue,
+                                             Version.v1.rawValue]
+    internal var initalRun: Bool {
+        get {
+            return currentVersion == 0 &&
+                KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore) == nil &&
+                KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) == nil &&
+                KeychainWrapper.keychain.data(forKey: CoderKey.userInfo) == nil &&
+                KeychainWrapper.keychain.data(forKey: CoderKey.usersInfo) == nil
+        }
+    }
+    
+    func rebuild(reason: RebuildReason) {
+        self.cleanLagacy()
+        self.currentVersion = self.latestVersion
+    }
+    
+    func cleanLagacy() {
+        // Clear up the old stuff on fresh installs also
+    }
+    
+    func logout() {
+        self.versionSaver.set(newValue: nil)
+    }
+    
+    func migrate(from verfrom: Int, to verto: Int) -> Bool {
+        switch (verfrom, verto) {
+        case (0, 1):
+            return self.migrate_0_1()
+        default:
+            return false
+        }
+    }
     
     struct CoderKey {
-           
+        // tracking the cache version added 1.12.0
+        static let Version = "Last.Users.Manager.Version"
+        
+        
         // old
         static let keychainStore = "keychainStoreKeyProtectedWithMainKey"
         // new
@@ -90,6 +145,11 @@ class UsersManager : Service {
     init(server: APIServerConfig, delegate : UsersManagerDelegate?) {
         self.serverConfig = server
         self.delegate = delegate
+        
+        /// for migrate
+        self.latestVersion = Version.version
+        
+        self.versionSaver = UserDefaultsSaver<Int>(key: CoderKey.Version)
     }
     
     /**
@@ -302,9 +362,6 @@ class UsersManager : Service {
             if let pwd = oldMailboxPassword() {
                 oldAuth.udpate(password: pwd)
             }
-//            if let userName = oldUserName() {
-//                oldAuth.userName = userName
-//            }
             
             user.twoFactor = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)
             user.passwordMode = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode)
@@ -340,7 +397,6 @@ class UsersManager : Service {
             if users.count > 0 {
                 return
             }
-            
             for (auth, user) in zip(auths, userinfos) {
                 let session = auth.sessionID
                 let userID = user.userId
@@ -351,6 +407,7 @@ class UsersManager : Service {
                 users.append(newUser)
             }
         }
+    }
         
 //        let authList = self.users.compactMap{ $0.auth }
 //        userCachedStatus.isForcedLogout = false
@@ -392,7 +449,7 @@ class UsersManager : Service {
 //                return
 //        }
 //        self.add(auth: auth, user: userInfo)
-    }
+//    }
     
     func save() {
         guard let mainKey = keymaker.mainKey else {
@@ -575,4 +632,176 @@ extension UsersManager {
             KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
         }
     }
+}
+
+
+
+extension UsersManager {
+    func migrate_0_1() -> Bool {
+        guard let mainKey = keymaker.mainKey else {
+            return false
+        }
+        
+        if let lagcyPwd = self.oldMailboxPasswordLagcy(), let locked = try? Locked(clearValue: lagcyPwd, with: mainKey) {
+            KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
+        }
+        if let lagcyName = oldUserNameLagcy(), let locked = try? Locked(clearValue: lagcyName, with: mainKey)  {
+            KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.username)
+        }
+        userCachedStatus.migrateLagcy()
+        
+        // check the older auth and older user format first
+        if let oldAuth = oldAuthFetchLagcy(),  let user = oldUserInfoLagcy() {
+            let session = oldAuth.sessionID
+            let userID = user.userId
+            let apiConfig = serverConfig
+            let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+            let newUser = UserManager(api: apiService, userinfo: user, auth: oldAuth, parent: self)
+            newUser.delegate = self
+            if let pwd = oldMailboxPassword() {
+                oldAuth.udpate(password: pwd)
+            }
+            user.twoFactor = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)
+            user.passwordMode = SharedCacheBase.getDefault().integer(forKey: CoderKey.userPasswordMode)
+            users.append(newUser)
+            self.save()
+            //Then clear lagcy
+            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.username)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
+            // save to newer version.
+            return true
+        } else {
+            guard let encryptedAuthData = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) else {
+                return false
+            }
+            let authlocked = Locked<[AuthCredential]>(encryptedValue: encryptedAuthData)
+            guard let auths = try? authlocked.lagcyUnlock(with: mainKey) else {
+                return false
+            }
+            
+            guard let encryptedUsersData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.usersInfo) else {
+                return false
+            }
+            
+            let userslocked = Locked<[UserInfo]>(encryptedValue: encryptedUsersData)
+            guard let userinfos = try? userslocked.lagcyUnlock(with: mainKey)  else {
+                return false
+            }
+            
+            guard userinfos.count == auths.count else {
+                return false
+            }
+            
+            //TODO:: temp
+            if users.count > 0 {
+                return false
+            }
+            
+            for (auth, user) in zip(auths, userinfos) {
+                let session = auth.sessionID
+                let userID = user.userId
+                let apiConfig = serverConfig
+                let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
+                let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+                newUser.delegate = self
+                users.append(newUser)
+            }
+            
+            //save to the newer version
+            self.save()
+            
+            
+            let disconnectedUsers = self.disconnedUsersLagcy()
+            if let data = try? JSONEncoder().encode(disconnectedUsers),
+                let locked = try? Locked(clearValue: data, with: mainKey) {
+                KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
+            }
+            return true
+        }
+        return false
+    }
+    
+    func oldAuthFetchLagcy() -> AuthCredential? {
+        guard let mainKey = keymaker.mainKey,
+            let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.keychainStore),
+            case let locked = Locked<Data>(encryptedValue: encryptedData),
+            let data = try? locked.lagcyUnlock(with: mainKey),
+            let authCredential = AuthCredential.unarchive(data: data as NSData) else
+        {
+            return nil
+        }
+        return authCredential
+    }
+    
+    func oldUserInfoLagcy() -> UserInfo? {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
+        {
+            return nil
+        }
+        let locked = Locked<UserInfo>(encryptedValue: cypherData)
+        return try? locked.lagcyUnlock(with: mainKey)
+    }
+    
+    func oldMailboxPasswordLagcy() -> String? {
+        guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
+            let key = keymaker.mainKey else
+        {
+            return nil
+        }
+        let locked = Locked<String>(encryptedValue: cypherBits)
+        return try? locked.lagcyUnlock(with: key)
+    }
+    
+    func oldUserNameLagcy() -> String? {
+        guard let mainKey = keymaker.mainKey,
+            let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
+        {
+            return nil
+        }
+        
+        let locked = Locked<String>(encryptedValue: cypherData)
+        return try? locked.lagcyUnlock(with: mainKey)
+    }
+    
+    
+    func disconnedUsersLagcy() -> Array<DisconnectedUserHandle> {
+        // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
+        guard let mainKey = keymaker.mainKey,
+            let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
+            case let locked = Locked<Data>(encryptedValue: encryptedData),
+            let data = try? locked.lagcyUnlock(with: mainKey),
+            let loggedOutUserHandles = try? JSONDecoder().decode(Array<DisconnectedUserHandle>.self, from: data) else
+        {
+            return []
+        }
+        return loggedOutUserHandles
+        
+        
+//        var disconnectedUsers: Array<DisconnectedUserHandle> {
+//            get {
+//                // TODO: this locking/unlocking can be refactored to be @propertyWrapper on iOS 5.1
+//                guard let mainKey = keymaker.mainKey,
+//                    let encryptedData = KeychainWrapper.keychain.data(forKey: CoderKey.disconnectedUsers),
+//                    case let locked = Locked<Data>(encryptedValue: encryptedData),
+//                    let data = try? locked.unlock(with: mainKey, new: true),
+//                    let loggedOutUserHandles = try? JSONDecoder().decode(Array<DisconnectedUserHandle>.self, from: data) else
+//                {
+//                    return []
+//                }
+//                return loggedOutUserHandles
+//            }
+//            set {
+//                guard let mainKey = keymaker.mainKey,
+//                    let data = try? JSONEncoder().encode(newValue),
+//                    let locked = try? Locked(clearValue: data, with: mainKey) else
+//                {
+//                    PMLog.D("Failed to save disconnectedUsers to keychain")
+//                    return
+//                }
+//                KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.disconnectedUsers)
+//            }
+//        }
+    }
+    
 }

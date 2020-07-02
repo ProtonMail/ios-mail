@@ -9,6 +9,11 @@ import Foundation
 import Crypto
 
 public struct CryptoSubtle: SubtleProtocol {
+    public static func Random(_ len: Int) -> Data? {
+        let pgp = CryptoGetGopenPGP()!
+        return try? pgp.randomTokenSize(len)
+    }
+    
     public static func DeriveKey(_ one: String, _ two: Data, _ three: Int, _ four: inout NSError?) -> Data? {
         return SubtleDeriveKey(one, two, three, &four)
     }
@@ -18,6 +23,8 @@ public struct CryptoSubtle: SubtleProtocol {
     public static func DecryptWithoutIntegrity(_ one: Data, _ two: Data, _ three: Data, _ four: inout NSError?) -> Data? {
         return SubtleDecryptWithoutIntegrity(one, two, three, &four)
     }
+    
+     
 }
 
 public typealias LockedErrors = Errors

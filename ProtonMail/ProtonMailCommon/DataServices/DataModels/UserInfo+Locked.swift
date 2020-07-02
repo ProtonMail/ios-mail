@@ -34,7 +34,16 @@ extension Locked where T == UserInfo {
     internal func unlock(with key: PMKeymaker.Key) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
-        
+        return try parse(data : data)
+    }
+    
+    internal func lagcyUnlock(with key: PMKeymaker.Key) throws -> T {
+        let locked = Locked<Data>(encryptedValue: self.encryptedValue)
+        let data = try locked.lagcyUnlock(with: key)
+        return try parse(data : data)
+    }
+    
+    internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "Share.UserInfo")
@@ -55,18 +64,10 @@ extension Locked where T == UserInfo {
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "ShareDev.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushService.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
-        
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMail.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "Share.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ShareDev.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushService.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
-        
+
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }
-        
         return value
     }
 }
@@ -82,7 +83,16 @@ extension Locked where T == [UserInfo] {
     internal func unlock(with key: PMKeymaker.Key) throws -> T {
         let locked = Locked<Data>(encryptedValue: self.encryptedValue)
         let data = try locked.unlock(with: key)
-        
+        return try self.parse(data:data)
+    }
+    
+    internal func lagcyUnlock(with key: PMKeymaker.Key) throws -> T {
+        let locked = Locked<Data>(encryptedValue: self.encryptedValue)
+        let data = try locked.lagcyUnlock(with: key)
+        return try self.parse(data:data)
+    }
+    
+    internal func parse(data: Data) throws -> T {
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMail.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UserInfo")
         NSKeyedUnarchiver.setClass(UserInfo.classForKeyedUnarchiver(), forClassName: "Share.UserInfo")
@@ -104,17 +114,16 @@ extension Locked where T == [UserInfo] {
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushService.Key")
         NSKeyedUnarchiver.setClass(Key.classForKeyedUnarchiver(), forClassName: "PushServiceDev.Key")
         
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMail.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "Share.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ShareDev.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushService.UpdateTime")
-//        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMail.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ProtonMailDev.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "Share.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "ShareDev.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushService.UpdateTime")
+        //        NSKeyedUnarchiver.setClass(UpdateTime.classForKeyedUnarchiver(), forClassName: "PushServiceDev.UpdateTime")
         
         guard let value = NSKeyedUnarchiver.unarchiveObject(with: data) as? T else {
             throw LockedErrors.keyDoesNotMatch
         }
-        
         return value
     }
 }
