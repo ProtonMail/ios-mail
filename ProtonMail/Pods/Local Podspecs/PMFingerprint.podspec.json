@@ -1,0 +1,19 @@
+{
+  "name": "PMFingerprint",
+  "version": "0.0.2",
+  "summary": "Collect user action in signup flow",
+  "description": "Collect user action in signup flow as well as device information",
+  "homepage": "https://gitlab.protontech.ch/jchen/ios-fingerprint",
+  "license": "ProtonMail",
+  "authors": "Anson Chen",
+  "swift_versions": "5.2",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": ".",
+    "tag": "0.0.2"
+  },
+  "source_files": "Sources/**/*",
+  "swift_version": "5.2"
+}
