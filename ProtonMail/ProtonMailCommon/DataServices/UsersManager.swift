@@ -525,6 +525,8 @@ extension UsersManager {
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
         KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
         
+        self.currentVersion = latestVersion
+        
         UserTempCachedStatus.backup()
         
         

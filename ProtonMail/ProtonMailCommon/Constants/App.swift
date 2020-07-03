@@ -40,9 +40,7 @@ struct Constants {
 
         static let AskTouchID : Int              = 1
         static var AppVersion : Int              = 1
- 
         
-
 //               //
 //         //
          static let URL_Protocol : String = "https://"

@@ -137,6 +137,13 @@ class CoreDataCache : Migrate {
             //
         }
         
+        if self.currentVersion <= Version.v2.rawValue {
+            let userVersion = UserDefaultsSaver<Int>(key: UsersManager.CoderKey.Version)
+            userVersion.set(newValue: 0)
+            KeychainWrapper.keychain.remove(forKey: "BioProtection" + ".version")
+            KeychainWrapper.keychain.remove(forKey: "PinProtection" + ".version")
+        }
+        
         //TODO:: fix me
         //sharedMessageDataService.cleanUp()
         self.currentVersion = self.latestVersion
