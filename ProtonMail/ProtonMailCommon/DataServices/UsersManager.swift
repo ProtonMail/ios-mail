@@ -555,11 +555,16 @@ extension UsersManager {
         
         // Workaround to fix MAILIOS-150
         // Method that checks signin or not before 1.11.17
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = sharedServices.get(by: UsersManager.self) //TODO:: improve this line
         let isMailboxPasswordStored = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
         let isSignIn = users.hasUserName() && isMailboxPasswordStored
         
         return KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) != nil && (hasUsersInfo || isSignIn)
+    }
+    
+    var isPasswordStored : Bool {
+        return KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil ||
+            KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
     var isMailboxPasswordStored : Bool {
