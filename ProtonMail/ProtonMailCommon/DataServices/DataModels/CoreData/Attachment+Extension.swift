@@ -321,7 +321,9 @@ extension UIImage: AttachmentConvertible {
             
                 attachment.message = message
                 
-                message.numAttachments = NSNumber(value: message.attachments.count)
+                let number = message.numAttachments.int32Value
+                let newNum = number > 0 ? number + 1 : 1
+                message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
                 
                 var error: NSError? = nil
                 error = context.saveUpstreamIfNeeded()
@@ -362,7 +364,9 @@ extension Data: AttachmentConvertible {
         
         attachment.message = message
         
-        message.numAttachments = NSNumber(value: message.attachments.count)
+        let number = message.numAttachments.int32Value
+        let newNum = number > 0 ? number + 1 : 1
+        message.numAttachments = NSNumber(value: Swift.max(newNum, Int32(message.attachments.count)))
         
         var error: NSError? = nil
         error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
@@ -393,7 +397,9 @@ extension URL: AttachmentConvertible {
         
         attachment.message = message
         
-        message.numAttachments = NSNumber(value: message.attachments.count)
+        let number = message.numAttachments.int32Value
+        let newNum = number > 0 ? number + 1 : 1
+        message.numAttachments = NSNumber(value: max(newNum, Int32(message.attachments.count)))
         
         var error: NSError? = nil
         error = attachment.managedObjectContext?.saveUpstreamIfNeeded()
