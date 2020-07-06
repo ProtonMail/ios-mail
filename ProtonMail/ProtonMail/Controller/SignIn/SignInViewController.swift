@@ -200,7 +200,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
                                                 sender: sender,
                                                 completion: { (loginDictionary, error) -> Void in
             if loginDictionary == nil {
-                if error!._code != Int(AppExtensionErrorCodeCancelledByUser) {
+                let cancelError: AppExtensionErrorCode = .cancelledByUser
+                if error!._code != Int(cancelError.rawValue) {
                     PMLog.D("Error invoking Password App Extension for find login: \(String(describing: error))")
                 }
                 return
