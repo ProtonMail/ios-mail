@@ -1,20 +1,18 @@
 PODS:
-  - AFNetworkActivityLogger (3.0.0):
-    - AFNetworking/NSURLSession (~> 3.0)
-  - AFNetworking (3.2.1):
-    - AFNetworking/NSURLSession (= 3.2.1)
-    - AFNetworking/Reachability (= 3.2.1)
-    - AFNetworking/Security (= 3.2.1)
-    - AFNetworking/Serialization (= 3.2.1)
-    - AFNetworking/UIKit (= 3.2.1)
-  - AFNetworking/NSURLSession (3.2.1):
+  - AFNetworking (4.0.1):
+    - AFNetworking/NSURLSession (= 4.0.1)
+    - AFNetworking/Reachability (= 4.0.1)
+    - AFNetworking/Security (= 4.0.1)
+    - AFNetworking/Serialization (= 4.0.1)
+    - AFNetworking/UIKit (= 4.0.1)
+  - AFNetworking/NSURLSession (4.0.1):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (3.2.1)
-  - AFNetworking/Security (3.2.1)
-  - AFNetworking/Serialization (3.2.1)
-  - AFNetworking/UIKit (3.2.1):
+  - AFNetworking/Reachability (4.0.1)
+  - AFNetworking/Security (4.0.1)
+  - AFNetworking/Serialization (4.0.1)
+  - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
   - AwaitKit (5.0.1):
     - PromiseKit (~> 6)
@@ -110,8 +108,7 @@ PODS:
   - "UIColor+Hex/UIColor (1.0.1)"
 
 DEPENDENCIES:
-  - AFNetworkActivityLogger (from `https://github.com/AFNetworking/AFNetworkActivityLogger.git`, branch `3_0_0`)
-  - AFNetworking (= 3.2.1)
+  - AFNetworking (= 4.0.1)
   - AwaitKit (~> 5.0.0)
   - Crashlytics
   - DKImagePickerController/PhotoGallery (~> 4.1.7)
@@ -157,9 +154,6 @@ SPEC REPOS:
     - "UIColor+Hex"
 
 EXTERNAL SOURCES:
-  AFNetworkActivityLogger:
-    :branch: 3_0_0
-    :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   EllipticCurveKeyPair:
     :git: https://github.com/abjurato/EllipticCurveKeyPair.git
     :tag: 1.0.4
@@ -184,9 +178,6 @@ EXTERNAL SOURCES:
     :tag: 5.2.0
 
 CHECKOUT OPTIONS:
-  AFNetworkActivityLogger:
-    :commit: b7cce59a369788c409d218e8dab7f381a858cee4
-    :git: https://github.com/AFNetworking/AFNetworkActivityLogger.git
   EllipticCurveKeyPair:
     :git: https://github.com/abjurato/EllipticCurveKeyPair.git
     :tag: 1.0.4
@@ -207,8 +198,7 @@ CHECKOUT OPTIONS:
     :tag: 5.2.0
 
 SPEC CHECKSUMS:
-  AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
-  AFNetworking: b6f891fdfaed196b46c7a83cf209e09697b94057
+  AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
   AwaitKit: a6d0b0b6d603cedda8ef1c1c249b8d6730359917
   Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
   DKImagePickerController: 6ffad961c212b0debf644f3d1aa72d0a2ee03d5f
@@ -236,6 +226,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: c135b29d8e24cfe46e8e39204550d071bc6cc425
+PODFILE CHECKSUM: d40fc8b797c807aec6e1ee9b349949e722dcfad4
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.3

@@ -24,7 +24,6 @@
 import CoreData
 import Foundation
 import AFNetworking
-import AFNetworkActivityLogger
 import TrustKit
 import PMNetworking
 import PMAuthentication
@@ -274,9 +273,10 @@ class APIService : Service {
                 self.debugError(error)
                 completion(nil, nil, error)
             } else {
-                let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
+                
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
                                                                             urlString: url,
-                                                                            parameters: nil, error: nil)
+                                                                            parameters: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
