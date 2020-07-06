@@ -101,16 +101,14 @@ extension PMFingerprint {
         public internal(set) var paste_recovery: [String] = []
         
         // MARK: Device relative setting
-        /// Timezone of Operating System
-        public private(set) var currentTimezone: TimeZone = TimeZone.current
         /// Timezone of Operating System, e.g. `Asia/Taipei`
         public private(set) var timezone: String = ""
         /// Timezone offset in minutes
         public private(set) var timezoneOffset: Int = 0
         /// Is device jail break
         public private(set) var isJailbreak = FileManager.isJailbreak()
-        /// Device name
-        public private(set) var deviceName = ""
+        /// Device name with hash
+        public private(set) var deviceName: Int = -1
         /// App language
         public private(set) var appLang = ""
         /// System setting region, not the real geo location
@@ -127,8 +125,6 @@ extension PMFingerprint {
         public private(set) var preferredContentSize: String = ""
         /// UUID for this app, will change after reinstall
         public private(set) var uuid = UIDevice.current.identifierForVendor?.uuidString ?? "unknow"
-        /// Common used emojis
-        public private(set) var commonUsedEmoji: [String] = []
         
         mutating func reset() {
             self.usernameChecks = []
@@ -146,11 +142,11 @@ extension PMFingerprint {
         }
         
         public func asDictionary() throws -> [String: Any] {
-          let data = try JSONEncoder().encode(self)
-          guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
-            throw NSError()
-          }
-          return dictionary
+            let data = try JSONEncoder().encode(self)
+            guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] else {
+                throw NSError()
+            }
+            return dictionary
         }
         
         public func asString() throws -> String {
@@ -160,13 +156,15 @@ extension PMFingerprint {
         }
  
         mutating func fetchValues() {
-            self.deviceName = UIDevice.current.name
+            self.deviceName = UIDevice.current.name.rollingHash()
             self.appLang = Locale.current.languageCode ?? "unknow"
             self.regionCode = Locale.current.regionCode ?? "unknow"
-            self.currentTimezone = TimeZone.current
-            self.timezone = self.currentTimezone.identifier
-            self.timezoneOffset = -1 * (self.currentTimezone.secondsFromGMT()/60)
-            if let keyboards = UserDefaults.standard.object(forKey: "AppleKeyboards") as? [String] {
+            let currentTimezone = TimeZone.current
+            self.timezone = currentTimezone.identifier
+            self.timezoneOffset = -1 * (currentTimezone.secondsFromGMT()/60)
+            if var keyboards = UserDefaults.standard.object(forKey: "AppleKeyboards") as? [String] {
+                let emoji = UserDefaults.recentlyEmoji().joined().rollingHash()
+                keyboards = keyboards.map {$0.contains("emoji") ? "\($0)-\(emoji)": $0}
                 self.keyboards = keyboards
             }
             self.cellulars = NetworkInformation.getCellularInfo()
@@ -174,7 +172,6 @@ extension PMFingerprint {
                 self.isDarkmodeOn = UITraitCollection.current.userInterfaceStyle == .dark
             }
             self.preferredContentSize = UIApplication.shared.preferredContentSizeCategory.rawValue
-            self.commonUsedEmoji = UserDefaults.recentlyEmoji()
         }
     }
 }

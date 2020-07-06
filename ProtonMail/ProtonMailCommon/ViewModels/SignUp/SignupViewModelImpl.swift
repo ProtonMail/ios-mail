@@ -23,6 +23,7 @@
 
 import Foundation
 import Crypto
+import PMFingerprint
 
 final class AccountSignupViewModelImpl : SignupViewModelImpl {
     override func isAccountManager() -> Bool {
@@ -51,6 +52,7 @@ class SignupViewModelImpl : SignupViewModel {
     
     fileprivate var delegate : SignupViewModelDelegate?
     fileprivate var verifyType : VerifyCodeType = .email
+    fileprivate var fingerprint = PMFingerprint()
     
     fileprivate var direct : [String] = []
     
@@ -93,6 +95,9 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func checkUserName(_ username: String, complete: CheckUserNameBlock!) {
+        
+        self.fingerprint.appendCheckedUsername(username)
+        
         // need valide user name format
         let api = CheckUserExist(userName: username)
         api.call(api: self.apiService) { (task, response, hasError) -> Void in
@@ -381,6 +386,9 @@ class SignupViewModelImpl : SignupViewModel {
     }
     
     override func sendVerifyCode(_ type: VerifyCodeType, complete: SendVerificationCodeBlock!) {
+        
+        self.fingerprint.requestVerify()
+        
         let api = VerificationCodeRequest(userName: self.userName, destination: destination, type: type)
         api.call(api: self.apiService) { (task, response, hasError) -> Void in
             if !hasError {
@@ -489,5 +497,21 @@ class SignupViewModelImpl : SignupViewModel {
                 complete(defaultDomains)
             }
         }
+    }
+    
+    override func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType) {
+        try! self.fingerprint.observeTextField(textField, type: type)
+    }
+    
+    override func stopObserveTextField(textField: UITextField) {
+        self.fingerprint.stopObserveTextField(textField)
+    }
+    
+    override func requestVerify() {
+        self.fingerprint.requestVerify()
+    }
+    
+    override func fingerprintExport() -> PMFingerprint.Fingerprint {
+        return self.fingerprint.export()
     }
 }

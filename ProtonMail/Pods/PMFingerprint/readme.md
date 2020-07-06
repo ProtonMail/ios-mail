@@ -1,56 +1,78 @@
 # Fingerprint
 
-收集使用者在註冊時的操作行為與裝置資訊，協助 anti-abuse 做判斷
+Collect fingerprint during user signup so that the anti-abuse team can analytic.
+For more detail about collected fingerprint please read [iOS fingerprints](https://confluence.protontech.ch/pages/viewpage.action?spaceKey=PRODUCT&title=iOS+fingerprints)
 
 ## Dependency
 * `UIKit`
 * `Foundation`
-* `CoreTelephony`
+* `CoreTelephony`: to collect cellular information
 
-## Reference
-* [iOS fingerprints](https://confluence.protontech.ch/pages/viewpage.action?spaceKey=PRODUCT&title=iOS+fingerprints)
-* [Fingerprinting in Today’s iOS](https://nshipster.com/device-identifiers/#fingerprinting-in-todays-ios)
-
-## Test app
-* first page: Do nothing, simulate user start the signup process
-* second page: some form to simulate user fill in signup data, don't forget to click `send sms` button before filling `smsverify` textField
-* third page: show collected data, and it mess, so you can copy the value through the right-top button and open online JSON parser
+## Install
+### CocoaPods
+```
+pod 'PMFingerprint', :git => 'https://gitlab.protontech.ch/apple/shared/pmfingerprint.git', :tag => '{TAG}'
+```
+### Swift Package Manager
+1. Using Xcode 11 go to File > Swift Packages > Add Package Dependency
+2. Paste the project URL: `https://gitlab.protontech.ch/apple/shared/pmfingerprint`
+3. Click on next and select the project target
 
 ## How to use
-### Life cycle
+### Initialize
+There are two ways to initialize `PMFingerprint`
+1. Singleton
 ```swift
 /// Get shared instance, thread safe
 public static func shared() -> PMFingerprint
 
-/// Release shared instance
+/// Release shared instance if you don't need it anymore.
 public static func release()
-
-/// Or if you don't prefer singleton
+```
+2. Common initialize
+```swift
 let fingerprint = PMFingerprint()
 ```
 
-### usage
+### Public functions
+1. Reset collected fingerprint data
 ```swift
-/// Reset collected data
 public func reset()
-
-/// Export collected fingerprint data, and reset collected data
+```
+2. Export collected fingerprint data and reset collected data  
+```swift
 public func export() -> PMFingerprint.Fingerprint
-
-/**
- Start observe given textfield, will ignore redundant function called
- - Parameter textField: textField will be observe
- - Parameter type: The usage of this textField
- - Parameter ignoreDelegate: Should ignore textField delegate missing error?
- */
+```
+3. Start to observe given textfield so that we can monitor copy/paste/characters changed...etc
+```swift
 public func observeTextField(_ textField: UITextField, type: TextFieldType, ignoreDelegate: Bool = false) throws
-
-/// Stop observe given textField, call this function when viewcontroller pushed
-public func stopObserveTextField(_ textField: UITextField)
-
-/// Record username that checks availability
+```
+support textfield types are below. 
+we collect different data depends on the type.
+```swift
+public enum TextFieldType {
+    /// TextField for username
+    case username
+    /// TextField for password
+    case password
+    /// TextField for password confirm
+    case confirm
+    /// TextField for recovery mail
+    case recovery
+    /// TextField for verification
+    case verification
+}
+```
+4. Record username that checks availability
+Please use this function every time when user checks availability.
+```swift
 public func appendCheckedUsername(_ username: String)
-
-/// Record user start request verification time
+```
+5. Declare user start request verification so that timer starts.
+```swift
 public func requestVerify()
+```
+6. Count verification time, only use in captcha verification
+```swift
+public func verificationFinsih() throws
 ```

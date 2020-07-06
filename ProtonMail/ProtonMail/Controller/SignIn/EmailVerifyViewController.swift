@@ -79,6 +79,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel.observeTextField(textField: verifyCodeTextField, type: .verification)
         emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._contacts_email_address_placeholder,
                                                                   attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
@@ -116,6 +117,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
         self.viewModel.setDelegate(nil)
+        self.viewModel.stopObserveTextField(textField: verifyCodeTextField)
         //unregister timer
         self.stopAutoFetch()
     }

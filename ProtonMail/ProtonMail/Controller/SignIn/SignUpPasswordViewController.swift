@@ -69,7 +69,7 @@ class SignUpPasswordViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.viewModel.observeTextField(textField: loginPasswordField, type: .password)
         loginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._signup_choose_password,
                                                                       attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         confirmLoginPasswordField.attributedPlaceholder = NSAttributedString(string: LocalString._composer_eo_confirm_pwd_placeholder,
@@ -101,6 +101,7 @@ class SignUpPasswordViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
+        self.viewModel.stopObserveTextField(textField: loginPasswordField)
     }
 
     override func didReceiveMemoryWarning() {

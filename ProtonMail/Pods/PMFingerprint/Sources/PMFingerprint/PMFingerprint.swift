@@ -85,14 +85,23 @@ extension PMFingerprint {
     
     /// Export collected fingerprint data, and reset collected data
     public func export() -> PMFingerprint.Fingerprint {
-        defer {self.reset()}
+        defer {
+            runInMainThread {
+                self.reset()
+            }
+        }
         
-        self.fingerprint.fetchValues()
+        let semaphore = DispatchSemaphore(value: 0)
+        runInMainThread {
+            self.fingerprint.fetchValues()
+            semaphore.signal()
+        }
+        semaphore.wait()
         return self.fingerprint
     }
     
     /**
-     Start observe given textfield, will ignore redundant function called
+     Start to observe given textfield, will ignore redundant function called
      - Parameter textField: textField will be observe
      - Parameter type: The usage of this textField
      - Parameter ignoreDelegate: Should ignore textField delegate missing error?
@@ -123,22 +132,35 @@ extension PMFingerprint {
         }
     }
     
-    /// Stop observe given textField, call this function when viewcontroller pushed
-    public func stopObserveTextField(_ textField: UITextField) {
-        guard let interceptor = self.interceptors.first(where: {$0.textField == textField}) else {
-            return
-        }
-        interceptor.destroy()
-    }
-    
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
         self.fingerprint.usernameChecks.append(username)
     }
     
-    /// Record user start request verification time
+    /// Declare user start request verification so that timer starts.
     public func requestVerify() {
         self.requestVerifyTime = Date().timeIntervalSince1970
+    }
+    
+    /// Count verification time, only use in captcha verification
+    public func verificationFinsih() throws {
+        if self.requestVerifyTime == 0 {
+            throw PMFingerprint.TimerError.verificationTimerError
+        }
+        self.fingerprint.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
+    }
+}
+
+// MARK: Private function
+extension PMFingerprint {
+    private func runInMainThread(closure: @escaping () -> Void) {
+        if Thread.isMainThread {
+            closure()
+        } else {
+            DispatchQueue.main.async {
+                closure()
+            }
+        }
     }
 }
 
@@ -200,12 +222,13 @@ extension PMFingerprint: TextFieldInterceptorDelegate {
                 self.fingerprint.paste_recovery.append(chars)
             }
         case .verification:
-            if self.fingerprint.time_human == 0 {
-                if self.requestVerifyTime == 0 {
-                    throw PMFingerprint.TimerError.verificationTimerError
-                }
-                self.fingerprint.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
-            }
+            // Already record time_human
+            guard self.fingerprint.time_human == 0 else {return}
+            // Haven't sent verification request
+            guard self.requestVerifyTime != 0 else {return}
+
+            self.fingerprint.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
+            
         default:
             break
         }

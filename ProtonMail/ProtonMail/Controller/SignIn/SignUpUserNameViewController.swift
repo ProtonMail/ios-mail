@@ -23,6 +23,7 @@
 
 import UIKit
 import MBProgressHUD
+import PMFingerprint
 
 class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     
@@ -90,6 +91,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         resetChecking()
+        self.viewModel.observeTextField(textField: usernameTextField, type: .username)
         usernameTextField.attributedPlaceholder = NSAttributedString(string: LocalString._username,
                                                                      attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         MBProgressHUD.showAdded(to: view, animated: true)
@@ -135,6 +137,7 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
+        self.viewModel.stopObserveTextField(textField: usernameTextField)
     }
     
     override func didReceiveMemoryWarning() {
