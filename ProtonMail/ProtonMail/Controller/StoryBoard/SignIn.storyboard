@@ -488,10 +488,10 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UaR-Wn-XvY">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UaR-Wn-XvY">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x5O-eb-fcJ" userLabel="Content View">
+                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x5O-eb-fcJ" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="350"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b8d-qE-UH9">
@@ -523,18 +523,7 @@
                                                     <constraint firstAttribute="height" constant="16" id="zos-ff-SQ4"/>
                                                 </constraints>
                                             </imageView>
-                                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlP-lx-EdD">
-                                                <rect key="frame" x="15" y="175" width="345" height="85"/>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="345" id="KZD-4A-ynw"/>
-                                                    <constraint firstAttribute="height" constant="85" id="aU3-Hx-VhC"/>
-                                                </constraints>
-                                                <connections>
-                                                    <outlet property="delegate" destination="XYV-2Y-X0C" id="LJa-r6-xeN"/>
-                                                </connections>
-                                            </webView>
-                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOc-mm-9Q7">
+                                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uOc-mm-9Q7">
                                                 <rect key="frame" x="87.5" y="284" width="200" height="42"/>
                                                 <color key="backgroundColor" red="0.56862745100000001" green="0.59999999999999998" blue="0.79607843140000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
@@ -567,14 +556,10 @@
                                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dx5-WV-bep" secondAttribute="trailing" constant="28" id="JLQ-Gk-ffI"/>
                                             <constraint firstAttribute="centerX" secondItem="TOy-0T-PLz" secondAttribute="centerX" priority="500" id="KiB-HO-tAR"/>
                                             <constraint firstItem="b8d-qE-UH9" firstAttribute="top" secondItem="x5O-eb-fcJ" secondAttribute="top" id="UQT-bp-eaw"/>
-                                            <constraint firstItem="uOc-mm-9Q7" firstAttribute="top" secondItem="dlP-lx-EdD" secondAttribute="bottom" priority="500" constant="24" id="Usl-xC-TLg"/>
-                                            <constraint firstAttribute="centerX" secondItem="dlP-lx-EdD" secondAttribute="centerX" priority="500" id="VV7-xs-gob"/>
                                             <constraint firstAttribute="centerX" secondItem="uOc-mm-9Q7" secondAttribute="centerX" priority="500" id="WAl-MT-M4y"/>
                                             <constraint firstAttribute="bottom" secondItem="uOc-mm-9Q7" secondAttribute="bottom" priority="500" constant="24" id="YzV-NY-wfX"/>
                                             <constraint firstItem="b8d-qE-UH9" firstAttribute="leading" secondItem="x5O-eb-fcJ" secondAttribute="leading" id="cmC-jP-jI9"/>
                                             <constraint firstItem="dx5-WV-bep" firstAttribute="top" secondItem="TOy-0T-PLz" secondAttribute="bottom" priority="500" constant="12" id="d1p-cD-FDS"/>
-                                            <constraint firstItem="dlP-lx-EdD" firstAttribute="top" secondItem="dx5-WV-bep" secondAttribute="bottom" constant="18" id="eP2-PM-DN1"/>
-                                            <constraint firstItem="dlP-lx-EdD" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="x5O-eb-fcJ" secondAttribute="leading" priority="750" constant="3" id="k2v-UB-gCC"/>
                                             <constraint firstItem="dx5-WV-bep" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="x5O-eb-fcJ" secondAttribute="leading" constant="28" id="sGI-d1-TXr"/>
                                             <constraint firstItem="TOy-0T-PLz" firstAttribute="top" secondItem="b8d-qE-UH9" secondAttribute="bottom" priority="500" constant="45" id="u6J-tC-aLC"/>
                                             <constraint firstItem="TOy-0T-PLz" firstAttribute="top" secondItem="b8d-qE-UH9" secondAttribute="bottom" priority="1" constant="18" id="uNL-9j-U9n"/>
@@ -614,8 +599,6 @@
                         <outlet property="titleTopPaddingConstraint" destination="CrW-rG-lgW" id="Nqf-5o-9UD"/>
                         <outlet property="topLeftButton" destination="b8d-qE-UH9" id="60A-YG-UEb"/>
                         <outlet property="topTitleLabel" destination="dx5-WV-bep" id="6eU-gB-DEb"/>
-                        <outlet property="webView" destination="dlP-lx-EdD" id="uo2-Ps-qhc"/>
-                        <outlet property="webViewHeightConstraint" destination="aU3-Hx-VhC" id="IAB-C0-Vzi"/>
                         <segue destination="YIP-X7-8Un" kind="show" identifier="sign_up_pwd_email_segue" id="BQ1-JS-Xpb"/>
                     </connections>
                 </viewController>
