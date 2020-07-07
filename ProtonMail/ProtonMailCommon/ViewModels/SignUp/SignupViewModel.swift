@@ -27,9 +27,9 @@ import PMFingerprint
 protocol FingerprintProtocol {
     func observeTextField(textField: UITextField, type: PMFingerprint.TextFieldType)
     
-    func stopObserveTextField(textField: UITextField)
-    
     func requestVerify()
+    
+    func captchaFinish()
     
     func fingerprintExport() -> PMFingerprint.Fingerprint
 }
@@ -135,15 +135,15 @@ class SignupViewModel : NSObject, FingerprintProtocol {
         fatalError("This method must be overridden")
     }
     
-    func stopObserveTextField(textField: UITextField) {
-        fatalError("This method must be overridden")
-    }
-    
     func requestVerify() {
         fatalError("This method must be overridden")
     }
     
     func fingerprintExport() -> PMFingerprint.Fingerprint {
+        fatalError("This method must be overridden")
+    }
+    
+    func captchaFinish() {
         fatalError("This method must be overridden")
     }
 }

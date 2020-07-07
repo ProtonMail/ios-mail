@@ -130,7 +130,6 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
         self.viewModel.setDelegate(nil)
-        self.viewModel.stopObserveTextField(textField: verifyCodeTextField)
         //unregister timer
         self.stopAutoFetch()
     }

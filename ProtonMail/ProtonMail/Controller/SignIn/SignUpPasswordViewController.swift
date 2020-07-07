@@ -101,7 +101,6 @@ class SignUpPasswordViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-        self.viewModel.stopObserveTextField(textField: loginPasswordField)
     }
 
     override func didReceiveMemoryWarning() {

@@ -202,13 +202,15 @@ class SignupViewModelImpl : SignupViewModel {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
                     let verifier = try auth.generateVerifier(2048)
-                    
+                    let fingerprintString = try? self.fingerprint.export().asString()
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
                                             email: self.recoverEmail,
                                             modulusID: moduls_id,
                                             salt: new_salt.encodeBase64(),
-                                            verifer: verifier.encodeBase64(), deviceToken: self.deviceCheckToken)
+                                            verifer: verifier.encodeBase64(),
+                                            deviceToken: self.deviceCheckToken,
+                                            fingerprint: fingerprintString ?? "")
                     api.call(api: self.apiService) { (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user
@@ -503,12 +505,12 @@ class SignupViewModelImpl : SignupViewModel {
         try! self.fingerprint.observeTextField(textField, type: type)
     }
     
-    override func stopObserveTextField(textField: UITextField) {
-        self.fingerprint.stopObserveTextField(textField)
-    }
-    
     override func requestVerify() {
         self.fingerprint.requestVerify()
+    }
+    
+    override func captchaFinish() {
+        try! self.fingerprint.verificationFinsih()
     }
     
     override func fingerprintExport() -> PMFingerprint.Fingerprint {

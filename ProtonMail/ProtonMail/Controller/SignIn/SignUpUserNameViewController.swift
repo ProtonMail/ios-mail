@@ -137,7 +137,6 @@ class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UI
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         NotificationCenter.default.removeKeyboardObserver(self)
-        self.viewModel.stopObserveTextField(textField: usernameTextField)
     }
     
     override func didReceiveMemoryWarning() {
@@ -385,7 +384,6 @@ extension SignUpUserNameViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         dismissKeyboard()
-        checkUserName();
         return true
     }
 }
