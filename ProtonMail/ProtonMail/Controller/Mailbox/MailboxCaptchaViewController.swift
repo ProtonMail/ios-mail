@@ -29,21 +29,26 @@ protocol MailboxCaptchaVCDelegate : AnyObject {
     func done()
 }
 
-class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
+class MailboxCaptchaViewController : UIViewController {
     
     var viewModel : HumanCheckViewModel!
     
-    @IBOutlet weak var webVIew: UIWebView!
-    @IBOutlet weak var backgroundImageView: UIImageView!
+    private var wkWebView: WKWebView!
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var cancelButton: UIButton!
+    @IBOutlet var humanVerificationLabel: UILabel!
+    @IBOutlet var cancelView: UIView!
     
     weak var delegate : MailboxCaptchaVCDelegate?
+    
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         contentView.layer.cornerRadius = 4
-        self.webVIew.delegate = self
+        self.setupWkWebView()
         // show loading
         MBProgressHUD.showAdded(to: view, animated: true)
         viewModel.getToken { (token, error) in
@@ -56,17 +61,7 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
         }
     }
     
-    fileprivate func loadWebView(_ token : String) {
-        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Server.live.hostUrl)")!
-        let requestObj = URLRequest(url: cptcha)
-        webVIew.loadRequest(requestObj)
-    }
-    
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.lightContent
-    }
-    
-    @IBAction func cancelAction(_ sender: AnyObject) {
+    @IBAction private func cancelAction(_ sender: AnyObject) {
         let alertController = UIAlertController(
             title: LocalString._signup_human_check_warning_title,
             message: LocalString._signup_human_check_warning,
@@ -82,41 +77,70 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
         self.present(alertController, animated: true, completion: nil)
         
     }
-    
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        let urlString = request.url?.absoluteString
-        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
-            return false
-        }
-        
-        if urlString?.contains("how-to-solve-") == true {
-            return false
-        }
-        
-        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
-            return false
-        }
+}
 
-        if let _ = urlString?.range(of: "https://secure.protonmail.com/expired_recaptcha_response://") {
-            webView.reload()
-            return false
-        } else if let _ = urlString?.range(of: "https://secure.protonmail.com/captcha/recaptcha_response://") {
-            if let token = urlString?.replacingOccurrences(of: "https://secure.protonmail.com/captcha/recaptcha_response://", with: "", options: NSString.CompareOptions.widthInsensitive, range: nil) {
-                MBProgressHUD.showAdded(to: view, animated: true)
-                viewModel.humanCheck("captcha", token: token, complete: { (error: NSError?) in
-                    MBProgressHUD.hide(for: self.view, animated: true)
-                    if let err = error {
-                        err.alertHumanCheckErrorToast()
-                        self.webVIew.reload()
-                    } else {
-                        self.dismiss(animated: true, completion: nil)
-                        self.delegate?.done()
-                    }
-                })   
-            }
-            return false
-        }
-        return true
+// MARK: Private function
+extension MailboxCaptchaViewController {
+    private func setupWkWebView() {
+        let webConfiguration = WKWebViewConfiguration()
+        self.wkWebView = WKWebView(frame: .zero, configuration: webConfiguration)
+        self.wkWebView.navigationDelegate = self
+        self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
+        self.contentView.addSubview(self.wkWebView)
+        
+        self.wkWebView.topAnchor.constraint(equalTo: self.humanVerificationLabel.bottomAnchor, constant: 18).isActive = true
+        self.wkWebView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor).isActive = true
+        self.wkWebView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor).isActive = true
+        self.wkWebView.bottomAnchor.constraint(equalTo: self.cancelView.topAnchor, constant: -8).isActive = true
+    }
+    
+    private func loadWebView(_ token : String) {
+        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Server.live.hostUrl)")!
+        let requestObj = URLRequest(url: cptcha)
+        self.wkWebView.load(requestObj)
     }
 }
 
+extension MailboxCaptchaViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        
+        PMLog.D("\(navigationAction.request)")
+        guard let urlString = navigationAction.request.url?.absoluteString else {
+            decisionHandler(.allow)
+            return
+        }
+     
+        let forbiden = [
+            "https://www.google.com/intl/en/policies/privacy",
+            "how-to-solve-",
+            "https://www.google.com/intl/en/policies/terms"
+        ]
+        if forbiden.contains(urlString) {
+            decisionHandler(.cancel)
+            return
+        }
+        
+        if urlString.contains("https://secure.protonmail.com/expired_recaptcha_response://") {
+            webView.reload()
+            decisionHandler(.cancel)
+            return
+        } else if urlString.contains("https://secure.protonmail.com/captcha/recaptcha_response://") {
+            let token = urlString.replacingOccurrences(of: "https://secure.protonmail.com/captcha/recaptcha_response://", with: "", options: NSString.CompareOptions.widthInsensitive, range: nil)
+            MBProgressHUD.showAdded(to: view, animated: true)
+            viewModel.humanCheck("captcha", token: token, complete: { (error: NSError?) in
+                MBProgressHUD.hide(for: self.view, animated: true)
+                if let err = error {
+                    err.alertHumanCheckErrorToast()
+                    self.wkWebView.reload()
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                    self.delegate?.done()
+                }
+            })
+            decisionHandler(.cancel)
+            return
+        }
+        
+        decisionHandler(.allow)
+    }
+}
