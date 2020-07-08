@@ -87,29 +87,29 @@ class APIService : Service {
     var sessionUID : String
 
     /// network config
-    let serverConfig : APIServerConfig
+    //let serverConfig : APIServerConfig
     
     /// the user id
     let userID : String
     
     //
-    lazy var authApi: PMAuthentication.Authenticator = {
-        let trust: TrustChallenge = { session, challenge, completion in
-            if let validator = TrustKitWrapper.current?.pinningValidator {
-                validator.handle(challenge, completionHandler: completion)
-            } else {
-                assert(false, "TrustKit was not initialized properly")
-                completion(.performDefaultHandling, nil)
+    var authApi: PMAuthentication.Authenticator {
+        get {
+            let trust: TrustChallenge = { session, challenge, completion in
+                if let validator = TrustKitWrapper.current?.pinningValidator {
+                    validator.handle(challenge, completionHandler: completion)
+                } else {
+                    assert(false, "TrustKit was not initialized properly")
+                    completion(.performDefaultHandling, nil)
+                }
             }
+            
+            let configuration = Authenticator.Configuration(trust: trust,
+                                                            hostUrl: self.doh.getHostUrl(),
+                                                            clientVersion: "iOS_\(Bundle.main.majorVersion)")
+            return Authenticator(configuration: configuration)
         }
-        
-        let configuration = Authenticator.Configuration(trust: trust,
-                                                        scheme: self.serverConfig.protocol,
-                                                        host: self.serverConfig.host,
-                                                        apiPath: self.serverConfig.path,
-                                                        clientVersion: "iOS_\(Bundle.main.majorVersion)")
-        return Authenticator(configuration: configuration)
-    }()
+    }
     
     static var sharedSessionManager: AFHTTPSessionManager? = nil
     
@@ -135,16 +135,15 @@ class APIService : Service {
         // init lock
         pthread_mutex_init(&mutex, nil)
 
-        doh.status = userCachedStatus.isDohOn ? .on : .off
+        doh.status = .on // userCachedStatus.isDohOn ? .on : .off
 
         // set config
-        self.serverConfig = config
+//        self.serverConfig = config
         self.sessionUID = sessionUID
         self.userID = userID
         // clear all response cache
         URLCache.shared.removeAllCachedResponses()
-        let apiHostUrl = self.serverConfig.hostUrl
-        
+        let apiHostUrl = self.doh.getHostUrl()
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
@@ -371,9 +370,7 @@ class APIService : Service {
                           completion: @escaping CompletionBlock) {
         
         
-        let url = self.serverConfig.hostUrl + path
-        
-        
+        let url = self.doh.getHostUrl() + path
         let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
@@ -571,8 +568,7 @@ class APIService : Service {
                         }
                     }
                 }
-                // let url = self.doh.getHostUrl() + path
-                let url = self.serverConfig.hostUrl + self.serverConfig.path + path
+                let url = self.doh.getHostUrl() + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,

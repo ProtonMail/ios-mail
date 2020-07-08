@@ -45,22 +45,16 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     
     public struct Configuration {
         public init(trust: TrustChallenge?,
-                    scheme: String,
-                    host: String,
-                    apiPath: String,
+                    hostUrl: String,
                     clientVersion: String)
         {
             self.trust = trust
-            self.scheme = scheme
-            self.host = host
-            self.apiPath = apiPath
+            self.hostUrl = hostUrl
             self.clientVersion = clientVersion
         }
         
         var trust: TrustChallenge?
-        var scheme: String
-        var host: String
-        var apiPath: String
+        var hostUrl: String
         var clientVersion: String
     }
     
@@ -87,9 +81,7 @@ public class GenericAuthenticator<SRP: SrpAuthProtocol, PROOF: SrpProofsProtocol
     
     public func update(configuration: Configuration) {
         AuthService.trust = configuration.trust
-        AuthService.scheme = configuration.scheme
-        AuthService.host = configuration.host
-        AuthService.apiPath = configuration.apiPath
+        AuthService.hostUrl = configuration.hostUrl
         AuthService.clientVersion = configuration.clientVersion
     }
     

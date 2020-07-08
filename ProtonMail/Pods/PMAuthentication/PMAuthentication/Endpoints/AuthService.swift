@@ -14,20 +14,21 @@ enum AuthService {
     */
     
     static var trust: TrustChallenge?
-    static var scheme: String = "https"
-    static var host: String = "api.protonmail.ch"
-    static var apiPath: String = ""
+//    static var scheme: String = "https"
+//    static var host: String = "api.protonmail.ch"
+//    static var apiPath: String = ""
+    static var hostUrl : String = ""
     static var apiVersion: String = "3"
     static var clientVersion: String = ""
     static var redirectUri: String = "http://protonmail.ch" // Probably, we do not actually need this thing
     
-    static var baseComponents: URLComponents {
-        var urlComponents = URLComponents()
-        urlComponents.scheme = scheme
-        urlComponents.host = host
-        urlComponents.path = apiPath
-        return urlComponents
-    }
+//    static var baseComponents: URLComponents {
+//        var urlComponents = URLComponents()
+//        urlComponents.scheme = scheme
+//        urlComponents.host = host
+//        urlComponents.path = apiPath
+//        return urlComponents
+//    }
     
     static var baseHeaders: [String: String] {
         return [
@@ -39,8 +40,8 @@ enum AuthService {
     }
 
     static func url(of path: String) -> URL {
-        let urlComponents = self.baseComponents
-        guard let url = urlComponents.url else {
+        let serverurl = URL(string: self.hostUrl)
+        guard let url = serverurl else {
             fatalError("Could not create URL from components")
         }
         return url.appendingPathComponent(path)
