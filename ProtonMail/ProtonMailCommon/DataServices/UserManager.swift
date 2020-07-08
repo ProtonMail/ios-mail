@@ -197,6 +197,12 @@ extension UserManager : SessionDelegate {
     
     func updateAuthCredential(_ credential: PMAuthentication.Credential) {
         self.auth.udpate(sessionID: credential.UID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
+        self.save()
+    }
+    
+    func updateAuth(_ credential: AuthCredential) {
+        self.auth.udpate(sessionID: credential.sessionID, accessToken: credential.accessToken, refreshToken: credential.refreshToken, expiration: credential.expiration)
+        self.save()
     }
 }
 

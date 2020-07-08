@@ -39,6 +39,7 @@ protocol APIServiceDelegate: class {
 protocol SessionDelegate: class {
     func getToken(bySessionUID uid: String) -> AuthCredential?
     func updateAuthCredential(_ credential: PMAuthentication.Credential)
+    func updateAuth(_ credential: AuthCredential)
 }
 
 class APIService : Service {
@@ -227,7 +228,8 @@ class APIService : Service {
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
+                            completion(newCredential?.accessToken, self.sessionUID, error)
+                            NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                         DispatchQueue.main.async {
@@ -251,6 +253,21 @@ class APIService : Service {
             completion(credential.accessToken, self.sessionUID, nil)
         }
     }
+    
+    internal func expireCredential() {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
+        let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
+        guard let credential = authCredential else {
+            PMLog.D("token is empty")
+            return
+        }
+        credential.expire()
+        self.sessionDeleaget?.updateAuth(credential)
+    }
+    
     
     
     // MARK: - Request methods
@@ -462,7 +479,7 @@ class APIService : Service {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                           // AuthCredential.expireOrClear(auth?.token)
+                            self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
                                 self.delegate?.onError(error: error)
@@ -472,13 +489,13 @@ class APIService : Service {
                             } else {
                                 if authRetryRemains > 0 {
                                     self.request(method: method,
-                                    path: path,
-                                    parameters: parameters,
-                                    headers: [HTTPHeader.apiVersion: 3],
-                                    authenticated: authenticated,
-                                    authRetryRemains: authRetryRemains - 1,
-                                    customAuthCredential: customAuthCredential,
-                                    completion: completion)
+                                                 path: path,
+                                                 parameters: parameters,
+                                                 headers: headers,
+                                                 authenticated: authenticated,
+                                                 authRetryRemains: authRetryRemains - 1,
+                                                 customAuthCredential: customAuthCredential,
+                                                 completion: completion)
                                 } else {
                                     NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
                                 }
@@ -517,17 +534,24 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                if authRetryRemains > 0 {
-                                    self.request(method: method,
-                                    path: path,
-                                    parameters: parameters,
-                                    headers: [HTTPHeader.apiVersion: 3],
-                                    authenticated: authenticated,
-                                    authRetryRemains: authRetryRemains - 1,
-                                    customAuthCredential: customAuthCredential,
-                                    completion: completion)
+                                self.expireCredential()
+                                if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                                    completion?(nil, nil, error)
+                                    UserTempCachedStatus.backup()
+                                    userCachedStatus.signOut()
                                 } else {
-                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    if authRetryRemains > 0 {
+                                        self.request(method: method,
+                                                     path: path,
+                                                     parameters: parameters,
+                                                     headers: headers,
+                                                     authenticated: authenticated,
+                                                     authRetryRemains: authRetryRemains - 1,
+                                                     customAuthCredential: customAuthCredential,
+                                                     completion: completion)
+                                    } else {
+                                        NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    }
                                 }
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
