@@ -229,6 +229,9 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     }
     
     @objc fileprivate func didPrimaryAccountLoggedOut(_ notification: Notification) {
+        guard self.viewModel.users.users.count > 0 else {
+            return
+        }
         self.viewModel.updateCurrent()
         self.viewModel.setupLabels(delegate: self)
         self.hideUsers()
