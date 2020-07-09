@@ -455,7 +455,7 @@ class APIService : Service {
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  authRetry: Bool = true,
-                 authRetryRemains: Int = 10,
+                 authRetryRemains: Int = 5,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthTokenBlock = { token, userID, error in

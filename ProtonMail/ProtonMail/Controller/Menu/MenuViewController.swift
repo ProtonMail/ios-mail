@@ -328,6 +328,10 @@ extension MenuViewController: UITableViewDelegate {
         }
     }
     
+    func toInbox() {
+        self.coordinator?.go(to: .mailbox, sender: MenuItem.inbox.menuToLabel)
+    }
+    
     func updateUser() {
         DispatchQueue.main.async(execute: { () -> Void in
             // pick it as current user

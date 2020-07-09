@@ -66,8 +66,6 @@ class ContactCoordinator : DefaultCoordinator {
         guard let segueID = identifier, let dest = Destination(rawValue: segueID) else {
             return false //
         }
-        
-
         return false
     }
 }
