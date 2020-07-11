@@ -71,7 +71,7 @@ class MessageQueue: PersistentQueue {
     func queuedMessageIds() -> [String] {
         let ids = self.queue.compactMap { entryOfQueue -> String? in
             guard let object = entryOfQueue as? [String: Any],
-                let element = object[Key.object] as? [String: String],
+				let element = object[PersistentQueue.Key.object] as? [String: String],
                 let id = element[Key.id] else {
                     return nil
             }
