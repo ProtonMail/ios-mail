@@ -549,11 +549,8 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
-        
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
-            let right = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines),
-            left == right,
             (left.contains(check: ";") || left.contains(check: ",")) {
             self.contactDelegate?.collectionView(at: self, pasted: self.searchText, needFocus: true)
             return
