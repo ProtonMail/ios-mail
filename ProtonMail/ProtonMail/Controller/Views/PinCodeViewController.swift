@@ -41,6 +41,10 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
         
         self.setUpView(true)
         self.subscribeToWillEnterForegroundMessage()
+
+        NotificationCenter.default.addObserver(forName:  UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.pinCodeView.resetPin()
+        }
     }
     
     deinit {
@@ -107,7 +111,7 @@ extension PinCodeViewController : PinCodeViewDelegate {
             return
         }
         
-        let alert = UIAlertController(title: nil, message: LocalString._logout_confirmation, preferredStyle: .alert)
+        let alert = UIAlertController(title: nil, message: LocalString._logout_secondary_account_from_manager_account, preferredStyle: .alert)
         alert.addAction(.init(title: LocalString._sign_out, style: .destructive, handler: self.proceedCancel))
         alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         self.present(alert, animated: true, completion: nil)

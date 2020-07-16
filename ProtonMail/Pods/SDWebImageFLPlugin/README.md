@@ -7,7 +7,9 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/SDWebImage/SDWebImageFLPlugin)
 [![codecov](https://codecov.io/gh/SDWebImage/SDWebImageFLPlugin/branch/master/graph/badge.svg)](https://codecov.io/gh/SDWebImage/SDWebImageFLPlugin)
 
-Starting with the SDWebImage 5.0 version, we move the [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) support code from the Core Repo to this stand-alone repo. Core which previously use FLAnimatedImage with SDWebImage can continue to work with this plugin.
+Starting with the SDWebImage 5.0 version, we move the [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) support code from the Core Repo to this stand-alone repo.
+
+Code which previously use FLAnimatedImage with SDWebImage can continue to work with this plugin. But it's recommended to use the [5.0 Animated Image Solution](https://github.com/SDWebImage/SDWebImage/wiki/Advanced-Usage#animated-image-50) to get better support and more features.
 
 ## What's for
 SDWebImageFLPlugin is a plugin for [SDWebImage](https://github.com/rs/SDWebImage/) framework, which provide the image loading support for [FLAnimatedImage](https://github.com/Flipboard/FLAnimatedImage) animated GIF engine.

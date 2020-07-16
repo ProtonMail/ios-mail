@@ -1,0 +1,6 @@
+framework module PMAuthentication {
+  umbrella header "PMAuthentication-umbrella.h"
+
+  export *
+  module * { export * }
+}

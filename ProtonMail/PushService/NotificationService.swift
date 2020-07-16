@@ -49,6 +49,10 @@ class NotificationService: UNNotificationServiceExtension {
             return
         }
         
+        bestAttemptContent.threadIdentifier = UID
+        
+        userCachedStatus.hasMessageFromNotification = true
+        
         guard let encryptionKit = PushNotificationDecryptor.encryptionKit(forSession: UID) else {
             PushNotificationDecryptor.markForUnsubscribing(uid: UID)
             #if Enterprise
@@ -83,8 +87,10 @@ class NotificationService: UNNotificationServiceExtension {
             bestAttemptContent.title = push.sender.name.isEmpty ? push.sender.address : push.sender.name
             bestAttemptContent.body = push.body
             
-            if push.badge > 0 {
+            if push.badge > 0 && userCachedStatus.primaryUserSessionId == UID {
                 bestAttemptContent.badge = NSNumber(value: push.badge)
+            } else {
+                bestAttemptContent.badge = nil
             }
         } catch let error {
             #if Enterprise
@@ -103,4 +109,10 @@ class NotificationService: UNNotificationServiceExtension {
         }
     }
     
+}
+
+protocol CacheStatusInject {
+    var isPinCodeEnabled : Bool { get }
+    var isTouchIDEnabled : Bool { get }
+    var pinFailedCount : Int { get set }
 }

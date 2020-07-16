@@ -72,12 +72,12 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    var contactTitle : String {
+    @objc var contactTitle : String {
         get {
             return title
         }
     }
-    var contactSubtitle : String? {
+    @objc var contactSubtitle : String? {
         get {
             return subtitle
         }
@@ -303,11 +303,11 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
      - Parameter progress: in progress ()-> Void
      - Parameter complete: complete ()-> Void
      **/
-    func lockCheck(progress: () -> Void, complete: LockCheckComplete?) {
+    func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {
         progress()
         async {
-            let getEmail = UserEmailPubKeys(email: self.email).run()
-            let getContact = sharedContactDataService.fetch(byEmails: [self.email], context: nil)
+            let getEmail = UserEmailPubKeys(email: self.email, api: api).run()
+            let getContact = contactService.fetch(byEmails: [self.email], context: nil)
             when(fulfilled: getEmail, getContact).done { keyRes, contacts in
                 //internal emails
                 if keyRes.recipientType == 1 {

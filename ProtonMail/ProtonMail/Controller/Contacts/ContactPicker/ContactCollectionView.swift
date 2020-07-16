@@ -348,7 +348,10 @@ class ContactCollectionView: UICollectionView, UICollectionViewDataSource {
             }
         }
         else if self.showPrompt {
-            self.scrollToItem(at: self.entryCellIndexPath, at: .bottom, animated: false)
+            //Check if there's any cell exists on that indexPath
+            if let _ = self.dataSource?.collectionView(self, cellForItemAt: self.entryCellIndexPath) {
+                self.scrollToItem(at: self.entryCellIndexPath, at: .bottom, animated: false)
+            }
         }
     }
     
@@ -546,11 +549,8 @@ extension ContactCollectionView : UITextFieldDelegateImproved {
     
     func textFieldDidChange(textField: UITextField) {
         self.searchText = textField.text
-        
         let left = self.searchText.trimmingCharacters(in: .whitespacesAndNewlines)
         if !left.isEmpty,
-            let right = UIPasteboard.general.string?.trimmingCharacters(in: .whitespacesAndNewlines),
-            left == right,
             (left.contains(check: ";") || left.contains(check: ",")) {
             self.contactDelegate?.collectionView(at: self, pasted: self.searchText, needFocus: true)
             return

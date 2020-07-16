@@ -734,7 +734,9 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
         if text.contains(check: ",") {
-            let cusTexts = text.split(separator: ",")
+            let separatorSet = CharacterSet(charactersIn: ",;")
+            let cusTexts = text.components(separatedBy: separatorSet)
+            //let cusTexts = text.split(separator: ",")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
@@ -743,7 +745,9 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
                 }
             }
         } else if text.contains(check: ";") {
-            let cusTexts = text.split(separator: ";")
+            let separatorSet = CharacterSet(charactersIn: ",;")
+            let cusTexts = text.components(separatedBy: separatorSet)
+            //let cusTexts = text.split(separator: ";")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
@@ -846,9 +850,10 @@ extension ContactPicker {
     var contactList: String {
         var contactList = ""
         let contactsSelected = NSArray(array: self.contactsSelected)
-        if let contacts = contactsSelected.value(forKey: ContactVO.Attributes.email) as? [String] {
-            contactList = contacts.joined(separator: ",")
+        let contacts = contactsSelected.compactMap { (contact) -> String? in
+            return (contact as? ContactVO)?.email
         }
+        contactList = contacts.joined(separator: ",")
         return contactList
     }
 

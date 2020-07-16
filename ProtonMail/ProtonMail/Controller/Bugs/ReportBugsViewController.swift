@@ -25,7 +25,7 @@ import Foundation
 import MBProgressHUD
 
 class ReportBugsViewController: ProtonMailViewController {
-    
+    var user: UserManager!
     fileprivate let bottomPadding: CGFloat = 30.0
     
     fileprivate var sendButton: UIBarButtonItem!
@@ -103,9 +103,12 @@ class ReportBugsViewController: ProtonMailViewController {
     }
     
     private func send(_ text: String) {
-        MBProgressHUD.showAdded(to: view, animated: true)
+        let v : UIView = self.navigationController?.view ?? self.view
+        MBProgressHUD.showAdded(to: v, animated: true)
         sendButton.isEnabled = false
-        BugDataService().reportBug(text, completion: { error in
+        _ = self.user.reportService.reportBug(text,
+                                              username: self.user.displayName,
+                                              email: self.user.defaultEmail, completion: { error in
             MBProgressHUD.hide(for: self.view, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {

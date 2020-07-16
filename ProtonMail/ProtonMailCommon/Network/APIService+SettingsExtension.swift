@@ -27,14 +27,14 @@ import Foundation
 extension APIService {
     
     fileprivate struct SettingPath {
-        static let base = Constants.App.API_PATH + "/settings/mail"
+        static let base = "/settings/mail"
     }
     
     //TODO::Swift
     func settingUpdateSignature(_ signature: String, authCredential: AuthCredential?, completion: @escaping CompletionBlock) {
         let path = SettingPath.base + "/signature"
         let parameters = ["Signature" : signature]
-        request(method: .put, path: path, parameters: parameters, headers: ["x-pm-apiversion": 3], customAuthCredential: authCredential, completion: completion)
+        request(method: .put, path: path, parameters: parameters, headers: [HTTPHeader.apiVersion: 3], customAuthCredential: authCredential, completion: completion)
     }
 }
 

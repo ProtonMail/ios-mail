@@ -28,6 +28,7 @@ class MenuLabelViewCell: UITableViewCell {
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var unreadLabel: UILabel!
+    @IBOutlet weak var separtor: UIView!
     
     fileprivate var item: Label!
     
@@ -41,9 +42,10 @@ class MenuLabelViewCell: UITableViewCell {
         self.selectedBackgroundView = selectedBackgroundView
     }
     
-    func configCell (_ item : Label!) {
+    func configCell (_ item : Label!, hideSepartor: Bool) {
         self.item = item;
         
+        separtor.isHidden = hideSepartor
         unreadLabel.layer.masksToBounds = true;
         unreadLabel.layer.cornerRadius = 12;
         unreadLabel.text = "0";
@@ -63,9 +65,7 @@ class MenuLabelViewCell: UITableViewCell {
         }
     }
     
-    func configUnreadCount () {
-        
-        let count = lastUpdatedStore.unreadCountForKey(item.labelID)
+    func configUnreadCount (count: Int) {
         if count > 0 {
             unreadLabel.text = "\(count)";
             unreadLabel.isHidden = false;
@@ -99,5 +99,10 @@ class MenuLabelViewCell: UITableViewCell {
         } else {
             self.backgroundColor = UIColor.ProtonMail.Menu_UnSelectBackground_Label
         }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        separtor.isHidden = true
     }
 }

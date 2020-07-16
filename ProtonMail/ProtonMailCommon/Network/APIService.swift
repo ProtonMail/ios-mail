@@ -27,6 +27,7 @@ import AFNetworking
 import AFNetworkActivityLogger
 import TrustKit
 import PMNetworking
+import PMAuthentication
 
 let APIServiceErrorDomain = NSError.protonMailErrorDomain("APIService")
 
@@ -35,8 +36,31 @@ protocol APIServiceDelegate: class {
     func isReachable() -> Bool
 }
 
-let sharedAPIService = APIService()
-class APIService {
+protocol SessionDelegate: class {
+    func getToken(bySessionUID uid: String) -> AuthCredential?
+    func updateAuthCredential(_ credential: PMAuthentication.Credential)
+    func updateAuth(_ credential: AuthCredential)
+}
+
+class APIService : Service {
+    
+    static var unauthorized: APIService = {
+        let unauthorized = APIService(config: Server.live, sessionUID: "", userID: "")
+        #if !APP_EXTENSION
+        unauthorized.delegate = UIApplication.shared.delegate as? AppDelegate
+        #endif
+        return unauthorized
+    }()
+    
+    /// Current APIService - of current user or unauthorized if there is no user available
+    static var shared: APIService {
+        if let user = sharedServices.get(by: UsersManager.self).users.first {
+            return user.apiService
+        }
+        // TODO: Should we have unauthorized calls here at all?
+        return self.unauthorized
+    }
+    
     // refresh token failed count
     internal var refreshTokenFailedCount = 0
     
@@ -51,20 +75,76 @@ class APIService {
         return sessionManager;
     }
     
+    ///
     weak var delegate : APIServiceDelegate?
     
     let doh : DoH = DoHMail.default
     
     // MARK: - Internal methods
+    weak var sessionDeleaget : SessionDelegate?
     
-    init() {
-        doh.status = userCachedStatus.isDohOn ? .on : .off
+    /// the session ID. this can be changed
+    var sessionUID : String
+
+    /// network config
+    //let serverConfig : APIServerConfig
+    
+    /// the user id
+    let userID : String
+    
+    //
+    var authApi: PMAuthentication.Authenticator {
+        get {
+            let trust: TrustChallenge = { session, challenge, completion in
+                if let validator = TrustKitWrapper.current?.pinningValidator {
+                    validator.handle(challenge, completionHandler: completion)
+                } else {
+                    assert(false, "TrustKit was not initialized properly")
+                    completion(.performDefaultHandling, nil)
+                }
+            }
+            
+            let configuration = Authenticator.Configuration(trust: trust,
+                                                            hostUrl: self.doh.getHostUrl(),
+                                                            clientVersion: "iOS_\(Bundle.main.majorVersion)")
+            return Authenticator(configuration: configuration)
+        }
+    }
+    
+    static var sharedSessionManager: AFHTTPSessionManager? = nil
+    
+    private func initSessionManager(apiHostUrl: String) -> AFHTTPSessionManager {
+        let sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
+        sessionManager.requestSerializer = AFJSONRequestSerializer()
+        sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
+        sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
         
+        sessionManager.responseSerializer.acceptableContentTypes?.insert("text/html")
+        
+        sessionManager.securityPolicy.validatesDomainName = false
+        sessionManager.securityPolicy.allowInvalidCertificates = false
+        #if DEBUG
+        sessionManager.securityPolicy.allowInvalidCertificates = true
+        #endif
+        
+        return sessionManager
+    }
+
+    // MARK: - Internal methods
+    required init(config: APIServerConfig, sessionUID: String, userID: String) {
         // init lock
         pthread_mutex_init(&mutex, nil)
+
+        doh.status = .on // userCachedStatus.isDohOn ? .on : .off
+
+        // set config
+//        self.serverConfig = config
+        self.sessionUID = sessionUID
+        self.userID = userID
+        // clear all response cache
         URLCache.shared.removeAllCachedResponses()
-        
-        sessionManager = AFHTTPSessionManager(baseURL: URL(string: doh.getHostUrl())!)
+        let apiHostUrl = self.doh.getHostUrl()
+        sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
         sessionManager.requestSerializer.stringEncoding = String.Encoding.utf8.rawValue
@@ -89,6 +169,8 @@ class APIService {
             return dispositionToReturn
         }
         
+        
+        //this is groot setup
         setupValueTransforms()
     }
     
@@ -122,68 +204,69 @@ class APIService {
         }
     }
     
-    internal func fetchAuthCredential(_ completion: @escaping AuthCredentialBlock) {
+    
+    internal typealias AuthTokenBlock = (String?, String?, NSError?) -> Void
+    internal func fetchAuthCredential(_ completion: @escaping AuthTokenBlock) {
+        //TODO:: fix me. this is wrong. concurruncy 
         DispatchQueue.global(qos: .default).async {
             pthread_mutex_lock(&self.mutex)
-            
-            //fetch auth info
+            let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
+            guard let credential = authCredential else {
+                PMLog.D("token is empty")
 
-            guard let credential = AuthCredential.fetchFromKeychain(), // mailbox pwd is empty should show error and logout
-                !(credential.password ?? "").isEmpty else
-            {
-                guard UnlockManager.shared.isUnlocked() else { // app is locked, fail with error gracefully
-                    pthread_mutex_unlock(&self.mutex)
-                    DispatchQueue.main.async {
-                        completion(nil, NSError.authCacheLocked())
-                    }
-                    return
-                }
-                
-                //clean auth cache let user relogin
-                AuthCredential.clearFromKeychain()
                 pthread_mutex_unlock(&self.mutex)
-                DispatchQueue.main.async {
-                    completion(nil, NSError.AuthCachePassEmpty())
-                    UserTempCachedStatus.backup()
-                    sharedUserDataService.signOut(true) //NOTES:signout + errors
-                    userCachedStatus.signOut()
-                    NSError.alertBadTokenToast()
-                }
+                completion(nil, nil, NSError(domain: "empty token", code: 0, userInfo: nil))
                 return
             }
             
-            guard !credential.isExpired else { // access token time is valid
-                self.authRefresh (credential.password  ?? "") { (task, authCredential, error) -> Void in
+            // when local credential expired, should handle the case same as api reuqest error handling
+            guard !credential.isExpired else {
+                self.authRefresh(credential) { _, newCredential, error in
                     self.debugError(error)
                     pthread_mutex_unlock(&self.mutex)
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
-                        AuthCredential.clearFromKeychain()
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
+                            completion(newCredential?.accessToken, self.sessionUID, error)
+                            NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
-                        AuthCredential.clearFromKeychain()
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
                             self.fetchAuthCredential(completion)
                         }
                     } else {
+                        if let credential = newCredential {
+                            self.sessionDeleaget?.updateAuthCredential(credential)
+                        }
                         DispatchQueue.main.async {
-                            completion(authCredential, error)
+                            completion(newCredential?.accessToken, self.sessionUID, error)
                         }
                     }
                 }
                 return
             }
-            
+
             pthread_mutex_unlock(&self.mutex)
-            DispatchQueue.main.async {
-                completion(credential, nil)
-            }
+            // renew
+            completion(credential.accessToken, self.sessionUID, nil)
         }
-        
     }
+    
+    internal func expireCredential() {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
+        let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
+        guard let credential = authCredential else {
+            PMLog.D("token is empty")
+            return
+        }
+        credential.expire()
+        self.sessionDeleaget?.updateAuth(credential)
+    }
+    
     
     
     // MARK: - Request methods
@@ -197,7 +280,7 @@ class APIService {
                            customAuthCredential: AuthCredential? = nil,
                            downloadTask: ((URLSessionDownloadTask) -> Void)?,
                            completion: @escaping ((URLResponse?, URL?, NSError?) -> Void)) {
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion(nil, nil, error)
@@ -211,10 +294,10 @@ class APIService {
                     }
                 }
                 
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
-                    request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
+                if let userID = userID {
+                    request.setValue(userID, forHTTPHeaderField: "x-pm-uid")
                 }
                 
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
@@ -243,31 +326,31 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     
-    internal func upload (byPath path: String,
-    parameters: [String:String],
-    keyPackets : Data,
-    dataPacket : Data,
-    signature : Data?,
-    headers: [String : Any]?,
-    authenticated: Bool = true,
-    customAuthCredential: AuthCredential? = nil,
-    completion: @escaping CompletionBlock) {
-        let url = self.doh.getHostUrl() + path
-        self.upload(byUrl: url,
-                    parameters: parameters,
-                    keyPackets: keyPackets,
-                    dataPacket: dataPacket,
-                    signature: signature,
-                    headers: headers,
-                    authenticated: authenticated,
-                    customAuthCredential: customAuthCredential,
-                    completion: completion)
-    }
-    
+//     internal func upload (byPath path: String,
+//     parameters: [String:String],
+//     keyPackets : Data,
+//     dataPacket : Data,
+//     signature : Data?,
+//     headers: [String : Any]?,
+//     authenticated: Bool = true,
+//     customAuthCredential: AuthCredential? = nil,
+//     completion: @escaping CompletionBlock) {
+//         let url = self.doh.getHostUrl() + path
+//         self.upload(byUrl: url,
+//                     parameters: parameters,
+//                     keyPackets: keyPackets,
+//                     dataPacket: dataPacket,
+//                     signature: signature,
+//                     headers: headers,
+//                     authenticated: authenticated,
+//                     customAuthCredential: customAuthCredential,
+//                     completion: completion)
+//     }
+
     /**
      this function only for upload attachments for now.
      
@@ -276,7 +359,7 @@ class APIService {
      :param: keyPackets encrypt attachment key package
      :param: dataPacket encrypt attachment data package
      */
-    internal func upload (byUrl url: String,
+    internal func upload (byPath path: String,
                           parameters: [String:String],
                           keyPackets : Data,
                           dataPacket : Data,
@@ -287,7 +370,8 @@ class APIService {
                           completion: @escaping CompletionBlock) {
         
         
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let url = self.doh.getHostUrl() + path
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion(nil, nil, error)
@@ -309,9 +393,9 @@ class APIService {
                     }
                 }
                 
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
+                if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
                 }
                 
@@ -337,7 +421,7 @@ class APIService {
                     {
                         // retry task asynchonously
                         DispatchQueue.global(qos: .utility).async {
-                            self.upload(byUrl: url,
+                            self.upload(byPath: url,
                                     parameters: parameters,
                                     keyPackets: keyPackets,
                                     dataPacket: dataPacket,
@@ -360,7 +444,7 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -371,9 +455,10 @@ class APIService {
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  authRetry: Bool = true,
+                 authRetryRemains: Int = 5,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
-        let authBlock: AuthCredentialBlock = { auth, error in
+        let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
                 completion?(nil, nil, error)
@@ -391,21 +476,26 @@ class APIService {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                            AuthCredential.expireOrClear(auth?.token)
+                            self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
                                 self.delegate?.onError(error: error)
                                 UserTempCachedStatus.backup()
-                                sharedUserDataService.signOut(true);
+                                //sharedUserDataService.signOut(true);
                                 userCachedStatus.signOut()
-                            }else {
-                                self.request(method: method,
-                                             path: path,
-                                             parameters: parameters,
-                                             headers: ["x-pm-apiversion": 3],
-                                             authenticated: authenticated,
-                                             customAuthCredential: customAuthCredential,
-                                             completion: completion)
+                            } else {
+                                if authRetryRemains > 0 {
+                                    self.request(method: method,
+                                                 path: path,
+                                                 parameters: parameters,
+                                                 headers: headers,
+                                                 authenticated: authenticated,
+                                                 authRetryRemains: authRetryRemains - 1,
+                                                 customAuthCredential: customAuthCredential,
+                                                 completion: completion)
+                                } else {
+                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                }
                             }
                         } else if let responseDict = response as? [String : Any], let responseCode = responseDict["Code"] as? Int {
                             let errorMessage = responseDict["Error"] as? String ?? ""
@@ -441,13 +531,25 @@ class APIService {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                self.request(method: method,
-                                             path: path,
-                                             parameters: parameters,
-                                             headers: ["x-pm-apiversion": 3],
-                                             authenticated: authenticated,
-                                             customAuthCredential: customAuthCredential,
-                                             completion: completion)
+                                self.expireCredential()
+                                if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                                    completion?(nil, nil, error)
+                                    UserTempCachedStatus.backup()
+                                    userCachedStatus.signOut()
+                                } else {
+                                    if authRetryRemains > 0 {
+                                        self.request(method: method,
+                                                     path: path,
+                                                     parameters: parameters,
+                                                     headers: headers,
+                                                     authenticated: authenticated,
+                                                     authRetryRemains: authRetryRemains - 1,
+                                                     customAuthCredential: customAuthCredential,
+                                                     completion: completion)
+                                    } else {
+                                        NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    }
+                                }
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
                                 let errorMessage = responseDictionary["Error"] as? String
@@ -466,7 +568,6 @@ class APIService {
                         }
                     }
                 }
-                
                 let url = self.doh.getHostUrl() + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
@@ -477,9 +578,9 @@ class APIService {
                         request.setValue("\(v)", forHTTPHeaderField: k)
                     }
                 }
-                let accessToken = auth?.token ?? ""
+                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-                if let userid = auth?.userID {
+                if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
                 }
                 let appversion = "iOS_\(Bundle.main.majorVersion)"
@@ -525,7 +626,7 @@ class APIService {
         if authenticated && customAuthCredential == nil {
             fetchAuthCredential(authBlock)
         } else {
-            authBlock(customAuthCredential, nil)
+            authBlock(customAuthCredential?.accessToken, customAuthCredential?.sessionID, nil)
         }
     }
     
@@ -541,5 +642,25 @@ class APIService {
     }
 }
 
+extension APIService : API {
+    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool, customAuthCredential: AuthCredential?, completion: CompletionBlock?) {
+        
+        if customAuthCredential != nil {
+            PMLog.D("")
+        }
 
+        self.request(method: method, path: path,
+                     parameters: parameters, headers: headers,
+                     authenticated: authenticated, authRetry: true,
+                     customAuthCredential: customAuthCredential, completion: completion)
+    }
+    
+    
+    func request(method: HTTPMethod, path: String, parameters: Any?, headers: [String : Any]?, authenticated: Bool, completion: CompletionBlock?) {
+        self.request(method: method, path: path, parameters: parameters,
+                     headers: headers, authenticated: authenticated,
+                     customAuthCredential: nil, completion: completion)
+    }
+    
+}
 

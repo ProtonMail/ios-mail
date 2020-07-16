@@ -27,12 +27,14 @@ class ServicePlanSubscription: NSObject, Codable {
     internal let start, end: Date?
     internal var paymentMethods: [PaymentMethod]?
     private let planDetails: [ServicePlanDetails]?
+    private let defaultPlanDetails: ServicePlanDetails?
     
-    internal init(start: Date?, end: Date?, planDetails: [ServicePlanDetails]?, paymentMethods: [PaymentMethod]?) {
+    internal init(start: Date?, end: Date?, planDetails: [ServicePlanDetails]?, defaultPlanDetails: ServicePlanDetails?, paymentMethods: [PaymentMethod]?) {
         self.start = start
         self.end = end
         self.planDetails = planDetails
         self.paymentMethods = paymentMethods
+        self.defaultPlanDetails = defaultPlanDetails
         super.init()
     }
 }
@@ -43,7 +45,7 @@ extension ServicePlanSubscription {
     }
     
     internal var details: ServicePlanDetails {
-        return self.planDetails?.merge() ?? ServicePlanDataService.shared.defaultPlanDetails ?? ServicePlanDetails(features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
+        return self.planDetails?.merge() ?? self.defaultPlanDetails ?? ServicePlanDetails(features: 0, iD: "", maxAddresses: 0, maxDomains: 0, maxMembers: 0, maxSpace: 0, maxVPN: 0, name: "", quantity: 0, services: 0, title: "", type: 0)
     }
     
     internal var hadOnlinePayments: Bool {

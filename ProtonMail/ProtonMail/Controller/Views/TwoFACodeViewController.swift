@@ -45,16 +45,6 @@ class TwoFACodeViewController : UIViewController {
         self.twoFACodeView.layer.cornerRadius = 8;
         self.twoFACodeView.initViewMode(mode)
         self.twoFACodeView.showKeyboard()
-        
-        // we want the code to be pasted only when user comes back after switching to authenticator app
-        var notificationName = UIApplication.willEnterForegroundNotification
-        if #available(iOS 13.0, *) {
-            notificationName = UIWindowScene.willEnterForegroundNotification
-        }
-        
-        NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: nil) { [weak self] _ in
-            self?.twoFACodeView.fill2FACodeFromPasteboard()
-        }
     }
     
     deinit {

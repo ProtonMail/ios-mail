@@ -90,6 +90,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
                 print("User do not have access to photo album.")
             case .denied:
                 print("User has denied the permission.")
+            default: break
             }
         }
         checkPermission()
@@ -202,6 +203,7 @@ class ContactEditViewController: ProtonMailViewController, ViewModelProtocol {
             let groupCountInformation = viewModel.getAllContactGroupCounts()
             let selectedGroupIDs = (sender as! ContactEditEmailCell).getCurrentlySelectedContactGroupsID()
             sharedVMService.contactSelectContactGroupsViewModel(destination,
+                                                                user: self.viewModel.user,
                                                                 groupCountInformation: groupCountInformation,
                                                                 selectedGroupIDs: selectedGroupIDs,
                                                                 refreshHandler: refreshHandler)

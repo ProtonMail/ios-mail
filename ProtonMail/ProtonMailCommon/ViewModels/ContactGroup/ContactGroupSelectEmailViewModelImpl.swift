@@ -24,8 +24,8 @@
 import Foundation
 
 /// View model for ContactGroupSelectEmailController
-class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
-{
+class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel {
+    
     /// all of the emails that the user have in the contact
     private var allEmails: [Email]
     
@@ -38,22 +38,36 @@ class ContactGroupSelectEmailViewModelImpl: ContactGroupSelectEmailViewModel
     /// after saving the email list, we refresh the edit view controller's data
     private let refreshHandler: (Set<Email>) -> Void
     
+    
+    let contactService : ContactDataService
+    
     /**
      Initializes a new ContactGroupSelectEmailViewModel
      */
-    init(selectedEmails: Set<Email>, refreshHandler: @escaping (Set<Email>) -> Void) {
-        self.allEmails = sharedContactDataService.allEmails()
+    init(selectedEmails: Set<Email>, contactService: ContactDataService, refreshHandler: @escaping (Set<Email>) -> Void) {
+        self.contactService = contactService
+        self.allEmails = self.contactService.allEmails()
         self.allEmails.sort {
             if $0.name == $1.name {
                 return $0.email < $1.email
             }
             return $0.name < $1.name
         }
-        self.emailsForDisplay = self.allEmails
+        let usersManager : UsersManager = sharedServices.get()
+        if let currentUser = usersManager.firstUser {
+            self.emailsForDisplay = self.allEmails
+                .filter({$0.userID == currentUser.userinfo.userId})
+        } else {
+            self.emailsForDisplay = self.allEmails
+        }
+        
+        self.emailsForDisplay = self.emailsForDisplay
+            .sorted(by: {$1.name.localizedCaseInsensitiveCompare($0.name) == .orderedDescending})
         
         self.selectedEmails = selectedEmails
         self.refreshHandler = refreshHandler
     }
+    
     
     /**
      For the given indexPath, returns if it is in the email list or not

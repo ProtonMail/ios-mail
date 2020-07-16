@@ -61,7 +61,7 @@ class ShareUnlockCoordinator : PushCoordinator {
         guard let navigationController = self.navigationController else { return }
         self.viewController?.bioCodeView?.pinUnlock?.isEnabled = false                // FIXME: do we actually need this?
         let pinView = SharePinUnlockCoordinator(navigation: navigationController,
-                                                vm: ShareUnlockPinCodeModelImpl(),
+                                                vm: ShareUnlockPinCodeModelImpl(unlock: self.services.get()),
                                                 services: self.services,
                                                 delegate: self)
         self.nextCoordinator = pinView
@@ -74,8 +74,9 @@ class ShareUnlockCoordinator : PushCoordinator {
         {
             return
         }
-        
-        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare)
+        // recent user active in the app
+        let user = self.services.get(by: UsersManager.self).firstUser!
+        let viewModel = ContainableComposeViewModel(subject: vc.inputSubject, body: vc.inputContent, files: vc.files, action: .newDraftFromShare, msgService: user.messageService, user: user)
         let next = UIStoryboard(name: "Composer", bundle: nil).make(ComposeContainerViewController.self)
         next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
         next.set(coordinator: ComposeContainerViewCoordinator(controller: next, services: self.services))
@@ -98,7 +99,8 @@ extension ShareUnlockCoordinator : SharePinUnlockViewControllerDelegate {
     }
     
     func next() {
-        self.viewController?.signInIfRememberedCredentials()
+        UnlockManager.shared.unlockIfRememberedCredentials(requestMailboxPassword: { })
+
     }
     
     func failed() {

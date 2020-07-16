@@ -35,6 +35,7 @@ protocol ContactGroupSubSelectionViewModelEmailCellDelegate
     func setRequiredEncryptedCheckStatus(at indexPath: IndexPath,
                                          to: ContactGroupSubSelectionEmailLockCheckingState,
                                          isEncrypted: UIImage?)
+    func lockerCheck(model: ContactPickerModelProtocol, progress: () -> Void, complete: LockCheckComplete?)
 }
 
 protocol ContactGroupSubSelectionViewModelHeaderCellDelegate

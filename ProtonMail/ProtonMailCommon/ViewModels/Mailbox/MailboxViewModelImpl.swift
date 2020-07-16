@@ -28,19 +28,9 @@ final class MailboxViewModelImpl : MailboxViewModel {
 
     private let label : Message.Location
 
-    init(label : Message.Location, service: MessageDataService, pushService: PushNotificationService) {
+    init(label : Message.Location, userManager: UserManager, usersManager: UsersManager, pushService: PushNotificationService) {
         self.label = label
-        super.init(labelID: label.rawValue, msgService: service, pushService: pushService)
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let labelID = try container.decode(String.self, forKey: .labelID)
-        guard let label = Message.Location(rawValue: labelID) else {
-            throw Errors.decoding
-        }
-        self.label = label
-        try super.init(from: decoder)
+        super.init(labelID: label.rawValue, userManager: userManager, usersManager: usersManager, pushService: pushService)
     }
     
     override var localizedNavigationTitle: String {
@@ -127,7 +117,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     override func emptyFolder() {
         switch(self.label) {
         case .trash, .spam, .draft:
-            sharedMessageDataService.empty(location: self.label)
+            self.messageService.empty(location: self.label)
         default:
             break
         }

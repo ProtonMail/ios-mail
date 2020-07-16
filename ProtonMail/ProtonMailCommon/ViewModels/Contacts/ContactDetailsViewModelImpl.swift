@@ -44,6 +44,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     
     var decryptError : Bool = false
     
+    var contactService: ContactDataService
+    
     //default
     var typeSection: [ContactEditSectionType] = [.email_header,
                                                  .emails,
@@ -54,8 +56,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .information,
                                                  .custom_field,
                                                  .notes]
-    init(c : Contact) {
-        super.init()
+    init(c : Contact, user: UserManager) {
+        self.contactService = user.contactService
+        super.init(user: user)
         self.contact = c
         //        if paidUser() {
         typeSection = [.email_header,
@@ -159,6 +162,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     @discardableResult
     private func setupEmails() -> Promise<Void> {
         return firstly { () -> Promise<Void> in
+            let userInfo = self.user.userInfo
+            
             //  origEmails
             let cards = self.contact.getCardData()
             for c in cards.sorted(by: {$0.type.rawValue < $1.type.rawValue}) {
@@ -191,26 +196,26 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 case .EncryptedOnly:
                     break
                 case .SignedOnly:
-                    if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                        for key in userkeys {
-                            do {
-                                let verifyStatus = try Crypto().verifyDetached(signature: c.sign,
-                                                                               plainText: c.data,
-                                                                               publicKey: key.publicKey,
-                                                                               verifyTime: 0)
-                                self.verifyType2 = verifyStatus
-                                if self.verifyType2 {
-                                    if !key.private_key.check(passphrase: sharedUserDataService.mailboxPassword!) {
-                                        self.verifyType2 = false
-                                    }
-                                    break
+                    let userkeys = userInfo.userKeys
+                    for key in userkeys {
+                        do {
+                            let verifyStatus = try Crypto().verifyDetached(signature: c.sign,
+                                                                           plainText: c.data,
+                                                                           publicKey: key.publicKey,
+                                                                           verifyTime: 0)
+                            self.verifyType2 = verifyStatus
+                            if self.verifyType2 {
+                                if !key.private_key.check(passphrase: user.mailboxPassword) {
+                                    self.verifyType2 = false
                                 }
-                                
-                            } catch {
-                                self.verifyType2 = false
+                                break
                             }
+                            
+                        } catch {
+                            self.verifyType2 = false
                         }
                     }
+                    
                     if let vcard = PMNIEzvcard.parseFirst(c.data) {
                         let emails = vcard.getEmails()
                         var order : Int = 1
@@ -236,21 +241,21 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                     }
                     break
                 case .SignAndEncrypt:
-                    guard let firstUserkey = sharedUserDataService.userInfo?.firstUserKey() else {
+                    guard let firstUserkey = userInfo.firstUserKey() else {
                         return Promise.value(())
                     }
                     var pt_contact : String?
                     var signKey : Key?
-                    if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                        for key in userkeys {
-                            do {
-                                pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                                signKey = key
-                                self.decryptError = false
-                                break
-                            } catch {
-                                self.decryptError = true
-                            }
+                    let userkeys = userInfo.userKeys
+                    for key in userkeys {
+                        do {
+                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key,
+                                                                               passphrase: user.mailboxPassword)
+                            signKey = key
+                            self.decryptError = false
+                            break
+                        } catch {
+                            self.decryptError = true
                         }
                     }
                     
@@ -346,7 +351,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                     case "Photo":
                                         let photo = vcard.getPhoto()
                                         if let image = photo?.getRawData() {
-                                            let data = Data.init(bytes: image)
+                                            let data = Data.init(image)
                                             self.profilePicture = UIImage.init(data: data)
                                         }
                                         
@@ -452,7 +457,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         }
         loading()
         return Promise { seal in
-            sharedContactDataService.details(contactID: contact.contactID).then { _ in
+            //Fixme
+            self.contactService.details(contactID: contact.contactID).then { _ in
                 self.setupEmails()
             }.done {
                 seal.fulfill(self.contact)
@@ -505,26 +511,28 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
     override func export() -> String {
         let cards = self.contact.getCardData()
         var vcard : PMNIVCard? = nil
+        let userInfo = self.user.userInfo
         for c in cards {
             if c.type == .SignAndEncrypt {
                 var pt_contact : String?
-                if let userkeys = sharedUserDataService.userInfo?.userKeys {
-                    for key in userkeys {
-                        do {
-                            pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key, passphrase: sharedUserDataService.mailboxPassword!)
-                            break
-                        } catch {
-                        }
+                let userkeys = userInfo.userKeys
+                for key in userkeys {
+                    do {
+                        pt_contact = try c.data.decryptMessageWithSinglKey(key.private_key,
+                                                                           passphrase: user.mailboxPassword)
+                        break
+                    } catch {
                     }
                 }
                 
+
                 guard let pt_contact_vcard = pt_contact else {
                     break
                 }
                 vcard = PMNIEzvcard.parseFirst(pt_contact_vcard)
             }
         }
-        
+
         for c in cards {
             if c.type == .PlainText {
                 if let card = PMNIEzvcard.parseFirst(c.data) {
@@ -539,7 +547,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
             }
         }
-        
+
         for c in cards {
             if c.type == .SignedOnly {
                 if let card = PMNIEzvcard.parseFirst(c.data) {
@@ -554,12 +562,12 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                 }
             }
         }
-        
-        
+
+
         guard let outVCard = vcard else {
             return ""
         }
-        
+
         return PMNIEzvcard.write(outVCard)
     }
     

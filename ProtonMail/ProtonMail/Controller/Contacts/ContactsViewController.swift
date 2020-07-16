@@ -93,7 +93,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.viewModel.setupFetchedResults(delaget: self)
         self.prepareSearchBar()
         
-        prepareNavigationItemRightDefault()
+        prepareNavigationItemRightDefault(self.viewModel.user)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -163,27 +163,45 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
+        let viewController = segue.destination
         
-        if (segue.identifier == kContactDetailsSugue) {
-            let contactDetailsViewController = segue.destination as! ContactDetailViewController
+        switch segue.identifier {
+        case kContactDetailsSugue:
+            let contactDetailsViewController = viewController as! ContactDetailViewController
+            
             let contact = sender as? Contact
-            sharedVMService.contactDetailsViewModel(contactDetailsViewController, contact: contact!)
-        } else if (segue.identifier == "toCompose") {
-        } else if (segue.identifier == kAddContactSugue) {
+            sharedVMService.contactDetailsViewModel(contactDetailsViewController, user: self.viewModel.user, contact: contact!)
+            
+        case "toCompose", kAddContactSugue:
             let addContactViewController = segue.destination.children[0] as! ContactEditViewController
-            sharedVMService.contactAddViewModel(addContactViewController)
-        } else if (segue.identifier == kAddContactGroupSugue) {
+            sharedVMService.contactAddViewModel(addContactViewController, user: self.viewModel.user)
+            
+        case kAddContactGroupSugue:
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
-            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, state: .create)
-        } else if segue.identifier == kSegueToImportView {
+            sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
+            
+        case kSegueToImportView:
             let popup = segue.destination as! ContactImportViewController
+            // TODO: inject it via ViewModel when ContactImportViewController will have one
+            popup.user = self.viewModel.user
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
-        } else if segue.identifier == kToUpgradeAlertSegue {
-            let popup = segue.destination as! UpgradeAlertViewController
+            
+        case kToUpgradeAlertSegue:
+            let popup = viewController as! UpgradeAlertViewController
             popup.delegate = self
             sharedVMService.upgradeAlert(contacts: popup)
+            
+        default:
+            break
+        }
+        
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            if let nav = viewController as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
         }
     }
     
@@ -435,4 +453,10 @@ extension ContactsViewController : NSFetchedResultsControllerDelegate {
     }
 }
 
-
+// detect view dismiss above iOS 13
+@available (iOS 13, *)
+extension ContactsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.isOnMainView = true
+    }
+}

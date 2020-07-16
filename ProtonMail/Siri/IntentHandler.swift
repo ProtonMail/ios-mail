@@ -20,7 +20,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
     
-import Keymaker
+import PMKeymaker
 import Intents
 
 @available(iOS 12.0, *)

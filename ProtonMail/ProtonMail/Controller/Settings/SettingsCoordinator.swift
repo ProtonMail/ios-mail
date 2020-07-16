@@ -116,7 +116,9 @@ class SettingsCoordinator: SWRevealCoordinator {
             guard let next = destination as? LablesViewController else {
                 return false
             }
-            next.viewModel = LabelManagerViewModelImpl()
+            
+            let user = services.get(by: UsersManager.self).firstUser!
+            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService)
         case .loginPwd:
             guard let next = destination as? ChangePasswordViewController else {
                 return false
@@ -131,7 +133,7 @@ class SettingsCoordinator: SWRevealCoordinator {
             guard let next = destination as? ChangePasswordViewController else {
                 return false
             }
-            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
+//            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
         case .snooze:
             break
         }

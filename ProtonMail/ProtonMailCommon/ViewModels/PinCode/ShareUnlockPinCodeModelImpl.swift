@@ -31,6 +31,12 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
     
     var enterPin : String = ""
     
+    let unlockManager : UnlockManager
+    
+    init(unlock: UnlockManager) {
+        self.unlockManager = unlock
+    }
+    
     override func title() -> String {
         return titleText
     }
@@ -63,7 +69,7 @@ class ShareUnlockPinCodeModelImpl : PinCodeViewModel {
     }
     
     override func isPinMatched(completion: @escaping (Bool)->Void) {
-        UnlockManager.shared.match(userInputPin: enterPin, completion: completion)
+        unlockManager.match(userInputPin: enterPin, completion: completion)
         currentStep = .enterPin
     }
     

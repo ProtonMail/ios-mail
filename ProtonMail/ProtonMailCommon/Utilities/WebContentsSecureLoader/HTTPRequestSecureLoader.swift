@@ -160,7 +160,7 @@ class HTTPRequestSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessag
             if (ratio > 1) {
                 ratio = 1;
             };
-            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * rects.height});
+            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
             """
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)

@@ -28,8 +28,9 @@ import Foundation
 final public class LabelEditingViewModelImple : LabelEditViewModel {
     var currentLabel : Label
     
-    required public init(label : Label) {
+    internal init(label : Label, apiService: APIService, labelService: LabelsDataService) {
         self.currentLabel = label
+        super.init(apiService: apiService, labelService: labelService)
     }
     
     override public func title() -> String {
@@ -58,8 +59,8 @@ final public class LabelEditingViewModelImple : LabelEditViewModel {
     }
     
     override public func apply(withName name: String, color: String, error: @escaping LabelEditViewModel.ErrorBlock, complete: @escaping LabelEditViewModel.OkBlock) {
-        let api = UpdateLabelRequest<CreateLabelRequestResponse>(id: currentLabel.labelID, name: name, color: color)
-        api.call { (task, response, hasError) -> Void in
+        let api = UpdateLabelRequest(id: currentLabel.labelID, name: name, color: color)
+        api.call(api: self.apiService) { (task, response, hasError) -> Void in
             if hasError {
                 error(response?.code ?? 1000, response?.errorMessage ?? "");
             } else {

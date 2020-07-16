@@ -42,6 +42,9 @@ extension Message {
         
         // 1.9.1
         static let unRead = "unRead"
+        
+        // 1.12.0
+        static let userID = "userID"
     }
     
     // MARK: - variables
@@ -290,10 +293,10 @@ extension Message {
     }
     
     class func delete(labelID : String) -> Bool {
-        let mContext = sharedCoreDataService.mainManagedObjectContext
+        let mContext = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         
-        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID =[cd] %@)", "\(labelID)")
+        fetchRequest.predicate = NSPredicate(format: "(ANY labels.labelID = %@)", "\(labelID)")
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: Message.Attributes.time, ascending: false)]
         do {
             if let oldMessages = try mContext.fetch(fetchRequest) as? [Message] {
@@ -320,7 +323,7 @@ extension Message {
      :param: messageID String
      */
     class func deleteMessage(_ messageID : String) {
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         context.performAndWait {
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: Attributes.labels)
@@ -405,39 +408,6 @@ extension Message {
         return nil
     }
     
-    
-    //const (
-    //  ok         = 0
-    //  notSigned  = 1
-    //  noVerifier = 2
-    //  failed     = 3
-    //  )
-    func verifyBody(verifier : Data, passphrase: String) -> SignStatus {
-        let keys = sharedUserDataService.addressKeys
-        guard let passphrase = sharedUserDataService.mailboxPassword else {
-            return .failed
-        }
-        
-        do {
-            let time : Int64 = Int64(round(self.time?.timeIntervalSince1970 ?? 0))
-            if let verify = sharedUserDataService.newSchema ?
-                try body.verifyMessage(verifier: verifier,
-                                       userKeys: sharedUserDataService.userPrivateKeys,
-                                       keys: keys, passphrase: passphrase, time: time) :
-                try body.verifyMessage(verifier: verifier,
-                                       binKeys: keys.binPrivKeys,
-                                       passphrase: passphrase,
-                                       time: time) {
-                guard let verification = verify.signatureVerificationError else {
-                    return .ok
-                }
-                return SignStatus(rawValue: verification.status) ?? .notSigned
-            }
-        } catch {
-        }
-        return .failed
-    }
-    
     func split() throws -> SplitMessage? {
         return try body.split()
     }
@@ -455,133 +425,6 @@ extension Message {
         }
     }
     
-    func decryptBodyIfNeeded() throws -> String? {
-        PMLog.D("Flags: \(self.flag.description)")
-        if let passphrase = sharedUserDataService.mailboxPassword ?? self.cachedPassphrase,
-            var body = sharedUserDataService.newSchema ?
-                try decryptBody(keys: sharedUserDataService.addressKeys,
-                                userKeys: sharedUserDataService.userPrivateKeys,
-                                passphrase: passphrase) :
-                try decryptBody(keys: sharedUserDataService.addressKeys,
-                                passphrase: passphrase) { //DONE
-            //PMLog.D(body)
-            if isPgpMime || isSignedMime {
-                if let mimeMsg = MIMEMessage(string: body) {
-                    if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
-                        body = html
-                    } else if let text = mimeMsg.mainPart.part(ofType: MimeType.plainText)?.bodyString {
-                        body = text.encodeHtml()
-                        body = "<html><body>\(body.ln2br())</body></html>"
-                    }
-                    
-                    let cidParts = mimeMsg.mainPart.partCIDs()
-                    
-                    for cidPart in cidParts {
-                        if var cid = cidPart.cid,
-                            let rawBody = cidPart.rawBodyString {
-                            cid = cid.preg_replace("<", replaceto: "")
-                            cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
-                        }
-                    }
-                    /// cache the decrypted inline attachments
-                    let atts = mimeMsg.mainPart.findAtts()
-                    var inlineAtts = [AttachmentInline]()
-                    for att in atts {
-                        if let filename = att.getFilename()?.clear {
-                            let data = att.data
-                            let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                            do {
-                                try data.write(to: path, options: [.atomic])
-                            } catch {
-                                continue
-                            }
-                            inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
-                        }
-                    }
-                    self.tempAtts = inlineAtts
-                } else { //backup plan
-                    body = body.multipartGetHtmlContent ()
-                }
-            } else if isPgpInline {
-                if isPlainText {
-                    body = body.encodeHtml()
-                    body = body.ln2br()
-                    return body
-                } else if isMultipartMixed {
-                    ///TODO:: clean up later
-                    if let mimeMsg = MIMEMessage(string: body) {
-                        if let html = mimeMsg.mainPart.part(ofType: MimeType.html)?.bodyString {
-                            body = html
-                        } else if let text = mimeMsg.mainPart.part(ofType: MimeType.plainText)?.bodyString {
-                            body = text.encodeHtml()
-                            body = "<html><body>\(body.ln2br())</body></html>"
-                        }
-                        
-                        if let cidPart = mimeMsg.mainPart.partCID(),
-                            var cid = cidPart.cid,
-                            let rawBody = cidPart.rawBodyString {
-                            cid = cid.preg_replace("<", replaceto: "")
-                            cid = cid.preg_replace(">", replaceto: "")
-                            let attType = "image/jpg" //cidPart.headers[.contentType]?.body ?? "image/jpg;name=\"unknow.jpg\""
-                            let encode = cidPart.headers[.contentTransferEncoding]?.body ?? "base64"
-                            body = body.stringBySetupInlineImage("src=\"cid:\(cid)\"", to: "src=\"data:\(attType);\(encode),\(rawBody)\"")
-                        }
-                        /// cache the decrypted inline attachments
-                        let atts = mimeMsg.mainPart.findAtts()
-                        var inlineAtts = [AttachmentInline]()
-                        for att in atts {
-                            if let filename = att.getFilename()?.clear {
-                                let data = att.data
-                                let path = FileManager.default.attachmentDirectory.appendingPathComponent(filename)
-                                do {
-                                    try data.write(to: path, options: [.atomic])
-                                } catch {
-                                    continue
-                                }
-                                inlineAtts.append(AttachmentInline(fnam: filename, size: data.count, mime: filename.mimeType(), path: path))
-                            }
-                        }
-                        self.tempAtts = inlineAtts
-                    } else { //backup plan
-                        body = body.multipartGetHtmlContent ()
-                    }
-                } else {
-                    return body
-                }
-            }
-            if isPlainText {
-                body = body.encodeHtml()
-                return body.ln2br()
-            }
-            return body
-        }
-        return body
-    }
-    
-    func encryptBody(_ body: String, mailbox_pwd: String, error: NSErrorPointer?) {
-        let address_id = self.getAddressID
-        if address_id.isEmpty {
-            return
-        }
-        
-        do {
-            if let key = sharedUserDataService.getAddressKey(address_id: address_id) {
-                self.body = try body.encrypt(withKey: key,
-                                             userKeys: sharedUserDataService.userPrivateKeys,
-                                             mailbox_pwd: mailbox_pwd) ?? ""
-            } else {//fallback
-                let key = sharedUserDataService.getAddressPrivKey(address_id: address_id)
-                self.body = try body.encrypt(withPrivKey: key, mailbox_pwd: mailbox_pwd) ?? ""
-            }
-        } catch let error {//TODO:: error handling
-            PMLog.D(any: error.localizedDescription)
-            self.body = ""
-        }
-        
-    }
     
     var isPlainText : Bool {
         get {
@@ -602,48 +445,6 @@ extension Message {
         }
     }
     
-    /// this function need to factor
-    var getAddressID: String {
-        get {
-            if let addr = defaultAddress {
-                return addr.address_id
-            }
-            return ""
-        }
-    }
-    
-    /// this function need to factor
-    var defaultAddress : Address? {
-        get {
-            if let addressID = addressID, !addressID.isEmpty {
-                if let add = sharedUserDataService.addresses.indexOfAddress(addressID), add.send == 1 {
-                    return add
-                } else {
-                    if let add = sharedUserDataService.addresses.defaultSendAddress() {
-                        return add
-                    }
-                }
-            } else {
-                if let addr = sharedUserDataService.addresses.defaultSendAddress() {
-                    return addr
-                }
-            }
-            return nil
-        }
-    }
-    
-    /// this function need to factor
-    var fromAddress : Address? {
-        get {
-            if let addressID = addressID, !addressID.isEmpty {
-                if let add = sharedUserDataService.addresses.indexOfAddress(addressID) {
-                    return add
-                }
-            }
-            return nil
-        }
-    }
-    
     var senderContactVO : ContactVO! {
         var sender: Sender?
         if let senderRaw = self.sender?.data(using: .utf8),
@@ -655,108 +456,6 @@ extension Message {
         return ContactVO(id: "",
                          name: sender?.name ?? "",
                          email: sender?.address ?? "")
-    }
-    
-    func copyMessage (_ copyAtts : Bool) -> Message {
-        let message = self
-        let newMessage = Message(context: sharedCoreDataService.mainManagedObjectContext)
-        newMessage.toList = message.toList
-        newMessage.bccList = message.bccList
-        newMessage.ccList = message.ccList
-        newMessage.title = message.title
-        newMessage.time = Date()
-        newMessage.body = message.body
-        
-        //newMessage.flag = message.flag
-        newMessage.sender = message.sender
-        newMessage.replyTos = message.replyTos
-        
-        newMessage.orginalTime = message.time
-        newMessage.orginalMessageID = message.messageID
-        newMessage.expirationOffset = 0
-        
-        newMessage.addressID = message.addressID
-        newMessage.messageStatus = message.messageStatus
-        newMessage.mimeType = message.mimeType
-        newMessage.setAsDraft()
-
-        if let error = newMessage.managedObjectContext?.saveUpstreamIfNeeded() {
-            PMLog.D("error: \(error)")
-        }
-        
-        var key: Key?
-        if let address_id = message.addressID,
-            let userinfo = sharedUserDataService.userInfo,
-            let addr = userinfo.userAddresses.indexOfAddress(address_id) {
-            key = addr.keys.first
-        }
-        
-        var body : String?
-        do {
-            body = try newMessage.decryptBodyIfNeeded()
-        } catch _ {
-            //ignore it
-        }
-        
-        var newAttachmentCount : Int = 0
-        for (index, attachment) in message.attachments.enumerated() {
-            PMLog.D("index: \(index)")
-            if let att = attachment as? Attachment {
-                if att.inline() || copyAtts {
-                    /// this logic to filter out the inline messages without cid in the message body
-                    if let b = body { //if body is nil. copy att by default
-                        if let cid = att.contentID(), b.contains(check: cid) { //if cid is nil that means this att is not inline don't copy. and if b doesn't contain cid don't copy
-                            
-                        } else {
-                            if !copyAtts {
-                                continue
-                            }
-                        }
-                    }
-                    
-                    let attachment = Attachment(context: newMessage.managedObjectContext!)
-                    attachment.attachmentID = att.attachmentID
-                    attachment.message = newMessage
-                    attachment.fileName = att.fileName
-                    attachment.mimeType = "image/jpg"
-                    attachment.fileData = att.fileData
-                    attachment.fileSize = att.fileSize
-                    attachment.headerInfo = att.headerInfo
-                    attachment.localURL = att.localURL
-                    attachment.keyPacket = att.keyPacket
-                    attachment.isTemp = true
-                    do {
-                        if let k = key,
-                            let sessionPack = sharedUserDataService.newSchema ?
-                                try att.getSession(userKey: sharedUserDataService.userPrivateKeys,
-                                                   keys: sharedUserDataService.addressKeys) :
-                                try att.getSession(keys: sharedUserDataService.addressPrivateKeys),//DONE
-                            let session = sessionPack.key,
-                            let newkp = try session.getKeyPackage(publicKey: k.publicKey, algo:  sessionPack.algo) {
-                                let encodedkp = newkp.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
-                                attachment.keyPacket = encodedkp
-                                attachment.keyChanged = true
-                        }
-                    } catch {
-                        
-                    }
-                    
-                    if let error = attachment.managedObjectContext?.saveUpstreamIfNeeded() {
-                        PMLog.D("error: \(error)")
-                    } else {
-                        newAttachmentCount += 1
-                    }
-                }
-                
-            }
-        }
-        newMessage.numAttachments = NSNumber(value: newAttachmentCount)
-        
-        return newMessage
-    }
-    
-    func fetchDetailIfNeeded(_ completion: @escaping MessageDataService.CompletionFetchDetail) {
-        sharedMessageDataService.fetchMessageDetailForMessage(self, completion: completion)
     }
 }
 

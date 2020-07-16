@@ -25,11 +25,15 @@ import Foundation
 import CoreData
 
 final class FolderApplyViewModelImpl : LabelViewModel {
-    fileprivate var messages : [Message]!
-    fileprivate var labelMessages : [String : LabelMessageModel]!
+    private var messages : [Message]!
+    private var labelMessages : [String : LabelMessageModel]!
     
-    init(msg:[Message]!) {
-        super.init()
+    private let messageService : MessageDataService
+    
+    init(msg:[Message], folderService: LabelsDataService, messageService: MessageDataService, apiService: APIService) {
+        self.messageService = messageService
+        
+        super.init(apiService: apiService, labelService: folderService)
         self.messages = msg
         self.labelMessages = [String : LabelMessageModel]()
     }
@@ -100,17 +104,17 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     }
     
     override func apply(archiveMessage : Bool) -> Bool {
-        let context = sharedCoreDataService.backgroundManagedObjectContext
+        let context = CoreDataService.shared.backgroundManagedObjectContext
         for (key, value) in self.labelMessages {
             if value.currentStatus != value.origStatus && value.currentStatus == 2 { //add
                 let ids = self.messages.map { ($0).messageID }
                 let api = ApplyLabelToMessages(labelID: key, messages: ids)
-                api.call(nil)
+                api.call(api: self.apiService, nil)
                 context.performAndWait { () -> Void in
                     for mm in self.messages {
                         let flable = mm.firstValidFolder() ?? Message.Location.inbox.rawValue
                         let id = mm.selfSent(labelID: flable)
-                        sharedMessageDataService.move(message: mm, from: id ?? flable, to: key, queue: false)
+                        messageService.move(message: mm, from: id ?? flable, to: key, queue: false)
                     }
                 }
             }
@@ -147,7 +151,7 @@ final class FolderApplyViewModelImpl : LabelViewModel {
     
     override func fetchController() -> NSFetchedResultsController<NSFetchRequestResult>? {
         let hasSent = self.messages.first { $0.contains(label: "2") } != nil // hidden sent, unremovable
-        return sharedLabelsDataService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
+        return labelService.fetchedResultsController(hasSent ? .folderWithOutbox : .folderWithInbox )
     }
     
     

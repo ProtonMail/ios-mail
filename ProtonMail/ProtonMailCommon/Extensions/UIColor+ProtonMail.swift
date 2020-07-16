@@ -81,6 +81,7 @@ extension UIColor {
         static let ServicePlanPlus = UIColor(red: 199/255, green: 89/255, blue: 31/255, alpha: 1.0)
         static let ServicePlanVisionary = UIColor(red: 56/255, green: 114/255, blue: 218/255, alpha: 1.0)
         
+        static let TableFootnoteTextGray = UIColor(red: 110/255, green: 110/255, blue: 112/255, alpha: 1.0)
         static let TableSeparatorGray = UIColor(red: 226/255, green: 230/255, blue: 232/255, alpha: 1.0)
         static let ButtonBackground: UIColor = {
             return Menu_UnreadCountBackground

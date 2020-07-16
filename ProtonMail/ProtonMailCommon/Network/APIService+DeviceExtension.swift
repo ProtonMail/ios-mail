@@ -29,8 +29,7 @@ extension APIService {
         static let basePath = "/devices"
     }
     
-    func device(registerWith settings: PushSubscriptionSettings, completion: CompletionBlock?) {
-        
+    func device(registerWith settings: PushSubscriptionSettings, authCredential: AuthCredential?, completion: CompletionBlock?) {
         let ver = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         #if Enterprise
             #if DEBUG
@@ -65,9 +64,10 @@ extension APIService {
         ] as [String : Any]
         
         request(method: .post,
-                path: Constants.App.API_PATH + DevicePath.basePath,
+                path: DevicePath.basePath,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
+                customAuthCredential: authCredential,
                 completion: completion)
     }
     
@@ -82,9 +82,9 @@ extension APIService {
         ]
 
         request(method: .delete,
-                path: Constants.App.API_PATH + DevicePath.basePath,
+                path: DevicePath.basePath,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 authenticated: false,
                 completion: completion)
     }

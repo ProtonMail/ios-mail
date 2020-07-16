@@ -51,16 +51,16 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
     
-    init(c : Contact?) {
-        super.init()
+    init(c : Contact?, user: UserManager) {
+        super.init(user: user)
         self.contact = c
         self.prepareContactData()
         self.prepareContactGroupData()
     }
     
     private func prepareContactGroupData() {
-        let groups = sharedLabelsDataService.getAllLabels(of: .contactGroup)
-        
+        let groups = self.user.labelService.getAllLabels(of: .contactGroup)
+
         for group in groups {
             contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
         }
@@ -146,8 +146,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 case .SignAndEncrypt:
                     var pt_contact : String?
                     do {
-                        pt_contact = try c.data.decryptMessage(binKeys: sharedUserDataService.userPrivateKeys,//contacts encrypted with UserKey
-                                                               passphrase: sharedUserDataService.mailboxPassword!)
+                        pt_contact = try c.data.decryptMessage(binKeys:
+                            self.user.userPrivateKeys,//contacts encrypted with UserKey
+                            passphrase: self.user.mailboxPassword)
                     } catch {
                         //TODO::show error
                     }
@@ -527,7 +528,9 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 origvCard2 = PMNIVCard.createInstance()
             }
             
-            guard let userkey = sharedUserDataService.userInfo?.firstUserKey() else {
+            let userInfo = self.user.userInfo
+            
+            guard let userkey = userInfo.firstUserKey() else {
                 return; //with error
             }
             
@@ -610,7 +613,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 //TODO:: fix try later
                 let signed_vcard2 = try? Crypto().signDetached(plainData: vcard2Str,
                                                               privateKey: userkey.private_key,
-                                                              passphrase: sharedUserDataService.mailboxPassword!)
+                                                              passphrase: user.mailboxPassword)
                 
                 //card 2 object
                 let card2 = CardData(t: .SignedOnly,
@@ -728,19 +731,19 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                     isCard3Set = true
                 }
                 
-                if uid == nil || uid!.getValue() == "" {
-                    let newuid = "protonmail-ios-" + UUID().uuidString
-                    let uuid = PMNIUid.createInstance(newuid)
-                    vcard3.setUid(uuid)
-                    uid = uuid
-                }
+//                if uid == nil || uid!.getValue() == "" {
+//                    let newuid = "protonmail-ios-" + UUID().uuidString
+//                    let uuid = PMNIUid.createInstance(newuid)
+//                    vcard3.setUid(uuid)
+//                    uid = uuid
+//                }
                 
                 // profile image
                 vcard3.clearPhotos()
                 if let profilePicture = profilePicture,
                     let compressedImage = UIImage.resize(image: profilePicture,
-                                                         targetSize: CGSize.init(width: 30, height: 30)),
-                    let jpegData = compressedImage.jpegData(compressionQuality: 0.25) {
+                                                         targetSize: CGSize.init(width: 60, height: 60)),
+                    let jpegData = compressedImage.jpegData(compressionQuality: 0.5) {
                     let image = PMNIPhoto.createInstance(jpegData,
                                                          type: "JPEG",
                                                          isBinary: true)
@@ -756,7 +759,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                               passphrase: "")
                 let signed_vcard3 = try! Crypto().signDetached(plainData: vcard3Str,
                                                                privateKey: userkey.private_key,
-                                                               passphrase: sharedUserDataService.mailboxPassword!)
+                                                               passphrase: user.mailboxPassword)
                 //card 3 object
                 let card3 = CardData(t: .SignAndEncrypt, d: encrypted_vcard3!, s: signed_vcard3)
                 if isCard3Set {
@@ -774,7 +777,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                 }
             }
             
-            sharedContactDataService.update(contactID: c.contactID,
+            self.user.contactService.update(contactID: c.contactID,
                                             cards: cards,
                                             completion: completion)
         } else {
@@ -787,7 +790,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
             complete(nil)
         } else {
             let contactID = contact?.contactID
-            sharedContactDataService.delete(contactID: contactID!, completion: { (error) in
+            
+            self.user.contactService.delete(contactID: contactID!, completion: { (error) in
                 if let err = error {
                     complete(err)
                 } else {

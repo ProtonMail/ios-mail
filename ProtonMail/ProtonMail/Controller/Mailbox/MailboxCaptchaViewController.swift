@@ -57,7 +57,7 @@ class MailboxCaptchaViewController : UIViewController, UIWebViewDelegate {
     }
     
     fileprivate func loadWebView(_ token : String) {
-        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Constants.App.URL_HOST)")!
+        let cptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=\(token)&client=ios&host=\(Server.live.hostUrl)")!
         let requestObj = URLRequest(url: cptcha)
         webVIew.loadRequest(requestObj)
     }

@@ -42,24 +42,16 @@ class UndoMessage {
         self.newLabels  = newLabels
     }
 }
-extension MailboxViewModel: Codable {
-    enum CodingKeys: CodingKey {
-        case labelID
-    }
-    
+extension MailboxViewModel {
     enum Errors: Error {
         case decoding
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(self.labelID, forKey: .labelID)
     }
 }
 
 class MailboxViewModel {
     internal let labelID : String
     /// message service
+    internal let user: UserManager
     internal let messageService : MessageDataService
     private let pushService : PushNotificationService
     /// fetch controller
@@ -67,31 +59,87 @@ class MailboxViewModel {
     /// local message for rating
     private var ratingMessage : Message?
     
+    private var contactService : ContactDataService
+    
+    ///
+    internal weak var users: UsersManager?
     
     /// mailbox viewModel
     ///
     /// - Parameters:
     ///   - labelID: location id and labelid
     ///   - msgService: service instance
-    init(labelID : String, msgService: MessageDataService, pushService: PushNotificationService) {
+    init(labelID : String, userManager: UserManager, usersManager: UsersManager?, pushService: PushNotificationService) {
         self.labelID = labelID
-        self.messageService = msgService
+        self.user = userManager
+        self.messageService = userManager.messageService
+        self.contactService = userManager.contactService
         self.pushService = pushService
-    }
-    
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let label = try container.decode(String.self, forKey: .labelID)
-        
-        self.labelID = label
-        self.messageService = sharedServices.get()
-        self.pushService = sharedServices.get()
+        self.users = usersManager
     }
     
     /// localized navigation title. overrride it or return label name
     var localizedNavigationTitle : String {
         get {
             return ""
+        }
+    }
+    
+    func allEmails() -> [Email] {
+        return self.contactService.allEmails()
+    }
+    
+    
+    func fetchContacts() {
+        self.contactService.fetchContacts { (_, _) in
+            
+        }
+    }
+
+    private var fetchingMessageForOhters : Bool = false
+    
+    func getLatestMessagesForOthers() {
+        if fetchingMessageForOhters == false {
+            fetchingMessageForOhters = true
+            DispatchQueue.main.async { [weak self] in
+                guard let `self` = self else { return }
+                guard let users = self.users else { return }
+                guard let secondUser = users.get(not: self.user.userInfo.userId) else { return }
+                let secondComplete : CompletionBlock = { (task, res, error) -> Void in
+                    var loadMore: Int = 0
+                    if error == nil {
+                        if let more = res?["More"] as? Int {
+                            loadMore = more
+                        }
+                        if loadMore <= 0 {
+                            secondUser.messageService.updateMessageCount()
+                        }
+                    }
+                    
+                    if loadMore > 0 {
+                        //self.retry()
+                    } else {
+                        self.fetchingMessageForOhters = false
+                    }
+                }
+                
+                if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId),
+                    updateTime.isNew == false, secondUser.messageService.isEventIDValid() {
+                    secondUser.messageService.fetchEvents(byLable: self.labelID,
+                                                          notificationMessageID: nil,
+                                                          completion: secondComplete)
+                } else {// this new
+                    if !secondUser.messageService.isEventIDValid() { //if event id is not valid reset
+                        secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
+                    }
+                    else {
+                        secondUser.messageService.fetchMessages(byLable: self.labelID,
+                                                                time: 0,
+                                                                forceClean: false,
+                                                                completion: secondComplete)
+                    }
+                }
+            }
         }
     }
     
@@ -218,8 +266,8 @@ class MailboxViewModel {
     /// the latest cache time of current location
     ///
     /// - Returns: location cache info
-    func lastUpdateTime() -> UpdateTime {
-        return lastUpdatedStore.labelsLastForKey(self.labelID)
+    func lastUpdateTime() -> LabelUpdate? {
+        return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID) //TODO:: fix me
     }
     
     
@@ -311,7 +359,6 @@ class MailboxViewModel {
         
     }
     
-    typealias CompletionBlock = APIService.CompletionBlock
     func fetchMessages(time: Int, foucsClean: Bool, completion: CompletionBlock?) {
         messageService.fetchMessages(byLable: self.labelID, time: time, forceClean: foucsClean, completion: completion)
     }
@@ -327,6 +374,10 @@ class MailboxViewModel {
     ///   - completion: aync complete handler
     func fetchMessageWithReset(time: Int, completion: CompletionBlock?) {
         messageService.fetchMessagesWithReset(byLabel: self.labelID, time: time, completion: completion)
+    }
+    
+    func isEventIDValid() -> Bool {
+        return messageService.isEventIDValid()
     }
     
     /// get the cached notification message id

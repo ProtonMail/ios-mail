@@ -44,7 +44,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     }
     
     var ID: String
-    var contactTitle: String
+    @objc var contactTitle: String
     var displayName: String?
     var displayEmail: String?
     var contactImage: UIImage?
@@ -58,7 +58,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return color
             }
             
-            let context = sharedCoreDataService.mainManagedObjectContext
+            let context = CoreDataService.shared.mainManagedObjectContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -70,7 +70,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         }
     }
     
-    var contactSubtitle: String? {
+    @objc var contactSubtitle: String? {
         get {
             let count = self.contactCount
             if count <= 1 {
@@ -89,7 +89,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     
     func setType(type: Int) { }
     
-    func lockCheck(progress: () -> Void, complete: LockCheckComplete?) {}
+    func lockCheck(api: APIService, contactService: ContactDataService, progress: () -> Void, complete: LockCheckComplete?) {}
     
     /*
      contact group subselection
@@ -154,9 +154,9 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
     func selectAllEmailFromGroup() {
         selectedMembers.removeAll()
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         
-        if let label = Label.labelGroup(by: contactTitle, inManagedObjectContext: context) {
+        if let label = Label.labelGroup(byID: self.ID, inManagedObjectContext: context) {
             for email in label.emails.allObjects as! [Email] {
                 let member = DraftEmailData.init(name: email.name,
                                                  email: email.email)
@@ -177,7 +177,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
             return (size, color)
         }
         
-        let context = sharedCoreDataService.mainManagedObjectContext
+        let context = CoreDataService.shared.mainManagedObjectContext
         if let label = Label.labelForLabelName(contactTitle,
                                                inManagedObjectContext: context) {
             groupColor = label.color
@@ -194,7 +194,7 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
                 return size
             }
             
-            let context = sharedCoreDataService.mainManagedObjectContext
+            let context = CoreDataService.shared.mainManagedObjectContext
             if let label = Label.labelForLabelName(contactTitle,
                                                    inManagedObjectContext: context) {
                 groupColor = label.color
@@ -215,22 +215,40 @@ class ContactGroupVO: NSObject, ContactPickerModelProtocol {
         
         let emailMultiSet = MultiSet<DraftEmailData>()
         var color = ""
-        let context = sharedCoreDataService.mainManagedObjectContext
-        // (1) get all email in the contact group
-        if let label = Label.labelForLabelName(self.contactTitle,
-                                               inManagedObjectContext: context),
-            let emails = label.emails.allObjects as? [Email] {
-            color = label.color
-        
-            for email in emails {
-                let member = DraftEmailData.init(name: email.name,
-                                                 email: email.email)
-                emailMultiSet.insert(member)
+        let context = CoreDataService.shared.mainManagedObjectContext
+        // (1) get all email in the contact group        
+        if self.ID.isEmpty {
+            if let label = Label.labelForLabelName(self.contactTitle,
+                                                   inManagedObjectContext: context),
+                let emails = label.emails.allObjects as? [Email] {
+                color = label.color
+            
+                for email in emails {
+                    let member = DraftEmailData.init(name: email.name,
+                                                     email: email.email)
+                    emailMultiSet.insert(member)
+                }
+            } else {
+                // TODO: handle error
+                return errorResponse
             }
         } else {
-            // TODO: handle error
-            return errorResponse
+            if let label = Label.labelForLableID(self.ID,
+                                                 inManagedObjectContext: context),
+                let emails = label.emails.allObjects as? [Email] {
+                color = label.color
+            
+                for email in emails {
+                    let member = DraftEmailData.init(name: email.name,
+                                                     email: email.email)
+                    emailMultiSet.insert(member)
+                }
+            } else {
+                // TODO: handle error
+                return errorResponse
+            }
         }
+        
         
         // (2) get all that is NOT in the contact group, but is selected
         // Because we might have identical name-email pairs, we can't simply use a set

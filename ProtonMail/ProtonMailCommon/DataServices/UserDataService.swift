@@ -24,8 +24,9 @@
 import Foundation
 import AwaitKit
 import PromiseKit
-import Keymaker
+import PMKeymaker
 import Crypto
+import PMAuthentication
 
 //TODO:: this class need suport mutiple user later
 protocol UserDataServiceDelegate {
@@ -33,40 +34,15 @@ protocol UserDataServiceDelegate {
 }
 
 /// Stores information related to the user
-class UserDataService : Service {
-    enum RuntimeError : String, Error, CustomErrorVar {
-        case no_address = "Can't find address key"
-        case no_user = "Can't find user info"
-        var code: Int {
-            get {
-                return -1001000
-            }
-        }
-        
-        var desc: String {
-            get {
-                return self.rawValue
-            }
-        }
-        
-        var reason: String {
-            get {
-                return self.rawValue
-            }
-        }
-    }
-    
-    typealias CompletionBlock = APIService.CompletionBlock
+class UserDataService : Service, HasLocalStorage {
     typealias UserInfoBlock = APIService.UserInfoBlock
+    typealias UpdatePasswordComplete = (_ task: URLSessionDataTask?, _ response: [String : Any]?, _ error: NSError?) -> Void
     
-    //Login callback blocks
-    typealias LoginAsk2FABlock = () -> Void
-    typealias LoginErrorBlock = (_ error: NSError) -> Void
-    typealias LoginSuccessBlock = (_ mpwd: String?) -> Void
-    
+    let apiService : APIService
     var delegate : UserDataServiceDelegate?
     
     struct CoderKey {//Conflict with Key object
+        // need to remove and clean
         static let mailboxPassword           = "mailboxPasswordKeyProtectedWithMainKey"
         static let username                  = "usernameKeyProtectedWithMainKey"
         
@@ -78,64 +54,72 @@ class UserDataService : Service {
         static let defaultSignatureStatus    = "defaultSignatureStatus"
         
         static let firstRunKey = "FirstRunKey"
+        
+        // new one, check if user logged in already
+        static let atLeastOneLoggedIn = "UsersManager.AtLeastoneLoggedIn"
     }
     
+//    var userInfo: UserInfo?
+    
+    //TODO:: move this to migration
     // MARK: - Private variables
-    fileprivate(set) var userInfo: UserInfo? {
-        get {
-            guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
-            {
-                return nil
-            }
-            
-            let locked = Locked<UserInfo>(encryptedValue: cypherData)
-            return try? locked.unlock(with: mainKey)
-        }
-        set {
-            self.saveUserInfo(newValue)
-        }
-    }
-    private func saveUserInfo(_ newValue: UserInfo?, protectedBy cachedKey: Keymaker.Key? = nil) {
-        guard let newValue = newValue else {
-            SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.userInfo)
-            return
-        }
-        guard let mainKey = cachedKey ?? keymaker.mainKey,
-            let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
-        {
-            return
-        }
-        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.userInfo)
-        SharedCacheBase.getDefault().synchronize()
-    }
+//    fileprivate(set) var userInfo: UserInfo? {
+//        get {
+//            guard let mainKey = keymaker.mainKey,
+//                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.userInfo) else
+//            {
+//                return nil
+//            }
+//
+//            let locked = Locked<UserInfo>(encryptedValue: cypherData)
+//            return try? locked.unlock(with: mainKey)
+//        }
+//        set {
+//            self.saveUserInfo(newValue)
+//        }
+//    }
+//
+//    private func saveUserInfo(_ newValue: UserInfo?, protectedBy cachedKey: Keymaker.Key? = nil) {
+//        guard let newValue = newValue else {
+//            SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.userInfo)
+//            return
+//        }
+//        guard let mainKey = cachedKey ?? keymaker.mainKey,
+//            let locked = try? Locked<UserInfo>(clearValue: newValue, with: mainKey) else
+//        {
+//            return
+//        }
+//        SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.userInfo)
+//        SharedCacheBase.getDefault().synchronize()
+//    }
     
+    //TODO:: move this into authinfo object
     //TODO::Fix later fileprivate(set)
-    fileprivate(set) var username: String? {
-        get {
-            guard let mainKey = keymaker.mainKey,
-                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
-            {
-                return nil
-            }
-            
-            let locked = Locked<String>(encryptedValue: cypherData)
-            return try? locked.unlock(with: mainKey)
-        }
-        set {
-            guard let newValue = newValue else {
-                SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.username)
-                return
-            }
-            guard let mainKey = keymaker.mainKey,
-                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
-            {
-                return
-            }
-            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.username)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
+//    fileprivate(set) var username: String? {
+//        get {
+//            guard let mainKey = keymaker.mainKey,
+//                let cypherData = SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) else
+//            {
+//                return nil
+//            }
+//
+//            let locked = Locked<String>(encryptedValue: cypherData)
+//            return try? locked.unlock(with: mainKey)
+//        }
+//        set {
+//            guard let newValue = newValue else {
+//                SharedCacheBase.getDefault()?.removeObject(forKey: CoderKey.username)
+//                return
+//            }
+//            guard let mainKey = keymaker.mainKey,
+//                let locked = try? Locked<String>(clearValue: newValue, with: mainKey) else
+//            {
+//                return
+//            }
+//            SharedCacheBase.getDefault()?.set(locked.encryptedValue, forKey: CoderKey.username)
+//            SharedCacheBase.getDefault().synchronize()
+//        }
+//    }
     
     var switchCacheOff: Bool? = SharedCacheBase.getDefault().bool(forKey: CoderKey.roleSwitchCache) {
         didSet {
@@ -147,13 +131,6 @@ class UserDataService : Service {
     var defaultSignatureStauts: Bool = SharedCacheBase.getDefault().bool(forKey: CoderKey.defaultSignatureStatus) {
         didSet {
             SharedCacheBase.getDefault().setValue(defaultSignatureStauts, forKey: CoderKey.defaultSignatureStatus)
-            SharedCacheBase.getDefault().synchronize()
-        }
-    }
-    
-    var twoFactorStatus: Int = SharedCacheBase.getDefault().integer(forKey: CoderKey.twoFAStatus)  {
-        didSet {
-            SharedCacheBase.getDefault().setValue(twoFactorStatus, forKey: CoderKey.twoFAStatus)
             SharedCacheBase.getDefault().synchronize()
         }
     }
@@ -173,217 +150,112 @@ class UserDataService : Service {
             defaultSignatureStauts = newValue
         }
     }
-    
-    var showMobileSignature : Bool {
-        get {
-            #if Enterprise
-                let isEnterprise = true
-            #else
-                let isEnterprise = false
-            #endif
-            
-            let role = userInfo?.role ?? 0
-            if role > 0 || isEnterprise {
-                return switchCacheOff == false
-            } else {
-                switchCacheOff = false
-                return true
-            } }
-        set {
-            switchCacheOff = (newValue == false)
-        }
-    }
-    
-    var mobileSignature : String {
-        get {
-            #if Enterprise
-                let isEnterprise = true
-            #else
-                let isEnterprise = false
-            #endif
-            let role = userInfo?.role ?? 0
-            if role > 0 || isEnterprise {
-                return userCachedStatus.mobileSignature
-            } else {
-                userCachedStatus.resetMobileSignature()
-                return userCachedStatus.mobileSignature
-            }
-        }
-        set {
-            userCachedStatus.mobileSignature = newValue
-        }
-    }
-    
-    var usedSpace: Int64 {
-        return userInfo?.usedSpace ?? 0
-    }
-    
-    var autoLoadRemoteImages: Bool {
-        return userInfo?.autoShowRemote ?? false
-    }
-    
-    var firstUserPublicKey: String? {
-        if let keys = userInfo?.userKeys, keys.count > 0 {
-            for k in keys {
-                return k.publicKey
-            }
-        }
-        return nil
-    }
-
-    func getAddressPrivKey(address_id : String) -> String {
-        let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
-        return addr?.keys.first?.private_key ?? ""
-    }
-    
-    func getAddressKey(address_id : String) -> Key? {
-        let addr = addresses.indexOfAddress(address_id) ?? addresses.defaultSendAddress()
-        return addr?.keys.first
-    }
-    
-    var newSchema : Bool {
-        for k in addressKeys {
-            if k.newSchema {
-                return true
-            }
-        }
-        return false
-    }
-    
-    @available(iOS, message: "migrate to new key schema")
-    var addressPrivateKeys : Data {
-        var out = Data()
-        var error : NSError?
-        for addr in addresses {
-            for key in addr.keys {
-                if let privK = ArmorUnarmor(key.private_key, &error) {
-                    out.append(privK)
-                }
-            }
-        }
-        return out
-    }
-    
-    var addressKeys : [Key] {
-        return self.userInfo?.addressKeys ?? [Key]()
-    }
-    
-    var userPrivateKeys : Data {
-        return self.userInfo?.userPrivateKeys ?? Data()
-    }
-    
+   
     // MARK: - Public variables
     
-    var defaultEmail : String {
-        if let addr = addresses.defaultAddress() {
-            return addr.email
-        }
-        return ""
-    }
+//    var defaultEmail : String {
+//        if let addr = addresses.defaultAddress() {
+//            return addr.email
+//        }
+//        return ""
+//    }
+//    
+//    var defaultDisplayName : String {
+//        if let addr = addresses.defaultAddress() {
+//            return addr.display_name
+//        }
+//        return displayName
+//    }
     
-    var defaultDisplayName : String {
-        if let addr = addresses.defaultAddress() {
-            return addr.display_name
-        }
-        return displayName
-    }
-    
-    var swiftLeft : MessageSwipeAction {
-        return userInfo?.swipeLeftAction ?? .archive
-    }
-    
-    var swiftRight : MessageSwipeAction {
-        return userInfo?.swipeRightAction ?? .trash
-    }
-    
+//    var swiftLeft : MessageSwipeAction {
+//        return userInfo?.swipeLeftAction ?? .archive
+//    }
+//
+//    var swiftRight : MessageSwipeAction {
+//        return userInfo?.swipeRightAction ?? .trash
+//    }
+//
     var linkConfirmation: LinkOpeningMode {
-        return userInfo?.linkConfirmation ?? .confirmationAlert
+        return .confirmationAlert
+        //TODO:: fix me
+//        return userInfo?.linkConfirmation ?? .confirmationAlert
     }
-    
-    var addresses: [Address] { //never be null
-        return userInfo?.userAddresses ?? [Address]()
-    }
-
-    var displayName: String {
-        return (userInfo?.displayName ?? "").decodeHtml()
-    }
-    
+//
+//    var addresses: [Address] { //never be null
+//        return userInfo?.userAddresses ?? [Address]()
+//    }
+//
+//    var displayName: String {
+//        return (userInfo?.displayName ?? "").decodeHtml()
+//    }
+//
     var isMailboxPasswordStored: Bool {
-        return KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
+        return KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
     var isNewUser : Bool = false
     
     var isUserCredentialStored: Bool {
-        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.username) != nil
+        return isMailboxPasswordStored
+//        return SharedCacheBase.getDefault()?.data(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
-    /// Value is only stored in the keychain
-    var mailboxPassword: String? {
-        get {
-            guard let cypherBits = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword),
-                let key = keymaker.mainKey else
-            {
-                return nil
-            }
-            let locked = Locked<String>(encryptedValue: cypherBits)
-            return try? locked.unlock(with: key)
-        }
-        set {
-            self.saveMailboxPassword(newValue)
-        }
-    }
-    private func saveMailboxPassword(_ newValue: String?, protectedBy cachedKey: Keymaker.Key? = nil) {
-        guard let newValue = newValue else {
-            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
-            return
-        }
-        guard let key = cachedKey ?? keymaker.mainKey,
-            let locked = try? Locked<String>(clearValue: newValue, with: key) else
-        {
-            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
-            return
-        }
-        
-        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
+    func allLoggedout() {
+        KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
     }
     
-    var maxSpace: Int64 {
-        return userInfo?.maxSpace ?? 0
-    }
+//    private func saveMailboxPassword(_ newValue: String?, protectedBy cachedKey: Keymaker.Key? = nil) {
+//        guard let newValue = newValue else {
+//            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
+//            return
+//        }
+//        guard let key = cachedKey ?? keymaker.mainKey,
+//            let locked = try? Locked<String>(clearValue: newValue, with: key) else
+//        {
+//            KeychainWrapper.keychain.remove(forKey: CoderKey.mailboxPassword)
+//            return
+//        }
+//
+//        KeychainWrapper.keychain.set(locked.encryptedValue, forKey: CoderKey.mailboxPassword)
+//    }
     
-    var notificationEmail: String {
-        return userInfo?.notificationEmail ?? ""
-    }
-    
-    var notify: Bool {
-        return (userInfo?.notify ?? 0 ) == 1
-    }
-    
-    var userDefaultSignature: String {
-        return (userInfo?.defaultSignature ?? "").ln2br()
-    }
-    
-    var isSet : Bool {
-        return userInfo != nil
-    }
+//    var maxSpace: Int64 {
+//        return userInfo?.maxSpace ?? 0
+//    }
+//
+//    var notificationEmail: String {
+//        return userInfo?.notificationEmail ?? ""
+//    }
+//
+//    var notify: Bool {
+//        return (userInfo?.notify ?? 0 ) == 1
+//    }
+//
+//
+//    var isSet : Bool {
+//        return userInfo != nil
+//    }
     
     // MARK: - methods
-    init(check : Bool = true) {
+    init(check : Bool = true, api: APIService) {  //Add interface for data agent //
+         self.apiService = api
         if check {
             cleanUpIfFirstRun()
             launchCleanUp()
         }
     }
     
-    func fetchUserInfo() -> Promise<UserInfo?> {
+    func fetchUserInfo(auth: AuthCredential? = nil) -> Promise<UserInfo?> {
         return async {
             
-            let addrApi = GetAddressesRequest()
-            let userApi = GetUserInfoRequest()
-            let userSettingsApi = GetUserSettings()
-            let mailSettingsApi = GetMailSettings()
-            
+            let addrApi = GetAddressesRequest(api: self.apiService)
+            addrApi.authCredential = auth
+            let userApi = GetUserInfoRequest(api: self.apiService)
+            userApi.authCredential = auth
+            let userSettingsApi = GetUserSettings(api: self.apiService)
+            userSettingsApi.authCredential = auth
+            let mailSettingsApi = GetMailSettings(api: self.apiService)
+            mailSettingsApi.authCredential = auth
             let addrRes = try await(addrApi.run())
             let userRes = try await(userApi.run())
             let userSettingsRes = try await(userSettingsApi.run())
@@ -393,215 +265,233 @@ class UserDataService : Service {
             userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
             
-            self.userInfo = userRes.userInfo
+//            self.userInfo = userRes.userInfo
+            //TODO:: fix me
+//            try await(self.activeUserKeys() )
             
-            try await(self.activeUserKeys() )
-            
-            return self.userInfo
+            return userRes.userInfo
         }
     }
     
-    func activeUserKeys() -> Promise<Void> {
-        return async {
-            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
-                return
-            }
-            let addresses = user.userAddresses
-            for addr in addresses {
-                for index in 0 ..< addr.keys.count {
-                    let key = addr.keys[index]
-                    if let activtion = key.activation {
-                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
-                            continue
-                        }
-                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
-                        let keylist : [[String: Any]] = [[
-                            "Fingerprint" :  key.fingerprint,
-                            "Primary" : 1,
-                            "Flags" : 3
-                            ]]
-                        let jsonKeylist = keylist.json()
-                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
-                        let signedKeyList : [String: Any] = [
-                            "Data" : jsonKeylist,
-                            "Signature" : signed
-                        ]
-                        let api = ActivateKey(addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
-                        let userSettingsRes = try await(api.run())
-                        if userSettingsRes.code == 1000 {
-                            addr.keys[index].activation = nil
-                            addr.keys[index].private_key = new_private_key
-                            self.userInfo = user
-                        }
-                    }
-                }
-            }
-            return 
-        }
-    }
+//    func activeUserKeys(userInfo: UserInfo) -> Promise<Void> {
+//        return async {
+//            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
+//                return
+//            }
+//            let addresses = user.userAddresses
+//            for addr in addresses {
+//                for index in 0 ..< addr.keys.count {
+//                    let key = addr.keys[index]
+//                    if let activtion = key.activation {
+//                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
+//                            continue
+//                        }
+//                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
+//                        let keylist : [[String: Any]] = [[
+//                            "Fingerprint" :  key.fingerprint,
+//                            "Primary" : 1,
+//                            "Flags" : 3
+//                            ]]
+//                        let jsonKeylist = keylist.json()
+//                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
+//                        let signedKeyList : [String: Any] = [
+//                            "Data" : jsonKeylist,
+//                            "Signature" : signed
+//                        ]
+//                        let api = ActivateKey(api: self.apiService, addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
+//                        let userSettingsRes = try await(api.run())
+//                        if userSettingsRes.code == 1000 {
+//                            addr.keys[index].activation = nil
+//                            addr.keys[index].private_key = new_private_key
+//                            self.userInfo = user
+//                        }
+//                    }
+//                }
+//            }
+//            return
+//        }
+//    }
     enum MyErrorType : Error {
         case SomeError
     }
     //
-    func updateFromEvents(userInfo: [String : Any]?) {
-        if let userData = userInfo {
-            let newUserInfo = UserInfo(response: userData)
-            if let user = self.userInfo {
-                user.set(userinfo: newUserInfo)
-                self.userInfo = user
-            }
-        }
-    }
-    //
-    func updateFromEvents(userSettings: [String : Any]?) {
-        if let user = self.userInfo {
-            user.parse(userSettings: userSettings)
-            self.userInfo = user
-        }
-    }
-    func updateFromEvents(mailSettings: [String : Any]?) {
-        if let user = self.userInfo {
-            user.parse(mailSettings: mailSettings)
-            self.userInfo = user
-        }
-    }
+//    func updateFromEvents(userInfo: [String : Any]?) {
+////        if let userData = userInfo {
+////            let newUserInfo = UserInfo(response: userData)
+////            if let user = self.userInfo {
+////                user.set(userinfo: newUserInfo)
+////                self.userInfo = user
+////            }
+////        }
+//    }
+//    //
+//    func updateFromEvents(userSettings: [String : Any]?) {
+////        if let user = self.userInfo {
+////            user.parse(userSettings: userSettings)
+////            self.userInfo = user
+////        }
+//    }
+//    func updateFromEvents(mailSettings: [String : Any]?) {
+////        if let user = self.userInfo {
+////            user.parse(mailSettings: mailSettings)
+////            self.userInfo = user
+////        }
+//    }
     
-    func update(usedSpace: Int64) {
-        if let user = self.userInfo {
-            user.usedSpace = usedSpace
-            self.userInfo = user
-        }
-    }
-
-    func setFromEvents(address: Address) {
-        if let user = self.userInfo {
-            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
-                user.userAddresses.remove(at: index)
-            }
-            user.userAddresses.append(address)
-            user.userAddresses.sort(by: { (v1, v2) -> Bool in
-                return v1.order < v2.order
-            })
-            self.userInfo = user
-        }
-    }
+//    func update(usedSpace: Int64) {
+////        if let user = self.userInfo {
+////            user.usedSpace = usedSpace
+////            self.userInfo = user
+////        }
+//    }
+//
+//    func setFromEvents(address: Address) {
+////        if let user = self.userInfo {
+////            if let index = user.userAddresses.firstIndex(where: { $0.address_id == address.address_id }) {
+////                user.userAddresses.remove(at: index)
+////            }
+////            user.userAddresses.append(address)
+////            user.userAddresses.sort(by: { (v1, v2) -> Bool in
+////                return v1.order < v2.order
+////            })
+////            self.userInfo = user
+////        }
+//    }
+//    
+//    func deleteFromEvents(addressID: String) {
+////        if let user = self.userInfo {
+////            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
+////                user.userAddresses.remove(at: index)
+////                self.userInfo = user
+////            }
+////        }
+//    }
     
-    func deleteFromEvents(addressID: String) {
-        if let user = self.userInfo {
-            if let index = user.userAddresses.firstIndex(where: { $0.address_id == addressID }) {
-                user.userAddresses.remove(at: index)
-                self.userInfo = user
-            }
-        }
-    }
+//    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
+//        return privateKey.check(passphrase: password)
+//    }
+//
+//    func setMailboxPassword(_ password: String, keysalt: String?) {
+//        //mailboxPassword = password
+//    }
+//
     
-    func isMailboxPasswordValid(_ password: String, privateKey : String) -> Bool {
-        return privateKey.check(passphrase: password)
-    }
-    
-    func setMailboxPassword(_ password: String, keysalt: String?) {
-        mailboxPassword = password
-    }
-    
-    var authResponse: AuthResponse? = nil
-    func signIn(_ username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
-                ask2fa: @escaping LoginAsk2FABlock,
-                onError:@escaping LoginErrorBlock,
-                onSuccess: @escaping LoginSuccessBlock) {
-        
-        
-        let completionWrapper: APIService.AuthCompleteBlock = { task, mpwd, status, res, error in
-            if status == .ask2FA {
-                self.twoFactorStatus = 1
-                self.authResponse = res
-                ask2fa()
-            } else {
-                self.authResponse = nil
-                if error == nil {
-                    self.username = username
-                    self.passwordMode = mpwd != nil ? 1 : 2
-                    self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
-                    onSuccess(mpwd)
+    static var authResponse: PMAuthentication.TwoFactorContext? = nil
+    func sign(in username: String, password: String, noKeyUser: Bool, twoFACode: String?, checkSalt: Bool = true, faillogout: Bool,
+              ask2fa: LoginAsk2FABlock?,
+              onError:@escaping LoginErrorBlock,
+              onSuccess: @escaping LoginSuccessBlock)
+    {
+        let completionWrapper: APIService.AuthCompleteBlockNew = { mpwd, status, credential, context, userinfo, error in
+            DispatchQueue.main.async {
+                if status == .ask2FA {
+                    UserDataService.authResponse = context
+                    ask2fa?()
                 } else {
-                    self.twoFactorStatus = 0
-                    self.signOut(true)
-                    onError(error!)
+                    UserDataService.authResponse = nil
+                    if error == nil {
+                        self.passwordMode = mpwd != nil ? 1 : 2
+                        onSuccess(mpwd, credential, userinfo)
+                    } else {
+                        if faillogout {
+                            self.signOut(true)
+                        }
+                        onError(error!)
+                    }
                 }
             }
         }
         
-        if let authRes = authResponse {
-            sharedAPIService.auth2fa(res: authRes, password: password, twoFACode: twoFACode, checkSalt: checkSalt, completion: completionWrapper)
+        if let authRes = UserDataService.authResponse {
+            let code = Int(twoFACode ?? "0") ?? 0
+            apiService.confirm2FA(code, password: password, context: authRes, completion: completionWrapper)
         } else {
-            // will use standard authCredential
-            sharedAPIService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: checkSalt, completion: completionWrapper)
+            apiService.authenticate(username: username, password: password, noKey: noKeyUser, completion: completionWrapper)
         }
     }
 
     
     func clean() {
         clearAll()
-        clearAuthToken()
     }
     
     func cleanUserInfo() {
         
     }
     
+    func cleanUp() {
+        // TODO: logout one user and remove its stuff from local storage
+        self.signOutFromServer()
+    }
+    
+    static func cleanUpAll() {
+        // TODO: logout all users and clear local storage
+    }
+    
+    func signOutFromServer() {
+        let api = AuthDeleteRequest()
+        api.call(api: self.apiService) { (task, response, hasError) in
+            // probably we want to notify user the session will seem active on website in case of error
+        }
+    }
+    
     func signOut(_ animated: Bool) {
         sharedVMService.signOut()
-        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            let api = AuthDeleteRequest()
-            api.authCredential = authCredential
-            api.call { (task, response, hasError) in
-                
-            }
-        }
+//        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
+//            let api = AuthDeleteRequest()
+//            api.authCredential = authCredential
+//            api.call(api: self.apiService) { (task, response, hasError) in
+//
+//            }
+//        }
         NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
-        clearAuthToken()
         delegate?.onLogout(animated: animated)
     }
     
     func signOutAfterSignUp() {
         sharedVMService.signOut()
-        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
-            let api = AuthDeleteRequest()
-            api.authCredential = authCredential
-            api.call { (task, response, hasError) in
-                
-            }
-        }
+//        if let authCredential = AuthCredential.fetchFromKeychain(), let token = authCredential.token, !token.isEmpty {
+//            let api = AuthDeleteRequest()
+//            api.authCredential = authCredential.call { (task, response, hasErro
+//            apir) in
+//
+//            }
+//        }
         NotificationCenter.default.post(name: Notification.Name.didSignOut, object: self)
         clearAll()
-        clearAuthToken()
     }
     
     @available(*, deprecated, message: "account wise display name, i don't think we are using it any more. double check and remvoe it")
-    func updateDisplayName(_ displayName: String, completion: UserInfoBlock?) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
+    func updateDisplayName(auth currentAuth: AuthCredential,
+                           user: UserInfo,
+                           displayName: String, completion: UserInfoBlock?) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
         {
             completion?(nil, nil, NSError.lockError())
             return
         }
         
+        
         let new_displayName = displayName.trim()
         let api = UpdateDisplayNameRequest(displayName: new_displayName, authCredential: authCredential)
-        api.call() { task, response, hasError in
+        api.call(api : self.apiService) { task, response, hasError in
             if !hasError {
                 userInfo.displayName = new_displayName
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
+//                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
-            completion?(self.userInfo, nil, nil)
+            completion?(userInfo, nil, nil)
         }
     }
     
-    func updateAddress(_ addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
+    func updateAddress(auth currentAuth: AuthCredential,
+                       user: UserInfo,
+                       addressId: String, displayName: String, signature: String, completion: UserInfoBlock?) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
         {
             completion?(nil, nil, NSError.lockError())
             return
@@ -611,7 +501,7 @@ class UserDataService : Service {
         let new_signature = signature.trim()
         
         let api = UpdateAddressRequest(id: addressId, displayName: new_displayName, signature: new_signature, authCredential: authCredential)
-        api.call() { task, response, hasError in
+        api.call(api: self.apiService) { task, response, hasError in
             if !hasError {
                 let addresses = userInfo.userAddresses
                 for addr in addresses {
@@ -622,16 +512,18 @@ class UserDataService : Service {
                     }
                 }
                 userInfo.userAddresses = addresses
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
-            completion?(self.userInfo, nil, nil)
+            completion?(userInfo, nil, nil)
         }
     }
     
-    func updateAutoLoadImage(remote status: Bool, completion: @escaping UserInfoBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
+    func updateAutoLoadImage(auth currentAuth: AuthCredential,
+                             user: UserInfo,
+                             remote status: Bool, completion: @escaping UserInfoBlock) {
+        
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
         {
             completion(nil, nil, NSError.lockError())
             return
@@ -645,47 +537,53 @@ class UserDataService : Service {
         }
         
         let api = UpdateShowImages(status: newStatus.rawValue, authCredential: authCredential)
-        api.call { (task, response, hasError) in
+        api.call(api: self.apiService) { (task, response, hasError) in
             if !hasError {
                 userInfo.showImages = newStatus
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
-            completion(self.userInfo, nil, response?.error)
+            completion(userInfo, nil, response?.error)
         }
     }
     
     #if !APP_EXTENSION
-    func updateLinkConfirmation(_ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
+    func updateLinkConfirmation(auth currentAuth: AuthCredential,
+                                user: UserInfo,
+                                _ status: LinkOpeningMode, completion: @escaping UserInfoBlock) {
+        let authCredential = currentAuth
+        let userInfo = user
+        guard let _ = keymaker.mainKey else
         {
             completion(nil, nil, NSError.lockError())
             return
         }
-        
         let api = UpdateLinkConfirmation(status: status, authCredential: authCredential)
-        api.call { (task, response, hasError) in
+        api.call(api: self.apiService) { (task, response, hasError) in
             if !hasError {
                 userInfo.linkConfirmation = status
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
-            completion(self.userInfo, nil, response?.error)
+            completion(userInfo, nil, response?.error)
         }
     }
     #endif
 
-    func updatePassword(_ login_password: String, new_password: String, twoFACode:String?, completion: @escaping CompletionBlock) {
-        guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
-            let _username = self.username else {
-            completion(nil, nil, NSError.lockError())
-            return
+    func updatePassword(auth currentAuth: AuthCredential,
+                        user: UserInfo,
+                        login_password: String,
+                        new_password: String,
+                        twoFACode:String?,
+                        completion: @escaping CompletionBlock) {
+        let oldAuthCredential = currentAuth
+        var _username = "" //oldAuthCredential.userName
+        if _username.isEmpty {
+            if let addr = user.userAddresses.defaultAddress() {
+               _username = addr.email
+            }
         }
         
-        {//asyn
+        {//async
             do {
                 //generate new pwd and verifier
-                let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall()
+                let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall(api: self.apiService)
                 guard let moduls_id = authModuls?.ModulusID else {
                     throw UpdatePasswordError.invalidModulusID.error
                 }
@@ -706,11 +604,11 @@ class UserDataService : Service {
                 
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall()
+                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
                     guard let authVersion = info?.Version, let modulus = info?.Modulus,
                         let ephemeral = info?.ServerEphemeral, let salt = info?.Salt,
                         let session = info?.SRPSession else {
-                        throw UpdatePasswordError.invalideAuthInfo.error
+                            throw UpdatePasswordError.invalideAuthInfo.error
                     }
                     
                     if authVersion <= 2 && !forceRetry {
@@ -730,15 +628,15 @@ class UserDataService : Service {
                     }
                     
                     do {
-                        let updatePwd = try UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
+                        let updatePwd_res = try UpdateLoginPassword(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                 clientProof: clientProof.encodeBase64(),
                                                                 SRPSession: session,
                                                                 modulusID: moduls_id,
                                                                 salt: new_salt.encodeBase64(),
                                                                 verifer: verifier.encodeBase64(),
                                                                 tfaCode: twoFACode,
-                                                                authCredential: oldAuthCredential).syncCall()
-                        if updatePwd?.code == 1000 {
+                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
+                        if updatePwd_res?.code == 1000 {
                             forceRetry = false
                         } else {
                             throw UpdatePasswordError.default.error
@@ -763,37 +661,46 @@ class UserDataService : Service {
         } ~> .async
     }
     
-    func updateMailboxPassword(_ login_password: String, new_password: String,
-                               twoFACode:String?, buildAuth: Bool, completion: @escaping CompletionBlock) {
-        guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
-            let user_info = self.userInfo,
-            let old_password = self.mailboxPassword,
-            let _username = self.username,
-            let cachedMainKey = keymaker.mainKey else {
-                
+    func updateMailboxPassword(auth currentAuth: AuthCredential,
+                               user: UserInfo,
+                               loginPassword: String,
+                               newPassword: String,
+                               twoFACode:String?,
+                               buildAuth: Bool, completion: @escaping CompletionBlock) {
+        let oldAuthCredential = currentAuth
+        let userInfo = user
+        let old_password = oldAuthCredential.mailboxpassword
+        var _username = "" //oldAuthCredential.userName
+        if _username.isEmpty {
+            if let addr = userInfo.userAddresses.defaultAddress() {
+               _username = addr.email
+            }
+        }
+        
+        guard let cachedMainKey = keymaker.mainKey else {
             completion(nil, nil, NSError.lockError())
             return
         }
-        
+
         {//asyn
             do {
                 //generat keysalt
                 let new_mpwd_salt : Data = try Crypto.random(byte: 16)
                 //PMNOpenPgp.randomBits(128) //mailbox pwd need 128 bits
-                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(new_password,
+                let new_hashed_mpwd = PasswordUtils.getMailboxPassword(newPassword,
                                                                        salt: new_mpwd_salt)
                 
-                let updated_address_keys = try Crypto.updateAddrKeysPassword(user_info.userAddresses,
+                let updated_address_keys = try Crypto.updateAddrKeysPassword(userInfo.userAddresses,
                                                                              old_pass: old_password,
                                                                              new_pass: new_hashed_mpwd)
-                let updated_userlevel_keys = try Crypto.updateKeysPassword(user_info.userKeys,
-                                                                                   old_pass: old_password,
-                                                                                   new_pass: new_hashed_mpwd)
+                let updated_userlevel_keys = try Crypto.updateKeysPassword(userInfo.userKeys,
+                                                                           old_pass: old_password,
+                                                                           new_pass: new_hashed_mpwd)
                 var new_org_key : String?
                 //create a key list for key updates
-                if user_info.role == 2 { //need to get the org keys
+                if userInfo.role == 2 { //need to get the org keys
                     //check user role if equal 2 try to get the org key.
-                    let cur_org_key = try GetOrgKeys().syncCall()
+                    let cur_org_key = try GetOrgKeys().syncCall(api: self.apiService)
                     if let org_priv_key = cur_org_key?.privKey, !org_priv_key.isEmpty {
                         do {
                             new_org_key = try Crypto.updatePassphrase(privateKey: org_priv_key,
@@ -804,10 +711,10 @@ class UserDataService : Service {
                         }
                     }
                 }
-                
+
                 var authPacket : PasswordAuth?
                 if buildAuth {
-                    let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall()
+                    let authModuls = try AuthModulusRequest(authCredential: oldAuthCredential).syncCall(api: self.apiService)
                     guard let moduls_id = authModuls?.ModulusID else {
                         throw UpdatePasswordError.invalidModulusID.error
                     }
@@ -816,42 +723,42 @@ class UserDataService : Service {
                     }
                     //generat new verifier
                     let new_lpwd_salt : Data = PMNOpenPgp.randomBits(80) //for the login password needs to set 80 bits
-                    
-                    guard let auth = try SrpAuthForVerifier(new_password, new_moduls, new_lpwd_salt) else {
+
+                    guard let auth = try SrpAuthForVerifier(newPassword, new_moduls, new_lpwd_salt) else {
                         throw UpdatePasswordError.cantHashPassword.error
                     }
-                    
+
                     let verifier = try auth.generateVerifier(2048)
                     authPacket = PasswordAuth(modulus_id: moduls_id,
                                               salt: new_lpwd_salt.encodeBase64(),
                                               verifer: verifier.encodeBase64())
                 }
-                
+
                 //start check exsit srp
                 var forceRetry = false
                 var forceRetryVersion = 2
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall()
+                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
                         throw UpdatePasswordError.invalideAuthInfo.error
                     }
-                    
+
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
                         forceRetryVersion = 2
                     }
-                    
+
                     //init api calls
                     let hashVersion = forceRetry ? forceRetryVersion : authVersion
-                    guard let auth = try SrpAuth(hashVersion, _username, login_password, salt, modulus, ephemeral) else {
+                    guard let auth = try SrpAuth(hashVersion, _username, loginPassword, salt, modulus, ephemeral) else {
                         throw UpdatePasswordError.cantHashPassword.error
                     }
                     let srpClient = try auth.generateProofs(2048)
                     guard let clientEphemeral = srpClient.clientEphemeral, let clientProof = srpClient.clientProof else {
                         throw UpdatePasswordError.cantGenerateSRPClient.error
                     }
-                    
+
                     do {
                         let update_res = try UpdatePrivateKeyRequest(clientEphemeral: clientEphemeral.encodeBase64(),
                                                                      clientProof:clientProof.encodeBase64(),
@@ -862,15 +769,14 @@ class UserDataService : Service {
                                                                      tfaCode: twoFACode,
                                                                      orgKey: new_org_key,
                                                                      auth: authPacket,
-                                                                     authCredential: oldAuthCredential).syncCall()
+                                                                     authCredential: oldAuthCredential).syncCall(api: self.apiService)
                         guard update_res?.code == 1000 else {
                             throw UpdatePasswordError.default.error
                         }
                         //update local keys
-                        user_info.userKeys = updated_userlevel_keys
-                        user_info.userAddresses = updated_address_keys
-                        self.saveUserInfo(user_info, protectedBy: cachedMainKey)
-                        self.saveMailboxPassword(new_hashed_mpwd, protectedBy: cachedMainKey)
+                        userInfo.userKeys = updated_userlevel_keys
+                        userInfo.userAddresses = updated_address_keys
+                        oldAuthCredential.udpate(password: new_hashed_mpwd)
                         forceRetry = false
                     } catch let error as NSError {
                         if error.isInternetError() {
@@ -895,52 +801,57 @@ class UserDataService : Service {
     }
     
     //TODO:: refactor newOrders. 
-    func updateUserDomiansOrder(_ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
-        {
+    func updateUserDomiansOrder(auth currentAuth: AuthCredential,
+                                user: UserInfo,
+                                _ email_domains: [Address], newOrder : [String], completion: @escaping CompletionBlock) {
+        
+        let authCredential = currentAuth
+        let userInfo = user
+        
+        guard let _ = keymaker.mainKey else {
             completion(nil, nil, NSError.lockError())
             return
         }
         
         let addressOrder = UpdateAddressOrder(adds: newOrder, authCredential: authCredential)
-        addressOrder.call() { task, response, hasError in
+        addressOrder.call(api: apiService) { task, response, hasError in
             if !hasError {
                 userInfo.userAddresses = email_domains
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
             completion(task, nil, nil)
         }
     }
     
-    func updateUserSwipeAction(_ isLeft : Bool , action: MessageSwipeAction, completion: @escaping CompletionBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
-        {
-            completion(nil, nil, NSError.lockError())
-            return
-        }
-        
-        let api = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: authCredential) : UpdateSwiftRightAction(action: action, authCredential: authCredential)
-        api.call() { task, response, hasError in
+    func updateUserSwipeAction(auth currentAuth: AuthCredential,
+                               userInfo: UserInfo,
+                               isLeft : Bool,
+                               action: MessageSwipeAction,
+                               completion: @escaping CompletionBlock) {
+        let api = isLeft ? UpdateSwiftLeftAction(action: action, authCredential: currentAuth) : UpdateSwiftRightAction(action: action, authCredential: currentAuth)
+        api.call(api : apiService) { task, response, hasError in
             if !hasError {
                 userInfo.swipeLeft = isLeft ? action.rawValue : userInfo.swipeLeft
                 userInfo.swipeRight = isLeft ? userInfo.swipeRight : action.rawValue
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
             completion(task, nil, nil)
         }
     }
     
-    func updateNotificationEmail(_ new_notification_email: String, login_password : String,
+    func updateNotificationEmail(auth currentAuth: AuthCredential,
+                                 user: UserInfo,
+                                 new_notification_email: String, login_password : String,
                                  twoFACode: String?, completion: @escaping CompletionBlock) {
-        guard let oldAuthCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let _username = self.username,
-            let cachedMainKey = keymaker.mainKey else {
-                
+        let oldAuthCredential = currentAuth
+        let userInfo = user
+        let old_password = oldAuthCredential.mailboxpassword
+        var _username = "" //oldAuthCredential.userName
+        if _username.isEmpty {
+            if let addr = userInfo.userAddresses.defaultAddress() {
+               _username = addr.email
+            }
+        }
+        
+        guard let _ = keymaker.mainKey else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -953,11 +864,11 @@ class UserDataService : Service {
                 
                 repeat {
                     // get auto info
-                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall()
+                    let info = try AuthInfoRequest(username: _username, authCredential: oldAuthCredential).syncCall(api: self.apiService)
                     guard let authVersion = info?.Version, let modulus = info?.Modulus, let ephemeral = info?.ServerEphemeral, let salt = info?.Salt, let session = info?.SRPSession else {
                         throw UpdateNotificationEmailError.invalideAuthInfo.error
                     }
-           
+                    
                     if authVersion <= 2 && !forceRetry {
                         forceRetry = true
                         forceRetryVersion = 2
@@ -980,10 +891,9 @@ class UserDataService : Service {
                                                                                 sRPSession: session,
                                                                                 notificationEmail: new_notification_email,
                                                                                 tfaCode: twoFACode,
-                                                                                authCredential: oldAuthCredential).syncCall()
+                                                                                authCredential: oldAuthCredential).syncCall(api: self.apiService)
                         if updatetNotifyEmailRes?.code == 1000 {
                             userInfo.notificationEmail = new_notification_email
-                            self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
                             forceRetry = false
                         } else {
                             throw UpdateNotificationEmailError.default.error
@@ -1008,30 +918,37 @@ class UserDataService : Service {
         } ~> .async
     }
     
-    func updateNotify(_ isOn: Bool, completion: @escaping CompletionBlock) {
-        guard let authCredential = AuthCredential.fetchFromKeychain(),
-            let userInfo = self.userInfo,
-            let cachedMainKey = keymaker.mainKey else
-        {
+    func updateNotify(auth currentAuth: AuthCredential,
+                      user: UserInfo,
+                      _ isOn: Bool, completion: @escaping CompletionBlock) {
+        let oldAuthCredential = currentAuth
+        let userInfo = user
+        
+        guard let _ = keymaker.mainKey else {
             completion(nil, nil, NSError.lockError())
             return
         }
-        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: authCredential)
-        notifySetting.call() { task, response, hasError in
+        let notifySetting = UpdateNotify(notify: isOn ? 1 : 0, authCredential: oldAuthCredential)
+        notifySetting.call(api: self.apiService) { task, response, hasError in
             if !hasError {
                 userInfo.notify = (isOn ? 1 : 0)
-                self.saveUserInfo(userInfo, protectedBy: cachedMainKey)
             }
             completion(task, nil, response?.error)
         }
     }
     
-    func updateSignature(_ signature: String, completion: UserInfoBlock?) {
-        guard let authCredential = AuthCredential.fetchFromKeychain() else {
-            completion?(nil, nil, NSError.lockError())
+    func updateSignature(auth currentAuth: AuthCredential,
+                         user: UserInfo,
+                         _ signature: String, completion: @escaping CompletionBlock) {
+        guard let _ = keymaker.mainKey else {
+            completion(nil, nil, NSError.lockError())
             return
         }
-        sharedAPIService.settingUpdateSignature(signature, authCredential: authCredential, completion: completionForUserInfo(completion))
+        
+        let signatureSetting = UpdateSignature(signature: signature, authCredential: currentAuth)
+        signatureSetting.call(api: self.apiService) { (task, response, hasError) in
+            completion(task, nil, response?.error)
+        }
     }
     
     // MARK: - Private methods
@@ -1047,24 +964,11 @@ class UserDataService : Service {
     }
     
     func clearAll() {
-        username = nil
-        mailboxPassword = nil
-        userInfo = nil
-        twoFactorStatus = 0
+        allLoggedout()
+       //mailboxPassword = nil
         passwordMode = 2
-        keymaker.wipeMainKey()
-        FileManager.default.cleanTemporaryDirectory()
-        
-        // some tests are messed up without tmp folder, so let's keep it for consistency
-        #if targetEnvironment(simulator)
-        try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
-                nil)
-        #endif
     }
     
-    func clearAuthToken() {
-        AuthCredential.clearFromKeychain()
-    }
     
     func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
         return { task, response, error in
@@ -1085,30 +989,51 @@ class UserDataService : Service {
     
     func launchCleanUp() {
         if !self.isUserCredentialStored {
-            twoFactorStatus = 0
             passwordMode = 2
         }
     }
     
-    /**
-     - Returns: true if the user is a paid user, otherwise return false
-     */
-    func isPaidUser() -> Bool {
-        if let role = sharedUserDataService.userInfo?.role,
-            role > 0 {
-            return true
+    //Login callback blocks
+    typealias LoginAsk2FABlock = () -> Void
+    typealias LoginErrorBlock = (_ error: NSError) -> Void
+    typealias LoginSuccessBlock = (_ mpwd: String?, _ auth: AuthCredential?, _ userinfo: UserInfo?) -> Void
+    /*
+    func sign(in username: String, password: String, twoFACode: String?, checkSalt: Bool = true,
+              ask2fa: @escaping LoginAsk2FABlock,
+              onError:@escaping LoginErrorBlock,
+              onSuccess: @escaping LoginSuccessBlock) {
+        // will use standard authCredential
+        apiService.auth(username, password: password, twoFACode: twoFACode, authCredential: nil, checkSalt: true) { (task, mpwd, status, res, auth, userinfo, error) in
+            if status == .ask2FA {
+                self.twoFactorStatus = 1
+                ask2fa()
+            } else {
+                if error == nil {
+                    self.username = username
+                    self.passwordMode = mpwd != nil ? 1 : 2
+                    self.twoFactorStatus = NSNumber(value: twoFACode != nil).intValue
+                    onSuccess(mpwd, auth, userinfo)
+                } else {
+                    self.twoFactorStatus = 0
+                    self.signOut(true)
+                    onError(error!)
+                }
+            }
         }
-        return false
     }
+       */
 }
+
+
+
 
 extension AppCache {
     static func inject(userInfo: UserInfo, into userDataService: UserDataService) {
-        userDataService.userInfo = userInfo
+        //userDataService.userInfo = userInfo
     }
     
     static func inject(username: String, into userDataService: UserDataService) {
-        userDataService.username = username
+//        userDataService.username = username
     }
 }
 

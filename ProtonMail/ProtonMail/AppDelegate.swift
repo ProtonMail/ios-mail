@@ -25,7 +25,7 @@ import UIKit
 import SWRevealViewController
 import AFNetworking
 import AFNetworkActivityLogger
-import Keymaker
+import PMKeymaker
 import UserNotifications
 import Intents
 
@@ -34,37 +34,14 @@ import Fabric
 import Crashlytics
 #endif
 
-let sharedUserDataService = UserDataService()
-
-/// tempeary here.
-let sharedServices: ServiceFactory = {
-    let helper = ServiceFactory()
-    ///
-    helper.add(AppCacheService.self, for: AppCacheService())
-    helper.add(AddressBookService.self, for: AddressBookService())
-    ///
-    let addrService: AddressBookService = helper.get()
-    helper.add(ContactDataService.self, for: ContactDataService(addressBookService: addrService))
-    helper.add(BugDataService.self, for: BugDataService())
-    
-    ///
-    let msgService: MessageDataService = MessageDataService()
-    helper.add(MessageDataService.self, for: msgService)
-    
-    helper.add(PushNotificationService.self, for: PushNotificationService(service: helper.get()))
-    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
-    
-    helper.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
-    
-    return helper
-}()
+let sharedUserDataService = UserDataService(api: APIService.unauthorized)
 
 @UIApplicationMain
 class AppDelegate: UIResponder {
     var window: UIWindow? { // this property is important for State Restoration of modally presented viewControllers
         return self.coordinator.currentWindow
     }
-    lazy var coordinator: WindowsCoordinator = WindowsCoordinator()
+    lazy var coordinator: WindowsCoordinator = WindowsCoordinator(services: sharedServices)
 }
 
 // MARK: - this is workaround to track when the SWRevealViewController first time load
@@ -72,7 +49,8 @@ extension SWRevealViewController {
     open override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if (segue.identifier == "sw_rear") {
             if let menuViewController =  segue.destination as? MenuViewController {
-                let viewModel = MenuViewModelImpl()
+                let usersManager : UsersManager = sharedServices.get()
+                let viewModel = MenuViewModelImpl(usersManager: usersManager)
                 let menu = MenuCoordinatorNew(vc: menuViewController, vm: viewModel, services: sharedServices)
                 menu.start()
             }
@@ -81,9 +59,14 @@ extension SWRevealViewController {
                 if let mailboxViewController: MailboxViewController = navigation.firstViewController() as? MailboxViewController {
                     ///TODO::fixme AppDelegate.coordinator.serviceHolder is bad
                     sharedVMService.mailbox(fromMenu: mailboxViewController)
-                    let viewModel = MailboxViewModelImpl(label: .inbox, service: sharedServices.get(), pushService: sharedServices.get())
-                    let mailbox = MailboxCoordinator(rvc: self, nav: navigation, vc: mailboxViewController, vm: viewModel, services: sharedServices)
-                    mailbox.start()                    
+                    let usersManager : UsersManager = sharedServices.get()
+                    let user = usersManager.firstUser!
+                    let viewModel = MailboxViewModelImpl(label: .inbox,
+                                                         userManager: user,
+                                                         usersManager: usersManager,
+                                                         pushService: sharedServices.get())
+                    let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
+                    mailbox.start()
                 }
             }
         }
@@ -142,23 +125,23 @@ let sharedInternetReachability : Reachability = Reachability.forInternetConnecti
 // MARK: - UIApplicationDelegate
 extension AppDelegate: UIApplicationDelegate {
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            // by the end of this method we need UIWindow with root view controller in order to restore modally presented view controller correctly
-            self.coordinator.prepare()
-        }
+        sharedServices.get(by: AppCacheService.self).restoreCacheWhenAppStart()
+
+        let usersManager = UsersManager(server: Server.live, delegate: self)
+        sharedServices.add(UnlockManager.self, for: UnlockManager(cacheStatus: userCachedStatus, delegate: self))
+        sharedServices.add(UsersManager.self, for: usersManager)
+        sharedServices.add(SignInManager.self, for: SignInManager(usersManager: usersManager))
+        sharedServices.add(SpringboardShortcutsService.self, for: SpringboardShortcutsService())
         return true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        #if DEBUG
+        #if DEBUG 
         PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         #endif
-        
-        let cacheService : AppCacheService = sharedServices.get()
-        cacheService.restoreCacheWhenAppStart()
-        
+
         #if Enterprise
         Fabric.with([Crashlytics.self])
         #endif
@@ -170,7 +153,6 @@ extension AppDelegate: UIApplicationDelegate {
         ///TODO::fixme refactor
         shareViewModelFactoy = ViewModelFactoryProduction()
         sharedVMService.cleanLegacy()
-        sharedAPIService.delegate = self
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
@@ -180,14 +162,14 @@ extension AppDelegate: UIApplicationDelegate {
         if let logger = AFNetworkActivityLogger.shared().loggers.first as? AFNetworkActivityConsoleLogger {
             logger.level = .AFLoggerLevelDebug;
         }
-        AFNetworkActivityLogger.shared().startLogging()
-        
         //start network notifier
         sharedInternetReachability.startNotifier()
         
-        sharedMessageDataService.launchCleanUpIfNeeded()
-        sharedUserDataService.delegate = self
+        // moved to coordinator
+        //sharedMessageDataService.launchCleanUpIfNeeded()
+        //sharedUserDataService.delegate = self
         
+        AFNetworkActivityLogger.shared().startLogging()
         if mode != .dev && mode != .sim {
             AFNetworkActivityLogger.shared().stopLogging()
         }
@@ -195,11 +177,10 @@ extension AppDelegate: UIApplicationDelegate {
         
         // setup language: iOS 13 allows setting language per-app in Settings.app, so we trust that value
         // we still use LanguageManager because Bundle.main of Share extension will take the value from host application :(
-        if #available(iOS 13.0, *),
-            let code = Bundle.main.preferredLocalizations.first
-        {
+        if #available(iOS 13.0, *), let code = Bundle.main.preferredLocalizations.first {
             LanguageManager.saveLanguage(byCode: code)
         }
+        //setup language
         LanguageManager.setupCurrentLanguage()
 
         let pushService : PushNotificationService = sharedServices.get()
@@ -211,27 +192,28 @@ extension AppDelegate: UIApplicationDelegate {
         StoreKitManager.default.updateAvailableProductsList()
         
         #if DEBUG
-        NotificationCenter.default.addObserver(forName: Keymaker.errorObtainingMainKey, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.errorObtainingMainKey, object: nil, queue: .main) { notification in
             (notification.userInfo?["error"] as? Error)?.localizedDescription.alertToast()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.obtainedMainKey, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.obtainedMainKey, object: nil, queue: .main) { notification in
             "Obtained main key".alertToastBottom()
         }
-        NotificationCenter.default.addObserver(forName: Keymaker.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
+        NotificationCenter.default.addObserver(forName: Keymaker.Const.removedMainKeyFromMemory, object: nil, queue: .main) { notification in
             "Removed main key from memory".alertToastBottom()
         }
         #endif
         
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(didSignOutNotification(_:)),
+                                               name: NSNotification.Name.didSignOut,
+                                               object: nil)
+        
         if #available(iOS 12.0, *) {
-            let intent = WipeMainKeyIntent()
-            let suggestions = [INShortcut(intent: intent)!]
-            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
+//            let intent = WipeMainKeyIntent()
+//            let suggestions = [INShortcut(intent: intent)!]
+//            INVoiceShortcutCenter.shared.setShortcutSuggestions(suggestions)
         }
-        
-        if #available(iOS 11.0, *) {
-            //self.generateToken()
-        }
-        
+
         if #available(iOS 13.0, *) {
             // multiwindow support managed by UISessionDelegate, not UIApplicationDelegate
         } else {
@@ -239,7 +221,11 @@ extension AppDelegate: UIApplicationDelegate {
         }
         return true
     }
-
+    
+    
+    @objc fileprivate func didSignOutNotification(_ notification: Notification) {
+        self.onLogout(animated: false)
+    }
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return self.checkOrientation(window?.rootViewController)
@@ -272,10 +258,26 @@ extension AppDelegate: UIApplicationDelegate {
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.scene(_:openURLContexts:)" )
     func application(_ application: UIApplication, handleOpen url: URL) -> Bool {
-        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true), urlComponents.host == "signup" else {
+        guard let urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
             return false
         }
         
+        
+        if ["protonmail", "mailto"].contains(urlComponents.scheme) {
+            var path = url.absoluteString
+            if urlComponents.scheme == "protonmail" {
+                path = path.preg_replace("protonmail://", replaceto: "")
+            }
+            
+            let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
+            deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
+            self.coordinator.followDeeplink(deeplink)
+            return true
+        }
+        
+        guard urlComponents.host == "signup" else {
+            return false
+        }
         guard let queryItems = urlComponents.queryItems, let verifyObject = queryItems.filter({$0.name == "verifyCode"}).first else {
             return false
         }
@@ -289,13 +291,13 @@ extension AppDelegate: UIApplicationDelegate {
                                         object: nil,
                                         userInfo: info)
         NotificationCenter.default.post(notification)
+                
         return true
     }
     
     @available(iOS, deprecated: 13, message: "This method will not get called on iOS 13, move the code to WindowSceneDelegate.sceneDidEnterBackground()" )
     func applicationDidEnterBackground(_ application: UIApplication) {
         keymaker.updateAutolockCountdownStart()
-        sharedMessageDataService.purgeOldMessages()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
         taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
@@ -306,9 +308,13 @@ extension AppDelegate: UIApplicationDelegate {
             }
         }
         
-        if SignInManager.shared.isSignedIn() {
-            sharedMessageDataService.updateMessageCount()
-            sharedMessageDataService.backgroundFetch { delayedCompletion() }
+        let users: UsersManager = sharedServices.get()
+        if let user = users.firstUser {
+            user.messageService.purgeOldMessages()
+            user.messageService.updateMessageCount()
+            user.messageService.backgroundFetch {
+                delayedCompletion()
+            }
         } else {
             delayedCompletion()
         }
@@ -330,12 +336,12 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
-        let mainContext = sharedCoreDataService.mainManagedObjectContext
+        let mainContext = CoreDataService.shared.mainManagedObjectContext
         mainContext.performAndWait {
             let _ = mainContext.saveUpstreamIfNeeded()
         }
         
-        let backgroundContext = sharedCoreDataService.mainManagedObjectContext
+        let backgroundContext = CoreDataService.shared.mainManagedObjectContext
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
         }
@@ -344,13 +350,16 @@ extension AppDelegate: UIApplicationDelegate {
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
-        guard SignInManager.shared.isSignedIn(), UnlockManager.shared.isUnlocked() else {
+        let signInManager = SignInManagerProvider()
+        let unlockManager = UnlockManagerProvider()
+        guard signInManager.isSignedIn, unlockManager.isUnlocked else {
             completionHandler(.noData)
             return
         }
-        sharedMessageDataService.backgroundFetch {
+        let usersManager: UsersManager = sharedServices.get()
+        usersManager.firstUser?.messageService.backgroundFetch(notify: {
             completionHandler(.newData)
-        }
+        })
     }
     
     // MARK: Notification methods
@@ -379,7 +388,7 @@ extension AppDelegate: UIApplicationDelegate {
         NotificationCenter.default.post(notification)
     }
 
-    // MARK: - State restoration via NSCoders, for iOS 9 - 12 and iOS 13 single window env (iPhone)
+    // MARK: - State restoration
     
     func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
         if UIDevice.current.stateRestorationPolicy == .multiwindow {
@@ -396,17 +405,7 @@ extension AppDelegate: UIApplicationDelegate {
             self.coordinator.restoreState(coder)
         }
         
-        return UIDevice.current.stateRestorationPolicy == .coders
-    }
-    func application(_ application: UIApplication, willEncodeRestorableStateWith coder: NSCoder) {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            self.coordinator.saveForRestoration(coder)
-        }
-    }
-    func application(_ application: UIApplication, didDecodeRestorableStateWith coder: NSCoder) {
-        if UIDevice.current.stateRestorationPolicy == .coders {
-            self.coordinator.restoreState(coder)
-        }
+        return false
     }
     
     // MARK: - Multiwindow iOS 13
@@ -445,3 +444,54 @@ extension AppDelegate: UIApplicationDelegate {
     }
 }
 
+extension AppDelegate : UsersManagerDelegate {
+
+    func migrating() {
+        
+    }
+    
+    func session() {
+        
+    }
+    
+    
+}
+
+extension AppDelegate : UnlockManagerDelegate {
+    var isUserCredentialStored: Bool {
+        get {
+            let users = sharedServices.get(by: UsersManager.self)
+            if users.isMailboxPasswordStored || users.hasUsers() {
+                return true
+            }
+            return false
+        }
+    }
+    
+    func isUserStored() -> Bool {
+        let users = sharedServices.get(by: UsersManager.self)
+        if users.hasUserName() || users.hasUsers() {
+            return true
+        }
+        return false
+    }
+    
+    func isMailboxPasswordStored(forUser uid: String?) -> Bool {
+        let users = sharedServices.get(by: UsersManager.self)
+        guard let _ = uid else {
+            return users.isPasswordStored || users.hasUserName() //|| users.isMailboxPasswordStored
+        }
+        return !(sharedServices.get(by: UsersManager.self).users.last?.mailboxPassword ?? "").isEmpty
+    }
+    
+    func cleanAll() {
+        ///
+        sharedServices.get(by: UsersManager.self).clean()
+        keymaker.wipeMainKey()
+        keymaker.mainKeyExists()
+    }
+    
+    func unlocked() {
+        // should work via messages
+    }
+}

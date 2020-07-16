@@ -2,6 +2,11 @@ import Foundation
 #if !PMKCocoaPods
 import PromiseKit
 #endif
+#if swift(>=4.1)
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
+#endif
 
 /**
  To import the `NSURLSession` category:

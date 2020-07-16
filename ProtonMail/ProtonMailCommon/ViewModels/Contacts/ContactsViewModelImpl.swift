@@ -29,6 +29,8 @@ final class ContactsViewModelImpl : ContactsViewModel {
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     fileprivate var isSearching: Bool = false
     
+    lazy var contactService : ContactDataService = self.user.contactService
+    
     override func setupFetchedResults(delaget: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()
         self.correctCachedData()
@@ -60,7 +62,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     private func getFetchedResultsController() -> NSFetchedResultsController<NSFetchRequestResult>? {
-        if let fetchedResultsController = sharedContactDataService.resultController() {
+        if let fetchedResultsController = contactService.resultController() {
             do {
                 try fetchedResultsController.performFetch()
             } catch let ex as NSError {
@@ -76,11 +78,13 @@ final class ContactsViewModelImpl : ContactsViewModel {
     }
     
     override func search(text: String) {
+        var predicate: NSPredicate?
         if text.isEmpty {
-            fetchedResultsController?.fetchRequest.predicate = nil
+            predicate = NSPredicate(format: "%K == %@", Contact.Attributes.userID, self.user.userInfo.userId)
         } else {
-            fetchedResultsController?.fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@", argumentArray: [text, text])
+            predicate = NSPredicate(format: "(name CONTAINS[cd] %@ OR ANY emails.email CONTAINS[cd] %@) AND %K == %@", argumentArray: [text, text, Contact.Attributes.userID, self.user.userInfo.userId])
         }
+        fetchedResultsController?.fetchRequest.predicate = predicate
         
         do {
             try fetchedResultsController?.performFetch()
@@ -136,7 +140,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
     
     // MARK: - api part
     override func delete(contactID: String!, complete : @escaping ContactDeleteComplete) {
-        sharedContactDataService.delete(contactID: contactID, completion: { (error) in
+        self.contactService.delete(contactID: contactID, completion: { (error) in
             if let err = error {
                 complete(err)
             } else {
@@ -153,15 +157,17 @@ final class ContactsViewModelImpl : ContactsViewModel {
         }
         if !isFetching {
             isFetching = true
-            sharedMessageDataService.fetchEvents(byLable: Message.Location.inbox.rawValue, notificationMessageID: nil, completion: { (task, res, error) in
+            
+            self.user.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
+                                                 notificationMessageID: nil,
+                                                 completion: { (task, res, error) in
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)
             })
-            sharedContactDataService.fetchContacts { (_, error) in
+            self.user.contactService.fetchContacts { (_, error) in
                 
             }
         }
-        
     }
 
     // MARK: - timer overrride

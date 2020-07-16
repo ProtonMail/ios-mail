@@ -53,10 +53,14 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
     /// for updating the ContactGroupEditViewController
     weak var delegate: ContactGroupEditViewControllerDelegate? = nil
     
+    private(set) var user: UserManager
+    var contactGroupService : ContactGroupsDataService
+    
     /**
      Setup the view model
      */
     init(state: ContactGroupEditViewControllerState = .create,
+         user: UserManager,
          groupID: String? = nil,
          name: String?,
          color: String?,
@@ -69,6 +73,8 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                              name: name,
                                              color: color,
                                              emailIDs: emailIDs)
+        self.user = user
+        self.contactGroupService = user.contactGroupService
         prepareEmails()
     }
     
@@ -314,11 +320,11 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
                                           color: String,
                                           emailList: Set<Email>) -> Promise<Void> {
         return firstly {
-            return sharedContactGroupsDataService.createContactGroup(name: name, color: color)
-            }.then {
-                (ID: String) -> Promise<Void> in
-                self.contactGroup.ID = ID
-                return self.addEmailsToContactGroup(emailList: emailList)
+            return self.contactGroupService.createContactGroup(name: name, color: color)
+        }.then {
+            (ID: String) -> Promise<Void> in
+            self.contactGroup.ID = ID
+            return self.addEmailsToContactGroup(emailList: emailList)
         }
     }
     
@@ -341,24 +347,22 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             
             if let ID = contactGroup.ID {
                 // update contact group
-                return sharedContactGroupsDataService.editContactGroup(groupID: ID,
-                                                                       name: name,
-                                                                       color: color)
+                return self.contactGroupService.editContactGroup(groupID: ID, name: name, color: color)
             } else {
                 return Promise.init(error: ContactGroupEditError.TypeCastingError)
             }
-            }.then {
-                () -> Promise<Void> in
-                
-                let original = self.contactGroup.originalEmailIDs
-                let toAdd = updatedEmailList.subtracting(original)
-                return self.addEmailsToContactGroup(emailList: toAdd)
-            }.then {
-                () -> Promise<Void> in
-                
-                let original = self.contactGroup.originalEmailIDs
-                let toDelete = original.subtracting(updatedEmailList)
-                return self.removeEmailsFromContactGroup(emailList: toDelete)
+        }.then {
+            () -> Promise<Void> in
+            
+            let original = self.contactGroup.originalEmailIDs
+            let toAdd = updatedEmailList.subtracting(original)
+            return self.addEmailsToContactGroup(emailList: toAdd)
+        }.then {
+            () -> Promise<Void> in
+            
+            let original = self.contactGroup.originalEmailIDs
+            let toDelete = original.subtracting(updatedEmailList)
+            return self.removeEmailsFromContactGroup(emailList: toDelete)
         }
     }
     
@@ -372,7 +376,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             () -> Promise<Void> in
             
             if let ID = contactGroup.ID {
-                return sharedContactGroupsDataService.deleteContactGroup(groupID: ID)
+                return self.contactGroupService.deleteContactGroup(groupID: ID)
             } else {
                 return Promise.init(error: ContactGroupEditError.InternalError)
             }
@@ -391,8 +395,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             () -> Promise<Void> in
             let emails = emailList.map{$0}
             if let ID = contactGroup.ID {
-                return sharedContactGroupsDataService.addEmailsToContactGroup(groupID: ID,
-                                                                              emailList: emails)
+                return self.contactGroupService.addEmailsToContactGroup(groupID: ID, emailList: emails)
             } else {
                 return Promise.init(error: ContactGroupEditError.InternalError)
             }
@@ -412,8 +415,7 @@ class ContactGroupEditViewModelImpl: ContactGroupEditViewModel {
             
             let emails = emailList.map{$0}
             if let ID = contactGroup.ID {
-                return sharedContactGroupsDataService.removeEmailsFromContactGroup(groupID: ID,
-                                                                                   emailList: emails)
+                return self.contactGroupService.removeEmailsFromContactGroup(groupID: ID, emailList: emails)
             } else {
                 return Promise.init(error: ContactGroupEditError.InternalError)
             }

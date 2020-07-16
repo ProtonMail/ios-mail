@@ -50,7 +50,7 @@ final class UpdateAddressOrder : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -82,7 +82,7 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .put
     }
     
@@ -99,8 +99,10 @@ final class UpdateAddressRequest : ApiRequest<ApiResponse> {
 //Mark setup address when signup after create the user
 final class SetupAddressRequest : ApiRequest<AddressesResponse> {
     let domain: String
-    init(domain_name: String) {
+    init(domain_name: String, auth: AuthCredential?) {
         self.domain = domain_name
+        super.init()
+        self.authCredential = auth
     }
     
     override func toDictionary() -> [String : Any]? {
@@ -108,7 +110,7 @@ final class SetupAddressRequest : ApiRequest<AddressesResponse> {
         return out
     }
     
-    override func method() -> APIService.HTTPMethod {
+    override func method() -> HTTPMethod {
         return .post
     }
     

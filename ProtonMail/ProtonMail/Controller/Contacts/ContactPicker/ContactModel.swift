@@ -32,7 +32,7 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     case contactGroup = 2
 }
 
-@objc protocol ContactPickerModelProtocol: class {
+protocol ContactPickerModelProtocol: class {
     
     var modelType: ContactPickerModelState { get }
     var contactTitle : String { get }
@@ -48,7 +48,7 @@ typealias LockCheckComplete = ((_ lock: UIImage?, _ lockType : Int) -> Void)
     var hasNonePM : Bool {get}
     func notes(type: Int) -> String
     func setType(type: Int)
-    func lockCheck(progress: LockCheckProgress, complete: LockCheckComplete?)
+    func lockCheck(api: APIService, contactService: ContactDataService, progress: LockCheckProgress, complete: LockCheckComplete?)
     
     
     func equals(_ others: ContactPickerModelProtocol) -> Bool

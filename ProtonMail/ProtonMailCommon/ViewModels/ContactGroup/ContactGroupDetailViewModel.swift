@@ -25,6 +25,8 @@ import Foundation
 import PromiseKit
 
 protocol ContactGroupDetailViewModel {
+    var user: UserManager { get }
+    
     func getGroupID() -> String
     func getName() -> String
     func getColor() -> String

@@ -24,6 +24,9 @@
 import Foundation
 
 class Storefront: NSObject {
+    private var servicePlanService: ServicePlanDataService
+    private var user: UserInfo
+    
     var plan: ServicePlan
     var details: ServicePlanDetails?
     var others: [ServicePlan]
@@ -35,21 +38,27 @@ class Storefront: NSObject {
     
     private var subscriptionObserver: NSKeyValueObservation!
     
-    init(plan: ServicePlan) {
+    init(plan: ServicePlan, servicePlanService: ServicePlanDataService, user: UserInfo) {
+        self.servicePlanService = servicePlanService
+        self.user = user
+        
         self.plan = plan
-        self.details = plan.fetchDetails()!
+        self.details = servicePlanService.detailsOfServicePlan(named: plan.rawValue)
         self.others = []
         self.title = plan.subheader.0
         
         self.isProductPurchasable = ( plan == .plus
-                                        && ServicePlanDataService.shared.currentSubscription?.plan == .free
+                                        && servicePlanService.currentSubscription?.plan == .free
                                         && StoreKitManager.default.readyToPurchaseProduct() )
         self.canBuyMoreCredits = false
-        self.credits = sharedUserDataService.userInfo?.credit ?? 0
+        self.credits = self.user.credit
         super.init()
     }
     
-    init(subscription: ServicePlanSubscription) {
+    init(subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, user: UserInfo) {
+        self.servicePlanService = servicePlanService
+        self.user = user
+        
         self.subscription = subscription
         self.plan = subscription.plan
         self.details = subscription.details
@@ -60,22 +69,25 @@ class Storefront: NSObject {
         
         // only plus, payed via apple
         self.canBuyMoreCredits = ( subscription.plan == .plus && !subscription.hadOnlinePayments )
-        self.credits = sharedUserDataService.userInfo?.credit ?? 0
+         self.credits = self.user.credit
         super.init()
 
-        self.subscriptionObserver = ServicePlanDataService.shared.observe(\.currentSubscription) { [unowned self] shared, change in
+        self.subscriptionObserver = self.servicePlanService.observe(\.currentSubscription) { [unowned self] shared, change in
             guard let newSubscription = shared.currentSubscription else { return }
             DispatchQueue.main.async {
                 self.plan = newSubscription.plan
                 self.details = newSubscription.details
                 self.others = Array<ServicePlan>(arrayLiteral: .free, .plus).filter({ $0 != newSubscription.plan })
-                self.credits = sharedUserDataService.userInfo?.credit ?? 0
+                self.credits = user.credit
                 self.subscription = shared.currentSubscription
             }
         }
     }
     
-    init(creditsFor subscription: ServicePlanSubscription) {
+    init(creditsFor subscription: ServicePlanSubscription, servicePlanService: ServicePlanDataService, user: UserInfo) {
+        self.servicePlanService = servicePlanService
+        self.user = user
+        
         self.subscription = subscription
         self.plan = subscription.plan
         self.title = LocalString._buy_more_credits
@@ -85,7 +97,7 @@ class Storefront: NSObject {
         self.isProductPurchasable = ( subscription.plan == .plus
                                         && !subscription.hadOnlinePayments
                                         && StoreKitManager.default.readyToPurchaseProduct() )
-        self.credits = sharedUserDataService.userInfo?.credit ?? 0
+        self.credits = user.credit
         self.canBuyMoreCredits = false
         
         super.init()

@@ -71,7 +71,7 @@ extension AttachmentsTableViewController {
                 return
             }
     
-            self.attachments.append(attachment)
+            self.updateAttachments()
             self.delegate?.attachments(self, didPickedAttachment: attachment)
         }
     }

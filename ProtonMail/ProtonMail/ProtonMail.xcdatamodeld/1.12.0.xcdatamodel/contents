@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18C54" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19F101" minimumToolsVersion="Xcode 7.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.11.0">
     <entity name="Attachment" representedClassName=".Attachment" syncable="YES">
         <attribute name="attachmentID" attributeType="String" valueTransformerName="StringCryptoTransformer" syncable="YES">
             <userInfo>
@@ -37,6 +37,11 @@
                 <entry key="JSONKeyPath" value="MIMEType"/>
             </userInfo>
         </attribute>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
         <relationship name="message" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Message" inverseName="attachments" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="attachmentID"/>
@@ -67,6 +72,11 @@
         <attribute name="size" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Size"/>
+            </userInfo>
+        </attribute>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
             </userInfo>
         </attribute>
         <attribute name="uuid" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
@@ -123,6 +133,11 @@
                 <entry key="JSONTransformerName" value="JsonStringTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
         <relationship name="contact" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Contact" inverseName="emails" inverseEntity="Contact" syncable="YES"/>
         <relationship name="labels" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Label" inverseName="emails" inverseEntity="Label" syncable="YES">
             <userInfo>
@@ -156,7 +171,7 @@
                 <entry key="JSONKeyPath" value="ID"/>
             </userInfo>
         </attribute>
-        <attribute name="name" optional="YES" attributeType="Transformable" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" valueTransformerName="StringCryptoTransformer" customClassName="String" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Name"/>
             </userInfo>
@@ -173,11 +188,25 @@
                 <entry key="NumberTransformer" value="NumberTransformer"/>
             </userInfo>
         </attribute>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
         <relationship name="emails" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Email" inverseName="labels" inverseEntity="Email" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Message" inverseName="labels" inverseEntity="Message" syncable="YES"/>
         <userInfo>
             <entry key="identityAttribute" value="labelID"/>
         </userInfo>
+    </entity>
+    <entity name="LabelUpdate" representedClassName=".LabelUpdate" syncable="YES">
+        <attribute name="end" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="labelID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="start" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="total" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="update" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <entity name="Message" representedClassName=".Message" syncable="YES">
         <attribute name="action" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
@@ -307,6 +336,11 @@
                 <entry key="JSONKeyPath" value="Unread"/>
             </userInfo>
         </attribute>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES">
+            <userInfo>
+                <entry key="JSONKeyPath" value="UserID"/>
+            </userInfo>
+        </attribute>
         <relationship name="attachments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Attachment" inverseName="message" inverseEntity="Attachment" syncable="YES">
             <userInfo>
                 <entry key="JSONKeyPath" value="Attachments"/>
@@ -321,13 +355,19 @@
             <entry key="identityAttribute" value="messageID"/>
         </userInfo>
     </entity>
+    <entity name="UserEvent" representedClassName=".UserEvent" syncable="YES">
+        <attribute name="eventID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
     <fetchRequest name="FetchRequest" entity="Message" predicateString="messageType == 1"/>
     <elements>
-        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="210"/>
-        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="210"/>
+        <element name="Attachment" positionX="1989" positionY="-3666" width="128" height="223"/>
+        <element name="Contact" positionX="1240" positionY="-3582" width="128" height="223"/>
         <element name="Conversation" positionX="1719" positionY="-3726" width="128" height="45"/>
-        <element name="Email" positionX="1539" positionY="-3582" width="128" height="180"/>
-        <element name="Label" positionX="2095" positionY="-3357" width="128" height="180"/>
-        <element name="Message" positionX="1717" positionY="-3867" width="128" height="585"/>
+        <element name="Email" positionX="1539" positionY="-3582" width="128" height="193"/>
+        <element name="Label" positionX="2095" positionY="-3357" width="128" height="193"/>
+        <element name="LabelUpdate" positionX="1440" positionY="-3717" width="128" height="148"/>
+        <element name="Message" positionX="1717" positionY="-3867" width="128" height="598"/>
+        <element name="UserEvent" positionX="1440" positionY="-3717" width="128" height="73"/>
     </elements>
 </model>

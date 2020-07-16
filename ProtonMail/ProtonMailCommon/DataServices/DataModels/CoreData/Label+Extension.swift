@@ -36,10 +36,10 @@ extension Label {
         static let color = "color"
         static let type = "type"
         static let exclusive = "exclusive"
+        static let userID = "userID"
     }
     
     // MARK: - Public methods
-    
     convenience init(context: NSManagedObjectContext) {
         self.init(entity: NSEntityDescription.entity(forEntityName: Attributes.entityName, in: context)!, insertInto: context)
     }
@@ -67,5 +67,9 @@ extension Label {
     
     class func labelGroup( by name: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
         return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.name : name, Attributes.type : "2"]) as? Label
+    }
+    
+    class func labelGroup( byID: String, inManagedObjectContext context: NSManagedObjectContext) -> Label? {
+        return context.managedObjectWithEntityName(Attributes.entityName, matching: [Attributes.labelID : byID, Attributes.type : "2"]) as? Label
     }
 }

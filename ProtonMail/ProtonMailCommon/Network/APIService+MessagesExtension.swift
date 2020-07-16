@@ -28,7 +28,7 @@ import Foundation
 extension APIService {
     
     fileprivate struct MessagePath {
-        static let base = Constants.App.API_PATH + "/messages"
+        static let base = "/messages"
     }
    
     enum Filter: Int {
@@ -62,7 +62,7 @@ extension APIService {
         request(method: .post,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -72,8 +72,7 @@ extension APIService {
         request(method: .put,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: ["x-pm-apiversion":
-                    apiRequest.apiVersion()],
+                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -83,7 +82,7 @@ extension APIService {
         request(method: .get,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -93,7 +92,7 @@ extension APIService {
         request(method: .delete,
                 path: apiRequest.path(),
                 parameters: parameterStrings,
-                headers: ["x-pm-apiversion": apiRequest.apiVersion()],
+                headers: [HTTPHeader.apiVersion: apiRequest.apiVersion()],
                 customAuthCredential: authCredential,
                 completion: completion)
     }
@@ -104,7 +103,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: nil,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 completion: completion)
     }
     
@@ -116,7 +115,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 completion: completion)
     }
     
@@ -127,7 +126,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 completion: completionWrapper)
     }
     
@@ -138,7 +137,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: nil,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 completion: completion)
     }
     
@@ -152,7 +151,7 @@ extension APIService {
         request(method: .get,
                 path: path,
                 parameters: parameters,
-                headers: ["x-pm-apiversion": 3],
+                headers: [HTTPHeader.apiVersion: 3],
                 completion: completion)
     }
     

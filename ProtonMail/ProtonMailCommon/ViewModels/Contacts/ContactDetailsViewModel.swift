@@ -27,14 +27,15 @@ import PromiseKit
 typealias LoadingProgress = () -> Void
 
 class ContactDetailsViewModel : ViewModelBase {
+    var user: UserManager
     
-    override init() { }
+    init(user: UserManager) {
+        self.user = user
+        super.init()
+    }
     
     func paidUser() -> Bool {
-        if let role = sharedUserDataService.userInfo?.role, role > 0 {
-            return true
-        }
-        return false
+        return user.isPaid
     }
     
     @discardableResult
