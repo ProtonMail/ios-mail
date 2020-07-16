@@ -145,7 +145,6 @@ class WindowsCoordinator: CoordinatorNew {
             case .lockWindow:
                 if self.lockWindow == nil {
                     let lock = UIWindow(storyboard: .signIn, scene: self.scene)
-                    lock.windowLevel = .statusBar
                     self.navigate(from: self.currentWindow, to: lock)
                     self.lockWindow = lock
                 }
