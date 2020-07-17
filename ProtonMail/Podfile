@@ -49,7 +49,8 @@ def common_pods
     
     pod 'TrustKit', '1.6.2'
     
-    pod 'PMNetworking', :path => '../Networking'
+#    pod 'PMNetworking', :path => '../Networking'
+pod 'PMNetworking', :git => 'git@gitlab.protontech.ch:apple/shared/pmnetworking.git', :branch => 'release/1.0.1'
 
     pm_shared_pods
 end

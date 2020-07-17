@@ -202,7 +202,7 @@ class SignupViewModelImpl : SignupViewModel {
                         throw SignUpCreateUserError.cantHashPassword.error
                     }
                     let verifier = try auth.generateVerifier(2048)
-                    let fingerprintString = try? self.fingerprint.export().asString()
+                    let fingerprintDict = try? self.fingerprint.export().asDictionary()
                     let api = CreateNewUser(token: self.token,
                                             type: self.verifyType.toString, username: self.userName,
                                             email: self.recoverEmail,
@@ -210,7 +210,10 @@ class SignupViewModelImpl : SignupViewModel {
                                             salt: new_salt.encodeBase64(),
                                             verifer: verifier.encodeBase64(),
                                             deviceToken: self.deviceCheckToken,
-                                            fingerprint: fingerprintString ?? "")
+                                            fingerprint: fingerprintDict ?? [:])
+                    let c = api.toDictionary()
+                    let jsonData = try! JSONSerialization.data(withJSONObject: c, options: [])
+                    let decoded = String(data: jsonData, encoding: .utf8)!
                     api.call(api: self.apiService) { (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user

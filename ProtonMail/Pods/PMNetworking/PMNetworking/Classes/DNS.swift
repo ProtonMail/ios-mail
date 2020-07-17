@@ -1,5 +1,5 @@
 //
-//  DoHMail.swift
+//  DNS.swift
 //  Created by ProtonMail on 2/24/20.
 //
 //
@@ -22,23 +22,19 @@
 
 
 import Foundation
-import PMNetworking
 
-
-class DoHMail : DoH, DoHConfig {
-    var defaultPath: String = Constants.App.API_PATH
-    
-    //defind your default host
-    var defaultHost: String = Constants.App.API_HOST_URL
-    //defind your query host
-    var apiHost : String = "dmfygsltqojxxi33onvqws3bomnua.protonpro.xyz"
-    //singleton
-    static let `default` = try! DoHMail()
-    
-    /// debug mode
-    var debugMode: Bool = false
-    var blockList: [String : Int] = [:]
-    //["api.protonmail.ch" : NSURLErrorTimedOut,
-//                                     "ec2-18-156-162-103.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut,
-//                                     "ec2-3-122-52-63.eu-central-1.compute.amazonaws.com" : NSURLErrorTimedOut]
+public struct DNS {
+    public let url: String
+    public let ttl: Int
 }
+
+enum DNSType : Int {
+    case txt = 16
+}
+
+
+enum Type {
+    case wireformat
+    case json
+}
+
