@@ -238,8 +238,8 @@ extension MessageDataService {
                 
             }
         }
-        newMessage.numAttachments = NSNumber(value: message.attachments.count)
-        
+//        newMessage.numAttachments = NSNumber(value: message.attachments.count)
+        newMessage.numAttachments = NSNumber(value: newAttachmentCount)
         return newMessage
     }
 }

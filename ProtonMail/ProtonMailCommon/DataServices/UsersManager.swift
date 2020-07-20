@@ -492,6 +492,7 @@ extension UsersManager {
         if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
             self.remove(user: user)
             NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+            NSError.alertBadTokenToast()
         } else {
             self.remove(user: user)
         }
@@ -525,6 +526,8 @@ extension UsersManager {
         KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
         KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
         
+        self.currentVersion = latestVersion
+        
         UserTempCachedStatus.backup()
         
         
@@ -555,11 +558,16 @@ extension UsersManager {
         
         // Workaround to fix MAILIOS-150
         // Method that checks signin or not before 1.11.17
-        let users = sharedServices.get(by: UsersManager.self)
+        let users = sharedServices.get(by: UsersManager.self) //TODO:: improve this line
         let isMailboxPasswordStored = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
         let isSignIn = users.hasUserName() && isMailboxPasswordStored
         
         return KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) != nil && (hasUsersInfo || isSignIn)
+    }
+    
+    var isPasswordStored : Bool {
+        return KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil ||
+            KeychainWrapper.keychain.string(forKey: CoderKey.atLeastOneLoggedIn) != nil
     }
     
     var isMailboxPasswordStored : Bool {

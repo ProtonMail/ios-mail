@@ -173,8 +173,10 @@ class WindowsCoordinator: CoordinatorNew {
     
     @objc func didReceiveTokenRevoke(uid: String) {
         let usersManager: UsersManager = services.get()
+        var foundUser = false
         if let user = usersManager.getUser(bySessionID: uid) {
             usersManager.logout(user: user, shouldAlert: true)
+            foundUser = true
         }
         
         guard let appWindow = self.appWindow else {return}
@@ -182,6 +184,10 @@ class WindowsCoordinator: CoordinatorNew {
             if let menu = controller as? MenuViewController {
                 //Work Around: trigger viewDidLoad of menu view controller
                 _ = menu.view
+                
+                if !foundUser {
+                    menu.toInbox()
+                }
             }
         }
     }

@@ -220,6 +220,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             self.view.window?.windowScene?.title = self.title ?? LocalString._locations_inbox_title
         }
         
+        guard let users = self.viewModel.users, users.count > 0 else {
+            return
+        }
+        
         self.viewModel.processCachedPush()
         
         //TODO:: fix me
@@ -240,6 +244,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.tableView.deselectRow(at: selectedItem, animated: true)
             }
         }
+        
         self.startAutoFetch()
         
         FileManager.default.cleanCachedAttsLegacy()

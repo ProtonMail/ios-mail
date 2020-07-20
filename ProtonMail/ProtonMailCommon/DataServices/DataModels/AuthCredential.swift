@@ -81,6 +81,10 @@ final class AuthCredential: NSObject, NSCoding {
     var isExpired: Bool {
         return Date().compare(expiration) != .orderedAscending
     }
+    
+    func expire() {
+        expiration = Date.distantPast
+    }
 
     func update(salt: String?, privateKey: String?) {
         self.privateKey = privateKey

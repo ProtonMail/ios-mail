@@ -77,6 +77,7 @@ extension NSError {
         hud.label.text = LocalString._general_alert_title
         hud.detailsLabel.text = LocalString._general_invalid_access_token
         hud.removeFromSuperViewOnHide = true
+        hud.offset.y = 250.0
         hud.hide(animated: true, afterDelay: 3)
     }
     

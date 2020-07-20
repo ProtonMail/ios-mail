@@ -734,7 +734,9 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
     
     func contactPicker(picker: ContactPicker, pasted text: String, needFocus focus: Bool) {
         if text.contains(check: ",") {
-            let cusTexts = text.split(separator: ",")
+            let separatorSet = CharacterSet(charactersIn: ",;")
+            let cusTexts = text.components(separatedBy: separatorSet)
+            //let cusTexts = text.split(separator: ",")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {
@@ -743,7 +745,9 @@ extension ComposeHeaderViewController: ContactPickerDelegate {
                 }
             }
         } else if text.contains(check: ";") {
-            let cusTexts = text.split(separator: ";")
+            let separatorSet = CharacterSet(charactersIn: ",;")
+            let cusTexts = text.components(separatedBy: separatorSet)
+            //let cusTexts = text.split(separator: ";")
             for cusText in cusTexts {
                 let trimmed = cusText.trimmingCharacters(in: .whitespacesAndNewlines)
                 if !trimmed.isEmpty {

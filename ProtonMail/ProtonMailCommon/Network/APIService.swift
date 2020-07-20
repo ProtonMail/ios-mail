@@ -39,6 +39,7 @@ protocol APIServiceDelegate: class {
 protocol SessionDelegate: class {
     func getToken(bySessionUID uid: String) -> AuthCredential?
     func updateAuthCredential(_ credential: PMAuthentication.Credential)
+    func updateAuth(_ credential: AuthCredential)
 }
 
 class APIService : Service {
@@ -86,29 +87,29 @@ class APIService : Service {
     var sessionUID : String
 
     /// network config
-    let serverConfig : APIServerConfig
+    //let serverConfig : APIServerConfig
     
     /// the user id
     let userID : String
     
     //
-    lazy var authApi: PMAuthentication.Authenticator = {
-        let trust: TrustChallenge = { session, challenge, completion in
-            if let validator = TrustKitWrapper.current?.pinningValidator {
-                validator.handle(challenge, completionHandler: completion)
-            } else {
-                assert(false, "TrustKit was not initialized properly")
-                completion(.performDefaultHandling, nil)
+    var authApi: PMAuthentication.Authenticator {
+        get {
+            let trust: TrustChallenge = { session, challenge, completion in
+                if let validator = TrustKitWrapper.current?.pinningValidator {
+                    validator.handle(challenge, completionHandler: completion)
+                } else {
+                    assert(false, "TrustKit was not initialized properly")
+                    completion(.performDefaultHandling, nil)
+                }
             }
+            
+            let configuration = Authenticator.Configuration(trust: trust,
+                                                            hostUrl: self.doh.getHostUrl(),
+                                                            clientVersion: "iOS_\(Bundle.main.majorVersion)")
+            return Authenticator(configuration: configuration)
         }
-        
-        let configuration = Authenticator.Configuration(trust: trust,
-                                                        scheme: self.serverConfig.protocol,
-                                                        host: self.serverConfig.host,
-                                                        apiPath: self.serverConfig.path,
-                                                        clientVersion: "iOS_\(Bundle.main.majorVersion)")
-        return Authenticator(configuration: configuration)
-    }()
+    }
     
     static var sharedSessionManager: AFHTTPSessionManager? = nil
     
@@ -134,16 +135,15 @@ class APIService : Service {
         // init lock
         pthread_mutex_init(&mutex, nil)
 
-        doh.status = userCachedStatus.isDohOn ? .on : .off
+        doh.status = .on // userCachedStatus.isDohOn ? .on : .off
 
         // set config
-        self.serverConfig = config
+//        self.serverConfig = config
         self.sessionUID = sessionUID
         self.userID = userID
         // clear all response cache
         URLCache.shared.removeAllCachedResponses()
-        let apiHostUrl = self.serverConfig.hostUrl
-        
+        let apiHostUrl = self.doh.getHostUrl()
         sessionManager = AFHTTPSessionManager(baseURL: URL(string: apiHostUrl)!)
         sessionManager.requestSerializer = AFJSONRequestSerializer()
         sessionManager.requestSerializer.cachePolicy = NSURLRequest.CachePolicy.reloadIgnoringCacheData  //.ReloadIgnoringCacheData
@@ -227,7 +227,8 @@ class APIService : Service {
                     if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.invalidGrant {
                         DispatchQueue.main.async {
                             NSError.alertBadTokenToast()
-                            self.fetchAuthCredential(completion)
+                            completion(newCredential?.accessToken, self.sessionUID, error)
+                            NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": self.sessionUID ])
                         }
                     } else if error != nil && error!.domain == APIServiceErrorDomain && error!.code == APIErrorCode.AuthErrorCode.localCacheBad {
                         DispatchQueue.main.async {
@@ -251,6 +252,21 @@ class APIService : Service {
             completion(credential.accessToken, self.sessionUID, nil)
         }
     }
+    
+    internal func expireCredential() {
+        pthread_mutex_lock(&self.mutex)
+        defer {
+            pthread_mutex_unlock(&self.mutex)
+        }
+        let authCredential = self.sessionDeleaget?.getToken(bySessionUID: self.sessionUID)
+        guard let credential = authCredential else {
+            PMLog.D("token is empty")
+            return
+        }
+        credential.expire()
+        self.sessionDeleaget?.updateAuth(credential)
+    }
+    
     
     
     // MARK: - Request methods
@@ -354,9 +370,7 @@ class APIService : Service {
                           completion: @escaping CompletionBlock) {
         
         
-        let url = self.serverConfig.hostUrl + path
-        
-        
+        let url = self.doh.getHostUrl() + path
         let authBlock: AuthTokenBlock = { token, userID, error in
             if let error = error {
                 self.debugError(error)
@@ -441,7 +455,7 @@ class APIService : Service {
                  headers: [String : Any]?,
                  authenticated: Bool = true,
                  authRetry: Bool = true,
-                 authRetryRemains: Int = 10,
+                 authRetryRemains: Int = 5,
                  customAuthCredential: AuthCredential? = nil,
                  completion: CompletionBlock?) {
         let authBlock: AuthTokenBlock = { token, userID, error in
@@ -462,7 +476,7 @@ class APIService : Service {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
-                           // AuthCredential.expireOrClear(auth?.token)
+                            self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
                                 self.delegate?.onError(error: error)
@@ -472,13 +486,13 @@ class APIService : Service {
                             } else {
                                 if authRetryRemains > 0 {
                                     self.request(method: method,
-                                    path: path,
-                                    parameters: parameters,
-                                    headers: [HTTPHeader.apiVersion: 3],
-                                    authenticated: authenticated,
-                                    authRetryRemains: authRetryRemains - 1,
-                                    customAuthCredential: customAuthCredential,
-                                    completion: completion)
+                                                 path: path,
+                                                 parameters: parameters,
+                                                 headers: headers,
+                                                 authenticated: authenticated,
+                                                 authRetryRemains: authRetryRemains - 1,
+                                                 customAuthCredential: customAuthCredential,
+                                                 completion: completion)
                                 } else {
                                     NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
                                 }
@@ -517,17 +531,24 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
-                                if authRetryRemains > 0 {
-                                    self.request(method: method,
-                                    path: path,
-                                    parameters: parameters,
-                                    headers: [HTTPHeader.apiVersion: 3],
-                                    authenticated: authenticated,
-                                    authRetryRemains: authRetryRemains - 1,
-                                    customAuthCredential: customAuthCredential,
-                                    completion: completion)
+                                self.expireCredential()
+                                if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
+                                    completion?(nil, nil, error)
+                                    UserTempCachedStatus.backup()
+                                    userCachedStatus.signOut()
                                 } else {
-                                    NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    if authRetryRemains > 0 {
+                                        self.request(method: method,
+                                                     path: path,
+                                                     parameters: parameters,
+                                                     headers: headers,
+                                                     authenticated: authenticated,
+                                                     authRetryRemains: authRetryRemains - 1,
+                                                     customAuthCredential: customAuthCredential,
+                                                     completion: completion)
+                                    } else {
+                                        NotificationCenter.default.post(name: .didReovke, object: nil, userInfo: ["uid": userID ?? ""])
+                                    }
                                 }
                             } else if responseCode.forceUpgrade  {
                                 //FIXME: shouldn't be here
@@ -547,8 +568,7 @@ class APIService : Service {
                         }
                     }
                 }
-                // let url = self.doh.getHostUrl() + path
-                let url = self.serverConfig.hostUrl + self.serverConfig.path + path
+                let url = self.doh.getHostUrl() + path
                 let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                             urlString: url,
                                                                             parameters: parameters,

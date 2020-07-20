@@ -40,7 +40,7 @@ class CoreDataCache : Migrate {
         static let coreDataVersion = "latest_core_data_cache"
     }
     enum Version : Int {
-        static let CacheVersion : Int = 3 // this is core data cache
+        static let CacheVersion : Int = 4 // this is core data cache
         
         case v1 = 1
         case v2 = 2
@@ -135,6 +135,13 @@ class CoreDataCache : Migrate {
             try FileManager.default.removeItem(at: CoreDataStore.dbUrl)
         } catch {
             //
+        }
+        
+        if self.currentVersion <= Version.v2.rawValue {
+            let userVersion = UserDefaultsSaver<Int>(key: UsersManager.CoderKey.Version)
+            userVersion.set(newValue: 0)
+            KeychainWrapper.keychain.remove(forKey: "BioProtection" + ".version")
+            KeychainWrapper.keychain.remove(forKey: "PinProtection" + ".version")
         }
         
         //TODO:: fix me

@@ -35,7 +35,7 @@ extension APIService {
         let filepath = destinationDirectoryURL.appendingPathComponent(attachmentID)
         
         // download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
-        download(byUrl: self.serverConfig.hostUrl + pathForAttachmentID(attachmentID),
+        download(byUrl: self.doh.getHostUrl() + pathForAttachmentID(attachmentID),
                  destinationDirectoryURL: filepath,
                  headers: [HTTPHeader.apiVersion: 3],
                  customAuthCredential: customAuthCredential,
@@ -50,7 +50,8 @@ extension APIService {
     
     // MARK: - Private methods
     fileprivate func pathForAttachmentID(_ attachmentID: String) -> String {
-        return self.serverConfig.path + "/attachments/\(attachmentID)"
+//        return self.serverConfig.path + "/attachments/\(attachmentID)"
+        return "/attachments/\(attachmentID)"
     }
     
 }
