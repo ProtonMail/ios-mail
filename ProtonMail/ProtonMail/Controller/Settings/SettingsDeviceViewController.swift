@@ -232,6 +232,10 @@ extension SettingsDeviceViewController {
                 case .cleanCache:
 //                    c.config(right: LocalString._empty_cache)
                     break
+                case .browser:
+                    let browser = userCachedStatus.browser
+                    c.config(left: item.description)
+                    c.config(right: browser.isInstalled ? browser.title : LinkOpener.safari.title)
                 }
             }
             return cell
@@ -354,6 +358,23 @@ extension SettingsDeviceViewController {
                 break
             case .cleanCache:
                 break
+            case .browser:
+                let browsers = LinkOpener.allCases.filter {
+                    $0.isInstalled
+                }.compactMap { app in
+                    return UIAlertAction(title: app.title, style: .default) { [weak self] _ in
+                        userCachedStatus.browser = app
+                        self?.tableView?.reloadRows(at: [indexPath], with: .fade)
+                    }
+                }
+                let alert = UIAlertController(title: nil, message: LocalString._settings_browser_disclaimer, preferredStyle: .actionSheet)
+                if let cell = tableView.cellForRow(at: indexPath) {
+                    alert.popoverPresentationController?.sourceView = cell
+                    alert.popoverPresentationController?.sourceRect = cell.bounds
+                }
+                browsers.forEach(alert.addAction)
+                alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
             }
         case .info, .network:
             break

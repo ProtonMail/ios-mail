@@ -49,6 +49,7 @@ public enum DeviceSectionItem : Int, CustomStringConvertible {
     case combinContacts = 2
     case cleanCache = 3
     case push = 4
+    case browser = 5
     
     public var description : String {
         switch(self){
@@ -62,6 +63,8 @@ public enum DeviceSectionItem : Int, CustomStringConvertible {
             return LocalString._local_cache_management
         case .push:
             return LocalString._push_notification
+        case .browser:
+            return LocalString._default_browser
         }
     }
 }
@@ -90,7 +93,7 @@ protocol SettingsDeviceViewModel : AnyObject {
 class SettingsDeviceViewModelImpl : SettingsDeviceViewModel {
     var sections: [SettingDeviceSection] = [ .account, .app, .network, .info]
     
-    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, .combinContacts, .cleanCache]
+    var appSettigns: [DeviceSectionItem] = [.push, .autolock, .language, .combinContacts, .browser, .cleanCache]
     var networkItems : [SNetworkItems] = [.doh]
     var userManager: UserManager
     var lockOn : Bool {
