@@ -109,11 +109,11 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private var menuBarButtonItem: UIBarButtonItem!
     
     // MARK: swipactions
-    private var leftSwipeAction : MessageSwipeAction {
-        return self.viewModel.user.userInfo.swipeRightAction
-    }
-    private var rightSwipeAction : MessageSwipeAction {
+    private var swipeLeftToRightAction : MessageSwipeAction {
         return self.viewModel.user.userInfo.swipeLeftAction
+    }
+    private var swipeRightToLeftAction : MessageSwipeAction {
+        return self.viewModel.user.userInfo.swipeRightAction
     }
     
     private var lastNetworkStatus : NetworkStatus? = nil
@@ -542,24 +542,24 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         mailboxCell.zeroMargin()
         mailboxCell.defaultColor = UIColor.lightGray
         let leftCrossView = UILabel()
-        leftCrossView.text = self.viewModel.getSwipeTitle(leftSwipeAction)
+        leftCrossView.text = self.viewModel.getSwipeTitle(swipeLeftToRightAction)
         leftCrossView.sizeToFit()
         leftCrossView.textColor = UIColor.white
         
         let rightCrossView = UILabel()
-        rightCrossView.text = self.viewModel.getSwipeTitle(rightSwipeAction)
+        rightCrossView.text = self.viewModel.getSwipeTitle(swipeRightToLeftAction)
         rightCrossView.sizeToFit()
         rightCrossView.textColor = UIColor.white
         
-        if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-            mailboxCell.setSwipeGestureWith(leftCrossView, color: leftSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state1 ) { [weak self] (cell, state, mode) -> Void in
+        if self.viewModel.isSwipeActionValid(self.swipeLeftToRightAction) {
+            mailboxCell.setSwipeGestureWith(leftCrossView, color: swipeLeftToRightAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state1 ) { [weak self] (cell, state, mode) -> Void in
                 guard let `self` = self else { return }
                 guard let cell = cell else { return }
                 if let indexp = self.tableView.indexPath(for: cell) {
-                    if self.viewModel.isSwipeActionValid(self.leftSwipeAction) {
-                        if !self.processSwipeActions(self.leftSwipeAction, indexPath: indexp) {
+                    if self.viewModel.isSwipeActionValid(self.swipeLeftToRightAction) {
+                        if !self.processSwipeActions(self.swipeLeftToRightAction, indexPath: indexp) {
                             mailboxCell.swipeToOrigin(completion: nil)
-                        } else if self.viewModel.stayAfterAction(self.leftSwipeAction) {
+                        } else if self.viewModel.stayAfterAction(self.swipeLeftToRightAction) {
                             mailboxCell.swipeToOrigin(completion: nil)
                         }
                     } else {
@@ -571,15 +571,15 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
             }
         }
         
-        if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-            mailboxCell.setSwipeGestureWith(rightCrossView, color: rightSwipeAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
+        if self.viewModel.isSwipeActionValid(self.swipeRightToLeftAction) {
+            mailboxCell.setSwipeGestureWith(rightCrossView, color: swipeRightToLeftAction.actionColor, mode: MCSwipeTableViewCellMode.exit, state: MCSwipeTableViewCellState.state3  ) { [weak self] (cell, state, mode) -> Void in
                 guard let `self` = self else { return }
                 guard let cell = cell else { return }
                 if let indexp = self.tableView.indexPath(for: cell) {
-                    if self.viewModel.isSwipeActionValid(self.rightSwipeAction) {
-                        if !self.processSwipeActions(self.rightSwipeAction, indexPath: indexp) {
+                    if self.viewModel.isSwipeActionValid(self.swipeRightToLeftAction) {
+                        if !self.processSwipeActions(self.swipeRightToLeftAction, indexPath: indexp) {
                             mailboxCell.swipeToOrigin(completion: nil)
-                        } else if self.viewModel.stayAfterAction(self.rightSwipeAction) {
+                        } else if self.viewModel.stayAfterAction(self.swipeRightToLeftAction) {
                             mailboxCell.swipeToOrigin(completion: nil)
                         }
                     } else {
