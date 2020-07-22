@@ -39,6 +39,7 @@ class SettingsGestureViewModelImpl: SettingsGestureViewModel {
     var setting_swipe_actions : [MessageSwipeAction]     = [.trash, .spam,
                                                             .star, .archive, .unread]
     let user: UserManager
+    let users: UsersManager
     
     var userInfo: UserInfo {
         get {
@@ -46,11 +47,15 @@ class SettingsGestureViewModelImpl: SettingsGestureViewModel {
         }
     }
     
-    init(user: UserManager) {
+    init(user: UserManager, users: UsersManager) {
         self.user = user
+        self.users = users
     }
     
     func updateUserSwipeAction(isLeft: Bool, action: MessageSwipeAction, completion: @escaping CompletionBlock) {
-        self.user.userService.updateUserSwipeAction(auth: self.user.auth, userInfo: self.userInfo, isLeft: isLeft, action: action, completion: completion)
+        self.user.userService.updateUserSwipeAction(auth: self.user.auth, userInfo: self.userInfo, isLeft: isLeft, action: action) { task, res, err in
+            self.users.onSave(userManger: self.user)
+            completion(task, res, err)
+        }
     }
 }
