@@ -407,6 +407,7 @@ class UsersManager : Service, Migrate {
                 users.append(newUser)
             }
         }
+        self.loggedIn()
     }
         
 //        let authList = self.users.compactMap{ $0.auth }
