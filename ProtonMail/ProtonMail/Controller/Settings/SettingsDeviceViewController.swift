@@ -222,6 +222,14 @@ extension SettingsDeviceViewController {
                     })
                 case .autolock:
                     let status = self.viewModel.lockOn ? "on" : "off"
+                    switch UIDevice.current.biometricType {
+                    case .none:
+                        c.config(left: LocalString._pin)
+                    case .touchID:
+                        c.config(left: LocalString._pin_and_touch_id)
+                    case .faceID:
+                        c.config(left: LocalString._pin_and_face_id)
+                    }
                     c.config(right: status)
                 case .language:
                     let language: ELanguage =  LanguageManager.currentLanguageEnum()
