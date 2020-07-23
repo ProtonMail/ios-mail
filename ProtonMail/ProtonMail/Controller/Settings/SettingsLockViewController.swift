@@ -55,6 +55,8 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     var protection_auto_logout : [Int]                   = [-1, 0, 1, 2, 5,
                                                             10, 15, 30, 60]
     
+    var lockText = LocalString._enable_pin
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.updateTitle()
@@ -69,6 +71,17 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     
     private func updateTitle() {
         self.title = LocalString._auto_lock
+        
+        switch UIDevice.current.biometricType {
+        case .none:
+            self.title = LocalString._pin
+        case .touchID:
+            self.title = LocalString._pin_and_touch_id
+            self.lockText = LocalString._enable_pin_or_touch_id
+        case .faceID:
+            self.title = LocalString._pin_and_face_id
+            self.lockText = LocalString._enable_pin_or_face_id
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -78,33 +91,12 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateTableProtectionSection()
-//        userManager.userInfo.passwor
-//        if sharedUserDataService.passwordMode == 1 {
-//            setting_general_items = [.notifyEmail, .singlePWD, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-//        } else {
-//            setting_general_items = [.notifyEmail, .loginPWD, .mbp, .autoLoadImage, .linkOpeningMode, .browser, .metadataStripping, .cleanCache]
-//        }
-//        if #available(iOS 10.0, *), Constants.Feature.snoozeOn {
-//            setting_general_items.append(.notificationsSnooze)
-//        }
-//
-//  multi_domains = self.userManager.addresses
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     internal func updateTableProtectionSection() {
         self.viewModel.updateProtectionItems()
         self.tableView.reloadData()
-        
-//        self.tableView.beginUpdates()
-//        for index in 0 ..< self.viewModel.sections.count {
-//            if index >= self.tableView.numberOfSections {
-//                self.tableView.insertSections(IndexSet(integer: index), with: .fade)
-//            } else {
-//                self.tableView.reloadSections(IndexSet(integer: index), with: .fade)
-//            }
-//        }
-//         self.tableView.endUpdates()
     }
     
     ///MARK: -- table view delegate
@@ -137,7 +129,7 @@ class SettingsLockViewController: UITableViewController, ViewModelProtocol, Coor
             cell.accessoryType = UITableViewCell.AccessoryType.none
             cell.selectionStyle = UITableViewCell.SelectionStyle.none
             if let c = cell as? SwitchTableViewCell {
-                c.configCell(eSection.description, bottomLine: "", status: self.viewModel.lockOn, complete: { (cell, newStatus, feedback) -> Void in
+                c.configCell(self.lockText, bottomLine: "", status: self.viewModel.lockOn, complete: { (cell, newStatus, feedback) -> Void in
                     let ison = self.viewModel.lockOn
                     self.viewModel.lockOn = !ison
                     self.updateTableProtectionSection()
