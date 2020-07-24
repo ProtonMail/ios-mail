@@ -135,7 +135,7 @@ class APIService : Service {
         // init lock
         pthread_mutex_init(&mutex, nil)
 
-        doh.status = .on // userCachedStatus.isDohOn ? .on : .off
+        doh.status = userCachedStatus.isDohOn ? .on : .off
 
         // set config
 //        self.serverConfig = config
