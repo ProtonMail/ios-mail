@@ -1,6 +1,6 @@
 //
-//  utility.swift
-//  ProtonMail - Created on 8/13/19.
+//  signinTests.swift
+//  ProtonMail - Created on 7/4/19.
 //
 //
 //  Copyright (c) 2019 Proton Technologies AG
@@ -20,10 +20,16 @@
 //  You should have received a copy of the GNU General Public License
 //  along with ProtonMail.  If not, see <https://www.gnu.org/licenses/>.
 
-import XCTest
-
-extension XCUIElementQuery {
-    func containing(label name: String) -> XCUIElementQuery {
-        return self.containing(NSPredicate(format: "label CONTAINS[c] '\(name)'"))
+class LoginTests: BaseTestCase {
+    
+    func testLoginLogoutUser() {
+        let user = TestUser.testUserOne
+        
+        LoginRobot()
+            .loginUser(user.email, user.password)
+            .verify.loginSuccessful()
+            .menuDrawer()
+            .logoutUser()
+            .verify.loginViewShown()
     }
 }
