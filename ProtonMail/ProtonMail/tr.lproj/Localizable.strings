@@ -75,8 +75,7 @@
 "Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Ödeme yapılmadığı için bu hesaba erişim engellendi. Ödenmemiş faturalarınızı ödemek için lütfen protonmail.com üzerinden oturum açın.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim devre dışı.
-Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi tabanımızı</a> ziyaret edin.";
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Ödeme yapılmadığı için bu hesaba erişim devre dışı. Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">bilgi tabanımızı</a> ziyaret edin.";
 
 /* 
  & title */
@@ -1819,9 +1818,7 @@ Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledg
 "To" = "Kime";
 
 /* human verification notes */
-"To prevent abuse of ProtonMail,
- we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için,
- insan olduğunuzu doğrulamamız gerekiyor.";
+"To prevent abuse of ProtonMail, we need to verify that you are human." = "ProtonMail'in kötüye kullanımını önlemek için, insan olduğunuzu doğrulamamız gerekiyor.";
 
 /* None */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "Posta kutusu parolanızı sıfırlamak için, lütfen protonmail.com adresinden ProtonMail'in web sürümünü kullanın";
@@ -1906,8 +1903,7 @@ Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledg
 "Unable to parse response" = "Yanıt ayrıştırılamadı";
 
 /* Description */
-"Unable to parse the response object:
-%@" = "Yanıt nesnesi ayrıştırılamadı: %@";
+"Unable to parse the response object: %@" = "Yanıt nesnesi ayrıştırılamadı: %@";
 
 /* Error */
 "Unable to parse token" = "Belirteç ayrıştırılamadı";
@@ -2103,9 +2099,7 @@ Lütfen daha fazla bilgi için <a href=\"https://protonmail.com/support/knowledg
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Yeni şifreli e-posta hesabınız kuruldu ve şifrelenmiş iletiler göndermeye ve almaya hazır.";
 
 /* view top title */
-"Your new secure email
- account is ready." = "Yeni güvenli e-posta
-hesabınız hazır.";
+"Your new secure email account is ready." = "Yeni güvenli e-posta hesabınız hazır.";
 
 /* Service plan description footer */
 "Your plan is currently active until" = "Planınız şu anda tarihine kadar etkin";
@@ -2144,8 +2138,7 @@ hesabınız hazır.";
 "for one year" = "bir yıl için";
 
 /* contacts api error when fetch */
-"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() başarısız oldu,
-peopleOrderedByUsersPreference boş sonuç döndürdü!!";
+"get contacts() failed, peopleOrderedByUsersPreference return null!!" = "get contacts() başarısız oldu, peopleOrderedByUsersPreference boş sonuç döndürdü!!";
 
 /* None */
 "hours" = "saat";
