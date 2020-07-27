@@ -145,8 +145,9 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
         let update = lastUpdateDefault(by: labelID, userID: userID, context: context ?? CoreDataService.shared.mainManagedObjectContext)
         update.unread = Int32(count)
         
-        let _ = context?.saveUpstreamIfNeeded()
-        
+        context?.perform {
+            let _ = context?.saveUpstreamIfNeeded()
+        }
         if labelID == Message.Location.inbox.rawValue {
             UIApplication.setBadge(badge: count)
         }
