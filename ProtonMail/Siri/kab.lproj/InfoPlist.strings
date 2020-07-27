@@ -2,5 +2,5 @@
 "CFBundleDisplayName" = "Siri";
 
 /* Bundle name */
-"CFBundleName" = "$(PRODUCT_NAME)";
+"CFBundleName" = "Siri";
 
