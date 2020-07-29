@@ -1416,8 +1416,10 @@ class MessageDataService : Service, HasLocalStorage {
     private func empty(labelId: String, UID: String, completion: CompletionBlock?) {
         if let location = Message.Location(rawValue: labelId) {
             self.empty(at: location, UID: UID, completion: completion)
+        } else {
+            self.empty(labelID: labelId, completion: completion)
         }
-        completion?(nil, nil, nil)
+//        completion?(nil, nil, nil)
     }
     
     private func empty(at location: Message.Location, UID: String, completion: CompletionBlock?) {
