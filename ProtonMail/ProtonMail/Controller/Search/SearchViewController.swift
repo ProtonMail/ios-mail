@@ -266,11 +266,11 @@ class SearchViewController: ProtonMailViewController {
                             page: Int? = nil)
     {
         let pageToLoad = page ?? 0
-        if query.count < 3 {
-            self.searchResult = []
-            self.currentPage = 0
-            return
-        }
+//        if query.count < 3 {  //query.preg_match("^[A-Za-z0-9_]+$") && 
+//            self.searchResult = []
+//            self.currentPage = 0
+//            return
+//        }
         noResultLabel.isHidden = true
         tableView.showLoadingFooter()
         
