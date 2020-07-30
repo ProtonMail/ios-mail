@@ -51,7 +51,7 @@ protocol SettingsPrivacyViewModel: AnyObject {
 
 class SettingsPrivacyViewModelImpl: SettingsPrivacyViewModel {   
     
-    var privacySections : [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping, .browser]
+    var privacySections : [SettingPrivacyItem] = [.autoLoadImage, .linkOpeningMode, .metadataStripping]
     let user: UserManager
     
     var userInfo: UserInfo {

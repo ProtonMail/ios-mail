@@ -85,9 +85,9 @@ class SettingsGesturesViewController: UITableViewController, ViewModelProtocol, 
         if let cell = tableView.dequeueReusableCell(withIdentifier: CellKey.settingCell, for: indexPath) as? GeneralSettingViewCell {
             switch self.viewModel.setting_swipe_action_items[indexPath.row] {
             case .left:
-                cell.configCell(LocalString._swipe_right_to_left, right: self.viewModel.userInfo.swipeLeftAction.description)
+                cell.configCell(LocalString._swipe_left_to_right, right: self.viewModel.userInfo.swipeLeftAction.description)
             case .right:
-                cell.configCell(LocalString._swipe_left_to_right, right: self.viewModel.userInfo.swipeRightAction.description)
+                cell.configCell(LocalString._swipe_right_to_left, right: self.viewModel.userInfo.swipeRightAction.description)
             }
             return cell
         }

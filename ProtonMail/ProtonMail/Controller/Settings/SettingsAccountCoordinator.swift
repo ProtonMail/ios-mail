@@ -183,7 +183,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
         let vc = SettingsGesturesViewController()
         let users: UsersManager = services.get()
         let user = users.firstUser!
-        let coordinator = SettingsGesturesCoordinator(dest: vc, vm: SettingsGestureViewModelImpl(user: user), services: self.services)
+        let coordinator = SettingsGesturesCoordinator(dest: vc, vm: SettingsGestureViewModelImpl(user: user, users: users), services: self.services)
         coordinator?.start()
         self.viewController?.navigationController?.pushViewController(vc, animated: true)
     }

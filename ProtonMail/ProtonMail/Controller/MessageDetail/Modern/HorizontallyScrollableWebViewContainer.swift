@@ -119,6 +119,9 @@ class HorizontallyScrollableWebViewContainer: UIViewController {
         self.webView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         
         self.verticalRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        if #available(iOS 13.4, *) {
+            self.verticalRecognizer.allowedScrollTypesMask = .all
+        }
         self.verticalRecognizer.delegate = self
         self.verticalRecognizer.maximumNumberOfTouches = 1
         self.webView.scrollView.addGestureRecognizer(verticalRecognizer)
