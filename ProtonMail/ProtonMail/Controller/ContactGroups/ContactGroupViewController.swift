@@ -289,8 +289,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
                                                 style: .destructive,
                                                 handler: deleteHandler))
         
-        alertController.popoverPresentationController?.sourceView = self.view
-        alertController.popoverPresentationController?.sourceRect = self.view.frame
+        alertController.popoverPresentationController?.barButtonItem = trashcanBarButtonItem
         self.present(alertController, animated: true, completion: nil)
     }
     
