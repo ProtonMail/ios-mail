@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Требуется для прикрепления фотографий к письмам.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "Используется для доступа к адресам электронной почты для контактов, сохраненных на устройстве, чтобы их можно было использовать при составлении сообщения или при загрузке контактов с устройства в ваш аккаунт вручную. Контактная информация не загружается на наши серверы без явного запроса этого действия.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Позволяет вам быстро и безопасно разблокировать приложение.";

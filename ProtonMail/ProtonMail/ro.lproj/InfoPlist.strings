@@ -8,7 +8,7 @@
 "NSCameraUsageDescription" = "Obligatoriu pentru atașarea imaginilor la e-mail.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "Folosit pentru accesarea adreselor de e-mail pentru persoanele de contact salvate pe dispozitiv astfel încât acestea să poată fi utilizate la compunerea mesajelor sau la încărcarea manuală a contactelor dispozitivului în contul propriu. Informațiile de contact nu sunt încărcate pe serverele noastre fără o acțiune explicită în acest sens.";
 
 /* Privacy - Face ID Usage Description */
 "NSFaceIDUsageDescription" = "Permite deblocarea rapidă și sigură a aplicației.";

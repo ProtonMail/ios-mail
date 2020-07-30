@@ -8,13 +8,13 @@
 "NSCameraUsageDescription" = "Necessário para anexar fotografias ao email.";
 
 /* Privacy - Contacts Usage Description */
-"NSContactsUsageDescription" = "Enables selecting email addresses from contacts on your device when composing messages.";
+"NSContactsUsageDescription" = "Usado para aceder a endereços de email de contactos no dispositivo, para os disponibilizar ao compor uma mensagem ou ao enviar manualmente os contactos do dispositivo para a sua conta. A informação do contacto não é enviada aos nossos servidores sem que tome uma acção explícita para tal.";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Permite que desbloqueie a aplicação de forma rápida e segura.";
+"NSFaceIDUsageDescription" = "Permite desbloquear a aplicação de forma rápida e segura.";
 
 /* Privacy - Photo Library Additions Usage Description */
-"NSPhotoLibraryAddUsageDescription" = "Necessário para guardar imagem em anexo da biblioteca de fotografias.";
+"NSPhotoLibraryAddUsageDescription" = "Necessário para gravar imagens anexadas na biblioteca de fotografias.";
 
 /* Privacy - Photo Library Usage Description */
 "NSPhotoLibraryUsageDescription" = "Necessário para anexar fotografias ao email.";

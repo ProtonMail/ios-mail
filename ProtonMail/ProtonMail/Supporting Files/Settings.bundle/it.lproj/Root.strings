@@ -1,0 +1,12 @@
+/* (No Comment) */
+"Enabled" = "Abilitato";
+
+/* A single strings file, whose title is specified in your preferences schema. The strings files provide the localized content to display to the user for each of your preferences. */
+"Group" = "Gruppo";
+
+/* (No Comment) */
+"Name" = "Nome";
+
+/* (No Comment) */
+"none given" = "nessuna selezione";
+
