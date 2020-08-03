@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Activare e-mail de notificare";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Activare PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Activare protecție PIN";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Activare PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Activare PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Activare TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Galerie foto";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Codul PIN nu poate fi gol.";

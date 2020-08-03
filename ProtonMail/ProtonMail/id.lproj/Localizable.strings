@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Aktifkan Pemberitahuan Surel";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Aktifkan PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Aktifkan proteksi PIN";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Aktifkan PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Aktifkan PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Aktifkan TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Perpustakaan Foto";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Kode pin tidak boleh kosong.";

@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Включить уведомление по электронной почте";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Включить защиту PIN-кодом";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Включить TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Фотоальбом / Медиатека";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";

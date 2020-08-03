@@ -171,7 +171,7 @@
 "All Mail" = "所有郵件";
 
 /* network troubleshot cell title */
-"Allow alternative routing" = "Allow alternative routing";
+"Allow alternative routing" = "允許替代路由";
 
 /* archive when apply label */
 "Also Archive" = "同時封存";
@@ -325,7 +325,7 @@
 "Buy More Credits" = "購買更多點數";
 
 /* Alert for removing disconnected accounts */
-"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?";
+"By removing this account, you will no longer be able to access it from this device unless you add it again.\n\nDo you want to remove this account anyway?" = "移除該帳號後，除非再次新增，否則您將無法再從本裝置上存取該帳號。\n\n仍要移除該帳號嗎？";
 
 /* agree check box first part words */
 "By using protonmail, you agree to our" = "使用 ProtonMail，您將同意我們的";
@@ -374,7 +374,7 @@
 "Can't find the selected message. Please try again." = "找不到已選取的信件。請再試一次。";
 
 /* Description */
-"Can't find the value from the response body" = "Can't find the value from the response body";
+"Can't find the value from the response body" = "無法自回覆正文中找到相應的值";
 
 /* when quick look attachment but can't find the data */
 "Can't find this attachment!" = "找不到這個附件！";
@@ -458,7 +458,7 @@
 "Check Again" = "再次檢查";
 
 /* network troubleshot cell title */
-"Check Proton Status for our system status." = "Check Proton Status for our system status.";
+"Check Proton Status for our system status." = "在「Proton 狀態」中確認我們的系統狀態。";
 
 /* loading message */
 "Checking ...." = "正在檢查 ‧‧‧‧";
@@ -534,7 +534,7 @@
 "Contact the ProtonMail team" = "聯繫 ProtonMail 團隊";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Contact us directly through our support form, email (support@protonmail.com), or Twitter.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "直接通過客服表單、電子郵件 (support@protonmail.com) 或 Twitter 聯絡我們。";
 
 /* Action and title
    menu title */
@@ -659,10 +659,10 @@
 "Details" = "詳情";
 
 /* network troubleshot cell title */
-"Disable any proxies or firewalls, or contact your network administrator." = "Disable any proxies or firewalls, or contact your network administrator.";
+"Disable any proxies or firewalls, or contact your network administrator." = "停用任何代理伺服器或防火牆，或聯絡您的網路管理員。";
 
 /* Cert pinning failed alert message */
-"Disable Validation" = "Disable Validation";
+"Disable Validation" = "停用驗證";
 
 /* Action */
 "Discard changes" = "放棄變更";
@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "啟用信件通知";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Enable PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "啟用 PIN 碼保護";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Enable PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Enable PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "使用TouchID";
@@ -869,7 +878,7 @@
 "Expires" = "有效期限";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Expires in %1$d days %2$d hours %3$d mins %4$d seconds";
+"Expires in %d days %d hours %d mins %d seconds" = "於 %1$d 天又 %2$d 小時 %3$d 分鐘 %4$d 秒後失效";
 
 /* Title */
 "Expiring Messages" = "有限期限信件";
@@ -963,7 +972,7 @@
 "Go to settings" = "前往設定頁面";
 
 /* network troubleshot cell title */
-"Government block" = "Government block";
+"Government block" = "遭政府封鎖";
 
 /* The title for the contact group detail view */
 "Group Details" = "群組詳細資訊";
@@ -1029,7 +1038,7 @@
 "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. [Learn more]";
 
 /* network troubleshot cell title */
-"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@";
+"In case Proton sites are blocked, this setting allows the app to try alternative network routing to reach Proton, which can be useful for bypassing firewalls or network issues. We recommend keeping this setting on for greater reliability. %1$@" = "若 Proton 網站遭到封鎖，該設定可讓應用程式嘗試使用替代路由來連線至 Proton，適用於繞過防火牆或網路問題。我們建議保持開啟本設定以獲得最佳可用性。%1$@";
 
 /* Error */
 "In order to use our services, you must agree to ProtonMail's Terms of Service." = "要使用ProtonMail，您必須同意ProtonMail的服務條款。";
@@ -1069,7 +1078,7 @@
 "Internet" = "網路";
 
 /* network troubleshot cell title */
-"Internet Service Provider (ISP) problem" = "Internet Service Provider (ISP) problem";
+"Internet Service Provider (ISP) problem" = "網際網路服務提供商 (ISP) 問題";
 
 /* (No Comment) */
 "Invalid access token please relogin" = "不正確的訪問 token，請重新登入";
@@ -1190,7 +1199,7 @@
 "Log Out All" = "全部登出";
 
 /* Alert when auth token is revoked and switch to another */
-"Logged out from %@ and signed in with %@" = "Logged out from %1$@ and signed in with %2$@";
+"Logged out from %@ and signed in with %@" = "登出 %1$@ 並登入 %2$@";
 
 /* Title */
 "Login" = "登入";
@@ -1235,7 +1244,7 @@
 "Manage Addresses" = "管理電子郵件位址";
 
 /* Settings row */
-"Manage in device Settings" = "Manage in device Settings";
+"Manage in device Settings" = "於裝置 [設定] 中管理";
 
 /* Title */
 "Manage Labels/Folders" = "管理標籤和資料夾";
@@ -1308,7 +1317,7 @@
 "More Credits" = "更多點數";
 
 /* move action */
-"Move to All Mail" = "Move to All Mail";
+"Move to All Mail" = "移至 [所有郵件]";
 
 /* move action */
 "Move to Archive" = "移動到封存";
@@ -1344,7 +1353,7 @@
 "NEED AN ACCOUNT? SIGN UP." = "需要帳戶？註冊吧！";
 
 /* section title */
-"Networking" = "Networking";
+"Networking" = "網路";
 
 /* Title */
 "New login password" = "新的登入密碼";
@@ -1362,7 +1371,7 @@
 "No connectivity detected..." = "沒有偵測到網路連線...";
 
 /* network troubleshot cell title */
-"No internet connection" = "No internet connection";
+"No internet connection" = "無網路連線";
 
 /* message when mailbox doesnt have emailsß */
 "No Messages" = "沒有訊息";
@@ -1432,7 +1441,7 @@
 "On EE, MMM d, yyyy at %@, %@, wrote:" = "在 EE, MMM d, yyyy 的 %1$@, %2$@, 寫下:";
 
 /* Alert when the free account limit is reached */
-"Only one free account can be added" = "Only one free account can be added";
+"Only one free account can be added" = "僅可新增一個免費帳號";
 
 /* (No Comment) */
 "OpenDraft" = "正在編寫的草稿";
@@ -1459,7 +1468,7 @@
 "Password cannot be empty." = "密碼欄位不能為空。";
 
 /* cell title in device settings */
-"Password management" = "Password management";
+"Password management" = "密碼管理";
 
 /* Title */
 "Password Mismatch" = "密碼不符合";
@@ -1503,6 +1512,15 @@
 /* Title */
 "Photo Library" = "相片集";
 
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
+
 /* Description */
 "Pin code can't be empty." = "Pin 碼欄位不能為空。";
 
@@ -1531,7 +1549,7 @@
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "請登錄您正在升級服務方案的 protonmail 帳戶, 以便我們完成服務方案啟動。";
 
 /* network troubleshot cell title */
-"Please make sure that your internet connection is working." = "Please make sure that your internet connection is working.";
+"Please make sure that your internet connection is working." = "請確定網際網路連線是否正常。";
 
 /* Error */
 "Please pick a user name first!" = "請先選擇一個使用者名稱！";
@@ -1543,7 +1561,7 @@
 "Please remove all attachments before changing sender!" = "請在更改寄件人之前刪除所有附件";
 
 /* The message will show up when the user attempts to apply label/folder in inbox without select any emails */
-"Please select at least one email" = "Please select at least one email";
+"Please select at least one email" = "請選擇至少一個電子郵件";
 
 /* The message will show up when the user attempts to create a contact group without any email selected */
 "Please select at least one email for the contact group" = "請至少為連絡人群組選擇一封電子郵件";
@@ -1603,13 +1621,13 @@
 "Print" = "列印";
 
 /* cell title in device settings */
-"Privacy" = "Privacy";
+"Privacy" = "隱私";
 
 /* agree check box privacy */
 "privacy policy." = "隱私政策。";
 
 /* Local notification title */
-"Problem sending message" = "Problem sending message";
+"Problem sending message" = "傳送訊息時發生錯誤";
 
 /* Title */
 "Protection" = "隱私保護";
@@ -1618,10 +1636,10 @@
 "Protection Entire App" = "保護整個 App";
 
 /* network troubleshot cell title */
-"Proton is down" = "Proton is down";
+"Proton is down" = "Proton 目前無法使用";
 
 /* network troubleshot cell title */
-"Proton Status" = "Proton Status";
+"Proton Status" = "Proton 狀態";
 
 /* Title */
 "ProtonMail" = "ProtonMail";
@@ -1636,7 +1654,7 @@
 "ProtonMail is currently offline, check our twitter for the current status: https://twitter.com/protonmail" = "ProtonMail 目前處於離線狀態，請到 Twitter 查看最新狀況：https://twitter.com/ProtonMail";
 
 /* Title */
-"ProtonMail is currently offline..." = "ProtonMail is currently offline...";
+"ProtonMail is currently offline..." = "ProtonMail 處於離線狀態...";
 
 /* Description */
 "ProtonMail Plus is required to customize your mobile signature" = "成為ProtonMail Plus用戶來更改您的行動版簽名檔";
@@ -1651,10 +1669,10 @@
 "ProtonVPN included" = "包括 ProtonVPN";
 
 /* network troubleshot cell title */
-"Proxy/Firewall interference" = "Proxy/Firewall interference";
+"Proxy/Firewall interference" = "代理伺服器/防火牆干擾";
 
 /* cell title in device settings */
-"Push Notifications" = "Push Notifications";
+"Push Notifications" = "推播通知";
 
 /* Title */
 "Quick swipe actions" = "快速滑動手勢";
@@ -1687,10 +1705,10 @@
 "Remove" = "移除";
 
 /* account right bar item title */
-"Remove All" = "Remove All";
+"Remove All" = "全部移除";
 
 /* Settings row */
-"Remove image meta-data" = "Remove image meta-data";
+"Remove image meta-data" = "移除圖片之中繼資料";
 
 /* un star message */
 "Remove Star" = "移除星號";
@@ -1838,7 +1856,7 @@
 "Single Password" = "單一密碼";
 
 /* Cell title in device settings - mute notification until a later time. */
-"Snooze" = "Snooze";
+"Snooze" = "延遲提醒";
 
 /* settings option */
 "Snooze Notifications" = "延遲通知";
@@ -1893,7 +1911,7 @@
 "State" = "省／州";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Still can't find a solution";
+"Still can't find a solution" = "仍無法解決";
 
 /* Title */
 "Storage" = "儲存空間";
@@ -1933,10 +1951,10 @@
 
 /* cell title in device settings
    Swiping gestures */
-"Swiping gestures" = "Swiping gestures";
+"Swiping gestures" = "滑動手勢";
 
 /* Alert when switched account by clicking notification of another account */
-"Switched to account '%@'" = "Switched to account '%@'";
+"Switched to account '%@'" = "切換至帳號「%@」";
 
 /* Error */
 "System can't copy the file" = "系統無法複製此檔案。";
@@ -1948,7 +1966,7 @@
 "Tap send anyway to send without expiration to these recipients" = "點擊發送，即使在沒有使用限時功能的情況下也直接寄給這些收件人。";
 
 /* network troubleshot cell title */
-"Temporarily disable or remove your antivirus software." = "Temporarily disable or remove your antivirus software.";
+"Temporarily disable or remove your antivirus software." = "暫時停用或移除防毒軟體。";
 
 /* agree check box terms */
 "terms and conditions" = "條款及細則";
@@ -1992,13 +2010,13 @@
 "The maximum number of labels is %d." = "標籤的最大數量為 %d。";
 
 /* update password error */
-"The new password can't be empty." = "The new password can't be empty.";
+"The new password can't be empty." = "新密碼不可為空。";
 
 /* (No Comment) */
 "The new password can't empty" = "新密碼不能空白";
 
 /* update password error */
-"The new password does not match." = "The new password does not match.";
+"The new password does not match." = "輸入的新密碼不一致。";
 
 /* (No Comment) */
 "The new password not match" = "密碼不相符";
@@ -2028,7 +2046,7 @@
 "The total attachment size cannot exceed 25MB" = "附件檔案大小總和不能超過 25MB";
 
 /* Alert when the account is already logged in */
-"The user is already logged in" = "The user is already logged in";
+"The user is already logged in" = "該使用者已登入。";
 
 /* 
  */
@@ -2042,10 +2060,10 @@
 "The verification failed!" = "驗證失敗！";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "佇列中仍有未處理的訊息。登出將刪除草稿。";
 
 /* Alert to confirm logout with pending message in the queue */
-"There are unsent messages that will be lost if you log out" = "There are unsent messages that will be lost if you log out";
+"There are unsent messages that will be lost if you log out" = "仍有未送出的訊息，若登出將遺失這些訊息";
 
 /* Description */
 "There was an error creating or loading the app's saved data." = "建立或載入程式的儲存資料過程中發生錯誤。";
@@ -2070,16 +2088,16 @@
 "This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "這可能是詐騙電子郵件。請檢查寄件者和內容以確保電子郵件是合法的。";
 
 /* Title */
-"This preference will fallback to Safari if the browser of choice will be uninstalled." = "This preference will fallback to Safari if the browser of choice will be uninstalled.";
+"This preference will fallback to Safari if the browser of choice will be uninstalled." = "若刪除選擇的瀏覽器，則該偏好選項將遞補為 Safari。";
 
 /* contacts talbe cell Title title */
 "Title" = "頭銜／職稱";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS 憑證驗證失敗。目前的連線可能正被監控，應用程式基於安全考量已暫時阻擋連線。\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS 憑證驗證失敗。目前的連線可能正被監控，應用程式基於安全考量已暫時阻擋連線。\n\n立即切換網路";
 
 /* Title */
 "To" = "收件人";
@@ -2124,13 +2142,13 @@
 "Trouble shooting guide" = "疑難解答";
 
 /* troubleshooting view button */
-"Troubleshoot" = "Troubleshoot";
+"Troubleshoot" = "疑難排解";
 
 /* network troubleshot view title */
-"TroubleShooting" = "TroubleShooting";
+"TroubleShooting" = "疑難排解";
 
 /* network troubleshot cell title */
-"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "Try connecting to Proton from a different network (or use ProtonVPN or Tor).";
+"Try connecting to Proton from a different network (or use ProtonVPN or Tor)." = "嘗試以不同的網路連線至 Proton（或使用 ProtonVPN 或 Tor）。";
 
 /* action sheet option */
 "Turn Off" = "關閉";
