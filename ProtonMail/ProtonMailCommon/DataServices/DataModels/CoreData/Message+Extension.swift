@@ -167,7 +167,7 @@ extension Message {
                 }
                 
                 if !label.labelID.preg_match ("(?!^\\d+$)^.+$") {
-                    if label.labelID != "1", label.labelID != "2", label.labelID != "10" {
+                    if label.labelID != "1", label.labelID != "2", label.labelID != "10", label.labelID != "5" {
                         return label.labelID
                     }
                 }
