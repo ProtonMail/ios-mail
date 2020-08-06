@@ -48,6 +48,7 @@ protocol UnlockManagerDelegate : class {
 
 class UnlockManager: Service {
     var cacheStatus : CacheStatusInject
+    private var mutex = pthread_mutex_t()
     weak var delegate : UnlockManagerDelegate?
     
     static var shared: UnlockManager {
@@ -57,6 +58,7 @@ class UnlockManager: Service {
     init(cacheStatus: CacheStatusInject, delegate: UnlockManagerDelegate?) {
         self.cacheStatus = cacheStatus
         self.delegate = delegate
+        pthread_mutex_init(&mutex, nil)
     }
     
     internal func isUnlocked() -> Bool {
@@ -180,8 +182,9 @@ class UnlockManager: Service {
     #if !APP_EXTENSION
     // TODO: verify if some of these operations can be optimized
     private func updateUserData(of user: UserManager) { // previously this method was called loadContactsAfterInstall()
-        user.sevicePlanService.updateServicePlans()
+        pthread_mutex_lock(&self.mutex)
         user.sevicePlanService.updateCurrentSubscription()
+        pthread_mutex_unlock(&self.mutex)
     }
     
     func updateCommonUserData() {
