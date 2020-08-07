@@ -90,11 +90,7 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
         metaWidth.content = "width=device-width";
         var rects = document.body.getBoundingClientRect();
         var ratio = document.body.offsetWidth/document.body.scrollWidth;
-        if (ratio < 1) {
-        metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
-        } else {
-        ratio = 1;
-        };
+
         document.getElementsByTagName('head')[0].appendChild(metaWidth);
         """
         
@@ -124,13 +120,16 @@ class HTMLStringSecureLoader: NSObject, WebContentsSecureLoader, WKScriptMessage
             userContentController.removeAllUserScripts()
             
             let message = """
-            var rects = document.body.getBoundingClientRect();
-            var ratio = document.body.offsetWidth/document.body.scrollWidth;
-            if (ratio > 1) {
-                ratio = 1;
-            };
-            window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
-            """
+        var metaWidth = document.querySelector('meta[name="viewport"]');
+        metaWidth.content = "width=device-width";
+        var ratio = document.body.offsetWidth/document.body.scrollWidth;
+        if (ratio < 1) {
+            metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0";
+        } else {
+            ratio = 1;
+        };
+        window.webkit.messageHandlers.loaded.postMessage({'height': ratio * document.body.scrollHeight});
+"""
             let sanitize = WKUserScript(source: message, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
             userContentController.addUserScript(sanitize)
             
