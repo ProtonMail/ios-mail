@@ -2192,6 +2192,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 }
                                 
                                 messageObject.userID = self.userID
+                                if msg.Action == IncrementalUpdateType.update1 {
+                                    messageObject.isDetailDownloaded = false
+                                }
+
                                 
                                 if let added = msg.message?["LabelIDsAdded"] as? NSArray {
                                     for add in added {
