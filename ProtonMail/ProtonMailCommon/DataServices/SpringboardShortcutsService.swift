@@ -37,6 +37,7 @@ class SpringboardShortcutsService: NSObject, Service {
             case .favorites:
                 let deeplink = DeepLink(String(describing: MenuViewController.self))
                 deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.starred))
+                deeplink.append(DeepLink.Node(name: String(describing: MailboxViewController.self), value: Message.Location.starred))
                 return deeplink
             case .compose:
                 let deeplink = DeepLink(String(describing: MenuViewController.self))

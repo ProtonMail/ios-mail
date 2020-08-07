@@ -228,6 +228,10 @@ class MailboxCoordinator : DefaultCoordinator {
     }   
     
     func go(to dest: Destination, sender: Any? = nil) {
+        guard let vc = self.viewController else {return}
+        if let presented = vc.presentedViewController {
+            presented.dismiss(animated: false, completion: nil)
+        }
         self.viewController?.performSegue(withIdentifier: dest.rawValue, sender: sender)
     }
     
