@@ -344,6 +344,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.isOnMainView = false // hide the tab bar
+        let viewController = segue.destination
         
         if segue.identifier == kToContactGroupDetailSegue {
             let contactGroupDetailViewController = segue.destination as! ContactGroupDetailViewController
@@ -390,6 +391,13 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             self.setPresentationStyleForSelfController(self,
                                                        presentingController: popup,
                                                        style: .overFullScreen)
+        }
+        
+        if #available(iOS 13, *) { // detect view dismiss above iOS 13
+            if let nav = viewController as? UINavigationController {
+                nav.children[0].presentationController?.delegate = self
+            }
+            segue.destination.presentationController?.delegate = self
         }
     }
     
@@ -670,5 +678,14 @@ extension ContactGroupsViewController: NSNotificationCenterKeyboardObserverProto
                             self.view.layoutIfNeeded()
             }, completion: nil)
         }
+    }
+}
+
+
+// detect view dismiss above iOS 13
+@available (iOS 13, *)
+extension ContactGroupsViewController: UIAdaptivePresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        self.isOnMainView = true
     }
 }
