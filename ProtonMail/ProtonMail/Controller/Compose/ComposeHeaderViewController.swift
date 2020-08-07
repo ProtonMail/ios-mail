@@ -240,7 +240,8 @@ class ComposeHeaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.height = self.view.heightAnchor.constraint(equalToConstant: 0.1)
+        // 184 is default height of header view
+        self.height = self.view.heightAnchor.constraint(equalToConstant: 184)
         self.height.priority = .init(999.0)
         self.height.isActive = true
         
