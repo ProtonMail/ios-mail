@@ -211,9 +211,6 @@ class SignupViewModelImpl : SignupViewModel {
                                             verifer: verifier.encodeBase64(),
                                             deviceToken: self.deviceCheckToken,
                                             fingerprint: fingerprintDict ?? [:])
-                    let c = api.toDictionary()
-                    let jsonData = try! JSONSerialization.data(withJSONObject: c, options: [])
-                    let decoded = String(data: jsonData, encoding: .utf8)!
                     api.call(api: self.apiService) { (task, response, hasError) -> Void in
                         if !hasError {
                             //need clean the cache without ui flow change then signin with a fresh user
