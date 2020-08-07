@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Benachrichtigungen aktivieren";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "PIN aktivieren";
+
 /* settings protection section title */
 "Enable Pin Protection" = "PIN-Schutz aktivieren";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "PIN/FaceID aktivieren";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "PIN/TouchID aktivieren";
 
 /* settings protection section title */
 "Enable TouchID" = "TouchID aktivieren";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Fotobibliothek";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN und FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN und TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Der PIN-Code darf nicht leer sein.";

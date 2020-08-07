@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "接收邮件通知";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "启用口令";
+
 /* settings protection section title */
 "Enable Pin Protection" = "开启口令保护";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "启用口令/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "启用口令/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "启用 TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "照片库";
+
+/* device settings auto lock type title */
+"PIN" = "口令";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "口令与 FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "口令与 TouchID";
 
 /* Description */
 "Pin code can't be empty." = "口令不能为空。";

@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Aktivera aviseringsmail";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Aktivera PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Aktivera PIN skydd";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Aktivera PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Aktivera PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Aktivera TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Fotobibliotek";
+
+/* device settings auto lock type title */
+"PIN" = "PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "PIN & FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "PIN & TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-kod kan inte vara tomt.";

@@ -17,7 +17,7 @@
 "*OPTIONAL" = "*OPCJONALNIE";
 
 /* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/ użytkownik";
+"/user" = "/ użytkownika";
 
 /* Service plan capability */
 "%@ storage capacity" = "%@ przestrzeni dyskowej";
@@ -787,8 +787,17 @@
 /* Title */
 "Enable Notification Email" = "Włącz powiadomienia e-mail";
 
+/* device settings auto lock type title toggle text */
+"Enable PIN" = "Włącz kod PIN";
+
 /* settings protection section title */
 "Enable Pin Protection" = "Włącz ochronę kodem PIN";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/FaceID" = "Włącz kod PIN/FaceID";
+
+/* device settings auto lock type title toggle text */
+"Enable PIN/TouchID" = "Włącz kod PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Włącz TouchID";
@@ -1502,6 +1511,15 @@
 
 /* Title */
 "Photo Library" = "Biblioteka zdjęć";
+
+/* device settings auto lock type title */
+"PIN" = "Kod PIN";
+
+/* device settings auto lock type title */
+"PIN & FaceID" = "Kod PIN i FaceID";
+
+/* device settings auto lock type title */
+"PIN & TouchID" = "Kod PIN i TouchID";
 
 /* Description */
 "Pin code can't be empty." = "Kod PIN nie może być pusty.";
