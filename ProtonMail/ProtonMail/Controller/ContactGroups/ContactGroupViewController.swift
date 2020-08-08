@@ -362,6 +362,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             let addContactGroupViewController = segue.destination.children[0] as! ContactGroupEditViewController
             sharedVMService.contactGroupEditViewModel(addContactGroupViewController, user: self.viewModel.user, state: .create)
         } else if segue.identifier == kSegueToImportView {
+            self.isOnMainView = true
             let popup = segue.destination as! ContactImportViewController
             // TODO: inject it via ViewModel when ContactImportViewController will have one
             popup.user = self.viewModel.user
