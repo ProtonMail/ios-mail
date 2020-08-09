@@ -8,13 +8,13 @@
 "%d Members" = "%d medlemmar";
 
 /* auto lock time format */
-"%d Minute" = "%d Minut";
+"%d Minute" = "%d minut";
 
 /* auto lock time format */
-"%d Minutes" = "%d Minuter";
+"%d Minutes" = "%d minuter";
 
 /* The string that describes how many contact groups are currently selected */
-"%d Selected" = "%d Vald";
+"%d Selected" = "%d vald";
 
 /* Service plan capability; i = 1 */
 "%i email address" = "%i e-postadress";
@@ -38,32 +38,32 @@
 "*OPTIONAL" = "*VALFRITT";
 
 /* Drag and drop zone for attachments */
-"+ Drop here to add as attachment" = "+ Drop here to add as attachment";
+"+ Drop here to add as attachment" = "+ Släpp här för att lägga till som bilaga";
 
 /* Service plan capability detail; like in '5 email addresses/user' */
-"/user" = "/user";
+"/user" = "/användare";
 
 /* 2fa verification failed */
-"2FA failed. Please try to login again." = "Autentisering misslyckades. Försök att logga in igen.";
+"2FA failed. Please try to login again." = "Tvåfaktorsverifiering misslyckades. Försök att logga in igen.";
 
 /* default empty object */
-"<no object>" = "<no object>";
+"<no object>" = "<inget objekt>";
 
 /* *
  *  LabelTableViewCell */
 "A message cannot have more than 5 labels" = "Ett meddelande kan inte ha fler än 5 etiketter";
 
 /* "Alert" = "Alert"; */
-"A new version of ProtonMail app is available, please update to latest version." = "En ny version av ProtonMail app är tillgänglig, vänligen uppdatera till senaste versionen.";
+"A new version of ProtonMail app is available, please update to latest version." = "En ny version av ProtonMail-appen är tillgänglig, vänligen uppdatera till senaste versionen.";
 
 /* Description */
 "A new version of ProtonMail app is available. Please update to the latest version." = "En ny version av ProtonMail-appen finns tillgänglig. Uppdatera till den senaste versionen.";
 
 /* alert description */
-"A paid ProtonMail plan is required to use this feature" = "För att kunna använda den här funktionen krävs en betald ProtonMail-plan";
+"A paid ProtonMail plan is required to use this feature" = "För att kunna använda den här funktionen krävs en prenumeration på ProtonMail";
 
 /* settings touchid error */
-"A passcode has not been set, enable it in the system Settings" = "En passcode har angetts, aktivera det i inställningar";
+"A passcode has not been set, enable it in the system Settings" = "Ingen kod har angetts, aktivera det i inställningar";
 
 /* when server not reachable */
 "API Server not reachable..." = "API-servern kan inte nås...";
@@ -72,22 +72,22 @@
 "ARCHIVE" = "ARKIV";
 
 /* error message */
-"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Tillgång till detta konto avstängt på grund av utebliven betalning. Logga in via protonmail.com för att betala obetalda fakturor.";
+"Access to this account is disabled due to non-payment. Please sign in through protonmail.com to pay your unpaid invoice." = "Tillgången till detta konto avstängd på grund av utebliven betalning. Logga in via protonmail.com för att betala obetalda fakturor.";
 
 /* None */
-"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Access till kontot har stoppats på grund av utebliven betalning.
+"Access to this account is disabled due to non-payment. Please visit our knowledge base for more information." = "Tillgången till detta konto är avstängd på grund av utebliven betalning.
 
-Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vår knowledgebase</a> för mer information.";
+Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">vår knowledgebase</a> för ytterligare information.";
 
 /* 
  & title */
-"Account password invalid" = "Felaktigt konto-lösenord";
+"Account password invalid" = "Felaktigt lösenord";
 
 /* None */
 "Add" = "Lägg till";
 
 /* new contacts add Anniversary */
-"Add Anniversary" = "Lägg till årsdagen";
+"Add Anniversary" = "Lägg till årsdag";
 
 /* new contacts add Birthday */
 "Add Birthday" = "Lägg till födelsedag";
@@ -117,10 +117,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Add New Label" = "Lägg till en ny etikett";
 
 /* new contacts add Nickname */
-"Add Nickname" = "Lägg till Smeknamn";
+"Add Nickname" = "Lägg till smeknamn";
 
 /* new contacts add Organization */
-"Add Organization" = "Lägg Organization";
+"Add Organization" = "Lägg organization";
 
 /* The button text for add profile picture */
 "Add Photo" = "Lägg till foto";
@@ -147,7 +147,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Add new phone number" = "Lägg till nytt telefonnummer";
 
 /* action */
-"Add new url" = "Lägg till ny url";
+"Add new url" = "Lägg till ny URL";
 
 /* Title */
 "Add to contacts" = "Lägg till i kontakter";
@@ -179,19 +179,19 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "App is locked" = "Appen är låst";
 
 /* Price breakdown */
-"Apple in-app purchase fee" = "Apple avgift för köp inuti app";
+"Apple in-app purchase fee" = "Apple-avgift för köp inuti app";
 
 /* Error message */
-"Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet ej kunde genomföras.";
+"Apple informed us they could not process the purchase." = "Apple meddelade oss att köpet inte kunde genomföras.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelade oss att du har uppgraderat serviceplanen, men sa inte vilket av dina ProtonMail-konton som skulle uppgraderas om du har mer än ett.";
+"Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple meddelade oss att du har uppgraderat prenumerationen, men angav inte vilket av dina ProtonMail-konton som skulle uppgraderas ifall du har mer än ett.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple informerade oss om du har uppgraderat serviceplanen, men några tekniska data saknades. Fyll i felrapporten och vår kundtjänst kommer att kontakta dig.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bugreport and our customer support team will contact you." = "Apple informerade oss om du har uppgraderat prenumerationen, men några tekniska uppgifter saknades. Fyll i felrapporten så kommer vår kundtjänst att kontakta dig.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelade oss att du har uppgraderat serviceplanen, men vi upptäckte att du har loggat ut från kontot sedan dess.";
+"Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple meddelade oss att du har uppgraderat prenumerationen, men vi upptäckte att du har loggat ut från kontot sedan dess.";
 
 /* Apply action */
 "Apply" = "Verkställ";
@@ -207,10 +207,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Archived" = "Arkiverad";
 
 /* Alert to confirm logout */
-"Are you sure you want to logout?" = "Are you sure you want to logout?";
+"Are you sure you want to logout?" = "Är du säker på att du vill logga ut?";
 
 /* Drag and drop zone for attachments */
-"Attachment imported" = "Attachment imported";
+"Attachment imported" = "Bilaga importerad";
 
 /* VoiceOver: email has attachments */
 "Attachments" = "Bilagor";
@@ -267,7 +267,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Birthday" = "Födelsedag";
 
 /* Title */
-"Bug Description" = "Bugg-beskrivning";
+"Bug Description" = "Felbeskrivning";
 
 /* Title */
 "Bug Report Received" = "Rapport mottagen";
@@ -276,10 +276,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Buy More Credits" = "Köp mer Credits";
 
 /* agree check box first part words */
-"By using protonmail, you agree to our" = "Genom att använda protonmail, samtycker du till vår";
+"By using protonmail, you agree to our" = "Genom att använda ProtonMail, samtycker du till vår";
 
 /* No comment provided by engineer. */
-"By using protonmail, you agree to our %@ and %@." = "By using protonmail, you agree to our %1$@ and %2$@.";
+"By using protonmail, you agree to our %@ and %@." = "Genom att använda ProtonMail, samtycker du till vår %1$@ och %2$@.";
 
 /* human check option button */
 "CAPTCHA" = "CAPTCHA";
@@ -300,7 +300,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Can't create a SRP verifier!" = "Kan inte skapa en SRP-verifierare!";
 
 /* When quick look attachment but can't decrypt it! */
-"Can't decrypt this attachment!" = "Kan inte dekryptera den bifogade filen!";
+"Can't decrypt this attachment!" = "Kan inte dekryptera den här bilagan!";
 
 /* The error message title that will be shown when the deletion of the contact group failed */
 "Can't delete contact group" = "Kunde inte radera kontaktgrupp";
@@ -310,22 +310,22 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* *
  *  MessageViewController */
-"Can't download message body, please try again." = "Kan inte hämta meddelandet, vänligen försök igen.";
+"Can't download message body, please try again." = "Kan inte hämta meddelandets innehåll, vänligen försök igen.";
 
 /* Error */
-"Can't download message body. Please try again." = "Kunde inte hämta meddelandets innehåll. Försök igen.";
+"Can't download message body. Please try again." = "Kan inte hämta meddelandets innehåll. Vänligen försök igen.";
 
 /* The error message title that will be shown when the app attempts to fetch contact groups from the server but failed */
-"Can't fetch contact groups" = "Kunde inte hämta kontaktgrupper";
+"Can't fetch contact groups" = "Kan inte hämta kontaktgrupper";
 
 /* None */
 "Can't find the clicked message please try again!" = "Kan inte hitta det meddelande du klickade på, vänligen försök igen!";
 
 /* Description */
-"Can't find the selected message. Please try again." = "Kan inte hitta valt meddelande. Försök igen.";
+"Can't find the selected message. Please try again." = "Kan inte hitta det valda meddelandet. Försök igen.";
 
 /* when quick look attachment but can't find the data */
-"Can't find this attachment!" = "Kan inte hitta den bifogade filen!";
+"Can't find this attachment!" = "Kan inte hitta denna bilagan!";
 
 /* update password error = typo:Modulus */
 "Can't get a Moduls ID!" = "Kan inte hämta Moduls ID!";
@@ -358,13 +358,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Cancel" = "Avbryt";
 
 /* Action */
-"Cancel Check" = "Avbryt Kontroll";
+"Cancel Check" = "Avbryt kontroll";
 
 /* Title */
 "Cancelling" = "Avbryter";
 
 /* None */
-"Cant' decrypt this attachment!" = "Kunde inte avkryptera bilagan.";
+"Cant' decrypt this attachment!" = "Kan inte avkryptera bilagan.";
 
 /* Title */
 "Cc" = "Cc";
@@ -388,22 +388,22 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Change Pin" = "Ändra PIN-kod";
 
 /* Title */
-"Change Single Password" = "Ändra Enkelt Lösenord";
+"Change Single Password" = "Ändra enda lösenord";
 
 /* Title */
-"Change default address to .." = "Ändra standard adress till ..";
+"Change default address to .." = "Ändra standardadress till ..";
 
 /* settings swipe actions section action description */
-"Change left swipe action" = "Ändra vänster svep rörelse";
+"Change left swipe action" = "Ändra vänster sveprörelse";
 
 /* settings swipe actions section action description */
-"Change right swipe action" = "Ändra höger svep rörelse";
+"Change right swipe action" = "Ändra höger sveprörelse";
 
 /* Title */
 "Change sender address to .." = "Ändra avsändarens adress till ..";
 
 /* Action */
-"Check Again" = "Kontrollera Igen";
+"Check Again" = "Kontrollera igen";
 
 /* loading message */
 "Checking ...." = "Kontrollerar....";
@@ -415,7 +415,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "City" = "Stad";
 
 /* settings general section title */
-"Clear Local Message Cache" = "Rensa Lokal Meddelande Buffert";
+"Clear Local Message Cache" = "Rensa lokal meddelandebuffert";
 
 /* general close action */
 "Close" = "Stäng";
@@ -433,13 +433,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Confirm" = "Bekräfta";
 
 /* "Login Password" */
-"Confirm Login Password" = "Bekräfta kontolösenord";
+"Confirm Login Password" = "Bekräfta inloggningslösenord";
 
 /* "Mailbox Password" */
 "Confirm Mailbox Password" = "Bekräfta brevlådelösenord";
 
 /* Placeholder */
-"Confirm Password" = "Bekräfta Lösenord";
+"Confirm Password" = "Bekräfta lösenord";
 
 /* Title */
 "Confirm new login password" = "Bekräfta nytt lösenord";
@@ -473,7 +473,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Continue" = "Fortsätt";
 
 /* Action */
-"Continue and Don't ask again" = "Continue and Don't ask again";
+"Continue and Don't ask again" = "Fortsätt och fråga inte igen";
 
 /* Title */
 "Copy address" = "Kopiera adress";
@@ -482,7 +482,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Copy name" = "Kopiera namn";
 
 /* Error message */
-"Could not connect to Store. Please try again later." = "Kunde inte ansluta till Affären. Försök igen senare.";
+"Could not connect to Store. Please try again later." = "Kunde inte ansluta till affären. Försök igen senare.";
 
 /* contact placeholder */
 "Country" = "Land";
@@ -500,16 +500,16 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Create a new account" = "Skapa ett nytt konto";
 
 /* Description */
-"Create and add Labels to organize your inbox. Long press on a message for all options." = "Lägg till Etiketter för att organisera din inbox. Tryck ner länge på ett meddelande för att se samtliga val.";
+"Create and add Labels to organize your inbox. Long press on a message for all options." = "Lägg till etiketter för att organisera din inkorg. Tryck ner länge på ett meddelande för att se samtliga val.";
 
 /* None */
-"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Skapa och lägg till Etikett för att organisera din inkorg. Tryck och håll på ett meddelande för alla alternativ.";
+"Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Skapa och lägg till etikett för att organisera din inkorg. Tryck och håll på ett meddelande för alla alternativ.";
 
 /* error message title when create new user */
 "Create user failed" = "Skapa användare misslyckades";
 
 /* Change language title */
-"Current Language is: " = "Nuvarande Språk är: ";
+"Current Language is: " = "Nuvarande språk är: ";
 
 /* Title */
 "Current login password" = "Nuvarande lösenord för inloggning";
@@ -522,7 +522,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Custom" = "Anpassad";
 
 /* Title */
-"DECRYPT MAILBOX" = "DEKRYPTERA BREVLÅDA";
+"DECRYPT MAILBOX" = "AVKRYPTERA BREVLÅDA";
 
 /* mail location title */
 "DRAFTS" = "UTKAST";
@@ -537,31 +537,31 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Debug" = "Felsök";
 
 /* Action */
-"Decrypt" = "Dekryptera";
+"Decrypt" = "Avkryptera";
 
 /* Description */
-"Decrypt token failed. Please try again." = "Dekrypteringen av token misslyckades. Försök igen.";
+"Decrypt token failed. Please try again." = "Avkrypteringen av token misslyckades. Försök igen.";
 
 /* error title */
-"Decryption error" = "Dekrypterings fel";
+"Decryption error" = "Avkrypteringsfel";
 
 /* error details */
-"Decryption of this content failed" = "Dekryptering av innehållet misslyckades";
+"Decryption of this content failed" = "Avkryptering av innehållet misslyckades";
 
 /* Title */
 "Default" = "Standard";
 
 /* error message when create new user */
-"Default error. Please try again." = "Allmänt fel. Försök igen.";
+"Default error. Please try again." = "Fel. Försök igen.";
 
 /* Placeholder */
-"Define Expiration Date" = "Ange Utgångsdatum";
+"Define Expiration Date" = "Ange utgångsdatum";
 
 /* Placeholder */
-"Define Hint (Optional)" = "Ange Ledtråd (Valfritt)";
+"Define Hint (Optional)" = "Ange ledtråd (valfritt)";
 
 /* place holder */
-"Define Password" = "Ange Lösenord";
+"Define Password" = "Ange lösenord";
 
 /* general delete action */
 "Delete" = "Radera";
@@ -570,7 +570,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Delete Contact" = "Radera Kontakt";
 
 /* The description of the button for deleting the contact group */
-"Delete Contact Group" = "Radera Kontaktgrupp";
+"Delete Contact Group" = "Radera kontaktgrupp";
 
 /* mail location desc */
 "Deleted" = "Raderad";
@@ -585,10 +585,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Discard draft" = "Ignorera utkast";
 
 /* Title in settings */
-"Display Name" = "Visnings Namn";
+"Display Name" = "Visningsnamn";
 
 /* Title */
-"Display Name Updated" = "Visnings Namn Uppdaterat";
+"Display Name Updated" = "Visningsnamn uppdaterat";
 
 /* None */
 "Display name" = "Visningsnamn";
@@ -597,7 +597,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "DisplayName" = "Visningsnamn";
 
 /* Question is user wants to bypass username validation and activate plan for current username */
-"Do you want to activate the purchased service plan for " = "Vill du aktivera den köpta serviceplanen för ";
+"Do you want to activate the purchased service plan for " = "Vill du aktivera den köpta prenumerationen för ";
 
 /* Description */
 "Do you want to cancel the process?" = "Vill du avbryta processen?";
@@ -615,7 +615,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Done" = "Klar";
 
 /* VoiceOver action description */
-"Double tap to setup" = "Dubbeltryck för att konfigurera";
+"Double tap to setup" = "Dubbelknacka för att konfigurera";
 
 /* Action
    mail location desc */
@@ -662,7 +662,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Email Verification" = "E-postverifiering";
 
 /* contact placeholder */
-"Email address" = "Epostadress";
+"Email address" = "E-postadress";
 
 /* Title */
 "Email address invalid" = "Ogiltig epostadress";
@@ -690,7 +690,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Enable Notification Email" = "Aktivera aviseringsmail";
 
 /* settings protection section title */
-"Enable Pin Protection" = "Aktivera PIN skydd";
+"Enable Pin Protection" = "Aktivera PIN-skydd";
 
 /* settings protection section title */
 "Enable TouchID" = "Aktivera TouchID";
@@ -723,19 +723,19 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "End Time" = "Sluttid";
 
 /* Title */
-"End-to-End Encryption" = "End-to-end-kryptering";
+"End-to-End Encryption" = "Ändpunktskryptering";
 
 /* encryption lock description */
-"End-to-end encrypted" = "End-to-end-krypterat";
+"End-to-end encrypted" = "Ändpunktskrypterat";
 
 /* encryption lock description */
-"End-to-end encrypted message" = "End-to-end-krypterat meddelande";
+"End-to-end encrypted message" = "Ändpunktskrypterat meddelande";
 
 /* encryption lock description */
-"End-to-end encrypted message from verified address" = "End-to-end-krypterat meddelande från verifierad adress";
+"End-to-end encrypted message from verified address" = "Ändpunktskrypterat meddelande från verifierad adress";
 
 /* encryption lock description */
-"End-to-end encrypted to verified address" = "End-to-end krypterad till verifierad adress";
+"End-to-end encrypted to verified address" = "Ändpunktskrypterad till verifierad adress";
 
 /* Action in 2fa popup view */
 "Enter" = "Mata in";
@@ -762,28 +762,28 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Error occured" = "Fel uppstod";
 
 /* lock app option */
-"Every time enter app" = "Varjegång appen öppnas";
+"Every time enter app" = "Varje gång appen öppnas";
 
 /* VoiceOver: email can expire */
-"Expires" = "Utgår";
+"Expires" = "Går ut";
 
 /* expiration time count down */
-"Expires in %d days %d hours %d mins %d seconds" = "Utgår om %1$d dagar %2$d timmar %3$d minuter %4$d sekunder";
+"Expires in %d days %d hours %d mins %d seconds" = "Går ut om %1$d dagar %2$d timmar %3$d minuter %4$d sekunder";
 
 /* Title */
 "Expiring Messages" = "Förfallande meddelanden";
 
 /* Key size checkbox */
-"Extreme Security" = "Extrem Säkerhet";
+"Extreme Security" = "Extrem säkerhet";
 
 /* login page forgot pwd */
 "FORGOT PASSWORD?" = "GLÖMT LÖSENORD?";
 
 /* abbreviation of forward: */
-"FW:" = "FW:";
+"FW:" = "VB:";
 
 /* Error message */
-"Failed to determine type of file" = "Kunde inte bestämma typen av fil";
+"Failed to determine type of file" = "Kunde inte bestämma filtyp";
 
 /* Error message */
 "Failed to get list of available products from AppStore." = "Kunde inte hämta listan över tillgängliga produkter från AppStore.";
@@ -799,7 +799,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Fax" = "Fax";
 
 /* menu title */
-"Feedback" = "Feedback";
+"Feedback" = "Återkoppling";
 
 /* Error */
 "Fetch user info failed" = "Hämtning av användarinfo misslyckades";
@@ -835,13 +835,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "From:" = "Från:";
 
 /* abbreviation of forward: */
-"Fwd:" = "Fwd:";
+"Fwd:" = "VB:";
 
 /* contacts talbe cell gender title */
 "Gender" = "Kön";
 
 /* Title */
-"General Settings" = "Allmänna Inställningar";
+"General Settings" = "Allmänna inställningar";
 
 /* Screen header, like 'Get VISIONARY' */
 "Get %@" = "Hämta";
@@ -862,7 +862,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Groups" = "Grupper";
 
 /* Title */
-"Help & Support" = "Hjälp & Support";
+"Help & Support" = "Hjälp & support";
 
 /* Title */
 "Help us to improve ProtonMail with your input." = "Hjälp oss att göra ProtonMail bättre med din åsikt.";
@@ -874,16 +874,16 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Hide" = "Dölj";
 
 /* Title */
-"Hide Details" = "Dölj Detaljer";
+"Hide Details" = "Dölj detaljer";
 
 /* Key size checkbox */
-"High Security" = "Hög Säkerhet";
+"High Security" = "Hög säkerhet";
 
 /* Title */
 "Hours" = "Timmar";
 
 /* Description */
-"Human Check Failed" = "Mänsklig Kontroll Misslyckades";
+"Human Check Failed" = "Människokontroll misslyckades";
 
 /* human check warning title */
 "Human Check Warning" = "Människokontrollvarning";
@@ -898,19 +898,19 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "INBOX" = "INKORG";
 
 /* Action */
-"Import Error" = "Fel vid importeringen";
+"Import Error" = "Fel vid importen";
 
 /* Title */
 "Import File From..." = "Importera fil från...";
 
 /* import contact title */
-"Importing Contacts" = "Importerar Kontakter";
+"Importing Contacts" = "Importerar kontakter";
 
 /* Drag and drop zone for attachments */
-"Importing attachment, that can take a while" = "Importing attachment, that can take a while";
+"Importing attachment, that can take a while" = "Importerar bilaga, det kan ta ett tag";
 
 /* Error */
-"In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att använda våra tjänster måste du godkänna ProtonMail's användarvillkor.";
+"In order to use our services, you must agree to ProtonMail's Terms of Service." = "För att använda våra tjänster måste du godkänna ProtonMails användarvillkor.";
 
 /* mail location desc
    menu title */
@@ -944,31 +944,31 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Invalid URL" = "Ogiltig URL";
 
 /* title */
-"Invalid UserName" = "Ogiltigt användarnamn";
+"Invalid UserName" = "Felaktigt användarnamn";
 
 /* Error message */
 "Invalid UserName!" = "Felaktigt användarnamn!";
 
 /* None */
-"Invalid access token please relogin" = "Ogiltigt åtkomstbevis, var god logga in igen";
+"Invalid access token please relogin" = "Ogiltigt åtkomsttoken, vänligen logga in igen";
 
 /* Description */
-"Invalid access token. Please relogin." = "Ogiltig access token. Vänligen logga in igen.";
+"Invalid access token. Please relogin." = "Ogiltigt åtkomsttoken. Vänligen logga in igen.";
 
 /* Error */
-"Invalid credential" = "Ogiltig autentiseringsuppgift";
+"Invalid credential" = "Ogiltiga inloggningsuppgifter";
 
 /* update password error */
-"Invalid hashed password!" = "Hashed lösenord är felaktigt!";
+"Invalid hashed password!" = "Kontrollsumman för lösenordet är ogiltig!";
 
 /* Error message */
-"Is this bug report about an in-app purchase?" = "Är denna felrapport om ett köp inuti app?";
+"Is this bug report about an in-app purchase?" = "Avser denna felrapport ett köp inuti app?";
 
 /* It is not possible to switch to `plan` within our iOS app. */
 "It is not possible to switch to %@ within our iOS app." = "Det går inte att växla till %@ inom vår iOS-app.";
 
 /* Error message */
-"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Fyll i buggrapporten så kommer vår kundtjänst att kontakta dig.";
+"It wasn't possible to match your purchased App Store product to any products on our server. Please fill in the bug report and our customer support team will contact you." = "Vi kunde inte matcha AppStore-produkten du köpt med någon produkt på vår server. Vänligen fyll i felrapporten så kommer vår kundtjänst att kontakta dig.";
 
 /* Title */
 "Keep me updated about new features" = "Håll mig uppdaterad om nya funktioner";
@@ -986,7 +986,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "LOGIN" = "Logga in";
 
 /* Title */
-"Label Management" = "Etikett Hantering";
+"Label Management" = "Etiketthantering";
 
 /* createing lable input place holder */
 "Label Name" = "Etikettnamn";
@@ -1001,10 +1001,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Labels have been applied." = "Etiketter applicerade.";
 
 /* Service plan capability */
-"Labels, Folders, Filters & More" = "Etiketter, mappar, filter & mer";
+"Labels, Folders, Filters & More" = "Etiketter, mappar, filter och mer";
 
 /* Title */
-"Labels/Folders" = "Etiketter/Mappar";
+"Labels/Folders" = "Etiketter/mappar";
 
 /* Title */
 "Language" = "Språk";
@@ -1019,7 +1019,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Limited to 150 messages sent/day" = "Begränsad till 150 meddelanden skickade/dag";
 
 /* Action */
-"Load remote content" = "Läs in fjärrinnehåll";
+"Load remote content" = "Läs in externt innehåll";
 
 /* None */
 "Loading..." = "Laddar...";
@@ -1032,7 +1032,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Localizable.strings" = "Base";
 
 /* menu title */
-"Lock The App" = "Lås Appen";
+"Lock The App" = "Lås appen";
 
 /* Title */
 "Login" = "Logga in";
@@ -1072,7 +1072,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Manage Labels/Folders" = "Hantera etiketter/mappar";
 
 /* mark message as read action */
-"Mark Read" = "Markera som Läst";
+"Mark Read" = "Markera som läst";
 
 /* Action */
 "Mark as unread" = "Markera som oläst";
@@ -1090,7 +1090,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Message Queue" = "Meddelandekö";
 
 /* Title */
-"Message Swipe Actions" = "Svep gester för meddelanden";
+"Message Swipe Actions" = "Svepgester för meddelanden";
 
 /* *
  *  Expiration View */
@@ -1103,19 +1103,19 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Message has been moved." = "Meddelandet har flyttats.";
 
 /* Description */
-"Message password does not match." = "Lösenordet för meddelandet är felaktigt.";
+"Message password does not match." = "Lösenordet för meddelandet matchar inte.";
 
 /* None */
-"Message sending failed please try again" = "Sändningen misslyckades försök igen";
+"Message sending failed please try again" = "Sändningen misslyckades, vänligen försök igen";
 
 /* Description */
-"Message sending failed. Please try again." = "Meddelandet kunde inte skickas. Försök igen.";
+"Message sending failed. Please try again." = "Meddelandet kunde inte skickas. Vänligen försök igen.";
 
 /* Description after message have been sent */
 "Message sent" = "Meddelande skickat";
 
 /* Description */
-"Messages you send can be set to auto delete after a certain time period." = "Meddelanden du skickar kan ställas in att automatiskt raderas efter en viss tid.";
+"Messages you send can be set to auto delete after a certain time period." = "Meddelanden du skickar kan ställas in för att raderas automatiskt efter en viss tid.";
 
 /* default vcard types */
 "Mobile" = "Mobil";
@@ -1124,40 +1124,40 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Mobile Signature" = "Mobilsignatur";
 
 /* Description */
-"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilregistrering är för tillfället inaktiverat. Försök igen senare, eller prova att registrera dig på protonmail.com via en dator.";
+"Mobile signups are temporarily disabled. Please try again later, or try signing up at protonmail.com using a desktop or laptop computer." = "Mobilregistrering är för tillfället inaktiverat. Vänligen försök igen senare, eller prova att registrera dig på protonmail.com via en dator.";
 
 /* Description */
-"Modifying or turning off the default mobile signature is a paid feature." = "Ändra eller stänga av standardmobilsignaturen är en betalfunktion.";
+"Modifying or turning off the default mobile signature is a paid feature." = "Att ändra eller stänga av standardmobilsignaturen är en betalfunktion.";
 
 /* More actions button */
 "More" = "More";
 
 /* Screen header */
-"More Credits" = "Köp mer Credits";
+"More Credits" = "Köp fler credits";
 
 /* move action */
-"Move to AllMail" = "Flytta till AllMail";
+"Move to AllMail" = "Flytta till all e-post";
 
 /* move action */
-"Move to Archive" = "Flytta till Arkiv";
+"Move to Archive" = "Flytta till arkiv";
 
 /* move action */
-"Move to Draft" = "Flytta till Utkast";
+"Move to Draft" = "Flytta till ukast";
 
 /* folder apply - title */
-"Move to Folder" = "Flytta till Mapp";
+"Move to Folder" = "Flytta till mapp";
 
 /* move action */
-"Move to Inbox" = "Flytta till Inkorgen";
+"Move to Inbox" = "Flytta till inkorgen";
 
 /* move action */
-"Move to Outbox" = "Flytta till Utkorgen";
+"Move to Outbox" = "Flytta till utkorgen";
 
 /* move action */
-"Move to Spam" = "Flytta till Skräppost";
+"Move to Spam" = "Flytta till skräppost";
 
 /* move action */
-"Move to Trash" = "Flytta till Papperskorgen";
+"Move to Trash" = "Flytta till papperskorgen";
 
 /* Title */
 "Move to..." = "Flytta till...";
@@ -1184,7 +1184,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Nickname" = "Smeknamn";
 
 /* message when mailbox doesnt have emailsß */
-"No Messages" = "Inga Meddelanden";
+"No Messages" = "Inga meddelanden";
 
 /* Title */
 "No connectivity detected..." = "Ingen anslutning...";
@@ -1193,7 +1193,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "No, for another ProtonMail account" = "Nej, för ett annat ProtonMail-konto";
 
 /* Error message */
-"No, not related to in-app purchase" = "Nej, inte relaterade till i-app inköp";
+"No, not related to in-app purchase" = "Nej, inte relaterat till köp inuti inköp";
 
 /* A *short* description saying that there is no contact group associated with this contact email
    Title */
@@ -1203,7 +1203,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Not Now" = "Inte nu";
 
 /* alert description */
-"Not all recipients support message expiration" = "Alla mottagare stödjer inte förfallodatum på meddelanden";
+"Not all recipients support message expiration" = "Alla mottagare stödjer inte förfallodatum för meddelanden";
 
 /* Signup user name notes */
 "Note: The Username is also your ProtonMail address." = "Obs: Användarnamnet är också din ProtonMail-adress.";
@@ -1221,34 +1221,34 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Notice" = "Viktigt information";
 
 /* Title */
-"Notification / Recovery Email" = "Avisering /E-post för återställning";
+"Notification / Recovery Email" = "Avisering / e-post för återställning";
 
 /* Title */
 "Notification Email" = "Avisering för e-post";
 
 /* title of action sheet */
-"Notification Snooze" = "Snooza Avisering";
+"Notification Snooze" = "Snooza avisering";
 
 /* VoiceOver description */
-"Notifications Are Snoozed" = "Aviseringar är Snoozade";
+"Notifications Are Snoozed" = "Aviseringar är snoozade";
 
 /* VoiceOver description */
-"Notifications Snooze Off" = "Snooze för Aviseringar Off";
+"Notifications Snooze Off" = "Snooze för aviseringar avstängd";
 
 /* Action */
 "OK" = "OK";
 
 /* Section header */
-"OTHER PLANS" = "ANDRA PLANER";
+"OTHER PLANS" = "ANDRA ERBJUDANDEN";
 
 /* Title */
 "On" = "På";
 
 /* forward email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. %@ part is 12/24 hour format it will be loaded in code. */
-"On EE, MMM d, yyyy at %@" = "På EE, MMM d, åååå på %@";
+"On EE, MMM d, yyyy at %@" = "Den EE, MMM d, åååå kl. %@";
 
 /* reply email content header, EE,MMM d, yyyy change to your country local format. if you are not sure just keep it as it. first %@ is 12/24 hour format, second %@ will be the email hyper link, they will be loaded in code. */
-"On EE, MMM d, yyyy at %@, %@, wrote:" = "On EE, MMM d, yyyy at %1$@, %2$@, wrote:";
+"On EE, MMM d, yyyy at %@, %@, wrote:" = "Den EE, MMM d, yyyy vid %1$@, %2$@, wrskrevote:";
 
 /* None */
 "OpenDraft" = "Öppna utkast";
@@ -1260,7 +1260,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Other" = "Annat";
 
 /* Error message */
-"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Vår kundtjänst kommer att försöka aktivera din serviceplan manuellt om du samtycker till att bifoga tekniska data som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var uppfylld på Appstores servrar.";
+"Our Customer Support team will try to activate your service plan manually if you agree to attach technical data that AppStore provided to the app at the moment of purchase. This data does not include any details about your iTunes account, Apple ID, linked credit cards, or any other user information. Technical data only helps us check and verify that the transaction was fulfilled on the AppStore's servers." = "Vår kundtjänst kommer att försöka aktivera din prenumeration manuellt om du samtycker till att bifoga de tekniska uppgifter som AppStore lämnat till appen vid köptillfället. Denna data innehåller inte några detaljer om ditt iTunes-konto, Apple-ID, länkade kreditkort eller någon annan användarinformation. Det hjälper bara oss att verifiera att transaktionen var fullgjord på AppStores servrar.";
 
 /* mail location desc */
 "Outbox" = "Utkorg";
@@ -1287,7 +1287,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Password" = "Lösenord";
 
 /* Title */
-"Password Mismatch" = "Lösenordet matchar inte";
+"Password Mismatch" = "Lösenorden matchar inte";
 
 /* Title */
 "Password Updated" = "Lösenordet uppdaterat";
@@ -1317,19 +1317,19 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Photo Library" = "Fotobibliotek";
 
 /* Description */
-"Pin code can't be empty." = "PIN-kod kan inte vara tomt.";
+"Pin code can't be empty." = "PIN-kod kan inte vara tom.";
 
 /* alert description */
 "Please add a password for the following recipients." = "Lägg till ett lösenord för följande mottagare.";
 
 /* Description */
-"Please check your cell phone for the verification code." = "Kontrollera din mobiltelefon för verifieringskoden.";
+"Please check your cell phone for the verification code." = "Vänligen kolla din epost efter verifikationskoden.";
 
 /* error message */
 "Please check your email for the verification code." = "Vänligen kolla din epost efter verifikationskoden.";
 
 /* alert description */
-"Please disable PGP Sending for following addresses." = "Avaktivera PGP-skickning för följande adresser.";
+"Please disable PGP Sending for following addresses." = "Avaktivera PGP-sändning för följande adresser.";
 
 /* Description */
 "Please input a valid cell phone number." = "Ange ett giltigt telefonummer.";
@@ -1338,10 +1338,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Please input a valid email address." = "Ange en giltig e-postadress.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt ProtonMail konto som du vill uppgradera med våra tjänster till så vi kan fullfölja betalningen.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Logga in på ditt ProtonMail-konto som du vill uppgradera prenumerationen för så att vi kan slutföra betalningen.";
 
 /* Error message */
-"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det ProtonMail-konto som du uppgraderar serviceplanen för, så att vi kan genomföra aktiveringen av serviceplanen.";
+"Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the service plan activation." = "Logga in på det ProtonMail-konto som du uppgraderar prenumerationen för, så att vi kan genomföra aktiveringen av prenumerationen.";
 
 /* Error */
 "Please pick a user name first!" = "Välj ett användarnamn först!";
@@ -1379,13 +1379,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Please try again." = "Försök igen";
 
 /* Error message */
-"Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din serviceplan";
+"Please unlock the app to proceed with your service plan activation" = "Lås upp appen för att fortsätta med aktiveringen av din prenumeration";
 
 /* Description */
-"Please use ProtonMail App login first." = "Vänligen använd ProtonMail App inlogg först.";
+"Please use ProtonMail App login first." = "Vänligen använd ProtonMail-appinloggningen först.";
 
 /* Alert */
-"Please use the web application to reset your password." = "Använd web-applikationen för att återställa ditt lösenord.";
+"Please use the web application to reset your password." = "Använd webbapplikationen för att återställa ditt lösenord.";
 
 /* None */
 "Please use the web version of ProtonMail to change your mailbox password!" = "Använd webbläsarversionen av ProtonMail för att byta lösenord för brevlådan!";
@@ -1397,11 +1397,11 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Please use your new password when signing in." = "Använd ditt nya lösenord när du loggar in.";
 
 /* The */
-"Please wait until the email downloaded!" = "Vänligen vänta till epostmeddelandet laddats ner!";
+"Please wait until the email downloaded!" = "Vänligen vänta till dess att e-postmeddelandet har laddats ner!";
 
 /* 
  & alert title */
-"Please, manage it in your phone." = "Please, manage it in your phone.";
+"Please, manage it in your phone." = "Vänligen hantera det i din telefon.";
 
 /* Action */
 "Print" = "Skriv ut";
@@ -1419,10 +1419,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "ProtonMail Plus is required to customize your mobile signature" = "ProtonMail Plus krävs för att anpassa din mobila signatur";
 
 /* Upgrade warning message */
-"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email.";
+"ProtonMail Plus/Professional/Visionary enables you to add and edit contact details beyond just your contact’s name and email. By using ProtonMail, this data will be as secure as your end-to-end encrypted email." = "Med ProtonMail Plus/Professional/Visionary kan du lägga till och redigera kontaktuppgifter utöver namn och e-post. Genom att använda ProtonMail kommer dessa uppgifter att vara lika säkra som din ändpunktskrypterade e-post.";
 
 /* Description */
-"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail säljer inte annonser och missbrukar inte din integritet. Ditt stöd är livsviktigt för fortsatt drift av ProtonMail. Du kan uppgradera till ett betalt konto eller donera för att stödja ProtonMail.";
+"ProtonMail doesn't sell ads or abuse your privacy. Your support is essential to keeping ProtonMail running. You can upgrade to a paid account or donate to support ProtonMail." = "ProtonMail säljer inte annonser och missbrukar inte din integritet. Ditt stöd är avgörande för fortsatt drift av ProtonMail. Du kan uppgradera till ett betalt konto eller donera för att stödja ProtonMail.";
 
 /* Title */
 "ProtonMail encrypted emails" = "ProtonMail krypterad e-post";
@@ -1440,7 +1440,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "RESET MAILBOX PASSWORD" = "ÅTERSTÄLL LÖSENORD FÖR BREVLÅDAN";
 
 /* Title */
-"Rate & Review" = "Betygsätt & Recensera";
+"Rate & Review" = "Betygsätt och recensera";
 
 /* set pin title */
 "Re-Enter your PIN" = "Ange din PIN-kod igen";
@@ -1449,7 +1449,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Re:" = "Sv:";
 
 /* Title */
-"Reading device contacts data..." = "Läser kontaktdata från enheten...";
+"Reading device contacts data..." = "Läser kontaktuppgifter från enheten...";
 
 /* Title */
 "Recovery Code" = "Återställningskod";
@@ -1461,13 +1461,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Recovery Email Warning" = "Återställningsadressvarning";
 
 /* Title */
-"Remind Me Later" = "Påminn Mig Senare";
+"Remind Me Later" = "Påminn mig senare";
 
 /* remove action */
 "Remove" = "Ta bort";
 
 /* un star message */
-"Remove Star" = "Ta bort Stjärnmärkning";
+"Remove Star" = "Ta bort stjärnmärkning";
 
 /* settings option (Repeat: sun, mon, thu) */
 "Repeat" = "Upprepa";
@@ -1476,7 +1476,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Reply" = "Svara";
 
 /* reply all action */
-"Reply All" = "Svara Alla";
+"Reply All" = "Svara alla";
 
 /* composer view model impl */
 "Reply message" = "Besvara meddelande";
@@ -1485,16 +1485,16 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "ReplyAll" = "Svara alla";
 
 /* menu title */
-"Report Bugs" = "Rapportera Buggar";
+"Report Bugs" = "Rapportera fel";
 
 /* message details-> more action-> report phishing */
-"Report Phishing" = "Rapportera Nätfiske";
+"Report Phishing" = "Rapportera nätfiske";
 
 /* alert message */
-"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Ett meddelande rapporterat för nätfiskeförsök kommer skickas till oss, så att vi kan analysera det och förbättre våra filter. Det betyder att vi kommer kunna se hela meddelandets innehåll.";
+"Reporting a message as a phishing attempt will send the message to us, so we can analyze it and improve our filters. This means that we will be able to see the contents of the message in full." = "Genom att rapportera ett meddelande för nätfiske kommer det att skickas till oss, så att vi kan analysera det och förbättra våra filter. Det innebär att vi kommer att kunna se meddelandets innehåll i dess helhet.";
 
 /* link opeining confirmation */
-"Request Link Confirmation" = "Request Link Confirmation";
+"Request Link Confirmation" = "Begär länkbekräftelse";
 
 /* Title */
 "Resetting message cache ..." = "Återställer meddelande-cache...";
@@ -1524,7 +1524,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Save" = "Spara";
 
 /* title */
-"Save Changes" = "Spara Ändringar";
+"Save Changes" = "Spara ändringar";
 
 /* Action */
 "Save draft" = "Spara utkast";
@@ -1548,7 +1548,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Send" = "Skicka";
 
 /* Title */
-"Send Verification Code" = "Skicka Verifieringskod";
+"Send Verification Code" = "Skicka verifieringskod";
 
 /* Action */
 "Send anyway" = "Skicka ändå";
@@ -1569,7 +1569,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Sending message" = "Skickar meddelande";
 
 /* pm.me upgrade warning in composer */
-"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Att skicka meddelanden från en %1$@. me adress är en betalfunktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
+"Sending messages from %@ address is a paid feature. Your message will be sent from your default address %@" = "Skickar meddelanden från en %1$@ adress är en betalfunktion. Ditt meddelande kommer att skickas från din standardadress %2$@";
 
 /* menu title */
 "Sent" = "Skickat";
@@ -1581,10 +1581,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Sent by ProtonMail with zero access encryption" = "Skickat av ProtonMail med nollåtkomst-kryptering";
 
 /* encryption lock description */
-"Sent by you with end-to-end encryption" = "Skickat av dig med end-to-end-kryptering";
+"Sent by you with end-to-end encryption" = "Skickat av dig med ändpunktskryptering";
 
 /* Description */
-"Server proofs not valid!" = "Server proofs not valid!";
+"Server proofs not valid!" = "Serverbevis ogiltiga!";
 
 /* Title */
 "Set Password" = "Ange lösenord";
@@ -1602,7 +1602,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Share Alert" = "Delningsnotis";
 
 /* action */
-"Share Contact" = "Dela Kontakt";
+"Share Contact" = "Dela kontakt";
 
 /* Title */
 "Share it with your friends" = "Dela med dina vänner";
@@ -1617,13 +1617,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Signature Updated" = "Signatur uppdaterad";
 
 /* settings general section title */
-"Single Password" = "Ett lösenord";
+"Single Password" = "Enkelt lösenord";
 
 /* settings option */
 "Snooze Notifications" = "Snooza aviseringar";
 
 /* title of action sheet when quick snooze is active (Snoozed for 30min) */
-"Snoozed for" = "Snoozad till";
+"Snoozed for" = "Snoozad under";
 
 /* title of action sheet when scheduled scoone is active (Snoozed till 8am) */
 "Snoozed till" = "Snoozad till";
@@ -1642,7 +1642,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Spammed" = "Spammad";
 
 /* Description */
-"Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
+"Srp single password keyslat invalid!" = "Srp keysalt för enkelt lösenord ogiltigt!";
 
 /* Title */
 "Star" = "Stjärnmärk";
@@ -1683,7 +1683,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Support ProtonMail" = "Stöd ProtonMail";
 
 /* Service plan capability; i = 2 */
-"Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. user@yourdomain.com)";
+"Support for %i custom domains (e.g. user@yourdomain.com)" = "Stöd för %i anpassade domäner (t.ex. du@dindomän.se)";
 
 /* settings swipe actions section title */
 "Swipe Left to Right" = "Svep från vänster till höger";
@@ -1704,10 +1704,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Tap send anyway to send without expiration to these recipients" = "Klicka skicka ändå för att skicka utan förfallotid till dessa mottagare";
 
 /* None */
-"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tack för att du skickar en felrapport.  Rapporten har vi lagt till vår felrapporteringssystemet.";
+"Thank you for submitting a bug report.  We have added your report to our bug tracking system." = "Tack för att du skickar en felrapport.  Rapporten har vi lagts till i vår felrapporteringssystem.";
 
 /* update password error */
-"The Password is wrong." = "Lösenordet är fel.";
+"The Password is wrong." = "Lösenordet är felaktigt.";
 
 /* Title */
 "The ProtonMail current offline..." = "ProtonMail är tillfälligt offline...";
@@ -1721,7 +1721,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 
 /* 
  */
-"The authentication token has expired." = "The authentication token has expired.";
+"The authentication token has expired." = "Autentiseringstoken har gått ut.";
 
 /* key size notes */
 "The current standard" = "Nuvarande standard";
@@ -1736,7 +1736,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "The draft format incorrectly sending failed!" = "Avsändning misslyckades. Det fanns ett fel med utkastformatet.";
 
 /* key size note part 1 */
-"The highest level of encryption available." = "Den högsta nivån av kryptering tillgänglig.";
+"The highest level of encryption available." = "Den högsta tillgängliga nivån av kryptering.";
 
 /* None */
 "The label name is duplicate" = "Etikettnamnet finns redan";
@@ -1773,16 +1773,16 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "The passwords you entered do not match." = "Lösenorden du angav matchar inte.";
 
 /* update password error */
-"The private key update failed." = "Uppdatering av privat nyckel misslyckades.";
+"The private key update failed." = "Uppdateringen av privat nyckel misslyckades.";
 
 /* Title */
 "The request timed out." = "Tidsgränsen för anrop har utgått.";
 
 /* None */
-"The total attachment size can't be bigger than 25MB" = "Bilagans totala storlek får inte överstiga 25 MB";
+"The total attachment size can't be bigger than 25MB" = "Den totala storleken på bilagor får inte överstiga 25 MB";
 
 /* Description */
-"The total attachment size cannot exceed 25MB" = "Bilagans totala storlek får inte överstiga 25 MB";
+"The total attachment size cannot exceed 25MB" = "Den totala storleken på bilagor får inte överstiga 25 MB";
 
 /* 
  & title */
@@ -1805,13 +1805,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "This contact belongs to your Address Book." = "Den här kontakten tillhör din adressbok.";
 
 /* spam score warning */
-"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Detta mail har misslyckats med sin domäns autentiseringskrav. Det kan vara falskt eller felaktigt vidarebefordrat!";
+"This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Detta mail uppfyller inte dess domäns autentiseringskrav. Det kan vara falskt eller felaktigt vidarebefordrat!";
 
 /* spam score warning */
-"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Detta e-post verkar vara från en ProtonMail-adress men kom från utanför vårt system och misslyckades våra autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefodrat!";
+"This email seems to be from a ProtonMail address but came from outside our system and failed our authentication requirements. It may be spoofed or improperly forwarded!" = "Detta e-post verkar vara från en ProtonMail-adress men kom från utanför vårt system och uppfyllde inte våra autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefodrat!";
 
 /* spam score warning */
-"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Detta meddelande kan vara ett nätfiskeförsök. Kontroller avsändaren och innehållet för att säkerställa legitimiteten.";
+"This message may be a phishing attempt. Please check the sender and contents to make sure they are legitimate." = "Detta meddelande kan vara ett nätfiskeförsök. Kontrollera avsändaren och innehållet för att säkerställa dess legitimitet.";
 
 /* contacts talbe cell Title title */
 "Title" = "Titel";
@@ -1825,7 +1825,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
  behöver vi verifiera att du inte är en robot.";
 
 /* None */
-"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "För att återställa lösenordet för din e-postlåda, vänligen använd ProtonMail:s webbversion på protonmail.com";
+"To reset your mailbox password, please use the web version of ProtonMail at protonmail.ch" = "För att återställa lösenordet för din e-postlåda, vänligen använd ProtonMails webbversion på protonmail.com";
 
 /* Description */
 "To reset your mailbox password, please use the web version of ProtonMail at protonmail.com" = "För att återställa lösenordet för din e-postlåda, vänligen använd ProtonMails webbversion på protonmail.com";
@@ -1861,10 +1861,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Tweet about ProtonMail" = "Twittra om ProtonMail";
 
 /* Placeholder */
-"Two Factor Code" = "Tvåfaktorkod";
+"Two Factor Code" = "Tvåfaktorskod";
 
 /* Internal type casting error */
-"Type casting error" = "Type casting error";
+"Type casting error" = "Type casting-fel";
 
 /* default vcard types */
 "URL" = "URL";
@@ -1883,7 +1883,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Unable to create SRP Client!" = "Kunde inte skapa SRP-klient!";
 
 /* Error */
-"Unable to decrypt message." = "Kunde inte dekryptera meddelande.";
+"Unable to decrypt message." = "Kunde inte avkryptera meddelande.";
 
 /* Description */
 "Unable to edit this message offline" = "Det går inte att redigera meddelandet offline";
@@ -1920,7 +1920,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Undo" = "Ångra";
 
 /* Description */
-"Unknow Error" = "Okänt Fel";
+"Unknow Error" = "Okänt fel";
 
 /* None */
 "Unknow file" = "Okänd fil";
@@ -1929,7 +1929,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Unknown" = "Okänd";
 
 /* Error */
-"Unknown Error" = "Okänt Fel";
+"Unknown Error" = "Okänt fel";
 
 /* None */
 "Unkonw Version" = "Okänd version";
@@ -1951,7 +1951,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Update" = "Uppdatera";
 
 /* Contacts Update contact */
-"Update Contact" = "Uppdatera Kontakt";
+"Update Contact" = "Uppdatera kontakt";
 
 /* update notification email error title */
 "Update Notification Email" = "Uppdateringsnotifikationer";
@@ -1963,10 +1963,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Update Required" = "Uppdatering krävs";
 
 /* Service plan description footer */
-"Upgrade to a paid plan to benefit from more features" = "Uppgradera till betalabonnemang för fler funktioner";
+"Upgrade to a paid plan to benefit from more features" = "Uppgradera till betalprenumeration för fler funktioner";
 
 /* Error */
-"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till betalabonnemang för att skicka från din %@ adress";
+"Upgrade to a paid plan to send from your %@ address" = "Uppgradera till betalprenumeration för att skicka från din %@ adress";
 
 /* alert description */
 "Upgrade to get all paid features." = "Uppgradera för att få tillgång till alla funktioner.";
@@ -2007,28 +2007,28 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Verification error" = "Verifieringsfel";
 
 /* error details */
-"Verification of this content’s signature failed" = "Verifiering av detta innehållets signatur misslyckades";
+"Verification of this content’s signature failed" = "Verifieringen av signaturen för innehållet misslyckades";
 
 /* None */
 "Version %@ %@" = "Version %@ %@";
 
 /* message details-> more action-> view headers */
-"View Headers" = "Visa Headers";
+"View Headers" = "Visa headers";
 
 /* Action */
-"View Plans" = "Visa abonnemang";
+"View Plans" = "Visa prenumeration";
 
 /* Title */
 "Warning" = "Varning";
 
 /* human check warning description */
-"Warning: Before you pass the human check you can't sent email!!!" = "Varning: Innan du passerat den mänskliga kontrollen kan du inte skicka epost!!!";
+"Warning: Before you pass the human check you can't sent email!!!" = "Varning: Innan du klarat människokontrollen kan du inte skicka epost!!!";
 
 /* Description */
 "Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Varning: Du har inte angett en återställningsadress så kontoåterställning är omöjligt om du glömmer ditt lösenord. Fortsätt utan återställningsadress?";
 
 /* Error message */
-"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "We have successfully activated your subscription. Please relaunch the app to start using your new service plan.";
+"We have successfully activated your subscription. Please relaunch the app to start using your new service plan." = "Vi har lyckats uppgradera din prenumeration. Vänligen starta om appen för att börja använda din nya prenumeration.";
 
 /* text field notes */
 "We will send a verification code to the cell phone above." = "Vi kommer att skicka en verifieringskod till ovanstående telefonnummer.";
@@ -2046,7 +2046,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "What people see in the \"From\" field." = "Vad folk ser i fältet ”Från”.";
 
 /* display name notes */
-"When you send an email, this is the name that appears in the sender field." = "När du skickar e-post, är det detta namn som syns i avsändarfältet.";
+"When you send an email, this is the name that appears in the sender field." = "När du skickar e-post är det detta namn som syns i avsändarfältet.";
 
 /* default vcard types */
 "Work" = "Arbete";
@@ -2062,7 +2062,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "Yes, attach details of payment" = "Ja, bifoga uppgifter om betalning";
 
 /* link opeining confirmation */
-"You are about to launch the web browser and navigate to" = "You are about to launch the web browser and navigate to";
+"You are about to launch the web browser and navigate to" = "Dä är på väg att starta webbläsaren och besöka";
 
 /* Description */
 "You can customize swipe gestures in the ProtonMail App Settings." = "Du kan anpassa svepgester i ProtonMail-appens inställningar.";
@@ -2074,7 +2074,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "You can't set %@ address as default because it is a paid feature." = "Du kan inte ange %@ adress som standard eftersom det är en betald funktion.";
 
 /* description */
-"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients.";
+"You enabled message expiration, but not all recipients support this. Please add a password and/or disable PGP sending to use expiration for all recipients." = "Du har aktiverat utgångstid av meddelanden, men alla mottagare stödjer inte detta. Vänligen lägg till ett lösenord och/eller inaktivera PGP-sändning för att använda utgångstid för alla mottagare.";
 
 /* Message */
 "You have %d new emails!" = "Du har %d nya e-postmeddelanden!";
@@ -2083,7 +2083,7 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "You have a new email!" = "Du har ett nytt meddelande!";
 
 /* Confirmation message */
-"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara?";
+"You have unsaved changes. Do you want to save it?" = "Du har osparade ändringar. Vill du spara dessa?";
 
 /* Description */
 "You have used %d%% of your storage space (%@)." = "Du har använt %1$d%% av ditt lagringsutrymme (%2$@).";
@@ -2095,10 +2095,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "You need at least one recipient to send" = "Du behöver minst en mottagare för att skicka";
 
 /* view top title */
-"Your Country Code" = "Ditt Landsnummer";
+"Your Country Code" = "Ditt landsnummer";
 
 /* Description */
-"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din inkorg skyddas nu av end-to-end-kryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också manuellt kryptera meddelanden till dem om de inte använder ProtonMail.";
+"Your inbox is now protected with end-to-end encryption. To automatically securely email friends, have them get ProtonMail! You can also manually encrypt messages to them if they don't use ProtonMail." = "Din inkorg skyddas nu av ändpunktskryptering. För att automatiskt skicka säker e-post till dina kontakter, bjud in dem att använda ProtonMail! Du kan också kryptera meddelanden manuellt till dem om de inte använder ProtonMail.";
 
 /* Description */
 "Your new encrypted email account has been set up and is ready to send and receive encrypted messages." = "Ditt nya krypterade e-postkonto har skapats och är redo att skicka och ta emot krypterade meddelanden.";
@@ -2108,10 +2108,10 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
  account is ready." = "Ditt nya säkra epostkonto är redo.";
 
 /* Service plan description footer */
-"Your plan is currently active until" = "Din plan är aktiv tills";
+"Your plan is currently active until" = "Din prenumeration är aktiv tills";
 
 /* Service plan description footer */
-"Your plan will automatically renew on" = "Din plan förnyas automatiskt på";
+"Your plan will automatically renew on" = "Din prenumeration förnyas automatiskt den";
 
 /* Description */
 "Your signature has been updated." = "Din signatur har uppdaterats.";
@@ -2126,13 +2126,13 @@ Besök <a href=\"https://protonmail.com/support/knowledge-base/delinquency/\">v�
 "at" = "vid";
 
 /* Error */
-"attempt remaining until secure data wipe!" = "försök återstår till säker data raderas!";
+"attempt remaining until secure data wipe!" = "försök återstår till säker dataradering!";
 
 /* Description */
 "attempts remaining" = "försök återstår";
 
 /* Error */
-"attempts remaining until secure data wipe!" = "försök återstår till säker data raderas!";
+"attempts remaining until secure data wipe!" = "försök återstår till säker dataradering!";
 
 /* Action */
 "close tour" = "avsluta rundturen";
