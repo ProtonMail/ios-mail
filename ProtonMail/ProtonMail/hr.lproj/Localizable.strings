@@ -1820,7 +1820,7 @@
 "Sent Failed" = "Poruka nije poslana";
 
 /* Description */
-"Server proofs not valid!" = "Server proofs not valid!";
+"Server proofs not valid!" = "Dokazi poslužitelja nisu valjani!";
 
 /* Description */
 "Set a password to encrypt this message for non-ProtonMail users." = "Postavite lozinku za šifriranje ove poruke za one koji nisu korisnici ProtonMaila.";
@@ -1887,7 +1887,7 @@
 "SRP Client" = "SRP Client";
 
 /* Error */
-"SRP Server" = "SRP Server";
+"SRP Server" = "SRP poslužitelj";
 
 /* Description */
 "Srp single password keyslat invalid!" = "Srp single password keysalt invalid!";
