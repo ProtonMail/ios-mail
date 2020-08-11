@@ -53,20 +53,24 @@ class EncryptionSetupViewController: UIViewController {
         let font = Fonts.h4.bold
         let attrHigh = NSMutableAttributedString(
             string: " " + LocalString._high_security,
-            attributes: [NSAttributedString.Key.font:font])
+            attributes: [NSAttributedString.Key.font:font,
+                         NSAttributedString.Key.foregroundColor: UIColor.ProtonMail.Menu_UnSelectBackground])
         let font1 = Fonts.h4.regular
         let attrHighSize = NSMutableAttributedString(
             string: " " +  LocalString._signup_key_2048_size,
-            attributes: [NSAttributedString.Key.font:font1])
+            attributes: [NSAttributedString.Key.font:font1,
+                         NSAttributedString.Key.foregroundColor: UIColor.ProtonMail.Menu_UnSelectBackground])
         attrHigh.append(attrHighSize)
         highBitLevel.setAttributedTitle(attrHigh, for: .normal)
         
         let attrExtreme = NSMutableAttributedString(
             string: LocalString._extreme_security,
-            attributes: [NSAttributedString.Key.font:font])
+            attributes: [NSAttributedString.Key.font:font,
+                         NSAttributedString.Key.foregroundColor: UIColor.ProtonMail.Menu_UnSelectBackground])
         let attrExtremeSize = NSMutableAttributedString(
             string: " " + LocalString._signup_key_4096_size,
-            attributes: [NSAttributedString.Key.font:font1])
+            attributes: [NSAttributedString.Key.font:font1,
+                         NSAttributedString.Key.foregroundColor: UIColor.ProtonMail.Menu_UnSelectBackground])
         attrExtreme.append(attrExtremeSize)
         normalBitLevel.setAttributedTitle(attrExtreme, for: .normal)
         
