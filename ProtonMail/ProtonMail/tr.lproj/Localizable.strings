@@ -534,7 +534,7 @@
 "Contact the ProtonMail team" = "ProtonMail ekibiyle iletişime geçin";
 
 /* network troubleshot cell title */
-"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Bize, Twitter üzerinden, eposta ile (support@protonmail.com) veya destek talebi formunu doldurarak direk olarak ulaşabilirsiniz.";
+"Contact us directly through our support form, email (support@protonmail.com), or Twitter." = "Bize Twitter üzerinden, e-posta ile (support@protonmail.com) veya destek talebi formunu doldurarak direkt olarak ulaşabilirsiniz.";
 
 /* Action and title
    menu title */
@@ -659,7 +659,7 @@
 "Details" = "Ayrıntılar";
 
 /* network troubleshot cell title */
-"Disable any proxies or firewalls, or contact your network administrator." = "Proxy veya güvenlik duvarını devre dışı bırakın veya ağ yöneticinize başvurun.";
+"Disable any proxies or firewalls, or contact your network administrator." = "Vekil sunucu veya güvenlik duvarını devre dışı bırakın veya ağ yöneticinize başvurun.";
 
 /* Cert pinning failed alert message */
 "Disable Validation" = "Doğrulamayı Devre Dışı Bırak";
@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Bildirim e-postasını etkinleştir";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "PIN'i etkinleştir";
 
 /* settings protection section title */
 "Enable Pin Protection" = "PIN korumasını etkinleştir";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "PIN/FaceID'yi etkinleştir";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "PIN/TouchID'yi etkinleştir";
 
 /* settings protection section title */
 "Enable TouchID" = "TouchID'yi etkinleştir";

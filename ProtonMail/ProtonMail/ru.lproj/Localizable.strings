@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Включить уведомление по электронной почте";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Включить ПИН";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Включить защиту PIN-кодом";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Включить ПИН/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Включить ПИН/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Включить TouchID";
@@ -1513,13 +1513,13 @@
 "Photo Library" = "Фотоальбом / Медиатека";
 
 /* device settings auto lock type title */
-"PIN" = "PIN";
+"PIN" = "ПИН";
 
 /* device settings auto lock type title */
-"PIN & FaceID" = "PIN & FaceID";
+"PIN & FaceID" = "ПИН & FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "PIN & TouchID";
+"PIN & TouchID" = "ПИН & FaceID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-код не может быть пустым.";
