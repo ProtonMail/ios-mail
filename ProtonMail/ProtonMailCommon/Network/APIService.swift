@@ -559,10 +559,10 @@ class APIService : Service {
                 }
                 let url = self.doh.getHostUrl() + path
                 PMLog.D("Start Request: " + url)
-                let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
-                                                                            urlString: url,
-                                                                            parameters: parameters,
-                                                                            error: nil)
+                //TODO:: fix me  change try ! to a better way
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: method.toString(),
+                                                                                 urlString: url,
+                                                                                 parameters: parameters)
                 request.timeoutInterval = self.doh.status == .off ? 60.0 : 30.0
                 if let header = headers {
                     for (k, v) in header {
