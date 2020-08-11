@@ -39,7 +39,6 @@ typealias ContactImportCancel = (() -> Bool)
 typealias ContactDeleteComplete = ((NSError?) -> Void)
 typealias ContactUpdateComplete = (([Contact]?, NSError?) -> Void)
 
-
 class ContactDataService: Service, HasLocalStorage {
     
     private let addressBookService: AddressBookService
@@ -410,7 +409,7 @@ class ContactDataService: Service, HasLocalStorage {
                 return .value(sucessed)
             }.done { result in
                 seal.fulfill(result)
-            }.catch { error in
+            }.catch(policy: .allErrors) { error in
                 seal.reject(error)
             }
         }
@@ -764,10 +763,10 @@ class ContactDataService: Service, HasLocalStorage {
                     }
                 }
                 complete?(c.lock, c.pgpType.rawValue)
-                }.catch({ (error) in
-                    PMLog.D(error.localizedDescription)
-                    complete?(nil, -1)
-                })
+            }.catch(policy: .allErrors) { (error) in
+                PMLog.D(error.localizedDescription)
+                complete?(nil, -1)
+            }
         }
     }
 }

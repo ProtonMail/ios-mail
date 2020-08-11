@@ -112,15 +112,21 @@ class BannerView : PMView {
             self.button.isHidden = true
         }
         
+        
         self.secondButtonConfig = button2
-        let attributeString = NSMutableAttributedString(string: "Troubleshoot",
-                                                        attributes: yourAttributes)
-        secondButton.setAttributedTitle(attributeString, for: .normal)
-        secondButton.isHidden = button2 == nil
+        if let config = button2 {
+            self.secondButton.isHidden = false
+            let attributeString = NSMutableAttributedString(string: "Troubleshoot",
+                                                            attributes: yourAttributes)
+            self.secondButton.setAttributedTitle(attributeString, for: .normal)
+        } else {
+            self.secondButton.isHidden = true
+        }
         
         messageLabel.sizeToFit()
         self.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPan(gesture:))))
         
+        self.sizeToFit()
         self.layoutIfNeeded()
     }
     

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -38,8 +38,11 @@
                                                 <color key="textColor" red="0.98039215690000003" green="0.98039215690000003" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DWs-10-ddZ">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DWs-10-ddZ">
                                                 <rect key="frame" x="0.0" y="38" width="265" height="30"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="12" id="6k5-CL-ILh"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                 <state key="normal" title="TroubleShoot">
                                                     <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -68,10 +71,10 @@
                             </stackView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="7wR-5r-dTV" firstAttribute="leading" secondItem="xJO-33-baX" secondAttribute="leading" constant="20" symbolic="YES" id="57s-v4-XNN"/>
+                            <constraint firstItem="7wR-5r-dTV" firstAttribute="leading" secondItem="xJO-33-baX" secondAttribute="leading" constant="20" id="Fjo-Mu-eK6"/>
                             <constraint firstItem="7wR-5r-dTV" firstAttribute="top" secondItem="xJO-33-baX" secondAttribute="top" constant="8" id="I8y-pH-LWT"/>
                             <constraint firstAttribute="bottom" secondItem="7wR-5r-dTV" secondAttribute="bottom" constant="8" id="NiG-Hw-xTq"/>
-                            <constraint firstAttribute="trailing" secondItem="7wR-5r-dTV" secondAttribute="trailing" constant="20" symbolic="YES" id="ab7-Qh-uGR"/>
+                            <constraint firstAttribute="trailing" secondItem="7wR-5r-dTV" secondAttribute="trailing" constant="20" id="wDa-yw-w5z"/>
                         </constraints>
                     </view>
                     <blurEffect style="extraLight"/>

@@ -452,11 +452,16 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     func handleRequestError (_ error : NSError) {
         let code = error.code
-        if code == NSURLErrorTimedOut {
-            
-        } else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
- 
+        if DoHMail.default.status != .off {
+            let alertController = error.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
         }
+//        else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
+//            let alertController = error.alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        }
         else if !self.checkDoh(error) && !code.forceUpgrade {
             let alertController = error.alertController()
             alertController.addOKAction()
@@ -471,7 +476,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
             return false
         }
         
-        let message = error.localizedDescription
+        let message = error.localizedFailureReason
         let alertController = UIAlertController(title: LocalString._protonmail,
                                                 message: message,
                                                 preferredStyle: .alert)

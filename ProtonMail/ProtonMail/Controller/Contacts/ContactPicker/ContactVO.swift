@@ -326,10 +326,10 @@ public class ContactVO: NSObject, ContactPickerModelProtocol {
                     }
                 }
                 complete?(nil, -1)
-            }.catch({ (error) in
+            }.catch(policy: .allErrors) { (error) in
                 PMLog.D(error.localizedDescription)
                 complete?(nil, -1)
-            })
+            }
         }
         
     }
