@@ -1785,7 +1785,7 @@ class MessageDataService : Service, HasLocalStorage {
                                                                                                  subtitle: message.title))
                 }
                 completion?(nil, nil, error)
-            }.catch { (error) in
+            }.catch(policy: .allErrors) { (error) in
                 status.insert(SendStatus.exceptionCatched)
                 
                 let err = error as NSError

@@ -371,9 +371,9 @@ class SendBuilder {
                 //TODO:: fix the ?
                 
                 seal.fulfill(self)
-            }.catch({ error in
+            }.catch(policy: .allErrors) { error in
                 seal.reject(error)
-            })
+            }
         }
     }
     

@@ -48,6 +48,7 @@ extension APIService {
         saltapi.authCredential = credential
         let userApi = GetUserInfoRequest(api: self)
         userApi.authCredential = credential
+        
         firstly {
             when(fulfilled: saltapi.run(), userApi.run())
         }.done { (saltRes, userRes)  in
@@ -57,26 +58,27 @@ extension APIService {
                 done(userInfo: userRes.userInfo)
             } else {
                 guard  let salt = saltRes.keySalt,
-                    let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
-                        return completion(nil, .resCheck, nil, nil, userRes.userInfo, NSError.authInvalidGrant())
+                       let privatekey = userRes.userInfo?.getPrivateKey(by: saltRes.keyID) else {
+                    return completion(nil, .resCheck, nil, nil, userRes.userInfo, NSError.authInvalidGrant())
                 }
                 keySalt = salt
                 privateKey = privatekey
                 done(userInfo: userRes.userInfo)
             }
-        }.catch { err in
+        }.catch(policy: .allErrors) { err in
             let error = err as NSError
             if error.isInternetError() {
                 return completion(nil, .resCheck, nil, nil, nil, NSError.internetError())
             } else {
-                return completion(nil, .resCheck, nil, nil, nil, NSError.authInvalidGrant())
+                //TODO:: add logs here
+                return completion(nil, .resCheck, nil, nil, nil, error)
             }
         }
     }
     
     
     func confirm2FA(_ code: Int, password: String, context: TwoFactorContext, completion: @escaping AuthCompleteBlockNew) {
-        self.authApi.confirm2FA(code, context: context) { result in
+        self.authApi.confirm2FA(code, context: context, completion: { (result ) in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
                 return completion(nil, .resCheck, nil, nil, nil, error)
@@ -91,11 +93,17 @@ extension APIService {
             case .success(.updatedCredential), .success(.ask2FA):
                 assert(false, "Should never happen in this flow")
             }
+        }) { (url, error) -> String? in
+            if self.doh.handleError(host: url, error: error) {
+                return self.doh.getHostUrl()
+            }
+            return nil
         }
     }
     
     func authenticate(username: String, password: String, noKey: Bool, completion: @escaping AuthCompleteBlockNew) {
-        self.authApi.authenticate(username: username, password: password) { result in
+        
+        self.authApi.authenticate(username: username, password: password, completion: { (result ) in
             switch result {
             case .failure(Authenticator.Errors.serverError(let error)): // error response returned by server
                 return completion(nil, .resCheck, nil, nil, nil, error)
@@ -114,26 +122,31 @@ extension APIService {
                 
             case .failure(Authenticator.Errors.emptyAuthInfoResponse):
                 return completion(nil, .resCheck, nil, nil, nil, NSError.authUnableToParseAuthInfo())
-            
+                
             case .failure(_): // network or parsing error
                 return completion(nil, .resCheck, nil, nil, nil, NSError.internetError())
-            
+                
             case .success(.ask2FA(let context)): // success but need 2FA
                 return completion(nil, .ask2FA, nil, context, nil, nil)
                 
             case .success(.newCredential(let credential, let passwordMode)): // success without 2FA
                 let authCredential = AuthCredential(credential)
                 self.completeAuthFlow(credential: authCredential, password: password, passwordMode: passwordMode.rawValue, noKey: noKey, completion: completion)
-            
+                
             case .success(.updatedCredential):
                 assert(false, "Should never happen in this flow")
             }
+        }) { (url, error) -> String? in
+            if self.doh.handleError(host: url, error: error) {
+                return self.doh.getHostUrl()
+            }
+            return nil
         }
     }
     
     func authRefresh(_ authCredential: AuthCredential, completion: AuthRefreshComplete?) {
         let oldCredential = PMAuthentication.Credential(authCredential)
-        self.authApi.refreshCredential(oldCredential) { result in
+        self.authApi.refreshCredential(oldCredential, completion: { (result ) in
             switch result {
             case .success(.updatedCredential(let newCredential)):
                 self.refreshTokenFailedCount = 0
@@ -169,6 +182,11 @@ extension APIService {
                     completion?(nil, nil, NSError.internetError())
                 }
             }
+        }) { (url, error) -> String? in
+            if self.doh.handleError(host: url, error: error) {
+                return self.doh.getHostUrl()
+            }
+            return nil
         }
     }
 }

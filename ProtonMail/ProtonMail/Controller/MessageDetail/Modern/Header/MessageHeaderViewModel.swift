@@ -139,11 +139,11 @@ extension MessageHeaderViewModel {
                                 self.message.checkedSign = true
                                 self.message.checkingSign = false
                                 complete?(c.lock, c.pgpType.rawValue)
-                            }.catch({ (error) in
+                            }.catch(policy: .allErrors) { (error) in
                                 self.message.checkingSign = false
                                 PMLog.D(error.localizedDescription)
                                 complete?(nil, -1)
-                            })
+                            }
                             
                         }
                     }
