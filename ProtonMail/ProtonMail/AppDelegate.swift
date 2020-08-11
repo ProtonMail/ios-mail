@@ -136,11 +136,24 @@ extension AppDelegate: UIApplicationDelegate {
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        #if DEBUG 
+        #if DEBUG
         PMLog.D("App group directory: " + FileManager.default.appGroupsDirectoryURL.absoluteString)
         PMLog.D("App directory: " + FileManager.default.applicationSupportDirectoryURL.absoluteString)
         PMLog.D("Tmp directory: " + FileManager.default.temporaryDirectoryUrl.absoluteString)
         #endif
+        
+        let arguments = ProcessInfo.processInfo.arguments
+        for argument in arguments {
+            switch argument {
+            case "UI_TESTING":
+                /// Reset app state and disable animations for UI tests.
+                sharedServices.get(by: UsersManager.self).clean()
+                keymaker.wipeMainKey()
+                keymaker.mainKeyExists()
+                UIView.setAnimationsEnabled(false)
+            default: break
+            }
+        }
 
         #if Enterprise
         Fabric.with([Crashlytics.self])

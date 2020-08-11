@@ -14,11 +14,15 @@ import XCTest
 */
 class BaseTestCase: XCTestCase {
     
+    let app = XCUIApplication()
+    var launchArguments = ["UI_TESTING"]
+    
     override func setUp() {
         super.setUp()
-        XCUIApplication().terminate()
+        app.terminate()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        app.launchArguments = launchArguments
+        app.launch()
         _ = handleInterruption()
     }
     
@@ -27,7 +31,7 @@ class BaseTestCase: XCTestCase {
         super.tearDown()
     }
     
-    func handleInterruption() -> Bool {        
+    func handleInterruption() -> Bool {
         addUIInterruptionMonitor(withDescription: "Allow Notifications") { (alert) -> Bool in
             let allowButton = alert.buttons["Don’t Allow"]
             if allowButton.exists {
