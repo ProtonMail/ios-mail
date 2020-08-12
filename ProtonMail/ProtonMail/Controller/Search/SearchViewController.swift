@@ -250,8 +250,6 @@ class SearchViewController: ProtonMailViewController {
                 return context.object(with: newId) as? Message
             }
             self.searchResult = messages
-            
-            self.showHideNoresult()
         }
     }
     
@@ -290,6 +288,8 @@ class SearchViewController: ProtonMailViewController {
             }
             self.currentPage = pageToLoad
             guard !messages.isEmpty else {
+                self.showHideNoresult()
+                self.searchResult = []
                 return
             }
 
@@ -345,6 +345,7 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     @objc func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        self.showHideNoresult()
         return self.searchResult.count
     }
     
