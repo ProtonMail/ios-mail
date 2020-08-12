@@ -8,14 +8,13 @@
 
 import Foundation
 import XCTest
-
 /**
  Parent class for all the test classes.
 */
 class BaseTestCase: XCTestCase {
     
     let app = XCUIApplication()
-    var launchArguments = ["UI_TESTING"]
+    var launchArguments = ["-clear_all_preference", "YES"]
     
     override func setUp() {
         super.setUp()
