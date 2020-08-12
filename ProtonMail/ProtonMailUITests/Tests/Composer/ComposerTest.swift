@@ -9,7 +9,7 @@
 class ComposerTests: BaseTestCase {
     
     func testSendMessageToInternalContact() {
-        let user = TestUser.testUserOne
+        let user = testData.onePassUser
         let subject = ""
         
         LoginRobot().loginUser(user.email, user.password)

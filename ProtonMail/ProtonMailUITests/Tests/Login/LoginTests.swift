@@ -22,14 +22,20 @@
 
 class LoginTests: BaseTestCase {
     
-    func testLoginLogoutUser() {
-        let user = TestUser.testUserOne
-        
-        LoginRobot()
+    private let loginRobot = LoginRobot()
+
+    func testLoginWithOnePass() {
+        let user = testData.onePassUser
+        loginRobot
             .loginUser(user.email, user.password)
             .verify.loginSuccessful()
-            .menuDrawer()
-            .logoutUser()
-            .verify.loginViewShown()
+    }
+
+    func testLoginWithTwoPass() {
+        let user = testData.twoPassUser
+        loginRobot
+            .loginTwoPasswordUser(user: user)
+            .decryptMailbox(user.mailboxPassword)
+            .verify.loginSuccessful()
     }
 }

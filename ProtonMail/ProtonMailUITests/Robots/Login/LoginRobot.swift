@@ -26,23 +26,20 @@ class LoginRobot {
     func loginUserWithTwoFA(user: String) -> LoginRobot {
         return username(user)
             .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
+            .signInWithTwoFA()
             .twoFACode(twoFACode: user)
             .confirm2FA()
     }
 
-    func loginTwoPasswordUser(user: String) -> LoginRobot {
-        return username(user)
-            .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
-            .mailboxPassword(password: user)
-            .decrypt()
+    func loginTwoPasswordUser(user: User) -> MailboxPasswordRobot {
+        return username(user.email)
+            .password(user.password)
+            .signInWithMailboxPassword()
     }
 
     private func loginTwoPasswordUserWithTwoFA(user: String) -> LoginRobot {
         return username(user)
             .password(user)
-            .signInWithMailboxPasswordOrTwoFA()
             .twoFACode(twoFACode: user)
             .mailboxPassword(password: user)
             .decrypt()
@@ -63,9 +60,14 @@ class LoginRobot {
         return InboxRobot()
     }
     
-    private func signInWithMailboxPasswordOrTwoFA() -> LoginRobot {
+    private func signInWithMailboxPassword() -> MailboxPasswordRobot {
         Element.button.tapByIdentifier(signinButtonIdentifier)
-        return self
+        return MailboxPasswordRobot()
+    }
+    
+    private func signInWithTwoFA() -> LoginRobot {
+        Element.button.tapByIdentifier(signinButtonIdentifier)
+        return LoginRobot()
     }
     
     private func loginUserWithTwoFA() -> InboxRobot {
