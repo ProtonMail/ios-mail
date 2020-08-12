@@ -2053,6 +2053,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		01F17B5C230F4AA95173E78FCD56391A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7CC48161B0FC946A8DB234B96B6A66DD;
+			remoteInfo = ProtonMail;
+		};
 		2997F84FD021251F483D45DDA67A148E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
@@ -2066,13 +2073,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 528CABDE5FC7422D1D0E7976ADAA8CAD;
 			remoteInfo = ShareDev;
-		};
-		EAF5800691E2B9994F68EA21363AAE18 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 3A22070EB30738B5102477B2E763C803 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 73B959411C37C32C3517112463FDCDDE;
-			remoteInfo = ProtonMailDev;
 		};
 		8B6894FA0B014CCBD1BBBE2B6026CC16 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3219,6 +3219,24 @@
 			path = AttachmentProviders;
 			sourceTree = "<group>";
 		};
+		02423C8683D1F61352E4CB6C1F49AB36 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
+				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
+				B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		04CFA334F535FC9A18B0C0471F183FF4 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				6EB6F68394B254A1D2A142B42FDA8F8F /* MenuRobot.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
 		0580D5989D7C857EF7FDB46999A078F1 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
@@ -3288,6 +3306,14 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		0C6EF615EFD94D744DBB5847EA781816 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				8610EB77CE145A1B2438608ACEBA8E1A /* ComposerRobot.swift */,
+			);
+			path = Composer;
+			sourceTree = "<group>";
+		};
 		0F7FCB458980D1F585FE26BF9E4838CC /* EmbeddableCompose */ = {
 			isa = PBXGroup;
 			children = (
@@ -3354,6 +3380,14 @@
 				DFCC5CF86AF472BE72A09BF44887F52C /* Info.plist */,
 			);
 			path = ProtonMailUITests;
+			sourceTree = "<group>";
+		};
+		1C1B82D542CF2D686015AD43EC12C5AE /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1DCA9F4BAA358B9863B99D1FEDF582CD /* LoginTests.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		1C5B28EDA8D0048B4F62006760143810 /* Attachments */ = {
@@ -3523,6 +3557,14 @@
 				0DDB859D696ED07B574FA18C09EFF40F /* TwoFACodeViewController.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		2D9A977C19BC17895B2218C72087E6B1 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E17E49EE35CCAC16B977B295510FC090 /* LoginRobot.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 		30E2F8F01D4D6E188F931A297BC000CB /* SRP */ = {
@@ -3803,6 +3845,16 @@
 			path = Body;
 			sourceTree = "<group>";
 		};
+		6651264FBFFCA1B8A5BD4B63BB8A4C1E /* Robots */ = {
+			isa = PBXGroup;
+			children = (
+				2D9A977C19BC17895B2218C72087E6B1 /* Login */,
+				A388D761FF6BC38A6D811A0FAC3A331F /* Mailbox */,
+				04CFA334F535FC9A18B0C0471F183FF4 /* Menu */,
+			);
+			path = Robots;
+			sourceTree = "<group>";
+		};
 		68FEC662E58FB5FAD41B65A72C59FEE2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
@@ -3932,6 +3984,14 @@
 			path = Contacts;
 			sourceTree = "<group>";
 		};
+		79A8BEF00A74215E5000DF170099604A /* Sent */ = {
+			isa = PBXGroup;
+			children = (
+				AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */,
+			);
+			path = Sent;
+			sourceTree = "<group>";
+		};
 		7A3256339B15D2424DA7411575938B6C /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
@@ -4035,76 +4095,6 @@
 			path = Contacts;
 			sourceTree = "<group>";
 		};
-		CEECE23575593F125B3940264BA9EBA2 /* TestHelpers */ = {
-			isa = PBXGroup;
-			children = (
-				DC8F140B64075288699C71E23331F458 /* Element.swift */,
-				8F7747E3106D867364E40495CDC3322A /* TestUser.swift */,
-				83E1AA926B0E49AAF06111604E48DDD0 /* User.swift */,
-			);
-			path = TestHelpers;
-			sourceTree = "<group>";
-		};
-		79A8BEF00A74215E5000DF170099604A /* Sent */ = {
-			isa = PBXGroup;
-			children = (
-				AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */,
-			);
-			path = Sent;
-			sourceTree = "<group>";
-		};
-		A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */ = {
-			isa = PBXGroup;
-			children = (
-				AF750BE80A55FC0B3C05B834F9305412 /* ComposerTest.swift */,
-			);
-			path = Composer;
-			sourceTree = "<group>";
-		};
-		2D9A977C19BC17895B2218C72087E6B1 /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				E17E49EE35CCAC16B977B295510FC090 /* LoginRobot.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		6651264FBFFCA1B8A5BD4B63BB8A4C1E /* Robots */ = {
-			isa = PBXGroup;
-			children = (
-				2D9A977C19BC17895B2218C72087E6B1 /* Login */,
-				A388D761FF6BC38A6D811A0FAC3A331F /* Mailbox */,
-				04CFA334F535FC9A18B0C0471F183FF4 /* Menu */,
-			);
-			path = Robots;
-			sourceTree = "<group>";
-		};
-		02423C8683D1F61352E4CB6C1F49AB36 /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
-				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
-				B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		1C1B82D542CF2D686015AD43EC12C5AE /* Login */ = {
-			isa = PBXGroup;
-			children = (
-				1DCA9F4BAA358B9863B99D1FEDF582CD /* LoginTests.swift */,
-			);
-			path = Login;
-			sourceTree = "<group>";
-		};
-		04CFA334F535FC9A18B0C0471F183FF4 /* Menu */ = {
-			isa = PBXGroup;
-			children = (
-				6EB6F68394B254A1D2A142B42FDA8F8F /* MenuRobot.swift */,
-			);
-			path = Menu;
-			sourceTree = "<group>";
-		};
 		8AAC3F978D5BBEB889BA0E63A8159C5F /* Share */ = {
 			isa = PBXGroup;
 			children = (
@@ -4118,37 +4108,6 @@
 				85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */,
 			);
 			path = Share;
-			sourceTree = "<group>";
-		};
-		A388D761FF6BC38A6D811A0FAC3A331F /* Mailbox */ = {
-			isa = PBXGroup;
-			children = (
-				0C6EF615EFD94D744DBB5847EA781816 /* Composer */,
-				F62D53E5B4F2D57604EB2B3A64ADAA67 /* Inbox */,
-				79A8BEF00A74215E5000DF170099604A /* Sent */,
-				9B242B2493B97D20D155664257D31D33 /* ApplyLabelRobotInterface.swift */,
-				2505EE5BD202C17D48FE1EB508A5F447 /* MailboxRobotInterface.swift */,
-				18FF1154F52F79C4A09B508E85C2CF09 /* MoveToFolderRobotInterface.swift */,
-				3CD1BF5C7BED47A1E49B3B310DD63EF1 /* SelectionMoreOptionsRobotInterface.swift */,
-				EE43C208E26A1BFFEED62DC55422A63F /* SelectionStateRobotInterface.swift */,
-			);
-			path = Mailbox;
-			sourceTree = "<group>";
-		};
-		F62D53E5B4F2D57604EB2B3A64ADAA67 /* Inbox */ = {
-			isa = PBXGroup;
-			children = (
-				9D3541C080FEB2E40FF2EC49FBD12E8E /* InboxRobot.swift */,
-			);
-			path = Inbox;
-			sourceTree = "<group>";
-		};
-		0C6EF615EFD94D744DBB5847EA781816 /* Composer */ = {
-			isa = PBXGroup;
-			children = (
-				8610EB77CE145A1B2438608ACEBA8E1A /* ComposerRobot.swift */,
-			);
-			path = Composer;
 			sourceTree = "<group>";
 		};
 		90F230708ECD00FCDF1936ED051FDBA1 /* Pickers */ = {
@@ -4258,6 +4217,21 @@
 			path = Coordinator;
 			sourceTree = "<group>";
 		};
+		A388D761FF6BC38A6D811A0FAC3A331F /* Mailbox */ = {
+			isa = PBXGroup;
+			children = (
+				0C6EF615EFD94D744DBB5847EA781816 /* Composer */,
+				F62D53E5B4F2D57604EB2B3A64ADAA67 /* Inbox */,
+				79A8BEF00A74215E5000DF170099604A /* Sent */,
+				9B242B2493B97D20D155664257D31D33 /* ApplyLabelRobotInterface.swift */,
+				2505EE5BD202C17D48FE1EB508A5F447 /* MailboxRobotInterface.swift */,
+				18FF1154F52F79C4A09B508E85C2CF09 /* MoveToFolderRobotInterface.swift */,
+				3CD1BF5C7BED47A1E49B3B310DD63EF1 /* SelectionMoreOptionsRobotInterface.swift */,
+				EE43C208E26A1BFFEED62DC55422A63F /* SelectionStateRobotInterface.swift */,
+			);
+			path = Mailbox;
+			sourceTree = "<group>";
+		};
 		A4E6950CC27E649B63D5F2E0DA207348 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -4299,6 +4273,14 @@
 				30ADF59BCFD3E4CBE9BCF9226A75EB08 /* Pods-SiriDev.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */ = {
+			isa = PBXGroup;
+			children = (
+				AF750BE80A55FC0B3C05B834F9305412 /* ComposerTest.swift */,
+			);
+			path = Composer;
 			sourceTree = "<group>";
 		};
 		A9FBBA2BC94A40F9CD3B9F3BD4E9D9FD /* SignIn */ = {
@@ -4581,6 +4563,16 @@
 			path = Compose;
 			sourceTree = "<group>";
 		};
+		CEECE23575593F125B3940264BA9EBA2 /* TestHelpers */ = {
+			isa = PBXGroup;
+			children = (
+				DC8F140B64075288699C71E23331F458 /* Element.swift */,
+				8F7747E3106D867364E40495CDC3322A /* TestUser.swift */,
+				83E1AA926B0E49AAF06111604E48DDD0 /* User.swift */,
+			);
+			path = TestHelpers;
+			sourceTree = "<group>";
+		};
 		CFEC2E78A25CC30C969C293B16523E72 /* Encryption */ = {
 			isa = PBXGroup;
 			children = (
@@ -4841,6 +4833,14 @@
 			path = MessageContainer;
 			sourceTree = "<group>";
 		};
+		F62D53E5B4F2D57604EB2B3A64ADAA67 /* Inbox */ = {
+			isa = PBXGroup;
+			children = (
+				9D3541C080FEB2E40FF2EC49FBD12E8E /* InboxRobot.swift */,
+			);
+			path = Inbox;
+			sourceTree = "<group>";
+		};
 		F677D57953C5CEA83F919CD082738B05 /* Menu */ = {
 			isa = PBXGroup;
 			children = (
@@ -5018,7 +5018,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				01FCE1B9866FE5B79C10A76CAB401E1F /* PBXTargetDependency */,
+				6AEB9D69CB35998B425D0499F46CDAB2 /* PBXTargetDependency */,
 			);
 			name = ProtonMailUITests;
 			productName = ProtonMailUITests;
@@ -5214,7 +5214,7 @@
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 73B959411C37C32C3517112463FDCDDE;
+						TestTargetID = 7CC48161B0FC946A8DB234B96B6A66DD;
 					};
 					73B959411C37C32C3517112463FDCDDE = {
 						DevelopmentTeam = 6UN54H93QT;
@@ -7989,10 +7989,10 @@
 			target = 55608604485FE7632E52ED7BBE6A939B /* PushService */;
 			targetProxy = C1413F955C68DB50312C878280E547D5 /* PBXContainerItemProxy */;
 		};
-		01FCE1B9866FE5B79C10A76CAB401E1F /* PBXTargetDependency */ = {
+		6AEB9D69CB35998B425D0499F46CDAB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 73B959411C37C32C3517112463FDCDDE /* ProtonMailDev */;
-			targetProxy = EAF5800691E2B9994F68EA21363AAE18 /* PBXContainerItemProxy */;
+			target = 7CC48161B0FC946A8DB234B96B6A66DD /* ProtonMail */;
+			targetProxy = 01F17B5C230F4AA95173E78FCD56391A /* PBXContainerItemProxy */;
 		};
 		B5512F1FD8180155D82C74560A54E210 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -8187,7 +8187,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ProtonMailDev;
+				TEST_TARGET_NAME = ProtonMail;
 			};
 			name = Release;
 		};
@@ -8983,7 +8983,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ProtonMailDev;
+				TEST_TARGET_NAME = ProtonMail;
 			};
 			name = Debug;
 		};
@@ -9417,7 +9417,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = ProtonMailDev;
+				TEST_TARGET_NAME = ProtonMail;
 			};
 			name = Distribution;
 		};
