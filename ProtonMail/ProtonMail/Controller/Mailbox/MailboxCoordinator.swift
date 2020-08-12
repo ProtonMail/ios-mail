@@ -115,6 +115,9 @@ class MailboxCoordinator : DefaultCoordinator {
         if self.navigation != nil, self.rvc != nil {
             self.rvc?.pushFrontViewController(self.navigation, animated: true)
         }
+        if let presented = self.viewController?.presentedViewController {
+            presented.dismiss(animated: false, completion: nil)
+        }
         self.navBeforeStart = nil
     }
 
