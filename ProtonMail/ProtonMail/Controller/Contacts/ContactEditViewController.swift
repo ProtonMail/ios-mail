@@ -404,6 +404,7 @@ extension ContactEditViewController : UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
+        self.showingUpgrade = false
         UIApplication.shared.openURL(.paidPlans)
     }
     
