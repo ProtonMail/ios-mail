@@ -99,9 +99,9 @@ PODS:
   - SDWebImageFLPlugin (0.4.0):
     - FLAnimatedImage (>= 1.0.11)
     - SDWebImage/Core (~> 5.6)
-  - Sentry (4.1.0):
-    - Sentry/Core (= 4.1.0)
-  - Sentry/Core (4.1.0)
+  - Sentry (5.2.0):
+    - Sentry/Core (= 5.2.0)
+  - Sentry/Core (5.2.0)
   - SWRevealViewController (2.3.0)
   - TrustKit (1.6.2)
   - "UIColor+Hex (1.0.1)":
@@ -129,7 +129,7 @@ DEPENDENCIES:
   - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`, tag `1.1.0`)
   - PMNetworking (from `../Networking`)
   - PromiseKit (~> 6.0)
-  - Sentry (= 4.1.0)
+  - Sentry (from `https://github.com/getsentry/sentry-cocoa.git`, tag `5.2.0`)
   - SWRevealViewController (= 2.3.0)
   - TrustKit (= 1.6.2)
   - "UIColor+Hex (= 1.0.1)"
@@ -152,7 +152,6 @@ SPEC REPOS:
     - PromiseKit
     - SDWebImage
     - SDWebImageFLPlugin
-    - Sentry
     - SWRevealViewController
     - TrustKit
     - "UIColor+Hex"
@@ -180,6 +179,9 @@ EXTERNAL SOURCES:
     :tag: 1.1.0
   PMNetworking:
     :path: "../Networking"
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.2.0
 
 CHECKOUT OPTIONS:
   AFNetworkActivityLogger:
@@ -200,6 +202,9 @@ CHECKOUT OPTIONS:
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
     :tag: 1.1.0
+  Sentry:
+    :git: https://github.com/getsentry/sentry-cocoa.git
+    :tag: 5.2.0
 
 SPEC CHECKSUMS:
   AFNetworkActivityLogger: e77f68d014becb33c4306a23f56a64906ff72670
@@ -222,15 +227,15 @@ SPEC CHECKSUMS:
   PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
   PMCrypto: e348d868870240d63305609cf06c9dfce423a702
   PMKeymaker: 6a485e8e71457722b83ddd01f671a5334a0d6b04
-  PMNetworking: 7c1717a5ae14cc5112c9972a94ae8f2399fc8b4d
+  PMNetworking: 54696647ab1a6cac500bab624733d5e08b7e7098
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
   SDWebImage: 7edb9c3ea661e77a66661f7f044de8c1b55d1120
   SDWebImageFLPlugin: 6c2295fb1242d44467c6c87dc5db6b0a13228fd8
-  Sentry: 44b85e768f435ede4d12ea279af588ff275c3939
+  Sentry: 6e04bc3e11bf771ca79140a112de64dcfbc7d8cb
   SWRevealViewController: 6d3fd97f70112fd7cef9de14df4260eacce4c63a
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 5d106cb0331b19c4d08ca2894d3538344cf1f7f2
+PODFILE CHECKSUM: c135b29d8e24cfe46e8e39204550d071bc6cc425
 
 COCOAPODS: 1.8.4

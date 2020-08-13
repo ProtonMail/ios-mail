@@ -1,57 +1,44 @@
-//
-//  SentryCrashInstallation.m
-//  Sentry
-//
-//  Created by Daniel Griesser on 10/05/2017.
-//  Copyright © 2017 Sentry. All rights reserved.
-//
-
-#if __has_include(<Sentry/Sentry.h>)
-
-#import <Sentry/SentryDefines.h>
-#import <Sentry/SentryInstallation.h>
-#import <Sentry/SentryCrashReportSink.h>
-#import <Sentry/SentryLog.h>
-
-#import <Sentry/SentryCrash.h>
-#import <Sentry/SentryCrashInstallation+Private.h>
-
-#else
-#import "SentryDefines.h"
 #import "SentryInstallation.h"
-#import "SentryCrashReportSink.h"
-#import "SentryLog.h"
-
-#import "SentryCrash.h"
-#import "SentryCrashInstallation+Private.h"
-#endif
+#import "SentryDefines.h"
+#import "SentryUser.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SentryInstallation
 
-- (id)init {
-    return [super initWithRequiredProperties:[NSArray new]];
-}
+static NSString *volatile installationString;
 
-- (id<SentryCrashReportFilter>)sink {
-    return [[SentryCrashReportSink alloc] init];
-}
-
-- (void)sendAllReports {
-    [self sendAllReportsWithCompletion:NULL];
-}
-
-- (void)sendAllReportsWithCompletion:(SentryCrashReportFilterCompletion)onCompletion {
-    [super sendAllReportsWithCompletion:^(NSArray *filteredReports, BOOL completed, NSError *error) {
-        if (nil != error) {
-            [SentryLog logWithMessage:error.localizedDescription andLevel:kSentryLogLevelError];
++ (NSString *)id
+{
+    if (nil != installationString) {
+        return installationString;
+    }
+    @synchronized(self) {
+        if (nil != installationString) {
+            return installationString;
         }
-        [SentryLog logWithMessage:[NSString stringWithFormat:@"Sent %lu crash report(s)", (unsigned long)filteredReports.count] andLevel:kSentryLogLevelDebug];
-        if (completed && onCompletion) {
-            onCompletion(filteredReports, completed, error);
+        NSString *cachePath
+            = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)
+                  .firstObject;
+
+        NSString *installationFilePath = [cachePath stringByAppendingPathComponent:@"INSTALLATION"];
+
+        NSData *installationData = [NSData dataWithContentsOfFile:installationFilePath];
+
+        if (nil == installationData) {
+            installationString = [NSUUID UUID].UUIDString;
+            NSData *installationData = [installationString dataUsingEncoding:NSUTF8StringEncoding];
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            [fileManager createFileAtPath:installationFilePath
+                                 contents:installationData
+                               attributes:nil];
+        } else {
+            installationString = [[NSString alloc] initWithData:installationData
+                                                       encoding:NSUTF8StringEncoding];
         }
-    }];
+
+        return installationString;
+    }
 }
 
 @end
