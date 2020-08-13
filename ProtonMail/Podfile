@@ -45,7 +45,7 @@ def common_pods
     pod 'AwaitKit', '~> 5.0.0'
     #pod 'ReachabilitySwift' #use this later
     
-    pod 'Sentry', '4.1.0'
+    pod 'Sentry', :git => 'https://github.com/getsentry/sentry-cocoa.git', :tag => '5.2.0'
     pod 'MBProgressHUD' , '1.1.0'
     
     pod 'TrustKit', '1.6.2'
