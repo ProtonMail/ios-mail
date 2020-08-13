@@ -453,17 +453,17 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     func handleRequestError (_ error : NSError) {
         let code = error.code
-        if DoHMail.default.status != .off {
-            let alertController = error.alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-        }
+//        if DoHMail.default.status != .off {
+//            let alertController = error.alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        }
 //        else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
 //            let alertController = error.alertController()
 //            alertController.addOKAction()
 //            self.present(alertController, animated: true, completion: nil)
 //        }
-        else if !self.checkDoh(error) && !code.forceUpgrade {
+        if !self.checkDoh(error) && !code.forceUpgrade {
             let alertController = error.alertController()
             alertController.addOKAction()
             self.present(alertController, animated: true, completion: nil)
