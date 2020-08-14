@@ -258,7 +258,6 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     }
     
     @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
-        self.coordinator?.go(to: .troubleShoot)
         dismissKeyboard()
     }
     
