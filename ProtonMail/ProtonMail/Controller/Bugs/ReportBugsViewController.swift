@@ -122,11 +122,11 @@ class ReportBugsViewController: ProtonMailViewController {
                 let alert = UIAlertController(title: LocalString._bug_report_received,
                                               message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
                                               preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { (_) in
+                    NotificationCenter.default.post(name: .switchView, object: nil)
+                }))
                 self.present(alert, animated: true, completion: {
                     self.reset()
-                    ///TODO::fixme consider move this after clicked ok button.
-                    NotificationCenter.default.post(name: .switchView, object: nil)
                 })
             }
         })
