@@ -781,7 +781,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //        }
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
-        viewModel.fetchMessages(time: 0, foucsClean: false, completion: nil)
+        viewModel.fetchMessages(time: 0, foucsClean: false) { (task, res, error) in
+            self.showNoResultLabel()
+        }
     }
     
     @objc internal func goTroubleshoot() {
@@ -795,6 +797,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         if !fetchingMessage {
             fetchingMessage = true
             self.beginRefreshingManually(animated: self.viewModel.rowCount(section: 0) < 1 ? true : false)
+            var handleNoResultLabel: Bool = true
             let complete : CompletionBlock = { (task, res, error) -> Void in
                 self.needToShowNewMessage = false
                 self.newMessageCount = 0
@@ -845,7 +848,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     if self.fetchingStopped! == true {
                         return
                     }
-                    self.showNoResultLabel()
+                    if handleNoResultLabel {
+                        self.showNoResultLabel()
+                    }
                     let _ = self.checkHuman()
                     
                     //temperay to check message status and fetch metadata
@@ -857,7 +862,14 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     }
                 }
             }
+            if tableView.tableFooterView?.frame.height ?? 0 == 0 {
+                // Show refreshControl if there is no loading view
+                refreshControl.beginRefreshing()
+                self.tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
+            }
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
+                // let response of checkEmptyMailbox decide show label or not.
+                handleNoResultLabel = false
                 //fetch
                 self.needToShowNewMessage = true
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
@@ -1423,7 +1435,9 @@ extension MailboxViewController: UITableViewDelegate {
                 //here need add a counter to check if tried too many times make one real call in case count not right
                 if updateTime.isNew || recordedCount > sectionCount {
                     self.fetchingOlder = true
-                    self.tableView.showLoadingFooter()
+                    if !refreshControl.isRefreshing {
+                        self.tableView.showLoadingFooter()
+                    }
 //                    let updateTime = self.viewModel.lastUpdateTime()
                     let unixTimt: Int = (updateTime.endTime == Date.distantPast ) ? 0 : Int(updateTime.endTime.timeIntervalSince1970)
                     self.viewModel.fetchMessages(time: unixTimt, foucsClean: false, completion: { (task, response, error) -> Void in
