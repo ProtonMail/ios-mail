@@ -349,6 +349,10 @@ extension AppDelegate: UIApplicationDelegate {
         usersManager.firstUser?.messageService.backgroundFetch(notify: {
             completionHandler(.newData)
         })
+        //HACK: Call this after n seconds to prevent app got killed.
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5)) {
+            completionHandler(.newData)
+        }
     }
     
     // MARK: Notification methods
