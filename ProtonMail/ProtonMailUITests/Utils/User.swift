@@ -21,4 +21,12 @@ class User {
         self.mailboxPassword = mailboxPassword
         self.twoFASecurityKey = twoFASecurityKey
     }
+    
+    init(user: String) {
+        let userData = user.split(separator: ",")
+        self.email = String(userData[0])
+        self.password = String(userData[1])
+        self.mailboxPassword = String(userData[2])
+        self.twoFASecurityKey = String(userData[3])
+    }
 }
