@@ -23,29 +23,18 @@
 
 import UIKit
 
-class WebViewController: UIViewController, ViewModelProtocol, UIWebViewDelegate {
+class WebViewController: UIViewController, ViewModelProtocol {
     typealias viewModelType = WebViewModel
     func set(viewModel: WebViewModel) {
         self.viewModel = viewModel
     }
     
-    func inactiveViewModel() {
-        //ignored
-    }
-    
-    @IBOutlet weak var webView: UIWebView!
+    private var wkWebView: WKWebView!
     private var viewModel : WebViewModel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.webView.delegate = self
-        // Do any additional setup after loading the view.
-        let url = self.viewModel.url
-        
-        let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60.0)
-        webView.loadRequest(request)
-        
+        self.setupWebView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -57,29 +46,37 @@ class WebViewController: UIViewController, ViewModelProtocol, UIWebViewDelegate 
         super.viewDidDisappear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    private func setupWebView() {
+        let webConfiguration = WKWebViewConfiguration()
+        self.wkWebView = WKWebView(frame: .zero, configuration: webConfiguration)
+        self.wkWebView.navigationDelegate = self
+        self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(self.wkWebView)
+        
+        self.wkWebView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.wkWebView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.wkWebView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.wkWebView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        
+        let url = self.viewModel.url
+        let request = URLRequest(url: url, cachePolicy: URLRequest.CachePolicy.reloadIgnoringLocalAndRemoteCacheData, timeoutInterval: 60.0)
+        self.wkWebView.load(request)
     }
-    
-    
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        if navigationType == .other {
-            return true
+}
+
+extension WebViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        guard let url = navigationAction.request.url?.absoluteString else {
+            decisionHandler(.cancel)
+            return
         }
-        return false
+        
+        // promise webview won't navigate to other link
+        if url == self.viewModel.url.absoluteString {
+            decisionHandler(.allow)
+        } else {
+            decisionHandler(.cancel)
+        }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

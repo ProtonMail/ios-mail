@@ -37,6 +37,7 @@ class AccountConnectCoordinator: DefaultCoordinator {
         case signUp = "toSignUpSegue"
         case decryptMailbox = "toAddAccountPasswordSegue"
         case twoFACode = "2fa_code_segue"
+        case troubleShoot = "toTroubleShootSegue"
     }
     
     init?(nav: UINavigationController, vm: SignInViewModel, services: ServiceFactory, scene: AnyObject? = nil) {
@@ -104,6 +105,13 @@ class AccountConnectCoordinator: DefaultCoordinator {
             let coordinator = AccountPasswordCoordinator(vc: viewController, vm: viewModel, services: services)!
             coordinator.delegate = self
             coordinator.start()
+        case .some(.troubleShoot):
+            guard let nav = destination as? UINavigationController else {
+                return false
+            }
+            
+            let tsVC = NetworkTroubleShootCoordinator.init(segueNav: nav, vm: NetworkTroubleShootViewModelImpl(), services: services)
+            tsVC.start()
         default:
             break
         }

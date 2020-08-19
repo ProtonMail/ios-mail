@@ -24,9 +24,7 @@
 import UIKit
 import MBProgressHUD
 
-class RecaptchaViewController: UIViewController, UIWebViewDelegate {
-    
-    @IBOutlet weak var webView: UIWebView!
+class RecaptchaViewController: UIViewController {
     
     //define
     fileprivate let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0);
@@ -37,11 +35,12 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     @IBOutlet weak var titleTopPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var titleLeftPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var webViewHeightConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var topLeftButton: UIButton!
     @IBOutlet weak var topTitleLabel: UILabel!
     @IBOutlet weak var continueButton: UIButton!
+    private var wkWebView: WKWebView!
+    private var wkWebViewHeightConstraint: NSLayoutConstraint!
     
     fileprivate let kSegueToNotificationEmail = "sign_up_pwd_email_segue"
     fileprivate var startVerify : Bool = false
@@ -50,56 +49,23 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
     fileprivate var doneClicked : Bool = false
     var viewModel : SignupViewModel!
     
-    func configConstraint(_ show : Bool) -> Void {
-        let level = show ? showPriority : hidePriority
-        
-        logoTopPaddingConstraint.priority = level
-        logoLeftPaddingConstraint.priority = level
-        titleTopPaddingConstraint.priority = level
-        titleLeftPaddingConstraint.priority = level
+    override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.default;
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
-        topTitleLabel.text = LocalString._human_verification
-        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
-        
-        resetChecking()
-        webView.scrollView.isScrollEnabled = false
-        
-        URLCache.shared.removeAllCachedResponses();
-        MBProgressHUD.showAdded(to: webView, animated: true)
-        //let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
-        
-        let recptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(Server.live.hostUrl)")!
-        let requestObj = URLRequest(url: recptcha)
-        webView.loadRequest(requestObj)
+        self.setupTitles()
+        self.resetChecking()
+        self.setupWebView()
     }
 
-    override var preferredStatusBarStyle : UIStatusBarStyle {
-        return UIStatusBarStyle.default;
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: true)
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    
+
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -108,29 +74,18 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             viewController.viewModel = self.viewModel
         }
     }
+    
+    // MARK: IBAction
+    @IBAction private func tapAction(_ sender: UITapGestureRecognizer) {
 
-    @IBAction func backAction(_ sender: UIButton) {
+    }
+    
+    @IBAction private func backAction(_ sender: UIButton) {
         stopLoading = true
         let _ = self.navigationController?.popViewController(animated: true)
     }
     
-    func startChecking() {
-        
-    }
-    
-    func resetChecking() {
-        checkUserStatus = false
-    }
-    
-    func finishChecking(_ isOk : Bool) {
-        if isOk {
-            checkUserStatus = true
-        } else {
-
-        }
-    }
-    
-    @IBAction func createAccountAction(_ sender: UIButton) {
+    @IBAction private func createAccountAction(_ sender: UIButton) {
         if viewModel.isTokenOk() {
             self.finishChecking(true)
             if doneClicked {
@@ -167,84 +122,147 @@ class RecaptchaViewController: UIViewController, UIWebViewDelegate {
             self.present(alert, animated: true, completion: nil)
         }
     }
-    
-    func goNotificationEmail() {
-        self.performSegue(withIdentifier: self.kSegueToNotificationEmail, sender: self)
+}
+
+// MARK: Setup
+extension RecaptchaViewController {
+    private func setupTitles() {
+        topLeftButton.setTitle(LocalString._general_back_action, for: .normal)
+        topTitleLabel.text = LocalString._human_verification
+        continueButton.setTitle(LocalString._genernal_continue, for: .normal)
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
-        PMLog.D("\(request)")
-        let urlString = request.url?.absoluteString;
+    private func setupWebView() {
+//        webView.scrollView.isScrollEnabled = false
+//        URLCache.shared.removeAllCachedResponses();
+//        MBProgressHUD.showAdded(to: webView, animated: true)
+        //let recptcha = NSURL(string: "https://secure.protonmail.com/mobile.html")!
+        
+        let recptcha = URL(string: "https://secure.protonmail.com/captcha/captcha.html?token=signup&client=ios&host=\(Server.live.hostUrl)")!
+        let requestObj = URLRequest(url: recptcha)
+//        webView.loadRequest(requestObj)
+        
+        // remove cache
+        let websiteDataTypes = NSSet(array: [WKWebsiteDataTypeDiskCache, WKWebsiteDataTypeMemoryCache])
+        let date = Date(timeIntervalSince1970: 0)
+        WKWebsiteDataStore.default().removeData(ofTypes: websiteDataTypes as! Set<String>, modifiedSince: date, completionHandler:{ })
+        
+        self.wkWebView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        self.wkWebView.navigationDelegate = self
+        self.wkWebView.scrollView.isScrollEnabled = false
+        self.wkWebView.translatesAutoresizingMaskIntoConstraints = false
+        MBProgressHUD.showAdded(to: self.wkWebView, animated: true)
+        self.view.addSubview(self.wkWebView)
+        
+        self.wkWebView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        self.wkWebView.widthAnchor.constraint(equalToConstant: 345).isActive = true
+        self.wkWebView.topAnchor.constraint(equalTo: self.topTitleLabel.bottomAnchor, constant: 18).isActive = true
+        self.wkWebView.bottomAnchor.constraint(equalTo: self.continueButton.topAnchor, constant: -24).isActive = true
+        self.wkWebViewHeightConstraint = self.wkWebView.heightAnchor.constraint(equalToConstant: 85)
+        self.wkWebViewHeightConstraint.isActive = true
+        self.wkWebView.load(requestObj)
+    }
+    
+    private func configConstraint(_ show : Bool) -> Void {
+        let level = show ? showPriority : hidePriority
+        
+        logoTopPaddingConstraint.priority = level
+        logoLeftPaddingConstraint.priority = level
+        titleTopPaddingConstraint.priority = level
+        titleLeftPaddingConstraint.priority = level
+    }
+    
+    private func resetChecking() {
+        checkUserStatus = false
+    }
+    
+    private func finishChecking(_ isOk : Bool) {
+        if isOk {
+            checkUserStatus = true
+        } else {
 
-        if urlString?.contains("https://www.google.com/recaptcha/api2/frame") == true {
-            startVerify = true;
+        }
+    }
+    
+    private func goNotificationEmail() {
+        self.performSegue(withIdentifier: self.kSegueToNotificationEmail, sender: self)
+    }
+}
+
+extension RecaptchaViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        
+        PMLog.D("\(navigationAction.request)")
+        guard let urlString = navigationAction.request.url?.absoluteString else {
+            decisionHandler(.allow)
+            return
         }
         
-        if urlString?.contains(".com/fc/api/nojs") == true {
-            startVerify = true;
+        let verifies = [
+            "https://www.google.com/recaptcha/api2/frame",
+            ".com/fc/api/nojs",
+            "fc/apps/canvas",
+            "about:blank"
+        ]
+        if verifies.contains(urlString) {
+            startVerify = true
         }
-        if urlString?.contains("fc/apps/canvas") == true {
-            startVerify = true;
+     
+        let forbiden = [
+            "https://www.google.com/intl/en/policies/privacy",
+            "how-to-solve-",
+            "https://www.google.com/intl/en/policies/terms"
+        ]
+        if forbiden.contains(urlString) {
+            decisionHandler(.cancel)
+            return
         }
         
-        if urlString?.contains("about:blank") == true {
-            startVerify = true;
-        }
-        
-        if urlString?.contains("https://www.google.com/intl/en/policies/privacy") == true {
-            return false
-        }
-
-        if urlString?.contains("how-to-solve-") == true {
-            return false
-        }
-        if urlString?.contains("https://www.google.com/intl/en/policies/terms") == true {
-            return false
-        }
-
-        if let _ = urlString?.range(of: "https://secure.protonmail.com/expired_recaptcha_response://") {
+        if urlString.contains("https://secure.protonmail.com/expired_recaptcha_response://") {
             viewModel.setRecaptchaToken("", isExpired: true)
             resetWebviewHeight()
             webView.reload()
-            return false
-        }
-        else if let _ = urlString?.range(of: "https://secure.protonmail.com/captcha/recaptcha_response://") {
-            if let token = urlString?.replacingOccurrences(of: "https://secure.protonmail.com/captcha/recaptcha_response://", with: "", options: NSString.CompareOptions.widthInsensitive, range: nil) {
-                viewModel.setRecaptchaToken(token, isExpired: false)
-            }
+            decisionHandler(.cancel)
+            return
+        } else if urlString.contains("https://secure.protonmail.com/captcha/recaptcha_response://") {
+            let token = urlString.replacingOccurrences(of: "https://secure.protonmail.com/captcha/recaptcha_response://", with: "", options: NSString.CompareOptions.widthInsensitive, range: nil)
+            viewModel.setRecaptchaToken(token, isExpired: false)
             resetWebviewHeight()
-            return false
+            decisionHandler(.cancel)
+            return
         }
-        return true
+        
+        decisionHandler(.allow)
     }
     
-    func webViewDidFinishLoad(_ webView: UIWebView) {
-        if startVerify {
-            if let _ = webView.stringByEvaluatingJavaScript(from: "document.body.scrollHeight;") {
-                let height = CGFloat(500)
-                webViewHeightConstraint.constant = height;
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        MBProgressHUD.hide(for: self.wkWebView, animated: true)
+        guard startVerify else {return}
+        startVerify = false
+        webView.evaluateJavaScript("document.body.scrollHeight;") { (_, error) in
+            if let err = error {
+                PMLog.D("Get scroll height failed, error: \(err.localizedDescription)")
+                return
             }
-            startVerify = false
+            self.wkWebViewHeightConstraint.constant = 500
         }
-        MBProgressHUD.hide(for: self.webView, animated: true)
     }
     
     func resetWebviewHeight() {
-        if let _ = webView.stringByEvaluatingJavaScript(from: "document.body.scrollHeight;") {
-            let height = CGFloat(85)
-            webViewHeightConstraint.constant = height;
+        self.wkWebView.evaluateJavaScript("document.body.scrollHeight;") { (_, error) in
+            if let err = error {
+                PMLog.D("Get scroll height failed, error: \(err.localizedDescription)")
+                return
+            }
+            self.wkWebViewHeightConstraint.constant = 85
         }
     }
     
-    func webViewDidStartLoad(_ webView: UIWebView) {
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         PMLog.D("")
     }
     
-    func webView(_ webView: UIWebView, didFailLoadWithError error: Error) {
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
         PMLog.D("")
-    }
-    
-    @IBAction func tapAction(_ sender: UITapGestureRecognizer) {
-
     }
 }

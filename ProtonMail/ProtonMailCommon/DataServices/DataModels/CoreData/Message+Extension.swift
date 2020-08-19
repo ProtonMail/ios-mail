@@ -292,7 +292,7 @@ extension Message {
         return false
     }
     
-    class func delete(labelID : String) -> Bool {
+    class func delete(labelID : String) -> Bool { //TODO:: double check if user id matters
         let mContext = CoreDataService.shared.mainManagedObjectContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
         

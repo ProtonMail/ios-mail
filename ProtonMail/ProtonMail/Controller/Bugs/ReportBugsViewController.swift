@@ -68,7 +68,6 @@ class ReportBugsViewController: ProtonMailViewController {
     }
     
     // MARK: - Private methods
-    
     fileprivate func reset() {
         textView.text = ""
         cachedBugReport.cachedBug = ""
@@ -109,7 +108,7 @@ class ReportBugsViewController: ProtonMailViewController {
         _ = self.user.reportService.reportBug(text,
                                               username: self.user.displayName,
                                               email: self.user.defaultEmail, completion: { error in
-            MBProgressHUD.hide(for: self.view, animated: true)
+            MBProgressHUD.hide(for: v, animated: true)
             self.sendButton.isEnabled = true
             if let error = error {
                 guard !self.checkDoh(error) else {

@@ -63,6 +63,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
     @IBOutlet weak var scrollBottomPaddingConstraint: NSLayoutConstraint!
     @IBOutlet weak var loginMidlineConstraint: NSLayoutConstraint!
     
+    
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
     }
@@ -274,10 +275,8 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 
                 if cachedTwoCode != nil {
                     self.coordinator?.go(to: .twoFACode, sender: self)
-                } else if !error.code.forceUpgrade {
-                    let alertController = error.alertController()
-                    alertController.addOKAction()
-                    self.present(alertController, animated: true, completion: nil)
+                } else {
+                    self.handleRequestError(error)
                 }
             case .ok:
                 MBProgressHUD.hide(for: self.view, animated: true)
@@ -294,6 +293,50 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
                 self.showAlert()
             }
         }
+    }
+    
+    func handleRequestError (_ error : NSError) {
+        let code = error.code
+//        if DoHMail.default.status != .off {
+//            let alertController = error.alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        }
+//        else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
+//            let alertController = error.alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        }
+//        else
+        if !self.checkDoh(error) && !code.forceUpgrade {
+            let alertController = error.alertController()
+            alertController.addOKAction()
+            self.present(alertController, animated: true, completion: nil)
+        }
+        PMLog.D("error: \(error)")
+    }
+    private func checkDoh(_ error : NSError) -> Bool {
+        let code = error.code
+        guard DoHMail.default.codeCheck(code: code) else {
+            return false
+        }
+        
+        let message = error.localizedFailureReason
+        let alertController = UIAlertController(title: LocalString._protonmail,
+                                                message: message,
+                                                preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Troubleshoot", style: .default, handler: { action in
+            self.coordinator?.go(to: .troubleShoot)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: { action in
+            
+        }))
+        
+//        UIApplication.shared.keyWindow?.rootViewController?.present(alertController, animated: true, completion: nil)
+        
+        self.present(alertController, animated: true, completion: nil)
+
+        return true
     }
 }
 

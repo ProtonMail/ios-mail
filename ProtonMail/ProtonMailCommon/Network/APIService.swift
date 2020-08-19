@@ -24,7 +24,6 @@
 import CoreData
 import Foundation
 import AFNetworking
-import AFNetworkActivityLogger
 import TrustKit
 import PMNetworking
 import PMAuthentication
@@ -274,9 +273,10 @@ class APIService : Service {
                 self.debugError(error)
                 completion(nil, nil, error)
             } else {
-                let request = self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
+                
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
                                                                             urlString: url,
-                                                                            parameters: nil, error: nil)
+                                                                            parameters: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
@@ -559,10 +559,10 @@ class APIService : Service {
                 }
                 let url = self.doh.getHostUrl() + path
                 PMLog.D("Start Request: " + url)
-                let request = self.sessionManager.requestSerializer.request(withMethod: method.toString(),
-                                                                            urlString: url,
-                                                                            parameters: parameters,
-                                                                            error: nil)
+                //TODO:: fix me  change try ! to a better way
+                let request = try! self.sessionManager.requestSerializer.request(withMethod: method.toString(),
+                                                                                 urlString: url,
+                                                                                 parameters: parameters)
                 request.timeoutInterval = self.doh.status == .off ? 60.0 : 30.0
                 if let header = headers {
                     for (k, v) in header {

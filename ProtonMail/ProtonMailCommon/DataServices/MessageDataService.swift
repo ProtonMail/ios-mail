@@ -1060,14 +1060,13 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    func purgeOldMessages() {
+    func purgeOldMessages() { //TODO:: later we need to clean the message with a bad user id
         // need fetch status bad messages
         let context = CoreDataService.shared.backgroundManagedObjectContext
         context.performAndWait {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetchRequest.predicate = NSPredicate(format: "%K == 0", Message.Attributes.messageStatus)
+            fetchRequest.predicate = NSPredicate(format: "(%K == 0) AND %K == %@", Message.Attributes.messageStatus, Contact.Attributes.userID, self.userID)
             do {
-                
                 if let badMessages = try context.fetch(fetchRequest) as? [Message] {
                     var badIDs : [String] = []
                     for message in badMessages {

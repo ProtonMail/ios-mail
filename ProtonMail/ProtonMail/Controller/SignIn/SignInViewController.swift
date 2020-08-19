@@ -200,7 +200,8 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
                                                 sender: sender,
                                                 completion: { (loginDictionary, error) -> Void in
             if loginDictionary == nil {
-                if error!._code != Int(AppExtensionErrorCodeCancelledByUser) {
+                let cancelError: AppExtensionErrorCode = .cancelledByUser
+                if error!._code != Int(cancelError.rawValue) {
                     PMLog.D("Error invoking Password App Extension for find login: \(String(describing: error))")
                 }
                 return
@@ -452,17 +453,17 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     func handleRequestError (_ error : NSError) {
         let code = error.code
-        if DoHMail.default.status != .off {
-            let alertController = error.alertController()
-            alertController.addOKAction()
-            self.present(alertController, animated: true, completion: nil)
-        }
+//        if DoHMail.default.status != .off {
+//            let alertController = error.alertController()
+//            alertController.addOKAction()
+//            self.present(alertController, animated: true, completion: nil)
+//        }
 //        else if code == NSURLErrorNotConnectedToInternet || code == NSURLErrorCannotConnectToHost {
 //            let alertController = error.alertController()
 //            alertController.addOKAction()
 //            self.present(alertController, animated: true, completion: nil)
 //        }
-        else if !self.checkDoh(error) && !code.forceUpgrade {
+        if !self.checkDoh(error) && !code.forceUpgrade {
             let alertController = error.alertController()
             alertController.addOKAction()
             self.present(alertController, animated: true, completion: nil)
