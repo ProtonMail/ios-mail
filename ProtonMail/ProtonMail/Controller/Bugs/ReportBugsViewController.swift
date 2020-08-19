@@ -34,6 +34,7 @@ class ReportBugsViewController: ProtonMailViewController {
     @IBOutlet weak var topTitleLabel: UILabel!
     
     private var kSegueToTroubleshoot : String = "toTroubleShootSegue"
+    private var reportSent: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +68,25 @@ class ReportBugsViewController: ProtonMailViewController {
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        guard let keywindow = UIApplication.shared.keyWindow, self.reportSent else { return }
+        keywindow.enumerateViewControllerHierarchy { (controller, stop) in
+            guard controller is MenuViewController else {return}
+            let alert = UIAlertController(title: LocalString._bug_report_received,
+                                          message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
+                                          preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { (_) in
+                
+            }))
+            controller.present(alert, animated: true, completion: {
+                
+            })
+            
+            stop = true
+        }
+    }
     // MARK: - Private methods
     fileprivate func reset() {
         textView.text = ""
@@ -118,15 +138,9 @@ class ReportBugsViewController: ProtonMailViewController {
                 alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             } else {
-                let alert = UIAlertController(title: LocalString._bug_report_received,
-                                              message: LocalString._thank_you_for_submitting_a_bug_report_we_have_added_your_report_to_our_bug_tracking_system,
-                                              preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: LocalString._general_ok_action, style: .default, handler: { (_) in
-                    NotificationCenter.default.post(name: .switchView, object: nil)
-                }))
-                self.present(alert, animated: true, completion: {
-                    self.reset()
-                })
+                self.reportSent = true
+                self.reset()
+                NotificationCenter.default.post(name: .switchView, object: nil)
             }
         })
     }
