@@ -48,7 +48,7 @@ extension MailboxViewModel {
     }
 }
 
-class MailboxViewModel {
+class MailboxViewModel: StorageLimit {
     internal let labelID : String
     /// message service
     internal let user: UserManager
@@ -486,5 +486,11 @@ class MailboxViewModel {
             }
         }
         return (.nothing, nil)
+    }
+    
+    func checkStorageIsCloseLimit() {
+        let usedStorageSpace = self.user.userInfo.usedSpace
+        let maxStorageSpace = self.user.userInfo.maxSpace
+        checkSpace(usedStorageSpace, maxSpace: maxStorageSpace, user: self.user)
     }
 }

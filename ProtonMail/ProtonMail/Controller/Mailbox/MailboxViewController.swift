@@ -225,11 +225,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.viewModel.processCachedPush()
-        
-        //TODO:: fix me
-//        let usedStorageSpace = sharedUserDataService.usedSpace
-//        let maxStorageSpace = sharedUserDataService.maxSpace
-//        StorageLimit().checkSpace(usedStorageSpace, maxSpace: maxStorageSpace)
+        self.viewModel.checkStorageIsCloseLimit()
         
         self.updateInterfaceWithReachability(sharedInternetReachability)
         
