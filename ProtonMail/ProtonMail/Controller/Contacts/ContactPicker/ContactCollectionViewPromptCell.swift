@@ -87,6 +87,7 @@ class ContactCollectionViewPromptCell: UICollectionViewCell {
         set {
             self._prompt = newValue
             self.promptLabel.text = self._prompt
+            self.promptLabel.accessibilityIdentifier = "\(self._prompt)Label"
         }
     }
     
