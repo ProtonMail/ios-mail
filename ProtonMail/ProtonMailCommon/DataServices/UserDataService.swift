@@ -677,7 +677,7 @@ class UserDataService : Service, HasLocalStorage {
             }
         }
         
-        guard let cachedMainKey = keymaker.mainKey else {
+        guard keymaker.mainKey != nil else {
             completion(nil, nil, NSError.lockError())
             return
         }
@@ -843,7 +843,7 @@ class UserDataService : Service, HasLocalStorage {
                                  twoFACode: String?, completion: @escaping CompletionBlock) {
         let oldAuthCredential = currentAuth
         let userInfo = user
-        let old_password = oldAuthCredential.mailboxpassword
+//        let old_password = oldAuthCredential.mailboxpassword
         var _username = "" //oldAuthCredential.userName
         if _username.isEmpty {
             if let addr = userInfo.userAddresses.defaultAddress() {

@@ -572,7 +572,7 @@ extension SignInViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameTextField {
-            passwordTextField.becomeFirstResponder()
+            _ = passwordTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
         }

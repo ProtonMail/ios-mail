@@ -133,7 +133,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
             if self.usernameTextField.text?.isEmpty != false {
                 usernameTextField.becomeFirstResponder()
             } else if self.passwordTextField.text?.isEmpty != false {
-                passwordTextField.becomeFirstResponder()
+                _ = passwordTextField.becomeFirstResponder()
             }
         }
     }
@@ -397,7 +397,7 @@ extension AccountConnectViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == usernameTextField {
-            passwordTextField.becomeFirstResponder()
+            _ = passwordTextField.becomeFirstResponder()
         } else {
             textField.resignFirstResponder()
         }

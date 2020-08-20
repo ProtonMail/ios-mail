@@ -1474,7 +1474,7 @@ class MessageDataService : Service, HasLocalStorage {
     struct SendStatus : OptionSet {
         let rawValue: Int
         
-        static let justStart             = SendStatus(rawValue: 0)
+        static let justStart             = SendStatus([])
         static let fetchEmailOK          = SendStatus(rawValue: 1 << 0)
         static let getBody               = SendStatus(rawValue: 1 << 1)
         static let updateBuilder         = SendStatus(rawValue: 1 << 2)
@@ -1890,7 +1890,7 @@ class MessageDataService : Service, HasLocalStorage {
             } else {
                 PMLog.D(" error: \(String(describing: error))")
                 var statusCode = 200
-                var errorCode = error?.code ?? 200
+                let errorCode = error?.code ?? 200
                 var isInternetIssue = false
                 if let errorUserInfo = error?.userInfo {
                     if let detail = errorUserInfo["com.alamofire.serialization.response.error.response"] as? HTTPURLResponse {

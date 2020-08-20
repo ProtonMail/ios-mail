@@ -507,6 +507,8 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                         }
                     }
                 }
+            @unknown default:
+                break
             }
         }
     }

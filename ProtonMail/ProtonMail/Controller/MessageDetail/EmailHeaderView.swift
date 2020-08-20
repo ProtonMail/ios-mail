@@ -348,15 +348,15 @@ class EmailHeaderView: UIView {
         self.emailFromTable.accessibilityLabel = LocalString._general_from_label
         self.emailCcTable.accessibilityLabel = LocalString._general_cc_label
         self.emailBccTable.accessibilityLabel = LocalString._general_bcc_label
-        self.accessibilityElements = [self.emailTitle,
-                                      self.emailFrom, self.emailFromTable,
-                                      self.emailTo, self.emailToTable,
-                                      self.emailCc, self.emailCcTable,
-                                      self.emailBcc, self.emailBccTable,
-                                      self.emailShortTime,
-                                      self.date ,
-                                      self.emailFavoriteButton,
-                                      self.emailDetailButton]
+        self.accessibilityElements = [self.emailTitle!,
+                                      self.emailFrom!, self.emailFromTable!,
+                                      self.emailTo!, self.emailToTable!,
+                                      self.emailCc!, self.emailCcTable!,
+                                      self.emailBcc!, self.emailBccTable!,
+                                      self.emailShortTime!,
+                                      self.date!,
+                                      self.emailFavoriteButton!,
+                                      self.emailDetailButton!]
     }
     
     required init?(coder aDecoder: NSCoder) {

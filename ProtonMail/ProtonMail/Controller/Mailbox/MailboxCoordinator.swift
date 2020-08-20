@@ -279,7 +279,9 @@ class MailboxCoordinator : DefaultCoordinator {
                 let user = self.viewModel.user
                 let mailToURL = URL(string: value)!
                 let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft, msgService: user.messageService, user: user)
-                if let mailTo : NSURL = mailToURL as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
+                
+                let mailTo: NSURL = mailToURL as NSURL
+                if mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                     let rawURLparts = resSpecifier.components(separatedBy: "?")
                     if (rawURLparts.count > 2) {
                         
@@ -337,6 +339,7 @@ class MailboxCoordinator : DefaultCoordinator {
                         }
                     }
                 }
+                    
                 let composer = ComposeContainerViewCoordinator.init(nav: nav, viewModel: ComposeContainerViewModel(editorViewModel: viewModel), services: services)
                 composer.start()
                 composer.follow(deeplink)

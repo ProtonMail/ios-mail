@@ -242,7 +242,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                       photo?.getImageType() ?? "",
                                       photo?.getIsBinary() ?? "")
                                 if let image = photo?.getRawData() {
-                                    let data = Data.init(bytes: image)
+                                    let data = Data.init(image)
                                     self.profilePicture = UIImage.init(data: data)
                                     self.origProfilePicture = self.profilePicture
                                 }

@@ -180,7 +180,7 @@ extension SignUpPasswordViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         updateButtonStatus()
         if textField == loginPasswordField {
-            confirmLoginPasswordField.becomeFirstResponder()
+            _ = confirmLoginPasswordField.becomeFirstResponder()
         } else if textField == confirmLoginPasswordField {
             dismissKeyboard()
         }

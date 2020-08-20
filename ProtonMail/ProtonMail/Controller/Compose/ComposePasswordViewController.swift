@@ -96,7 +96,11 @@ class ComposePasswordViewController: UIViewController {
     
     @IBAction func getMoreInfoAction(_ sender: UIButton) {
         #if !APP_EXTENSION
-        UIApplication.shared.openURL(.eoLearnMore)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.eoLearnMore, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.eoLearnMore)
+        }
         #endif
     }
 

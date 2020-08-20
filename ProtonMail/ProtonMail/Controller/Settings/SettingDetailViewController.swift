@@ -271,7 +271,11 @@ extension SettingDetailViewController : UpgradeAlertVCDelegate {
     }
     
     func learnMore() {
-        UIApplication.shared.openURL(.paidPlans)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.paidPlans)
+        }
     }
     
     func cancel() {

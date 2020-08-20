@@ -173,7 +173,11 @@ extension ComposeCoordinator: ExpirationWarningVCDelegate{
     
     func learnMore() {
         #if !APP_EXTENSION
-        UIApplication.shared.openURL(.eoLearnMore)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.eoLearnMore, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.eoLearnMore)
+        }
         #endif
     }
 }

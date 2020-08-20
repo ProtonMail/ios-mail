@@ -235,9 +235,9 @@ class ChangePWDViewModelTest : ChangePWDViewModel{
     func setNewPassword(_ current: String, new_pwd: String, confirm_new_pwd: String, tfaCode : String?, complete:@escaping (Bool, NSError?) -> Void) {
         //add random test case and random
         //remove space.
-        let curr_pwd = current//.trim();
-        let newpwd = new_pwd//.trim();
-        let confirmpwd = confirm_new_pwd//.trim();
+//        let curr_pwd = current//.trim();
+//        let newpwd = new_pwd//.trim();
+//        let confirmpwd = confirm_new_pwd//.trim();
         
 //        if curr_pwd != sharedUserDataService.mailboxPassword {
 //            complete(false, UpdatePasswordError.currentPasswordWrong.error)
