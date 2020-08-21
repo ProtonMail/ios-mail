@@ -272,11 +272,11 @@ class ComposeHeaderViewController: UIViewController {
         
         // accessibility
         self.view.isAccessibilityElement = false
-        self.accessibilityElements = [ self.fromPickerButton,
-                                       self.toContactPicker,
-                                       self.ccContactPicker, self.bccContactPicker,
-                                       self.subject,
-                                       self.expirationView, self.buttonView, self.passwordView
+        self.accessibilityElements = [ self.fromPickerButton!,
+                                       self.toContactPicker!,
+                                       self.ccContactPicker!, self.bccContactPicker!,
+                                       self.subject!,
+                                       self.expirationView!, self.buttonView!, self.passwordView!
         ]
     }
     

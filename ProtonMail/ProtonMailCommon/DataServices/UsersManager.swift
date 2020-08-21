@@ -727,7 +727,6 @@ extension UsersManager {
             }
             return true
         }
-        return false
     }
     
     func oldAuthFetchLagcy() -> AuthCredential? {

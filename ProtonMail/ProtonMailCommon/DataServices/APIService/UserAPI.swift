@@ -336,7 +336,7 @@ class VerificationCodeRequest : ApiRequest<ApiResponse> {
     override func toDictionary() -> [String : Any]? {
         let dest = type == .email ? ["Address" : destination] : ["Phone" : destination]
         let out : [String : Any] = [
-            "Username" : userName,
+            "Username" : userName!,
             "Type" : type.toString,
             "Platform" : platform,
             "Destination" : dest

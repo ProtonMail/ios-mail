@@ -86,11 +86,11 @@ class SettingDebugViewController: UITableViewController {
         var element : [String : Any]!
         if indexPath.section == 0
         {
-            element = sharedMessageQueue.queueArray()[indexPath.row] as! [String : Any]
+            element = (sharedMessageQueue.queueArray()[indexPath.row] as! [String : Any])
         }
         else if indexPath.section == 1
         {
-            element = sharedFailedQueue.queueArray()[indexPath.row] as! [String : Any]
+            element = (sharedFailedQueue.queueArray()[indexPath.row] as! [String : Any])
         }
         
         if let element = element["object"] as? [String : String] {

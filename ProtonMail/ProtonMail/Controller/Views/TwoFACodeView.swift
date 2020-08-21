@@ -112,9 +112,9 @@ class TwoFACodeView : PMView {
     
     func showKeyboard() {
         if mode!.check(.loginPassword) {
-            loginPasswordField.becomeFirstResponder()
+            _ = loginPasswordField.becomeFirstResponder()
         } else if mode!.check(.twoFactorCode) {
-            twoFactorCodeField.becomeFirstResponder()
+            _ = twoFactorCodeField.becomeFirstResponder()
         }
     }
     

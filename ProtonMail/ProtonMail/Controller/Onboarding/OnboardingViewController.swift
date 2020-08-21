@@ -76,7 +76,11 @@ class OnboardingViewController : UIViewController, UIScrollViewDelegate {
     }
     
     @IBAction func learnMoreAction(_ sender: UIButton) {
-        UIApplication.shared.openURL(.planUpgradePage)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.planUpgradePage, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.planUpgradePage)
+        }
         self.dismiss(animated: true, completion: nil)
     }
     

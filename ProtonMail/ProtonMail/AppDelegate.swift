@@ -155,8 +155,6 @@ extension AppDelegate: UIApplicationDelegate {
         
         AFNetworkActivityIndicatorManager.shared().isEnabled = true
         
-        //get build mode if debug mode enable network logging
-        let mode = UIApplication.shared.releaseMode()
         //start network notifier
         sharedInternetReachability.startNotifier()
         

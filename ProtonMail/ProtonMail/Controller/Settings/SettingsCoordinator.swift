@@ -130,10 +130,11 @@ class SettingsCoordinator: SWRevealCoordinator {
             }
             next.setViewModel(shareViewModelFactoy.getChangeMailboxPassword())
         case .singlePwd:
-            guard let next = destination as? ChangePasswordViewController else {
-                return false
-            }
+//            guard let next = destination as? ChangePasswordViewController else {
+//                return false
+//            }
 //            next.setViewModel(shareViewModelFactoy.getChangeSinglePassword())
+            return false
         case .snooze:
             break
         }

@@ -405,7 +405,11 @@ extension ContactEditViewController : UpgradeAlertVCDelegate {
     
     func learnMore() {
         self.showingUpgrade = false
-        UIApplication.shared.openURL(.paidPlans)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(.paidPlans, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(.paidPlans)
+        }
     }
     
     func cancel() {

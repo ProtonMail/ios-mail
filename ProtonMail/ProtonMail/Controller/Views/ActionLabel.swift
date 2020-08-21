@@ -27,7 +27,7 @@ class ActionLabel: UILabel {
     
     internal struct `Type` : OptionSet {
         let rawValue: Int
-        static let copy = Type(rawValue: 0)
+        static let copy = Type([])
     }
     
 

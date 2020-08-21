@@ -84,8 +84,6 @@ class AccountManagerCoordinator: DefaultCoordinator {
             account.delegate = self
             account.start()
             return true
-        default:
-            return false
         }
     }
 }

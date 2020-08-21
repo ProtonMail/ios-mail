@@ -85,7 +85,7 @@ class DocumentAttachmentProvider: NSObject, AttachmentProvider {
                 }
             #else
             do {
-                url.startAccessingSecurityScopedResource()
+                _ = url.startAccessingSecurityScopedResource()
                 let data = try Data(contentsOf: url)
                 url.stopAccessingSecurityScopedResource()
                 fileData = ConcreteFileData<Data>(name: url.lastPathComponent, ext: url.mimeType(), contents: data)

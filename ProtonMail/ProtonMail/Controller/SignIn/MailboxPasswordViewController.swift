@@ -120,11 +120,6 @@ class MailboxPasswordViewController: UIViewController {
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
-    override func segueForUnwinding(to toViewController: UIViewController, from fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue {
-        navigationController?.setNavigationBarHidden(true, animated: true)
-        return super.segueForUnwinding(to: toViewController, from: fromViewController, identifier: identifier)!
-    }
-    
     func setupDecryptButton() {
         decryptButton.layer.borderColor = UIColor.ProtonMail.Login_Button_Border_Color.cgColor;
         decryptButton.alpha = buttonDisabledAlpha

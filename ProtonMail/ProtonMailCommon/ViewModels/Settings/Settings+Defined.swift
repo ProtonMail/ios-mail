@@ -81,6 +81,8 @@ extension ELanguage {
                 return "bahasa Indonesia"
             case .count:
                 return ""
+            @unknown default:
+                return ""
             }
         }
     }
@@ -139,6 +141,8 @@ extension ELanguage {
             case .indonesian:
                 return "in_ID"
             case .count:
+                return "en_US"
+            @unknown default:
                 return "en_US"
             }
         }
@@ -199,6 +203,8 @@ extension ELanguage {
             case .indonesian:
                 return "id"
             case .count:
+                return "en"
+            @unknown default:
                 return "en"
             }
         }

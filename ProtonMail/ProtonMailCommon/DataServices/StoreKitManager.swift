@@ -290,6 +290,8 @@ extension StoreKitManager: SKPaymentTransactionObserver {
             self.deferredCompletion?()
         case .restored:
             break // never happens in our flow
+        @unknown default:
+            break
         }
     }
     
