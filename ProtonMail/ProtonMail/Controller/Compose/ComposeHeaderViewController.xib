@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17124"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -45,6 +43,7 @@
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Subject" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="6W7-2D-2Lf">
                     <rect key="frame" x="0.0" y="96" width="375" height="44"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" identifier="SubjectTextField"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Fen-0r-N7C">
                             <variation key="widthClass=compact" constant="44"/>
@@ -56,6 +55,7 @@
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="chC-fW-E4g" userLabel="Show CC BCC View">
                     <rect key="frame" x="321" y="48" width="44" height="44"/>
+                    <accessibility key="accessibilityConfiguration" identifier="showCcBccButton"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="48" id="Tn1-q8-Z7u">
                             <variation key="widthClass=compact" constant="44"/>
@@ -78,6 +78,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dbl-67-gDP" userLabel="Attachment Button">
                             <rect key="frame" x="250" y="0.0" width="125" height="48"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="attachmentButton"/>
                             <state key="normal" image="compose_attachment">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -88,6 +89,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z2X-0b-CtZ" userLabel="Encrypted Button">
                             <rect key="frame" x="0.0" y="0.0" width="125" height="48"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="encryptedButton"/>
                             <state key="normal" image="compose_lock">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -98,6 +100,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JkT-bn-Mlp" userLabel="Expiration Button">
                             <rect key="frame" x="125" y="0.0" width="125" height="48"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="expirationButton"/>
                             <state key="normal" image="compose_expiration">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
@@ -130,6 +133,7 @@
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Expiration Date" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0cq-9r-3dX" userLabel="Expiration Text Field">
                             <rect key="frame" x="52" y="0.0" width="323" height="48"/>
+                            <accessibility key="accessibilityConfiguration" identifier="expirationDateTextField"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="5hk-D9-wdh"/>
                             </constraints>
@@ -139,6 +143,7 @@
                         <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eEu-2X-OTC" userLabel="Expiration Action">
                             <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
                             <color key="backgroundColor" red="0.33301636576652527" green="0.45990800857543945" blue="0.60649919509887695" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="expirationActionButton"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="48" id="IpN-S8-Y9f"/>
                                 <constraint firstAttribute="width" constant="52" id="XzH-29-5vD"/>
@@ -165,12 +170,14 @@
                     <subviews>
                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Define Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="WxL-Ya-BL5" userLabel="Encrypted Password TextField">
                             <rect key="frame" x="52" y="0.0" width="323" height="48"/>
+                            <accessibility key="accessibilityConfiguration" identifier="encryptedPasswordTextField"/>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="18"/>
                             <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                         </textField>
                         <button opaque="NO" contentMode="center" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8G-S8-0hr" userLabel="Encrypted Action Button">
                             <rect key="frame" x="0.0" y="0.0" width="52" height="48"/>
                             <color key="backgroundColor" red="0.33301636576652527" green="0.45990800857543945" blue="0.60649919509887695" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <accessibility key="accessibilityConfiguration" identifier="encryptedActionButton"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="52" id="Tmt-hU-Ru0"/>
                                 <constraint firstAttribute="height" constant="48" id="eOb-yZ-g4D"/>
@@ -204,12 +211,14 @@
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilt-bS-8Pw">
                             <rect key="frame" x="55" y="0.0" width="320" height="48"/>
+                            <accessibility key="accessibilityConfiguration" identifier="fromLable"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.52929306030273438" green="0.52396804094314575" blue="0.67762881517410278" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hKt-vn-DC9">
                             <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
+                            <accessibility key="accessibilityConfiguration" identifier="fromPickerButton"/>
                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
                             <state key="normal" image="mail_attachment-closed">
                                 <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
