@@ -36,6 +36,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.webView.scrollView.clipsToBounds = false
+        self.webView.isAccessibilityElement = true
         self.webView.accessibilityIdentifier = "ComposerBody"
         
         self.heightObservation = self.htmlEditor.observe(\.contentHeight, options: [.new, .old]) { [weak self] htmlEditor, change in
