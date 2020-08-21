@@ -60,6 +60,7 @@ class UserManager : Service, HasLocalStorage {
         userCachedStatus.removeMobileSignature(uid: userInfo.userId)
         userCachedStatus.removeMobileSignatureSwitchStatus(uid: userInfo.userId)
         userCachedStatus.removeDefaultSignatureSwitchStatus(uid: userInfo.userId)
+        userCachedStatus.removeIsCheckSpaceDisabledStatus(uid: userInfo.userId)
         #if !APP_EXTENSION
         self.sevicePlanService.cleanUp()
         #endif

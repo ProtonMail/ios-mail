@@ -1081,6 +1081,8 @@ class LocalizedString {
 
     /// "Storage Warning"
     lazy var _space_warning = NSLocalizedString("Storage Warning", comment: "Title")
+    lazy var _space_all_used_warning = NSLocalizedString("You have used up all of your storage space (%@).", comment: "Content of space warning")
+    lazy var _space_partial_used_warning = NSLocalizedString("You have used %d%% of your storage space (%@).", comment: "Content of space warning")
 
     /// "Warning"
     lazy var _warning = NSLocalizedString("Warning", comment: "Title")
