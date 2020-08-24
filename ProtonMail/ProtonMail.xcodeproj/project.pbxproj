@@ -1117,6 +1117,7 @@
 		8A90B0B224EAB9F600B762B9 /* Wait.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A90B0B124EAB9F600B762B9 /* Wait.swift */; };
 		8A99489069F5835CF7B0E2AFA9D39007 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		8AC8AFA024E49393009D6C93 /* MailboxPasswordRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC8AF9F24E49393009D6C93 /* MailboxPasswordRobot.swift */; };
+		8ACA273F24EFBFC7004E1907 /* Otp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ACA273E24EFBFC7004E1907 /* Otp.swift */; };
 		8AD928675659266C1C75D3EF4E42F794 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
 		8AE880B99047B45BAB89A20E473E0108 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */; };
 		8B22AEAA6BBAEA1144476219AF514CC1 /* ContactTypeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6C64FE049CCAB116A41B87B7BC1195 /* ContactTypeViewModelImpl.swift */; };
@@ -2644,6 +2645,7 @@
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
 		8AC8AF9F24E49393009D6C93 /* MailboxPasswordRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxPasswordRobot.swift; sourceTree = "<group>"; };
 		8A90B0B124EAB9F600B762B9 /* Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wait.swift; sourceTree = "<group>"; };
+		8ACA273E24EFBFC7004E1907 /* Otp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Otp.swift; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
@@ -4576,6 +4578,7 @@
 				8F7747E3106D867364E40495CDC3322A /* TestData.swift */,
 				83E1AA926B0E49AAF06111604E48DDD0 /* User.swift */,
 				8A90B0B124EAB9F600B762B9 /* Wait.swift */,
+				8ACA273E24EFBFC7004E1907 /* Otp.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -7959,6 +7962,7 @@
 				04958BBE878E988157766291E34F66C2 /* MenuRobot.swift in Sources */,
 				799780FD5F2FA1EA8AF1CF17E727BFC8 /* MoveToFolderRobotInterface.swift in Sources */,
 				A974AF9A803726FCF4AD4206594456B9 /* SelectionMoreOptionsRobotInterface.swift in Sources */,
+				8ACA273F24EFBFC7004E1907 /* Otp.swift in Sources */,
 				CCC74C53CAB34A2B5092D5CC47CEAF86 /* SelectionStateRobotInterface.swift in Sources */,
 				7D03892CEB3648710D441D97493FDF9E /* SentRobot.swift in Sources */,
 				73C810D6DDD8209520D4D42323C5A9EB /* TestData.swift in Sources */,

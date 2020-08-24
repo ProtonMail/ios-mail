@@ -38,4 +38,19 @@ class LoginTests: BaseTestCase {
             .decryptMailbox(user.mailboxPassword)
             .verify.loginSuccessful()
     }
+    
+    func testLoginWithOnePassAnd2FA() {
+        let user = testData.onePassUserWith2Fa
+        loginRobot
+            .loginUserWithTwoFA(user: user)
+            .verify.loginSuccessful()
+    }
+    
+    func testLoginWithTwoPassAnd2FA() {
+        let user = testData.twoPassUserWith2Fa
+        loginRobot
+            .loginTwoPasswordUserWithTwoFA(user: user)
+            .decryptMailbox(user.mailboxPassword)
+            .verify.loginSuccessful()
+    }
 }

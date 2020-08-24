@@ -29,4 +29,8 @@ class User {
         self.mailboxPassword = String(userData[2])
         self.twoFASecurityKey = String(userData[3])
     }
+    
+    func getTwoFaCode() -> String {
+        return Otp().generate(self.twoFASecurityKey)
+    }
 }
