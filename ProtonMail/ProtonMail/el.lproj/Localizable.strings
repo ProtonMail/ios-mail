@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Ενεργοποίηση μηνύματος ειδοποίησης με E-mail";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Ενεργοποίηση PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Ενεργοποίηση προστασίας PIN";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Ενεργοποίηση PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Ενεργοποίηση PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Ενεργοποίηση TouchID";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Έχετε μη αποθηκευμένες αλλαγές. Θέλετε να τις αποθηκεύσετε;";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Έχετε χρησιμοποιήσει το %1$d%% του χώρου αποθήκευσης σας (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Έχετε εξαντλήσει όλο το χώρο αποθήκευσης σας (%@).";
 
 /* Description */

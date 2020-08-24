@@ -824,6 +824,7 @@
 		65F1E4F60651566208B4712F8704166A /* ShareAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3D8128B46D4B7C22F889D85E7DF773B /* ShareAppCoordinator.swift */; };
 		65FE86FE3C88B02A177BA6ECC18D2D12 /* LinkOpeningMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 006B4EB43FF5EB36A9D584477B9777C9 /* LinkOpeningMode.swift */; };
 		661F6EFDB7DC67F3BBABFF467D851BDF /* Dictionary+JSON+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C43BAC98CCCFA15D66BE820319144279 /* Dictionary+JSON+Extension.swift */; };
+		665E564624F3A17D00087BA3 /* OnePasswordExtension.strings in Resources */ = {isa = PBXBuildFile; fileRef = 665E564424F3A17D00087BA3 /* OnePasswordExtension.strings */; };
 		6680B419189C1F7035A421E6E5C88774 /* PushData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA88C187FD1DF1D21F421275A2862B6 /* PushData.swift */; };
 		66C4A4AED23E47D0E1DFF3C693F5174D /* SettingsDeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B638CAEF36AC7D048561717D2293B44 /* SettingsDeviceViewController.swift */; };
 		66E9F09FB00042C83ADC068C5F06797C /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218348D8D5386E202A585F3C1D3CF0A8 /* UITextField+Extension.swift */; };
@@ -2518,10 +2519,34 @@
 		64762B896DE435D0D6267C79BF66D6C3 /* test_html.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; path = test_html.html; sourceTree = "<group>"; };
 		65AEFDCB007ECCDB7EF98DB95F136C12 /* Share.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Share.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		65E79798EF9EFDC06A9602AEDA36F519 /* MessageAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageAPI.swift; sourceTree = "<group>"; };
+		6602ACDB24F3A1CC006A0065 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		661239F824F3A1D4003AE4B7 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		6622F96924F3A1DC00BB14AF /* kab */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = kab; path = kab.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		663254C924F3A1E40018D22B /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66428EDC24F3A1EB00640E80 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66520CEE24F3A1F30097B5BE /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/OnePasswordExtension.strings"; sourceTree = "<group>"; };
+		665E564524F3A17D00087BA3 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		666249B924F3A1FB0010B324 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		6671CAD524F3A1850098DBB3 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		667240FA24F3A20300B383D3 /* ro */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ro; path = ro.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		667B259499756B936C5965740FB1C262 /* ExpirationWarningHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpirationWarningHeaderCell.swift; sourceTree = "<group>"; };
+		6682484424F3A18D00D75264 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		6682FA7824F3A20B00934989 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66920A1124F3A2130018FF51 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		6692A51C24F3A1950055592C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66A26B8B24F3A19D009D9965 /* el */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = el; path = el.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66A28F9024F3A21B00819AA7 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		66A41F56CFDB2ECDC24EEDDAAFC7557E /* SplashSignInSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashSignInSegue.swift; sourceTree = "<group>"; };
+		66B208FA24F3A22200A8E83E /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66B2522B24F3A1A500DF1BBD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66C2BE3024F3A1AD00214C87 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66C2C79224F3A22A0090A64F /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/OnePasswordExtension.strings"; sourceTree = "<group>"; };
 		66C6DA59C08DB69AC664D5D8D0ECB14F /* Alerts.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Alerts.storyboard; sourceTree = "<group>"; };
+		66D20A7324F3A1B400DC35CC /* hr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hr; path = hr.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
+		66D2556C24F3A23200D9ADC9 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/OnePasswordExtension.strings"; sourceTree = "<group>"; };
+		66E286A724F3A1BC001DEF49 /* hu */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hu; path = hu.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		66ECFE85614856773C0AB02A79A1B127 /* TextInsetTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextInsetTextField.swift; sourceTree = "<group>"; };
+		66F28C0924F3A1C400DFB2D0 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		675FBF79D40CC09DA975E382018E27B6 /* InfoDev.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = InfoDev.plist; sourceTree = "<group>"; };
 		67EC1DC2D18907F7965D542F99DC7A68 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/PasswordExtension.strings"; sourceTree = "<group>"; };
 		680AA287FBEF2802C1CC7D4471321EF3 /* URL+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Extension.swift"; sourceTree = "<group>"; };
@@ -2643,8 +2668,8 @@
 		899BDDEF3A3E63FB3DBDEDD1BF91B1FD /* Pods-Keymaker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keymaker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keymaker/Pods-Keymaker.release.xcconfig"; sourceTree = "<group>"; };
 		8A0079ABF470F5678C8F5773F88F5C12 /* MessageContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContainerViewModel.swift; sourceTree = "<group>"; };
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
-		8AC8AF9F24E49393009D6C93 /* MailboxPasswordRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxPasswordRobot.swift; sourceTree = "<group>"; };
 		8A90B0B124EAB9F600B762B9 /* Wait.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wait.swift; sourceTree = "<group>"; };
+		8AC8AF9F24E49393009D6C93 /* MailboxPasswordRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxPasswordRobot.swift; sourceTree = "<group>"; };
 		8ACA273E24EFBFC7004E1907 /* Otp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Otp.swift; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -3383,7 +3408,6 @@
 				6651264FBFFCA1B8A5BD4B63BB8A4C1E /* Robots */,
 				02423C8683D1F61352E4CB6C1F49AB36 /* Tests */,
 				CEECE23575593F125B3940264BA9EBA2 /* Utils */,
-				CEECE23575593F125B3940264BA9EBA2 /* TestHelpers */,
 				DFCC5CF86AF472BE72A09BF44887F52C /* Info.plist */,
 			);
 			path = ProtonMailUITests;
@@ -4396,6 +4420,7 @@
 			isa = PBXGroup;
 			children = (
 				ADAF5E5011C30A623AEEAB65309AA864 /* Info.plist */,
+				665E564424F3A17D00087BA3 /* OnePasswordExtension.strings */,
 				675FBF79D40CC09DA975E382018E27B6 /* InfoDev.plist */,
 				1ECA6547BB92EFBFF9D78045E47FD613 /* InfoPlist.strings */,
 				78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */,
@@ -5455,6 +5480,7 @@
 				9D8AA94044019EE989862A88469971C1 /* GeneralSettingViewCell.xib in Resources */,
 				2F502E26FF1CB0F6178CA27F2FF94E92 /* HtmlEditor.css in Resources */,
 				F284D2AF97095DAFCFEE47BCFCF4147B /* HtmlEditor.html in Resources */,
+				665E564624F3A17D00087BA3 /* OnePasswordExtension.strings in Resources */,
 				867A6015D967A842B339E58C7CAE1BFF /* HtmlEditor.js in Resources */,
 				2E9ED30694204615DEB77F1481CE08D1 /* Images.xcassets in Resources */,
 				C8D4166CCFEEBBFF61A27F6B3ED89961 /* InfoPlist.strings in Resources */,
@@ -8085,6 +8111,37 @@
 			name = PasswordExtension.strings;
 			path = ProtonMail;
 			sourceTree = SOURCE_ROOT;
+		};
+		665E564424F3A17D00087BA3 /* OnePasswordExtension.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				665E564524F3A17D00087BA3 /* ca */,
+				6671CAD524F3A1850098DBB3 /* cs */,
+				6682484424F3A18D00D75264 /* da */,
+				6692A51C24F3A1950055592C /* de */,
+				66A26B8B24F3A19D009D9965 /* el */,
+				66B2522B24F3A1A500DF1BBD /* es */,
+				66C2BE3024F3A1AD00214C87 /* fr */,
+				66D20A7324F3A1B400DC35CC /* hr */,
+				66E286A724F3A1BC001DEF49 /* hu */,
+				66F28C0924F3A1C400DFB2D0 /* id */,
+				6602ACDB24F3A1CC006A0065 /* is */,
+				661239F824F3A1D4003AE4B7 /* it */,
+				6622F96924F3A1DC00BB14AF /* kab */,
+				663254C924F3A1E40018D22B /* nl */,
+				66428EDC24F3A1EB00640E80 /* pl */,
+				66520CEE24F3A1F30097B5BE /* pt-BR */,
+				666249B924F3A1FB0010B324 /* pt */,
+				667240FA24F3A20300B383D3 /* ro */,
+				6682FA7824F3A20B00934989 /* ru */,
+				66920A1124F3A2130018FF51 /* sv */,
+				66A28F9024F3A21B00819AA7 /* tr */,
+				66B208FA24F3A22200A8E83E /* uk */,
+				66C2C79224F3A22A0090A64F /* zh-Hans */,
+				66D2556C24F3A23200D9ADC9 /* zh-Hant */,
+			);
+			name = OnePasswordExtension.strings;
+			sourceTree = "<group>";
 		};
 		76771759773C55CE5C40C760F5E359F2 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;

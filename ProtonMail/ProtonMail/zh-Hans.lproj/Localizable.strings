@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "您的改动尚未保存，要保存吗？";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "您的存储空间（%2$@）已使用 %1$d%%。";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "您的存储空间（%@）已用尽。";
 
 /* Description */
