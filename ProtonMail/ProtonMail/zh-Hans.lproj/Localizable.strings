@@ -773,7 +773,7 @@
 "Empty Folder" = "清空文件夹";
 
 /* it is an option to empty the label */
-"Empty Label" = "清空标签";
+"Empty Label" = "删除所有带此标签的邮件";
 
 /* Title */
 "Enable Default Signature" = "使用预置落款";

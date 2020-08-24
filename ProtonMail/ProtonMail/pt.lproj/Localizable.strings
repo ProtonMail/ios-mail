@@ -168,7 +168,7 @@
 /* mail location desc
    mail location title
    menu title */
-"All Mail" = "Todos os emails";
+"All Mail" = "Todo o correio";
 
 /* network troubleshot cell title */
 "Allow alternative routing" = "Permitir redireccionamento alternativo";
@@ -1317,7 +1317,7 @@
 "More Credits" = "Mais créditos";
 
 /* move action */
-"Move to All Mail" = "Mover para Todos os emails";
+"Move to All Mail" = "Mover para Todo o correio";
 
 /* move action */
 "Move to Archive" = "Mover para Arquivo";
