@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Sie haben noch nicht gespeicherte Änderungen. Möchten Sie diese speichern?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Sie nutzen bereits %1$d%% Ihres Speicherplatzes (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Sie haben Ihren gesamten Speicherplatz (%@) aufgebraucht.";
 
 /* Description */

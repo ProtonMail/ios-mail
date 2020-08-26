@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Máte neuložené změny, chcete je uložit?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "You have used %1$d%% of your storage space (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Vyčerpali jste celý váš úložný prostor (%@).";
 
 /* Description */

@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Értesítési e-mail engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "PIN-kód engedélyezése";
 
 /* settings protection section title */
 "Enable Pin Protection" = "PIN kódos védelem engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "PIN/FaceID engedélyezése";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "PIN/TouchID engedélyezése";
 
 /* settings protection section title */
 "Enable TouchID" = "TouchID engedélyezése";
@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "A változtatások nincsenek elmentve. Szeretné megtartani őket?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Eddig %1$d%%-ot használt fel a rendelkezésre álló helyből (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Az összes rendelkezésre álló tárhelyet elhasználta (%@).";
 
 /* Description */

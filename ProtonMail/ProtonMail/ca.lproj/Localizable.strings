@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "Hi ha canvis no desats. Vols desar-los?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Heu utilitzat %1$d%% del vostre espai d'emmagatzematge (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Has utilitzat tot el teu espai d'emmagatzematge (%@).";
 
 /* Description */

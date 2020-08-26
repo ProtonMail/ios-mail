@@ -2401,10 +2401,10 @@
 /* Confirmation message */
 "You have unsaved changes. Do you want to save it?" = "У вас есть несохранённые изменения. Вы хотите сохранить их?";
 
-/* Description */
+/* Content of space warning */
 "You have used %d%% of your storage space (%@)." = "Вы используете %1$d%% объёма своего хранилища (%2$@).";
 
-/* Description */
+/* Content of space warning */
 "You have used up all of your storage space (%@)." = "Вы исчерпали весь объём хранилища (%@).";
 
 /* Description */
