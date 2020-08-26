@@ -60,8 +60,10 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
 
         let cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = cancelButton
+        self.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "cancelButton"
         let removeAllButton = UIBarButtonItem(title: LocalString._remove_all, style: .plain, target: self, action: #selector(removeAction))
         self.navigationItem.rightBarButtonItem = removeAllButton
+        self.navigationItem.rightBarButtonItem?.accessibilityIdentifier = "removeAllButton"
     }
     
     @objc internal func dismiss() {
@@ -114,7 +116,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
                 self.dismiss()
             }.cauterize()
         }))
-        
+
         alertController.popoverPresentationController?.barButtonItem = sender
         alertController.popoverPresentationController?.sourceRect = self.view.frame
         present(alertController, animated: true, completion: nil)

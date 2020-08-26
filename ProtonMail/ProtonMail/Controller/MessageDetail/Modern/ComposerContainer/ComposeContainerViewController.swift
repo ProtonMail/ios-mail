@@ -23,7 +23,7 @@
 
 import UIKit
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate, Accessible
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
@@ -47,6 +47,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
+        
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidLoad() {

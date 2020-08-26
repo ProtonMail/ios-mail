@@ -27,12 +27,25 @@ struct Wait {
     
     private let timeout = 10.00
     
-    func forElementToBeEnabled(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, "isEnabled == true", file, line)
+    struct Condition {
+        static let enabled = "isEnabled == true"
+        static let hittable = "hittable == true"
+        static let doesNotExist = "exists == false"
     }
     
+    @discardableResult
+    func forElementToBeEnabled(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
+        return waitForCondition(element, Condition.enabled, file, line)
+    }
+    
+    @discardableResult
     func forElementToBeHittable(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
-        return waitForCondition(element, "hittable == true", file, line)
+        return waitForCondition(element, Condition.hittable, file, line)
+    }
+    
+    @discardableResult
+    func forElementToDisappear(_ element: XCUIElement, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {
+        return waitForCondition(element, Condition.doesNotExist, file, line)
     }
     
     private func waitForCondition(_ element: XCUIElement, _ expression: String, _ file: StaticString = #file, _ line: UInt = #line) -> XCUIElement {

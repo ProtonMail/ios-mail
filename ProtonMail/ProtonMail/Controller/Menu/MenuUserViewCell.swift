@@ -113,8 +113,11 @@ class MenuUserViewCell: UITableViewCell {
         
         let displayName = name.isEmpty ? email : name
         self.displayName.text = displayName
+        self.displayName.accessibilityIdentifier = displayName
         self.emailAddress.text = email
+        self.emailAddress.accessibilityIdentifier = email
         self.setupShortName(displayName: displayName)
+        self.accessibilityIdentifier = "\(email)_MenuUserCell"
     }
     
     private func setupShortName(displayName: String) {

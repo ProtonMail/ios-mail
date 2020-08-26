@@ -113,13 +113,14 @@ extension UIViewController {
 }
 
 
-class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtocol {
+class ProtonMailViewController: UIViewController, ProtonMailViewControllerProtocol, Accessible {
 
     @IBOutlet weak var menuButton: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         UIViewController.setup(self, self.menuButton, self.shouldShowSideMenu())
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

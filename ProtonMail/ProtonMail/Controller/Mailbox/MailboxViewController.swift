@@ -161,6 +161,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
         self.tableView.RegisterCell(MailboxRateReviewCell.Constant.identifier)
+        self.tableView.accessibilityIdentifier = "mailboxTableView"
         
         self.addSubViews()
 
@@ -269,6 +270,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
+        self.refreshControl.accessibilityIdentifier = "refreshControl"
         
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self

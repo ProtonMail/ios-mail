@@ -27,14 +27,14 @@ class LoginTests: BaseTestCase {
     func testLoginWithOnePass() {
         let user = testData.onePassUser
         loginRobot
-            .loginUser(user.email, user.password)
+            .loginUser(user)
             .verify.loginSuccessful()
     }
 
     func testLoginWithTwoPass() {
         let user = testData.twoPassUser
         loginRobot
-            .loginTwoPasswordUser(user: user)
+            .loginTwoPasswordUser(user)
             .decryptMailbox(user.mailboxPassword)
             .verify.loginSuccessful()
     }
@@ -42,14 +42,14 @@ class LoginTests: BaseTestCase {
     func testLoginWithOnePassAnd2FA() {
         let user = testData.onePassUserWith2Fa
         loginRobot
-            .loginUserWithTwoFA(user: user)
+            .loginUserWithTwoFA(user)
             .verify.loginSuccessful()
     }
     
     func testLoginWithTwoPassAnd2FA() {
         let user = testData.twoPassUserWith2Fa
         loginRobot
-            .loginTwoPasswordUserWithTwoFA(user: user)
+            .loginTwoPasswordUserWithTwoFA(user)
             .decryptMailbox(user.mailboxPassword)
             .verify.loginSuccessful()
     }

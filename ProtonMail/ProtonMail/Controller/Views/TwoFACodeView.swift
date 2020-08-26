@@ -94,9 +94,9 @@ class TwoFACodeView : PMView {
         loginPasswordField.placeholder = LocalString._login_password
         topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
-        cancelButton.accessibilityIdentifier = "cancelButton"
+        cancelButton.accessibilityIdentifier = "authCancelButton"
         enterButton.setTitle(LocalString._enter, for: .normal)
-        enterButton.accessibilityIdentifier = "enterButton"
+        enterButton.accessibilityIdentifier = "authEnterButton"
     }
 
     @objc func doneButtonAction() {

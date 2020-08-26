@@ -34,22 +34,22 @@
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "TEST_USER1"
-            value = "1PassUser,ios12345,stub,stub"
+            value = "1PassUser@protonmail.com,ios12345,stub,stub"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "TEST_USER2"
-            value = "2PassUser,ios12345,123,stub"
+            value = "2PassUser@protonmail.com,ios12345,123,stub"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "TEST_USER3"
-            value = "1PassUserWith2FA,ios12345,stub,5IGRHJLWRGHKB3XBXN367QEGV3IPDSRA"
+            value = "1PassUserWith2FA@protonmail.com,ios12345,stub,5IGRHJLWRGHKB3XBXN367QEGV3IPDSRA"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "TEST_USER4"
-            value = "2PassUserWith2FA,ios12345,123,U6I25VM77GRWQZAYQCMX6LP6UDI3D4ES"
+            value = "2PassUserWith2FA@protonmail.com,ios12345,123,U6I25VM77GRWQZAYQCMX6LP6UDI3D4ES"
             isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>

@@ -8,6 +8,8 @@
 
 import XCTest
 
+fileprivate let mailboxTableView = "mailboxTableView"
+
 /**
  Represents Inbox view.
 */
@@ -39,7 +41,7 @@ class InboxRobot : MailboxRobotInterface {
         
         @discardableResult
         func loginSuccessful() -> InboxRobot {
-            Element.wait.forButtonWithIdentifier(composeButtonLabel)
+            Element.wait.forButtonWithIdentifier(composeButtonLabel, file: #file, line: #line)
             return InboxRobot()
         }
     }

@@ -55,6 +55,7 @@ class AccountManagerUserCell: UITableViewCell {
         diaplayName.text = displayName
         emailAddress.text = email
         self.setupShortName(displayName: displayName)
+        self.accessibilityIdentifier = "\(email)_UserCell"
     }
     
     private func setupShortName(displayName: String) {
@@ -82,6 +83,7 @@ class AccountManagerUserCell: UITableViewCell {
         
         self.diaplayName.textColor = .red
         self.emailAddress.textColor = .red
+        self.accessibilityIdentifier = "\(email)_UserCell_LoggedOut"
     }
     
     func configUnreadCount (count: Int) {

@@ -17,7 +17,7 @@ class MailboxPasswordRobot {
     }
 
     private func mailboxPassword(_ mailboxPwd: String) -> MailboxPasswordRobot {
-        Element.secureTextField.tapByIdentifier(mailboxPasswordTextField).typeText(mailboxPwd)
+        Element.wait.forSecureTextFieldWithIdentifier(mailboxPasswordTextField, file: #file, line: #line).typeText(mailboxPwd)
         return self
     }
 
