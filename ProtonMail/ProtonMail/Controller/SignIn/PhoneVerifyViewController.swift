@@ -84,6 +84,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.viewModel.observeTextField(textField: verifyCodeTextField, type: .verification)
         emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._cell_phone_number,
                                                                   attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,

@@ -26,6 +26,8 @@ import PMNetworking
 
 
 class DoHMail : DoH, DoHConfig {
+    var defaultPath: String = Constants.App.API_PATH
+    
     //defind your default host
     var defaultHost: String = Constants.App.API_HOST_URL
     //defind your query host

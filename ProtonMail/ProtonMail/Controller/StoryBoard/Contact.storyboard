@@ -301,18 +301,18 @@
                         <viewControllerLayoutGuide type="bottom" id="RqS-2f-w4i"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d86-wE-Bc8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bh9-82-LsH">
-                                <rect key="frame" x="0.0" y="56" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="ysN-oo-Xni"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="PSd-wW-WIb">
-                                <rect key="frame" x="0.0" y="100" width="320" height="448"/>
+                                <rect key="frame" x="0.0" y="88" width="320" height="480"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationWidth="10" reuseIdentifier="ContactGroupCell" textLabel="WbC-oa-iR9" style="IBUITableViewCellStyleDefault" id="y6B-Pu-T9r">
@@ -380,11 +380,11 @@
                         <viewControllerLayoutGuide type="bottom" id="MSl-sf-MVB"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="1Nj-fq-uUv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sFp-SQ-U22">
-                                <rect key="frame" x="0.0" y="56" width="320" height="80"/>
+                                <rect key="frame" x="0.0" y="44" width="320" height="80"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="contact_groups_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Gyj-Fm-pIs">
                                         <rect key="frame" x="20" y="12.5" width="55" height="55"/>
@@ -440,7 +440,7 @@
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="KRC-sl-Cdx">
-                                <rect key="frame" x="0.0" y="136" width="320" height="412"/>
+                                <rect key="frame" x="0.0" y="124" width="320" height="395"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="JZ0-Zf-iCa" id="f5C-8V-j6y"/>
@@ -2487,12 +2487,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="6gL-17-Vjp"/>
-        <segue reference="sDR-N5-yCe"/>
-        <segue reference="rru-oY-8Lv"/>
-        <segue reference="Grd-B0-e0M"/>
-        <segue reference="GcK-DS-QnS"/>
-        <segue reference="3li-n2-ywX"/>
+        <segue reference="7yS-kj-Eid"/>
+        <segue reference="Hva-pu-Vsz"/>
+        <segue reference="m8Q-wN-q8j"/>
+        <segue reference="HIr-Zm-YHr"/>
+        <segue reference="vny-dJ-xp5"/>
+        <segue reference="cjF-6k-L7o"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="contact_groups_icon" width="40" height="40"/>
