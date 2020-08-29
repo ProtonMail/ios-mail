@@ -287,11 +287,16 @@ extension AppDelegate: UIApplicationDelegate {
         keymaker.updateAutolockCountdownStart()
         
         var taskID = UIBackgroundTaskIdentifier(rawValue: 0)
-        taskID = application.beginBackgroundTask { PMLog.D("Background Task Timed Out") }
+        taskID = application.beginBackgroundTask {
+            PMLog.D("Background Task Timed Out")
+            application.endBackgroundTask(taskID)
+            taskID = .invalid
+        }
         let delayedCompletion: ()->Void = {
             delay(3) {
                 PMLog.D("End Background Task")
-                application.endBackgroundTask(UIBackgroundTaskIdentifier(rawValue: taskID.rawValue))
+                application.endBackgroundTask(taskID)
+                taskID = .invalid
             }
         }
         
