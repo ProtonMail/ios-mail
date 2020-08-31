@@ -1270,7 +1270,11 @@ extension MailboxViewController {
     }
     
     func retry() {
-        self.getLatestMessages()
+        // When network reconnect, the DNS data seems will miss at a short time
+        // Delay 5 seconds to retry can prevent some relative error
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            self.getLatestMessages()
+        }
     }
 }
 
