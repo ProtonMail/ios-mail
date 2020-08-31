@@ -574,7 +574,7 @@
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea y añade etiquetas para organizar tu bandeja de entrada. Mantén pulsado un mensaje para ver todas las opciones.";
 
 /* title of button in account connect page */
-"Create new account" = "Cree una nueva cuenta";
+"Create new account" = "Create new account";
 
 /* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Habilitar correo electrónico de notificación";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Habilitar PIN";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Habilitar protección con PIN";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Habilitar PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Habilitar PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Habilitar TouchID";
@@ -1672,7 +1672,7 @@
 "Proxy/Firewall interference" = "Interferencia de Proxy/Firewall";
 
 /* cell title in device settings */
-"Push Notifications" = "Notificaciones push";
+"Push Notifications" = "Notificaciones Push";
 
 /* Title */
 "Quick swipe actions" = "Acciones de deslizamiento rápido";
