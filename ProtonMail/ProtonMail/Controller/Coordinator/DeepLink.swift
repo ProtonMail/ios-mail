@@ -33,25 +33,30 @@ class DeepLink {
         //
         var name : String
         var value: String?
+        var states: [String: Any]?
         
-        init(name: String, value: String? = nil) {
+        init(name: String, value: String? = nil, states: [String: Any]? = nil) {
             self.name = name
             self.value = value
+            self.states = states
         }
         
-        convenience init<T>(name: String, value: T? = nil) where T: RawRepresentable, T.RawValue == String {
-            self.init(name: name, value: value?.rawValue)
+        convenience init<T>(name: String, value: T? = nil, states: [String: Any]? = nil) where T: RawRepresentable, T.RawValue == String {
+            self.init(name: name, value: value?.rawValue, states: states)
         }
         
         required init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             self.name = try container.decode(String.self, forKey: .destination)
             self.value = try? container.decode(String.self, forKey: .sender)
+            if let jsonStates = try? container.decode(String.self, forKey: .states) {
+                self.states = jsonStates.toDictionary()
+            }
         }
     }
     
-    init(_ dest: String, sender: String? = nil) {
-        let node = Node(name: dest, value: sender)
+    init(_ dest: String, sender: String? = nil, states: [String: Any]? = nil) {
+        let node = Node(name: dest, value: sender, states: states)
         self.append(node)
     }
     
@@ -174,14 +179,14 @@ class DeepLink {
 
 extension DeepLink.Node: CustomDebugStringConvertible {
     var debugDescription: String {
-        return "dest: \(self.name), sender: \(String(describing: self.value)))"
+        return "dest: \(self.name), sender: \(String(describing: self.value)), states: \(String(describing: self.states))"
     }
 }
 
 extension DeepLink.Node: Equatable {
     static func == (lhs: DeepLink.Node, rhs: DeepLink.Node) -> Bool {
         return lhs.name == rhs.name
-                && lhs.value?.hashValue == rhs.value?.hashValue
+            && lhs.value?.hashValue == rhs.value?.hashValue && lhs.states?.json(prettyPrinted: true).hashValue == rhs.states?.json(prettyPrinted: true).hashValue
     }
 }
 
@@ -200,12 +205,15 @@ extension DeepLink: CustomDebugStringConvertible {
 }
 
 extension DeepLink.Node: Codable {
-    enum CodingKeys: CodingKey { case destination, sender }
+    enum CodingKeys: CodingKey { case destination, sender, states }
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(self.name, forKey: .destination)
         if let sender = self.value {
             try container.encode(sender, forKey: .sender)
+        }
+        if let jsonString = self.states?.json(prettyPrinted: true) {
+            try container.encode(jsonString, forKey: .states)
         }
     }
 }
