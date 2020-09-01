@@ -505,11 +505,11 @@ class SignupViewModelImpl : SignupViewModel {
         try! self.fingerprint.observeTextField(textField, type: type)
     }
     
-    override func requestVerify() {
+    override func requestHumanVerification() {
         self.fingerprint.requestVerify()
     }
     
-    override func captchaFinish() {
+    override func humanVerificationFinish() {
         try! self.fingerprint.verificationFinsih()
     }
     

@@ -79,7 +79,6 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel.observeTextField(textField: verifyCodeTextField, type: .verification)
         emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._contacts_email_address_placeholder,
                                                                   attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
@@ -210,6 +209,7 @@ class EmailVerifyViewController: UIViewController, SignupViewModelDelegate {
         MBProgressHUD.showAdded(to: view, animated: true)
         dismissKeyboard()
         viewModel.setEmailVerifyCode(verifyCodeTextField.text!)
+        self.viewModel.humanVerificationFinish()
         DispatchQueue.main.async(execute: { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 DispatchQueue.main.async(execute: { () -> Void in

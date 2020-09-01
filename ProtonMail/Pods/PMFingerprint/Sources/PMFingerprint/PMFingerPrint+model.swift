@@ -79,10 +79,10 @@ extension PMFingerprint {
         public internal(set) var usernameChecks: [String] = []
         /// Number of seconds it took to verify sms/email/catpcha/payment
         public internal(set) var time_human: Int = 0
-        /// Number of seconds from signup form load to start filling password input
+        /// Number of seconds that user focus on password textField.
         public internal(set) var time_pass: Int = 0
         /// Number of seconds from signup form load to start filling username input
-        public internal(set) var time_user: Int = 0
+        public internal(set) var time_user: [Int] = []
         /// Chars that typed in username input
         public internal(set) var usernameTypedChars: [String] = []
         /// Chars that deleted in username input
@@ -129,7 +129,7 @@ extension PMFingerprint {
         mutating func reset() {
             self.usernameChecks = []
             self.time_human = 0
-            self.time_user = 0
+            self.time_user = []
             self.time_pass = 0
             self.usernameTypedChars = []
             self.recoverTypedChars = []

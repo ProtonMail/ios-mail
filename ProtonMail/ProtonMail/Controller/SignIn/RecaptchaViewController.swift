@@ -100,7 +100,7 @@ class RecaptchaViewController: UIViewController {
         }
 
         doneClicked = true;
-        self.viewModel.captchaFinish()
+        self.viewModel.humanVerificationFinish()
         MBProgressHUD.showAdded(to: view, animated: true)
         self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
             DispatchQueue.main.async(execute: { () -> Void in
@@ -156,7 +156,7 @@ extension RecaptchaViewController {
         self.wkWebViewHeightConstraint = self.wkWebView.heightAnchor.constraint(equalToConstant: 85)
         self.wkWebViewHeightConstraint.isActive = true
         self.wkWebView.load(requestObj)
-        self.viewModel.requestVerify()
+        self.viewModel.requestHumanVerification()
     }
     
     private func configConstraint(_ show : Bool) -> Void {
