@@ -84,7 +84,6 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.viewModel.observeTextField(textField: verifyCodeTextField, type: .verification)
         emailTextField.attributedPlaceholder = NSAttributedString(string: LocalString._cell_phone_number,
                                                                   attributes:[NSAttributedString.Key.foregroundColor : UIColor(hexColorCode: "#9898a8")])
         verifyCodeTextField.attributedPlaceholder = NSAttributedString(string: LocalString._enter_verification_code,
@@ -231,6 +230,7 @@ class PhoneVerifyViewController: ProtonMailViewController, SignupViewModelDelega
         MBProgressHUD.showAdded(to: view, animated: true)
         dismissKeyboard()
         viewModel.setPhoneVerifyCode(verifyCodeTextField.text!)
+        self.viewModel.humanVerificationFinish()
         DispatchQueue.main.async(execute: { () -> Void in
             self.viewModel.createNewUser { (isOK, createDone, message, error) -> Void in
                 MBProgressHUD.hide(for: self.view, animated: true)

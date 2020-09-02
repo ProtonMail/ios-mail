@@ -44,11 +44,14 @@ public func reset()
 public func export() -> PMFingerprint.Fingerprint
 ```
 3. Start to observe given textfield so that we can monitor copy/paste/characters changed...etc
+
+If you call this function with the same type (or same textField) twice.
+The data of the first called will be overridden by the second called.
 ```swift
 public func observeTextField(_ textField: UITextField, type: TextFieldType, ignoreDelegate: Bool = false) throws
 ```
-support textfield types are below. 
-we collect different data depends on the type.
+support textfield types are below.     
+we collect different data depends on the type.      
 ```swift
 public enum TextFieldType {
     /// TextField for username
@@ -63,16 +66,19 @@ public enum TextFieldType {
     case verification
 }
 ```
+Note, this library supports these types.      
+but it doesn't mean every type will get the same action monitor.
+
 4. Record username that checks availability
 Please use this function every time when user checks availability.
 ```swift
 public func appendCheckedUsername(_ username: String)
 ```
-5. Declare user start request verification so that timer starts.
+5. Declare user start request verification (email/ sms/ captcha) so that timer starts.
 ```swift
 public func requestVerify()
 ```
-6. Count verification time, only use in captcha verification
+6. Count verification time
 ```swift
 public func verificationFinsih() throws
 ```

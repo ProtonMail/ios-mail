@@ -49,8 +49,7 @@ def common_pods
     
     pod 'TrustKit', '1.6.2'
     
-#    pod 'PMNetworking', :path => '../Networking'
-pod 'PMNetworking', :git => 'git@gitlab.protontech.ch:apple/shared/pmnetworking.git', :branch => 'release/1.0.1'
+    pod 'PMNetworking', :path => '../Networking'
 
     pm_shared_pods
 end
@@ -62,7 +61,7 @@ def pm_pods
     
     pod 'SWRevealViewController', '2.3.0'
     pod 'DKImagePickerController/PhotoGallery', '~> 4.1.7'
-    pod 'PMFingerprint', :git => 'git@gitlab.protontech.ch:apple/shared/pmfingerprint.git', :tag => '0.0.1'
+    pod 'PMFingerprint', :git => 'git@gitlab.protontech.ch:apple/shared/pmfingerprint.git', :tag => '0.0.2'
 end
 
 # for extensions Share

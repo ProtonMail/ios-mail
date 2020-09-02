@@ -23,6 +23,8 @@
 import UIKit
 
 protocol TextFieldInterceptorDelegate: class {
+    func beginEditing(type: PMFingerprint.TextFieldType)
+    func endEditing(type: PMFingerprint.TextFieldType)
     func charactersTyped(chars: String, type: PMFingerprint.TextFieldType) throws
     func charactersDeleted(chars: String, type: PMFingerprint.TextFieldType)
     func tap(textField: UITextField, type: PMFingerprint.TextFieldType)
@@ -32,6 +34,7 @@ final class TextFieldDelegateInterceptor: NSObject {
     private weak var delegate: TextFieldInterceptorDelegate?
     private weak var originalDelegate: UITextFieldDelegate?
     private(set) weak var textField: UITextField?
+    private var touchDown: UILongPressGestureRecognizer?
     let type: PMFingerprint.TextFieldType
     private var observe: NSKeyValueObservation?
     
@@ -47,21 +50,29 @@ final class TextFieldDelegateInterceptor: NSObject {
         
         super.init()
         textField.delegate = self
-        textField.addTarget(self, action: #selector(TextFieldDelegateInterceptor.tapTextField), for: .touchDown)
+        self.touchDown = UILongPressGestureRecognizer(target:self, action: #selector(tapTextField))
+        self.touchDown!.minimumPressDuration = 0
+        self.touchDown!.delegate = self
+        self.textField?.addGestureRecognizer(self.touchDown!)
     }
     
     func destroy() {
         self.textField?.delegate = self.originalDelegate
         self.textField = nil
         self.delegate = nil
-        textField?.removeTarget(self, action: #selector(TextFieldDelegateInterceptor.tapTextField), for: .touchDown)
+        textField?.removeGestureRecognizer(self.touchDown!)
     }
 }
 
-extension TextFieldDelegateInterceptor {
+extension TextFieldDelegateInterceptor: UIGestureRecognizerDelegate {
     @objc private func tapTextField() {
         guard let _delegate = self.delegate, let _textField = self.textField else {return}
         _delegate.tap(textField: _textField, type: self.type)
+    }
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        self.tapTextField()
+        return false
     }
 }
 
@@ -72,7 +83,7 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        
+        self.delegate?.beginEditing(type: self.type)
         self.originalDelegate?.textFieldDidBeginEditing?(textField)
     }
 
@@ -82,12 +93,12 @@ extension TextFieldDelegateInterceptor: UITextFieldDelegate {
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
+        self.delegate?.endEditing(type: self.type)
         self.originalDelegate?.textFieldDidEndEditing?(textField)
     }
 
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        
+        self.delegate?.endEditing(type: self.type)
         self.originalDelegate?.textFieldDidEndEditing?(textField, reason: reason)
     }
 

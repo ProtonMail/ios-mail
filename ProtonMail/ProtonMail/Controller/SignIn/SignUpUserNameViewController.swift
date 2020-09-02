@@ -23,7 +23,6 @@
 
 import UIKit
 import MBProgressHUD
-import PMFingerprint
 
 class SignUpUserNameViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate {
     

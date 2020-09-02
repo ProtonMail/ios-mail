@@ -78,7 +78,7 @@ PODS:
   - PMAuthentication (1.0.0):
     - PMCrypto
   - PMCrypto (1.0.0)
-  - PMFingerprint (0.0.1)
+  - PMFingerprint (0.0.2)
   - PMKeymaker (1.1.0):
     - EllipticCurveKeyPair
     - PMCrypto
@@ -124,7 +124,7 @@ DEPENDENCIES:
   - OpenPGP (from `../OpenPGP`)
   - PMAuthentication (from `https://gitlab.protontech.ch/apple/shared/pmauthentication.git`, tag `1.0.0`)
   - PMCrypto (from `https://gitlab.protontech.ch/apple/shared/pmcrypto.git`, tag `1.0.0`)
-  - "PMFingerprint (from `git@gitlab.protontech.ch:apple/shared/pmfingerprint.git`, tag `0.0.1`)"
+  - "PMFingerprint (from `git@gitlab.protontech.ch:apple/shared/pmfingerprint.git`, tag `0.0.2`)"
   - PMKeymaker (from `https://gitlab.protontech.ch/apple/shared/pmkeymaker.git`, tag `1.1.0`)
   - PMNetworking (from `../Networking`)
   - PromiseKit (~> 6.0)
@@ -172,7 +172,7 @@ EXTERNAL SOURCES:
     :tag: 1.0.0
   PMFingerprint:
     :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
-    :tag: 0.0.1
+    :tag: 0.0.2
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
     :tag: 1.1.0
@@ -197,7 +197,7 @@ CHECKOUT OPTIONS:
     :tag: 1.0.0
   PMFingerprint:
     :git: "git@gitlab.protontech.ch:apple/shared/pmfingerprint.git"
-    :tag: 0.0.1
+    :tag: 0.0.2
   PMKeymaker:
     :git: https://gitlab.protontech.ch/apple/shared/pmkeymaker.git
     :tag: 1.1.0
@@ -224,7 +224,7 @@ SPEC CHECKSUMS:
   OpenSSL: 246ffb948e9d56466727fd318134af35f5aa764e
   PMAuthentication: 7e217178684e2ec8e1b593bc95ed1c59c2959ac3
   PMCrypto: e348d868870240d63305609cf06c9dfce423a702
-  PMFingerprint: 32aa068046e0a3a75954c5e8e0d471ade7cec010
+  PMFingerprint: 0b9ad826868fc9a743f0f4f7dc4f1b71cf95c80c
   PMKeymaker: 6a485e8e71457722b83ddd01f671a5334a0d6b04
   PMNetworking: 54696647ab1a6cac500bab624733d5e08b7e7098
   PromiseKit: 28fda91c973cc377875d8c0ea4f973013c05b6db
@@ -235,6 +235,6 @@ SPEC CHECKSUMS:
   TrustKit: 0a64b37d31518f16e344ceaf27e129dde624ce75
   "UIColor+Hex": 9fee91bb8e19f17dd40a79ae1e98949a6a84489d
 
-PODFILE CHECKSUM: 465e922322116e899ad79137c23be07f707b1586
+PODFILE CHECKSUM: af6f6202ef544b3060c3e36a433c7f95c9b10e91
 
 COCOAPODS: 1.9.3

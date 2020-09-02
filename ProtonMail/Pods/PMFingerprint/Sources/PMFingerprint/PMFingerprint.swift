@@ -30,10 +30,10 @@ final public class PMFingerprint {
     private var fingerprint = PMFingerprint.Fingerprint()
     /// Interceptor of `UITextField`
     private var interceptors: [TextFieldDelegateInterceptor] = []
-    /// To calculate number of second that user start input username
-    private var usernameLoadTime: TimeInterval = 0
-    /// To calculate number of second that user start input password
-    private var passwordLoadTime: TimeInterval = 0
+    /// To calculate number of second that user editing username
+    private var usernameEditingTime: TimeInterval = 0
+    /// To calculate number of second that user editing password
+    private var passwordEditingTime: TimeInterval = 0
     /// To calculate number of second from request verify to start input verification
     private var requestVerifyTime: TimeInterval = 0
     /// Copy event debounce
@@ -78,8 +78,8 @@ extension PMFingerprint {
         
         self.interceptors.forEach({$0.destroy()})
         self.interceptors = []
-        self.usernameLoadTime = 0
-        self.passwordLoadTime = 0
+        self.usernameEditingTime = 0
+        self.passwordEditingTime = 0
         self.requestVerifyTime = 0
     }
     
@@ -101,32 +101,42 @@ extension PMFingerprint {
     }
     
     /**
-     Start to observe given textfield, will ignore redundant function called
+     Start to observe given textfield
+     
+     If you call this function with the same type (or same textField) twice.
+     The data of the first called will be overridden by the second called.
+     
      - Parameter textField: textField will be observe
      - Parameter type: The usage of this textField
      - Parameter ignoreDelegate: Should ignore textField delegate missing error?
      */
     public func observeTextField(_ textField: UITextField, type: TextFieldType, ignoreDelegate: Bool = false) throws {
-        guard self.interceptors.first(where: {$0.textField == textField || $0.type == type}) == nil else {
-            // Ignore redundant
-            return
+
+        while true {
+            if let idx = self.interceptors.firstIndex(where: {$0.type == type || $0.textField == textField}) {
+                let interceptor = self.interceptors.remove(at: idx)
+                interceptor.destroy()
+            } else {
+                break
+            }
         }
         
         do {
             let interceptor = try TextFieldDelegateInterceptor(textField: textField,
-                                                           type: type, delegate: self,
-                                                           ignoreDelegate: ignoreDelegate)
+                                                               type: type, delegate: self,
+                                                               ignoreDelegate: ignoreDelegate)
             self.interceptors.append(interceptor)
         } catch  {
             throw error
         }
         
-        // It means textField loaded, can start count for `time_pass`, `time_user`
         switch type {
         case .username:
-            self.usernameLoadTime = Date().timeIntervalSince1970
+            self.usernameEditingTime = 0
+            self.fingerprint.time_user = []
         case .password:
-            self.passwordLoadTime = Date().timeIntervalSince1970
+            self.passwordEditingTime = 0
+            self.fingerprint.time_pass = 0
         default:
             break
         }
@@ -134,7 +144,22 @@ extension PMFingerprint {
     
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
+        if self.usernameEditingTime == 0 {
+            // Sometimes check username without editing username.
+            self.fingerprint.time_user.append(0)
+        } else {
+            let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
+            self.fingerprint.time_user.append(time)
+        }
+        
         self.fingerprint.usernameChecks.append(username)
+        
+        self.usernameEditingTime = 0
+        guard let interceptor = self.interceptors.first(where: {$0.type == .username}) else {
+            return
+        }
+        // make sure the textField is not focused after check username.
+        interceptor.textField?.resignFirstResponder()
     }
     
     /// Declare user start request verification so that timer starts.
@@ -142,7 +167,7 @@ extension PMFingerprint {
         self.requestVerifyTime = Date().timeIntervalSince1970
     }
     
-    /// Count verification time, only use in captcha verification
+    /// Count verification time
     public func verificationFinsih() throws {
         if self.requestVerifyTime == 0 {
             throw PMFingerprint.TimerError.verificationTimerError
@@ -202,33 +227,43 @@ extension PMFingerprint {
 
 // MARK: TextFieldInterceptorDelegate, internal usage
 extension PMFingerprint: TextFieldInterceptorDelegate {
+    func beginEditing(type: TextFieldType) {
+        switch type {
+        case .username:
+            if self.usernameEditingTime == 0 {
+                self.usernameEditingTime = Date().timeIntervalSince1970
+            }
+        case .password:
+            if self.passwordEditingTime == 0 {
+                self.passwordEditingTime = Date().timeIntervalSince1970
+            }
+        default:
+            break
+        }
+    }
+    
+    func endEditing(type: TextFieldType) {
+        switch type {
+        case .password:
+            self.fingerprint.time_pass += Int(Date().timeIntervalSince1970 - self.passwordEditingTime)
+            self.passwordEditingTime = 0
+        default:
+            break
+        }
+    }
+    
     func charactersTyped(chars: String, type: TextFieldType) throws {
         switch type {
         case .username:
             self.fingerprint.usernameTypedChars.append(chars)
-            if self.fingerprint.time_user == 0 {
-                self.fingerprint.time_user = Int(Date().timeIntervalSince1970 - self.usernameLoadTime)
-            }
             if chars.count > 1 {
                 self.fingerprint.paste_username.append(chars)
-            }
-        case .password:
-            if self.fingerprint.time_pass == 0 {
-                self.fingerprint.time_pass = Int(Date().timeIntervalSince1970 - self.passwordLoadTime)
             }
         case .recovery:
             self.fingerprint.recoverTypedChars.append(chars)
             if chars.count > 1 {
                 self.fingerprint.paste_recovery.append(chars)
             }
-        case .verification:
-            // Already record time_human
-            guard self.fingerprint.time_human == 0 else {return}
-            // Haven't sent verification request
-            guard self.requestVerifyTime != 0 else {return}
-
-            self.fingerprint.time_human = Int(Date().timeIntervalSince1970 - self.requestVerifyTime)
-            
         default:
             break
         }
