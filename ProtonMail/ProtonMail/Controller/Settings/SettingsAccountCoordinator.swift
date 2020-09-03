@@ -135,7 +135,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
             
             let users : UsersManager = services.get()
             let user = users.firstUser!
-            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService)
+            next.viewModel = LabelManagerViewModelImpl(apiService: user.apiService, labelService: user.labelService, coreDataService: services.get())
 //        case .loginPwd:
 //            guard let next = destination as? ChangePasswordViewController else {
 //                return false

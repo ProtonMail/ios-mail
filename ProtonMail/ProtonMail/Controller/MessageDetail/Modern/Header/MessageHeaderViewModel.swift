@@ -31,17 +31,19 @@ class MessageHeaderViewModel: NSObject {
     private(set) var parentViewModel: MessageViewModel 
     private var parentObservation: NSKeyValueObservation!
     private var messageObservation: NSKeyValueObservation!
+    private let coreDataService: CoreDataService
     
 
     let messageService: MessageDataService
     let user : UserManager
     
-    init(parentViewModel: MessageViewModel, message: Message) {
+    init(parentViewModel: MessageViewModel, message: Message, coreDataService: CoreDataService) {
         self.message = message
         self.headerData = parentViewModel.header
         self.parentViewModel = parentViewModel
         self.messageService = parentViewModel.messageService
         self.user = parentViewModel.user
+        self.coreDataService = coreDataService
         super.init()
         
         self.parentObservation = parentViewModel.observe(\.header) { [weak self] parentViewModel, _ in
@@ -94,7 +96,7 @@ extension MessageHeaderViewModel {
                                 return
                             }
                             
-                            let context = CoreDataService.shared.backgroundManagedObjectContext
+                            let context = self.coreDataService.mainManagedObjectContext
                             let getEmail = UserEmailPubKeys(email: emial, api: user.apiService).run()
                             let contactService = self.user.contactService
                             let getContact = contactService.fetch(byEmails: [emial], context: context)

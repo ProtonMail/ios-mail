@@ -286,7 +286,8 @@ class ContactDetailViewController: ProtonMailViewController, ViewModelProtocol {
             let user = self.viewModel.user
             let viewModel = ContainableComposeViewModel(msg: nil, action: .newDraft,
                                                         msgService: user.messageService,
-                                                        user: user)
+                                                        user: user,
+                                                        coreDataService: self.viewModel.coreDataService)
             if let contact = sender as? ContactVO {
                 viewModel.addToContacts(contact)
             }

@@ -383,9 +383,10 @@ extension MenuViewController: UITableViewDataSource {
         case .inboxes:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             let data = self.viewModel.item(inboxes: row)
-            let count = self.viewModel.count(by: data.menuToLabel.rawValue, userID: nil)
+            self.viewModel.count(by: data.menuToLabel.rawValue, userID: nil).done { (count) in
+                cell.configUnreadCount(count: count)
+            }.cauterize()
             cell.configCell(data, hideSepartor: hideSepartor)
-            cell.configUnreadCount(count: count)
             return cell
         case .others:
             let cell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
@@ -395,17 +396,19 @@ extension MenuViewController: UITableViewDataSource {
         case .labels:
             let cell = tableView.dequeueReusableCell(withIdentifier: kLabelTableCellId, for: indexPath) as! MenuLabelViewCell
             if let data = self.viewModel.label(at: row) {
-                let count = self.viewModel.count(by: data.labelID, userID: data.userID)
+                self.viewModel.count(by: data.labelID, userID: data.userID).done { (count) in
+                    cell.configUnreadCount(count: count)
+                }.cauterize()
                 cell.configCell(data, hideSepartor: hideSepartor)
-                cell.configUnreadCount(count: count)
             }
             return cell
         case .users:
             let cell = tableView.dequeueReusableCell(withIdentifier: kUserTableCellID, for: indexPath) as! MenuUserViewCell
             if let user = self.viewModel.user(at: row) {
                 cell.configCell(type: .LoggedIn, name: user.defaultDisplayName, email: user.defaultEmail)
-                let count = user.getUnReadCount(by: Message.Location.inbox.rawValue)
-                cell.configUnreadCount(count: count)
+                _ = user.getUnReadCount(by: Message.Location.inbox.rawValue).done { (count) in
+                    cell.configUnreadCount(count: count)
+                }
             }
             cell.hideSepartor(hideSepartor)
             return cell
@@ -491,8 +494,8 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                     tableView.insertRows(at: [IndexPath(row: newIndexPath.row, section: 2)], with: UITableView.RowAnimation.fade)
                 }
             case .move:
-                if let indexPath = indexPath {
-                    if let newIndexPath = newIndexPath {
+                if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                    if tableView.cellForRow(at: indexPath) != nil && tableView.cellForRow(at: newIndexPath) != nil {
                         tableView.moveRow(at: IndexPath(row: indexPath.row, section: 2), to: IndexPath(row: newIndexPath.row, section: 2))
                     }
                 }
@@ -502,8 +505,9 @@ extension MenuViewController: NSFetchedResultsControllerDelegate {
                     if let cell = tableView.cellForRow(at: index) as? MenuLabelViewCell {
                         if let data = self.viewModel.label(at: index.row) {
                             cell.configCell(data, hideSepartor: cell.separtor.isHidden)
-                            let count = self.viewModel.count(by: data.labelID, userID: nil)
-                            cell.configUnreadCount(count: count)
+                            self.viewModel.count(by: data.labelID, userID: nil).done { (count) in
+                                cell.configUnreadCount(count: count)
+                            }.cauterize()
                         }
                     }
                 }

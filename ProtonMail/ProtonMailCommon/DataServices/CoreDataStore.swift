@@ -43,12 +43,26 @@ class CoreDataStore {
         return Bundle(url: Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!)!
     }
     
+    static let name: String = "ProtonMail.sqlite"
+    
+    public lazy var defaultContainer: NSPersistentContainer = {
+        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
+    }()
+    
+    public lazy var memoryPersistentContainer: NSPersistentContainer = {
+        return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
+    }()
+    
+    public lazy var testPersistentContainer: NSPersistentContainer = {
+        return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
+    }()
+    
     public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = {
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
     }()
     
     public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = {
-        return self.newMemeryStoreCoordinator(self.managedObjectModel)
+        return self.newMemoryStoreCoordinator(self.managedObjectModel)
     }()
     
     public lazy var testPersistentStore: NSPersistentStoreCoordinator! = {
@@ -60,7 +74,47 @@ class CoreDataStore {
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
-    private func newMemeryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
+    private func newPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String, url: URL) -> NSPersistentContainer {
+        var url = url
+        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
+        container.persistentStoreDescriptions = [NSPersistentStoreDescription(url: url)]
+        container.loadPersistentStores { (persistentStoreDescription, error) in
+            if let ex = error as NSError? {
+                PMLog.D(api: ex)
+                if (ex.domain == "NSCocoaErrorDomain" && ex.code == 134100) {
+                    do {
+                        try FileManager.default.removeItem(at: url)
+                    } catch let error as NSError{
+                        self.popError(error)
+                    }
+                } else {
+                    self.popError(ex)
+                }
+                fatalError()
+            } else {
+                url.excludeFromBackup()
+                container.viewContext.automaticallyMergesChangesFromParent = true
+                container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            }
+        }
+        return container
+    }
+    
+    private func newMemoryPersistentContainer(_ managedObjectModel: NSManagedObjectModel, name: String) -> NSPersistentContainer {
+        let container = NSPersistentContainer(name: name, managedObjectModel: managedObjectModel)
+        let description = NSPersistentStoreDescription()
+        description.type = NSInMemoryStoreType
+        container.persistentStoreDescriptions = [description]
+        container.loadPersistentStores { (persistentStoreDescription, error) in
+            if let ex = error as NSError? {
+                PMLog.D(api: ex)
+            }
+            fatalError()
+        }
+        return container
+    }
+    
+    private func newMemoryStoreCoordinator(_ objectModel: NSManagedObjectModel) -> NSPersistentStoreCoordinator? {
         let coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: managedObjectModel)
         // Coordinator with in-mem store type
         do {

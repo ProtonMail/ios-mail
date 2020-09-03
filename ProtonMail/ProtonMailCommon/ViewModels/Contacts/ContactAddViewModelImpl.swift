@@ -44,13 +44,13 @@ class ContactAddViewModelImpl : ContactEditViewModel {
     var profile : ContactEditProfile = ContactEditProfile(n_displayname: "")
     var profilePicture: UIImage? = nil
 
-    override init(user: UserManager) {
-        super.init(user: user)
+    override init(user: UserManager, coreDataService: CoreDataService) {
+        super.init(user: user, coreDataService: coreDataService)
         self.contact = nil
     }
     
-    init(contactVO : ContactVO, user: UserManager) {
-        super.init(user: user)
+    init(contactVO : ContactVO, user: UserManager, coreDataService: CoreDataService) {
+        super.init(user: user, coreDataService: coreDataService)
         self.contact = nil
         
         let email = self.newEmail()
@@ -139,7 +139,8 @@ class ContactAddViewModelImpl : ContactEditViewModel {
                                      sign: nil ,
                                      scheme: nil,
                                      mimeType: nil,
-                                     delegate: nil)
+                                     delegate: nil,
+                                     coreDataService: self.coreDataService)
         emails.append(email)
         return email
     }

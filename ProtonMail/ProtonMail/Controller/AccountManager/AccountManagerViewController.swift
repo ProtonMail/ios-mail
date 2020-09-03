@@ -107,8 +107,9 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         alertController.addAction(.init(title: LocalString._remove_all, style: .destructive, handler: { _ in
-            self.viewModel.signOut()
-            self.dismiss()
+            self.viewModel.signOut().ensure {
+                self.dismiss()
+            }.cauterize()
         }))
         
         alertController.popoverPresentationController?.barButtonItem = sender
@@ -190,8 +191,9 @@ extension AccountManagerViewController: UITableViewDataSource {
                         }
                     }
                     
-                    self.viewModel.remove(at: indexPath)
-                    self.tableView.reloadData()
+                    self.viewModel.remove(at: indexPath).done {
+                        self.tableView.reloadData()
+                    }.cauterize()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }]
@@ -202,8 +204,9 @@ extension AccountManagerViewController: UITableViewDataSource {
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
                 alert.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
                 alert.addAction(.init(title: LocalString._general_remove_button, style: .destructive, handler: { _ in
-                    self.viewModel.remove(at: indexPath)
-                    self.tableView.reloadData()
+                    self.viewModel.remove(at: indexPath).done {
+                        self.tableView.reloadData()
+                    }.cauterize()
                 }))
                 self.present(alert, animated: true, completion: nil)
             }]

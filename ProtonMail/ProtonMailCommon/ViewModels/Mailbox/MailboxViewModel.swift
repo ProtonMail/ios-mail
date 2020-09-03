@@ -61,6 +61,8 @@ class MailboxViewModel: StorageLimit {
     
     private var contactService : ContactDataService
     
+    private let coreDataService: CoreDataService
+    
     ///
     internal weak var users: UsersManager?
     
@@ -69,11 +71,12 @@ class MailboxViewModel: StorageLimit {
     /// - Parameters:
     ///   - labelID: location id and labelid
     ///   - msgService: service instance
-    init(labelID : String, userManager: UserManager, usersManager: UsersManager?, pushService: PushNotificationService) {
+    init(labelID : String, userManager: UserManager, usersManager: UsersManager?, pushService: PushNotificationService, coreDataService: CoreDataService) {
         self.labelID = labelID
         self.user = userManager
         self.messageService = userManager.messageService
         self.contactService = userManager.contactService
+        self.coreDataService = coreDataService
         self.pushService = pushService
         self.users = usersManager
     }
@@ -221,7 +224,7 @@ class MailboxViewModel: StorageLimit {
     /// clean up the rate/review items
     func cleanReviewItems() {
         if let context = fetchedResultsController?.managedObjectContext {
-            context.perform {
+            coreDataService.enqueue(context: context) { (context) in
                 let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
                 //TODO:: need filter by user id
                 fetchRequest.predicate = NSPredicate(format: "%K == 1", Message.Attributes.messageType)
@@ -443,7 +446,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func undo(_ undo: UndoMessage) {
-        let messages = self.messageService.fetchMessages(withIDs: [undo.messageID])
+        let messages = self.messageService.fetchMessages(withIDs: [undo.messageID], in: self.coreDataService.mainManagedObjectContext)
         for msg in messages {
             messageService.move(message: msg, from: undo.newLabels, to: undo.origLabels)
         }

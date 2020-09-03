@@ -63,7 +63,8 @@ extension SWRevealViewController {
                     let viewModel = MailboxViewModelImpl(label: .inbox,
                                                          userManager: user,
                                                          usersManager: usersManager,
-                                                         pushService: sharedServices.get())
+                                                         pushService: sharedServices.get(),
+                                                         coreDataService: sharedServices.get())
                     let mailbox = MailboxCoordinator(vc: mailboxViewController, vm: viewModel, services: sharedServices)
                     mailbox.start()
                 }
@@ -328,12 +329,13 @@ extension AppDelegate: UIApplicationDelegate {
     
     func applicationWillTerminate(_ application: UIApplication) {
         //TODO::here need change to notify composer to save editing draft
-        let mainContext = CoreDataService.shared.mainManagedObjectContext
+        let coreDataService = sharedServices.get(by: CoreDataService.self)
+        let mainContext = coreDataService.mainManagedObjectContext
         mainContext.performAndWait {
             let _ = mainContext.saveUpstreamIfNeeded()
         }
         
-        let backgroundContext = CoreDataService.shared.mainManagedObjectContext
+        let backgroundContext = coreDataService.backgroundManagedObjectContext
         backgroundContext.performAndWait {
             let _ = backgroundContext.saveUpstreamIfNeeded()
         }

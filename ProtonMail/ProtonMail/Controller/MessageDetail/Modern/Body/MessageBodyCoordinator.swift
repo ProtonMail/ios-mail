@@ -29,14 +29,17 @@ class MessageBodyCoordinator {
     private let kToComposerSegue : String    = "toCompose"
     
     let user: UserManager
+    let coreDataService: CoreDataService
     
     init(controller: MessageBodyViewController,
          enclosingScroller: ScrollableContainer,
-         user: UserManager)
+         user: UserManager,
+         coreDataService: CoreDataService)
     {
         self.controller = controller
         self.controller.enclosingScroller = enclosingScroller
         self.user = user
+        self.coreDataService = coreDataService
     }
     
     internal func open(url originalURL: URL) {
@@ -63,7 +66,8 @@ class MessageBodyCoordinator {
             let viewModel = ContainableComposeViewModel(msg: nil,
                                                         action: .newDraft,
                                                         msgService: user.messageService,
-                                                        user: user)
+                                                        user: user,
+                                                        coreDataService: self.coreDataService)
             if let mailTo : NSURL = sender as? NSURL, mailTo.scheme == "mailto", let resSpecifier = mailTo.resourceSpecifier {
                 let rawURLparts = resSpecifier.components(separatedBy: "?")
                 if (rawURLparts.count > 2) {

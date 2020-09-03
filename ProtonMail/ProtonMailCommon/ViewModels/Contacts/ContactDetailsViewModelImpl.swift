@@ -56,9 +56,9 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                  .information,
                                                  .custom_field,
                                                  .notes]
-    init(c : Contact, user: UserManager) {
+    init(c : Contact, user: UserManager, coreDateService: CoreDataService) {
         self.contactService = user.contactService
-        super.init(user: user)
+        super.init(user: user, coreDataService: coreDateService)
         self.contact = c
         //        if paidUser() {
         typeSection = [.email_header,
@@ -187,7 +187,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                       sign: nil ,
                                                       scheme: nil,
                                                       mimeType: nil,
-                                                      delegate: nil)
+                                                      delegate: nil,
+                                                      coreDataService: self.coreDataService)
                             origEmails.append(ce)
                             order += 1
                         }
@@ -234,7 +235,8 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
                                                       sign: nil ,
                                                       scheme: nil,
                                                       mimeType: nil,
-                                                      delegate: nil)
+                                                      delegate: nil,
+                                                      coreDataService: self.coreDataService)
                             origEmails.append(ce)
                             order += 1
                         }

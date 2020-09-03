@@ -24,6 +24,7 @@
 import Foundation
 import CoreData
 import UIKit
+import PromiseKit
 
 class MenuViewModelImpl : MenuViewModel {
     private let kMenuCellHeight: CGFloat = 44.0
@@ -169,11 +170,11 @@ class MenuViewModelImpl : MenuViewModel {
         return .unknown
     }
     
-    func count(by labelID: String, userID: String? = nil) -> Int {
+    func count(by labelID: String, userID: String? = nil) -> Promise<Int> {
         if let service = self.labelDataService {
             return service.unreadCount(by: labelID, userID: userID)
         } else {
-            return 0
+            return Promise.value(0)
         }
     }
 
@@ -227,10 +228,11 @@ class MenuViewModelImpl : MenuViewModel {
         return IndexPath(row: r, section: s)
     }
     
-    func signOut() {
+    func signOut() -> Promise<Void> {
         if let currentUser = self.currentUser {
             self.usersManager.logout(user: currentUser)
         }
+        return Promise()
     }
     
     func isCurrentUserHasQueuedMessage() -> Bool {

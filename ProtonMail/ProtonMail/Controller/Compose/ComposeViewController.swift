@@ -718,8 +718,9 @@ extension ComposeViewController : ComposeViewDelegate {
     func updateEO() {
         self.viewModel.updateEO(expir: self.headerView.expirationTimeInterval,
                                 pwd: self.encryptionPassword,
-                                pwdHit: self.encryptionPasswordHint)
-        self.headerView.reloadPicker()
+                                pwdHit: self.encryptionPasswordHint).done { (_) in
+                                    self.headerView.reloadPicker()
+        }
     }
 
     func composeView(_ composeView: ComposeHeaderViewController, didAddContact contact: ContactPickerModelProtocol, toPicker picker: ContactPicker) {

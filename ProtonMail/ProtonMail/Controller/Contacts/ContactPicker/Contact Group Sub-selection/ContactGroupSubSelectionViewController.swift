@@ -41,7 +41,9 @@ class ContactGroupSubSelectionViewController: UIViewController {
         viewModel = ContactGroupSubSelectionViewModelImpl.init(contactGroupName: contactGroupName,
                                                                selectedEmails: selectedEmails,
                                                                user: self.user,
-                                                               delegate: self)
+                                                               delegate: self,
+                                                               //FIXME: move it to coordinator
+                                                               coreDataService: CoreDataService.shared)
         
         prepareTableView()
         tableView.zeroMargin()

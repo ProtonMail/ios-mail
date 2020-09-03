@@ -171,7 +171,7 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = services.get()
         var foundUser = false
         if let user = usersManager.getUser(bySessionID: uid) {
-            usersManager.logout(user: user, shouldAlert: true)
+            usersManager.logout(user: user, shouldAlert: true).cauterize()
             foundUser = true
         }
         

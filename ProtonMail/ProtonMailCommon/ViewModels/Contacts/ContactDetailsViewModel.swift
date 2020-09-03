@@ -28,9 +28,11 @@ typealias LoadingProgress = () -> Void
 
 class ContactDetailsViewModel : ViewModelBase {
     var user: UserManager
+    let coreDataService: CoreDataService
     
-    init(user: UserManager) {
+    init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
+        self.coreDataService = coreDataService
         super.init()
     }
     

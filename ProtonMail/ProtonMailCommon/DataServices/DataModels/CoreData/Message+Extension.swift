@@ -324,7 +324,7 @@ extension Message {
      */
     class func deleteMessage(_ messageID : String) {
         let context = CoreDataService.shared.mainManagedObjectContext
-        context.performAndWait {
+        CoreDataService.shared.enqueue(context: context) { (context) in
             if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                 let labelObjs = message.mutableSetValue(forKey: Attributes.labels)
                 labelObjs.removeAllObjects()

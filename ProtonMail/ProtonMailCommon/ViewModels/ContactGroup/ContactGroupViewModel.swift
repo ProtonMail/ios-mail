@@ -33,6 +33,7 @@ import PromiseKit
 
 protocol ContactGroupsViewModel {
     var user: UserManager { get }
+    var coreDataService: CoreDataService { get }
     func initEditing() -> Bool
     
     func save()
