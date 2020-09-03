@@ -485,6 +485,20 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
+    /// Sync mail setting when user in composer
+    /// workaround
+    func syncMailSetting(labelID: String = "0") {
+        queue {
+            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID))
+            eventAPI.call(api: self.apiService) { task, response, hasError in
+                guard let eventsRes = response, eventsRes.code == 1000 else {
+                    return
+                }
+                self.processEvents(mailSettings: eventsRes.mailSettings)
+            }
+        }
+    }
+    
     
     /// upload attachment to server
     ///

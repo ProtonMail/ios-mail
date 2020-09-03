@@ -44,6 +44,12 @@ class ComposeContainerViewModel: TableContainerViewModel {
         return 2
     }
     
+    override func syncMailSetting() {
+        let usersManager = sharedServices.get(by: UsersManager.self)
+        guard let currentUser = usersManager.firstUser else {return}
+        currentUser.messageService.syncMailSetting()
+    }
+    
     internal func filesExceedSizeLimit() -> Bool {
         return self.childViewModel.currentAttachmentsSize >= self.kDefaultAttachmentFileSize
     }
