@@ -23,6 +23,7 @@
 
 import Foundation
 import CoreData
+import PromiseKit
 
 
 class LabelMessageModel {
@@ -36,20 +37,22 @@ class LabelMessageModel {
 class LabelViewModel {
     internal let apiService: APIService
     internal let labelService: LabelsDataService
+    internal let coreDataService: CoreDataService
     
     public typealias OkBlock = () -> Void
     public typealias ErrorBlock = (_ code : Int, _ errorMessage : String) -> Void
     
-    internal init(apiService: APIService, labelService: LabelsDataService) {
+    internal init(apiService: APIService, labelService: LabelsDataService, coreDataService: CoreDataService) {
         self.apiService = apiService
         self.labelService = labelService
+        self.coreDataService = coreDataService
     }
     
     func getFetchType() -> LabelFetchType {
         fatalError("This method must be overridden")
     }
     
-    func apply (archiveMessage : Bool) -> Bool {
+    func apply (archiveMessage : Bool) -> Promise<Bool> {
         fatalError("This method must be overridden")
     }
     

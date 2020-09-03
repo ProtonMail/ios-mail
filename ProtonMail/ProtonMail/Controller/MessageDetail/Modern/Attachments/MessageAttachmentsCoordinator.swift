@@ -40,27 +40,30 @@ class MessageAttachmentsCoordinator: NSObject {
     }
     
     internal func quickLook(clearfileURL: URL, fileName:String, type: String) {
-        self.tempClearFileURL = clearfileURL // will use it in DataSource
-        
-        // FIXME: use UTI here instead of strings
-        if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
-            let pkfile = try? Data(contentsOf: clearfileURL),
-            let pass = try? PKPass(data: pkfile),
-            let vc = PKAddPassesViewController(pass: pass),
-            // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
-            (vc as UIViewController?) != nil
-        {
-            self.controller?.present(vc, animated: true, completion: nil)
-            return
+        DispatchQueue.main.async {
+            self.tempClearFileURL = clearfileURL // will use it in DataSource
+            
+            // FIXME: use UTI here instead of strings
+            if (type == "application/vnd.apple.pkpass" || fileName.contains(check: ".pkpass") == true),
+                let pkfile = try? Data(contentsOf: clearfileURL),
+                let pass = try? PKPass(data: pkfile),
+                let vc = PKAddPassesViewController(pass: pass),
+                // as of iOS 12.0 SDK, PKAddPassesViewController will not be initialized on iPads without any warning 🤯
+                (vc as UIViewController?) != nil
+            {
+                self.controller?.present(vc, animated: true, completion: nil)
+                return
+            }
+            
+            guard self.tempClearFileURL != nil else {
+                return
+            }
+            
+            let previewQL = QuickViewViewController()
+            previewQL.dataSource = self
+            previewQL.delegate = self
+            self.controller?.present(previewQL, animated: true, completion: nil)
         }
-        
-        guard self.tempClearFileURL != nil else {
-            return
-        }
-        let previewQL = QuickViewViewController()
-        previewQL.dataSource = self
-        previewQL.delegate = self
-        self.controller?.present(previewQL, animated: true, completion: nil)
     }
 }
 

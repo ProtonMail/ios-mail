@@ -22,11 +22,12 @@
     
 
 import Foundation
+import PromiseKit
 
 protocol Service: AnyObject {}
 protocol HasLocalStorage {
-    func cleanUp()
-    static func cleanUpAll()
+    func cleanUp() -> Promise<Void>
+    static func cleanUpAll() -> Promise<Void>
 }
 
 /// tempeary here. //device level service
@@ -34,10 +35,10 @@ let sharedServices: ServiceFactory = {
     let helper = ServiceFactory()
     // app cache service
     helper.add(AppCacheService.self, for: AppCacheService())
-    
+    helper.add(CoreDataService.self, for: CoreDataService.shared)
     #if !APP_EXTENSION
     // view model factory
-    helper.add(ViewModelService.self, for: ViewModelServiceImpl())
+    helper.add(ViewModelService.self, for: ViewModelServiceImpl(coreDataService: CoreDataService.shared))
     
     // push service
     helper.add(PushNotificationService.self, for: PushNotificationService())

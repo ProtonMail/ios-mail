@@ -419,13 +419,17 @@ class UserDataService : Service, HasLocalStorage {
         
     }
     
-    func cleanUp() {
-        // TODO: logout one user and remove its stuff from local storage
-        self.signOutFromServer()
+    func cleanUp() -> Promise<Void> {
+        return Promise { seal in
+            // TODO: logout one user and remove its stuff from local storage
+            self.signOutFromServer()
+            seal.fulfill_()
+        }
     }
     
-    static func cleanUpAll() {
+    static func cleanUpAll() -> Promise<Void> {
         // TODO: logout all users and clear local storage
+        return Promise()
     }
     
     func signOutFromServer() {

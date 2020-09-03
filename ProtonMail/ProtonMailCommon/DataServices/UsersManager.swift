@@ -487,23 +487,24 @@ extension UsersManager {
         self.users.forEach { $0.launchCleanUpIfNeeded() }
     }
     
-    func logout(user: UserManager, shouldAlert: Bool = false) {
-        user.cleanUp()
-        
-        if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
-            self.remove(user: user)
-            NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
-            NSError.alertBadTokenToast()
-        } else {
-            self.remove(user: user)
-        }
-        
-        if self.users.isEmpty {
-            self.clean()
-        } else if shouldAlert {
-            String(format: LocalString._logout_account_switched_when_token_revoked,
-                   arguments: [user.defaultEmail,
-                               self.users.first!.defaultEmail]).alertToast()
+    func logout(user: UserManager, shouldAlert: Bool = false) -> Promise<Void> {
+        return user.cleanUp().then { _ -> Promise<Void> in
+            if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
+                self.remove(user: user)
+                NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                NSError.alertBadTokenToast()
+            } else {
+                self.remove(user: user)
+            }
+            
+            if self.users.isEmpty {
+                self.clean()
+            } else if shouldAlert {
+                String(format: LocalString._logout_account_switched_when_token_revoked,
+                       arguments: [user.defaultEmail,
+                                   self.users.first!.defaultEmail]).alertToast()
+            }
+            return Promise()
         }
     }
     
@@ -519,38 +520,38 @@ extension UsersManager {
     }
     
     internal func clean() { 
-        UserManager.cleanUpAll()
-        
-        SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
-        KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
-        KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
-        KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
-        KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
-        
-        self.currentVersion = latestVersion
-        
-        UserTempCachedStatus.backup()
-        
-        
-        sharedUserDataService.signOut(true)
-                
-        userCachedStatus.signOut()
-        self.users.forEach { user in
-            user.userService.signOut(true)
-            user.messageService.launchCleanUpIfNeeded()
+        _ = UserManager.cleanUpAll().ensure {
+            SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.atLeastOneLoggedIn)
+            KeychainWrapper.keychain.remove(forKey: CoderKey.disconnectedUsers)
+            
+            self.currentVersion = self.latestVersion
+            
+            UserTempCachedStatus.backup()
+            
+            
+            sharedUserDataService.signOut(true)
+                    
+            userCachedStatus.signOut()
+            self.users.forEach { user in
+                user.userService.signOut(true)
+                user.messageService.launchCleanUpIfNeeded()
+            }
+            self.users = []
+            self.save()
+            
+            // device level service
+            keymaker.wipeMainKey()
+            // good opportunity to remove all temp folders
+            FileManager.default.cleanTemporaryDirectory()
+            // some tests are messed up without tmp folder, so let's keep it for consistency
+            #if targetEnvironment(simulator)
+            try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
+                    nil)
+            #endif
         }
-        self.users = []
-        self.save()
-        
-        // device level service
-        keymaker.wipeMainKey()
-        // good opportunity to remove all temp folders
-        FileManager.default.cleanTemporaryDirectory()
-        // some tests are messed up without tmp folder, so let's keep it for consistency
-        #if targetEnvironment(simulator)
-        try? FileManager.default.createDirectory(at: FileManager.default.temporaryDirectoryUrl, withIntermediateDirectories: true, attributes:
-                nil)
-        #endif
     }
     
     func hasUsers() -> Bool {
@@ -579,10 +580,8 @@ extension UsersManager {
         KeychainWrapper.keychain.set("LoggedIn", forKey: CoderKey.atLeastOneLoggedIn)
     }
     
-    func loggedOutAll() {
-        for user in users {
-            self.logout(user: user)
-        }
+    func loggedOutAll() -> Promise<Void> {
+        return when(fulfilled: users.map{ self.logout(user: $0) })
     }
     
     func freeAccountNum() -> Int {

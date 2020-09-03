@@ -26,6 +26,7 @@ import CoreData
 import PromiseKit
 
 class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
+    let coreDataService: CoreDataService
     private var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>? = nil
     private var isFetching: Bool = false
     
@@ -46,8 +47,9 @@ class ContactGroupsViewModelImpl: ViewModelTimer, ContactGroupsViewModel {
      State "ContactGroupsView" is for showing all contact groups in the contact group tab
      State "ContactSelectGroups" is for showing all contact groups in the contact creation / editing page
      */
-    init(user: UserManager) {
+    init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
+        self.coreDataService = coreDataService
         self.contactGroupService = user.contactGroupService
         self.labelDataService = user.labelService
         self.messageService = user.messageService

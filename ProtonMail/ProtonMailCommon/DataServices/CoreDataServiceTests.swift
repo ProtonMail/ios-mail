@@ -37,7 +37,7 @@ class CoreDataServiceTests: XCTestCase {
     func testMessageTableWithEmptyValues() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         //        try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
-        let coredata = CoreDataService(store: CoreDataStore.shared.memoryPersistentStore)
+        let coredata = CoreDataService(container: CoreDataStore.shared.memoryPersistentContainer)
         let metadata = """
      {
         "IsForwarded" : 0,
@@ -128,7 +128,7 @@ class CoreDataServiceTests: XCTestCase {
             // Put setup code here. This method is called before the invocation of each test method in the class.
             try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
             
-            let coredata = CoreDataService(store: CoreDataStore.shared.testPersistentStore)
+            let coredata = CoreDataService(container: CoreDataStore.shared.testPersistentContainer)
             let metadata = """
  {
     "IsForwarded" : 0,
@@ -333,7 +333,7 @@ class CoreDataServiceTests: XCTestCase {
         for i in 1 ... 50 {
             // Put setup code here. This method is called before the invocation of each test method in the class.
             try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
-            let coredata = CoreDataService(store: CoreDataStore.shared.testPersistentStore)
+            let coredata = CoreDataService(container: CoreDataStore.shared.testPersistentContainer)
             let metadata = """
  {
     "IsForwarded" : 0,

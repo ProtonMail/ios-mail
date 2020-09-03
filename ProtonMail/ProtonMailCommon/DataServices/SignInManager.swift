@@ -145,8 +145,9 @@ class SignInManager: Service {
             self.usersManager.update(auth: auth, user: info)
             
             guard info.delinquent < 3 else {
-                self.usersManager.logout(user: user, shouldAlert: false)
-                onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                _ = self.usersManager.logout(user: user, shouldAlert: false).ensure {
+                    onError(NSError.init(domain: "", code: 0, localizedDescription: LocalString._general_account_disabled_non_payment))
+                }
                 return
             }
             

@@ -94,7 +94,8 @@ final class ContactEditEmail: ContactEditTypeInterface {
     var scheme: PMNIPMScheme?
     var mimeType: PMNIPMMimeType?
     
-    private let delegate: ContactEditViewModelContactGroupDelegate? 
+    private let delegate: ContactEditViewModelContactGroupDelegate?
+    private let coreDataService: CoreDataService
     
     init(order: Int,
          type: ContactFieldType,
@@ -106,8 +107,10 @@ final class ContactEditEmail: ContactEditTypeInterface {
          sign : PMNIPMSign?,
          scheme : PMNIPMScheme?,
          mimeType: PMNIPMMimeType?,
-         delegate: ContactEditViewModelContactGroupDelegate?) {
+         delegate: ContactEditViewModelContactGroupDelegate?,
+         coreDataService: CoreDataService) {
         self.delegate = delegate
+        self.coreDataService = coreDataService
         
         self.newOrder = order
         self.newType = type
@@ -157,7 +160,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
         // we decide to stick with using core data information for now
         origContactGroupIDs.removeAll()
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = self.coreDataService.mainManagedObjectContext
         let emailObject = Email.EmailForAddressWithContact(self.newEmail,
                                                            contactID: contactID,
                                                            inManagedObjectContext: context)
@@ -181,7 +184,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getContactGroupNames() -> [String] {
         var result: [String] = []
         for labelID in newContactGroupIDs {
-            let context = CoreDataService.shared.mainManagedObjectContext
+            let context = self.coreDataService.mainManagedObjectContext
             if let label = Label.labelForLableID(labelID, inManagedObjectContext: context) {
                 result.append(label.name)
             } else {
@@ -207,7 +210,7 @@ final class ContactEditEmail: ContactEditTypeInterface {
     func getCurrentlySelectedContactGroupColors() -> [String] {
         var colors = [String]()
         
-        let context = CoreDataService.shared.mainManagedObjectContext
+        let context = self.coreDataService.mainManagedObjectContext
         for ID in newContactGroupIDs {
             let label = Label.labelForLableID(ID, inManagedObjectContext: context)
             

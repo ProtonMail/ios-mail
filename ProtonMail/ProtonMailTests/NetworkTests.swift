@@ -51,7 +51,7 @@ class NetworkTests: XCTestCase {
         let expectation1 = self.expectation(description: "Success completion block called")
         let url = URL(string: "https://www.example.com/1")!
         let manager = AFHTTPSessionManager()
-        manager.get(url.absoluteString, parameters: nil, progress: nil, success: { (task, response) -> Void in
+        manager.get(url.absoluteString, parameters: nil, headers: nil, progress: nil, success: { (task, response) -> Void in
             XCTAssertEqual(response as? NSDictionary, [ "data": 1 ])
             //OHHTTPStubs.removeStub(sub)
             expectation1.fulfill()
@@ -59,7 +59,7 @@ class NetworkTests: XCTestCase {
             XCTFail("This shouldn't return an error")
         }
         let expectation2 = self.expectation(description: "Success completion block called")
-        manager.get(url.absoluteString, parameters: nil, progress: nil, success: { (task, response) -> Void in
+        manager.get(url.absoluteString, parameters: nil, headers: nil, progress: nil, success: { (task, response) -> Void in
             XCTAssertEqual(response as? NSDictionary, [ "data": 1 ])
             expectation2.fulfill()
         }) { (task, error) -> Void in

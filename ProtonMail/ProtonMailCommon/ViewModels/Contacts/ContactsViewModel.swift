@@ -26,9 +26,11 @@ import CoreData
 
 class ContactsViewModel : ViewModelTimer {
     var user: UserManager
+    let coreDataService: CoreDataService
     
-    init(user: UserManager) {
+    init(user: UserManager, coreDataService: CoreDataService) {
         self.user = user
+        self.coreDataService = coreDataService
         super.init()
     }
     
@@ -44,7 +46,7 @@ class ContactsViewModel : ViewModelTimer {
         fatalError("This method must be overridden")
     }
     
-    func setupFetchedResults(delaget : NSFetchedResultsControllerDelegate?) {
+    func setupFetchedResults(delegate : NSFetchedResultsControllerDelegate?) {
         fatalError("This method must be overridden")
     }
     

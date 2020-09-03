@@ -336,7 +336,8 @@ class SearchViewController: ProtonMailViewController {
             let messageDetailViewController = segue.destination as! MessageContainerViewController
             let indexPathForSelectedRow = self.tableView.indexPathForSelectedRow
             if let indexPathForSelectedRow = indexPathForSelectedRow {
-                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user))
+                //FIXME
+                messageDetailViewController.set(viewModel: .init(message: self.searchResult[indexPathForSelectedRow.row], msgService: user.messageService, user: user, coreDataService: CoreDataService.shared))
                 messageDetailViewController.set(coordinator: MessageContainerViewCoordinator(controller: messageDetailViewController))
             } else {
                 PMLog.D("No selected row.")
@@ -391,7 +392,8 @@ extension SearchViewController: UITableViewDelegate {
         let viewModel = ContainableComposeViewModel(msg: message,
                                                     action: .openDraft,
                                                     msgService: user.messageService,
-                                                    user: user)
+                                                    user: user,
+                                                    coreDataService: CoreDataService.shared)//FIXME
         if let navigationController = self.navigationController
         {
             let composer = ComposeContainerViewCoordinator(nav: navigationController,

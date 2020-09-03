@@ -24,6 +24,7 @@
 import Foundation
 import CoreData
 import UIKit
+import PromiseKit
 
 
 enum AccountSection {
@@ -70,11 +71,11 @@ class AccountManagerViewModel {
         return self.usersManager.disconnectedUser(at: index)
     }
     
-    func remove(at indexPath: IndexPath) {
+    func remove(at indexPath: IndexPath) -> Promise<Void> {
         switch self.section(at: indexPath.section) {
         case .users:
             if let user = self.user(at: indexPath.row) {
-                self.usersManager.logout(user: user)
+                return self.usersManager.logout(user: user)
             }
         case .disconnected:
             if let handle = self.handle(at: indexPath.row) {
@@ -83,6 +84,7 @@ class AccountManagerViewModel {
             }
         default: break
         }
+        return Promise()
     }
     
     var currentUser: UserManager? {
@@ -120,8 +122,8 @@ class AccountManagerViewModel {
         self.usersManager.active(index: indexPath.row)
     }
     
-    func signOut() {
-         self.usersManager.loggedOutAll()
+    func signOut() -> Promise<Void> {
+        return self.usersManager.loggedOutAll()
     }
 
     func sectionCount() -> Int {

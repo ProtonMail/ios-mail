@@ -23,6 +23,7 @@
 
 import Foundation
 import AwaitKit
+import PromiseKit
 
 protocol ServicePlanDataStorage: class {
     var servicePlansDetails: [ServicePlanDetails]? { get set }
@@ -32,12 +33,16 @@ protocol ServicePlanDataStorage: class {
 }
 
 class ServicePlanDataService: NSObject, Service, HasLocalStorage {
-    func cleanUp() {
-        self.currentSubscription = nil
+    func cleanUp() -> Promise<Void> {
+        return Promise { seal in
+            self.currentSubscription = nil
+            seal.fulfill_()
+        }
     }
     
-    static func cleanUpAll() {
+    static func cleanUpAll() -> Promise<Void> {
         // FIXME: how can we cope with this without knowing exact type of localStorage?
+        return Promise()
     }
     
     

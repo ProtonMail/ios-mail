@@ -51,8 +51,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     var origvCard2 : PMNIVCard?
     var origvCard3 : PMNIVCard?
     
-    init(c : Contact?, user: UserManager) {
-        super.init(user: user)
+    init(c : Contact?, user: UserManager, coreDataService: CoreDataService) {
+        super.init(user: user, coreDataService: coreDataService)
         self.contact = c
         self.prepareContactData()
         self.prepareContactGroupData()
@@ -101,7 +101,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                       sign: sign,
                                                       scheme: schemeType,
                                                       mimeType: mimeType,
-                                                      delegate: self)
+                                                      delegate: self,
+                                                      coreDataService: self.coreDataService)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -137,7 +138,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                                       sign: sign,
                                                       scheme: schemeType,
                                                       mimeType: mimeType,
-                                                      delegate: self)
+                                                      delegate: self,
+                                                      coreDataService: self.coreDataService)
                             self.emails.append(ce)
                             order += 1
                         }
@@ -438,7 +440,8 @@ class ContactEditViewModelImpl : ContactEditViewModel {
                                      sign: nil ,
                                      scheme: nil,
                                      mimeType: nil,
-                                     delegate: self)
+                                     delegate: self,
+                                     coreDataService: self.coreDataService)
         emails.append(email)
         return email
     }
