@@ -553,7 +553,7 @@
 "Copy name" = "Kopiuj nazwę";
 
 /* Error message */
-"Could not connect to Store. Please try again later." = "Nie można połączyć się ze sklepem. Spróbuj później.";
+"Could not connect to Store. Please try again later." = "Nie można połączyć się ze sklepem. Spróbuj ponownie później.";
 
 /* contact placeholder */
 "Country" = "Kraj";
@@ -686,10 +686,10 @@
 "Do you want to activate the purchased service plan for " = "Czy chcesz aktywować zakupiony plan dla ";
 
 /* Description */
-"Do you want to cancel the process?" = "Chcesz przerwać operację?";
+"Do you want to cancel the process?" = "Czy chcesz anulować proces?";
 
 /* Title */
-"Do you want to save the unsaved changes?" = "Czy chcesz zapisać niezapisane zmiany?";
+"Do you want to save the unsaved changes?" = "Czy chcesz zapisać zmiany?";
 
 /* Action */
 "Don't remind me again" = "Nie przypominaj";

@@ -788,16 +788,16 @@
 "Enable Notification Email" = "Activeer e-mailnotificatie";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "PIN inschakelen";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Activeer PIN-beveiliging";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "PIN/FaceID inschakelen";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "PIN/TouchID inschakelen";
 
 /* settings protection section title */
 "Enable TouchID" = "Activeer TouchID";
