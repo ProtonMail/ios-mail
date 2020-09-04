@@ -45,15 +45,43 @@ class Analytics {
         }
     }
     
-    func logCustomEvent(customAttributes: Dictionary<String, Any>) {
+    func logCustomEvent(customAttributes: Dictionary<String, Any>, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let event = Event(level: .debug)
-        event.message = customAttributes.json()
+        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column)"
+        event.message = "\(append) - \(customAttributes.json())"
+        event.user = self.getUsesr()
         SentrySDK.capture(event: event)
     }
     
-    func recordError(_ error: NSError) {
+    func recordError(_ error: NSError, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let event = Event(level: .error)
-        event.message = error.localizedDescription
+        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column)"
+        event.message = "\(append) - \(error.localizedDescription)"
+        event.user = self.getUsesr()
         SentrySDK.capture(event: event)
     }
+    
+    private func getUsesr(currentUser: UserManager?=nil) -> Sentry.User {
+        guard let currentUser = currentUser else {
+            return Sentry.User(userId: "Not record")
+        }
+        let user = Sentry.User(userId: currentUser.userinfo.userId)
+        return user
+    }
+}
+
+extension Analytics {
+    
+    struct Events {
+        static let event = "Event"
+        static let logout = "Logout"
+    }
+    struct Reason {
+        static let reason = "Reason"
+        static let tokenRevoke = "Token Revoke"
+        static let delinquent = "Delinquent limitation"
+        static let logoutAll = "Logout All"
+        static let userAction = "User Action"
+    }
+    
 }
