@@ -1540,7 +1540,7 @@
 "Please input a valid cell phone number." = "Wpisz prawidłowy numer telefonu komórkowego.";
 
 /* error message */
-"Please input a valid email address." = "Wpisz poprawny adres e-mail.";
+"Please input a valid email address." = "Wpisz prawidłowy adres e-mail.";
 
 /* Error message */
 "Please log in to the ProtonMail account you're upgrading the service plan for so we can complete the purchase." = "Zaloguj się do konta ProtonMail, w którym ulepszasz plan, aby zakończyć zakup.";

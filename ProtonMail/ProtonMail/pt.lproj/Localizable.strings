@@ -1741,7 +1741,7 @@
 "Request Link Confirmation" = "Pedir confirmação da hiperligação";
 
 /* Action */
-"RESET MAILBOX PASSWORD" = "REDEFINIR SENHA DA CAIXA DE CORREIO";
+"RESET MAILBOX PASSWORD" = "REPOR SENHA DA CAIXA DE CORREIO";
 
 /* Title */
 "Resetting message cache ..." = "A repor lista de mensagens...";
@@ -2384,7 +2384,7 @@
 "You can get help and support at protonmail.com/support. Bugs can also be reported with the app." = "Pode obter ajuda e suporte em protonmail.com/pt/support. Os erros também podem ser reportados com a aplicação.";
 
 /* pm.me upgrade warning in composer */
-"You can't set %@ address as default because it is a paid feature." = "Não pode definir o endereço %@ como predefinição porque essa é uma funcionalidade paga.";
+"You can't set %@ address as default because it is a paid feature." = "Não pode predefinir o endereço %@, é uma funcionalidade paga.";
 
 /* Alert when user enabled FaceID in app settings but restricted the use of FaceID in device settings */
 "You disabled FaceID in your system settings. FaceID has been used to protect important account information. To access your account, go to settings and reactivate FaceID, or log back in." = "Desactivou o FaceID nas definições do sistema. O FaceID foi utilizado para proteger informação importante da conta. Para aceder à sua conta, reactive o FaceID nas definições ou faça reinicie sessão.";

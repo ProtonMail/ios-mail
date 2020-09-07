@@ -241,7 +241,7 @@
 "Are you sure you want to logout %@?" = "Are you sure you want to logout %@?";
 
 /* emptify folder/label confirmation alert */
-"Are you sure? This can't be undone." = "Are you sure? This can't be undone.";
+"Are you sure? This can't be undone." = "Sikker? Handlingen kan ikke fortrydes.";
 
 /* like at 10:00pm */
 "at" = "kl.";
@@ -644,7 +644,7 @@
 "Delete" = "Slet";
 
 /* emptify folder/label confirmation alert */
-"Delete all" = "Delete all";
+"Delete all" = "Slet alle";
 
 /* Title-Contacts */
 "Delete Contact" = "Slet kontakt";
