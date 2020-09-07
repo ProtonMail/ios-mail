@@ -210,7 +210,10 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
             if shouldDeleteMessageInQueue {
                 self.viewModel.removeAllQueuedMessageOfCurrentUser()
             }
-            
+            Analytics.shared.logCustomEvent(customAttributes: [
+                Analytics.Events.event: Analytics.Events.logout,
+                Analytics.Reason.reason: Analytics.Reason.userAction
+            ], user: self.viewModel.currentUser)
             self.signingOut = true
             self.viewModel.signOut()
             

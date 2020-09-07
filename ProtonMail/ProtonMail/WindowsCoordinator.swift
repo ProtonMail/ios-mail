@@ -171,6 +171,10 @@ class WindowsCoordinator: CoordinatorNew {
         let usersManager: UsersManager = services.get()
         var foundUser = false
         if let user = usersManager.getUser(bySessionID: uid) {
+            Analytics.shared.logCustomEvent(customAttributes: [
+                Analytics.Events.event: Analytics.Events.logout,
+                Analytics.Reason.reason: Analytics.Reason.tokenRevoke
+            ], user: user)
             usersManager.logout(user: user, shouldAlert: true).cauterize()
             foundUser = true
         }

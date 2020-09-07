@@ -564,7 +564,16 @@ extension UsersManager {
         let isMailboxPasswordStored = KeychainWrapper.keychain.data(forKey: CoderKey.mailboxPassword) != nil
         let isSignIn = users.hasUserName() && isMailboxPasswordStored
         
-        return KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore) != nil && (hasUsersInfo || isSignIn)
+        let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
+        
+        Analytics.shared.logCustomEvent(customAttributes: [
+            Analytics.Events.event: Analytics.Events.checkUser,
+            "hasUserName": users.hasUserName(),
+            "hasMailboxPassword": isMailboxPasswordStored,
+            "authKeychainStore": authKeychainStore != nil,
+            "hasUserInfo": hasUsersInfo
+        ])
+        return  authKeychainStore != nil && (hasUsersInfo || isSignIn)
     }
     
     var isPasswordStored : Bool {
