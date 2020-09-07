@@ -47,7 +47,7 @@ class Analytics {
     
     func logCustomEvent(customAttributes: Dictionary<String, Any>, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let event = Event(level: .debug)
-        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column)"
+        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) : \(UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID")"
         event.message = "\(append) - \(customAttributes.json())"
         event.user = self.getUsesr()
         SentrySDK.capture(event: event)
@@ -55,7 +55,7 @@ class Analytics {
     
     func recordError(_ error: NSError, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
         let event = Event(level: .error)
-        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column)"
+        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) : \(UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID")"
         event.message = "\(append) - \(error.localizedDescription)"
         event.user = self.getUsesr()
         SentrySDK.capture(event: event)
@@ -75,6 +75,7 @@ extension Analytics {
     struct Events {
         static let event = "Event"
         static let logout = "Logout"
+        static let checkUser = "Check User"
     }
     struct Reason {
         static let reason = "Reason"
