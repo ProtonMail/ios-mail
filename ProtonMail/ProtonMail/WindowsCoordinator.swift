@@ -249,18 +249,17 @@ class WindowsCoordinator: CoordinatorNew {
             let _ = source
             let _ = destination
             effectView.removeFromSuperview()
+            
+            // notify source's views they are disappearing
+            source?.topmostViewController()?.viewWillDisappear(false)
+
+            // notify destination views they are about to show up
+            if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
+                topDestination.viewWillAppear(false)
+                topDestination.viewDidAppear(false)
+            }
         })
-        
-        // notify source's views they are disappearing
-        source?.topmostViewController()?.viewWillDisappear(false)
-        
         self.currentWindow = destination
-        
-        // notify destination views they are about to show up
-        if let topDestination = destination.topmostViewController(), topDestination.isViewLoaded {
-            topDestination.viewDidAppear(false)
-        }
-        
         return true
     }
     
