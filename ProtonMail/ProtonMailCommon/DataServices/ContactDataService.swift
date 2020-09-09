@@ -516,7 +516,7 @@ class ContactDataService: Service, HasLocalStorage {
         self.retries = self.retries + 1
         
         let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
+        async {
             do {
                 // fetch contacts, without their respective emails
                 var currentPage = 0
@@ -540,32 +540,34 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contacts.count
                         }
-                        do {
-                            if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                               fromJSONArray: contacts,
-                                                                               in: context) as? [Contact] {
-                                for c in contacts {
-                                    c.userID = self.userID
-                                    if let emails = c.emails.allObjects as? [Email] {
-                                        emails.forEach { (e) in
-                                            e.userID = self.userID
+                        self.coreDataService.enqueue(context: context) { (context) in
+                            do {
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                   fromJSONArray: contacts,
+                                                                                   in: context) as? [Contact] {
+                                    for c in contacts {
+                                        c.userID = self.userID
+                                        if let emails = c.emails.allObjects as? [Email] {
+                                            emails.forEach { (e) in
+                                                e.userID = self.userID
+                                            }
                                         }
                                     }
+                                    if let error = context.saveUpstreamIfNeeded() {
+                                        PMLog.D(" error: \(error)");
+                                        
+                                        {
+                                            error.alertErrorToast()
+                                            } ~> .main
+                                    }
                                 }
-                                if let error = context.saveUpstreamIfNeeded() {
-                                    PMLog.D(" error: \(error)");
-                                    
-                                    {
-                                        error.alertErrorToast()
-                                        } ~> .main
-                                }
+                            } catch let ex as NSError {
+                                PMLog.D(" error: \(ex)");
+                                
+                                {
+                                    ex.alertErrorToast()
+                                    } ~> .main
                             }
-                        } catch let ex as NSError {
-                            PMLog.D(" error: \(ex)");
-                            
-                            {
-                                ex.alertErrorToast()
-                                } ~> .main
                         }
                     }
                 }
@@ -598,27 +600,29 @@ class ContactDataService: Service, HasLocalStorage {
                         } else {
                             fetched = fetched + contactsArray.count
                         }
-                        do {
-                            if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
-                                                                               fromJSONArray: contactsArray,
-                                                                               in: context) as? [Contact] {
-                                for contact in contacts {
-                                    contact.userID = self.userID
-                                    let _ = contact.fixName(force: true)
-                                    if let emails = contact.emails.allObjects as? [Email] {
-                                        emails.forEach { (e) in
-                                            e.userID = self.userID
+                        self.coreDataService.enqueue(context: context) { (context) in
+                            do {
+                                if let contacts = try GRTJSONSerialization.objects(withEntityName: Contact.Attributes.entityName,
+                                                                                   fromJSONArray: contactsArray,
+                                                                                   in: context) as? [Contact] {
+                                    for contact in contacts {
+                                        contact.userID = self.userID
+                                        let _ = contact.fixName(force: true)
+                                        if let emails = contact.emails.allObjects as? [Email] {
+                                            emails.forEach { (e) in
+                                                e.userID = self.userID
+                                            }
                                         }
                                     }
+                                    try context.save()
                                 }
-                                try context.save()
+                            } catch let ex as NSError {
+                                PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)");
+                                
+                                {
+                                    ex.alertErrorToast()
+                                    } ~> .main
                             }
-                        } catch let ex as NSError {
-                            PMLog.D("GRTJSONSerialization contact emails error: \(ex) \(ex.userInfo)");
-                            
-                            {
-                                ex.alertErrorToast()
-                                } ~> .main
                         }
                     }
                 }
@@ -627,12 +631,6 @@ class ContactDataService: Service, HasLocalStorage {
                 self.isFetching = false
                 self.retries = 0
                 
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)");
-                    {
-                        error.alertErrorToast()
-                    } ~> .main
-                }
             } catch let ex as NSError {
                 lastUpdatedStore.contactsCached = 0
                 self.isFetching = false;
