@@ -75,8 +75,7 @@ class AccountManagerViewModel {
         switch self.section(at: indexPath.section) {
         case .users:
             if let user = self.user(at: indexPath.row) {
-                Analytics.shared.logCustomEvent(customAttributes: [
-                    Analytics.Events.event: Analytics.Events.logout,
+                Analytics.shared.debug(message: .logout, extra: [
                     Analytics.Reason.reason: Analytics.Reason.userAction
                 ], user: user)
                 return self.usersManager.logout(user: user)

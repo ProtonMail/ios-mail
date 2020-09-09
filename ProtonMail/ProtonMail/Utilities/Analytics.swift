@@ -45,19 +45,55 @@ class Analytics {
         }
     }
     
-    func logCustomEvent(customAttributes: Dictionary<String, Any>, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    func debug(message: Analytics.Events, extra: [String: Any],
+               user: UserManager?=nil, file: String = #file,
+               function: String = #function, line: Int = #line,
+               column: Int = #column) {
+        
+        let appendDic = self.getAppendInfo(file, function, line, column)
         let event = Event(level: .debug)
-        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) : \(UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID")"
-        event.message = "\(append) - \(customAttributes.json())"
-        event.user = self.getUsesr()
+        event.message = message.rawValue
+        event.extra = extra + appendDic
+        event.user = self.getUsesr(currentUser: user)
         SentrySDK.capture(event: event)
     }
     
-    func recordError(_ error: NSError, user: UserManager?=nil, file: String = #file, function: String = #function, line: Int = #line, column: Int = #column) {
+    func error(message: Analytics.Events, error: Error, extra: [String: Any]=[:],
+               user: UserManager?=nil, file: String = #file,
+               function: String = #function, line: Int = #line,
+               column: Int = #column) {
+        
+        let err = error as NSError
+        let dic: [String: Any] = [
+            "code" : err.code,
+            "error_desc": err.description,
+            "error_full": err.localizedDescription,
+            "error_reason" : "\(String(describing: err.localizedFailureReason))"
+        ]
+        let appendDic = self.getAppendInfo(file, function, line, column)
+        // todo assemble message
         let event = Event(level: .error)
-        let append = "\((file as NSString).lastPathComponent) : \(function) : \(line) : \(column) : \(UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID")"
-        event.message = "\(append) - \(error.localizedDescription)"
-        event.user = self.getUsesr()
+        let _error = error as NSError
+        event.message = "\(message.rawValue) - \(_error.code)"
+        event.extra = extra + appendDic + dic
+        event.user = self.getUsesr(currentUser: user)
+        SentrySDK.capture(event: event)
+    }
+    
+    func error(message: Analytics.Events, error: String, extra: [String: Any]=[:],
+               user: UserManager?=nil, file: String = #file,
+               function: String = #function, line: Int = #line,
+               column: Int = #column) {
+        
+        let dic: [String: Any] = [
+            "error": error
+        ]
+        let appendDic = self.getAppendInfo(file, function, line, column)
+        
+        let event = Event(level: .error)
+        event.message = "\(message.rawValue) - \(-10000000) - \(NSError.protonMailErrorDomain("DataService"))"
+        event.extra = extra + appendDic + dic
+        event.user = self.getUsesr(currentUser: user)
         SentrySDK.capture(event: event)
     }
     
@@ -68,21 +104,52 @@ class Analytics {
         let user = Sentry.User(userId: currentUser.userinfo.userId)
         return user
     }
+    
+    private func getAppendInfo(_ file: String, _ function: String, _ line: Int, _ column: Int) -> [String: Any] {
+        var ver = "1.0.0"
+        if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+            ver = version
+        }
+        
+        let appendDic: [String: Any] = [
+            "file": file,
+            "function": function,
+            "line": line,
+            "column": column,
+            "uuid": UIDevice.current.identifierForVendor?.uuidString ?? "UnknowUUID",
+            "DeviceModel" : UIDevice.current.model,
+            "DeviceVersion" : UIDevice.current.systemVersion,
+            "AppVersion" : "iOS_\(ver)",
+        ]
+        return appendDic
+    }
 }
 
 extension Analytics {
     
-    struct Events {
-        static let event = "Event"
-        static let logout = "Logout"
-        static let checkUser = "Check User"
+    enum Events: String {
+        case logout = "Logout"
+        case checkUser = "Check User"
+        case keychainError = "Keychain Error"
+        case notificationError = "Notification Error"
+        case sendMessageError = "Send Message Error"
+        case fetchMetadata = "FetchMetadata"
+        case grtJSONSerialization = "GRTJSONSerialization"
+        case vcard = "vcard"
+        case authError = "AuthError"
+        case updateAddressIDError = "UpdateAddressID Error"
+        case purgeOldMessages = "Purge Old Messages"
+        case queueError = "Queue Error"
+        case updateLoginPassword = "Update Login Password"
+        case updateMailBoxPassword = "Update MailBox Password"
     }
+    
     struct Reason {
         static let reason = "Reason"
         static let tokenRevoke = "Token Revoke"
         static let delinquent = "Delinquent limitation"
         static let logoutAll = "Logout All"
         static let userAction = "User Action"
+        static let status = "status"
     }
-    
 }

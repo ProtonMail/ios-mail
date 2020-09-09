@@ -566,8 +566,7 @@ extension UsersManager {
         
         let authKeychainStore = KeychainWrapper.keychain.data(forKey: CoderKey.authKeychainStore)
         
-        Analytics.shared.logCustomEvent(customAttributes: [
-            Analytics.Events.event: Analytics.Events.checkUser,
+        Analytics.shared.debug(message: .checkUser, extra: [
             "hasUserName": users.hasUserName(),
             "hasMailboxPassword": isMailboxPasswordStored,
             "authKeychainStore": authKeychainStore != nil,

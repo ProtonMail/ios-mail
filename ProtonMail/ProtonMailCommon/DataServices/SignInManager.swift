@@ -145,8 +145,7 @@ class SignInManager: Service {
             self.usersManager.update(auth: auth, user: info)
             
             guard info.delinquent < 3 else {
-                Analytics.shared.logCustomEvent(customAttributes: [
-                    Analytics.Events.event: Analytics.Events.logout,
+                Analytics.shared.debug(message: .logout, extra: [
                     Analytics.Reason.reason: Analytics.Reason.delinquent
                 ], user: user)
                 _ = self.usersManager.logout(user: user, shouldAlert: false).ensure {

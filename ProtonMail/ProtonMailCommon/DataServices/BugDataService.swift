@@ -50,35 +50,4 @@ public class BugDataService: Service {
             completion?(response?.error)
         }
     }
-    
-    public class func debugReport(_ title: String, _ bug: String, completion: ((NSError?) -> Void)?) {
-        let userInfo = [
-            NSLocalizedDescriptionKey: "ProtonMail App bug debugging.",
-            NSLocalizedFailureReasonErrorKey: "Parser issue.",
-            NSLocalizedRecoverySuggestionErrorKey: "Parser failed.",
-            "Title": title,
-            "Value": bug
-        ]
-        
-        let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
-        Analytics.shared.recordError(errors)
-    }
-    
-    
-    public class func sendingIssue(title: String,
-                                   bug: String,
-                                   status: Int,
-                                   emials: [String],
-                                   attCount: Int) {
-        let userInfo = [
-            NSLocalizedDescriptionKey: "ProtonMail App bug debugging.",
-            NSLocalizedFailureReasonErrorKey: "Parser issue.",
-            NSLocalizedRecoverySuggestionErrorKey: "Parser failed.",
-            "Title": title,
-            "Value": bug,
-        ]
-        
-        let errors = NSError(domain: dataServiceDomain, code: -10000000, userInfo: userInfo)
-        Analytics.shared.recordError(errors)
-    }
 }
