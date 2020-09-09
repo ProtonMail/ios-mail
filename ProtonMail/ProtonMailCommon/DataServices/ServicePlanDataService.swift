@@ -146,7 +146,6 @@ extension ServicePlanDataService {
     }
     
     internal func updateCurrentSubscription(completion: CompletionHandler? = nil) {
-        self.updateServicePlans()
         async {
             let subscriptionApi = GetSubscriptionRequest(api: self.apiService)
             let subscriptionRes = try await(subscriptionApi.run())

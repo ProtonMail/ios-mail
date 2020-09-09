@@ -183,7 +183,10 @@ class UnlockManager: Service {
     // TODO: verify if some of these operations can be optimized
     private func updateUserData(of user: UserManager) { // previously this method was called loadContactsAfterInstall()
         pthread_mutex_lock(&self.mutex)
-        user.sevicePlanService.updateCurrentSubscription()
+        user.sevicePlanService.updateServicePlans() {
+            user.sevicePlanService.updateCurrentSubscription()
+        }
+        
         pthread_mutex_unlock(&self.mutex)
     }
     
