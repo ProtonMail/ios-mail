@@ -164,7 +164,7 @@ extension APIService {
                 }
                 
                 var needsRetry : Bool = false
-                err.upload(toAnalytics : AuthErrorTitle)
+                Analytics.shared.error(message: .authError, error: err)
                 if err.code == NSURLErrorTimedOut ||
                     err.code == NSURLErrorNotConnectedToInternet ||
                     err.code == NSURLErrorCannotConnectToHost ||

@@ -692,14 +692,22 @@ class MessageDataService : Service, HasLocalStorage {
                                     }
                                     if let error = context.saveUpstreamIfNeeded() {
                                         PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName saveUpstreamIfNeeded failed \(error)")
-                                        error.upload(toAnalytics: self.reportTitle + "-Save")
+                                        Analytics.shared.error(message: .fetchMetadata,
+                                                               error: error,
+                                                               extra: [Analytics.Reason.status: "save"],
+                                                               user: self.usersManager?.getUser(byUserId: self.userID))
                                     }
                                 } else {
-                                    BugDataService.debugReport(self.reportTitle, "insert empty", completion: nil)
+                                    Analytics.shared.error(message: .fetchMetadata,
+                                                           error: "insert empty",
+                                                           user: self.usersManager?.getUser(byUserId: self.userID))
                                     PMLog.D("GRTJSONSerialization.mergeObjectsForEntityName failed \(String(describing: error))")
                                 }
                             } catch let err as NSError {
-                                err.upload(toAnalytics: self.reportTitle + "-TryCatch")
+                                Analytics.shared.error(message: .fetchMetadata,
+                                                       error: err,
+                                                       extra: ["status": "try catch"],
+                                                       user: self.usersManager?.getUser(byUserId: self.userID))
                                 PMLog.D("fetchMessagesWithIDs failed \(err)")
                             }
                         }
@@ -709,7 +717,9 @@ class MessageDataService : Service, HasLocalStorage {
                         if let err = error {
                             details = err.description
                         }
-                        BugDataService.debugReport(self.reportTitle, "Can't get the response Messages -- " + details, completion: nil)
+                        Analytics.shared.error(message: .fetchMetadata,
+                                               error: "Can't get the response Messages -- " + details,
+                                               user: self.usersManager?.getUser(byUserId: self.userID))
                         PMLog.D("fetchMessagesWithIDs can't get the response Messages")
                     }
                 }
@@ -1140,7 +1150,9 @@ class MessageDataService : Service, HasLocalStorage {
                     self.fetchMetadata(with: badIDs)
                 }
             } catch let ex as NSError {
-                ex.upload(toAnalytics: "purgeOldMessages")
+                Analytics.shared.error(message: .purgeOldMessages,
+                                       error: ex,
+                                       user: self.usersManager?.getUser(byUserId: self.userID))
                 PMLog.D("error : \(ex)")
             }
         }
@@ -1595,7 +1607,7 @@ class MessageDataService : Service, HasLocalStorage {
             if message.managedObjectContext == nil {
                 NSError.alertLocalCacheErrorToast()
                 let err = RuntimeError.bad_draft.error
-                Analytics.shared.recordError(err)
+                Analytics.shared.error(message: .sendMessageError, error: err)
                 errorBlock(nil, nil, err)
                 return
             }
@@ -1842,11 +1854,12 @@ class MessageDataService : Service, HasLocalStorage {
                         error?.alertErrorToast()
                     }
                     NSError.alertMessageSentErrorToast()
-                    BugDataService.sendingIssue(title: SendingErrorTitle,
-                                                bug: error?.localizedDescription ?? "unknown",
-                                                status: status.rawValue,
-                                                emials: emails,
-                                                attCount: attachments.count)
+                    let _err = error?.localizedDescription ?? "Unknow error"
+                    Analytics.shared.error(message: .sendMessageError, error: _err, extra: [
+                        "status": status.rawValue,
+                        "emails": emails,
+                        "attCount": attachments.count
+                    ], user: self.usersManager?.getUser(byUserId: self.userID))
                     // show message now
                     self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                                  error: "\(LocalString._message_sent_failed_desc):\n\(error!.localizedDescription)",
@@ -1880,12 +1893,12 @@ class MessageDataService : Service, HasLocalStorage {
                 self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID,
                                                                                              error: "\(LocalString._messages_sending_failed_try_again):\n\(err.localizedDescription)",
                                                                                              timeInterval: 1,
-                                                                                             subtitle: message.title))
-                BugDataService.sendingIssue(title: SendingErrorTitle,
-                                            bug: err.localizedDescription,
-                                            status: status.rawValue,
-                                            emials: emails,
-                                            attCount: attachments.count)
+                                                                                            subtitle: message.title))
+                Analytics.shared.error(message: .sendMessageError, error: err, extra: [
+                    "status": status.rawValue,
+                    "emails": emails,
+                    "attCount": attachments.count
+                ], user: self.usersManager?.getUser(byUserId: self.userID))
                 completion?(nil, nil, err)
             }
             return
@@ -2018,7 +2031,9 @@ class MessageDataService : Service, HasLocalStorage {
                 if statusCode != 200 && statusCode != 404 && statusCode != 500 && !isInternetIssue {
                     //show error
                     let _ = sharedMessageQueue.remove(elementID)
-                    error?.upload(toAnalytics: QueueErrorTitle)
+                    Analytics.shared.error(message: .queueError,
+                                           error: error?.localizedDescription ?? "Error is nil",
+                                           user: self.usersManager?.getUser(byUserId: self.userID))
                 }
                 
                 if !isInternetIssue && (errorCode != NSError.authCacheLocked().code) {
@@ -2206,7 +2221,10 @@ class MessageDataService : Service, HasLocalStorage {
                                 //in case
                                 error = context.saveUpstreamIfNeeded()
                                 if error != nil  {
-                                    error?.upload(toAnalytics: "GRTJSONSerialization Delete")
+                                    Analytics.shared.error(message: .grtJSONSerialization,
+                                                           error: error!,
+                                                           extra: [Analytics.Reason.status: "Delete"],
+                                                           user: self.usersManager?.getUser(byUserId: self.userID))
                                     PMLog.D(" error: \(String(describing: error))")
                                 }
                             }
@@ -2305,14 +2323,19 @@ class MessageDataService : Service, HasLocalStorage {
                                         if let messageid = msg.message?["ID"] as? String {
                                             messagesNoCache.append(messageid)
                                         }
-                                        error?.upload(toAnalytics: "GRTJSONSerialization Update")
+                                        Analytics.shared.error(message: .grtJSONSerialization,
+                                                               error: error!,
+                                                               extra: [Analytics.Reason.status: "GRTJSONSerialization Update"],
+                                                               user: self.usersManager?.getUser(byUserId: self.userID))
                                         PMLog.D(" error: \(String(describing: error))")
                                     }
                                 } else {
                                     if let messageid = msg.message?["ID"] as? String {
                                         messagesNoCache.append(messageid)
                                     }
-                                    BugDataService.debugReport("GRTJSONSerialization Insert", "context nil", completion: nil)
+                                    Analytics.shared.error(message: .grtJSONSerialization,
+                                                           error: "GRTJSONSerialization Insert - context nil",
+                                                           user: self.usersManager?.getUser(byUserId: self.userID))
                                 }
                             } else {
                                 // when GRTJSONSerialization inset returns no thing
@@ -2320,14 +2343,19 @@ class MessageDataService : Service, HasLocalStorage {
                                     messagesNoCache.append(messageid)
                                 }
                                 PMLog.D(" case .Some(IncrementalUpdateType.insert), .Some(IncrementalUpdateType.update1), .Some(IncrementalUpdateType.update2): insert empty")
-                                BugDataService.debugReport("GRTJSONSerialization Insert", "insert empty", completion: nil)
+                                Analytics.shared.error(message: .grtJSONSerialization,
+                                                       error: "GRTJSONSerialization Insert - insert empty",
+                                                       user: self.usersManager?.getUser(byUserId: self.userID))
                             }
                         } catch let err as NSError {
                             // when GRTJSONSerialization insert failed
                             if let messageid = msg.message?["ID"] as? String {
                                 messagesNoCache.append(messageid)
                             }
-                            err.upload(toAnalytics: "GRTJSONSerialization Insert")
+                            Analytics.shared.error(message: .grtJSONSerialization,
+                                                   error: err,
+                                                   extra: [Analytics.Reason.status: "Insert"],
+                                                   user: self.usersManager?.getUser(byUserId: self.userID))
                             PMLog.D(" error: \(err)")
                         }
                     default:
@@ -2337,7 +2365,10 @@ class MessageDataService : Service, HasLocalStorage {
                     //TODO:: move this to the loop and to catch the error also put it in noCache queue.
                     error = context.saveUpstreamIfNeeded()
                     if error != nil  {
-                        error?.upload(toAnalytics: "GRTJSONSerialization Save")
+                        Analytics.shared.error(message: .grtJSONSerialization,
+                                               error: error!,
+                                               extra: [Analytics.Reason.status: "Save"],
+                                               user: self.usersManager?.getUser(byUserId: self.userID))
                         PMLog.D(" error: \(String(describing: error))")
                     }
                 }

@@ -659,7 +659,8 @@ class UserDataService : Service, HasLocalStorage {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toAnalytics: "UpdateLoginPassword")
+                Analytics.shared.error(message: .updateLoginPassword,
+                                       error: error)
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -797,7 +798,8 @@ class UserDataService : Service, HasLocalStorage {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toAnalytics: "UpdateMailBoxPassword")
+                Analytics.shared.error(message: .updateMailBoxPassword,
+                                       error: error)
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async
@@ -916,7 +918,8 @@ class UserDataService : Service, HasLocalStorage {
                 } while(forceRetry && forceRetryVersion >= 0)
                 return { completion(nil, nil, nil) } ~> .main
             } catch let error as NSError {
-                error.upload(toAnalytics: "UpdateLoginPassword")
+                Analytics.shared.error(message: .updateLoginPassword,
+                                       error: error)
                 return { completion(nil, nil, error) } ~> .main
             }
         } ~> .async

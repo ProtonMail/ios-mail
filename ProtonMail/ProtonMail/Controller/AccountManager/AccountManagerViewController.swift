@@ -107,8 +107,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alertController.addAction(.init(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
         alertController.addAction(.init(title: LocalString._remove_all, style: .destructive, handler: { _ in
-            Analytics.shared.logCustomEvent(customAttributes: [
-                Analytics.Events.event: Analytics.Events.logout,
+            Analytics.shared.debug(message: .logout, extra: [
                 Analytics.Reason.reason: Analytics.Reason.logoutAll
             ], user: self.viewModel.currentUser)
             self.viewModel.signOut().ensure {
