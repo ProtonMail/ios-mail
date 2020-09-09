@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="14k-5d-srV">
     <device id="ipad9_7" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
@@ -388,9 +388,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage accounts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49f-bC-Hh9" userLabel="Settings Label">
-                                                    <rect key="frame" x="10" y="12.5" width="748" height="19"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="manageAccountsLabel"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49f-bC-Hh9" userLabel="Settings Label">
+                                                    <rect key="frame" x="10" y="22" width="748" height="0.0"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                     <color key="textColor" red="0.50588235294117645" green="0.50980392156862742" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -1213,11 +1212,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Mail" id="Y7X-YF-pK8">
                         <barButtonItem key="backBarButtonItem" title=" " id="ucd-t8-khK"/>
-                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem">
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="sidebarButton"/>
-                            </userDefinedRuntimeAttributes>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem"/>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
@@ -2631,11 +2626,11 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="A0a-yx-qTn"/>
+        <segue reference="dh2-Js-yHz"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="hZj-FM-cPb"/>
         <segue reference="XIN-Jt-JzU"/>
-        <segue reference="YGe-pV-72F"/>
+        <segue reference="LdN-DE-nXL"/>
         <segue reference="hak-ZV-HgC"/>
     </inferredMetricsTieBreakers>
     <resources>

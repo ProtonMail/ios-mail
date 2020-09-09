@@ -30,7 +30,7 @@ protocol UpgradeAlertVCDelegate {
     func learnMore()
 }
 
-class UpgradeAlertViewController: UIViewController, ViewModelProtocol {
+class UpgradeAlertViewController: UIViewController, ViewModelProtocol, AccessibleView {
     typealias viewModelType = UpgradeAlertViewModel
     
     var viewModel : UpgradeAlertViewModel!
@@ -71,6 +71,7 @@ class UpgradeAlertViewController: UIViewController, ViewModelProtocol {
         self.titleLabel.text = self.viewModel.title
         self.titleLabelTwo.text = self.viewModel.title2
         self.messageLabel.text = self.viewModel.message
+        generateAccessibilityIdentifiers()
     }
     
     override func didReceiveMemoryWarning() {

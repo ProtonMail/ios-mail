@@ -6,8 +6,8 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-private let mailboxPasswordTextField = "txtMailboxPassword"
-private let decryptButton = "decryptButton"
+private let mailboxPasswordTextField = "MailboxPasswordViewController.passwordTextField"
+private let decryptButton = "MailboxPasswordViewController.decryptButton"
 
 class MailboxPasswordRobot {
     

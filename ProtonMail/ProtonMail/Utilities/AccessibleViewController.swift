@@ -9,11 +9,11 @@
 import Foundation
 import UIKit
 
-protocol Accessible {
+protocol AccessibleView {
     func generateAccessibilityIdentifiers()
 }
 
-extension Accessible {
+extension AccessibleView {
 
     func generateAccessibilityIdentifiers() {
         #if DEBUG
@@ -22,7 +22,6 @@ extension Accessible {
         for child in mirror.children {
             if
                 let view = child.value as? UIView,
-                
                 let identifier = child.label?.replacingOccurrences(of: ".storage", with: "") {
                 view.accessibilityIdentifier = "\(type(of: self)).\(identifier)"
             }

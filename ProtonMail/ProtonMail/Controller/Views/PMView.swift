@@ -33,7 +33,7 @@ extension PMView {
     }
 }
 
-class PMView: UIView {
+class PMView: UIView, AccessibleView {
     var pmView: UIView!
     
     override init(frame: CGRect) { // for using CustomView in code
@@ -57,6 +57,7 @@ class PMView: UIView {
         } else {
             PMLog.D("PMView setupView loadViewFromNib failed") //TODO:: add a real log
         }
+        generateAccessibilityIdentifiers()
     }
     
     fileprivate func loadViewFromNib () -> UIView? {

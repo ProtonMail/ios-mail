@@ -23,11 +23,9 @@
 
 import Foundation
 
-class MenuButtonViewCell: UITableViewCell {
+class MenuButtonViewCell: UITableViewCell, AccessibleCell {
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var separtor: UIView!
-    
-    fileprivate var item: MenuItem!
     
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)!
@@ -38,10 +36,11 @@ class MenuButtonViewCell: UITableViewCell {
         
         self.selectedBackgroundView = selectedBackgroundView
     }
-    
-    func configCell (_ item : MenuItem!, hideSepartor: Bool) {
-        self.item = item;
+
+    func configCell (_ label: String, hideSepartor: Bool) {
+        self.label.text = label;
         self.separtor.isHidden = hideSepartor
+        generateCellAccessibilityIdentifiers(label)
     }
     
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {

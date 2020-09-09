@@ -29,7 +29,7 @@ protocol MailboxCaptchaVCDelegate : AnyObject {
     func done()
 }
 
-class MailboxCaptchaViewController : UIViewController {
+class MailboxCaptchaViewController : UIViewController, AccessibleView {
     
     var viewModel : HumanCheckViewModel!
     
@@ -59,6 +59,7 @@ class MailboxCaptchaViewController : UIViewController {
             }
             MBProgressHUD.hide(for: self.view, animated: true)
         }
+        generateAccessibilityIdentifiers()
     }
     
     @IBAction private func cancelAction(_ sender: AnyObject) {

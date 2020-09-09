@@ -11,9 +11,9 @@ import XCTest
 private let usernameIdentifier = "SignInViewController.usernameTextField"
 private let passwordIdentifier = "SignInViewController.passwordTextField"
 private let signinButtonIdentifier = "SignInViewController.signInButton"
-private let twoFaCodeIdentifier = "TwoFACodeView"
-private let twoFaCancelButtonIdentifier = "authCancelButton"
-private let twoFaEnterButtonIdentifier = "authEnterButton"
+private let twoFaCodeIdentifier = "TextInsetTextField.twoFactorCodeField"
+private let twoFaCancelButtonIdentifier = "UIButton.cancelButton"
+private let twoFaEnterButtonIdentifier = "UIButton.enterButton"
 
 class LoginRobot {
     
@@ -31,7 +31,6 @@ class LoginRobot {
             .password(user.password)
             .signInWithTwoFA()
             .provideTwoFaCode(code: user.getTwoFaCode())
-            
     }
 
     func loginTwoPasswordUser(_ user: User) -> MailboxPasswordRobot {

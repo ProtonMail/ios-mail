@@ -23,7 +23,7 @@
 
 import UIKit
 
-class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate, Accessible
+class ComposeContainerViewController: TableContainerViewController<ComposeContainerViewModel, ComposeContainerViewCoordinator>, NSNotificationCenterKeyboardObserverProtocol, UITableViewDropDelegate
 {
     private var childrenHeightObservations: [NSKeyValueObservation]!
     private var cancelButton: UIBarButtonItem! //cancel button.
@@ -96,8 +96,9 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         // accessibility
         self.sendButton.accessibilityLabel = LocalString._general_send_action
-        self.cancelButton.accessibilityIdentifier = "cancelButton"
-        self.sendButton.accessibilityIdentifier = "sendButton"
+//        self.cancelButton.accessibilityIdentifier = "cancelButton"
+//        self.sendButton.accessibilityIdentifier = "sendButton"
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

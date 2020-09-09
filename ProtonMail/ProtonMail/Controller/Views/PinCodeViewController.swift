@@ -30,7 +30,7 @@ protocol PinCodeViewControllerDelegate: class {
     func Next()
 }
 
-class PinCodeViewController : UIViewController, BioAuthenticating {
+class PinCodeViewController : UIViewController, BioAuthenticating, AccessibleView {
     var viewModel : PinCodeViewModel!
     weak var delegate : PinCodeViewControllerDelegate?
     
@@ -46,6 +46,7 @@ class PinCodeViewController : UIViewController, BioAuthenticating {
         NotificationCenter.default.addObserver(forName:  UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
             self?.pinCodeView.resetPin()
         }
+        generateAccessibilityIdentifiers()
     }
     
     deinit {

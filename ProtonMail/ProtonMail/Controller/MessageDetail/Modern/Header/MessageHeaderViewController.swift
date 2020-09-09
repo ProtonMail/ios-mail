@@ -23,7 +23,7 @@
 
 import UIKit
 
-class MessageHeaderViewController: UIViewController {
+class MessageHeaderViewController: UIViewController, AccessibleView {
     private var coordinator: MessageHeaderViewCoordinator!
     private(set) var viewModel: MessageHeaderViewModel!
     @IBOutlet weak var emailHeaderView: EmailHeaderView!
@@ -57,6 +57,7 @@ class MessageHeaderViewController: UIViewController {
             guard let self = self else { return }
             self.updateHeaderData(viewModel.headerData, on: self.emailHeaderView)
         }
+        generateAccessibilityIdentifiers()
     }
     
     fileprivate func setupHeaderView(_ emailHeaderView: EmailHeaderView) {

@@ -8,9 +8,9 @@
 
 import XCTest
 
-fileprivate let menuButton = "sidebarButton"
+fileprivate let menuButton = "Menu"
 let composeButtonLabel = "Compose"
-fileprivate let mailboxTableViewIdentifier = "mailboxTableView"
+fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.

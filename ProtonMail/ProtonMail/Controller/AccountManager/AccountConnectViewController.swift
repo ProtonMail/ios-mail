@@ -79,7 +79,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         
         let cancelButton = UIBarButtonItem(title: LocalString._general_cancel_button, style: .plain, target: self, action: #selector(cancelAction))
         self.navigationItem.leftBarButtonItem = cancelButton
-        self.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "cancelButton"
+        //self.navigationItem.leftBarButtonItem?.accessibilityIdentifier = "cancelButton"
 
         setupTextFields()
         setupButtons()
@@ -87,6 +87,7 @@ class AccountConnectViewController: ProtonMailViewController, ViewModelProtocol,
         if self.viewModel.username == nil {
             self.showCreateNewAccountButton()
         }
+        generateAccessibilityIdentifiers()
     }
     
     @objc internal func dismiss() {

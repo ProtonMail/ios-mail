@@ -161,7 +161,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.setNavigationTitleText(viewModel.localizedNavigationTitle)
         self.tableView.RegisterCell(MailboxMessageCell.Constant.identifier)
         self.tableView.RegisterCell(MailboxRateReviewCell.Constant.identifier)
-        self.tableView.accessibilityIdentifier = "mailboxTableView"
         
         self.addSubViews()
 

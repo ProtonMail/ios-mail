@@ -26,7 +26,7 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 
-class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew {
+class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -191,6 +191,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
 
         /// change message as read
         self.viewModel.markAsRead()
+        generateAccessibilityIdentifiers()
     }
 
     private func retrieveAllContacts() -> Promise<Void> {

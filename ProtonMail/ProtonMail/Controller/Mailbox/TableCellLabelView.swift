@@ -23,7 +23,7 @@
 
 import UIKit
 
-class TableCellLabelView: UIView {
+class TableCellLabelView: UIView, AccessibleCell {
     fileprivate let kCoverImageViewWidth : CGFloat = 3.0
     
     fileprivate var textLabel:UILabel!
@@ -70,6 +70,7 @@ class TableCellLabelView: UIView {
     
     func setText(_ label: String, color: UIColor) ->CGFloat {
         self.textLabel.text = "  \(label)  "
+        generateCellAccessibilityIdentifiers(label)
 
         let s = self.textLabel.sizeThatFits(CGSize.zero)
                 textLabel.textColor = color

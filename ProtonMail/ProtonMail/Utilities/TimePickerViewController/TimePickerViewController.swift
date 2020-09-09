@@ -24,7 +24,7 @@
 import UIKit
 
 @available(iOS 9.0, *)
-final class TimePickerViewController: UIViewController, UINavigationBarDelegate {
+final class TimePickerViewController: UIViewController, UINavigationBarDelegate, AccessibleView {
     typealias ChangeHandler = (SelectedComponents)->Void
     typealias SelectedComponents = DateComponents
     
@@ -56,6 +56,7 @@ final class TimePickerViewController: UIViewController, UINavigationBarDelegate 
                                          of: Date())!
         self.picker.setDate(date, animated: false)
         self.customNavigationItem.title = self.customTitle
+        generateAccessibilityIdentifiers()
     }
     
     @IBAction func cancel() {

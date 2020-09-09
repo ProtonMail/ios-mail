@@ -8,13 +8,11 @@
 
 import XCTest
 
-private let logoutStaticText = "Logout"
-private let logoutConfirmButton = "Log out"
-private let sentStaticText = "Sent"
-private let displayNameStaticTextIdentifier = "displayNameLabel"
-private let displayEmailStaticTextIdentifier = "displayEmailLabel"
-private let sidebarHeaderViewOtherIdentifier = "sidebarHeaderView"
-private let manageAccountsStaticTextIdentifier = "manageAccountsLabel"
+private let logoutStaticText = "MenuTableViewCell.\(LocalizedString()._sign_out)"
+private let logoutConfirmButton = "MenuTableViewCell.\(LocalString._menu_signout_title)"
+private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
+private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
+private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
 
 /**
  Represents Menu view.
@@ -58,7 +56,7 @@ class MenuRobot {
         }
 
         func manageAccounts() -> AccountManagerRobot {
-            Element.wait.forStaticTextFieldWithIdentifier(manageAccountsStaticTextIdentifier, file: #file, line: #line).tap()
+            Element.wait.forCellWithIdentifier(manageAccountsStaticTextIdentifier, file: #file, line: #line).tap()
             return AccountManagerRobot()
         }
 

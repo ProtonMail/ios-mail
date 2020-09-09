@@ -24,7 +24,7 @@
 import Foundation
 
 
-class  PMWebView: WKWebView {
+class  PMWebView: WKWebView, AccessibleView {
     
     override var canBecomeFirstResponder : Bool {
         return true

@@ -73,6 +73,7 @@ class MessageContainerViewController: TableContainerViewController<MessageContai
         
         self.subscribeToThread()
         self.viewModel.downloadThreadDetails()
+        generateAccessibilityIdentifiers()
     }
     
     @objc func topMoreButtonTapped(_ sender: UIBarButtonItem) { 

@@ -25,7 +25,7 @@ import UIKit
 import CoreData
 import PromiseKit
 
-class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
+class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, AccessibleView {
     /// those two are optional
     typealias viewModelType = MenuViewModel
     typealias coordinatorType = MenuCoordinatorNew
@@ -87,6 +87,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
                                                selector: #selector(didPrimaryAccountLoggedOut(_:)),
                                                name: NSNotification.Name.didPrimaryAccountLogout,
                                                object: nil)
+<<<<<<< HEAD
         
         guard let user = self.viewModel.currentUser else {return}
         _ = firstly {
@@ -97,6 +98,9 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
                 self.tableView.reloadData()
             }
         }
+=======
+        generateAccessibilityIdentifiers()
+>>>>>>> Apply accessibility identifiers through reflection.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -438,7 +442,8 @@ extension MenuViewController: UITableViewDataSource {
             return cell
         case .accountManager:
             let cell = tableView.dequeueReusableCell(withIdentifier: kButtonTableCellID, for: indexPath) as! MenuButtonViewCell
-             return cell
+            cell.configCell(LocalString._menu_manage_accounts, hideSepartor: false)
+            return cell
         default:
             let cell: MenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell
             return cell
