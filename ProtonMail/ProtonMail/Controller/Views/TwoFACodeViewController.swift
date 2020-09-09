@@ -44,7 +44,6 @@ class TwoFACodeViewController : UIViewController {
         self.twoFACodeView.delegate = self
         self.twoFACodeView.layer.cornerRadius = 8;
         self.twoFACodeView.initViewMode(mode)
-        self.twoFACodeView.showKeyboard()
     }
     
     deinit {
@@ -54,6 +53,7 @@ class TwoFACodeViewController : UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         NotificationCenter.default.addKeyboardObserver(self)
+        self.twoFACodeView.showKeyboard()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,6 +62,7 @@ class TwoFACodeViewController : UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.view.endEditing(true)
         NotificationCenter.default.removeKeyboardObserver(self)
     }
     
@@ -87,8 +88,11 @@ extension TwoFACodeViewController: NSNotificationCenterKeyboardObserverProtocol 
     
     func keyboardWillShowNotification(_ notification: Notification) {
         let info: NSDictionary = notification.userInfo! as NSDictionary
-        if let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            tfaCodeCenterConstraint.constant = (keyboardSize.height / 2) * -1.0
+        guard let keyboardSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {return}
+        let keyboardInfo = notification.keyboardInfo
+        tfaCodeCenterConstraint.constant = (keyboardSize.height / 2) * -1.0
+        UIView.animate(withDuration: keyboardInfo.duration) {
+            self.view.layoutIfNeeded()
         }
     }
 }
