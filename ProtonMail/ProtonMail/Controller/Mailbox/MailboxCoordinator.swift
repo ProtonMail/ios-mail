@@ -251,7 +251,7 @@ class MailboxCoordinator : DefaultCoordinator {
                 let message = msgService.fetchMessages(withIDs: [messageID]).first,
                 let nav = self.navigation
             {
-                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService, user: user, coreDataService: self.services.get(by: CoreDataService.self)), services: services)
+                let details = MessageContainerViewCoordinator(nav: nav, viewModel: .init(message: message, msgService: msgService, user: user, coreDataService: self.services.get(by: CoreDataService.self), states: path.states), services: services)
                 details.start()
                 details.follow(deeplink)
             }
