@@ -122,6 +122,11 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
             UIApplication.shared.delegate?.applicationDidEnterBackground?(UIApplication.shared)
         }
     }
+    
+    func sceneWillResignActive(_ scene: UIScene) {
+        let application = UIApplication.shared
+        application.delegate?.applicationWillResignActive?(application)
+    }
 }
 
 @available(iOS 13.0, *)

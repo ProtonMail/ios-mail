@@ -341,6 +341,10 @@ extension AppDelegate: UIApplicationDelegate {
         }
     }
     
+    func applicationWillResignActive(_ application: UIApplication) {
+        // Home button is pressed twice
+        self.coordinator.didEnterBackground()
+    }
     // MARK: Background methods
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         // this feature can only work if user did not lock the app
