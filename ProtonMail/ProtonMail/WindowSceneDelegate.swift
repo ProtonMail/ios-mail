@@ -127,6 +127,11 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         let application = UIApplication.shared
         application.delegate?.applicationWillResignActive?(application)
     }
+    
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        let application = UIApplication.shared
+        application.delegate?.applicationDidBecomeActive?(application)
+    }
 }
 
 @available(iOS 13.0, *)
