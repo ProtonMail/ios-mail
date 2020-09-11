@@ -81,13 +81,14 @@ class LabelsDataService: Service, HasLocalStorage {
      ````
      - Parameter type: type 1 is for message labels, type 2 is for contact groups
      */
-    func fetchLabels(type: Int = 1) {
+    func fetchLabels(type: Int = 1, completion: (() -> Void)? = nil) {
         let eventAPI = GetLabelsRequest(type: type)
         eventAPI.call(api: self.api) {
             task, response, hasError in
             
             if response == nil {
                 //TODO:: error
+                completion?()
             } else if var labels = response?.labels {
                 // add prebuild inbox label
                 for (index, _) in labels.enumerated() {
@@ -125,9 +126,11 @@ class LabelsDataService: Service, HasLocalStorage {
                     } catch let ex as NSError {
                         PMLog.D("error: \(ex)")
                     }
+                    completion?()
                 }
             } else {
                 //TODO:: error
+                completion?()
             }
         }
     }

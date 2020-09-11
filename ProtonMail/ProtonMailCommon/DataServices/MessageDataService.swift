@@ -1057,21 +1057,25 @@ class MessageDataService : Service, HasLocalStorage {
         }
     }
     
-    fileprivate func cleanMessage() {
-        self.coreDataService.enqueue { (context) in
-            if #available(iOS 12, *) {
-                self.isFirstTimeSaveAttData = true
+    fileprivate func cleanMessage() -> Promise<Void> {
+        return Promise { seal in
+            self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+                if #available(iOS 12, *) {
+                    self.isFirstTimeSaveAttData = true
+                }
+                
+                let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
+                fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
+                let request = NSBatchDeleteRequest(fetchRequest: fetch)
+                if let _ = try? context.execute(request) {
+                    _ = context.saveUpstreamIfNeeded()
+                }
+                DispatchQueue.main.async {
+                    UIApplication.setBadge(badge: 0)
+                }
+                seal.fulfill_()
             }
-            
-            let fetch = NSFetchRequest<NSFetchRequestResult>(entityName: Message.Attributes.entityName)
-            fetch.predicate = NSPredicate(format: "%K == %@", Message.Attributes.userID, self.userID)
-            let request = NSBatchDeleteRequest(fetchRequest: fetch)
-            if let _ = try? context.execute(request) {
-                _ = context.saveUpstreamIfNeeded()
-            }
-            
         }
-        UIApplication.setBadge(badge: 0)
     }
     
     func search(_ query: String, page: Int, completion: (([Message.ObjectIDContainer]?, NSError?) -> Void)?) {
@@ -2149,23 +2153,24 @@ class MessageDataService : Service, HasLocalStorage {
         let getLatestEventID = EventLatestIDRequest<EventLatestIDResponse>()
         getLatestEventID.call(api: self.apiService) { task, response, hasError in
             if response != nil && !hasError && !response!.eventID.isEmpty {
-                let completionWrapper: CompletionBlock = { task, responseDict, error in
-                    if error == nil {
-                        lastUpdatedStore.clear()
-                        _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID).ensure {
-                            completion?(task, nil, error)
+                self.cleanMessage().then { _ -> Promise<Void> in
+                    return self.contactDataService.cleanUp()
+                }.ensure {
+                    self.labelDataService.fetchLabels() {
+                        self.contactDataService.fetchContacts { (_, error) in
+                            if error == nil {
+                                lastUpdatedStore.clear()
+                                _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID).ensure {
+                                    completion?(task, nil, error)
+                                }
+                            } else {
+                                DispatchQueue.main.async {
+                                    completion?(task, nil, error)
+                                }
+                            }
                         }
-                        return
                     }
-                    completion?(task, nil, error)
-                }
-
-                self.cleanMessage()
-                _ = self.contactDataService.cleanUp().ensure {
-                    self.labelDataService.fetchLabels()
-                    self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false, completion: completionWrapper)
-                    self.contactDataService.fetchContacts(completion: nil)
-                }
+                }.cauterize()
             } else {
                 completion?(task, nil, response?.error)
             }
