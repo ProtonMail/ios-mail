@@ -39,7 +39,7 @@ let fingerprint = PMFingerprint()
 ```swift
 public func reset()
 ```
-2. Export collected fingerprint data and reset collected data  
+2. Export collected fingerprint data
 ```swift
 public func export() -> PMFingerprint.Fingerprint
 ```

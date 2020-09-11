@@ -61,7 +61,7 @@ def pm_pods
     
     pod 'SWRevealViewController', '2.3.0'
     pod 'DKImagePickerController/PhotoGallery', '~> 4.1.7'
-    pod 'PMFingerprint', :git => 'git@gitlab.protontech.ch:apple/shared/pmfingerprint.git', :tag => '0.0.2'
+    pod 'PMFingerprint', :git => 'git@gitlab.protontech.ch:apple/shared/pmfingerprint.git', :tag => '0.0.3'
 end
 
 # for extensions Share
