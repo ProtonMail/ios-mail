@@ -107,13 +107,7 @@ class MenuCoordinatorNew: DefaultCoordinator {
     private func toPlan() {
         let user = self.viewModel.currentUser!
         let nextCoordinator = StorefrontCoordinator(rvc: self.viewController?.revealViewController(), user: user)
-        if let currentSubscription = user.sevicePlanService.currentSubscription {
-            let storefront = Storefront(subscription: currentSubscription, servicePlanService: user.sevicePlanService, user: user.userInfo)
-            nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
-        } else {
-            let storefront = Storefront(plan: .free, servicePlanService: user.sevicePlanService, user: user.userInfo)
-            nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
-        }
+        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: user)
 
         nextCoordinator.start()
     }

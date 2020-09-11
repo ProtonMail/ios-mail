@@ -23,6 +23,7 @@
 
 import UIKit
 import CoreData
+import PromiseKit
 
 class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
     /// those two are optional
@@ -86,6 +87,16 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew {
                                                selector: #selector(didPrimaryAccountLoggedOut(_:)),
                                                name: NSNotification.Name.didPrimaryAccountLogout,
                                                object: nil)
+        
+        guard let user = self.viewModel.currentUser else {return}
+        _ = firstly {
+            user.sevicePlanService.updateServicePlans()
+        }.done {
+            if self.tableView.visibleCells.count > 0 {
+                self.viewModel.updateMenuItems()
+                self.tableView.reloadData()
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

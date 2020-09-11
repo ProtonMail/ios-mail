@@ -142,6 +142,7 @@ extension Analytics {
         case queueError = "Queue Error"
         case updateLoginPassword = "Update Login Password"
         case updateMailBoxPassword = "Update MailBox Password"
+        case fetchSubscriptionData = "Fetch Subscription Data"
     }
     
     struct Reason {
