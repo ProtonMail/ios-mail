@@ -44,7 +44,7 @@ extension StorageLimit {
             return
         }
         
-        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.file)
+        let formattedMaxSpace : String = ByteCountFormatter.string(fromByteCount: Int64(maxSpace), countStyle: ByteCountFormatter.CountStyle.binary)
         var message = ""
         
         if usedSpace >= maxSpace {
