@@ -498,6 +498,7 @@ class ContactDataService: Service, HasLocalStorage {
     fileprivate var retries : Int = 0
     func fetchContacts(completion: ContactFetchComplete?) {
         if lastUpdatedStore.contactsCached == 1 || isFetching {
+            completion?(nil, nil)
             return
         }
         
@@ -630,6 +631,8 @@ class ContactDataService: Service, HasLocalStorage {
                 lastUpdatedStore.contactsCached = 1
                 self.isFetching = false
                 self.retries = 0
+                
+                completion?(nil, nil)
                 
             } catch let ex as NSError {
                 lastUpdatedStore.contactsCached = 0
