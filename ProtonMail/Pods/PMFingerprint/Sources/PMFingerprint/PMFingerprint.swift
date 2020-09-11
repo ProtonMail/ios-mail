@@ -144,14 +144,14 @@ extension PMFingerprint {
     
     /// Record username that checks availability
     public func appendCheckedUsername(_ username: String) {
-        if self.usernameEditingTime == 0 {
-            // Sometimes check username without editing username.
-            self.fingerprint.time_user.append(0)
-        } else {
-            let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
-            self.fingerprint.time_user.append(time)
+        guard self.usernameEditingTime > 0 else {
+            // Ignore if editing time is zero
+            // Sometimes app will check the same username in very short time.
+            return
         }
         
+        let time = Int(Date().timeIntervalSince1970 - self.usernameEditingTime)
+        self.fingerprint.time_user.append(time)
         self.fingerprint.usernameChecks.append(username)
         
         self.usernameEditingTime = 0
@@ -217,6 +217,7 @@ extension PMFingerprint {
         switch interceptor.type {
         case .username:
             self.fingerprint.copy_username.append(copyText)
+            self.fingerprint.usernameTypedChars.append("Copy")
         case .recovery:
             self.fingerprint.copy_recovery.append(copyText)
         default:
@@ -253,14 +254,15 @@ extension PMFingerprint: TextFieldInterceptorDelegate {
     }
     
     func charactersTyped(chars: String, type: TextFieldType) throws {
+        let value: String = chars.count > 1 ? "Paste": chars
         switch type {
         case .username:
-            self.fingerprint.usernameTypedChars.append(chars)
+            self.fingerprint.usernameTypedChars.append(value)
             if chars.count > 1 {
                 self.fingerprint.paste_username.append(chars)
             }
         case .recovery:
-            self.fingerprint.recoverTypedChars.append(chars)
+            self.fingerprint.recoverTypedChars.append(value)
             if chars.count > 1 {
                 self.fingerprint.paste_recovery.append(chars)
             }
