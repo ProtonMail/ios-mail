@@ -1803,6 +1803,16 @@ class MessageDataService : Service, HasLocalStorage {
                 //Debug info
                 status.insert(SendStatus.buildSend)
                 
+                if msgs.count == 0 {
+                    Analytics.shared.debug(message: .sendMessageError,
+                                           extra: ["SendStatus": status,
+                                                   "IsBodyEmpty": message.body == "",
+                                                   "HasPlainText": sendBuilder.hasPlainText,
+                                                   "HasMIME": sendBuilder.hasMime,
+                                                   "HasAtt": attachments.count != 0],
+                                           user: self.usersManager?.firstUser)
+                }
+                
                 let sendApi = SendMessage(api: userManager.apiService,
                                           messageID: message.messageID,
                                           expirationTime: message.expirationOffset,
