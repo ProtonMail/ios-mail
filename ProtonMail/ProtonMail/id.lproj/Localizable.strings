@@ -1045,10 +1045,10 @@
 
 /* mail location desc
    menu title */
-"Inbox" = "Kootak masuk";
+"Inbox" = "Kotak masuk";
 
 /* mail location title */
-"INBOX" = "Kootak masuk";
+"INBOX" = "Kotak masuk";
 
 /* Title */
 "Incorrect password" = "Kata sandi salah";
