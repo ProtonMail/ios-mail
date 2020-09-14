@@ -519,8 +519,8 @@ extension UsersManager {
         self.save()
     }
     
-    internal func clean() { 
-        _ = UserManager.cleanUpAll().ensure {
+    internal func clean() -> Promise<Void> {
+        return UserManager.cleanUpAll().ensure {
             SharedCacheBase.getDefault()?.remove(forKey: CoderKey.usersInfo)
             KeychainWrapper.keychain.remove(forKey: CoderKey.keychainStore)
             KeychainWrapper.keychain.remove(forKey: CoderKey.authKeychainStore)
