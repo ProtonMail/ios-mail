@@ -23,9 +23,10 @@
 
 import Foundation
 import UIKit
+import PromiseKit
 
 protocol PinCodeViewControllerDelegate: class {
-    func Cancel()
+    func Cancel() -> Promise<Void>
     func Next()
 }
 
@@ -122,8 +123,9 @@ extension PinCodeViewController : PinCodeViewDelegate {
     }
     
     private func proceedCancel(_ sender: Any? = nil) {
-        self.delegate?.Cancel()
-        let _ = self.navigationController?.popViewController(animated: true)
+        _ = self.delegate?.Cancel().done {
+            let _ = self.navigationController?.popViewController(animated: true)
+        }
     }
     
     func Next(_ code : String) {

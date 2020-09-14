@@ -509,9 +509,13 @@ extension SignInViewController : TwoFACodeViewControllerDelegate {
 
 extension SignInViewController : PinCodeViewControllerDelegate {
     
-    func Cancel() {
-        UserTempCachedStatus.backup()
-        self.coordinator?.services.get(by: UsersManager.self).clean()
+    func Cancel() -> Promise<Void> {
+        return Promise { seal in
+            UserTempCachedStatus.backup()
+            self.coordinator?.services.get(by: UsersManager.self).clean().done {
+                seal.fulfill_()
+            }
+        }
     }
     
     func Next() {
