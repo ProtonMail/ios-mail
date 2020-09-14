@@ -725,10 +725,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         guard self.viewModel.sectionCount() > 0 else {
             return
         }
-        let rowCount = self.viewModel.rowCount(section: 0)
-        guard rowCount == 0 else {
-            return
-        }
+        
         self.pullDown()
         //TODO:: fix me
 //        let updateTime = viewModel.lastUpdateTime()
