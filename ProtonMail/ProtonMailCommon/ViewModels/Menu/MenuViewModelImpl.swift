@@ -80,6 +80,7 @@ class MenuViewModelImpl : MenuViewModel {
     func updateCurrent(row: Int) {
         self.currentUser = self.usersManager.user(at: row)
         self.usersManager.active(index: row)
+        _ = self.currentUser?.sevicePlanService.updateServicePlans()
     }
     
     func updateCurrent() {
@@ -136,6 +137,7 @@ class MenuViewModelImpl : MenuViewModel {
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
+        
         if let user = self.currentUser, !user.sevicePlanService.isIAPAvailable {
             otherItems = otherItems.filter { $0 != .servicePlan }
         }

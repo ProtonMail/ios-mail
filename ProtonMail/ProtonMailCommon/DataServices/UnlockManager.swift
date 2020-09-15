@@ -167,7 +167,6 @@ class UnlockManager: Service {
         #if !APP_EXTENSION
         sharedServices.get(by: UsersManager.self).users.forEach {
             $0.messageService.injectTransientValuesIntoMessages()
-            self.updateUserData(of: $0)
         }
         self.updateCommonUserData()
         StoreKitManager.default.processAllTransactions()
@@ -180,16 +179,6 @@ class UnlockManager: Service {
     
     
     #if !APP_EXTENSION
-    // TODO: verify if some of these operations can be optimized
-    private func updateUserData(of user: UserManager) { // previously this method was called loadContactsAfterInstall()
-        pthread_mutex_lock(&self.mutex)
-        user.sevicePlanService.updateServicePlans() {
-            user.sevicePlanService.updateCurrentSubscription()
-        }
-        
-        pthread_mutex_unlock(&self.mutex)
-    }
-    
     func updateCommonUserData() {
 //        sharedUserDataService.fetchUserInfo().done { _ in }.catch { _ in }
 //        //TODO:: here need to be changed

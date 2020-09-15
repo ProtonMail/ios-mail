@@ -98,23 +98,24 @@ class ServicePlanDataService: NSObject, Service, HasLocalStorage {
 }
 //TODO:: this logic need to be changed
 extension ServicePlanDataService {
-    internal func updateServicePlans(completion: CompletionHandler? = nil) {
-        async {
-            let statusApi = GetIAPStatusRequest(api: self.apiService)
-            let statusRes = try await(statusApi.run())
-            self.isIAPAvailableOnBE = statusRes.isAvailable ?? false
-            
-            let servicePlanApi = GetServicePlansRequest(api: self.apiService)
-            let servicePlanRes = try await(servicePlanApi.run())
-            self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
-            
-            let defaultServicePlanApi = GetDefaultServicePlanRequest(api: self.apiService)
-            let defaultServicePlanRes = try await(defaultServicePlanApi.run())
-            self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
-
-            completion?()
-        }.catch { _ in
-            completion?()
+    internal func updateServicePlans() -> Promise<Void> {
+        return Promise {seal in
+            async {
+                let statusApi = GetIAPStatusRequest(api: self.apiService)
+                let statusRes = try await(statusApi.run())
+                self.isIAPAvailableOnBE = statusRes.isAvailable ?? false
+                
+                let servicePlanApi = GetServicePlansRequest(api: self.apiService)
+                let servicePlanRes = try await(servicePlanApi.run())
+                self.allPlanDetails = servicePlanRes.availableServicePlans ?? []
+                
+                let defaultServicePlanApi = GetDefaultServicePlanRequest(api: self.apiService)
+                let defaultServicePlanRes = try await(defaultServicePlanApi.run())
+                self.defaultPlanDetails = defaultServicePlanRes.defaultMailPlan
+                seal.fulfill_()
+            }.catch { error in
+                seal.reject(error)
+            }
         }
     }
     
@@ -145,21 +146,22 @@ extension ServicePlanDataService {
         }
     }
     
-    internal func updateCurrentSubscription(completion: CompletionHandler? = nil) {
-        async {
-            let subscriptionApi = GetSubscriptionRequest(api: self.apiService)
-            let subscriptionRes = try await(subscriptionApi.run())
-            self.currentSubscription = subscriptionRes.subscription
-            self.updatePaymentMethods()
-            completion?()
-        }.catch { error in
-            if (error as NSError).code == 22110 { // no subscription stands for free/default plan
-                self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, defaultPlanDetails: self.defaultPlanDetails, paymentMethods: nil)
+    internal func updateCurrentSubscription() -> Promise<Void> {
+        return Promise {seal in
+            async {
+                let subscriptionApi = GetSubscriptionRequest(api: self.apiService)
+                let subscriptionRes = try await(subscriptionApi.run())
+                self.currentSubscription = subscriptionRes.subscription
+                self.updatePaymentMethods()
+                seal.fulfill_()
+            }.catch { error in
+                if (error as NSError).code == 22110 { // no subscription stands for free/default plan
+                    self.currentSubscription = ServicePlanSubscription(start: nil, end: nil, planDetails: nil, defaultPlanDetails: self.defaultPlanDetails, paymentMethods: nil)
+                }
+                seal.fulfill_()
+            }.finally {
+                self.updateTier()
             }
-            completion?()
-        }.finally {
-            self.updateTier()
         }
-
     }
 }

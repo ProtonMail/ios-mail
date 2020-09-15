@@ -54,7 +54,7 @@ class StorefrontCoordinator: PushCoordinator {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
         let storefront = Storefront(plan: nextPlan, servicePlanService: user.sevicePlanService, user: user.userInfo)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
+        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: self.user, storefront: storefront)
 
         nextCoordinator.start()
     }
@@ -63,8 +63,7 @@ class StorefrontCoordinator: PushCoordinator {
         guard let navigationController = self.navigationController else { return }
         let nextCoordinator = StorefrontCoordinator(navigation: navigationController, user: self.user)
         let storefront = Storefront(creditsFor: subscription, servicePlanService: user.sevicePlanService, user: user.userInfo)
-        nextCoordinator.viewController?.viewModel = StorefrontViewModel(storefront: storefront, servicePlanService: user.sevicePlanService)
-
+        nextCoordinator.viewController?.viewModel = StorefrontViewModel(currentUser: self.user, storefront: storefront)
         nextCoordinator.start()
     }
     
