@@ -11,9 +11,9 @@ import XCTest
 private let usernameIdentifier = "SignInViewController.usernameTextField"
 private let passwordIdentifier = "SignInViewController.passwordTextField"
 private let signinButtonIdentifier = "SignInViewController.signInButton"
-private let twoFaCodeIdentifier = "TextInsetTextField.twoFactorCodeField"
-private let twoFaCancelButtonIdentifier = "UIButton.cancelButton"
-private let twoFaEnterButtonIdentifier = "UIButton.enterButton"
+private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
 
 class LoginRobot {
     

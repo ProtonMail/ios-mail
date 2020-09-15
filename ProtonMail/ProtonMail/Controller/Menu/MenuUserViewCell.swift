@@ -113,9 +113,7 @@ class MenuUserViewCell: UITableViewCell, AccessibleCell {
         
         let displayName = name.isEmpty ? email : name
         self.displayName.text = displayName
-        self.displayName.accessibilityIdentifier = displayName
         self.emailAddress.text = email
-        self.emailAddress.accessibilityIdentifier = email
         self.setupShortName(displayName: displayName)
         generateCellAccessibilityIdentifiers(email)
     }

@@ -70,21 +70,21 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Pro (logged out)" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GfF-je-Cu0" userLabel="user display name">
                                                     <rect key="frame" x="60" y="10" width="300" height="19.5"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="accountDisplayName"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy@pm.me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BZL-dY-GDg" userLabel="user email address">
                                                     <rect key="frame" x="60" y="34" width="298" height="16"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="accountEmail"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qzy-Am-RZf" userLabel="Short name">
                                                     <rect key="frame" x="10" y="10" width="40" height="40"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="shortNameLabel"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" secondItem="qzy-Am-RZf" secondAttribute="height" multiplier="1:1" id="VMr-sv-qgy"/>
                                                         <constraint firstAttribute="height" constant="40" id="e9i-O9-5V7"/>
@@ -96,7 +96,6 @@
                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="MvZ-mI-RVr" userLabel="unread label">
                                                     <rect key="frame" x="368" y="17" width="26" height="26"/>
                                                     <color key="backgroundColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                    <accessibility key="accessibilityConfiguration" identifier="unreadLabel"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="26" id="ASb-9R-ZaP"/>
                                                         <constraint firstAttribute="height" constant="26" id="lN6-CO-41a"/>
@@ -164,6 +163,7 @@
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add Account" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Dn-pK-KrN" userLabel="Settings Label">
                                                             <rect key="frame" x="30" y="12.5" width="364" height="19.5"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="addAccountLabel"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                             <color key="textColor" red="0.50588235290000005" green="0.50980392159999999" blue="0.76470588240000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <nil key="highlightedColor"/>
@@ -878,6 +878,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="7DW-yo-ejW" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="342" height="40"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtUsername"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" returnKeyType="next" enablesReturnKeyAutomatically="YES" textContentType="username"/>
@@ -900,7 +901,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="3vb-Mm-OtJ" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="342" height="40"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <accessibility key="accessibilityConfiguration" identifier="txtPassword"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtUsername"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
@@ -982,7 +983,7 @@
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NeA-VN-zIr">
                                                 <rect key="frame" x="47" y="851" width="280" height="20"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="createNewAccountButton"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="a8y-Ug-xRX"/>
                                                     <constraint firstAttribute="height" constant="20" id="p9r-rw-vaC"/>
@@ -1123,7 +1124,7 @@
                                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="Kmh-ty-7n3" customClass="TextInsetTextField" customModule="ProtonMail" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="342" height="40"/>
                                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                                                        <accessibility key="accessibilityConfiguration" identifier="txtMailboxPassword"/>
+                                                        <accessibility key="accessibilityConfiguration" identifier="txtUsername"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next" enablesReturnKeyAutomatically="YES" secureTextEntry="YES" textContentType="password"/>
@@ -1181,7 +1182,7 @@
                                             </button>
                                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8CE-uJ-iOh">
                                                 <rect key="frame" x="47" y="225.5" width="280" height="20"/>
-                                                <accessibility key="accessibilityConfiguration" identifier="forgotPasswordMailboxButton"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="forgotPasswordButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="280" id="8PJ-dP-Xr0"/>
                                                     <constraint firstAttribute="height" constant="20" id="let-Lq-bRy"/>

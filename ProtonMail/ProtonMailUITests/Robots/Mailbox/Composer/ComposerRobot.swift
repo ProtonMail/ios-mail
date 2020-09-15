@@ -10,7 +10,7 @@ import XCTest
 fileprivate let sendButtonLabel = "Send"
 fileprivate let toStaticTextLabel = "To"
 fileprivate let fromStaticTextLabel = "From"
-fileprivate let subjectStaticTextLabel = "Subject"
+fileprivate let subjectIdentifier = "SubjectTextField"
 
 /**
  Represents Composer view.
@@ -20,8 +20,8 @@ class ComposerRobot {
     var verify: Verify! = nil
     init() { verify = Verify(parent: self) }
     
-    func sendMessage(to: String, subject: String) -> InboxRobot {
-        //TODO:: add implementation
+    func sendMessage(to: String, subjectText: String) -> InboxRobot {
+        subject(subjectText)
         return InboxRobot()
     }
     
@@ -50,8 +50,8 @@ class ComposerRobot {
         return self
     }
     
-    func subject(_ subject: String) -> ComposerRobot {
-        Element.staticText.tapByIdentifier(subjectStaticTextLabel)
+    func subject(_ subjectText: String) -> ComposerRobot {
+        Element.wait.forTextFieldWithIdentifier(subjectIdentifier, file: #file, line: #line).typeText(subjectText)
         return self
     }
     

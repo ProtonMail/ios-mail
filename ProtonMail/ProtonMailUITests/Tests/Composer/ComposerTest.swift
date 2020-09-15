@@ -14,7 +14,7 @@ class ComposerTests: BaseTestCase {
         
         LoginRobot().loginUser(user)
             .compose()
-            .sendMessage(to: user.email, subject: subject)
+            .sendMessage(to: user.email, subjectText: subject)
             .menuDrawer()
             .sent()
             .verify.messageWithSubjectExists(subject)

@@ -6,14 +6,16 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-fileprivate let usernameTextFieldIdentifier = "txtUsername"
-fileprivate let passwordSecureTextFieldIdentifier = "txtPassword"
-fileprivate let loginButtonIdentifier = "loginButton"
-fileprivate let mailboxPasswordTextField = "txtMailboxPassword"
-private let twoFaCodeIdentifier = "TwoFACodeView"
-private let twoFaEnterButtonIdentifier = "authEnterButton"
-private let twoFaCancelButtonIdentifier = "authCancelButton"
-private let cancelButtonIdentifier = "cancelButton"
+fileprivate let usernameTextFieldIdentifier = "AccountConnectViewController.usernameTextField"
+fileprivate let passwordSecureTextFieldIdentifier = "AccountConnectViewController.passwordTextField"
+fileprivate let loginButtonIdentifier = "AccountConnectViewController.signInButton"
+fileprivate let mailboxPasswordTextField = "AccountPasswordViewController.passwordTextField"
+fileprivate let decryptButtonIdentifier = "AccountPasswordViewController.signInButton"
+private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
+private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+private let cancelButtonIdentifier = "UINavigationItem.leftBarButtonItem"
+
 
 class ConnectAccountRobot {
     
@@ -77,7 +79,7 @@ class ConnectAccountRobot {
     }
     
     private func decrypt() -> InboxRobot {
-        Element.wait.forButtonWithIdentifier(loginButtonIdentifier).tap()
+        Element.wait.forButtonWithIdentifier(decryptButtonIdentifier).tap()
         return InboxRobot()
     }
 

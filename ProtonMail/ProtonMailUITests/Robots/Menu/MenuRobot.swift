@@ -13,7 +13,9 @@ private let logoutConfirmButton = "MenuTableViewCell.\(LocalString._menu_signout
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
 private let manageAccountsStaticTextIdentifier = "MenuButtonViewCell.\(LocalString._menu_manage_accounts.replaceSpaces())"
-
+private func userAccountCellIdentifier(_ email: String) -> String { return "MenuUserViewCell.\(email)" }
+private func shortNameStaticTextdentifier(_ email: String) -> String { return "\(email).shortName" }
+private func displayNameStaticTextdentifier(_ email: String) -> String { return "\(email).displayName" }
 /**
  Represents Menu view.
 */
@@ -61,7 +63,7 @@ class MenuRobot {
         }
 
         func switchToAccount(_ user: User) -> InboxRobot {
-            Element.wait.forCellWithIdentifier("\(user.email)_MenuUserCell", file: #file, line: #line).tap()
+            Element.wait.forCellWithIdentifier(userAccountCellIdentifier(user.email), file: #file, line: #line).tap()
             return InboxRobot()
         }
 
@@ -71,8 +73,9 @@ class MenuRobot {
         class Verify {
 
             func accountAdded(_ user: User) {
-                Element.wait.forStaticTextFieldWithIdentifier(user.email, file: #file, line: #line)
-                Element.wait.forStaticTextFieldWithIdentifier(user.name, file: #file, line: #line)
+                Element.wait.forCellWithIdentifier(userAccountCellIdentifier(user.email), file: #file, line: #line)
+                Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
+                Element.wait.forStaticTextFieldWithIdentifier(displayNameStaticTextdentifier(user.email), file: #file, line: #line)
             }
         }
     }

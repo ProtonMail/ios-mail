@@ -176,6 +176,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoView.isHidden = true
         
         self.viewModel.cleanReviewItems()
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -269,7 +270,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.refreshControl.addTarget(self, action: #selector(pullDown), for: UIControl.Event.valueChanged)
         self.refreshControl.tintColor = UIColor.gray
         self.refreshControl.tintColorDidChange()
-        self.refreshControl.accessibilityIdentifier = "refreshControl"
         
         self.tableView.addSubview(self.refreshControl)
         self.tableView.dataSource = self

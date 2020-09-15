@@ -44,11 +44,8 @@ class TwoFACodeViewController : UIViewController, AccessibleView {
         self.twoFACodeView.delegate = self
         self.twoFACodeView.layer.cornerRadius = 8;
         self.twoFACodeView.initViewMode(mode)
-<<<<<<< HEAD
-=======
         self.twoFACodeView.showKeyboard()
         generateAccessibilityIdentifiers()
->>>>>>> Apply accessibility identifiers through reflection.
     }
     
     deinit {

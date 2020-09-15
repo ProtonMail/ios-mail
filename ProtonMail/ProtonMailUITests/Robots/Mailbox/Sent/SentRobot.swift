@@ -22,7 +22,7 @@ class SentRobot : MailboxRobotInterface {
     override func menuDrawer() -> MenuRobot {
         return super.menuDrawer()
     }
-    
+
     override func swipeLeftMessageAtPosition(_ position: Int) -> SentRobot {
         super.swipeLeftMessageAtPosition(position)
         return self

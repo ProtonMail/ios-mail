@@ -8,9 +8,14 @@
 
 import XCTest
 
-fileprivate let addAccountCellIdentifier = "addAccount"
-fileprivate let removeAllButtonIdentifier = "removeAllButton"
+fileprivate let addAccountCellIdentifier = "addAccountLabel"
+fileprivate let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
 fileprivate let swipeUserCellTrailingButtonIdentifier = "trailing0"
+
+fileprivate let removeAllLabel = "Remove All"
+
+private func userAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)" }
+private func loggedOutUserAccountCellIdentifier(_ email: String) -> String { return "AccountManagerUserCell.\(email)_(logged_out)" }
 
 /**
  Represents Account Manager view.
@@ -24,7 +29,7 @@ class AccountManagerRobot {
     }
     
     func addAccount() -> ConnectAccountRobot {
-        Element.cell.tapByIdentifier(addAccountCellIdentifier)
+        Element.wait.forStaticTextFieldWithIdentifier(addAccountCellIdentifier).tap()
         return ConnectAccountRobot()
     }
 
@@ -46,17 +51,17 @@ class AccountManagerRobot {
     }
     
     private func removeAll() -> RemoveAllAlertRobot {
-        Element.wait.forButtonWithIdentifier(removeAllButtonIdentifier).tap()
+        Element.wait.forButtonWithIdentifier(removeAllLabel).tap()
         return RemoveAllAlertRobot()
     }
     
     private func swipeLeft(_ email: String) -> AccountManagerRobot {
-        Element.cell.swipeLeftByIdentifier("\(email)_UserCell")
+        Element.wait.forCellWithIdentifier(userAccountCellIdentifier(email)).swipeLeft()
         return AccountManagerRobot()
     }
     
     private func swipeLeftToDelete(_ email: String) -> AccountManagerRobot {
-        Element.wait.forCellWithIdentifier("\(email)_UserCell_LoggedOut").swipeLeft()
+        Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email)).swipeLeft()
         return AccountManagerRobot()
     }
 
@@ -131,11 +136,11 @@ class AccountManagerRobot {
         }
         
         func accountLoggedOut(_ email: String) {
-            Element.wait.forCellWithIdentifier("\(email)_UserCell_LoggedOut", file: #file, line: #line)
+            Element.wait.forCellWithIdentifier(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line)
         }
         
         func accountRemoved(_ email: String) {
-            Element.wait.forCellWithIdentifierToDisappear("\(email)_UserCell_LoggedOut", file: #file, line: #line)
+            Element.wait.forCellWithIdentifierToDisappear(loggedOutUserAccountCellIdentifier(email), file: #file, line: #line)
         }
     }
 }

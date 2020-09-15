@@ -288,18 +288,21 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy Pro (logged out)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cvm-Jg-qNv" userLabel="user display name">
                                                     <rect key="frame" x="60" y="10" width="596" height="19.5"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Andy@pm.me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMY-R2-RON" userLabel="user email address">
                                                     <rect key="frame" x="60" y="34" width="594" height="16"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="AY" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HBS-Vs-pJD" userLabel="Short name">
                                                     <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="contactsLabel"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="YAq-uQ-TNg"/>
                                                         <constraint firstAttribute="width" secondItem="HBS-Vs-pJD" secondAttribute="height" multiplier="1:1" id="reA-O6-oMp"/>
@@ -388,8 +391,9 @@
                                             <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49f-bC-Hh9" userLabel="Settings Label">
-                                                    <rect key="frame" x="10" y="22" width="748" height="0.0"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Manage accounts" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49f-bC-Hh9" userLabel="Settings Label">
+                                                    <rect key="frame" x="10" y="12.5" width="748" height="19"/>
+                                                    <accessibility key="accessibilityConfiguration" identifier="reportBugsLabel"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                                                     <color key="textColor" red="0.50588235294117645" green="0.50980392156862742" blue="0.76470588235294112" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
@@ -499,18 +503,14 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Display Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJa-fM-KPk">
                                         <rect key="frame" x="16" y="6" width="603" height="20"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="displayNameLabel">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
+                                        <accessibility key="accessibilityConfiguration" identifier="displayNameLabel"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="abcdefg@protonmail.ch" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dGF-dy-Rrr">
                                         <rect key="frame" x="16" y="28" width="603" height="13"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="displayEmailLabel">
-                                            <bool key="isElement" value="NO"/>
-                                        </accessibility>
+                                        <accessibility key="accessibilityConfiguration" identifier="displayEmailLabel"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="13" id="Qa3-jH-MjH"/>
                                         </constraints>
@@ -520,7 +520,6 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IIk-hq-6PK">
                                         <rect key="frame" x="16" y="6" width="627" height="35"/>
-                                        <accessibility key="accessibilityConfiguration" identifier="sidebarHeaderViewButton"/>
                                         <connections>
                                             <action selector="usersClicked:" destination="JMB-iY-fYD" eventType="touchUpInside" id="4Gc-af-1BM"/>
                                         </connections>
@@ -553,9 +552,7 @@
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.24604520201683044" green="0.24387916922569275" blue="0.30707395076751709" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <accessibility key="accessibilityConfiguration" identifier="sidebarHeaderView">
-                                    <bool key="isElement" value="YES"/>
-                                </accessibility>
+                                <accessibility key="accessibilityConfiguration" identifier="sidebarHeaderView"/>
                                 <constraints>
                                     <constraint firstItem="UJa-fM-KPk" firstAttribute="top" secondItem="E7U-Dc-qS6" secondAttribute="top" constant="6" id="4WZ-sS-AqA"/>
                                     <constraint firstItem="dGF-dy-Rrr" firstAttribute="trailing" secondItem="aXI-g9-7g9" secondAttribute="leading" id="6gX-aT-a78"/>
@@ -614,7 +611,7 @@
             <objects>
                 <navigationController restorationIdentifier="MailboxNavigationController" id="N9H-or-xL9" userLabel="Mailbox Navigation Controller" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="e1C-fN-Z7f">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="50"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -634,7 +631,7 @@
                         <viewControllerLayoutGuide type="bottom" id="9Rd-Ua-EDv"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="DPk-ca-rce">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="viD-Nu-yL2">
@@ -957,7 +954,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Jzd-SW-ZeK"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="OTG-Sc-6eN">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="974"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="928"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="TableView" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="64" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="7Zx-Yy-VI3">
@@ -1212,7 +1209,11 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Mail" id="Y7X-YF-pK8">
                         <barButtonItem key="backBarButtonItem" title=" " id="ucd-t8-khK"/>
-                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem"/>
+                        <barButtonItem key="leftBarButtonItem" image="top_menu" id="MGt-Hd-KyR" userLabel="MenuItem">
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="accessibilityIdentifier" value="sidebarButton"/>
+                            </userDefinedRuntimeAttributes>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
@@ -2037,7 +2038,7 @@
                         <viewControllerLayoutGuide type="bottom" id="ZhV-KS-V88"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="32V-8f-C20">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="974"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="928"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="tU2-Zj-lnU">
@@ -2171,7 +2172,7 @@
                         <viewControllerLayoutGuide type="bottom" id="8ib-9c-KcH"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vpJ-dr-6fj">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="Amg-8j-09a">
@@ -2284,20 +2285,20 @@
                         <viewControllerLayoutGuide type="bottom" id="Wwc-Ui-77h"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uTm-XO-wri">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="popup_behind_image" translatesAutoresizingMaskIntoConstraints="NO" id="5Xo-vL-RT0">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                                <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwg-Ux-TaO">
-                                <rect key="frame" x="20" y="162" width="728" height="700"/>
+                                <rect key="frame" x="20" y="142" width="672" height="700"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rf0-hK-9R9">
-                                        <rect key="frame" x="0.0" y="655" width="728" height="45"/>
+                                        <rect key="frame" x="0.0" y="655" width="672" height="45"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H3Y-k6-mux">
-                                                <rect key="frame" x="0.0" y="1" width="728" height="44"/>
+                                                <rect key="frame" x="0.0" y="1" width="672" height="44"/>
                                                 <color key="backgroundColor" red="0.96862745100000003" green="0.96470588239999999" blue="0.96470588239999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Cancel">
@@ -2319,7 +2320,7 @@
                                         </constraints>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Human Verification" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Svt-lb-fps">
-                                        <rect key="frame" x="249" y="58" width="230" height="40"/>
+                                        <rect key="frame" x="221" y="58" width="230" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="pXb-ol-ngz"/>
                                         </constraints>
@@ -2328,7 +2329,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="signup_logo" translatesAutoresizingMaskIntoConstraints="NO" id="bIx-SP-PDv">
-                                        <rect key="frame" x="315" y="36" width="98" height="16"/>
+                                        <rect key="frame" x="287" y="36" width="98" height="16"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="98" id="r2Q-y2-uKb"/>
                                             <constraint firstAttribute="height" constant="16" id="zyA-pz-oHP"/>
@@ -2409,7 +2410,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Gho-mc-bBE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0Mc-y7-gPg">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="712" height="984"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kjf-eK-ZgA">
@@ -2626,11 +2627,11 @@
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="udh-Uk-5dd"/>
-        <segue reference="dh2-Js-yHz"/>
+        <segue reference="A0a-yx-qTn"/>
         <segue reference="0zg-HM-MdK"/>
         <segue reference="hZj-FM-cPb"/>
         <segue reference="XIN-Jt-JzU"/>
-        <segue reference="LdN-DE-nXL"/>
+        <segue reference="F9J-SM-saL"/>
         <segue reference="hak-ZV-HgC"/>
     </inferredMetricsTieBreakers>
     <resources>

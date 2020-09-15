@@ -87,7 +87,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
                                                selector: #selector(didPrimaryAccountLoggedOut(_:)),
                                                name: NSNotification.Name.didPrimaryAccountLogout,
                                                object: nil)
-<<<<<<< HEAD
         
         guard let user = self.viewModel.currentUser else {return}
         _ = firstly {
@@ -98,9 +97,7 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
                 self.tableView.reloadData()
             }
         }
-=======
         generateAccessibilityIdentifiers()
->>>>>>> Apply accessibility identifiers through reflection.
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -442,7 +439,7 @@ extension MenuViewController: UITableViewDataSource {
             return cell
         case .accountManager:
             let cell = tableView.dequeueReusableCell(withIdentifier: kButtonTableCellID, for: indexPath) as! MenuButtonViewCell
-            cell.configCell(LocalString._menu_manage_accounts, hideSepartor: false)
+            cell.configCell(LocalString._menu_manage_accounts, containsStackView: false, hideSepartor: false)
             return cell
         default:
             let cell: MenuTableViewCell = tableView.dequeueReusableCell(withIdentifier: kMenuTableCellId, for: indexPath) as! MenuTableViewCell

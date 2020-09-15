@@ -62,6 +62,7 @@ class AccountManagerViewController: ProtonMailViewController, ViewModelProtocol,
         self.navigationItem.leftBarButtonItem = cancelButton
         let removeAllButton = UIBarButtonItem(title: LocalString._remove_all, style: .plain, target: self, action: #selector(removeAction))
         self.navigationItem.rightBarButtonItem = removeAllButton
+        self.navigationItem.assignNavItemIndentifiers()
         generateAccessibilityIdentifiers()
     }
     
@@ -148,6 +149,9 @@ extension AccountManagerViewController: UITableViewDataSource {
             return cell
         case .add:
             let cell = tableView.dequeueReusableCell(withIdentifier: "add_account_cell", for: indexPath)
+            if let userCell = cell as? MenuButtonViewCell {
+                userCell.configCell(LocalString._menu_add_account, containsStackView: true, hideSepartor: false)
+            }
             return cell
         }
         

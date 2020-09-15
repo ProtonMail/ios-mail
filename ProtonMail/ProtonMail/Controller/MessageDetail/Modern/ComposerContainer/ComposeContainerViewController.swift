@@ -96,8 +96,6 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         // accessibility
         self.sendButton.accessibilityLabel = LocalString._general_send_action
-//        self.cancelButton.accessibilityIdentifier = "cancelButton"
-//        self.sendButton.accessibilityIdentifier = "sendButton"
         generateAccessibilityIdentifiers()
     }
     
