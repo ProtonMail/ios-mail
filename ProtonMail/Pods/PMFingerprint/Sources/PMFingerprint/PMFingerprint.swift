@@ -83,14 +83,8 @@ extension PMFingerprint {
         self.requestVerifyTime = 0
     }
     
-    /// Export collected fingerprint data, and reset collected data
+    /// Export collected fingerprint data
     public func export() -> PMFingerprint.Fingerprint {
-        defer {
-            runInMainThread {
-                self.reset()
-            }
-        }
-        
         let semaphore = DispatchSemaphore(value: 0)
         runInMainThread {
             self.fingerprint.fetchValues()
