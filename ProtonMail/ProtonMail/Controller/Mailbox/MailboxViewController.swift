@@ -197,8 +197,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                                                     name: UIApplication.willEnterForegroundNotification,
                                                     object: nil)
         }
-        self.tableView.reloadData()
-        self.refreshControl.endRefreshing()
     }
     
     @IBAction func undoAction(_ sender: UIButton) {
@@ -774,6 +772,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 //        }
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
+        self.fetchNewMessage()
+    }
+    
+    private func fetchNewMessage() {
         viewModel.fetchMessages(time: 0, foucsClean: false) { (task, res, error) in
             self.showNoResultLabel()
         }
@@ -855,11 +857,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                     }
                 }
             }
-            if tableView.tableFooterView?.frame.height ?? 0 == 0 {
-                // Show refreshControl if there is no loading view
-                refreshControl.beginRefreshing()
-                self.tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
-            }
+            self.showRefreshController()
             if let updateTime = viewModel.lastUpdateTime(), updateTime.isNew == false, viewModel.isEventIDValid() {
                 // let response of checkEmptyMailbox decide show label or not.
                 handleNoResultLabel = false
@@ -868,7 +866,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
                                       notificationMessageID: self.viewModel.notificationMessageID,
                                       completion: complete)
-                self.checkEmptyMailbox()
+                self.fetchNewMessage()
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchMessageWithReset(time: 0, completion: complete)
@@ -893,6 +891,16 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 self.noResultLabel.isHidden = true
             }
         } ~> .main
+    }
+    
+    private func showRefreshController() {
+        let height = tableView.tableFooterView?.frame.height ?? 0
+        let count = tableView.visibleCells.count
+        guard height == 0 && count == 0 else {return}
+        
+        // Show refreshControl if there is no bottom loading view
+        refreshControl.beginRefreshing()
+        self.tableView.setContentOffset(CGPoint(x: 0, y: -refreshControl.frame.size.height), animated: true)
     }
 
     internal func moveMessages(to location: Message.Location) {
@@ -1312,7 +1320,8 @@ extension MailboxViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return self.viewModel.sectionCount()
     }
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {        return self.viewModel.rowCount(section: section)
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.viewModel.rowCount(section: section)
     }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let rIndex = self.viewModel.ratingIndex {
@@ -1335,7 +1344,10 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.endUpdates()
+        delay(0.5) {
+            self.tableView.endUpdates()
+        }
+        
         self.showNewMessageCount(self.newMessageCount)
     }
     
@@ -1346,9 +1358,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch(type) {
         case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
         case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
         default:
             return
         }
@@ -1358,11 +1370,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
                         if let msgTime = newMsg.time, newMsg.unRead {
