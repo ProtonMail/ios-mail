@@ -485,49 +485,49 @@ class CoreDataServiceTests: XCTestCase {
                 return
             }
             
-            let messagedetails = try? GRTJSONSerialization.object(withEntityName: "Message",
-                                                                  fromJSONDictionary: out,
-                                                                  in: coredata.testChildContext)
-            XCTAssertNotNil(messagedetails)
-            
-            try! coredata.testChildContext.save()
-            //        try! coredata.testChildContext.saveUpstreamIfNeeded()
-            
-            guard let message2 = messagedetails as? Message else {
-                XCTAssertNotNil(nil)
-                return
-            }
-            XCTAssertEqual(message2.messageID, messageID)
-            XCTAssertEqual(message2.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
-            XCTAssertEqual(message2.spamScore, 0)
-            XCTAssertEqual(message2.mimeType, "texthtml11111")
-            
-            guard let beforeMerge = Message.messageForMessageID(messageID, inManagedObjectContext: coredata.mainManagedObjectContext) else {
-                XCTAssertNotNil(nil)
-                return
-            }
-            XCTAssertEqual(beforeMerge.messageID, messageID)
-            //        XCTAssertEqual(beforeMerge.body, "")
-            XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
-            XCTAssertEqual(beforeMerge.spamScore, 0)
-            //        XCTAssertEqual(beforeMerge.mimeType, "texthtml")
-            XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
-            
-            
-            ///
-            guard let beforeMerge1 = Message.messageForMessageID(messageID, inManagedObjectContext: coredata.testChildContext) else {
-                XCTAssertNotNil(nil)
-                return
-            }
-            XCTAssertEqual(beforeMerge1.messageID, messageID)
-            XCTAssertEqual(beforeMerge1.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----", "stop at index: \(i)")
-            XCTAssertEqual(beforeMerge1.spamScore, 0)
-            //        XCTAssertEqual(beforeMerge1.mimeType, "texthtml")
-            XCTAssertEqual(beforeMerge1.mimeType, "texthtml11111")
-            
-            
-            // Put teardown code here. This method is called after the invocation of each test method in the class.
-            try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
+//            let messagedetails = try? GRTJSONSerialization.object(withEntityName: "Message",
+//                                                                  fromJSONDictionary: out,
+//                                                                  in: coredata.testChildContext)
+//            XCTAssertNotNil(messagedetails)
+//            
+//            try! coredata.testChildContext.save()
+//            //        try! coredata.testChildContext.saveUpstreamIfNeeded()
+//            
+//            guard let message2 = messagedetails as? Message else {
+//                XCTAssertNotNil(nil)
+//                return
+//            }
+//            XCTAssertEqual(message2.messageID, messageID)
+//            XCTAssertEqual(message2.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
+//            XCTAssertEqual(message2.spamScore, 0)
+//            XCTAssertEqual(message2.mimeType, "texthtml11111")
+//            
+//            guard let beforeMerge = Message.messageForMessageID(messageID, inManagedObjectContext: coredata.mainManagedObjectContext) else {
+//                XCTAssertNotNil(nil)
+//                return
+//            }
+//            XCTAssertEqual(beforeMerge.messageID, messageID)
+//            //        XCTAssertEqual(beforeMerge.body, "")
+//            XCTAssertEqual(beforeMerge.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----")
+//            XCTAssertEqual(beforeMerge.spamScore, 0)
+//            //        XCTAssertEqual(beforeMerge.mimeType, "texthtml")
+//            XCTAssertEqual(beforeMerge.mimeType, "texthtml11111")
+//            
+//            
+//            ///
+//            guard let beforeMerge1 = Message.messageForMessageID(messageID, inManagedObjectContext: coredata.testChildContext) else {
+//                XCTAssertNotNil(nil)
+//                return
+//            }
+//            XCTAssertEqual(beforeMerge1.messageID, messageID)
+//            XCTAssertEqual(beforeMerge1.body, "-----BEGIN PGP MESSAGE-----This is encrypted body-----END PGP MESSAGE-----", "stop at index: \(i)")
+//            XCTAssertEqual(beforeMerge1.spamScore, 0)
+//            //        XCTAssertEqual(beforeMerge1.mimeType, "texthtml")
+//            XCTAssertEqual(beforeMerge1.mimeType, "texthtml11111")
+//            
+//            
+//            // Put teardown code here. This method is called after the invocation of each test method in the class.
+//            try? FileManager.default.removeItem(at:  CoreDataStore.tempUrl)
             
         }
     }

@@ -109,7 +109,7 @@ class CoreDataStore {
             if let ex = error as NSError? {
                 PMLog.D(api: ex)
             }
-            fatalError()
+//            fatalError()
         }
         return container
     }
