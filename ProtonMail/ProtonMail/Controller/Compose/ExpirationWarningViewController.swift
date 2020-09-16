@@ -34,7 +34,7 @@ enum HeaderType {
     case pgp
 }
 
-class ExpirationWarningViewController : UIViewController {
+class ExpirationWarningViewController : UIViewController, AccessibleView {
     
     fileprivate let kHeaderView : String = "ExpirationWarningHeaderCell"
     fileprivate let kHeaderID : String   = "expiration_warning_header_cell"
@@ -95,6 +95,7 @@ class ExpirationWarningViewController : UIViewController {
         headerLabel.text = LocalString._not_all_recipients_support_message_expiration
         cancelButton.layer.borderWidth = 1.0
         cancelButton.layer.borderColor = UIColor.darkGray.cgColor
+        generateAccessibilityIdentifiers()
     }
     
     @IBAction func learnMoreAction(_ sender: Any) {

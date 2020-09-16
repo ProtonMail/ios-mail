@@ -23,7 +23,8 @@
 
 import Foundation
 
-class MenuTableViewCell: UITableViewCell {
+class MenuTableViewCell: UITableViewCell, AccessibleCell {
+    
     
     @IBOutlet weak var titleImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -65,6 +66,7 @@ class MenuTableViewCell: UITableViewCell {
         unreadLabel.isHidden = !item.hasCount
         
         separtor.isHidden = hideSepartor
+        generateCellAccessibilityIdentifiers(item.localizedTitle)
     }
     
     func configUnreadCount (count: Int) {

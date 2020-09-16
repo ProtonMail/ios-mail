@@ -23,7 +23,7 @@
 
 import Foundation
 
-class AccountManagerUserCell: UITableViewCell {
+class AccountManagerUserCell: UITableViewCell, AccessibleCell {
     
     
     @IBOutlet weak var backgroundImage: UIImageView!
@@ -55,6 +55,7 @@ class AccountManagerUserCell: UITableViewCell {
         diaplayName.text = displayName
         emailAddress.text = email
         self.setupShortName(displayName: displayName)
+        generateCellAccessibilityIdentifiers(email)
     }
     
     private func setupShortName(displayName: String) {
@@ -82,6 +83,7 @@ class AccountManagerUserCell: UITableViewCell {
         
         self.diaplayName.textColor = .red
         self.emailAddress.textColor = .red
+        generateCellAccessibilityIdentifiers("\(email)_\(LocalString._logged_out)")
     }
     
     func configUnreadCount (count: Int) {

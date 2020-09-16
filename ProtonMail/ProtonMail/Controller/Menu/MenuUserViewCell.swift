@@ -27,7 +27,7 @@ protocol MenuUserViewCellDelegate: class {
     func didClickedSignInButton(cell: MenuUserViewCell)
 }
 
-class MenuUserViewCell: UITableViewCell {
+class MenuUserViewCell: UITableViewCell, AccessibleCell {
     
     weak var delegate: MenuUserViewCellDelegate?
     
@@ -115,6 +115,7 @@ class MenuUserViewCell: UITableViewCell {
         self.displayName.text = displayName
         self.emailAddress.text = email
         self.setupShortName(displayName: displayName)
+        generateCellAccessibilityIdentifiers(email)
     }
     
     private func setupShortName(displayName: String) {

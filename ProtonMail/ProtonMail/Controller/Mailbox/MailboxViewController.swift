@@ -176,6 +176,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.undoView.isHidden = true
         
         self.viewModel.cleanReviewItems()
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {

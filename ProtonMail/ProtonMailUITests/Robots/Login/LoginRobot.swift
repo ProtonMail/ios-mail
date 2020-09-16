@@ -8,39 +8,38 @@
 
 import XCTest
 
-private let usernameIdentifier = "txtUsername"
-private let passwordIdentifier = "txtPassword"
-private let signinButtonIdentifier = "loginButton"
-private let twoFaCodeIdentifier = "TwoFACodeView"
-private let twoFaCancelButtonIdentifier = "cancelButton"
-private let twoFaEnterButtonIdentifier = "enterButton"
+private let usernameIdentifier = "SignInViewController.usernameTextField"
+private let passwordIdentifier = "SignInViewController.passwordTextField"
+private let signinButtonIdentifier = "SignInViewController.signInButton"
+private let twoFaCodeIdentifier = "TwoFACodeViewController.twoFactorCodeField"
+private let twoFaCancelButtonIdentifier = "TwoFACodeViewController.cancelButton"
+private let twoFaEnterButtonIdentifier = "TwoFACodeViewController.enterButton"
 
 class LoginRobot {
     
     var verify: Verify! = nil
     init() { verify = Verify(parent: self) }
     
-    func loginUser(_ name: String, _ pwd: String) -> InboxRobot {
-        return username(name)
-            .password(pwd)
+    func loginUser(_ user: User) -> InboxRobot {
+        return username(user.email)
+            .password(user.password)
             .signIn()
     }
 
-    func loginUserWithTwoFA(user: User) -> InboxRobot {
+    func loginUserWithTwoFA(_ user: User) -> InboxRobot {
         return username(user.email)
             .password(user.password)
             .signInWithTwoFA()
             .provideTwoFaCode(code: user.getTwoFaCode())
-            
     }
 
-    func loginTwoPasswordUser(user: User) -> MailboxPasswordRobot {
+    func loginTwoPasswordUser(_ user: User) -> MailboxPasswordRobot {
         return username(user.email)
             .password(user.password)
             .signInWithMailboxPassword()
     }
 
-    func loginTwoPasswordUserWithTwoFA(user: User) -> MailboxPasswordRobot {
+    func loginTwoPasswordUserWithTwoFA(_ user: User) -> MailboxPasswordRobot {
         return username(user.email)
             .password(user.password)
             .signInWithTwoFA()
@@ -97,11 +96,11 @@ class LoginRobot {
         }
 
         private func confirm2FA() {
-            Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier).tap()
+            Element.wait.forButtonWithIdentifier(twoFaEnterButtonIdentifier, file: #file, line: #line).tap()
         }
         
         private func twoFACode(code: String) -> TwoFaRobot {
-            Element.wait.forTextFieldWithIdentifier(twoFaCodeIdentifier).typeText(code)
+            Element.wait.forTextFieldWithIdentifier(twoFaCodeIdentifier, file: #file, line: #line).typeText(code)
             return self
         }
     }
@@ -110,8 +109,8 @@ class LoginRobot {
         unowned let loginRobot: LoginRobot
         init(parent: LoginRobot) { loginRobot = parent }
 
-        func loginViewShown() {
-            Element.assert.buttonWithIdentifierExists(signinButtonIdentifier, file: #file, line: #line)
+        func loginScreenDisplayed() {
+            Element.wait.forButtonWithIdentifier(signinButtonIdentifier, file: #file, line: #line)
         }
     }
 }

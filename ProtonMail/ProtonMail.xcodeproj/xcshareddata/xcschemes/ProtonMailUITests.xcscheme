@@ -11,48 +11,6 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "NO">
-      <EnvironmentVariables>
-         <EnvironmentVariable
-            key = "TEST_RECIPIENT1"
-            value = "1PassUser,ios12345,stub,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_RECIPIENT2"
-            value = "1PassUser,ios12345,stub,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_RECIPIENT3"
-            value = "1PassUser,ios12345,stub,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_RECIPIENT4"
-            value = "1PassUser,ios12345,stub,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_USER1"
-            value = "1PassUser,ios12345,stub,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_USER2"
-            value = "2PassUser,ios12345,123,stub"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_USER3"
-            value = "1PassUserWith2FA,ios12345,stub,5IGRHJLWRGHKB3XBXN367QEGV3IPDSRA"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-         <EnvironmentVariable
-            key = "TEST_USER4"
-            value = "2PassUserWith2FA,ios12345,123,U6I25VM77GRWQZAYQCMX6LP6UDI3D4ES"
-            isEnabled = "YES">
-         </EnvironmentVariable>
-      </EnvironmentVariables>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -63,6 +21,11 @@
                BlueprintName = "ProtonMailUITests"
                ReferencedContainer = "container:ProtonMail.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "BaseTestCase">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

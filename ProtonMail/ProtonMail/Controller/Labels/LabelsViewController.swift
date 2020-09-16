@@ -30,7 +30,7 @@ protocol LablesViewControllerDelegate {
 }
 
 //TODO::fixme coordinator
-class LablesViewController : UIViewController {
+class LablesViewController : UIViewController, AccessibleView {
     
     var viewModel : LabelViewModel!
     
@@ -126,6 +126,7 @@ class LablesViewController : UIViewController {
         cancelButton.setTitle(viewModel.getCancelButtonText(), for: UIControl.State())
         
         tableView.noSeparatorsBelowFooter()
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

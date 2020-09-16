@@ -94,6 +94,7 @@ class ContactsViewController: ContactsAndGroupsSharedCode, ViewModelProtocol {
         self.prepareSearchBar()
         
         prepareNavigationItemRightDefault(self.viewModel.user)
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidAppear(_ animated: Bool) {

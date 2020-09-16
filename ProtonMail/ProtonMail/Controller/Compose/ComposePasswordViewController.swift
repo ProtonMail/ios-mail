@@ -29,7 +29,7 @@ protocol ComposePasswordViewControllerDelegate : AnyObject {
     func Apply(_ password : String, confirmPassword :String, hint : String)
 }
 
-class ComposePasswordViewController: UIViewController {
+class ComposePasswordViewController: UIViewController, AccessibleView {
     
     @IBOutlet weak var viewTitleLable: UILabel!
     @IBOutlet weak var titleDesLabel: UILabel!
@@ -70,6 +70,7 @@ class ComposePasswordViewController: UIViewController {
         applyButton.titleLabel?.adjustsFontSizeToFitWidth = true
         applyButton.titleLabel?.minimumScaleFactor = 10.0 / 16.0
         applyButton.setTitle(LocalString._general_apply_button, for: .normal)
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

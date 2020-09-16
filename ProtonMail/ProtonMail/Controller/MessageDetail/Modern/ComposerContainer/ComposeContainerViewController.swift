@@ -47,6 +47,8 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
             self.view.window?.windowScene?.title = LocalString._general_draft_action
         }
         #endif
+        
+        generateAccessibilityIdentifiers()
     }
     
     override func viewDidLoad() {
@@ -94,8 +96,7 @@ class ComposeContainerViewController: TableContainerViewController<ComposeContai
         
         // accessibility
         self.sendButton.accessibilityLabel = LocalString._general_send_action
-        self.cancelButton.accessibilityIdentifier = "cancelButton"
-        self.sendButton.accessibilityIdentifier = "sendButton"
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

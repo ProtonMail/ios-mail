@@ -62,6 +62,7 @@ class ContainableComposeViewController: ComposeViewController, BannerRequester {
             self?.step.insert(.sendingFinishedSuccessfully)
         }
         #endif
+        generateAccessibilityIdentifiers()
     }
     
     @objc func removeStyleFromSelection() {

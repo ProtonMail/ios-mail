@@ -24,7 +24,7 @@
 import Foundation
 import MBProgressHUD
 
-class MailboxPasswordViewController: UIViewController {
+class MailboxPasswordViewController: UIViewController, AccessibleView {
     let animationDuration: TimeInterval = 0.5
     let buttonDisabledAlpha: CGFloat = 0.5
     let keyboardPadding: CGFloat = 12
@@ -62,6 +62,7 @@ class MailboxPasswordViewController: UIViewController {
         topTitleLabel.text = LocalString._decrypt_mailbox
         decryptButton.setTitle(LocalString._decrypt, for: .normal)
         resetMailboxPasswordAction.setTitle(LocalString._reset_mailbox_password, for: .normal)
+        generateAccessibilityIdentifiers()
     }
     
     override var preferredStatusBarStyle : UIStatusBarStyle {

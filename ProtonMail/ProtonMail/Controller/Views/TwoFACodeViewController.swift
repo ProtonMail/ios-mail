@@ -29,7 +29,7 @@ protocol TwoFACodeViewControllerDelegate {
     func ConfirmedCode(_ code : String, pwd:String)
 }
 
-class TwoFACodeViewController : UIViewController {
+class TwoFACodeViewController : UIViewController, AccessibleView {
     //var viewModel : TwoFAViewModel!
     @IBOutlet weak var twoFACodeView: TwoFACodeView!
     var delegate : TwoFACodeViewControllerDelegate?
@@ -44,6 +44,8 @@ class TwoFACodeViewController : UIViewController {
         self.twoFACodeView.delegate = self
         self.twoFACodeView.layer.cornerRadius = 8;
         self.twoFACodeView.initViewMode(mode)
+        self.twoFACodeView.showKeyboard()
+        generateAccessibilityIdentifiers()
     }
     
     deinit {

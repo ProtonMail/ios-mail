@@ -8,13 +8,18 @@
 
 import XCTest
 
-fileprivate let menuButton = "sidebarButton"
+fileprivate let menuButton = "Menu"
 let composeButtonLabel = "Compose"
+fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 
 /**
  Parent class for all the Mailbox Robot classes like Inbox, Sent, Trash, etc.
  */
 class MailboxRobotInterface {
+    
+    init() {
+        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line)
+    }
     
     @discardableResult
     func swipeLeftMessageAtPosition(_ position: Int) -> MailboxRobotInterface {
@@ -39,7 +44,7 @@ class MailboxRobotInterface {
     }
 
     func menuDrawer() -> MenuRobot {
-        Element.button.tapByIdentifier(menuButton)
+        Element.wait.forHittableButton(menuButton).tap()
         return MenuRobot()
     }
 

@@ -93,6 +93,7 @@ class ContactGroupsViewController: ContactsAndGroupsSharedCode, ViewModelProtoco
             prepareNavigationItemRightDefault(self.viewModel.user)
             updateNavigationBar()
         }
+        generateAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {

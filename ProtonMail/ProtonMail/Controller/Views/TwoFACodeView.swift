@@ -90,13 +90,11 @@ class TwoFACodeView : PMView {
         twoFactorCodeField.inputAccessoryView = toolbarDone
         
         twoFactorCodeField.placeholder = LocalString._two_factor_code
-        twoFactorCodeField.accessibilityIdentifier = "TwoFACodeView"
         loginPasswordField.placeholder = LocalString._login_password
         topTitleLabel.text = LocalString._authentication
         cancelButton.setTitle(LocalString._general_cancel_button, for: .normal)
-        cancelButton.accessibilityIdentifier = "cancelButton"
         enterButton.setTitle(LocalString._enter, for: .normal)
-        enterButton.accessibilityIdentifier = "enterButton"
+        generateAccessibilityIdentifiers()
     }
 
     @objc func doneButtonAction() {

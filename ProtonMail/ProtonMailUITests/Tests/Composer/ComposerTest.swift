@@ -12,9 +12,9 @@ class ComposerTests: BaseTestCase {
         let user = testData.onePassUser
         let subject = ""
         
-        LoginRobot().loginUser(user.email, user.password)
+        LoginRobot().loginUser(user)
             .compose()
-            .sendMessage(to: user.email, subject: subject)
+            .sendMessage(to: user.email, subjectText: subject)
             .menuDrawer()
             .sent()
             .verify.messageWithSubjectExists(subject)
