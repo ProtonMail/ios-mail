@@ -126,7 +126,7 @@ class MailboxViewModel: StorageLimit {
                     }
                 }
                 
-                if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId),
+                if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId, context: self.coreDataService.mainManagedObjectContext),
                    updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext) {
                     secondUser.messageService.fetchEvents(byLable: self.labelID,
                                                           notificationMessageID: nil,

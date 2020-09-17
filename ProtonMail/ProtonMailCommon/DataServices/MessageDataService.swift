@@ -350,13 +350,14 @@ class MessageDataService : Service, HasLocalStorage {
                         completion?(task, responseDict, error)
                     }
                     
-                    self.cleanMessage()
-                    lastUpdatedStore.removeUpdateTime(by: self.userID)
-                    _ = self.contactDataService.cleanUp().ensure {
+                    self.cleanMessage().then { (_) -> Promise<Void> in
+                        lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
+                        return self.contactDataService.cleanUp()
+                    }.ensure {
                         self.fetchMessages(byLable: labelID, time: time, forceClean: false, completion: completionWrapper)
                         self.contactDataService.fetchContacts(completion: nil)
                         self.labelDataService.fetchLabels()
-                    }
+                    }.cauterize()
                 }  else {
                     completion?(task, nil, nil)
                 }
@@ -1032,14 +1033,12 @@ class MessageDataService : Service, HasLocalStorage {
      4. use wraped manully.
      */
     func cleanUp() -> Promise<Void> {
-        return Promise { seal in
-            self.cleanMessage()
+        return self.cleanMessage().done { (_) in
             lastUpdatedStore.clear()
-            lastUpdatedStore.removeUpdateTime(by: self.userID)
+            lastUpdatedStore.removeUpdateTime(by: self.userID, context: self.managedObjectContext)
             
-            removeQueuedMessage(userId: self.userID)
-            removeFailedQueuedMessage(userId: self.userID)
-            seal.fulfill_()
+            self.removeQueuedMessage(userId: self.userID)
+            self.removeFailedQueuedMessage(userId: self.userID)
         }
     }
     
