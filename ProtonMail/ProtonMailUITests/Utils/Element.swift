@@ -27,7 +27,7 @@ struct Element {
         }
         
         static func staticTextWithIdentifierExists(_ identifier: String, file: StaticString = #file, line: UInt = #line) {
-            let element = app.textFields[identifier]
+            let element = app.staticTexts[identifier]
             XCTAssertTrue(element.exists, "StaticText element \(element.debugDescription) does not exist.", file: file, line: line)
         }
     }
@@ -51,12 +51,41 @@ struct Element {
         }
     }
     
+    class menuItem {
+        @discardableResult
+        class func tapByIdentifier(_ identifier: String) -> XCUIElement {
+            let element = app.menuItems[identifier]
+            element.tap()
+            return element
+        }
+    }
+    
     class other {
         @discardableResult
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.otherElements[identifier]
             element.tap()
             return element
+        }
+        
+        @discardableResult
+        class func tapByIdentifier(_ identifier: String, _ index: Int) -> XCUIElement {
+            let element = app.otherElements.matching(identifier: identifier).element(boundBy: index)
+            element.tap()
+            return element
+        }
+        
+        class func tapIfExists(_ identifier: String) {
+            let element = app.otherElements[identifier]
+            if (Wait().forElement(element, #file, #line, 2)) {
+                element.tap()
+            }
+        }
+    }
+    
+    class pickerWheel {
+        class func setPickerWheelValue(pickerWheelIndex: Int, value: Int, dimension: String) {
+            app.pickerWheels.element(boundBy: pickerWheelIndex).adjust(toPickerWheelValue: "\(value) \(dimension)")
         }
     }
     
@@ -87,7 +116,27 @@ struct Element {
         }
     }
     
+    class system {
+        class func saveToClipBoard(_ text: String) {
+            UIPasteboard.general.string = text
+        }
+    }
+    
+    class tableView {
+        class func swipeDownByIdentifier(_ identifier: String) {
+            let topEdge = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.15))
+            let toCoordinate = app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.8))
+            topEdge.press(forDuration: 0, thenDragTo: toCoordinate)
+        }
+    }
+    
     class textField {
+        
+        var perform: XCUIElement
+        init(_ identifier: String) {
+            self.perform = app.textFields[identifier]
+        }
+        
         class func tapByIdentifier(_ identifier: String) -> XCUIElement {
             let element = app.textFields[identifier]
             element.tap()
@@ -99,19 +148,26 @@ struct Element {
             element.tap()
             return element
         }
+        
+        class func typeTextByIdentifier(_ identifier: String, _ text: String) -> XCUIElement {
+            let element = app.textFields[identifier]
+            element.typeText(text)
+            return element
+        }
     }
     
     class wait {
+        
         @discardableResult
-        static func forCellWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.cells[identifier]
+        static func forButtonWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
+            let element = app.buttons[identifier]
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }
         
         @discardableResult
-        static func forButtonWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
-            let element = app.buttons[identifier]
+        static func forCellWithIdentifier(_ identifier: String, file: StaticString = #file, line: UInt = #line, timeout: TimeInterval = 10) -> XCUIElement {
+            let element = app.cells[identifier]
             XCTAssertTrue(element.waitForExistence(timeout: timeout), "Element \(element.debugDescription) does not exist.", file: file, line: line)
             return element
         }

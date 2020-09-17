@@ -6,8 +6,6 @@
 //  Copyright © 2020 ProtonMail. All rights reserved.
 //
 
-import XCTest
-
 fileprivate let addAccountCellIdentifier = "addAccountLabel"
 fileprivate let removeAllButtonIdentifier = "UINavigationItem.rightBarButtonItem"
 fileprivate let swipeUserCellTrailingButtonIdentifier = "trailing0"

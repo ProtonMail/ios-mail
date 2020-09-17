@@ -22,6 +22,7 @@ class InboxRobot : MailboxRobotInterface {
         verify = Verify(parent: self)
     }
 
+    @discardableResult
     override func menuDrawer() -> MenuRobot {
         return super.menuDrawer()
     }
