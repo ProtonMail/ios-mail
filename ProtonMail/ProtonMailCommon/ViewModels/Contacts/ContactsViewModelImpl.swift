@@ -166,6 +166,7 @@ final class ContactsViewModelImpl : ContactsViewModel {
             
             self.user.messageService.fetchEvents(byLable: Message.Location.inbox.rawValue,
                                                  notificationMessageID: nil,
+                                                 context: self.coreDataService.mainManagedObjectContext,
                                                  completion: { (task, res, error) in
                 self.isFetching = false
                 self.fetchComplete?(nil, nil)

@@ -581,11 +581,10 @@ class ComposeViewModelImpl : ComposeViewModel {
                                                   body: body,
                                                   attachments: nil,
                                                   mailbox_pwd: mailboxPassword)
-                
-                if let error = context.saveUpstreamIfNeeded() {
-                    PMLog.D(" error: \(error)")
-                }
             }
+        }
+        if let error = context.saveUpstreamIfNeeded() {
+            PMLog.D(" error: \(error)")
         }
     }
     

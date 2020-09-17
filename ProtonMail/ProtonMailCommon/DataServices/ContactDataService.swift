@@ -651,12 +651,12 @@ class ContactDataService: Service, HasLocalStorage {
      - Parameter contactID: contact id
      - Parameter completion: async complete response
      **/
-    func details(contactID: String, inContext: NSManagedObjectContext? = nil) -> Promise<Contact> {
+    func details(contactID: String, inContext: NSManagedObjectContext) -> Promise<Contact> {
         return Promise { seal in
             let api = ContactDetailRequest<ContactDetailResponse>(cid: contactID)
             api.call(api: self.apiService) { (task, response, hasError) in
                 if let contactDict = response?.contact {
-                    let context = inContext ?? self.coreDataService.mainManagedObjectContext
+                    let context = inContext
                     self.coreDataService.enqueue(context: context) { (context) in
                         do {
                             if let contact = try GRTJSONSerialization.object(withEntityName: Contact.Attributes.entityName, fromJSONDictionary: contactDict, in: context) as? Contact {

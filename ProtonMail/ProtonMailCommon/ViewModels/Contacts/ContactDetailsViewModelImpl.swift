@@ -460,7 +460,7 @@ class ContactDetailsViewModelImpl : ContactDetailsViewModel {
         loading()
         return Promise { seal in
             //Fixme
-            self.contactService.details(contactID: contact.contactID).then { _ in
+            self.contactService.details(contactID: contact.contactID, inContext: self.coreDataService.mainManagedObjectContext).then { _ in
                 self.setupEmails()
             }.done {
                 seal.fulfill(self.contact)

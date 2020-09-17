@@ -177,6 +177,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
+        
+        self.fetchNewMessage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -867,7 +869,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
                                       notificationMessageID: self.viewModel.notificationMessageID,
                                       completion: complete)
-                self.fetchNewMessage()
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchMessageWithReset(time: 0, completion: complete)
@@ -1404,22 +1405,26 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 //            }
             
             /// #2
-//            if let indexPath = indexPath {
-//                let cell = tableView.cellForRow(at: indexPath)
-//                self.configure(cell: cell, indexPath: indexPath)
-//            }
-//
+            if let indexPath = indexPath {
+                let cell = tableView.cellForRow(at: indexPath)
+                self.configure(cell: cell, indexPath: indexPath)
+            }
+
 //            if let newIndexPath = newIndexPath {
 //                let cell = tableView.cellForRow(at: newIndexPath)
 //                self.configure(cell: cell, indexPath: newIndexPath)
 //            }
 
             /// #3
-            if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: newIndexPath)
-            }
+//            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: newIndexPath)
+//            }/
         case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
+            }
             break
         default:
             return

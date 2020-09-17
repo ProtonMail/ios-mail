@@ -291,7 +291,7 @@ class ContactGroupsDataService: Service, HasLocalStorage {
     }
     
     func getAllContactGroupVOs() -> [ContactGroupVO] {
-        let labels = self.labelDataService.getAllLabels(of: .contactGroup)
+        let labels = self.labelDataService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainManagedObjectContext)
         
         var result: [ContactGroupVO] = []
         for label in labels {

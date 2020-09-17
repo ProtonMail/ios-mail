@@ -135,7 +135,7 @@ class LabelsDataService: Service, HasLocalStorage {
         }
     }
     
-    func getAllLabels(of type : LabelFetchType, context: NSManagedObjectContext? = nil) -> [Label] {
+    func getAllLabels(of type : LabelFetchType, context: NSManagedObjectContext) -> [Label] {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: Label.Attributes.entityName)
         
         if type == .contactGroup && userCachedStatus.isCombineContactOn {
@@ -145,7 +145,7 @@ class LabelsDataService: Service, HasLocalStorage {
             fetchRequest.predicate = self.fetchRequestPrecidate(type)
         }
         
-        let context = context ?? self.coreDataService.mainManagedObjectContext
+        let context = context
         do {
             let results = try context.fetch(fetchRequest)
             if let results = results as? [Label] {

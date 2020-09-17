@@ -59,7 +59,7 @@ class ContactEditViewModelImpl : ContactEditViewModel {
     }
     
     private func prepareContactGroupData() {
-        let groups = self.user.labelService.getAllLabels(of: .contactGroup)
+        let groups = self.user.labelService.getAllLabels(of: .contactGroup, context: self.coreDataService.mainManagedObjectContext)
 
         for group in groups {
             contactGroupData[group.labelID] = (name: group.name, color: group.color, count: group.emails.count)
