@@ -1345,7 +1345,12 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        delay(0.5) {
+        if self.refreshControl.isRefreshing {
+            delay(0.5) {
+                // Workaround, if endUpdates too quick the view will glitch
+                self.tableView.endUpdates()
+            }
+        } else {
             self.tableView.endUpdates()
         }
         
