@@ -836,10 +836,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                         self.retryCounter += 1
                     }
                 } else {
-                    // artificial delay to make refreshControl animation roll longer when Internet is too fast
-                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(500)) { [weak self] in
-                        self?.refreshControl?.endRefreshing()
-                    }
+                    self.refreshControl.endRefreshing()
                     self.retryCounter = 0
                     if self.fetchingStopped! == true {
                         return
@@ -1345,15 +1342,7 @@ extension MailboxViewController: UITableViewDataSource {
 
 extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if self.refreshControl.isRefreshing {
-            delay(0.5) {
-                // Workaround, if endUpdates too quick the view will glitch
-                self.tableView.endUpdates()
-            }
-        } else {
-            self.tableView.endUpdates()
-        }
-        
+        self.tableView.endUpdates()
         self.showNewMessageCount(self.newMessageCount)
     }
     
@@ -1364,9 +1353,9 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
         switch(type) {
         case .delete:
-            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .automatic)
+            tableView.deleteSections(IndexSet(integer: sectionIndex), with: .fade)
         case .insert:
-            tableView.insertSections(IndexSet(integer: sectionIndex), with: .automatic)
+            tableView.insertSections(IndexSet(integer: sectionIndex), with: .fade)
         default:
             return
         }
@@ -1376,11 +1365,11 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         switch(type) {
         case .delete:
             if let indexPath = indexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+                tableView.deleteRows(at: [indexPath], with: .fade)
             }
         case .insert:
             if let newIndexPath = newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
                 if self.needToShowNewMessage == true {
                     if let newMsg = anObject as? Message {
                         if let msgTime = newMsg.time, newMsg.unRead {
