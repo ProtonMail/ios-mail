@@ -1,6 +1,9 @@
 stages:
+  - unit_tests
   - bot # comes from translations/generator job
 
+
+# --- includes ---
 include:
   - project: 'translations/generator'
     ref: master
@@ -10,6 +13,25 @@ include:
     ref: master
     file: '/jobs/commit-locales.gitlab-ci.yml'
 
+
+variables:
+  LC_ALL: "en_US.UTF-8"
+  LANG: "en_US.UTF-8"
+  GEM_HOME: "$CI_PROJECT_DIR/gem"
+
+unit_tests:
+   dependencies: []
+   stage: unit_tests
+   before_script:
+    - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
+    - git submodule init
+    - git submodule update --init --recursive 
+    # - pip install xUnique
+   script:
+    - defaults write com.apple.iphonesimulator ConnectHardwareKeyboard 0 # Fixed UI tests failing on secure field
+    - fastlane scan --workspace "ProtonMail/Protonmail.xcworkspace" --scheme "Tests" --device "iPhone 8" --clean
+   tags:
+    - iOS
 
 # --- Translation related tasks ---
 i18n-sync-crowdin:

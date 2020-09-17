@@ -39,7 +39,7 @@ class CoreDataStoreTest: XCTestCase {
         
         let coordinator = NSPersistentStoreCoordinator.init(managedObjectModel: oldManagedObjectModel!)
         let url = FileManager.default.temporaryDirectoryUrl.appendingPathComponent("ProtonMail.sqlite", isDirectory: false)
-        try! coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+        try? coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         let managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         XCTAssertNotNil(managedObjectContext)

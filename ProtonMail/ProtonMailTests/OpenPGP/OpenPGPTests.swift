@@ -49,7 +49,7 @@ class OpenPGPTests: XCTestCase {
     let openPGP = PMNOpenPgp.createInstance()
     func testEncryption() {
         self.measure {
-            for _ in 0 ... 100 {
+            for _ in 0 ... 10 {
                 let out = openPGP?.encryptMessageSingleKey(OpenPGPDefines.publicKey,
                                                            plainText: "test",
                                                            privateKey: "",
