@@ -46,6 +46,12 @@ class MessageBodyCoordinator {
         let browserSpecificUrl = userCachedStatus.browser.deeplink(to: originalURL) ?? originalURL
         switch userCachedStatus.browser {
         case .inAppSafari:
+            let supports = ["https", "http"]
+            let scheme = browserSpecificUrl.scheme ?? ""
+            guard supports.contains(scheme) else {
+                self.showUnsupportAlert(url: browserSpecificUrl)
+                return
+            }
             let safari = SFSafariViewController(url: browserSpecificUrl)
             self.controller.present(safari, animated: true, completion: nil)
             
@@ -135,6 +141,17 @@ class MessageBodyCoordinator {
             next.set(viewModel: ComposeContainerViewModel(editorViewModel: viewModel))
             next.set(coordinator: ComposeContainerViewCoordinator(controller: next))
         }
+    }
+    
+    private func showUnsupportAlert(url: URL) {
+        let message = LocalString._unsupported_url
+        let open = LocalString._general_open_button
+        let alertController = UIAlertController(title: LocalString._general_alert_title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: open, style: .default, handler: { (action) in
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }))
+        alertController.addAction(UIAlertAction(title: LocalString._general_cancel_button, style: .cancel, handler: nil))
+        self.controller.present(alertController, animated: true, completion: nil)
     }
 }
 

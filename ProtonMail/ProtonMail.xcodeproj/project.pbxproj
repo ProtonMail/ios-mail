@@ -8036,7 +8036,6 @@
 				E5E5E57B22DC50D3410BA0CB0697E412 /* TestData.swift in Sources */,
 				E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */,
 				19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */,
-				8A081A0A24F4FE820042A1B1 /* ConnectAccountRobot.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
