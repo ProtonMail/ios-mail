@@ -177,6 +177,8 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
+        
+        self.fetchNewMessage()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -867,7 +869,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
                 viewModel.fetchEvents(time: Int(updateTime.startTime.timeIntervalSince1970),
                                       notificationMessageID: self.viewModel.notificationMessageID,
                                       completion: complete)
-                self.fetchNewMessage()
             } else {// this new
                 if !viewModel.isEventIDValid() { //if event id is not valid reset
                     viewModel.fetchMessageWithReset(time: 0, completion: complete)
