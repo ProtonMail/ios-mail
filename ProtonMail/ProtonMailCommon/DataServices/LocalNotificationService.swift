@@ -71,6 +71,15 @@ class LocalNotificationService: Service, HasLocalStorage {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [details.messageID])
     }
     
+    func rescheduleMessage(oldID: String, details: MessageSendingDetails) {
+        let center = UNUserNotificationCenter.current()
+        center.getPendingNotificationRequests { [weak self](requests) in
+            guard let _ = requests.first(where: {$0.identifier == oldID}) else {return}
+            self?.unscheduleMessageSendingFailedNotification(.init(messageID: oldID))
+            self?.scheduleMessageSendingFailedNotification(details)
+        }
+    }
+    
     func cleanUp() -> Promise<Void> {
         return Promise { seal in
             let center = UNUserNotificationCenter.current()
