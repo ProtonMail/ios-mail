@@ -1217,9 +1217,7 @@ class MessageDataService : Service, HasLocalStorage {
                     if message.messageID != messageID {
                         // Cancel scheduled local notification and re-schedule
                         self.localNotificationService
-                            .unscheduleMessageSendingFailedNotification(.init(messageID: message.messageID))
-                        self.localNotificationService
-                            .scheduleMessageSendingFailedNotification(.init(messageID: messageID, subtitle: message.title))
+                            .rescheduleMessage(oldID: message.messageID, details: .init(messageID: messageID, subtitle: message.title))
                     }
                     message.messageID = messageID
                     message.isDetailDownloaded = true
