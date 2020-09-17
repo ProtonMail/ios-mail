@@ -127,12 +127,13 @@ class MailboxViewModel: StorageLimit {
                 }
                 
                 if let updateTime = lastUpdatedStore.lastUpdate(by: self.labelID, userID: secondUser.userInfo.userId),
-                    updateTime.isNew == false, secondUser.messageService.isEventIDValid() {
+                   updateTime.isNew == false, secondUser.messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext) {
                     secondUser.messageService.fetchEvents(byLable: self.labelID,
                                                           notificationMessageID: nil,
+                                                          context: self.coreDataService.mainManagedObjectContext,
                                                           completion: secondComplete)
                 } else {// this new
-                    if !secondUser.messageService.isEventIDValid() { //if event id is not valid reset
+                    if !secondUser.messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext) { //if event id is not valid reset
                         secondUser.messageService.fetchMessagesWithReset(byLabel: self.labelID, time: 0, completion: secondComplete)
                     }
                     else {
@@ -271,7 +272,7 @@ class MailboxViewModel: StorageLimit {
     ///
     /// - Returns: location cache info
     func lastUpdateTime() -> LabelUpdate? {
-        return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID) //TODO:: fix me
+        return lastUpdatedStore.lastUpdate(by: self.labelID, userID: self.messageService.userID, context: self.coreDataService.mainManagedObjectContext) //TODO:: fix me
     }
     
     
@@ -368,7 +369,10 @@ class MailboxViewModel: StorageLimit {
     }
     
     func fetchEvents(time: Int, notificationMessageID:String?, completion: CompletionBlock?) {
-        messageService.fetchEvents(byLable: self.labelID, notificationMessageID: notificationMessageID, completion: completion)
+        messageService.fetchEvents(byLable: self.labelID,
+                                   notificationMessageID: notificationMessageID,
+                                   context: self.coreDataService.mainManagedObjectContext,
+                                   completion: completion)
     }
     
     /// fetch messages and reset events
@@ -381,7 +385,7 @@ class MailboxViewModel: StorageLimit {
     }
     
     func isEventIDValid() -> Bool {
-        return messageService.isEventIDValid()
+        return messageService.isEventIDValid(context: self.coreDataService.mainManagedObjectContext)
     }
     
     /// get the cached notification message id

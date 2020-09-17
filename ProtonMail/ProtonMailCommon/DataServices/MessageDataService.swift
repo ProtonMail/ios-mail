@@ -341,7 +341,7 @@ class MessageDataService : Service, HasLocalStorage {
                     let completionWrapper: CompletionBlock = { task, responseDict, error in
                         if error == nil {
                             lastUpdatedStore.clear()
-                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID).ensure {
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: IDRes.eventID, context: self.managedObjectContext).ensure {
                                 completion?(task, responseDict, error)
                             }
                             return
@@ -365,8 +365,8 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     
-    func isEventIDValid() -> Bool {
-        let eventID = lastUpdatedStore.lastEventID(userID: self.userID)
+    func isEventIDValid(context: NSManagedObjectContext) -> Bool {
+        let eventID = lastUpdatedStore.lastEventID(userID: self.userID, context: context)
         return eventID != "" && eventID != "0"
     }
     
@@ -376,9 +376,9 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - labelID: Label/location/forlder
     ///   - notificationMessageID: the notification message
     ///   - completion: async complete handler
-    func fetchEvents(byLable labelID: String, notificationMessageID : String?, completion: CompletionBlock?) {
+    func fetchEvents(byLable labelID: String, notificationMessageID : String?, context: NSManagedObjectContext, completion: CompletionBlock?) {
         queue {
-            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID))
+            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             eventAPI.call(api: self.apiService) { task, response, hasError in
                 if let eventsRes = response {
                     if eventsRes.refresh.contains(.all) || eventsRes.refresh.contains(.mail) || (hasError && eventsRes.code == 18001) {
@@ -415,7 +415,7 @@ class MessageDataService : Service, HasLocalStorage {
                         DispatchQueue.global().async {
                             self.processEvents(messages: messageEvents, notificationMessageID: notificationMessageID, task: task) { task, res, error in
                                 if error == nil {
-                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID).then { (_) -> Promise<Void> in
+                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
                                         return self.processEvents(contacts: eventsRes.contacts)
                                     }.then { (_) -> Promise<Void> in
                                         return self.processEvents(contactEmails: eventsRes.contactEmails)
@@ -448,7 +448,7 @@ class MessageDataService : Service, HasLocalStorage {
                         }
                     } else {
                         if eventsRes.code == 1000 {
-                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID).then { (_) -> Promise<Void> in
+                            _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: eventsRes.eventID, context: self.managedObjectContext).then { (_) -> Promise<Void> in
                                 return self.processEvents(contacts: eventsRes.contacts)
                             }.then { (_) -> Promise<Void> in
                                 return self.processEvents(contactEmails: eventsRes.contactEmails)
@@ -487,9 +487,9 @@ class MessageDataService : Service, HasLocalStorage {
     
     /// Sync mail setting when user in composer
     /// workaround
-    func syncMailSetting(labelID: String = "0") {
+    func syncMailSetting(labelID: String = "0", context: NSManagedObjectContext) {
         queue {
-            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID))
+            let eventAPI = EventCheckRequest(eventID: lastUpdatedStore.lastEventID(userID: self.userID, context: context))
             eventAPI.call(api: self.apiService) { task, response, hasError in
                 guard let eventsRes = response, eventsRes.code == 1000 else {
                     return
@@ -2177,7 +2177,7 @@ class MessageDataService : Service, HasLocalStorage {
                         self.contactDataService.fetchContacts { (_, error) in
                             if error == nil {
                                 lastUpdatedStore.clear()
-                                _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID).ensure {
+                                _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID, context: self.managedObjectContext).ensure {
                                     completion?(task, nil, error)
                                 }
                             } else {
