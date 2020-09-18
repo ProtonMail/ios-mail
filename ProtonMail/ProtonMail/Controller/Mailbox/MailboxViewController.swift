@@ -125,10 +125,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-        /*
-         We've been invalidating FetchedResultsController here, but that does not make sense in multiwindow env on iOS 13
-         Revert if there will be strange bugs with FetchedResultsController
-        */
+        self.viewModel.resetFetchedController()
     }
     
     deinit {
