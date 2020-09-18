@@ -121,11 +121,11 @@ class UserManager : Service, HasLocalStorage {
     //TODO:: add a user status. logging in, expired, no key etc...
 
     //public let user
-    public lazy var reportService: BugDataService = {
+    public lazy var reportService: BugDataService = { [unowned self] in
         let service = BugDataService(api: self.apiService)
         return service
     }()
-    public lazy var contactService: ContactDataService = {
+    public lazy var contactService: ContactDataService = { [unowned self] in
         let service = ContactDataService(api: self.apiService,
                                          labelDataService: self.labelService,
                                          userID: self.userinfo.userId,
@@ -133,7 +133,7 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var contactGroupService: ContactGroupsDataService = {
+    public lazy var contactGroupService: ContactGroupsDataService = { [unowned self] in
         let service = ContactGroupsDataService(api: self.apiService,
                                                labelDataService: self.labelService,
                                                coreDataServie: sharedServices.get(by: CoreDataService.self))
@@ -142,7 +142,7 @@ class UserManager : Service, HasLocalStorage {
     
     weak var parentManager: UsersManager?
     
-    public lazy var messageService: MessageDataService = {
+    public lazy var messageService: MessageDataService = { [unowned self] in
         let service = MessageDataService(api: self.apiService,
                                          userID: self.userinfo.userId,
                                          labelDataService: self.labelService,
@@ -154,25 +154,25 @@ class UserManager : Service, HasLocalStorage {
         return service
     }()
     
-    public lazy var labelService: LabelsDataService = {
+    public lazy var labelService: LabelsDataService = { [unowned self] in
         let service = LabelsDataService(api: self.apiService, userID: self.userinfo.userId, coreDataService: sharedServices.get(by: CoreDataService.self))
         return service
     }()
     
-    public lazy var userService: UserDataService = {
+    public lazy var userService: UserDataService = { [unowned self] in
         let service = UserDataService(check: false, api: self.apiService)
         return service
     }()
     
     
-    public lazy var localNotificationService: LocalNotificationService = {
+    public lazy var localNotificationService: LocalNotificationService = { [unowned self] in
         let service = LocalNotificationService(userID: self.userinfo.userId)
         return service
     }()
    
     
     #if !APP_EXTENSION
-    public lazy var sevicePlanService: ServicePlanDataService = {
+    public lazy var sevicePlanService: ServicePlanDataService = { [unowned self] in
         let service = ServicePlanDataService(localStorage: userCachedStatus, apiService: self.apiService) // FIXME: SHOULD NOT BE ONE STORAGE FOR ALL
         return service
     }()

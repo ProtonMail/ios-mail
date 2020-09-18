@@ -76,7 +76,7 @@ class AttachmentsTableViewController: UITableViewController, AttachmentControlle
         return []
     }
     
-    lazy var attachmentProviders: Array<AttachmentProvider> = {
+    lazy var attachmentProviders: Array<AttachmentProvider> = { [unowned self] in
         // There is no access to camera in AppExtensions, so should not include it into menu
         #if APP_EXTENSION
             return [PhotoAttachmentProvider(for: self),

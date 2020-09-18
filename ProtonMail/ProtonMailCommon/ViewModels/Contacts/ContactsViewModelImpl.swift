@@ -29,7 +29,9 @@ final class ContactsViewModelImpl : ContactsViewModel {
     fileprivate var fetchedResultsController: NSFetchedResultsController<NSFetchRequestResult>?
     fileprivate var isSearching: Bool = false
     
-    lazy var contactService : ContactDataService = self.user.contactService
+    lazy var contactService : ContactDataService = { [unowned self] in
+        return self.user.contactService
+    }()
     
     override func setupFetchedResults(delegate: NSFetchedResultsControllerDelegate?) {
         self.fetchedResultsController = self.getFetchedResultsController()

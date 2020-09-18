@@ -35,7 +35,7 @@ class SettingsCoordinator: SWRevealCoordinator {
     internal weak var swRevealVC: SWRevealViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsTableViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsTableViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }

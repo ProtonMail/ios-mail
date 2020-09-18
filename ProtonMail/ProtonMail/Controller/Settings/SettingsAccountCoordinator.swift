@@ -33,7 +33,7 @@ class SettingsAccountCoordinator: DefaultCoordinator {
     internal weak var viewController: SettingsAccountViewController?
     internal weak var deepLink: DeepLink?
     
-    lazy internal var configuration: ((SettingsAccountViewController) -> ())? = { vc in
+    lazy internal var configuration: ((SettingsAccountViewController) -> ())? = { [unowned self] vc in
         vc.set(coordinator: self)
         vc.set(viewModel: self.viewModel)
     }

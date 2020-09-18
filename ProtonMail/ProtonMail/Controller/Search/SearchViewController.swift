@@ -40,7 +40,7 @@ class SearchViewController: ProtonMailViewController {
     
     internal var user: UserManager!
     
-    private lazy var replacingEmails : [Email] = {
+    private lazy var replacingEmails : [Email] = { [unowned self] in
         return user.contactService.allEmails()
     }()
     
