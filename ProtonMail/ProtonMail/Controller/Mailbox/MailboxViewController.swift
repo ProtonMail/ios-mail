@@ -1388,18 +1388,19 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         case .update:
             //#3 is active
             /// # 1
-//            if let indexPath = indexPath {
-//                self.tableView.reloadRows(at: [indexPath], with: .fade)
-//            }
+            if let indexPath = indexPath {
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+            
 //            if let newIndexPath = newIndexPath {
 //                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
 //            }
             
             /// #2
-            if let indexPath = indexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: indexPath)
-            }
+//            if let indexPath = indexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: indexPath)
+//            }
 
 //            if let newIndexPath = newIndexPath {
 //                let cell = tableView.cellForRow(at: newIndexPath)
