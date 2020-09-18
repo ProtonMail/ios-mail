@@ -208,6 +208,10 @@ public class PushNotificationService: NSObject, Service {
         }
     }
     
+    func hasCachedLaunchOptions() -> Bool {
+        return self.launchOptions != nil
+    }
+    
     // MARK: - notifications
     
     public func didReceiveRemoteNotification(_ userInfo: [AnyHashable: Any],

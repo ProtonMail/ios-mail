@@ -154,6 +154,14 @@ class MenuCoordinatorNew: DefaultCoordinator {
     }
     
     func follow(_ deepLink: DeepLink) {
+        
+        // Navigate to notification mail firstly, ignore previous deep link
+        let pushService = sharedServices.get(by: PushNotificationService.self)
+        guard !pushService.hasCachedLaunchOptions() else {
+            pushService.processCachedLaunchOptions()
+            return
+        }
+        
         // take first node
         var start = deepLink.popFirst
         
