@@ -177,7 +177,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         
-        self.fetchNewMessage()
+        //Do not fetch message when first logged in
+        if viewModel.isEventIDValid() {
+            self.fetchNewMessage()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

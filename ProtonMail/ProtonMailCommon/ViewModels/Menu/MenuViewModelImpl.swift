@@ -232,7 +232,7 @@ class MenuViewModelImpl : MenuViewModel {
     
     func signOut() -> Promise<Void> {
         if let currentUser = self.currentUser {
-            self.usersManager.logout(user: currentUser)
+            return self.usersManager.logout(user: currentUser)
         }
         return Promise()
     }
