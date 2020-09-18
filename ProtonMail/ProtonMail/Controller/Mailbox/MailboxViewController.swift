@@ -70,7 +70,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     private weak var topMessageView: BannerView?
     
     // MARK: - Private attributes
-    private lazy var replacingEmails = viewModel.allEmails()
+    private lazy var replacingEmails: [Email] = { [unowned self] in
+        viewModel.allEmails()
+    }()
     private var listEditing: Bool = false
     private var timer : Timer!
     private var timerAutoDismiss : Timer?

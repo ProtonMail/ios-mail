@@ -105,7 +105,7 @@ class MenuViewModelImpl : MenuViewModel {
     let usersManager : UsersManager
     
     //
-    lazy var labelDataService : LabelsDataService? = {
+    lazy var labelDataService : LabelsDataService? = { [unowned self] in
         if let user = self.currentUser {
             return user.labelService
         } else {
@@ -118,7 +118,7 @@ class MenuViewModelImpl : MenuViewModel {
     }
     
     // user at the moment of creation of this MenuViewModel instance
-    lazy var currentUser: UserManager? = {
+    lazy var currentUser: UserManager? = { [unowned self] in
         return self.usersManager.firstUser
     }()
     

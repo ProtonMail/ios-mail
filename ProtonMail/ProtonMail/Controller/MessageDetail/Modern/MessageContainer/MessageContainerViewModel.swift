@@ -33,7 +33,7 @@ extension MessageContainerViewModel {
 
 /// ViewModel object of big MessaveViewController screen with a whole thread of messages inside. ViewModel objects of singular messages are nested in `thread` array.
 class MessageContainerViewModel: TableContainerViewModel {
-    internal lazy var userActivity: NSUserActivity = {
+    internal lazy var userActivity: NSUserActivity = { [unowned self] in
         let activity = NSUserActivity(activityType: "Handoff.Message")
         activity.isEligibleForHandoff = true
         activity.isEligibleForSearch = false

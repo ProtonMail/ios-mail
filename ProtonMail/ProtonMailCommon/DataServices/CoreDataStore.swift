@@ -45,31 +45,31 @@ class CoreDataStore {
     
     static let name: String = "ProtonMail.sqlite"
     
-    public lazy var defaultContainer: NSPersistentContainer = {
+    public lazy var defaultContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.dbUrl)
     }()
     
-    public lazy var memoryPersistentContainer: NSPersistentContainer = {
+    public lazy var memoryPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newMemoryPersistentContainer(self.managedObjectModel, name: CoreDataStore.name)
     }()
     
-    public lazy var testPersistentContainer: NSPersistentContainer = {
+    public lazy var testPersistentContainer: NSPersistentContainer = { [unowned self] in
         return self.newPersistentContainer(self.managedObjectModel, name: CoreDataStore.name, url: CoreDataStore.tempUrl)
     }()
     
-    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = {
+    public lazy var defaultPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.dbUrl)
     }()
     
-    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = {
+    public lazy var memoryPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newMemoryStoreCoordinator(self.managedObjectModel)
     }()
     
-    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = {
+    public lazy var testPersistentStore: NSPersistentStoreCoordinator! = { [unowned self] in
         return self.newPersistentStoreCoordinator(self.managedObjectModel, url: CoreDataStore.tempUrl)
     }()
     
-    private lazy var managedObjectModel: NSManagedObjectModel = {
+    private lazy var managedObjectModel: NSManagedObjectModel = { [unowned self] in
         var modelURL = Bundle.main.url(forResource: "ProtonMail", withExtension: "momd")!
         return NSManagedObjectModel(contentsOf: modelURL)!
     }()

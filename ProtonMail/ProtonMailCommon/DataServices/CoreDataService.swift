@@ -45,12 +45,12 @@ class CoreDataService: Service {
     }
     
     // MARK: - variables
-    lazy var mainManagedObjectContext: NSManagedObjectContext = {
+    lazy var mainManagedObjectContext: NSManagedObjectContext = { [unowned self] in
         return self.container.viewContext
     }()
     
     /// this case crashes when cleaning cache
-    lazy var backgroundManagedObjectContext: NSManagedObjectContext = {
+    lazy var backgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
         let context = self.container.newBackgroundContext()
         context.mergePolicy = NSMergePolicy.mergeByPropertyStoreTrump
         return context
@@ -101,14 +101,14 @@ class CoreDataService: Service {
     }
     
     /// this do the auto sync
-    lazy var testChildContext: NSManagedObjectContext = {
+    lazy var testChildContext: NSManagedObjectContext = { [unowned self] in
         let managedObjectContext = self.container.newBackgroundContext()
         managedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         managedObjectContext.parent = self.mainManagedObjectContext
         return managedObjectContext
     }()
     
-    lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = {
+    lazy var testbackgroundManagedObjectContext: NSManagedObjectContext = { [unowned self] in
         return self.container.newBackgroundContext()
     }()
     
