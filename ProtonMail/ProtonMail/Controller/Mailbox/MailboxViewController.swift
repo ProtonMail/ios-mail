@@ -1414,8 +1414,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 //            }/
         case .move:
             if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
             }
             break
         default:
