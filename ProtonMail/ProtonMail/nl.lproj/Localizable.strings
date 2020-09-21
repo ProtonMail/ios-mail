@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Toevoegen";
 
+/* menu title */
+"Add accounts" = "Add accounts";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Jubileum toevoegen";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Mailboxgrootte";
 
+/* menu title */
+"Manage accounts" = "Manage accounts";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Adressen beheren";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Er kan slechts één gratis account worden toegevoegd";
+
+/* Open action */
+"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "OpenDraft";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "De totale grootte van de bijlagen kan niet meer zijn dan 25MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "De gebruiker is al ingelogd";

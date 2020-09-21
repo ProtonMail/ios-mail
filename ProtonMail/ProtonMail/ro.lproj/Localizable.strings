@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Adăugare";
 
+/* menu title */
+"Add accounts" = "Adăugare conturi";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Adăugare aniversare";
 
@@ -924,7 +927,7 @@
 "for one year" = "pentru un an";
 
 /* Service Plan description */
-"For organizations that need multi-user support and additional productivity features" = "Pentru organizații ce doresc suport multiutilizatori și funcții adiționale de productivitate";
+"For organizations that need multi-user support and additional productivity features" = "Pentru organizații ce doresc suport pentru utilizatori multipli și funcții adiționale de productivitate";
 
 /* Service Plan description */
 "For power users and groups of people that value full anonymity and privacy" = "Pentru utilizatori avansați și grupuri de persoane ce apreciază anonimatul și intimitatea";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Mărime stocare mesaje";
 
+/* menu title */
+"Manage accounts" = "Gestionare conturi";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestionare adrese";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Doar un singur cont gratuit poate fi adăugat";
+
+/* Open action */
+"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "Deschidere ciornă";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Total fișierelor atașate nu poate depăși 25 MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Utilizator deja conectat";

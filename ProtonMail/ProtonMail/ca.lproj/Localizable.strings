@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Afegir";
 
+/* menu title */
+"Add accounts" = "Afegir comptes";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Afegeix aniversari";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Mida de la bústia";
 
+/* menu title */
+"Manage accounts" = "Gestionar comptes";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestionar les adreces";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Només es pot afegir un compte gratuït";
+
+/* Open action */
+"Open" = "Obrir";
 
 /* (No Comment) */
 "OpenDraft" = "EsborranyObert";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "La mida total del fitxer adjunt no pot ser superior a 25 Mb";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL que voleu accedir no és estàndard i no es pot carregar correctament. Voleu obrir-lo amb el navegador predeterminat del dispositiu?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Es usuari ja està identificat";

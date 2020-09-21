@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Přidat";
 
+/* menu title */
+"Add accounts" = "Add accounts";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Přidat výročí";
 
@@ -133,7 +136,7 @@
 "Add new phone number" = "Přidat nové telefonní číslo";
 
 /* action */
-"Add new URL" = "Add new URL";
+"Add new URL" = "Přidat novou adresu URL";
 
 /* new contacts add Nickname */
 "Add Nickname" = "Přidat přezdívku";
@@ -213,7 +216,7 @@
 "Apple informed us you've upgraded the service plan, but did not say which of your ProtonMail accounts to upgrade in case you have more than one." = "Apple nás informoval, že jste navýšil/a plán služby, ale neřekl, který z vašich ProtonMail účtů má být navýšen v případě, že jich máte více než jeden.";
 
 /* Error message */
-"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you.";
+"Apple informed us you've upgraded the service plan, but some technical data was missing. Please fill in the bug report and our customer support team will contact you." = "Apple nás informoval, že jste navýšil/a plán služby, ale některé technické údaje chyběly. Prosím vyplňte zprávu o chybě a náš tým podpory zákazníků vás bude kontaktovat.";
 
 /* Error message */
 "Apple informed us you've upgraded the service plan, but we detected you have logged out of the account since then." = "Apple nás informoval, že jste navýšil/a servisní plán, ale zjistili jsme, že jste se od té doby z účtu odhlásili.";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Mailbox size";
 
+/* menu title */
+"Manage accounts" = "Manage accounts";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Spravovat Adresy";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Only one free account can be added";
+
+/* Open action */
+"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "Otevřít rozepsaný";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Celková velikost příloh nemůže být větší než 25MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "The user is already logged in";
