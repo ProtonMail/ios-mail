@@ -165,6 +165,7 @@ class UsersManager : Service, Migrate {
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+        newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                           defaultEmail: newUser.defaultEmail,
                           userID: user.userId))
