@@ -303,8 +303,13 @@ extension LablesViewController : NSFetchedResultsControllerDelegate {
                 tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         case .update:
-            if let index = indexPath {
-                tableView.reloadRows(at: [index], with: UITableView.RowAnimation.automatic)
+            if let indexPath = indexPath {
+                tableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            }
+        case .move:
+            if let indexPath = indexPath, let newIndexPath = newIndexPath {
+                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.fade)
             }
         default:
             return

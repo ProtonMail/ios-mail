@@ -61,7 +61,7 @@ class UserManager : Service, HasLocalStorage {
                 self.contactGroupService.cleanUp(),
                 self.localNotificationService.cleanUp(),
                 self.userService.cleanUp(),
-                LastUpdatedStore.cleanUpAll()
+                lastUpdatedStore.cleanUp(userId: self.userinfo.userId)
             ]
             #if !APP_EXTENSION
             promises.append(self.sevicePlanService.cleanUp())
