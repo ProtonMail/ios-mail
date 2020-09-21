@@ -227,12 +227,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
             ], user: self.viewModel.currentUser)
             self.signingOut = true
             _ = self.viewModel.signOut()
-            
-            self.viewModel.updateCurrent()
-            self.viewModel.setupLabels(delegate: self)
-            self.hideUsers()
-            self.sectionClicked = false
-            
             self.signingOut = false
         }))
         alertController.popoverPresentationController?.sourceView = sender ?? self.view

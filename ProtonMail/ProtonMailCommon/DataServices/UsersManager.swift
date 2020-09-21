@@ -165,6 +165,7 @@ class UsersManager : Service, Migrate {
         let apiConfig = serverConfig
         let apiService = APIService(config: apiConfig, sessionUID: session, userID: userID)
         let newUser = UserManager(api: apiService, userinfo: user, auth: auth, parent: self)
+        newUser.delegate = self
         self.removeDisconnectedUser(.init(defaultDisplayName: newUser.defaultDisplayName,
                           defaultEmail: newUser.defaultEmail,
                           userID: user.userId))
@@ -488,23 +489,28 @@ extension UsersManager {
     }
     
     func logout(user: UserManager, shouldAlert: Bool = false) -> Promise<Void> {
+        var isPrimaryAccountLogout = false
         return user.cleanUp().then { _ -> Promise<Void> in
             if let primary = self.users.first, primary.isMatch(sessionID: user.auth.sessionID) {
                 self.remove(user: user)
-                NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+                isPrimaryAccountLogout = true
                 NSError.alertBadTokenToast()
             } else {
                 self.remove(user: user)
             }
             
             if self.users.isEmpty {
-                self.clean()
+                return self.clean()
             } else if shouldAlert {
                 String(format: LocalString._logout_account_switched_when_token_revoked,
                        arguments: [user.defaultEmail,
                                    self.users.first!.defaultEmail]).alertToast()
             }
             return Promise()
+        }.done {
+            if isPrimaryAccountLogout {
+                NotificationCenter.default.post(name: Notification.Name.didPrimaryAccountLogout, object: nil)
+            }
         }
     }
     

@@ -125,10 +125,7 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
-        /*
-         We've been invalidating FetchedResultsController here, but that does not make sense in multiwindow env on iOS 13
-         Revert if there will be strange bugs with FetchedResultsController
-        */
+        self.viewModel.resetFetchedController()
     }
     
     deinit {
@@ -180,7 +177,10 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         self.viewModel.cleanReviewItems()
         generateAccessibilityIdentifiers()
         
-        self.fetchNewMessage()
+        //Do not fetch message when first logged in
+        if viewModel.isEventIDValid() {
+            self.fetchNewMessage()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -1388,18 +1388,19 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
         case .update:
             //#3 is active
             /// # 1
-//            if let indexPath = indexPath {
-//                self.tableView.reloadRows(at: [indexPath], with: .fade)
-//            }
+            if let indexPath = indexPath {
+                self.tableView.reloadRows(at: [indexPath], with: .fade)
+            }
+            
 //            if let newIndexPath = newIndexPath {
 //                self.tableView.reloadRows(at: [newIndexPath], with: .fade)
 //            }
             
             /// #2
-            if let indexPath = indexPath {
-                let cell = tableView.cellForRow(at: indexPath)
-                self.configure(cell: cell, indexPath: indexPath)
-            }
+//            if let indexPath = indexPath {
+//                let cell = tableView.cellForRow(at: indexPath)
+//                self.configure(cell: cell, indexPath: indexPath)
+//            }
 
 //            if let newIndexPath = newIndexPath {
 //                let cell = tableView.cellForRow(at: newIndexPath)
@@ -1413,8 +1414,8 @@ extension MailboxViewController: NSFetchedResultsControllerDelegate {
 //            }/
         case .move:
             if let indexPath = indexPath, let newIndexPath = newIndexPath {
-                tableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
-                tableView.insertRows(at: [newIndexPath], with: UITableView.RowAnimation.automatic)
+                tableView.deleteRows(at: [indexPath], with: .fade)
+                tableView.insertRows(at: [newIndexPath], with: .fade)
             }
             break
         default:
