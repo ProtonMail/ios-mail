@@ -258,6 +258,7 @@ extension AppDelegate: UIApplicationDelegate {
             }
             
             let deeplink = DeepLink(String(describing: MailboxViewController.self), sender: Message.Location.inbox.rawValue)
+            deeplink.append(DeepLink.Node(name: "toMailboxSegue", value: Message.Location.inbox))
             deeplink.append(DeepLink.Node(name: "toComposeMailto", value: path))
             self.coordinator.followDeeplink(deeplink)
             return true
