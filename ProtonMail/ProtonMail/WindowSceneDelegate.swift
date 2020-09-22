@@ -87,6 +87,12 @@ class WindowSceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         
         self.coordinator.start()
+        
+        //For default mail function
+        guard case let app = UIApplication.shared, let delegate = app.delegate as? AppDelegate else { return }
+        _ = connectionOptions.urlContexts.first { context in
+            delegate.application(app, open: context.url)
+        }
     }
 
     func stateRestorationActivity(for scene: UIScene) -> NSUserActivity? {
