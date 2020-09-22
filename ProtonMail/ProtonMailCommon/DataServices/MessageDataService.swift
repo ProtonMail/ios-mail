@@ -283,7 +283,8 @@ class MessageDataService : Service, HasLocalStorage {
                                         updateTime.start = firstMsg.time!
                                         updateTime.total = Int32(messcount)
                                     }
-                                    if let time = lastMsg.time {
+                                    if let time = lastMsg.time,
+                                       updateTime.endTime.compare(time) == .orderedDescending {
                                         updateTime.end = time
                                     }
                                     updateTime.update = Date()
