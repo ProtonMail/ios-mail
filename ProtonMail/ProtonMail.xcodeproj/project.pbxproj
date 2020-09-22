@@ -3268,6 +3268,7 @@
 				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
 				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
 				7F99C21B951CD60E433D732794EC773C /* ManageAccounts */,
+				BD55102274F6587A08710E8CF4AC0036 /* TestPlans */,
 				B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */,
 			);
 			path = Tests;
@@ -4170,6 +4171,13 @@
 				85850442C4864AE9C5F562412AEE815A /* ShareExtensionEntry.swift */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		BD55102274F6587A08710E8CF4AC0036 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TestPlans;
 			sourceTree = "<group>";
 		};
 		90F230708ECD00FCDF1936ED051FDBA1 /* Pickers */ = {

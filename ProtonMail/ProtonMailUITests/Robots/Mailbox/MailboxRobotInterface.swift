@@ -18,7 +18,7 @@ fileprivate let mailboxTableViewIdentifier = "MailboxViewController.tableView"
 class MailboxRobotInterface {
     
     init() {
-        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line)
+        Element.wait.forTableViewWithIdentifier(mailboxTableViewIdentifier, file: #file, line: #line, timeout: 15)
     }
     
     @discardableResult
