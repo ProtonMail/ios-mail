@@ -254,7 +254,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - time: the latest update time
     ///   - forceClean: force clean the exsition messages first
     ///   - completion: aync complete handler
-    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) { 
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
@@ -284,7 +284,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastMsg.time,
-                                       updateTime.endTime.compare(time) == .orderedDescending {
+                                       (updateTime.endTime.compare(time) == .orderedDescending || updateTime.endTime == .distantPast) {
                                         updateTime.end = time
                                     }
                                     updateTime.update = Date()
