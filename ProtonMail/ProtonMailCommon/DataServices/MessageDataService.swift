@@ -531,19 +531,20 @@ class MessageDataService : Service, HasLocalStorage {
     /// delete attachment from server
     ///
     /// - Parameter att: Attachment
-    func delete(att: Attachment!) {
-        let attachmentID = att.attachmentID
-        let objectId = att.objectID
-        let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            let object = context.object(with: objectId)
-            context.delete(object)
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+    func delete(att: Attachment!) -> Promise<Void> {
+        return Promise { seal in
+            let attachmentID = att.attachmentID
+            let context = att.managedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                context.delete(att)
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+                seal.fulfill_()
             }
+            let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
+            dequeueIfNeeded()
         }
-        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
-        dequeueIfNeeded()
     }
     
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void

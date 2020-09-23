@@ -188,9 +188,10 @@ class ComposeViewModelImpl : ComposeViewModel {
         self.updateDraft()
     }
     
-    override func deleteAtt(_ att: Attachment!) {
-        messageService.delete(att: att)
-        self.updateDraft()
+    override func deleteAtt(_ att: Attachment!) -> Promise<Void> {
+        return messageService.delete(att: att).done { (_) in
+            self.updateDraft()
+        }
     }
     
     override func getAttachments() -> [Attachment]? {
