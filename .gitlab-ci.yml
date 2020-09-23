@@ -22,6 +22,10 @@ variables:
 unit_tests:
    dependencies: []
    stage: unit_tests
+   only:
+    - master
+    - develop
+    - /^release\/.*$/
    before_script:
     - git config --global url."https://gitlab_deploy_token_mail:${CI_JOB_TOKEN_PMNETWORK}@gitlab.protontech.ch/apple/shared/pmnetworking".insteadOf git@gitlab.protontech.ch:apple/shared/pmnetworking
     - git submodule init
