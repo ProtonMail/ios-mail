@@ -112,13 +112,15 @@ class MessageDataService : Service, HasLocalStorage {
     private func updateCounter(markUnRead: Bool, on message: Message) {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLableIDs()
-        for lID in labelIDs {
-            _ = lastUpdatedStore.unreadCount(by: lID, userID: userID, context: managedObjectContext).done { (unreadCount) in
-                var count = unreadCount + offset
-                if count < 0 {
-                    count = 0
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            for lID in labelIDs {
+                _ = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context).done { (unreadCount) in
+                    var count = unreadCount + offset
+                    if count < 0 {
+                        count = 0
+                    }
+                    lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context)
                 }
-                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: self.managedObjectContext)
             }
         }
     }
@@ -146,13 +148,15 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     func updateCounter(plus: Bool, with labelID: String) {
-        let offset = plus ? 1 : -1
-        _ = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
-            var count = unreadCount + offset
-            if count < 0 {
-                count = 0
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            let offset = plus ? 1 : -1
+            _ = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context).done { (unreadCount) in
+                var count = unreadCount + offset
+                if count < 0 {
+                    count = 0
+                }
+                lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
             }
-            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: self.managedObjectContext)
         }
     }
 
@@ -2634,23 +2638,24 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         lastUpdatedStore.resetUnreadCounts()
-        for count in messageCounts {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            for count in messageCounts {
+                if let labelID = count["LabelID"] as? String {
+                    guard let unread = count["Unread"] as? Int else {
+                        continue
+                    }
+                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
                 }
-                lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
+            }
+            
+            _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
+                var badgeNumber = unreadCount
+                if  badgeNumber < 0 {
+                    badgeNumber = 0
+                }
+                UIApplication.setBadge(badge: badgeNumber)
             }
         }
-        
-        _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: userID, context: self.managedObjectContext).done { (unreadCount) in
-            var badgeNumber = unreadCount
-            if  badgeNumber < 0 {
-                badgeNumber = 0
-            }
-            UIApplication.setBadge(badge: badgeNumber)
-        }
-        
     }
     
     
