@@ -114,13 +114,12 @@ class MessageDataService : Service, HasLocalStorage {
         let labelIDs: [String] = message.getLableIDs()
         self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
             for lID in labelIDs {
-                _ = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context).done { (unreadCount) in
-                    var count = unreadCount + offset
-                    if count < 0 {
-                        count = 0
-                    }
-                    lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context)
+                let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
+                var count = unreadCount + offset
+                if count < 0 {
+                    count = 0
                 }
+                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context)
             }
         }
     }
