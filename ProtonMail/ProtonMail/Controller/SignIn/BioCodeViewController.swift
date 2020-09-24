@@ -42,8 +42,10 @@ class BioCodeViewController: UIViewController, BioCodeViewDelegate, BioAuthentic
             return
         }
         
+        // delegate could be nil
+        let _delegate = self.delegate
         UnlockManager.shared.biometricAuthentication(afterBioAuthPassed: {
-            self.delegate?.Next()
+            _delegate?.Next()
         })
     }
     
