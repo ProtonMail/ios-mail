@@ -137,10 +137,6 @@ class MenuViewModelImpl : MenuViewModel {
         if !userCachedStatus.isPinCodeEnabled, !userCachedStatus.isTouchIDEnabled {
             otherItems = otherItems.filter { $0 != .lockapp }
         }
-        
-        if let user = self.currentUser, !user.sevicePlanService.isIAPAvailable {
-            otherItems = otherItems.filter { $0 != .servicePlan }
-        }
     }
     
     func setupLabels(delegate: NSFetchedResultsControllerDelegate?) {

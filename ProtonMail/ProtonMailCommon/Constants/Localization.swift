@@ -1589,6 +1589,8 @@ class LocalizedString {
 
 
     // Mark: - IAP
+    
+    lazy var _iap_unavailable = NSLocalizedString("Subscription information temporarily unavailable. Please try again later.", comment: "Fetch subscription data failed")
 
     lazy var _unlimited_messages_sent = NSLocalizedString("Unlimited messages sent/day", comment: "Service plan capability;")
 
