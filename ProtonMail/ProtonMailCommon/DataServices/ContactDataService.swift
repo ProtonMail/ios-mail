@@ -72,6 +72,11 @@ class ContactDataService: Service, HasLocalStorage {
                 let request2 = NSBatchDeleteRequest(fetchRequest: fetch2)
                 _ = try? context.execute(request2)
                 
+                let fetch3 = NSFetchRequest<NSFetchRequestResult>(entityName: LabelUpdate.Attributes.entityName)
+                fetch3.predicate = NSPredicate(format: "%K == %@", LabelUpdate.Attributes.userID, self.userID)
+                let request3 = NSBatchDeleteRequest(fetchRequest: fetch3)
+                _ = try? context.execute(request3)
+                
                 _ = context.saveUpstreamIfNeeded()
                 seal.fulfill_()
             }
