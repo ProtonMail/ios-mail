@@ -531,14 +531,14 @@ class ComposeViewModelImpl : ComposeViewModel {
         }
         
         self.updateDraft()
-        messageService.send(inQueue: self.message?.messageID)  { _, _, _ in }
+        messageService.send(inQueue: self.message)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
         let mailboxPassword = self.user.mailboxPassword
         self.setSubject(title)
         
-        let objectId = self.message?.objectID
+//        let objectId = self.message?.objectID
         let context = self.coreDataService.mainManagedObjectContext
         if self.message == nil || self.message?.managedObjectContext == nil {
             self.message = self.messageService.messageWithLocation(recipientList: self.toJsonString(self.toSelectedContacts),
@@ -556,6 +556,10 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.message?.unRead = false
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
         } else {
             self.message?.toList = self.toJsonString(self.toSelectedContacts)
             self.message?.ccList = self.toJsonString(self.ccSelectedContacts)
@@ -567,25 +571,37 @@ class ComposeViewModelImpl : ComposeViewModel {
             self.message?.passwordHint = pwdHit
             self.message?.expirationOffset = Int32(expir)
             
-            if let objId = objectId, let msg = context.object(with: objId) as? Message {
-                msg.toList = self.toJsonString(self.toSelectedContacts)
-                msg.ccList = self.toJsonString(self.ccSelectedContacts)
-                msg.bccList = self.toJsonString(self.bccSelectedContacts)
-                msg.title = self.getSubject()
-                msg.time = Date()
-                msg.password = pwd
-                msg.unRead = false
-                msg.passwordHint = pwdHit
-                msg.expirationOffset = Int32(expir)
+//            if let objId = objectId, let msg = context.object(with: objId) as? Message {
+//                msg.toList = self.toJsonString(self.toSelectedContacts)
+//                msg.ccList = self.toJsonString(self.ccSelectedContacts)
+//                msg.bccList = self.toJsonString(self.bccSelectedContacts)
+//                msg.title = self.getSubject()
+//                msg.time = Date()
+//                msg.password = pwd
+//                msg.unRead = false
+//                msg.passwordHint = pwdHit
+//                msg.expirationOffset = Int32(expir)
+//
+//            }
+            if let msg = self.message {
                 self.messageService.updateMessage(msg,
                                                   expirationTimeInterval: expir,
                                                   body: body,
                                                   attachments: nil,
                                                   mailbox_pwd: mailboxPassword)
             }
-        }
-        if let error = context.saveUpstreamIfNeeded() {
-            PMLog.D(" error: \(error)")
+            
+            if let error = context.saveUpstreamIfNeeded() {
+                PMLog.D(" error: \(error)")
+            }
+            
+            if let msg = self.message, msg.objectID.isTemporaryID {
+                do {
+                    try context.obtainPermanentIDs(for: [msg])
+                } catch {
+                    PMLog.D("error: \(error)")
+                }
+            }
         }
     }
     

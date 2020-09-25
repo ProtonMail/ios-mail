@@ -584,26 +584,11 @@ class MessageDataService : Service, HasLocalStorage {
     
     
     // MARK : Send message
-    func send(inQueue messageID : String!, completion: CompletionBlock?) {
-        var error: NSError?
-        let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: messageID, subtitle: message.title))
-                
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
-                } else {
-                    self.queue(message, action: .send)
-                }
-            } else {
-                //TODO:: handle can't find the message error.
-            }
-            DispatchQueue.main.async {
-                completion?(nil, nil, error)
-            }
+    func send(inQueue message : Message!, completion: CompletionBlock?) {
+        self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
+        self.queue(message, action: .send)
+        DispatchQueue.main.async {
+            completion?(nil, nil, nil)
         }
     }
 
@@ -2256,7 +2241,7 @@ class MessageDataService : Service, HasLocalStorage {
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                if !cachedMessage.contains(label: .draft) && !cachedMessage.contains(label: .sent) {
+                                if !cachedMessage.contains(label: .sent) {
                                     continue
                                 }
                             }
