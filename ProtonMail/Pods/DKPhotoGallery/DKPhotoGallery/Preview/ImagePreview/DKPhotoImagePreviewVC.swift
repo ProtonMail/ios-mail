@@ -169,8 +169,7 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
             assertionFailure()
         }
         
-        // SDWebImage 4.4.0: SDImageCacheScaleDownLargeImages   1 << 2
-        SDImageCache.shared.queryCacheOperation(forKey: key, options: SDImageCacheOptions(rawValue: 1 << 2).union(.queryMemoryData)) { (image, data, cacheType) in
+        SDImageCache.shared.queryCacheOperation(forKey: key, options: SDImageCacheOptions.scaleDownLargeImages.union(.queryMemoryData)) { (image, data, cacheType) in
             if image != nil || data != nil {
                 if NSData.sd_imageFormat(forImageData: data) == .GIF {
                     completeBlock(data ?? image, nil)
@@ -237,15 +236,15 @@ class DKPhotoImagePreviewVC: DKPhotoBaseImagePreviewVC {
         
         if let downloadURL = self.downloadURL {
             if let extraInfo = self.item.extraInfo, let originalURL = extraInfo[DKPhotoGalleryItemExtraInfoKeyRemoteImageOriginalURL] as? URL {
-                // SDWebImage 4.4.0: SDImageCacheScaleDownLargeImages   1 << 2
-                SDImageCache.shared.queryCacheOperation(forKey: originalURL.absoluteString, options: SDImageCacheOptions(rawValue: 1 << 2)) { (image, data, _) in
-                    if image != nil || data != nil {
-                        self.downloadURL = originalURL
-                    }
-                    
-                    if let downloadURL = self.downloadURL {
-                        self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
-                    }
+                SDImageCache.shared.queryCacheOperation(forKey: originalURL.absoluteString,
+                                                        options: .scaleDownLargeImages) { (image, data, _) in
+                                                            if image != nil || data != nil {
+                                                                self.downloadURL = originalURL
+                                                            }
+                                                            
+                                                            if let downloadURL = self.downloadURL {
+                                                                self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)
+                                                            }
                 }
             } else {
                 self.asyncFetchImage(with: downloadURL, progressBlock: checkProgressBlock, completeBlock: checkCompleteBlock)

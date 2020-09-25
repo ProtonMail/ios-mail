@@ -71,7 +71,7 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
         gallery.finishedBlock = { dismissIndex, dismissItem in
             let cellIndex = groupDetailVC.adjustAssetIndex(dismissIndex)
             let cellIndexPath = IndexPath(row: cellIndex, section: 0)
-            groupDetailVC.scrollIndexPathToVisible(cellIndexPath)
+            groupDetailVC.scroll(to: cellIndexPath)
             
             return groupDetailVC.thumbnailImageView(for: cellIndexPath)
         }
@@ -81,7 +81,7 @@ open class DKImageExtensionGallery: DKImageBaseExtension, DKPhotoGalleryDelegate
     
     // MARK: - DKPhotoGalleryDelegate
     
-    open var backItem = UIBarButtonItem(image: DKImagePickerControllerResource.photoGalleryBackArrowImage(),
+    open lazy var backItem = UIBarButtonItem(image: DKImagePickerControllerResource.photoGalleryBackArrowImage(),
                                            style: .plain,
                                            target: self,
                                            action: #selector(dismissGallery))
