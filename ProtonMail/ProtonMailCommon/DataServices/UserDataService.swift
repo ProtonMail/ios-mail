@@ -264,53 +264,58 @@ class UserDataService : Service, HasLocalStorage {
             userRes.userInfo?.set(addresses: addrRes.addresses)
             userRes.userInfo?.parse(userSettings: userSettingsRes.userSettings)
             userRes.userInfo?.parse(mailSettings: mailSettingsRes.mailSettings)
-            
-//            self.userInfo = userRes.userInfo
-            //TODO:: fix me
-//            try await(self.activeUserKeys() )
-            
+
+            try await(self.activeUserKeys(userInfo: userRes.userInfo, auth: auth) )
             return userRes.userInfo
         }
     }
     
-//    func activeUserKeys(userInfo: UserInfo) -> Promise<Void> {
-//        return async {
-//            guard let user = self.userInfo, let pwd = self.mailboxPassword else {
-//                return
-//            }
-//            let addresses = user.userAddresses
-//            for addr in addresses {
-//                for index in 0 ..< addr.keys.count {
-//                    let key = addr.keys[index]
-//                    if let activtion = key.activation {
-//                        guard let token = try activtion.decryptMessage(binKeys: self.userPrivateKeys, passphrase: pwd) else {
-//                            continue
-//                        }
-//                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
-//                        let keylist : [[String: Any]] = [[
-//                            "Fingerprint" :  key.fingerprint,
-//                            "Primary" : 1,
-//                            "Flags" : 3
-//                            ]]
-//                        let jsonKeylist = keylist.json()
-//                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
-//                        let signedKeyList : [String: Any] = [
-//                            "Data" : jsonKeylist,
-//                            "Signature" : signed
-//                        ]
-//                        let api = ActivateKey(api: self.apiService, addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
-//                        let userSettingsRes = try await(api.run())
-//                        if userSettingsRes.code == 1000 {
-//                            addr.keys[index].activation = nil
-//                            addr.keys[index].private_key = new_private_key
-//                            self.userInfo = user
-//                        }
-//                    }
-//                }
-//            }
-//            return
-//        }
-//    }
+    func activeUserKeys(userInfo: UserInfo?, auth: AuthCredential? = nil) -> Promise<Void> {
+        return async {
+            guard let user = userInfo, let pwd = auth?.mailboxpassword else {
+                return
+            }
+            let addresses = user.userAddresses
+            for addr in addresses {
+                for index in 0 ..< addr.keys.count {
+                    let key = addr.keys[index]
+                    if let activtion = key.activation {
+                        guard let token = try activtion.decryptMessage(binKeys: user.userPrivateKeys, passphrase: pwd) else {
+                            continue
+                        }
+                        let new_private_key = try Crypto.updatePassphrase(privateKey: key.private_key, oldPassphrase: token, newPassphrase: pwd)
+                        let keylist : [[String: Any]] = [[
+                            "Fingerprint" :  key.fingerprint,
+                            "Primary" : 1,
+                            "Flags" : 3
+                        ]]
+                        let jsonKeylist = keylist.json()
+                        let signed = try Crypto().signDetached(plainData: jsonKeylist, privateKey: new_private_key, passphrase: pwd)
+                        let signedKeyList : [String: Any] = [
+                            "Data" : jsonKeylist,
+                            "Signature" : signed
+                        ]
+                        let api = ActivateKey(api: self.apiService, addrID: key.key_id, privKey: new_private_key, signedKL: signedKeyList)
+                        api.authCredential = auth
+                        
+                        do {
+                            let userSettingsRes = try await(api.run())
+                            if userSettingsRes.code == 1000 {
+                                addr.keys[index].activation = nil
+                                addr.keys[index].private_key = new_private_key
+                            }
+                        } catch let ex {
+                            PMLog.D(ex.localizedDescription)
+                            //ignore error for now
+                        }
+                        
+                    }
+                }
+            }
+            return
+        }
+    }
+    
     enum MyErrorType : Error {
         case SomeError
     }
@@ -977,22 +982,22 @@ class UserDataService : Service, HasLocalStorage {
     }
     
     
-    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
-        return { task, response, error in
-            if error == nil {
-                self.fetchUserInfo().done { (userInfo) in
-                    
-//                    self.fetchUserInfo(completion)
-                }.catch { error in
-                    
-//                    self.fetchUserInfo(completion)
-                }
-                
-            } else {
-                completion?(nil, nil, error)
-            }
-        }
-    }
+//    func completionForUserInfo(_ completion: UserInfoBlock?) -> CompletionBlock {
+//        return { task, response, error in
+//            if error == nil {
+//                self.fetchUserInfo().done { (userInfo) in
+//                    
+////                    self.fetchUserInfo(completion)
+//                }.catch { error in
+//                    
+////                    self.fetchUserInfo(completion)
+//                }
+//                
+//            } else {
+//                completion?(nil, nil, error)
+//            }
+//        }
+//    }
     
     func launchCleanUp() {
         if !self.isUserCredentialStored {
