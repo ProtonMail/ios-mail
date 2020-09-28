@@ -55,6 +55,7 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
     
     private var isShowpwd      = false
     private var isRemembered   = false
+    private var twoFAErrorFailed = false
     
     //define
     private let hidePriority : UILayoutPriority = UILayoutPriority(rawValue: 1.0)
@@ -436,7 +437,15 @@ class SignInViewController: ProtonMailViewController, ViewModelProtocol, Coordin
                 PMLog.D("error: \(error)")
                 self.showLoginViews()
                 if let _ = cachedTwoCode {
-                    self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
+                    // When user input twoFA too quick, it may failed in first time
+                    // auto retry once to prevent this situation
+                    if self.twoFAErrorFailed {
+                        self.twoFAErrorFailed = false
+                        self.performSegue(withIdentifier: self.kSegueTo2FACodeSegue, sender: self)
+                    } else {
+                        self.twoFAErrorFailed = true
+                        self.signIn(username: username, password: password, cachedTwoCode: cachedTwoCode)
+                    }
                 } else {
                     self.handleRequestError(error)
                 }
