@@ -1048,7 +1048,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     fileprivate func cleanMessage() -> Promise<Void> {
         return Promise { seal in
-            self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
@@ -1059,9 +1059,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if let _ = try? context.execute(request) {
                     _ = context.saveUpstreamIfNeeded()
                 }
-                DispatchQueue.main.async {
-                    UIApplication.setBadge(badge: 0)
-                }
+                UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
             }
         }
@@ -2160,16 +2158,18 @@ class MessageDataService : Service, HasLocalStorage {
                 self.cleanMessage().then { _ -> Promise<Void> in
                     return self.contactDataService.cleanUp()
                 }.ensure {
-                    self.labelDataService.fetchLabels() {
-                        self.contactDataService.fetchContacts { (_, error) in
-                            if error == nil {
-                                lastUpdatedStore.clear()
-                                _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID, context: self.managedObjectContext).ensure {
-                                    completion?(task, nil, error)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion?(task, nil, error)
+                    lastUpdatedStore.clear()
+                    self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
+                        self.labelDataService.fetchLabels() {
+                            self.contactDataService.fetchContacts { (_, error) in
+                                if error == nil {
+                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID, context: self.managedObjectContext).ensure {
+                                        completion?(task, nil, error)
+                                    }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        completion?(task, nil, error)
+                                    }
                                 }
                             }
                         }

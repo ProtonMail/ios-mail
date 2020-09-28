@@ -228,6 +228,12 @@ class MenuCoordinatorNew: DefaultCoordinator {
             return false
         }
         
+        //Inactive nsfetchcontroller while last view entering background
+        let lastFrontVC = (rvc.frontViewController as? UINavigationController)?.firstViewController()
+        if let vc = lastFrontVC as? MailboxViewController {
+            vc.inactiveViewModel()
+        }
+        
         switch dest {
         case .mailbox:
             guard let next = navigation?.firstViewController() as? MailboxViewController else {
