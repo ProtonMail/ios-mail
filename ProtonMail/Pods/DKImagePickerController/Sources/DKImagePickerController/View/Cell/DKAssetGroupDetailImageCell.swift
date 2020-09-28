@@ -8,9 +8,10 @@
 
 import UIKit
 
-class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
+@objcMembers
+public class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
     
-    class override func cellReuseIdentifier() -> String {
+    public class override func cellReuseIdentifier() -> String {
         return "DKImageAssetIdentifier"
     }
     
@@ -35,7 +36,7 @@ class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    class DKImageCheckView: UIView {
+    open class DKImageCheckView: UIView {
         
         internal lazy var checkImageView: UIImageView = {
             let imageView = UIImageView(image: DKImagePickerControllerResource.checkedImage())
@@ -56,11 +57,11 @@ class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
             self.addSubview(self.checkLabel)
         }
         
-        required init?(coder aDecoder: NSCoder) {
+        required public init?(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
         
-        override func layoutSubviews() {
+        override open func layoutSubviews() {
             super.layoutSubviews()
             
             self.checkImageView.frame = self.bounds
@@ -69,12 +70,12 @@ class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
         
     } /* DKImageCheckView */
     
-    override var thumbnailImage: UIImage? {
+    override public var thumbnailImage: UIImage? {
         didSet {
             self.thumbnailImageView.image = self.thumbnailImage
         }
     }
-    override var selectedIndex: Int {
+    override public var selectedIndex: Int {
         didSet {
             self.checkView.checkLabel.text =  "\(self.selectedIndex + 1)"
         }
@@ -88,15 +89,15 @@ class DKAssetGroupDetailImageCell: DKAssetGroupDetailBaseCell {
         return thumbnailImageView
     }()
     
-    override var thumbnailImageView: UIImageView {
+    override public var thumbnailImageView: UIImageView {
         get {
             return _thumbnailImageView
         }
     }
     
-    fileprivate let checkView = DKImageCheckView()
+    public let checkView = DKImageCheckView()
     
-    override var isSelected: Bool {
+    override public var isSelected: Bool {
         didSet {
             self.checkView.isHidden = !super.isSelected
         }

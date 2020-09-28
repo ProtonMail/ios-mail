@@ -8,9 +8,10 @@
 
 import UIKit
 
-class DKAssetGroupDetailCameraCell: DKAssetGroupDetailBaseCell {
+@objcMembers
+public class DKAssetGroupDetailCameraCell: DKAssetGroupDetailBaseCell {
     
-    class override func cellReuseIdentifier() -> String {
+    public class override func cellReuseIdentifier() -> String {
         return "DKImageCameraIdentifier"
     }
     
