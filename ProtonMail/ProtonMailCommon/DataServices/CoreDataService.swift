@@ -46,11 +46,7 @@ class CoreDataService: Service {
     
     // MARK: - variables
     lazy var mainManagedObjectContext: NSManagedObjectContext = { [unowned self] in
-        let context = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
-        context.parent = self.backgroundManagedObjectContext
-        context.automaticallyMergesChangesFromParent = true
-        context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-        return context
+        return self.container.viewContext
     }()
     
     /// this case crashes when cleaning cache
