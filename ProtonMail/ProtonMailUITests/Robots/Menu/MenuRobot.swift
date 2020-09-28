@@ -8,7 +8,7 @@
 
 import XCTest
 
-private let logoutStaticText = "MenuTableViewCell.\(LocalizedString()._sign_out)"
+private let logoutStaticText = "MenuTableViewCell.\(LocalString._sign_out)"
 private let logoutConfirmButton = "MenuTableViewCell.\(LocalString._menu_signout_title)"
 private let sentStaticText = "MenuTableViewCell.\(LocalString._menu_sent_title)"
 private let sidebarHeaderViewOtherIdentifier = "MenuViewController.headerView"
@@ -26,8 +26,9 @@ class MenuRobot {
             .confirmLogout()
     }
     
+    @discardableResult
     func sent() -> SentRobot {
-        Element.wait.forSecureTextFieldWithIdentifier(sentStaticText, file: #file, line: #line).tap()
+        Element.wait.forCellWithIdentifier(sentStaticText, file: #file, line: #line).tap()
         return SentRobot()
     }
     

@@ -44,7 +44,7 @@ protocol ContactPickerDelegate: ContactCollectionViewDelegate {
     func finishLockCheck()
 }
 
-class ContactPicker: UIView {
+class ContactPicker: UIView, AccessibleView {
     private var keyboardFrame: CGRect = .zero
     private var searchTableViewController: ContactSearchTableViewController?
     
@@ -171,6 +171,7 @@ class ContactPicker: UIView {
                                                selector: #selector(keyboardShown(_:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+        generateAccessibilityIdentifiers()
     }
     
     override func awakeFromNib() {
