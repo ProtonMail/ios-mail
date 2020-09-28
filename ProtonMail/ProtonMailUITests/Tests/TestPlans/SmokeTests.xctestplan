@@ -1,0 +1,64 @@
+{
+  "configurations" : [
+    {
+      "id" : "E11EDE49-D87E-4898-BC36-C7AD6C4E6B83",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "TEST_USER4",
+        "value" : "2PassUserWith2FA@protonmail.com,ios12345,123,U6I25VM77GRWQZAYQCMX6LP6UDI3D4ES"
+      },
+      {
+        "key" : "TEST_USER1",
+        "value" : "1PassUser@protonmail.com,ios12345,stub,stub"
+      },
+      {
+        "key" : "TEST_USER3",
+        "value" : "1PassUserWith2FA@protonmail.com,ios12345,stub,5IGRHJLWRGHKB3XBXN367QEGV3IPDSRA"
+      },
+      {
+        "key" : "TEST_USER2",
+        "value" : "2PassUser@protonmail.com,ios12345,123,stub"
+      },
+      {
+        "key" : "TEST_RECIPIENT4",
+        "value" : "internalUntrustedKeys@protonmail.com,auto123,mail_pwd_stub,2fa_stub"
+      },
+      {
+        "key" : "TEST_RECIPIENT3",
+        "value" : "internalTrustedKeys@protonmail.com,auto123,mail_pwd_stub,2fa_stub"
+      },
+      {
+        "key" : "TEST_RECIPIENT2",
+        "value" : "outPGPSigned@outlook.com,PGPSigned1!,mail_pwd_stub,2fa_stub"
+      },
+      {
+        "key" : "TEST_RECIPIENT1",
+        "value" : "gmPGPEncrypted@gmail.com,PGPEncrypted1!,cnardtvjtmnqnond,2fa_stub"
+      }
+    ]
+  },
+  "testTargets" : [
+    {
+      "selectedTests" : [
+        "LoginTests\/testLoginWithOnePass()",
+        "LoginTests\/testLoginWithTwoPass()",
+        "MultiuserManagementTests\/testLogoutPrimaryAccount()",
+        "MultiuserManagementTests\/testRemovePrimaryAccount()",
+        "MultiuserManagementTests\/testSwitchAccount()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonMail.xcodeproj",
+        "identifier" : "6C2152B9B3009541EC36C038232F5EE3",
+        "name" : "ProtonMailUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
