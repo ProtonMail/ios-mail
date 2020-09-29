@@ -112,13 +112,14 @@ class MessageDataService : Service, HasLocalStorage {
     private func updateCounter(markUnRead: Bool, on message: Message) {
         let offset = markUnRead ? 1 : -1
         let labelIDs: [String] = message.getLableIDs()
-        for lID in labelIDs {
-            _ = lastUpdatedStore.unreadCount(by: lID, userID: userID, context: managedObjectContext).done { (unreadCount) in
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            for lID in labelIDs {
+                let unreadCount: Int = lastUpdatedStore.unreadCount(by: lID, userID: self.userID, context: context)
                 var count = unreadCount + offset
                 if count < 0 {
                     count = 0
                 }
-                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: self.managedObjectContext)
+                lastUpdatedStore.updateUnreadCount(by: lID, userID: self.userID, count: count, context: context)
             }
         }
     }
@@ -146,13 +147,15 @@ class MessageDataService : Service, HasLocalStorage {
     }
     
     func updateCounter(plus: Bool, with labelID: String) {
-        let offset = plus ? 1 : -1
-        _ = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
-            var count = unreadCount + offset
-            if count < 0 {
-                count = 0
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            let offset = plus ? 1 : -1
+            _ = lastUpdatedStore.unreadCount(by: labelID, userID: self.userID, context: context).done { (unreadCount) in
+                var count = unreadCount + offset
+                if count < 0 {
+                    count = 0
+                }
+                lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: context)
             }
-            lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: count, context: self.managedObjectContext)
         }
     }
 
@@ -254,7 +257,7 @@ class MessageDataService : Service, HasLocalStorage {
     ///   - time: the latest update time
     ///   - forceClean: force clean the exsition messages first
     ///   - completion: aync complete handler
-    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) {
+    func fetchMessages(byLable labelID : String, time: Int, forceClean: Bool, completion: CompletionBlock?) { 
         queue {
             let completionWrapper: CompletionBlock = { task, responseDict, error in
                 if error != nil {
@@ -284,7 +287,7 @@ class MessageDataService : Service, HasLocalStorage {
                                         updateTime.total = Int32(messcount)
                                     }
                                     if let time = lastMsg.time,
-                                       updateTime.endTime.compare(time) == .orderedDescending {
+                                       (updateTime.endTime.compare(time) == .orderedDescending || updateTime.endTime == .distantPast) {
                                         updateTime.end = time
                                     }
                                     updateTime.update = Date()
@@ -531,19 +534,20 @@ class MessageDataService : Service, HasLocalStorage {
     /// delete attachment from server
     ///
     /// - Parameter att: Attachment
-    func delete(att: Attachment!) {
-        let attachmentID = att.attachmentID
-        let objectId = att.objectID
-        let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            let object = context.object(with: objectId)
-            context.delete(object)
-            if let error = context.saveUpstreamIfNeeded() {
-                PMLog.D(" error: \(error)")
+    func delete(att: Attachment!) -> Promise<Void> {
+        return Promise { seal in
+            let attachmentID = att.attachmentID
+            let context = att.managedObjectContext
+            self.coreDataService.enqueue(context: context) { (context) in
+                context.delete(att)
+                if let error = context.saveUpstreamIfNeeded() {
+                    PMLog.D(" error: \(error)")
+                }
+                seal.fulfill_()
             }
+            let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
+            dequeueIfNeeded()
         }
-        let _ = sharedMessageQueue.addMessage(attachmentID, action: .deleteAtt, userId: self.userID)
-        dequeueIfNeeded()
     }
     
     typealias base64AttachmentDataComplete = (_ based64String : String) -> Void
@@ -580,26 +584,11 @@ class MessageDataService : Service, HasLocalStorage {
     
     
     // MARK : Send message
-    func send(inQueue messageID : String!, completion: CompletionBlock?) {
-        var error: NSError?
-        let context = self.coreDataService.backgroundManagedObjectContext
-        self.coreDataService.enqueue(context: context) { (context) in
-            if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
-                self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: messageID, subtitle: message.title))
-                
-                //message.location = .outbox
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D(" error: \(String(describing: error))")
-                } else {
-                    self.queue(message, action: .send)
-                }
-            } else {
-                //TODO:: handle can't find the message error.
-            }
-            DispatchQueue.main.async {
-                completion?(nil, nil, error)
-            }
+    func send(inQueue message : Message!, completion: CompletionBlock?) {
+        self.localNotificationService.scheduleMessageSendingFailedNotification(.init(messageID: message.messageID, subtitle: message.title))
+        self.queue(message, action: .send)
+        DispatchQueue.main.async {
+            completion?(nil, nil, nil)
         }
     }
 
@@ -1059,7 +1048,7 @@ class MessageDataService : Service, HasLocalStorage {
     
     fileprivate func cleanMessage() -> Promise<Void> {
         return Promise { seal in
-            self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            self.coreDataService.enqueue(context: self.coreDataService.mainManagedObjectContext) { (context) in
                 if #available(iOS 12, *) {
                     self.isFirstTimeSaveAttData = true
                 }
@@ -1070,9 +1059,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if let _ = try? context.execute(request) {
                     _ = context.saveUpstreamIfNeeded()
                 }
-                DispatchQueue.main.async {
-                    UIApplication.setBadge(badge: 0)
-                }
+                UIApplication.setBadge(badge: 0)
                 seal.fulfill_()
             }
         }
@@ -1387,7 +1374,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? userManager.userPrivateKeys,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
                                      passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -1625,7 +1612,10 @@ class MessageDataService : Service, HasLocalStorage {
             var status = SendStatus.justStart
             
             let userInfo = message.cachedUser ?? userManager.userInfo
+            
             let userPrivKeys = userInfo.userPrivateKeys
+            
+            let userPrivKeysArray = userInfo.userPrivateKeysArray
             let addrPrivKeys = userInfo.addressKeys
             let newSchema = addrPrivKeys.newSchema
             
@@ -1670,10 +1660,10 @@ class MessageDataService : Service, HasLocalStorage {
                     let bodyData = splited.dataPacket,
                     let keyData = splited.keyPacket,
                     let session = newSchema ?
-                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
+                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
                                                                 passphrase: passphrase,
                                                                 keys: addrPrivKeys) :
-                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeys,
+                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
                                                   passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                 }
@@ -1717,7 +1707,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = newSchema ?
                         try message.decryptBody(keys: addrPrivKeys,
-                                                userKeys: userPrivKeys,
+                                                userKeys: userPrivKeysArray,
                                                 passphrase: passphrase) :
                         try message.decryptBody(keys: addrPrivKeys,
                                                 passphrase: passphrase) else {
@@ -1731,10 +1721,10 @@ class MessageDataService : Service, HasLocalStorage {
                 for att in attachments {
                     if att.managedObjectContext != nil {
                         if let sessionPack = newSchema ?
-                            try att.getSession(userKey: userPrivKeys,
+                            try att.getSession(userKey: userPrivKeysArray,
                                                keys: addrPrivKeys,
                                                mailboxPassword: userManager.mailboxPassword) :
-                            try att.getSession(keys: addrPrivKeys.binPrivKeys,
+                            try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
                                                mailboxPassword: userManager.mailboxPassword) {
                             guard let key = sessionPack.key else {
                                 continue
@@ -1763,7 +1753,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildMime(senderKey: addressKey,
                                              passphrase: passphrase,
-                                             userKeys: userPrivKeys,
+                                             userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
                                              msgService: self,
@@ -1782,7 +1772,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildPlainText(senderKey: addressKey,
                                                   passphrase: passphrase,
-                                                  userKeys: userPrivKeys,
+                                                  userKeys: userPrivKeysArray,
                                                   keys: addrPrivKeys,
                                                   newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
@@ -2171,16 +2161,18 @@ class MessageDataService : Service, HasLocalStorage {
                 self.cleanMessage().then { _ -> Promise<Void> in
                     return self.contactDataService.cleanUp()
                 }.ensure {
-                    self.labelDataService.fetchLabels() {
-                        self.contactDataService.fetchContacts { (_, error) in
-                            if error == nil {
-                                lastUpdatedStore.clear()
-                                _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID, context: self.managedObjectContext).ensure {
-                                    completion?(task, nil, error)
-                                }
-                            } else {
-                                DispatchQueue.main.async {
-                                    completion?(task, nil, error)
+                    lastUpdatedStore.clear()
+                    self.fetchMessages(byLable: Message.Location.inbox.rawValue, time: 0, forceClean: false) { (_, _, _) in
+                        self.labelDataService.fetchLabels() {
+                            self.contactDataService.fetchContacts { (_, error) in
+                                if error == nil {
+                                    _ = lastUpdatedStore.updateEventID(by: self.userID, eventID: response!.eventID, context: self.managedObjectContext).ensure {
+                                        completion?(task, nil, error)
+                                    }
+                                } else {
+                                    DispatchQueue.main.async {
+                                        completion?(task, nil, error)
+                                    }
                                 }
                             }
                         }
@@ -2252,7 +2244,7 @@ class MessageDataService : Service, HasLocalStorage {
                     case .some(IncrementalUpdateType.insert), .some(IncrementalUpdateType.update1), .some(IncrementalUpdateType.update2):
                         if IncrementalUpdateType.insert == msg.Action {
                             if let cachedMessage = Message.messageForMessageID(msg.ID, inManagedObjectContext: context) {
-                                if !cachedMessage.contains(label: .draft) && !cachedMessage.contains(label: .sent) {
+                                if !cachedMessage.contains(label: .sent) {
                                     continue
                                 }
                             }
@@ -2634,23 +2626,24 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         lastUpdatedStore.resetUnreadCounts()
-        for count in messageCounts {
-            if let labelID = count["LabelID"] as? String {
-                guard let unread = count["Unread"] as? Int else {
-                    continue
+        self.coreDataService.enqueue(context: self.managedObjectContext) { (context) in
+            for count in messageCounts {
+                if let labelID = count["LabelID"] as? String {
+                    guard let unread = count["Unread"] as? Int else {
+                        continue
+                    }
+                    lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
                 }
-                lastUpdatedStore.updateUnreadCount(by: labelID, userID: self.userID, count: unread, context: self.managedObjectContext)
+            }
+            
+            _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: self.userID, context: self.managedObjectContext).done { (unreadCount) in
+                var badgeNumber = unreadCount
+                if  badgeNumber < 0 {
+                    badgeNumber = 0
+                }
+                UIApplication.setBadge(badge: badgeNumber)
             }
         }
-        
-        _ = lastUpdatedStore.unreadCount(by: Message.Location.inbox.rawValue, userID: userID, context: self.managedObjectContext).done { (unreadCount) in
-            var badgeNumber = unreadCount
-            if  badgeNumber < 0 {
-                badgeNumber = 0
-            }
-            UIApplication.setBadge(badge: badgeNumber)
-        }
-        
     }
     
     
@@ -2680,7 +2673,7 @@ class MessageDataService : Service, HasLocalStorage {
                                        userKeys: self.userDataSource!.userPrivateKeys,
                                        keys: keys, passphrase: passphrase, time: time) :
                 try message.body.verifyMessage(verifier: verifier,
-                                       binKeys: keys.binPrivKeys,
+                                       binKeys: keys.binPrivKeysArray,
                                        passphrase: passphrase,
                                        time: time) {
                 guard let verification = verify.signatureVerificationError else {

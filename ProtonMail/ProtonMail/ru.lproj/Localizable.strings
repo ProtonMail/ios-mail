@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Добавить";
 
+/* menu title */
+"Add accounts" = "Добавить учетные записи";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Добавить годовщину";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Объём почтового ящика";
 
+/* menu title */
+"Manage accounts" = "Управление учётными записями";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Управление адресами";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Можно добавить только одну бесплатную учётную запись";
+
+/* Open action */
+"Open" = "Open";
 
 /* (No Comment) */
 "OpenDraft" = "Открыть черновик";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Общий объём вложений не может превышать 25МБ";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Этот пользователь уже вошёл";

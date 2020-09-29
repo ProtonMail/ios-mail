@@ -8,9 +8,10 @@
 
 import UIKit
 
-class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
+@objcMembers
+public class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
     
-    class override func cellReuseIdentifier() -> String {
+    public class override func cellReuseIdentifier() -> String {
         return "DKVideoAssetIdentifier"
     }
     
@@ -26,7 +27,7 @@ class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         
         let height: CGFloat = 30
@@ -34,7 +35,7 @@ class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
                                           width: self.contentView.bounds.width, height: height)
     }
     
-    override weak var asset: DKAsset? {
+    override weak public var asset: DKAsset? {
         didSet {
             if let asset = asset {
                 let videoDurationLabel = self.videoInfoView.viewWithTag(-1) as! UILabel
@@ -45,7 +46,7 @@ class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
         }
     }
     
-    override var isSelected: Bool {
+    override public var isSelected: Bool {
         didSet {
             if super.isSelected {
                 self.videoInfoView.backgroundColor = UIColor(red: 20 / 255, green: 129 / 255, blue: 252 / 255, alpha: 1)

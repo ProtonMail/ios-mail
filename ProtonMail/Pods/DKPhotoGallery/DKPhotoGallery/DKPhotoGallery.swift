@@ -145,18 +145,14 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         super.viewWillAppear(animated)
         
         self.doSetupOnce()
-        
-        UIApplication.shared.statusBarStyle = DKPhotoGallery._preferredStatusBarStyle
-        
+                
         self.modalPresentationCapturesStatusBarAppearance = true
         self.setNeedsStatusBarAppearanceUpdate()
     }
     
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        UIApplication.shared.statusBarStyle = self.defaultStatusBarStyle
-        
+                
         self.modalPresentationCapturesStatusBarAppearance = false
         self.setNeedsStatusBarAppearanceUpdate()
     }
@@ -228,7 +224,6 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
         }
     }
     
-    @available(iOS 9.0, *)
     open override var previewActionItems: [UIPreviewActionItem] {
         return self.contentVC!.currentVC.previewActionItems
     }
@@ -444,7 +439,7 @@ DKPhotoGalleryContentDataSource, DKPhotoGalleryContentDelegate {
 
 public extension UIViewController {
     
-    @objc public func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
+    @objc func present(photoGallery gallery: DKPhotoGallery, completion: (() -> Swift.Void)? = nil) {
         gallery.modalPresentationStyle = .custom
         
         gallery.transitionController = DKPhotoGalleryTransitionController(gallery: gallery,

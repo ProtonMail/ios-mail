@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Bæta við";
 
+/* menu title */
+"Add accounts" = "Add accounts";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Bæta við afmælisdegi";
 
@@ -788,16 +791,16 @@
 "Enable Notification Email" = "Virkja tilkynningapóst";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN" = "Enable PIN";
+"Enable PIN" = "Virkja PIN-númer";
 
 /* settings protection section title */
 "Enable Pin Protection" = "Virkja varnir með PIN-númeri";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/FaceID" = "Enable PIN/FaceID";
+"Enable PIN/FaceID" = "Virkja PIN/FaceID";
 
 /* device settings auto lock type title toggle text */
-"Enable PIN/TouchID" = "Enable PIN/TouchID";
+"Enable PIN/TouchID" = "Virkja PIN/TouchID";
 
 /* settings protection section title */
 "Enable TouchID" = "Virkja TouchID";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Stærð pósthólfs";
 
+/* menu title */
+"Manage accounts" = "Manage accounts";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Sýsla með vistföng";
 
@@ -1443,6 +1449,9 @@
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Aðeins er hægt að bæta við einum ókeypis aðgangi";
 
+/* Open action */
+"Open" = "Open";
+
 /* (No Comment) */
 "OpenDraft" = "Opna drög";
 
@@ -1513,13 +1522,13 @@
 "Photo Library" = "Myndasafn";
 
 /* device settings auto lock type title */
-"PIN" = "PIN";
+"PIN" = "PIN-númer";
 
 /* device settings auto lock type title */
-"PIN & FaceID" = "PIN & FaceID";
+"PIN & FaceID" = "PIN og FaceID";
 
 /* device settings auto lock type title */
-"PIN & TouchID" = "PIN & TouchID";
+"PIN & TouchID" = "PIN og TouchID";
 
 /* Description */
 "Pin code can't be empty." = "PIN-númer má ekki vera autt.";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Heildarstærð viðhengja má ekki vera meiri en MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Notandinn er þegar skráður inn";

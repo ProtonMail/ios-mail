@@ -171,19 +171,29 @@ final class LastUpdatedStore : SharedCacheBase, HasLocalStorage {
             }
         }
     }
+    
+    func unreadCount(by labelID : String, userID: String, context: NSManagedObjectContext) -> Int {
+        var unreadCount: Int32?
+        let update = self.lastUpdate(by: labelID, userID: userID, context: context)
+        unreadCount = update?.unread
+        
+        guard let result = unreadCount else {
+            return 0
+        }
+        return Int(result)
+    }
+    
 
     // update unread count
     func updateUnreadCount(by labelID : String, userID: String, count: Int, context: NSManagedObjectContext) {
-        self.coreDataService.enqueue(context: context) { (context) in
-            let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context)
-            update.unread = Int32(count)
-            
-            let _ = context.saveUpstreamIfNeeded()
-            
-            if labelID == Message.Location.inbox.rawValue {
-                DispatchQueue.main.async {
-                    UIApplication.setBadge(badge: count)
-                }
+        let update = self.lastUpdateDefault(by: labelID, userID: userID, context: context)
+        update.unread = Int32(count)
+        
+        let _ = context.saveUpstreamIfNeeded()
+        
+        if labelID == Message.Location.inbox.rawValue {
+            DispatchQueue.main.async {
+                UIApplication.setBadge(badge: count)
             }
         }
     }

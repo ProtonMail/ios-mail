@@ -76,11 +76,7 @@ extension UIImage {
             // use the width and height to calculate the total number of pixels
             // in the input image.
             let sourceTotalPixels = sourceResolution.width * sourceResolution.height
-            
-            // calculate the number of MB that would be required to store
-            // this image uncompressed in memory.
-            let sourceTotalMB = sourceTotalPixels / Constant.pixelsPerMB
-            
+                        
             // determine the scale ratio to apply to the input image
             // that results in an output image of the defined size.
             // see kDestImageSizeMB, and how it relates to destTotalPixels.

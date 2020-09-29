@@ -88,15 +88,6 @@ class MenuViewController: UIViewController, ViewModelProtocol, CoordinatedNew, A
                                                name: NSNotification.Name.didPrimaryAccountLogout,
                                                object: nil)
         
-        guard let user = self.viewModel.currentUser else {return}
-        _ = firstly {
-            user.sevicePlanService.updateServicePlans()
-        }.done {
-            if self.tableView.visibleCells.count > 0 {
-                self.viewModel.updateMenuItems()
-                self.tableView.reloadData()
-            }
-        }
         generateAccessibilityIdentifiers()
     }
     

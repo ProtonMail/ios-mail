@@ -647,7 +647,7 @@
 		4FDDBDBF846E13C163C486A86A589F95 /* ContactsDetailsWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9B4974E9CC194892692CE0F147C1428 /* ContactsDetailsWarningCell.swift */; };
 		4FFB318A7F47E5EC94367D2D8FD43FD6 /* ComposeErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C83FBFD5F77D9FC09A7E1F0B30FC69E /* ComposeErrorView.swift */; };
 		500CDEF98158211428DCDF9A6EF23EE7 /* String+Parse+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC3E9EA0CE4352CBFBB3A341A5B1D784 /* String+Parse+Extension.swift */; };
-		501F0434D4A66B4E1000E9E5B286005D /* ComposerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF750BE80A55FC0B3C05B834F9305412 /* ComposerTest.swift */; };
+		501F0434D4A66B4E1000E9E5B286005D /* SendNewMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AF750BE80A55FC0B3C05B834F9305412 /* SendNewMessageTests.swift */; };
 		5034927DA2DD0DAB2638D017809F8375 /* NetworkTroubleShootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21DB7372E0DC3A96A4CDA41BC6F4BE51 /* NetworkTroubleShootViewController.swift */; };
 		503677A9A4D04F882F55EBAFC5F5A12D /* LabelEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C2ECDE676236E467CC81AEDFAF886B7 /* LabelEditViewModel.swift */; };
 		505DC82E54FC1F329CDB9743C00A26F5 /* ContactCollectionViewContactCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 161647CD3D12CAF522C1683DBD2046F6 /* ContactCollectionViewContactCell.xib */; };
@@ -959,7 +959,6 @@
 		756C8DE3D03A99F6D7B08F28F0BC88F4 /* ViewModelFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = E317255F86BEBA7FC4A9C815198014ED /* ViewModelFactory.swift */; };
 		7570BBAAB1FBDAE7C8C2E45A3C90AA09 /* SRPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E10F0CE0F7B6837D9EE20FBD2E3E83C7 /* SRPClient.swift */; };
 		759615B64EBA6C81044604CD4E8CC779 /* PinCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070475F75227B69A2718C78F69C33998 /* PinCodeModel.swift */; };
-		75C47496A8E0E5A55FD54E4D71742324 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */; };
 		75D447D16FCAACFC84F4EFC27B57F25A /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E73966B7175FDEFB1CA1F9CE6C8D75 /* Images.swift */; };
 		75E3E625A137E008ACDC04C18E18120D /* ImageProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7540794E9C555FB8DDB5720141F8D48E /* ImageProcessor.swift */; };
 		75EC480816F82223F98EE85D0655440A /* KeysAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13D78E546E3F3806274A9F329BEF35A4 /* KeysAPI.swift */; };
@@ -1121,6 +1120,11 @@
 		8A99489069F5835CF7B0E2AFA9D39007 /* PMImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51C5A44A396F31F83DCAFDDFF6FF0381 /* PMImagePickerController.swift */; };
 		8AA8BFA311AD73AD9970B819DB5CEB89 /* AccessibleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3013005B4B7D91E90B2977862424351 /* AccessibleCell.swift */; };
 		8AD928675659266C1C75D3EF4E42F794 /* UIScrollView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0214F4524AF2E8823C6C57E07A7C305A /* UIScrollView+Extension.swift */; };
+		8ADAF372251553A500C081B7 /* ForwardMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF371251553A500C081B7 /* ForwardMessageTests.swift */; };
+		8ADAF37E251553BF00C081B7 /* ReplyToMessageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF37D251553BF00C081B7 /* ReplyToMessageTests.swift */; };
+		8ADAF39E25155F5400C081B7 /* MessageAttachmentsRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF39D25155F5400C081B7 /* MessageAttachmentsRobot.swift */; };
+		8ADAF3B42518B37D00C081B7 /* ImageGalleryRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ADAF3B32518B37D00C081B7 /* ImageGalleryRobot.swift */; };
+		8ADAF3BF2518E97D00C081B7 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 78B6DE1A930126C15AA3563827673B5F /* Localizable.strings */; };
 		8AE880B99047B45BAB89A20E473E0108 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C33280811503EE1C12B69359DF59547D /* ContactsViewModel.swift */; };
 		8B22AEAA6BBAEA1144476219AF514CC1 /* ContactTypeViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6C64FE049CCAB116A41B87B7BC1195 /* ContactTypeViewModelImpl.swift */; };
 		8BB426EEBA26771E275C708A1A245969 /* TableContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF1DE9C31FB59BEBDEABDC93DA9E0A71 /* TableContainerViewModel.swift */; };
@@ -1900,7 +1904,6 @@
 		EAE40B24672C34917D246D4A61FCDDC2 /* IntentHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F092E325F64EA09A865FC4BB1A07EED /* IntentHandler.swift */; };
 		EAFCD103D4EE4E4076C7C1A1DF292E81 /* Migrate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB654B37DC6C08F1719348B39220081 /* Migrate.swift */; };
 		EB1708D1FF5FAD7FF06A61538BE4D96E /* MessageBodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1529D2B86F3F2BDF78B10DF4FC15D2C /* MessageBodyViewController.swift */; };
-		EB5AFAD22E5B6B33A37272C15FA18272 /* Crypto.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */; };
 		EBE4091D5FC4E21F49D69DBF5E282BB0 /* SettingsAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CC89E0A851DCC2FD5428BF4608CA49E /* SettingsAccountViewController.swift */; };
 		EBE8F60BE244E382DDF2F5B4E2863283 /* BaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */; };
 		EBF129F32A76CF4D29C856D4878D6218 /* MessageDataService+Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17A9290E97B86BEF7B76F5C74E77B040 /* MessageDataService+Builder.swift */; };
@@ -2672,7 +2675,12 @@
 		897D0BE51EA2CC2FCE34C2A2AD6F9CEC /* ComposeViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModelImpl.swift; sourceTree = "<group>"; };
 		899BDDEF3A3E63FB3DBDEDD1BF91B1FD /* Pods-Keymaker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Keymaker.release.xcconfig"; path = "Pods/Target Support Files/Pods-Keymaker/Pods-Keymaker.release.xcconfig"; sourceTree = "<group>"; };
 		8A0079ABF470F5678C8F5773F88F5C12 /* MessageContainerViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageContainerViewModel.swift; sourceTree = "<group>"; };
+		8A21214E251355CD00DB8741 /* add_test_users.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = add_test_users.sh; sourceTree = "<group>"; };
 		8A4817514C39F28D5E9FC8ED064329ED /* flags.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = flags.bundle; sourceTree = "<group>"; };
+		8ADAF371251553A500C081B7 /* ForwardMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardMessageTests.swift; sourceTree = "<group>"; };
+		8ADAF37D251553BF00C081B7 /* ReplyToMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyToMessageTests.swift; sourceTree = "<group>"; };
+		8ADAF39D25155F5400C081B7 /* MessageAttachmentsRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageAttachmentsRobot.swift; sourceTree = "<group>"; };
+		8ADAF3B32518B37D00C081B7 /* ImageGalleryRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryRobot.swift; sourceTree = "<group>"; };
 		8AEEB7309E4291B271DBB36D89716138 /* ContactEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactEditViewController.swift; sourceTree = "<group>"; };
 		8AFD327F9665CD8F972A0FDF58A1E1AB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		8B5E299341AF60F8CF7EE9E617D11F49 /* NetworkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTests.swift; sourceTree = "<group>"; };
@@ -2795,7 +2803,6 @@
 		AB6974F6AA8FEDB33BA4293427A6631D /* ViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelProtocol.swift; sourceTree = "<group>"; };
 		AB90062386EDBA2FE0FA3C138B0E8076 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/OnePasswordExtension.strings; sourceTree = "<group>"; };
 		ABB213520EA00047AD189FA1FF60F82A /* PhotoAttachmentProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAttachmentProvider.swift; sourceTree = "<group>"; };
-		ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crypto.framework; sourceTree = "<group>"; };
 		ABD88A66A63F4F7C7552CDFC78E8B063 /* ContactEditUrlCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditUrlCell.swift; sourceTree = "<group>"; };
 		ABDE292945E8024D84F2EA11D7D532B4 /* Attachment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attachment.swift; sourceTree = "<group>"; };
 		AD51C151104399D25DAD527D5CE00D6C /* nl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -2806,7 +2813,7 @@
 		ADB9FC5D69B6BA67F8EEF7823648FABB /* UINavigationController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Extension.swift"; sourceTree = "<group>"; };
 		AE41D28A62DD3D5530902EEF2EADF47D /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		AEED05C7EADA3DD772CA5DF3FDEC0155 /* LanguageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LanguageManager.h; sourceTree = "<group>"; };
-		AF750BE80A55FC0B3C05B834F9305412 /* ComposerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerTest.swift; sourceTree = "<group>"; };
+		AF750BE80A55FC0B3C05B834F9305412 /* SendNewMessageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendNewMessageTests.swift; sourceTree = "<group>"; };
 		AF854384083DAAD5C6ABD733A67536E4 /* SentRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SentRobot.swift; sourceTree = "<group>"; };
 		AFC0D4124C61390A1D788A83DD1A9FFC /* MailboxViewModelImpl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailboxViewModelImpl.swift; sourceTree = "<group>"; };
 		AFD5F00BA4D8B92C42BE8672F2EBF7B3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/PasswordExtension.strings; sourceTree = "<group>"; };
@@ -3112,7 +3119,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75C47496A8E0E5A55FD54E4D71742324 /* Crypto.framework in Frameworks */,
 				46EB8A356624DB9F23CEF6D61FBA248E /* Pods_PushServiceDev.framework in Frameworks */,
 				FD62A45970BF00BB7B3F7F60230EBDDB /* UserNotifications.framework in Frameworks */,
 			);
@@ -3177,7 +3183,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB5AFAD22E5B6B33A37272C15FA18272 /* Crypto.framework in Frameworks */,
 				1EBB770BC84B7697CD50C6F5B425DE32 /* Pods_PushService.framework in Frameworks */,
 				81A58A76220AA0DDBE19E270B8C690EB /* UserNotifications.framework in Frameworks */,
 			);
@@ -3268,6 +3273,7 @@
 				A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */,
 				1C1B82D542CF2D686015AD43EC12C5AE /* Login */,
 				7F99C21B951CD60E433D732794EC773C /* ManageAccounts */,
+				BD55102274F6587A08710E8CF4AC0036 /* TestPlans */,
 				B23C0EC1863E6D644F42BEE3865758C5 /* BaseTestCase.swift */,
 			);
 			path = Tests;
@@ -3354,6 +3360,8 @@
 			isa = PBXGroup;
 			children = (
 				8610EB77CE145A1B2438608ACEBA8E1A /* ComposerRobot.swift */,
+				8ADAF39D25155F5400C081B7 /* MessageAttachmentsRobot.swift */,
+				8ADAF3B32518B37D00C081B7 /* ImageGalleryRobot.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -4172,6 +4180,13 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
+		BD55102274F6587A08710E8CF4AC0036 /* TestPlans */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = TestPlans;
+			sourceTree = "<group>";
+		};
 		90F230708ECD00FCDF1936ED051FDBA1 /* Pickers */ = {
 			isa = PBXGroup;
 			children = (
@@ -4342,7 +4357,9 @@
 		A7081D7BD43E6D25BFF6342BBBAF0F47 /* Composer */ = {
 			isa = PBXGroup;
 			children = (
-				AF750BE80A55FC0B3C05B834F9305412 /* ComposerTest.swift */,
+				AF750BE80A55FC0B3C05B834F9305412 /* SendNewMessageTests.swift */,
+				8ADAF371251553A500C081B7 /* ForwardMessageTests.swift */,
+				8ADAF37D251553BF00C081B7 /* ReplyToMessageTests.swift */,
 			);
 			path = Composer;
 			sourceTree = "<group>";
@@ -4515,6 +4532,7 @@
 				FDA85A4767DFF60E04EC425132BEE5F6 /* TestData.swift */,
 				5ED38F3AA08F1433223C4769A991F274 /* User.swift */,
 				DE36B28208BD286A0723AD3898C35B43 /* Wait.swift */,
+				8A21214E251355CD00DB8741 /* add_test_users.sh */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -4771,7 +4789,6 @@
 		E82E69E71ACE409E41C4CFA61526BB54 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ABBC3D61C18BD0D3A7FC37EA3741CFC1 /* Crypto.framework */,
 				0985533340B13F5D4B91DAAD280C8446 /* Pods_Keymaker.framework */,
 				FAC33B29F96859EC6802F8339E4AAEB1 /* Pods_KeymakerTests.framework */,
 				41E5FF415464C7BC5B7487FC9782F5B4 /* Pods_ProtonMail.framework */,
@@ -5123,8 +5140,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2D585567F9D5A0C6D468369FF5279B47 /* Build configuration list for PBXNativeTarget "ProtonMail" */;
 			buildPhases = (
-				C72262B8B45609150E84751ED2520A06 /* Swift lint */,
 				F00EFEC03D5478819F38AF0E5CB9C21F /* [CP] Check Pods Manifest.lock */,
+				C72262B8B45609150E84751ED2520A06 /* Swift lint */,
 				62EAA77DF5C46BC4F2CACA119ECA6BF0 /* Sources */,
 				7CDDAC75253802DE782BC64CCCF195FE /* Frameworks */,
 				74DAC7A39D03830847662B2CA23938FC /* Resources */,
@@ -5480,6 +5497,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8ADAF3BF2518E97D00C081B7 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5861,7 +5879,6 @@
 				"${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
 				"${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
@@ -5871,9 +5888,9 @@
 				"${BUILT_PRODUCTS_DIR}/PMNetworking/PMNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework",
 				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 			);
@@ -5884,7 +5901,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EllipticCurveKeyPair.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
@@ -5894,9 +5910,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageFLPlugin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 			);
@@ -5953,7 +5969,6 @@
 				"${BUILT_PRODUCTS_DIR}/DKImagePickerController/DKImagePickerController.framework",
 				"${BUILT_PRODUCTS_DIR}/DKPhotoGallery/DKPhotoGallery.framework",
 				"${BUILT_PRODUCTS_DIR}/EllipticCurveKeyPair/EllipticCurveKeyPair.framework",
-				"${BUILT_PRODUCTS_DIR}/FLAnimatedImage/FLAnimatedImage.framework",
 				"${BUILT_PRODUCTS_DIR}/Groot/Groot.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MCSwipeTableViewCell/MCSwipeTableViewCell.framework",
@@ -5963,9 +5978,9 @@
 				"${BUILT_PRODUCTS_DIR}/PMNetworking/PMNetworking.framework",
 				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
-				"${BUILT_PRODUCTS_DIR}/SDWebImageFLPlugin/SDWebImageFLPlugin.framework",
 				"${BUILT_PRODUCTS_DIR}/SWRevealViewController/SWRevealViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyGif/SwiftyGif.framework",
 				"${BUILT_PRODUCTS_DIR}/TrustKit/TrustKit.framework",
 				"${BUILT_PRODUCTS_DIR}/UIColor+Hex/UIColor_Hex.framework",
 			);
@@ -5976,7 +5991,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKImagePickerController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DKPhotoGallery.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EllipticCurveKeyPair.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FLAnimatedImage.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Groot.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MCSwipeTableViewCell.framework",
@@ -5986,9 +6000,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PMNetworking.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImageFLPlugin.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWRevealViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyGif.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrustKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIColor_Hex.framework",
 			);
@@ -8035,14 +8049,16 @@
 				F660947D5659326DD87F6553687D1372 /* ApplyLabelRobotInterface.swift in Sources */,
 				EBE8F60BE244E382DDF2F5B4E2863283 /* BaseTestCase.swift in Sources */,
 				11989775DB18729FD27C572B336D130F /* ComposerRobot.swift in Sources */,
-				501F0434D4A66B4E1000E9E5B286005D /* ComposerTest.swift in Sources */,
+				501F0434D4A66B4E1000E9E5B286005D /* SendNewMessageTests.swift in Sources */,
 				17D7B699035252DD8B8F2A4136017190 /* ConnectAccountRobot.swift in Sources */,
 				671C4E531F5B7E16DFE870F28521EE8D /* Element.swift in Sources */,
 				969474F5DD65897C3E131A08DF023B7E /* InboxRobot.swift in Sources */,
 				4695E81C490C43F765A82EC1F0A5205D /* Localization.swift in Sources */,
 				ED1983FB1A5A4CE945ADBA5416F44583 /* LoginRobot.swift in Sources */,
 				C9FDA003EC894499994AA18C9F16B11D /* LoginTests.swift in Sources */,
+				8ADAF3B42518B37D00C081B7 /* ImageGalleryRobot.swift in Sources */,
 				C8159E6143A7328BA8A3D3DF7DD27C05 /* MailboxPasswordRobot.swift in Sources */,
+				8ADAF39E25155F5400C081B7 /* MessageAttachmentsRobot.swift in Sources */,
 				575CFE5A59C03AE1FDEC8240ED0DDAA1 /* MailboxRobotInterface.swift in Sources */,
 				04958BBE878E988157766291E34F66C2 /* MenuRobot.swift in Sources */,
 				799780FD5F2FA1EA8AF1CF17E727BFC8 /* MoveToFolderRobotInterface.swift in Sources */,
@@ -8050,10 +8066,12 @@
 				AD3FC9A8281D52D92DD6AB2AC337BBE4 /* Otp.swift in Sources */,
 				A974AF9A803726FCF4AD4206594456B9 /* SelectionMoreOptionsRobotInterface.swift in Sources */,
 				CCC74C53CAB34A2B5092D5CC47CEAF86 /* SelectionStateRobotInterface.swift in Sources */,
+				8ADAF37E251553BF00C081B7 /* ReplyToMessageTests.swift in Sources */,
 				7D03892CEB3648710D441D97493FDF9E /* SentRobot.swift in Sources */,
 				400426555CFA13848300895913BE6DFC /* StringUtils.swift in Sources */,
 				E5E5E57B22DC50D3410BA0CB0697E412 /* TestData.swift in Sources */,
 				E53D72796133AE043B1964AC624BF070 /* User.swift in Sources */,
+				8ADAF372251553A500C081B7 /* ForwardMessageTests.swift in Sources */,
 				19DC6D51C10AA421BA9651B12C206A72 /* Wait.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -8277,7 +8295,7 @@
 				MARKETING_VERSION = 1.12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "ProtonMail Siri kit dev";
@@ -8341,7 +8359,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.12.4;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Protonmail Siri kit release";
@@ -8476,7 +8494,7 @@
 				MARKETING_VERSION = 1.12.4;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "development siriDev";
@@ -8511,7 +8529,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.12.4;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "production siriDev";
@@ -8880,7 +8898,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.12.4;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = com.protonmail.protonmail.SiriDev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "production siriDev";
@@ -9208,7 +9226,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MARKETING_VERSION = 1.12.4;
 				MTL_FAST_MATH = YES;
-				OTHER_SWIFT_FLAGS = "-DAPP_EXTENSION";
+				OTHER_SWIFT_FLAGS = "$(inherited) -DAPP_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.protonmail.protonmail.Siri;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Protonmail Siri kit release";

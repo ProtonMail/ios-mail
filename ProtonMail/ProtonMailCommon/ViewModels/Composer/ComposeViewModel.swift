@@ -166,8 +166,9 @@ class ComposeViewModel: NSObject {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
     }
     
-    func deleteAtt(_ att : Attachment!) {
+    func deleteAtt(_ att : Attachment!) -> Promise<Void> {
         NSException(name:NSExceptionName(rawValue: "name"), reason:"reason", userInfo:nil).raise()
+        return Promise()
     }
     
     func markAsRead() {
