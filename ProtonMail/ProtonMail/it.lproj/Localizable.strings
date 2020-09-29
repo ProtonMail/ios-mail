@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Aggiungi";
 
+/* menu title */
+"Add accounts" = "Aggiungi account";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Aggiungi anniversario";
 
@@ -473,7 +476,7 @@
 "Clear Local Message Cache" = "Cancella la cache dei messaggi locali";
 
 /* Menu action to remove text formatting */
-"Clear Style" = "Clear Style";
+"Clear Style" = "Rimuovi formattazione";
 
 /* general close action */
 "Close" = "Chiudi";
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Spazio della casella email";
 
+/* menu title */
+"Manage accounts" = "Gestisci account";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Gestire gli indirizzi";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Può essere aggiunto solo un account gratuito";
+
+/* Open action */
+"Open" = "Apri";
 
 /* (No Comment) */
 "OpenDraft" = "Apri bozza";
@@ -2045,6 +2054,9 @@
 /* Description */
 "The total attachment size cannot exceed 25MB" = "La dimensione totale degli allegati non può superare i 25MB";
 
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "L'URL che stai cercando di accedere non è standard e potrebbe non essere caricato correttamente. Vuoi aprirlo usando il browser predefinito del tuo dispositivo?";
+
 /* Alert when the account is already logged in */
 "The user is already logged in" = "L'utente ha già effettuato l'accesso";
 
@@ -2060,7 +2072,7 @@
 "The verification failed!" = "Verifica non riuscita!";
 
 /* alert when logout user if in queue still have tasks */
-"There are still some messages in queue. If you log out, the draft will be deleted." = "There are still some messages in queue. If you log out, the draft will be deleted.";
+"There are still some messages in queue. If you log out, the draft will be deleted." = "Ci sono ancora alcuni messaggi in coda. Se ci si disconnette, la bozza verrà eliminata.";
 
 /* Alert to confirm logout with pending message in the queue */
 "There are unsent messages that will be lost if you log out" = "Ci sono messaggi non inviati che andranno persi se ti disconnetti";
@@ -2094,10 +2106,10 @@
 "Title" = "Titolo";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\n" = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza.\n\n";
 
 /* Cert pinning failed alert message */
-"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately";
+"TLS certificate validation failed. Your connection may be monitored and the app is temporarily blocked for your safety.\n\nswitch  networks immediately" = "Convalida del certificato TLS non riuscita. La tua connessione potrebbe essere monitorata e l'app è temporaneamente bloccata per la tua sicurezza. Cambia connessione immediatamente";
 
 /* Title */
 "To" = "A";

@@ -87,6 +87,9 @@
 /* (No Comment) */
 "Add" = "Dodaj";
 
+/* menu title */
+"Add accounts" = "Dodaj konta";
+
 /* new contacts add Anniversary */
 "Add Anniversary" = "Dodaj rocznicę";
 
@@ -1240,6 +1243,9 @@
 /* cell title in device settings */
 "Mailbox size" = "Rozmiar skrzynki pocztowej";
 
+/* menu title */
+"Manage accounts" = "Zarządzaj kontami";
+
 /* The title for the view where user can manage emails in the contact group */
 "Manage Addresses" = "Zarządzaj adresami";
 
@@ -1442,6 +1448,9 @@
 
 /* Alert when the free account limit is reached */
 "Only one free account can be added" = "Możesz dodać tylko jedno darmowe konto";
+
+/* Open action */
+"Open" = "Otwórz";
 
 /* (No Comment) */
 "OpenDraft" = "Otwórz szkic";
@@ -2044,6 +2053,9 @@
 
 /* Description */
 "The total attachment size cannot exceed 25MB" = "Rozmiar załącznika nie może przekroczyć 25MB";
+
+/* Unsupported url alert message */
+"The URL you are trying to access is not standard and may not load properly. Do you want to open it using your device's default browser?" = "Adres URL, do którego próbujesz uzyskać dostęp nie jest standardowy i może nie wczytać się poprawnie. Czy chcesz otworzyć go przy użyciu domyślnej przeglądarki urządzenia?";
 
 /* Alert when the account is already logged in */
 "The user is already logged in" = "Użytkownik jest już zalogowany";
