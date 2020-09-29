@@ -273,17 +273,24 @@ class APIService : Service {
                 self.debugError(error)
                 completion(nil, nil, error)
             } else {
+                let accessToken = token ?? ""
+                if authenticated && accessToken.isEmpty {
+                    let localerror = NSError.protonMailError(401,
+                                                             localizedDescription: "The download request failed, invalid access token.",
+                                                             localizedFailureReason: "The download request failed, invalid access token.",
+                                                             localizedRecoverySuggestion: nil)
+                    completion(nil, nil, localerror)
+                    return
+                }
                 
                 let request = try! self.sessionManager.requestSerializer.request(withMethod: HTTPMethod.get.toString(),
-                                                                            urlString: url,
-                                                                            parameters: nil)
+                                                                                 urlString: url,
+                                                                                 parameters: nil)
                 if let header = headers {
                     for (k, v) in header {
                         request.setValue("\(v)", forHTTPHeaderField: k)
                     }
                 }
-                
-                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
                 if let userID = userID {
                     request.setValue(userID, forHTTPHeaderField: "x-pm-uid")
@@ -365,6 +372,16 @@ class APIService : Service {
                 self.debugError(error)
                 completion(nil, nil, error)
             } else {
+                
+                let accessToken = token ?? ""
+                if authenticated && accessToken.isEmpty {
+                    let localerror = NSError.protonMailError(401,
+                                                             localizedDescription: "The upload request failed, invalid access token.",
+                                                             localizedFailureReason: "The upload request failed, invalid access token.",
+                                                             localizedRecoverySuggestion: nil)
+                    return completion(nil, nil, localerror)
+                }
+                
                 let request = self.sessionManager.requestSerializer.multipartFormRequest(withMethod: "POST",
                                                                                          urlString: url, parameters: parameters,
                                                                                          constructingBodyWith: { (formData) -> Void in
@@ -381,8 +398,6 @@ class APIService : Service {
                         request.setValue("\(v)", forHTTPHeaderField: k)
                     }
                 }
-                
-                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
                 if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
@@ -465,6 +480,12 @@ class APIService : Service {
                         }
                         
                         if authenticated && httpCode == 401 && authRetry {
+                            if token == nil {
+                                Analytics.shared.debug(message: .logout, extra: [
+                                    "EmptyToken": true,
+                                    "Path": path
+                                ])
+                            }
                             self.expireCredential()
                             if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                 completion?(nil, nil, error)
@@ -520,6 +541,12 @@ class APIService : Service {
                             }
                             
                             if authenticated && responseCode == 401 {
+                                if token == nil {
+                                    Analytics.shared.debug(message: .logout, extra: [
+                                        "EmptyToken": true,
+                                        "Path": path
+                                    ])
+                                }
                                 self.expireCredential()
                                 if path.contains("https://api.protonmail.ch/refresh") { //tempery no need later
                                     completion?(nil, nil, error)
@@ -559,6 +586,16 @@ class APIService : Service {
                 }
                 let url = self.doh.getHostUrl() + path
                 PMLog.D("Start Request: " + url)
+                
+                let accessToken = token ?? ""
+                if authenticated && accessToken.isEmpty {
+                    let localerror = NSError.protonMailError(401,
+                                                             localizedDescription: "The request failed, invalid access token.",
+                                                             localizedFailureReason: "The request failed, invalid access token.",
+                                                             localizedRecoverySuggestion: nil)
+                    completion?(nil, nil, localerror)
+                    return
+                }
                 //TODO:: fix me  change try ! to a better way
                 let request = try! self.sessionManager.requestSerializer.request(withMethod: method.toString(),
                                                                                  urlString: url,
@@ -569,7 +606,6 @@ class APIService : Service {
                         request.setValue("\(v)", forHTTPHeaderField: k)
                     }
                 }
-                let accessToken = token ?? ""
                 request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
                 if let userid = userID {
                     request.setValue(userid, forHTTPHeaderField: "x-pm-uid")
