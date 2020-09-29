@@ -1374,7 +1374,7 @@ class MessageDataService : Service, HasLocalStorage {
         }
         
         let signed = attachment.sign(byKey: key,
-                                     userKeys: attachment.message.cachedUser?.userPrivateKeys ?? userManager.userPrivateKeys,
+                                     userKeys: attachment.message.cachedUser?.userPrivateKeysArray ?? userManager.userPrivateKeys,
                                      passphrase: passphrase)
         let completionWrapper: CompletionBlock = { task, response, error in
             PMLog.D("SendAttachmentDebug == finish upload att!")
@@ -1612,7 +1612,10 @@ class MessageDataService : Service, HasLocalStorage {
             var status = SendStatus.justStart
             
             let userInfo = message.cachedUser ?? userManager.userInfo
+            
             let userPrivKeys = userInfo.userPrivateKeys
+            
+            let userPrivKeysArray = userInfo.userPrivateKeysArray
             let addrPrivKeys = userInfo.addressKeys
             let newSchema = addrPrivKeys.newSchema
             
@@ -1657,10 +1660,10 @@ class MessageDataService : Service, HasLocalStorage {
                     let bodyData = splited.dataPacket,
                     let keyData = splited.keyPacket,
                     let session = newSchema ?
-                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeys,
+                        try keyData.getSessionFromPubKeyPackage(userKeys: userPrivKeysArray,
                                                                 passphrase: passphrase,
                                                                 keys: addrPrivKeys) :
-                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeys,
+                        try message.getSessionKey(keys: addrPrivKeys.binPrivKeysArray,
                                                   passphrase: passphrase) else {
                             throw RuntimeError.cant_decrypt.error
                 }
@@ -1704,7 +1707,7 @@ class MessageDataService : Service, HasLocalStorage {
                 if sendBuilder.hasMime || sendBuilder.hasPlainText {
                     guard let clearbody = newSchema ?
                         try message.decryptBody(keys: addrPrivKeys,
-                                                userKeys: userPrivKeys,
+                                                userKeys: userPrivKeysArray,
                                                 passphrase: passphrase) :
                         try message.decryptBody(keys: addrPrivKeys,
                                                 passphrase: passphrase) else {
@@ -1718,10 +1721,10 @@ class MessageDataService : Service, HasLocalStorage {
                 for att in attachments {
                     if att.managedObjectContext != nil {
                         if let sessionPack = newSchema ?
-                            try att.getSession(userKey: userPrivKeys,
+                            try att.getSession(userKey: userPrivKeysArray,
                                                keys: addrPrivKeys,
                                                mailboxPassword: userManager.mailboxPassword) :
-                            try att.getSession(keys: addrPrivKeys.binPrivKeys,
+                            try att.getSession(keys: addrPrivKeys.binPrivKeysArray,
                                                mailboxPassword: userManager.mailboxPassword) {
                             guard let key = sessionPack.key else {
                                 continue
@@ -1750,7 +1753,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildMime(senderKey: addressKey,
                                              passphrase: passphrase,
-                                             userKeys: userPrivKeys,
+                                             userKeys: userPrivKeysArray,
                                              keys: addrPrivKeys,
                                              newSchema: newSchema,
                                              msgService: self,
@@ -1769,7 +1772,7 @@ class MessageDataService : Service, HasLocalStorage {
                 //build pgp sending mime body
                 return sendBuilder.buildPlainText(senderKey: addressKey,
                                                   passphrase: passphrase,
-                                                  userKeys: userPrivKeys,
+                                                  userKeys: userPrivKeysArray,
                                                   keys: addrPrivKeys,
                                                   newSchema: newSchema)
             } .then { sendbuilder -> Guarantee<[Result<AddressPackageBase>]> in
@@ -2670,7 +2673,7 @@ class MessageDataService : Service, HasLocalStorage {
                                        userKeys: self.userDataSource!.userPrivateKeys,
                                        keys: keys, passphrase: passphrase, time: time) :
                 try message.body.verifyMessage(verifier: verifier,
-                                       binKeys: keys.binPrivKeys,
+                                       binKeys: keys.binPrivKeysArray,
                                        passphrase: passphrase,
                                        time: time) {
                 guard let verification = verify.signatureVerificationError else {

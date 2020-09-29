@@ -1063,6 +1063,17 @@ extension UserInfo {
         return out
     }
     
+    var userPrivateKeysArray: [Data] {
+        var out: [Data] = []
+        var error: NSError?
+        for key in userKeys {
+            if let privK = ArmorUnarmor(key.private_key, &error) {
+                out.append(privK)
+            }
+        }
+        return out
+    }
+    
     var addressKeys : [Key] {
         var out = [Key]()
         for addr in userAddresses {
