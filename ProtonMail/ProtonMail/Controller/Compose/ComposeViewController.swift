@@ -474,20 +474,32 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
     
     private func collectDraftData()  -> Guarantee<Void>  {
         return Guarantee { ret in
-            self.htmlEditor.getHtml().done { body in
+            self.htmlEditor.getHtml().done { bodyString in
                 
-                var html = body.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
-                html = body.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                let head = "<html><head></head><body>"
+                let foot = "</body></html>"
+                
+                var html = bodyString.replacingOccurrences(of: "\\", with: "&#92;", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "\"", with: "\\\"", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "“", with: "&quot;", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "”", with: "&quot;", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "\r", with: "\\r", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "\n", with: "\\n", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "<br>", with: "<br />", options: .caseInsensitive, range: nil)
+                html = bodyString.replacingOccurrences(of: "<hr>", with: "<hr />", options: .caseInsensitive, range: nil)
+                
+                var body = html.isEmpty ? bodyString : html
+                if !body.hasPrefix(head) {
+                    body = head + body
+                }
+                
+                if !body.hasSuffix(foot) {
+                    body = body + foot
+                }
                 
                 self.viewModel.collectDraft (
                     self.headerView.subject.text!,
-                    body: html.isEmpty ? body : html,
+                    body: body,
                     expir: self.headerView.expirationTimeInterval,
                     pwd:self.encryptionPassword,
                     pwdHit:self.encryptionPasswordHint
