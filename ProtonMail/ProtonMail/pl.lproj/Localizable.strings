@@ -1414,7 +1414,7 @@
 "Notice" = "Uwaga";
 
 /* Title */
-"Notification / Recovery Email" = "Adres odzyskiwania/powiadomień";
+"Notification / Recovery Email" = "Adres pomocniczy/powiadomień";
 
 /* Title */
 "Notification Email" = "Powiadomienia e-mail";
@@ -1693,10 +1693,10 @@
 "Recovery Code" = "Kod odzyskiwania";
 
 /* Title */
-"Recovery Email" = "Adres odzyskiwania";
+"Recovery Email" = "Adres pomocniczy";
 
 /* Title */
-"Recovery Email Warning" = "Ostrzeżenie dotyczące adresu odzyskiwania";
+"Recovery Email Warning" = "Ostrzeżenie dotyczące adresu pomocniczego";
 
 /* Title */
 "Remind Me Later" = "Przypomnij później";
@@ -2022,7 +2022,7 @@
 "The new password not match" = "Hasła nie pasują do siebie";
 
 /* recovery email notes */
-"The optional recovery email address allows you to reset your login password if you forget it." = "Opcjonalny adres odzyskiwania pozwoli Ci zresetować hasło logowania, jeśli je zapomnisz.";
+"The optional recovery email address allows you to reset your login password if you forget it." = "Opcjonalny adres pomocniczy pozwoli Ci zresetować hasło logowania, jeśli je zapomnisz.";
 
 /* update password error */
 "The Password is wrong." = "Hasło jest nieprawidłowe.";
@@ -2329,7 +2329,7 @@
 "Warning: Before you pass the human check you can't sent email!!!" = "Ostrzeżenie: dopóki nie sprawdzimy, że jesteś człowiekiem, nie możesz wysyłać wiadomości!!!";
 
 /* Description */
-"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu odzyskiwania. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
+"Warning: You did not set a recovery email so account recovery is impossible if you forget your password. Proceed without recovery email?" = "Ostrzeżenie: Nie dodałeś adresu pomocniczego. Jeśli zapomnisz hasła, to nie odzyskasz już swojego konta. Czy chcesz przejść dalej bez wpisywania tego adresu?";
 
 /* Local notification text */
 "We could not send your message, possibly because of a poor network connection. Your message was saved to Drafts and will be sent automatically the next time you open the app." = "Nie mogliśmy wysłać wiadomości, prawdopodobnie ze względu na słabe połączenie internetowe. Wiadomość została zapisana w folderze Szkice i zostanie wysłana automatycznie przy następnym uruchomieniu aplikacji.";
