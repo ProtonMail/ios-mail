@@ -733,19 +733,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
         }
         
         self.pullDown()
-        //TODO:: fix me
-//        let updateTime = viewModel.lastUpdateTime()
-//        let recordedCount = Int(updateTime.total)
-//        if updateTime.isNew || recordedCount > rowCount {
-//            self.fetchingOlder = true
-//            viewModel.fetchMessages(time: 0, foucsClean: false, completion: { (task, messages, error) -> Void in
-//                self.fetchingOlder = false
-//                if error != nil {
-//                    PMLog.D("search error: \(String(describing: error))")
-//                }
-//                self.checkHuman()
-//            })
-//        }
     }
     
     func handleRequestError (_ error : NSError) {
@@ -774,10 +761,6 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
     
     
     @objc internal func pullDown() {
-//        guard refreshControl.isRefreshing == false else {
-//            self.refreshControl?.endRefreshing()
-//            return
-//        }
         self.getLatestMessages()
         //temperay to fix the new messages are not loaded
         self.fetchNewMessage()

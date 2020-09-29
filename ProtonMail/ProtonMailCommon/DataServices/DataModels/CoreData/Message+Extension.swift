@@ -375,7 +375,7 @@ extension Message {
         return nil
     }
     
-    func decryptBody(keys: [Key], userKeys: Data, passphrase: String) throws -> String? {
+    func decryptBody(keys: [Key], userKeys: [Data], passphrase: String) throws -> String? {
         var firstError : Error?
         for key in keys {
             do {
@@ -392,7 +392,7 @@ extension Message {
                         return try body.decryptMessageWithSinglKey(key.private_key, passphrase: plaitToken)
                     }
                 } else {//normal key old schema
-                    return try body.decryptMessage(binKeys: keys.binPrivKeys, passphrase: passphrase)
+                    return try body.decryptMessage(binKeys: keys.binPrivKeysArray, passphrase: passphrase)
                 }
             } catch let error {
                 if firstError == nil {
@@ -412,7 +412,7 @@ extension Message {
         return try body.split()
     }
     
-    func getSessionKey(keys: Data, passphrase: String) throws -> SymmetricKey? {
+    func getSessionKey(keys: [Data], passphrase: String) throws -> SymmetricKey? {
         return try split()?.keyPacket?.getSessionFromPubKeyPackage(passphrase, privKeys: keys)
     }
     

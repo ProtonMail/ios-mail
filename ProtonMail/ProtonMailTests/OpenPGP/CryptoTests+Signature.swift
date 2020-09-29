@@ -47,10 +47,10 @@ extension CryptoTests {
             XCTFail("can't be nil")
             return
         }
-        let pgp = Crypto()
+        let crypto = Crypto()
         do {
             
-            let armoredSignature = try pgp.signDetached(plainData: signedPlainText,
+            let armoredSignature = try crypto.signDetached(plainData: signedPlainText,
                                                         privateKey: keyringPrivateKey,
                                                         passphrase: self.testMailboxPassword)
             XCTAssertTrue(!armoredSignature.isEmpty)
@@ -58,7 +58,7 @@ extension CryptoTests {
             
             
             
-            let isOk = try pgp.verifyDetached(signature: armoredSignature,
+            let isOk = try crypto.verifyDetached(signature: armoredSignature,
                                               plainText: signedPlainText,
                                               publicKey: keyringPublicKey,
                                               verifyTime: testTime)
@@ -67,20 +67,41 @@ extension CryptoTests {
         } catch let error {
             XCTFail("thrown" + "\(error.localizedDescription)")
         }
-        
-   
-//        message = NewPlainMessageFromString(signedPlainText)
-//        textSignature, err = signingKeyRing.SignDetached(message)
-//        if err != nil {
-//            t.Fatal("Cannot generate signature:", err)
-//        }
-//
-//        armoredSignature, err := textSignature.GetArmored()
-//        if err != nil {
-//            t.Fatal("Cannot armor signature:", err)
-//        }
-//
-//        assert.Regexp(t, signatureTest, armoredSignature)
+    }
+    
+    func testSignDataDetached() {
+        let signedPlainText = "Signed message\n"
+        let signedData = signedPlainText.data(using: .utf8)!
+        let signatureRegexMatch = "(?s)^-----BEGIN PGP SIGNATURE-----.*-----END PGP SIGNATURE-----$"
+        let testTime : Int64 = 0
+        guard let keyringPrivateKey = OpenPGPTestsDefine.keyring_privateKey.rawValue,
+        let keyringPublicKey =  OpenPGPTestsDefine.keyring_publicKey.rawValue else {
+            XCTFail("can't be nil")
+            return
+        }
+        let crypto = Crypto()
+        do {
+            
+            guard let armoredSignature = try crypto.signDetached(plainData: signedData,
+                                                        privateKey: keyringPrivateKey,
+                                                        passphrase: self.testMailboxPassword) else {
+                                                            XCTFail("Nil signature")
+                                                            return
+            }
+            XCTAssertTrue(!armoredSignature.isEmpty)
+            XCTAssertTrue( armoredSignature.isMatch(signatureRegexMatch, options: []))
+            
+            
+            
+            let isOk = try crypto.verifyDetached(signature: armoredSignature,
+                                              plainData: signedData,
+                                              publicKey: keyringPublicKey,
+                                              verifyTime: testTime)
+            XCTAssertTrue(isOk)
+            
+        } catch let error {
+            XCTFail("thrown" + "\(error.localizedDescription)")
+        }
     }
     
 //    func testVerifyTextDetachedSig() {
