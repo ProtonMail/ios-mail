@@ -574,7 +574,7 @@
 "Create and add Labels to organize your inbox. Press and hold down on a message for all options." = "Crea y añade etiquetas para organizar tu bandeja de entrada. Mantén pulsado un mensaje para ver todas las opciones.";
 
 /* title of button in account connect page */
-"Create new account" = "Create new account";
+"Create new account" = "Crear una cuenta nueva";
 
 /* error message title when create new user */
 "Create user failed" = "Error al crear el usuario";
@@ -957,7 +957,7 @@
 "General Settings" = "Ajustes generales";
 
 /* Screen header, like 'Get VISIONARY' */
-"Get %@" = "Obtenga %@";
+"Get %@" = "Obtener %@";
 
 /* Action */
 "Get more information" = "Obtener más información";
@@ -1177,7 +1177,7 @@
 "Local cache can't find mailbox password" = "La caché local no puede encontrar la contraseña del buzón";
 
 /* cell title in device settings */
-"Local Cache Management" = "Gestionar caché local";
+"Local Cache Management" = "Local Cache Management";
 
 /* cell title in device settings */
 "Local storage limit" = "Límite de almacenamiento local";
@@ -1225,7 +1225,7 @@
 "Looking to secure your contact's details?" = "¿Buscando asegurar sus datos de contacto?";
 
 /* cell title in device settings */
-"MAILBOX" = "Buzón";
+"MAILBOX" = "BUZÓN";
 
 /* settings general section title */
 "Mailbox Password" = "Contraseña del buzón";
@@ -1911,7 +1911,7 @@
 "State" = "Estado";
 
 /* network troubleshot cell title */
-"Still can't find a solution" = "Si todavía no encuentra una solución";
+"Still can't find a solution" = "Still can't find a solution";
 
 /* Title */
 "Storage" = "Almacenamiento";
@@ -2016,7 +2016,7 @@
 "The new password can't empty" = "La nueva contraseña no puede estar vacía";
 
 /* update password error */
-"The new password does not match." = "La nueva contraseñas no coincide.";
+"The new password does not match." = "La nueva contraseña no coincide.";
 
 /* (No Comment) */
 "The new password not match" = "Las contraseñas no coinciden";
@@ -2076,7 +2076,7 @@
 "This can take a while. Please do not dismiss the app." = "Esto puede tomar un tiempo, no cierre la aplicación.";
 
 /* alert desc */
-"This contact belongs to your Address Book." = "Este contacto pertenece a su libreta de direcciones.";
+"This contact belongs to your Address Book." = "Este contacto pertenece a tu libreta de direcciones.";
 
 /* spam score warning */
 "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" = "Este correo electrónico ha fallado los requisitos de autenticación de su dominio. ¡Puede ser falsificado o reenviado incorrectamente!";
