@@ -137,7 +137,7 @@ class SignInManager: Service {
         let labelService = user.labelService
         let userDataService = user.userService
         labelService.fetchLabels()
-        userDataService.fetchUserInfo().done(on: .main) { info in
+        userDataService.fetchUserInfo(auth: auth).done(on: .main) { info in
             guard let info = info else {
                 onError(NSError.unknowError())
                 return

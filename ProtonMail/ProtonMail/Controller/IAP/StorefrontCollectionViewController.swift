@@ -46,8 +46,8 @@ final class StorefrontCollectionViewController: UICollectionViewController {
         }.catch({ (error) in
             MBProgressHUD.hide(for: self.view, animated: true)
             Analytics.shared.error(message: .fetchSubscriptionData, error: error, user: self.viewModel.currentUser)
+            self.showErrorAlert()
         })
-        
     }
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -103,6 +103,14 @@ final class StorefrontCollectionViewController: UICollectionViewController {
             assert(false, "Unknown cell type requested")
             return ""
         }
+    }
+    
+    private func showErrorAlert() {
+        let alertController = UIAlertController(title: LocalString._general_alert_title, message: LocalString._iap_unavailable, preferredStyle: .alert)
+        alertController.addOKAction { [weak self](_) in
+            self?.coordinator.goToInbox()
+        }
+        self.present(alertController, animated: true, completion: nil)
     }
 }
 

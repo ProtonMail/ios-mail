@@ -506,7 +506,7 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
                 if let content_id = att.contentID(), !content_id.isEmpty && att.inline() {
                     if orignal.contains(content_id) {
                         if !edited.contains(content_id) {
-                            self.viewModel.deleteAtt(att)
+                            self.viewModel.deleteAtt(att).cauterize()
                         }
                     }
                 }
@@ -542,7 +542,7 @@ extension ComposeViewController: HtmlEditorBehaviourDelegate {
             self.viewModel.message?.numAttachments = NSNumber(value: newNum)
         }
         
-        self.viewModel.deleteAtt(attachment)
+        self.viewModel.deleteAtt(attachment).cauterize()
     }
     
     func htmlEditorDidFinishLoadingContent() {
@@ -856,8 +856,9 @@ extension ComposeViewController: AttachmentsTableViewControllerDelegate {
                 self.viewModel.message?.numAttachments = NSNumber(value: newNum)
             }
             
-            self.viewModel.deleteAtt(attachment)
-            attViewController.updateAttachments()
+            self.viewModel.deleteAtt(attachment).ensure {
+                attViewController.updateAttachments()
+            }.cauterize()
         }
     }
 

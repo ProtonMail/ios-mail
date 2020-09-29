@@ -71,14 +71,18 @@ class StorefrontViewModel: NSObject {
             return Promise()
         }
         
-        return firstly {
-            self.currentUser.sevicePlanService.updateCurrentSubscription()
-        }.done {
-            self.initStoreFront()
-            self.servicePlanService = self.currentUser.sevicePlanService
-            self.setup(with: self.storefront)
-            self.setupObserve()
-        }
+        return self.currentUser.sevicePlanService.updateServicePlans()
+            .then { () -> Promise<Void> in
+                guard self.currentUser.sevicePlanService.isIAPAvailable else {
+                    throw NSError(domain: "", code: -1, localizedDescription: "IAP unavailable")
+                }
+                return self.currentUser.sevicePlanService.updateCurrentSubscription()
+            }.done {
+                self.initStoreFront()
+                self.servicePlanService = self.currentUser.sevicePlanService
+                self.setup(with: self.storefront)
+                self.setupObserve()
+            }
     }
     
     func numberOfSections() -> Int {

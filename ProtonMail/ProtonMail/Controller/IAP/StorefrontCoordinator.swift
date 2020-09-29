@@ -83,4 +83,13 @@ class StorefrontCoordinator: PushCoordinator {
             navigationController?.pushViewController(vc, animated: animated)
         }
     }
+    
+    func goToInbox() {
+        guard let menuVC = self.rvc?.rearViewController as? MenuViewController,
+              let coord = menuVC.getCoordinator() as? MenuCoordinatorNew else {
+            return
+        }
+        
+        coord.go(to: .mailbox)
+    }
 }

@@ -14,9 +14,19 @@ fileprivate extension UIView {
     }
 }
 
+public func ArrowDefaultColor() -> UIColor {
+    if #available(iOS 13, *) {
+        return UIColor.systemGray6
+    } else {
+        return UIColor.white
+    }
+}
+
 open class DKPopoverViewController: UIViewController {
     
-    @objc open class func popoverViewController(_ viewController: UIViewController, fromView: UIView, arrowColor: UIColor = UIColor.white) {
+    @objc open class func popoverViewController(_ viewController: UIViewController,
+                                                fromView: UIView,
+                                                arrowColor: UIColor = ArrowDefaultColor()) {
         let window = UIApplication.shared.keyWindow!
         
         let popoverViewController = DKPopoverViewController()
@@ -52,7 +62,7 @@ open class DKPopoverViewController: UIViewController {
         
         let arrowWidth: CGFloat = 20
         let arrowHeight: CGFloat = 10
-        var arrowColor = UIColor.white
+        var arrowColor = ArrowDefaultColor()
         var arrowOffset = CGPoint.zero
         
         fileprivate let arrowImageView: UIImageView = UIImageView()
@@ -111,7 +121,7 @@ open class DKPopoverViewController: UIViewController {
         }
     }
     
-    @objc public var arrowColor = UIColor.white
+    @objc public var arrowColor = ArrowDefaultColor()
     
     private var contentViewController: UIViewController!
     private var fromView: UIView!

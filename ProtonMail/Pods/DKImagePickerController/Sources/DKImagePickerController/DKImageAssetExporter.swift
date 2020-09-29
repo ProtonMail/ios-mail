@@ -85,7 +85,7 @@ public protocol DKImageAssetExporterObserver {
 }
 
 /*
- Configuration options for a DKImageAssetExporter.  When an exporter is created,
+ Configuration options for a DKImageAssetExporter. When an exporter is created,
  a copy of the configuration object is made - you cannot modify the configuration
  of an exporter after it has been created.
  */
@@ -432,22 +432,21 @@ open class DKImageAssetExporter: DKImageBaseManager {
                                     asset.fileName = "Image.jpg"
                                 }
                             }
-                            let fileName = asset.fileName!
-                            
-                            asset.localTemporaryPath = asset.localTemporaryPath?.appendingPathComponent(fileName)
-                            
-                            if FileManager.default.fileExists(atPath: asset.localTemporaryPath!.path) {
-                                return completion(nil)
-                            }
-                            
-                            if  self.configuration.imageExportPreset == .compatible && self.isHEIC(with: imageData) {
-                                if let jpgData = self.imageToJPEG(with: imageData) {
+                                                                                    
+                            if self.configuration.imageExportPreset == .compatible && self.isHEIC(with: imageData) {
+                                if let fileName = asset.fileName, let jpgData = self.imageToJPEG(with: imageData) {
                                     imageData = jpgData
                                     
                                     if fileName.uppercased().hasSuffix(".HEIC") {
                                         asset.fileName = fileName.dropLast(4) + "jpg"
                                     }
                                 }
+                            }
+                            
+                            asset.localTemporaryPath = asset.localTemporaryPath?.appendingPathComponent(asset.fileName!)
+                            
+                            if FileManager.default.fileExists(atPath: asset.localTemporaryPath!.path) {
+                                return completion(nil)
                             }
                             
                             do {

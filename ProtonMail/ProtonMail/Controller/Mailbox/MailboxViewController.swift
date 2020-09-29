@@ -125,6 +125,9 @@ class MailboxViewController: ProtonMailViewController, ViewModelProtocol, Coordi
 
     ///
     func inactiveViewModel() {
+        guard self.viewModel != nil else {
+            return
+        }
         self.viewModel.resetFetchedController()
     }
     

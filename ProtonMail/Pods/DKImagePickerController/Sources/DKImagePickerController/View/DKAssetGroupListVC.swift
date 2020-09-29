@@ -49,7 +49,12 @@ class DKAssetGroupCell: UITableViewCell, DKAssetGroupCellType {
     lazy var totalCountLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 10)
-        label.textColor = UIColor.gray
+        
+        if #available(iOS 13, *) {
+            label.textColor = UIColor.secondaryLabel
+        } else {
+            label.textColor = UIColor.gray
+        }
         return label
     }()
 
@@ -69,14 +74,21 @@ class DKAssetGroupCell: UITableViewCell, DKAssetGroupCellType {
     lazy var customSeparator: DKAssetGroupSeparator = {
         let separator = DKAssetGroupSeparator(frame: CGRect(x: 10, y: self.bounds.height - 1, width: self.bounds.width, height: 0.5))
 
-        separator.backgroundColor = UIColor.lightGray
+        if #available(iOS 13, *) {
+            separator.backgroundColor = UIColor.systemGray5
+        } else {
+            separator.backgroundColor = UIColor.lightGray
+        }
         separator.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         return separator
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
+        
+        if #available(iOS 13, *) {
+            self.backgroundColor = UIColor.systemGray6
+        }
         self.selectedBackgroundView = self.customSelectedBackgroundView
 
         self.contentView.addSubview(self.thumbnailImageView)
@@ -202,6 +214,12 @@ class DKAssetGroupListVC: UITableViewController, DKImageGroupDataManagerObserver
         self.tableView.register(cellType, forCellReuseIdentifier: DKImageGroupCellIdentifier)
         self.tableView.rowHeight = cellType.preferredHeight
         self.tableView.separatorStyle = .none
+        
+        if #available(iOS 13, *) {
+            self.tableView.backgroundColor = UIColor.systemGray6
+        } else {
+            self.tableView.backgroundColor = UIColor.white
+        }
 
         self.clearsSelectionOnViewWillAppear = false
 
