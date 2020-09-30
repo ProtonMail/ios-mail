@@ -26,7 +26,7 @@ import PromiseKit
 import AwaitKit
 import MBProgressHUD
 
-class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView {
+class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelProtocol, CoordinatedNew, AccessibleView, HtmlEditorBehaviourDelegate {
     typealias viewModelType = ComposeViewModel
     typealias coordinatorType = ComposeCoordinator
     
@@ -522,14 +522,19 @@ class ComposeViewController : HorizontallyScrollableWebViewContainer, ViewModelP
             self.headerView.updateAttachmentButton(false)
         }
     }
-}
-extension ComposeViewController: HtmlEditorBehaviourDelegate {
-    @objc func addInlineAttachment(_ sid: String, data: Data) {
+    
+    //MARK: - HtmlEditorBehaviourDelegate
+    func addInlineAttachment(_ sid: String, data: Data) -> Promise<Void> {
         // Data.toAttachment will automatically increment number of attachments in the message
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-        guard let attachment = data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata) else { return }
-        attachment.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
-        self.viewModel.uploadAtt(attachment)
+        
+        return data.toAttachment(self.viewModel.message!, fileName: sid, type: "image/png", stripMetadata: stripMetadata).done { (attachment) in
+            guard let att = attachment else {
+                return
+            }
+            att.headerInfo = "{ \"content-disposition\": \"inline\", \"content-id\": \"\(sid)\" }"
+            self.viewModel.uploadAtt(att)
+        }
     }
     
     func removeInlineAttachment(_ sid: String) {
@@ -554,8 +559,7 @@ extension ComposeViewController: HtmlEditorBehaviourDelegate {
     }
 }
 
-
-// MARK : - view extensions
+//MARK: - view extensions
 extension ComposeViewController : ComposeViewDelegate {
     
     func composeViewWillPresentSubview() {
