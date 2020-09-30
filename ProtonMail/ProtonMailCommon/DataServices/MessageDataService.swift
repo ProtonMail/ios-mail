@@ -947,7 +947,9 @@ class MessageDataService : Service, HasLocalStorage {
             self.coreDataService.enqueue(context: context) { (context) in
                 if let message = Message.messageForMessageID(messageID, inManagedObjectContext: context) {
                     if message.isDetailDownloaded {
-                        completion(nil, nil, Message.ObjectIDContainer(message), nil)
+                        DispatchQueue.main.async {
+                            completion(nil, nil, Message.ObjectIDContainer(message), nil)
+                        }
                     } else {
                         self.apiService.messageDetail(messageID: messageID, completion: completionWrapper)
                     }

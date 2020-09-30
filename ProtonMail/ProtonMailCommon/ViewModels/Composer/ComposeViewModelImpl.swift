@@ -79,7 +79,11 @@ class ComposeViewModelImpl : ComposeViewModel {
         
         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
         for f in files {
-            self.uploadAtt(f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata))
+            f.contents.toAttachment(self.message!, fileName: f.name, type: f.ext, stripMetadata: stripMetadata).done { (attachment) in
+                if let att = attachment {
+                    self.uploadAtt(att)
+                }
+            }.cauterize()
         }
         
     }
@@ -136,9 +140,11 @@ class ComposeViewModelImpl : ComposeViewModel {
                     if let mimeAtts = msg?.tempAtts {
                         let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
                         for mimeAtt in mimeAtts {
-                            if let att = mimeAtt.toAttachment(message: self.message, stripMetadata: stripMetadata) {
-                                attachments.append(att)
-                            }
+                            mimeAtt.toAttachment(message: self.message, stripMetadata: stripMetadata).done { (attachment) in
+                                if let att = attachment {
+                                    self.attachments.append(att)
+                                }
+                            }.cauterize()
                         }
                     }
                 } else {
@@ -497,41 +503,43 @@ class ComposeViewModelImpl : ComposeViewModel {
     }
     
     override func sendMessage() {
-        //check if has extenral emails and if need attach key
-        let userinfo = self.user.userInfo
-        if userinfo.attachPublicKey == 1,
-            let msg = message,
-            let addr = self.messageService.defaultAddress(msg),
-            let key = addr.keys.first,
-            let data = key.publicKey.data(using: String.Encoding.utf8) {
-            
-            let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
-            var attached: Bool = false
-            // check if key already attahced
-            if let atts = self.getAttachments() {
-                for att in atts {
-                    if att.fileName == filename {
-                        attached = true
-                        break
+        async {
+            //check if has extenral emails and if need attach key
+            let userinfo = self.user.userInfo
+            if userinfo.attachPublicKey == 1,
+               let msg = self.message,
+               let addr = self.messageService.defaultAddress(msg),
+               let key = addr.keys.first,
+               let data = key.publicKey.data(using: String.Encoding.utf8) {
+                
+                let filename = "publicKey - " + addr.email + " - " + key.shortFingerpritn + ".asc"
+                var attached: Bool = false
+                // check if key already attahced
+                if let atts = self.getAttachments() {
+                    for att in atts {
+                        if att.fileName == filename {
+                            attached = true
+                            break
+                        }
                     }
                 }
+                
+                // attach key
+                if attached == false, let context = msg.managedObjectContext {
+                    let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
+                    let attachment = try? await(data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata))
+                    var error: NSError? = nil
+                    error = context.saveUpstreamIfNeeded()
+                    if error != nil {
+                        PMLog.D("toAttachment () with error: \(String(describing: error))")
+                    }
+                    self.uploadPubkey(attachment)
+                }
             }
             
-            // attach key
-            if attached == false, let context = msg.managedObjectContext {
-                let stripMetadata = userCachedStatus.metadataStripping == .stripMetadata
-                let attachment = data.toAttachment(msg, fileName: filename, type: "application/pgp-keys", stripMetadata: stripMetadata)
-                var error: NSError? = nil
-                error = context.saveUpstreamIfNeeded()
-                if error != nil {
-                    PMLog.D("toAttachment () with error: \(String(describing: error))")
-                }
-                self.uploadPubkey(attachment)
-            }
+            self.updateDraft()
+            self.messageService.send(inQueue: self.message, completion: nil)
         }
-        
-        self.updateDraft()
-        messageService.send(inQueue: self.message)  { _, _, _ in }
     }
     
     override func collectDraft(_ title: String, body: String, expir:TimeInterval, pwd:String, pwdHit:String) {
