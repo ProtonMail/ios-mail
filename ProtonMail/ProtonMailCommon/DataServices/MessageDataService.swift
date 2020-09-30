@@ -2603,6 +2603,14 @@ class MessageDataService : Service, HasLocalStorage {
                                 break
                             }
                             self.userDataSource?.setFromEvents(addressRes: parsedAddr)
+                            guard let user = self.usersManager?.getUser(byUserId: self.userID) else {
+                                break
+                            }
+                            do {
+                                try await(user.userService.activeUserKeys(userInfo: user.userinfo, auth: user.authCredential))
+                            } catch let error {
+                                print(error.localizedDescription)
+                            }
                         default:
                             PMLog.D(" unknown type in message: \(address)")
                         }
