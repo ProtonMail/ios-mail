@@ -98,7 +98,7 @@ final class MailboxViewModelImpl : MailboxViewModel {
     
     override func showLocation() -> Bool {
         switch(self.label) {
-        case .allmail:
+        case .allmail, .draft:
             return true
         default:
             return false
