@@ -50,8 +50,10 @@ class MessageHeaderViewModel: NSObject {
             self?.headerData = parentViewModel.header
         }
         self.messageObservation = message.observe(\.labels, options: [.old, .new]) { [weak self] message, change in
-            guard change.newValue != change.oldValue else { return }
-            self?.headerData = HeaderData(message: message)
+            DispatchQueue.main.async {
+                guard change.newValue != change.oldValue else { return }
+                self?.headerData = HeaderData(message: message)
+            }
         }
     }
     
